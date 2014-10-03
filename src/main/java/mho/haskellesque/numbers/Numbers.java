@@ -39,6 +39,7 @@ public class Numbers {
     }
 
     public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
+        if (s.startsWith("0x") || s.startsWith("-0") || s.length() > 1 && s.charAt(0) == '0') return Optional.empty();
         try {
             return Optional.of(Integer.parseInt(s));
         } catch (NumberFormatException e) {
@@ -47,6 +48,7 @@ public class Numbers {
     }
 
     public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
+        if (s.startsWith("0x") || s.startsWith("-0") || s.length() > 1 && s.charAt(0) == '0') return Optional.empty();
         try {
             return Optional.of(new BigInteger(s));
         } catch (NumberFormatException e) {
