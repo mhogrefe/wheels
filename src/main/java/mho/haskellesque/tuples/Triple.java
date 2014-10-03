@@ -11,7 +11,7 @@ public final class Triple<A, B, C> {
     public final @Nullable B b;
     public final @Nullable C c;
 
-    private Triple(@Nullable A a, @Nullable B b, @Nullable C c) {
+    public Triple(@Nullable A a, @Nullable B b, @Nullable C c) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -36,8 +36,7 @@ public final class Triple<A, B, C> {
         Triple triple = (Triple) o;
         if (a != null ? !a.equals(triple.a) : triple.a != null) return false;
         if (b != null ? !b.equals(triple.b) : triple.b != null) return false;
-        if (c != null ? !c.equals(triple.c) : triple.c != null) return false;
-        return true;
+        return !(c != null ? !c.equals(triple.c) : triple.c != null);
     }
 
     @Override
