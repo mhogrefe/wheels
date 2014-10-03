@@ -120,51 +120,91 @@ public enum Ordering {
         return ge(a, b);
     }
 
-    public static <T extends Comparable<T>> boolean eq(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean eq(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) == 0;
     }
 
-    public static <T extends Comparable<T>> boolean equalTo(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean equalTo(Comparator<T> comparator, T a, T b) {
         return eq(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> boolean ne(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean ne(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) != 0;
     }
 
-    public static <T extends Comparable<T>> boolean notEqualTo(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean notEqualTo(Comparator<T> comparator, T a, T b) {
         return ne(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> boolean lt(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean lt(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) < 0;
     }
 
-    public static <T extends Comparable<T>> boolean lessThan(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean lessThan(Comparator<T> comparator, T a, T b) {
         return lt(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> boolean gt(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean gt(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) > 0;
     }
 
-    public static <T extends Comparable<T>> boolean greaterThan(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean greaterThan(Comparator<T> comparator, T a, T b) {
         return gt(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> boolean le(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean le(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) <= 0;
     }
 
-    public static <T extends Comparable<T>> boolean lessThanOrEqualTo(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean lessThanOrEqualTo(Comparator<T> comparator, T a, T b) {
         return le(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> boolean ge(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean ge(Comparator<T> comparator, T a, T b) {
         return comparator.compare(a, b) >= 0;
     }
 
-    public static <T extends Comparable<T>> boolean greaterThanOrEqualTo(Comparator<T> comparator, T a, T b) {
+    public static <T> boolean greaterThanOrEqualTo(Comparator<T> comparator, T a, T b) {
         return ge(comparator, a, b);
+    }
+
+    public static <T extends Comparable<T>> T min(T... elements) {
+        if (elements.length == 0)
+            throw new IllegalArgumentException("element list cannot be empty");
+        T smallest = elements[0];
+        for (T element : elements) {
+            if (lt(element, smallest)) smallest = element;
+        }
+        return smallest;
+    }
+
+    public static <T extends Comparable<T>> T max(T... elements) {
+        if (elements.length == 0)
+            throw new IllegalArgumentException("element list cannot be empty");
+        T largest = elements[0];
+        for (T element : elements) {
+            if (gt(element, largest)) largest = element;
+        }
+        return largest;
+    }
+
+    public static <T> T min(Comparator<T> comparator, T... elements) {
+        if (elements.length == 0)
+            throw new IllegalArgumentException("element list cannot be empty");
+        T smallest = elements[0];
+        for (T element : elements) {
+            if (lt(comparator, element, smallest)) smallest = element;
+        }
+        return smallest;
+    }
+
+    public static <T> T max(Comparator<T> comparator, T... elements) {
+        if (elements.length == 0)
+            throw new IllegalArgumentException("element list cannot be empty");
+        T largest = elements[0];
+        for (T element : elements) {
+            if (gt(comparator, element, largest)) largest = element;
+        }
+        return largest;
     }
 }
