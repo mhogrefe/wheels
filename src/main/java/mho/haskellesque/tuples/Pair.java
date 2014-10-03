@@ -10,14 +10,9 @@ public final class Pair<S, T> {
     public final @Nullable S fst;
     public final @Nullable T snd;
 
-    private Pair(@Nullable S fst, @Nullable T snd) {
+    public Pair(@Nullable S fst, @Nullable T snd) {
         this.fst = fst;
         this.snd = snd;
-    }
-
-    public static @NotNull
-    <S, T> Pair<S, T> of(@Nullable S fst, @Nullable T snd) {
-        return new Pair<>(fst, snd);
     }
 
     private static <S extends Comparable<S>, T extends Comparable<T>> int compare(
@@ -49,7 +44,8 @@ public final class Pair<S, T> {
         return "(" + fst + ", " + snd + ")";
     }
 
-    public static class PairComparator<S extends Comparable<S>, T extends Comparable<T>> implements Comparator<Pair<S, T>> {
+    public static class PairComparator<S extends Comparable<S>, T extends Comparable<T>>
+            implements Comparator<Pair<S, T>> {
         @Override
         public int compare(@NotNull Pair<S, T> p, @NotNull Pair<S, T> q) {
             return Pair.compare(p, q);
