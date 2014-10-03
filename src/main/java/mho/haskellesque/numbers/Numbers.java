@@ -1,5 +1,7 @@
 package mho.haskellesque.numbers;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -36,7 +38,7 @@ public class Numbers {
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
     }
 
-    public static Optional<Integer> readInteger(String s) {
+    public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
         try {
             return Optional.of(Integer.parseInt(s));
         } catch (NumberFormatException e) {
@@ -44,7 +46,7 @@ public class Numbers {
         }
     }
 
-    public static Optional<BigInteger> readBigInteger(String s) {
+    public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
         try {
             return Optional.of(new BigInteger(s));
         } catch (NumberFormatException e) {
