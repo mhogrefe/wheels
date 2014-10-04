@@ -14,18 +14,33 @@ import static mho.haskellesque.ordering.Ordering.*;
 
 public class IterableUtils {
     /**
-     * Converts an <tt>Iterable</tt> to a <tt>Collection</tt>. Only works for finite <tt>Iterable</tt>s.
+     * Adds an <tt>Iterable</tt> to a <tt>Collection</tt>. Only works for finite <tt>Iterable</tt>s.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li><tt>collection</tt> must be non-null.</li>
+     * </ul>
      *
      * @param xs the iterable
      * @param <T> the iterable's element type
      */
-    public static <T> void addTo(Iterable<T> xs, Collection<T> collection) {
+    public static <T> void addTo(@NotNull Iterable<T> xs, @NotNull Collection<T> collection) {
         for (T x : xs) {
             collection.add(x);
         }
     }
 
-    public static void addTo(String s, Collection<Character> collection) {
+    /**
+     * Adds a <tt>String</tt>'s characters to a <tt>Collection</tt>.
+     *
+     * <ul>
+     *  <li><tt>s</tt> cannot be null.</li>
+     *  <li><tt>collection</tt> must be non-null.</li>
+     * </ul>
+     *
+     * @param s the string
+     */
+    public static void addTo(@NotNull String s, @NotNull Collection<Character> collection) {
         for (int i = 0; i < s.length(); i++) {
             collection.add(s.charAt(i));
         }
