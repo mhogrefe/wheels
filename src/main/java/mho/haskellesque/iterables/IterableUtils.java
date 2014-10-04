@@ -19,6 +19,7 @@ public class IterableUtils {
      * <ul>
      *  <li><tt>xs</tt> must be finite.</li>
      *  <li><tt>collection</tt> must be non-null.</li>
+     *  <li><tt>collection</tt> must be able to hold every element of <tt>xs</tt>.</li>
      * </ul>
      *
      * @param xs the iterable
@@ -36,6 +37,7 @@ public class IterableUtils {
      * <ul>
      *  <li><tt>s</tt> cannot be null.</li>
      *  <li><tt>collection</tt> must be non-null.</li>
+     *  <li><tt>collection</tt> must be able to hold every character of <tt>s</tt>.</li>
      * </ul>
      *
      * @param s the string
