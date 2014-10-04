@@ -14,7 +14,8 @@ import static mho.haskellesque.ordering.Ordering.*;
 
 public class IterableUtils {
     /**
-     * Adds an <tt>Iterable</tt> to a <tt>Collection</tt>. Only works for finite <tt>Iterable</tt>s.
+     * Adds an <tt>Iterable</tt>'s elements to a <tt>Collection</tt>, in the order that the elements appear in the
+     * <tt>Iterable</tt>. Only works for finite <tt>Iterable</tt>s.
      *
      * <ul>
      *  <li><tt>xs</tt> must be finite.</li>
@@ -23,7 +24,8 @@ public class IterableUtils {
      * </ul>
      *
      * @param xs the iterable
-     * @param <T> the iterable's element type
+     * @param collection the collection to which the <tt>Iterable</tt>'s elements are added
+     * @param <T> the <tt>Iterable</tt>'s element type
      */
     public static <T> void addTo(@NotNull Iterable<T> xs, @NotNull Collection<T> collection) {
         for (T x : xs) {
@@ -32,7 +34,8 @@ public class IterableUtils {
     }
 
     /**
-     * Adds a <tt>String</tt>'s characters to a <tt>Collection</tt>.
+     * Adds a <tt>String</tt>'s characters to a <tt>Collection</tt>, in the order that the characters appear in the
+     * <tt>String</tt>.
      *
      * <ul>
      *  <li><tt>s</tt> cannot be null.</li>
@@ -41,6 +44,7 @@ public class IterableUtils {
      * </ul>
      *
      * @param s the string
+     * @param collection the collection to which the <tt>String</tt>'s characters are added
      */
     public static void addTo(@NotNull String s, @NotNull Collection<Character> collection) {
         for (int i = 0; i < s.length(); i++) {
@@ -51,9 +55,9 @@ public class IterableUtils {
     /**
      * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
      *
-     * @param xs the iterable
-     * @param <T> the iterable's element type
-     * @return a list containing the elements of the iterable in their original order
+     * @param xs the <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return a <tt>List</tt> containing the elements of the <tt>Iterable</tt> in their original order
      */
     public static @NotNull <T>List<T> toList(@NotNull Iterable<T> xs) {
         List<T> list = new ArrayList<>();
