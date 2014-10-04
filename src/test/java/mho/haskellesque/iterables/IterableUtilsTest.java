@@ -48,11 +48,12 @@ public class IterableUtilsTest {
         LinkedHashSet<Integer> iLinkedHashSet = new LinkedHashSet<>();
         addTo(set, iLinkedHashSet);
         assertEquals(iLinkedHashSet.size(), 5);
-        assertTrue(iLinkedHashSet.contains(4));
-        assertTrue(iLinkedHashSet.contains(1));
-        assertTrue(iLinkedHashSet.contains(5));
-        assertTrue(iLinkedHashSet.contains(9));
-        assertTrue(iLinkedHashSet.contains(2));
+        Iterator<Integer> iLinkedHashSetIterator = iLinkedHashSet.iterator();
+        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(4));
+        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(1));
+        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(5));
+        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(9));
+        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(2));
 
         set = new HashSet<>();
         iArrayList = new ArrayList<>();
@@ -103,10 +104,69 @@ public class IterableUtilsTest {
         LinkedHashSet<Float> fLinkedHashSet = new LinkedHashSet<>();
         addTo(lList, fLinkedHashSet);
         assertEquals(fLinkedHashSet.size(), 4);
-        assertTrue(fLinkedHashSet.contains(Float.valueOf(0.2f)));
-        assertTrue(fLinkedHashSet.contains(Float.valueOf(-5f)));
-        assertTrue(fLinkedHashSet.contains(null));
-        assertTrue(fLinkedHashSet.contains(Float.valueOf(1e30f)));
+        Iterator<Float> fLinkedHashSetIterator = fLinkedHashSet.iterator();
+        assertEquals(fLinkedHashSetIterator.next(), Float.valueOf(0.2f));
+        assertEquals(fLinkedHashSetIterator.next(), Float.valueOf(-5f));
+        assertNull(fLinkedHashSetIterator.next());
+        assertEquals(fLinkedHashSetIterator.next(), Float.valueOf(1e30f));
+    }
+
+    @Test
+    public void testAddTo_String_Collection() {
+        ArrayList<Character> arrayList = new ArrayList<>();
+        addTo("hello", arrayList);
+        assertEquals(arrayList.size(), 5);
+        assertEquals(arrayList.get(0), Character.valueOf('h'));
+        assertEquals(arrayList.get(1), Character.valueOf('e'));
+        assertEquals(arrayList.get(2), Character.valueOf('l'));
+        assertEquals(arrayList.get(3), Character.valueOf('l'));
+        assertEquals(arrayList.get(4), Character.valueOf('o'));
+        LinkedList<Character> linkedList = new LinkedList<>();
+        addTo("hello", linkedList);
+        assertEquals(linkedList.size(), 5);
+        assertEquals(linkedList.get(0), Character.valueOf('h'));
+        assertEquals(linkedList.get(1), Character.valueOf('e'));
+        assertEquals(linkedList.get(2), Character.valueOf('l'));
+        assertEquals(linkedList.get(3), Character.valueOf('l'));
+        assertEquals(linkedList.get(4), Character.valueOf('o'));
+        HashSet<Character> hashSet = new HashSet<>();
+        addTo("hello", hashSet);
+        assertEquals(hashSet.size(), 4);
+        assertTrue(hashSet.contains(Character.valueOf('h')));
+        assertTrue(hashSet.contains(Character.valueOf('e')));
+        assertTrue(hashSet.contains(Character.valueOf('l')));
+        assertTrue(hashSet.contains(Character.valueOf('o')));
+        TreeSet<Character> treeSet = new TreeSet<>();
+        addTo("hello", treeSet);
+        assertEquals(treeSet.size(), 4);
+        assertTrue(treeSet.contains(Character.valueOf('h')));
+        assertTrue(treeSet.contains(Character.valueOf('e')));
+        assertTrue(treeSet.contains(Character.valueOf('l')));
+        assertTrue(treeSet.contains(Character.valueOf('o')));
+        LinkedHashSet<Character> linkedHashSet = new LinkedHashSet<>();
+        addTo("hello", linkedHashSet);
+        assertEquals(treeSet.size(), 4);
+        Iterator<Character> linkedHashSetIterator = linkedHashSet.iterator();
+        assertEquals(linkedHashSetIterator.next(), Character.valueOf('h'));
+        assertEquals(linkedHashSetIterator.next(), Character.valueOf('e'));
+        assertEquals(linkedHashSetIterator.next(), Character.valueOf('l'));
+        assertEquals(linkedHashSetIterator.next(), Character.valueOf('o'));
+
+        arrayList = new ArrayList<>();
+        addTo("", arrayList);
+        assertTrue(arrayList.isEmpty());
+        linkedList = new LinkedList<>();
+        addTo("", linkedList);
+        assertTrue(linkedList.isEmpty());
+        hashSet = new HashSet<>();
+        addTo("", hashSet);
+        assertTrue(hashSet.isEmpty());
+        treeSet = new TreeSet<>();
+        addTo("", treeSet);
+        assertTrue(treeSet.isEmpty());
+        linkedHashSet = new LinkedHashSet<>();
+        addTo("", linkedHashSet);
+        assertTrue(linkedHashSet.isEmpty());
     }
 
     @Test
