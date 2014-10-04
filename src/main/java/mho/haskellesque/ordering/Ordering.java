@@ -38,38 +38,10 @@ public enum Ordering {
 
     public static @NotNull <T extends Comparable<T>> Ordering compare(
             @NotNull Comparator<T> comparator,
-            @NotNull T a,
-            @NotNull T b
-    ) {
-        return fromInt(comparator.compare(a, b));
-    }
-
-    public static @NotNull <T extends Comparable<T>> Ordering compareNullable(@Nullable T a, @Nullable T b) {
-        if (a == null && b == null) {
-            return EQ;
-        } else if (a == null) {
-            return LT;
-        } else if (b == null) {
-            return GT;
-        } else {
-            return compare(a, b);
-        }
-    }
-
-    public static @NotNull <T extends Comparable<T>> Ordering compareNullable(
-            Comparator<T> comparator,
             @Nullable T a,
             @Nullable T b
     ) {
-        if (a == null && b == null) {
-            return EQ;
-        } else if (a == null) {
-            return LT;
-        } else if (b == null) {
-            return GT;
-        } else {
-            return compare(comparator, a, b);
-        }
+        return fromInt(comparator.compare(a, b));
     }
 
     public static <T extends Comparable<T>> boolean eq(T a, T b) {
