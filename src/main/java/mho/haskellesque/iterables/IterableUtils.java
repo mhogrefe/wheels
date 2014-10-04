@@ -14,37 +14,11 @@ import static mho.haskellesque.ordering.Ordering.*;
 
 public class IterableUtils {
     /**
-     * Converts an Iterable to a List. Only works for finite Iterables.
+     * Converts an <tt>Iterable</tt> to a <tt>Collection</tt>. Only works for finite <tt>Iterable</tt>s.
      *
      * @param xs the iterable
      * @param <T> the iterable's element type
-     * @return a list containing the elements of the iterable in their original order
      */
-    public static @NotNull
-    <T>List<T> toList(@NotNull Iterable<T> xs) {
-        List<T> list = new ArrayList<>();
-        for (T x : xs) {
-            list.add(x);
-        }
-        return list;
-    }
-
-    public static <T> List<T> toList(List<T> xs) {
-        return xs;
-    }
-
-    public static <T> String toString(Iterable<T> xs) {
-        return toList(xs).toString();
-    }
-
-    public static List<Character> toList(String s) {
-        List<Character> list = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            list.add(s.charAt(i));
-        }
-        return list;
-    }
-
     public static <T> void addTo(Iterable<T> xs, Collection<T> collection) {
         for (T x : xs) {
             collection.add(x);
@@ -55,6 +29,29 @@ public class IterableUtils {
         for (int i = 0; i < s.length(); i++) {
             collection.add(s.charAt(i));
         }
+    }
+
+    /**
+     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
+     *
+     * @param xs the iterable
+     * @param <T> the iterable's element type
+     * @return a list containing the elements of the iterable in their original order
+     */
+    public static @NotNull <T>List<T> toList(@NotNull Iterable<T> xs) {
+        List<T> list = new ArrayList<>();
+        addTo(xs, list);
+        return list;
+    }
+
+    public static List<Character> toList(String s) {
+        List<Character> list = new ArrayList<>();
+        addTo(s, list);
+        return list;
+    }
+
+    public static <T> String toString(Iterable<T> xs) {
+        return toList(xs).toString();
     }
 
     public static Iterable<Character> fromString(String s) {
