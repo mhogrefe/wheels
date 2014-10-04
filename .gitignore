@@ -1,4 +1,5 @@
 .idea/*
+documentation/*
 *.iml
 *.class
 *.jar
