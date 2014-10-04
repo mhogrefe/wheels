@@ -1,5 +1,6 @@
 package mho.haskellesque.tuples;
 
+import mho.haskellesque.ordering.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,9 +20,9 @@ public final class Pair<S, T> {
             @NotNull Pair<S, T> p,
             @NotNull Pair<S, T> q
     ) {
-        Ordering fstOrdering = Ordering.compareNullable(p.fst, q.fst);
+        Ordering fstOrdering = Ordering.compare(new NullHandlingComparator<>(), p.fst, q.fst);
         if (fstOrdering != Ordering.EQ) return fstOrdering.toInt();
-        return Ordering.compareNullable(p.snd, q.snd).toInt();
+        return Ordering.compare(new NullHandlingComparator<>(), p.snd, q.snd).toInt();
     }
 
     @Override
@@ -29,8 +30,8 @@ public final class Pair<S, T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pair pair = (Pair) o;
-        return fst == null ? pair.fst == null : fst.equals(pair.fst)
-                && (snd == null ? pair.snd == null : snd.equals(pair.snd));
+        return (fst == null ? pair.fst == null : fst.equals(pair.fst)) &&
+               (snd == null ? pair.snd == null : snd.equals(pair.snd));
     }
 
     @Override

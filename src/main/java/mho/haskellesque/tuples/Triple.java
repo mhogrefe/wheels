@@ -1,5 +1,6 @@
 package mho.haskellesque.tuples;
 
+import mho.haskellesque.ordering.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +23,11 @@ public final class Triple<A, B, C> {
                 B extends Comparable<B>,
                 C extends Comparable<C>
             > int compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {
-        Ordering aOrdering = Ordering.compareNullable(p.a, q.a);
+        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
         if (aOrdering != Ordering.EQ) return aOrdering.toInt();
-        Ordering bOrdering = Ordering.compareNullable(p.b, q.b);
+        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
         if (bOrdering != Ordering.EQ) return bOrdering.toInt();
-        return Ordering.compareNullable(p.c, q.c).toInt();
+        return Ordering.compare(new NullHandlingComparator<C>(), p.c, q.c).toInt();
     }
 
     @Override
@@ -34,9 +35,9 @@ public final class Triple<A, B, C> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Triple triple = (Triple) o;
-        if (a != null ? !a.equals(triple.a) : triple.a != null) return false;
-        if (b != null ? !b.equals(triple.b) : triple.b != null) return false;
-        return !(c != null ? !c.equals(triple.c) : triple.c != null);
+        return (a == null ? triple.a == null : a.equals(triple.a)) &&
+               (b == null ? triple.b == null : b.equals(triple.b)) &&
+               (c == null ? triple.c == null : c.equals(triple.c));
     }
 
     @Override
