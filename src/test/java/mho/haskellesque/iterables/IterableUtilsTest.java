@@ -240,6 +240,20 @@ public class IterableUtilsTest {
         } catch (NullPointerException e) {}
     }
 
+    @Test
+    public void testCons_Iterable() {
+        aeq(cons(5, Arrays.asList(1, 2, 3, 4, 5)), "[5, 1, 2, 3, 4, 5]");
+        aeq(cons(null, Arrays.asList(1, 2, 3, 4, 5)), "[null, 1, 2, 3, 4, 5]");
+        aeq(cons(5, Arrays.asList(1, 2, null, 4, 5)), "[5, 1, 2, null, 4, 5]");
+        aeq(cons(5, new ArrayList<>()), "[5]");
+    }
+
+    @Test
+    public void testCons_String() {
+        aeq(cons('A', " SMALL CAT"), "A SMALL CAT");
+        aeq(cons('A', ""), "A");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
