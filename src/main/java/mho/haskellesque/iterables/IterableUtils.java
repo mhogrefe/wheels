@@ -56,7 +56,7 @@ public class IterableUtils {
      * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be a finite <tt>Iterable</tt>.</li>
+     *  <li><tt>xs</tt> must be finite.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -87,7 +87,21 @@ public class IterableUtils {
         return list;
     }
 
-    public static <T> String toString(Iterable<T> xs) {
+    /**
+     * Creates a <tt>String</tt> representation of <tt>xs</tt>. Each element is converted to a <tt>String</tt> and
+     * those strings are placed in a comma-separated list surrounded by square brackets. Only works for finite
+     * <tt>Iterable</tt>s.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result begins with '[' and ends with ']'.</li>
+     * </ul>
+     *
+     * @param xs the <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return a <tt>String</tt> representation of <tt>xs</tt>
+     */
+    public static @NotNull <T> String toString(@NotNull Iterable<T> xs) {
         return toList(xs).toString();
     }
 
