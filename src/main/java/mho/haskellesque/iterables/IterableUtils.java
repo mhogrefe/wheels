@@ -220,7 +220,24 @@ public class IterableUtils {
         return Character.toString(c) + cs;
     }
 
-    public static <T> Iterable<T> concat(Iterable<T> xs, Iterable<T> ys) {
+    /**
+     * Equivalent of Haskell's (++) operator. Creates an <tt>Iterable</tt> consisting of <tt>xs</tt>'s elements
+     * followed by <tt>ys</tt>'s elements. <tt>xs</tt> may be infinite, in which case the result will be equal to
+     * <tt>xs</tt>. <tt>ys</tt> may be infinite, in which case the result will also be infinite. Uses O(1) additional
+     * memory. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li><tt>ys</tt> must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>.
+     * @param ys another <tt>Iterable</tt>.
+     * @param <T> the element type of the <tt>Iterable</tt> to be created.
+     * @return <tt>xs</tt> concatenated with <tt>ys</tt>.
+     */
+    public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             private final Iterator<T> ysi = ys.iterator();
@@ -232,12 +249,32 @@ public class IterableUtils {
 
             @Override
             public T next() {
-                return xsi.hasNext() ? xsi.next() : ysi.next();
+                return (xsi.hasNext() ? xsi : ysi).next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
-    public static String concat(String s, String t) {
+    /**
+     * Equivalent of Haskell's (++) operator. Creates a <tt>String</tt> consisting of <tt>s</tt>'s characters followed
+     * by <tt>t</tt>'s characters. Uses O(n) additional memory, where n is the sum of the lengths of <tt>s</tt> and
+     * <tt>t</tt>.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li><tt>t</tt> must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>.
+     * @param t a <tt>String</tt>.
+     * @return <tt>s</tt> concatenated with <tt>t</tt>.
+     */
+    public static @NotNull String concat(@NotNull String s, @NotNull String t) {
         return s + t;
     }
 
@@ -247,6 +284,10 @@ public class IterableUtils {
 
     public static <T> T head(List<T> xs) {
         return xs.get(0);
+    }
+
+    public static <T> T head(SortedSet<T> xs) {
+        return xs.first();
     }
 
     public static char head(String s) {
@@ -263,6 +304,10 @@ public class IterableUtils {
 
     public static <T> T last(List<T> xs) {
         return xs.get(xs.size() - 1);
+    }
+
+    public static <T> T last(SortedSet<T> xs) {
+        return xs.last();
     }
 
     public static char last(String s) {
