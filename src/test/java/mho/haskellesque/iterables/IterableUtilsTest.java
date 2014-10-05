@@ -211,4 +211,16 @@ public class IterableUtilsTest {
         list = toList("");
         assertTrue(list.isEmpty());
     }
+
+    @Test
+    public void testToString() {
+        assertEquals(IterableUtils.toString(Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
+        assertEquals(IterableUtils.toString(new HashSet<>()), "[]");
+        LinkedList<Float> lList = new LinkedList<>();
+        lList.add(0.2f);
+        lList.add(-5f);
+        lList.add(null);
+        lList.add(1e30f);
+        assertEquals(IterableUtils.toString(lList), "[0.2, -5.0, null, 1.0E30]");
+    }
 }
