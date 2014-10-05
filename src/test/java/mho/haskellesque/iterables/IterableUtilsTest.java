@@ -215,7 +215,7 @@ public class IterableUtilsTest {
     @Test
     public void testToString() {
         assertEquals(IterableUtils.toString(Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
-        assertEquals(IterableUtils.toString(new HashSet<>()), "[]");
+        assertEquals(IterableUtils.toString(new HashSet<Integer>()), "[]");
         LinkedList<Float> lList = new LinkedList<>();
         lList.add(0.2f);
         lList.add(-5f);
@@ -245,13 +245,44 @@ public class IterableUtilsTest {
         aeq(cons(5, Arrays.asList(1, 2, 3, 4, 5)), "[5, 1, 2, 3, 4, 5]");
         aeq(cons(null, Arrays.asList(1, 2, 3, 4, 5)), "[null, 1, 2, 3, 4, 5]");
         aeq(cons(5, Arrays.asList(1, 2, null, 4, 5)), "[5, 1, 2, null, 4, 5]");
-        aeq(cons(5, new ArrayList<>()), "[5]");
+        aeq(cons(5, new ArrayList<Integer>()), "[5]");
+        aeq(take(10, (Iterable<Integer>) cons(5, repeat(1))), "[5, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
     }
 
     @Test
     public void testCons_String() {
         aeq(cons('A', " SMALL CAT"), "A SMALL CAT");
         aeq(cons('A', ""), "A");
+    }
+
+    @Test
+    public void testConcat_Iterable_Iterable() {
+        aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, 80, 70)), "[1, 2, 3, 90, 80, 70]");
+        aeq(concat(Arrays.asList(1, null, 3), Arrays.asList(90, 80, 70)), "[1, null, 3, 90, 80, 70]");
+        aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, null, 70)), "[1, 2, 3, 90, null, 70]");
+        aeq(concat(new ArrayList<>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
+        aeq(concat(Arrays.asList(1, 2, 3), new ArrayList<>()), "[1, 2, 3]");
+        aeq(concat(new ArrayList<Integer>(), new ArrayList<>()), "[]");
+        aeq(
+                take(10, (Iterable<Integer>) concat(Arrays.asList(1, 2, 3), repeat(5))),
+                "[1, 2, 3, 5, 5, 5, 5, 5, 5, 5]"
+        );
+        aeq(
+                take(10, (Iterable<Integer>) concat(repeat(5), Arrays.asList(1, 2, 3))),
+                "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]"
+        );
+        aeq(
+                take(10, (Iterable<Integer>) concat(repeat(5), repeat(1))),
+                "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]"
+        );
+    }
+
+    @Test
+    public void testConcat_String_String() {
+        aeq(concat("Hello ", "World"), "Hello World");
+        aeq(concat("Hello", ""), "Hello");
+        aeq(concat("", "World"), "World");
+        aeq(concat("", ""), "");
     }
 
     private static void aeq(Iterable<?> a, Object b) {
