@@ -3,6 +3,7 @@ package mho.haskellesque.iterables;
 import mho.haskellesque.tuples.Pair;
 import mho.haskellesque.tuples.Triple;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -107,7 +108,7 @@ public class IterableUtils {
 
     /**
      * Converts a <tt>String</tt> to an <tt>Iterable</tt> of characters. The order of the characters is preserved. Uses
-     * constant additional memory.
+     * O(1) additional memory.
      *
      * <ul>
      *  <li><tt>s</tt> must be non-null.</li>
@@ -158,7 +159,23 @@ public class IterableUtils {
         return sb.toString();
     }
 
-    public static <T> Iterable<T> cons(T x, Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's (:) list constructor. Creates an <tt>Iterable</tt> whose first element is <tt>x</tt> and
+     * whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the result is also
+     * infinite. Uses O(1) additional memory.
+     *
+     * <ul>
+     *  <li><tt>x</tt> can be anything.</li>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result is a non-empty <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * @param x the first element of the <tt>Iterable</tt> to be created.
+     * @param xs the second-through-last elements of the <tt>Iterable</tt> to be created.
+     * @param <T> the element type of the <tt>Iterable</tt> to be created.
+     * @return the <tt>Iterable</tt> to be created.
+     */
+    public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private boolean readHead = false;
             private final Iterator<T> xsi = xs.iterator();
@@ -180,8 +197,22 @@ public class IterableUtils {
         };
     }
 
-    public static String cons(char c, String s) {
-        return Character.toString(c) + s;
+    /**
+     * Equivalent of Haskell's (:) list constructor. Creates a <tt>String</tt> whose first character is <tt>c</tt> and
+     * whose remaining characters are given by <tt>cs</tt>. Uses O(n) additional memory, where n is the length of cs.
+     *
+     * <ul>
+     *  <li><tt>c</tt> can be anything.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li>The result is a non-empty <tt>String</tt>.</li>
+     * </ul>
+     *
+     * @param c the first character of the <tt>String</tt> to be created.
+     * @param cs the second-through-last characters of the <tt>String</tt> to be created.
+     * @return the <tt>String</tt> to be created.
+     */
+    public static @NotNull String cons(char c, @NotNull String cs) {
+        return Character.toString(c) + cs;
     }
 
     public static <T> Iterable<T> concat(Iterable<T> xs, Iterable<T> ys) {
