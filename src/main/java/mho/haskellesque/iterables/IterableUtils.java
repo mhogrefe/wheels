@@ -105,7 +105,19 @@ public class IterableUtils {
         return toList(xs).toString();
     }
 
-    public static Iterable<Character> fromString(String s) {
+    /**
+     * Converts a <tt>String</tt> to an <tt>Iterable</tt> of characters. The order of the characters is preserved. Uses
+     * constant additional memory.
+     *
+     * <ul>
+     *  <li><tt>s</tt> may not be null.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param s the <tt>String</tt>
+     * @return an <tt>Iterable</tt> containing all the <tt>String</tt>'s characters in their original order.
+     */
+    public static @NotNull Iterable<Character> fromString(@NotNull String s) {
         return () -> new Iterator<Character>() {
             private int i = 0;
 
@@ -117,6 +129,11 @@ public class IterableUtils {
             @Override
             public Character next() {
                 return s.charAt(i++);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
