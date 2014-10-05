@@ -197,4 +197,18 @@ public class IterableUtilsTest {
         assertNull(fList.get(2));
         assertEquals(fList.get(3), Float.valueOf(1e30f));
     }
+
+    @Test
+    public void testToList_String() {
+        List<Character> list = toList("hello");
+        assertEquals(list.size(), 5);
+        assertEquals(list.get(0), Character.valueOf('h'));
+        assertEquals(list.get(1), Character.valueOf('e'));
+        assertEquals(list.get(2), Character.valueOf('l'));
+        assertEquals(list.get(3), Character.valueOf('l'));
+        assertEquals(list.get(4), Character.valueOf('o'));
+
+        list = toList("");
+        assertTrue(list.isEmpty());
+    }
 }
