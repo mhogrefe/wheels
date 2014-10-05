@@ -38,7 +38,7 @@ public class IterableUtils {
      * <tt>String</tt>.
      *
      * <ul>
-     *  <li><tt>s</tt> cannot be null.</li>
+     *  <li><tt>s</tt> must be non-null.</li>
      *  <li><tt>collection</tt> must be non-null.</li>
      *  <li><tt>collection</tt> must be able to hold every character of <tt>s</tt>.</li>
      * </ul>
@@ -110,12 +110,12 @@ public class IterableUtils {
      * constant additional memory.
      *
      * <ul>
-     *  <li><tt>s</tt> may not be null.</li>
+     *  <li><tt>s</tt> must be non-null.</li>
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param s the <tt>String</tt>
-     * @return an <tt>Iterable</tt> containing all the <tt>String</tt>'s characters in their original order.
+     * @return an <tt>Iterable</tt> containing all the <tt>String</tt>'s characters in their original order
      */
     public static @NotNull Iterable<Character> fromString(@NotNull String s) {
         return () -> new Iterator<Character>() {
@@ -138,9 +138,21 @@ public class IterableUtils {
         };
     }
 
-    public static String charsToString(Iterable<Character> chars) {
+    /**
+     * Creates a <tt>String</tt> from an <tt>Iterable</tt> of characters. The order of the characters is preserved.
+     * Only works for finite <tt>Iterable</tt>s.
+     *
+     * <ul>
+     *  <li><tt>cs</tt> must be finite and cannot contain nulls.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param cs the <tt>Iterable</tt> of characters
+     * @return the <tt>String</tt> containing all of <tt>chars</tt>'s characters in their original order
+     */
+    public static @NotNull String charsToString(@NotNull Iterable<Character> cs) {
         StringBuilder sb = new StringBuilder();
-        for (char c : chars) {
+        for (char c : cs) {
             sb.append(c);
         }
         return sb.toString();
