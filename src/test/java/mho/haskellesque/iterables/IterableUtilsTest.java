@@ -230,6 +230,16 @@ public class IterableUtilsTest {
         aeq(fromString(""), "[]");
     }
 
+    @Test
+    public void testCharsToString() {
+        aeq(charsToString(Arrays.asList('h', 'e', 'l', 'l', 'o')), "hello");
+        aeq(charsToString(new ArrayList<>()), "");
+        try {
+            charsToString(Arrays.asList('h', null, 'l', 'l', 'o'));
+            fail();
+        } catch (NullPointerException e) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
