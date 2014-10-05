@@ -223,4 +223,18 @@ public class IterableUtilsTest {
         lList.add(1e30f);
         assertEquals(IterableUtils.toString(lList), "[0.2, -5.0, null, 1.0E30]");
     }
+
+    @Test
+    public void testFromString() {
+        aeq(fromString("hello"), "[h, e, l, l, o]");
+        aeq(fromString(""), "[]");
+    }
+
+    private static void aeq(Iterable<?> a, Object b) {
+        assertEquals(IterableUtils.toString(a), b.toString());
+    }
+
+    private static void aeq(Object a, Object b) {
+        assertEquals(a.toString(), b.toString());
+    }
 }
