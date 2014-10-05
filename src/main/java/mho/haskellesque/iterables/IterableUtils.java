@@ -108,7 +108,7 @@ public class IterableUtils {
 
     /**
      * Converts a <tt>String</tt> to an <tt>Iterable</tt> of characters. The order of the characters is preserved. Uses
-     * O(1) additional memory.
+     * O(1) additional memory. The <tt>Iterable</tt> produced does not support removing elements.
      *
      * <ul>
      *  <li><tt>s</tt> must be non-null.</li>
@@ -162,7 +162,7 @@ public class IterableUtils {
     /**
      * Equivalent of Haskell's (:) list constructor. Creates an <tt>Iterable</tt> whose first element is <tt>x</tt> and
      * whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the result is also
-     * infinite. Uses O(1) additional memory.
+     * infinite. Uses O(1) additional memory. The <tt>Iterable</tt> produced does not support removing elements.
      *
      * <ul>
      *  <li><tt>x</tt> can be anything.</li>
@@ -193,6 +193,11 @@ public class IterableUtils {
                     readHead = true;
                     return x;
                 }
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
