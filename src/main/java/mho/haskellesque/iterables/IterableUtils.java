@@ -55,17 +55,33 @@ public class IterableUtils {
     /**
      * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
      *
+     * <ul>
+     *  <li><tt>xs</tt> must be a finite <tt>Iterable</tt>.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
      * @param xs the <tt>Iterable</tt>
      * @param <T> the <tt>Iterable</tt>'s element type
      * @return a <tt>List</tt> containing the elements of the <tt>Iterable</tt> in their original order
      */
-    public static @NotNull <T>List<T> toList(@NotNull Iterable<T> xs) {
+    public static @NotNull <T> List<T> toList(@NotNull Iterable<T> xs) {
         List<T> list = new ArrayList<>();
         addTo(xs, list);
         return list;
     }
 
-    public static List<Character> toList(String s) {
+    /**
+     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
+     *
+     * <ul>
+     *  <li><tt>s</tt> may be any <tt>String</tt>.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the <tt>String</tt>
+     * @return a <tt>List</tt> containing the characters of <tt>s</tt> in their original order
+     */
+    public static @NotNull List<Character> toList(@NotNull String s) {
         List<Character> list = new ArrayList<>();
         addTo(s, list);
         return list;
