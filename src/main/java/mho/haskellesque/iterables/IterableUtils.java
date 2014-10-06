@@ -1552,4 +1552,33 @@ public class IterableUtils {
     public static <A, B, C, D, O> Iterable<O> zipWith4Padded(Function<Quadruple<A, B, C, D>, O> f, A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
         return map(f, zip4Padded(aPad, bPad, cPad, dPad, as, bs, cs, ds));
     }
+
+    public static <S, T> Pair<Iterable<S>, Iterable<T>> unzip(Iterable<Pair<S, T>> ps) {
+        return new Pair<>(
+                map(p -> p.fst, ps),
+                map(p -> p.snd, ps)
+        );
+    }
+
+    public static <A, B, C> Triple<Iterable<A>, Iterable<B>, Iterable<C>> unzip3(Iterable<Triple<A, B, C>> ps) {
+        return new Triple<>(
+                map(p -> p.a, ps),
+                map(p -> p.b, ps),
+                map(p -> p.c, ps)
+        );
+    }
+
+    public static <A, B, C, D> Quadruple<
+            Iterable<A>,
+            Iterable<B>,
+            Iterable<C>,
+            Iterable<D>
+            > unzip4(Iterable<Quadruple<A, B, C, D>> ps) {
+        return new Quadruple<>(
+                map(p -> p.a, ps),
+                map(p -> p.b, ps),
+                map(p -> p.c, ps),
+                map(p -> p.d, ps)
+        );
+    }
 }
