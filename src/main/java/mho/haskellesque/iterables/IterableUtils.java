@@ -171,10 +171,10 @@ public class IterableUtils {
      *  <li>The result is a non-empty <tt>Iterable</tt>.</li>
      * </ul>
      *
-     * @param x the first element of the <tt>Iterable</tt> to be created.
-     * @param xs the second-through-last elements of the <tt>Iterable</tt> to be created.
-     * @param <T> the element type of the <tt>Iterable</tt> to be created.
-     * @return the <tt>Iterable</tt> to be created.
+     * @param x the first element of the <tt>Iterable</tt> to be created
+     * @param xs the second-through-last elements of the <tt>Iterable</tt> to be created
+     * @param <T> the element type of the <tt>Iterable</tt> to be created
+     * @return the <tt>Iterable</tt> to be created
      */
     public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
@@ -214,9 +214,9 @@ public class IterableUtils {
      *  <li>The result is a non-empty <tt>String</tt>.</li>
      * </ul>
      *
-     * @param c the first character of the <tt>String</tt> to be created.
-     * @param cs the second-through-last characters of the <tt>String</tt> to be created.
-     * @return the <tt>String</tt> to be created.
+     * @param c the first character of the <tt>String</tt> to be created
+     * @param cs the second-through-last characters of the <tt>String</tt> to be created
+     * @return the <tt>String</tt> to be created
      */
     public static @NotNull String cons(char c, @NotNull String cs) {
         return Character.toString(c) + cs;
@@ -234,10 +234,10 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param ys another <tt>Iterable</tt>.
-     * @param <T> the element type of the <tt>Iterable</tt> to be created.
-     * @return <tt>xs</tt> concatenated with <tt>ys</tt>.
+     * @param xs an <tt>Iterable</tt>
+     * @param ys another <tt>Iterable</tt>
+     * @param <T> the element type of the <tt>Iterable</tt> to be created
+     * @return <tt>xs</tt> concatenated with <tt>ys</tt>
      */
     public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return () -> new Iterator<T>() {
@@ -272,9 +272,9 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @param t a <tt>String</tt>.
-     * @return <tt>s</tt> concatenated with <tt>t</tt>.
+     * @param s a <tt>String</tt>
+     * @param t a <tt>String</tt>
+     * @return <tt>s</tt> concatenated with <tt>t</tt>
      */
     public static @NotNull String concat(@NotNull String s, @NotNull String t) {
         return s + t;
@@ -289,9 +289,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param <T> the <tt>Iterable</tt>'s element type.
-     * @return the <tt>Iterable</tt>'s first element.
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return the <tt>Iterable</tt>'s first element
      */
     public static @Nullable <T> T head(@NotNull Iterable<T> xs) {
         return xs.iterator().next();
@@ -306,9 +306,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>List</tt>.
-     * @param <T> the <tt>List</tt>'s element type.
-     * @return the <tt>List</tt>'s first element.
+     * @param xs a <tt>List</tt>
+     * @param <T> the <tt>List</tt>'s element type
+     * @return the <tt>List</tt>'s first element
      */
     public static @Nullable <T> T head(@NotNull List<T> xs) {
         return xs.get(0);
@@ -323,9 +323,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>SortedSet</tt>.
-     * @param <T> the <tt>SortedSet</tt>'s element type.
-     * @return the <tt>SortedSet</tt>'s first element.
+     * @param xs a <tt>SortedSet</tt>
+     * @param <T> the <tt>SortedSet</tt>'s element type
+     * @return the <tt>SortedSet</tt>'s first element
      */
     public static @Nullable <T> T head(@NotNull SortedSet<T> xs) {
         return xs.first();
@@ -340,8 +340,8 @@ public class IterableUtils {
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @return the <tt>String</tt>'s first character.
+     * @param s a <tt>String</tt>
+     * @return the <tt>String</tt>'s first character
      */
     public static char head(@NotNull String s) {
         return s.charAt(0);
@@ -356,9 +356,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param <T> the <tt>Iterable</tt>'s element type.
-     * @return the <tt>Iterable</tt>'s last element.
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return the <tt>Iterable</tt>'s last element
      */
     public static @Nullable <T> T last(@NotNull Iterable<T> xs) {
         T previous = null;
@@ -381,9 +381,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>List</tt>.
-     * @param <T> the <tt>List</tt>'s element type.
-     * @return the <tt>List</tt>'s last element.
+     * @param xs a <tt>List</tt>
+     * @param <T> the <tt>List</tt>'s element type
+     * @return the <tt>List</tt>'s last element
      */
     public static @Nullable <T> T last(@NotNull List<T> xs) {
         return xs.get(xs.size() - 1);
@@ -398,9 +398,9 @@ public class IterableUtils {
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>SortedSet</tt>.
-     * @param <T> the <tt>SortedSet</tt>'s element type.
-     * @return the <tt>SortedSet</tt>'s last element.
+     * @param xs a <tt>SortedSet</tt>
+     * @param <T> the <tt>SortedSet</tt>'s element type
+     * @return the <tt>SortedSet</tt>'s last element
      */
     public static @Nullable <T> T last(@NotNull SortedSet<T> xs) {
         return xs.last();
@@ -415,8 +415,8 @@ public class IterableUtils {
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @return the <tt>String</tt>'s last character.
+     * @param s a <tt>String</tt>
+     * @return the <tt>String</tt>'s last character
      */
     public static char last(@NotNull String s) {
         return s.charAt(s.length() - 1);
@@ -432,9 +432,9 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param <T> the <tt>Iterable</tt>'s element type.
-     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first.
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first
      */
     public static @NotNull <T> Iterable<T> tail(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -471,8 +471,8 @@ public class IterableUtils {
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the first.
+     * @param s a <tt>String</tt>
+     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the first
      */
     public static @NotNull String tail(@NotNull String s) {
         return s.substring(1);
@@ -488,9 +488,9 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param <T> the <tt>Iterable</tt>'s element type.
-     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the last.
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the last
      */
     public static @NotNull <T> Iterable<T> init(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -532,8 +532,8 @@ public class IterableUtils {
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the last.
+     * @param s a <tt>String</tt>
+     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the last
      */
     public static @NotNull String init(@NotNull String s) {
         return s.substring(0, s.length() - 1);
@@ -548,9 +548,9 @@ public class IterableUtils {
      *  <li>The result may be either <tt>boolean</tt>.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>.
-     * @param <T> the <tt>Iterable</tt>'s element type.
-     * @return whether <tt>xs</tt> is empty.
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return whether <tt>xs</tt> is empty
      */
     public static <T> boolean isEmpty(@NotNull Iterable<T> xs) {
         return !xs.iterator().hasNext();
@@ -565,9 +565,9 @@ public class IterableUtils {
      *  <li>The result may be either <tt>boolean</tt>.</li>
      * </ul>
      *
-     * @param xs a <tt>Collection</tt>.
-     * @param <T> the <tt>Collection</tt>'s element type.
-     * @return whether <tt>xs</tt> is empty.
+     * @param xs a <tt>Collection</tt>
+     * @param <T> the <tt>Collection</tt>'s element type
+     * @return whether <tt>xs</tt> is empty
      */
     public static <T> boolean isEmpty(@NotNull Collection<T> xs) {
         return xs.isEmpty();
@@ -582,14 +582,27 @@ public class IterableUtils {
      *  <li>The result may be either <tt>boolean</tt>.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>.
-     * @return whether <tt>s</tt> is empty.
+     * @param s a <tt>String</tt>
+     * @return whether <tt>s</tt> is empty
      */
     public static boolean isEmpty(@NotNull String s) {
         return s.isEmpty();
     }
 
-    public static <T> int length(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in an <tt>Iterable</tt>. Only
+     * works on finite <tt>Iterable</tt>s. Uses O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return the <tt>Iterable</tt>'s length
+     */
+    public static <T> int length(@NotNull Iterable<T> xs) {
         int i = 0;
         for (T x : xs) {
             i++;
@@ -597,7 +610,21 @@ public class IterableUtils {
         return i;
     }
 
-    public static <T> BigInteger bigIntegerLength(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in an <tt>Iterable</tt>. Only
+     * works on finite <tt>Iterable</tt>s. Uses O(log(n)) additional space, where n is <tt>xs</tt>'s length; but it's
+     * effectively constant space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return the <tt>Iterable</tt>'s length
+     */
+    public static @NotNull <T> BigInteger bigIntegerLength(@NotNull Iterable<T> xs) {
         BigInteger bi = BigInteger.ZERO;
         for (T x : xs) {
             bi = bi.add(BigInteger.ONE);
@@ -605,11 +632,36 @@ public class IterableUtils {
         return bi;
     }
 
-    public static <T> int length(Collection<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in a <tt>Collection</tt>. Uses
+     * O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs a <tt>Collection</tt>
+     * @param <T> the <tt>Collection</tt>'s element type
+     * @return the <tt>Collection</tt>'s length
+     */
+    public static <T> int length(@NotNull Collection<T> xs) {
         return xs.size();
     }
 
-    public static int length(String s) {
+    /**
+     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of characters in a <tt>String</tt>. Uses
+     * O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>
+     * @return the <tt>String</tt>'s length
+     */
+    public static int length(@NotNull String s) {
         return s.length();
     }
 
