@@ -9,6 +9,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.iterables.IterableUtils.take;
 import static org.junit.Assert.*;
 
 public class IterableUtilsTest {
@@ -598,7 +599,7 @@ public class IterableUtilsTest {
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9))), "[1, 2, 3, 0, 0, 0, 4, 5, 6, 0, 0, 0, 7, 8, 9]");
-        aeq(intercalate(new ArrayList<>(), Arrays.asList(
+        aeq((Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9))), "[1, 2, 3, 4, 5, 6, 7, 8, 9]");
@@ -606,8 +607,16 @@ public class IterableUtilsTest {
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9)))), "[1, 2, 3, 5, 5, 5, 5, 5, 5, 5]");
+        aeq(take(10, (Iterable<Integer>) intercalate(Arrays.asList(0, 0, 0), Arrays.asList(
+                (Iterable<Integer>) repeat(1),
+                (Iterable<Integer>) repeat(2),
+                (Iterable<Integer>) repeat(3)))), "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
+        aeq(take(10, (Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
+                (Iterable<Integer>) repeat(1),
+                (Iterable<Integer>) repeat(2),
+                (Iterable<Integer>) repeat(3)))), "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
         aeq(intercalate(Arrays.asList(0, 0, 0), new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(intercalate(new ArrayList<>(), new ArrayList<Iterable<Integer>>()), "[]");
+        aeq((Iterable<Integer>) intercalate(new ArrayList<>(), new ArrayList<Iterable<Integer>>()), "[]");
         aeq(intercalate(repeat(5), new ArrayList<Iterable<Integer>>()), "[]");
         aeq(
                 take(10, (Iterable<Integer>) intercalate(
@@ -617,7 +626,7 @@ public class IterableUtilsTest {
                 "[1, 2, 3, 0, 0, 0, 1, 2, 3, 0]"
         );
         aeq(
-                take(10, (Iterable<Integer>) intercalate(
+                (Iterable<Integer>) take(10, (Iterable<Integer>) intercalate(
                         new ArrayList<>(),
                         repeat((Iterable<Integer>) Arrays.asList(1, 2, 3))
                 )),
