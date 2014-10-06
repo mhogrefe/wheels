@@ -568,6 +568,19 @@ public class IterableUtilsTest {
         } catch (IllegalArgumentException e) {}
     }
 
+    @Test
+    public void testReverse_Iterable() {
+        aeq(reverse(Arrays.asList(5, 4, 3, 2, 1)), "[1, 2, 3, 4, 5]");
+        aeq(reverse(new ArrayList<>()), "[]");
+    }
+
+    @Test
+    public void testReverse_String() {
+        aeq(reverse("hello"), "olleh");
+        aeq(reverse("thanks"), "sknaht");
+        aeq(reverse(""), "");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
