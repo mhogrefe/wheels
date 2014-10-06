@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.iterables.IterableUtils.head;
 import static org.junit.Assert.*;
 
 public class IterableUtilsTest {
@@ -261,7 +262,7 @@ public class IterableUtilsTest {
         aeq(concat(Arrays.asList(1, null, 3), Arrays.asList(90, 80, 70)), "[1, null, 3, 90, 80, 70]");
         aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, null, 70)), "[1, 2, 3, 90, null, 70]");
         aeq(concat(new ArrayList<Integer>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
-        aeq(concat(Arrays.asList(1, 2, 3), new ArrayList<>()), "[1, 2, 3]");
+        aeq(concat(Arrays.asList(1, 2, 3), new ArrayList<Integer>()), "[1, 2, 3]");
         aeq(concat(new ArrayList<Integer>(), new ArrayList<Integer>()), "[]");
         aeq(
                 take(10, (Iterable<Integer>) concat(Arrays.asList(1, 2, 3), repeat(5))),
@@ -336,6 +337,58 @@ public class IterableUtilsTest {
         aeq(head("hello"), 'h');
         try {
             head("");
+        } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testLast_Iterable() {
+        LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(5, 4, 3, 2, 1));
+        aeq(last(linkedHashSet), 1);
+
+        linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(5, 4, 3, 2, null));
+        assertNull(last(linkedHashSet));
+
+        linkedHashSet = new LinkedHashSet<>();
+        try {
+            assertNull(last(linkedHashSet));
+            fail();
+        } catch (NoSuchElementException e) {}
+    }
+
+    @Test
+    public void testLast_List() {
+        aeq(last((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 1);
+        assertNull(last((List<Integer>) Arrays.asList(5, 4, 3, 2, null)));
+        try {
+            last(new ArrayList<>());
+            fail();
+        } catch (IndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testLast_SortedSet() {
+        SortedSet<Integer> sortedSet = new TreeSet<>();
+        sortedSet.addAll(Arrays.asList(1, 2, 3, 4, 5));
+        aeq(last(sortedSet), 5);
+
+        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet.add(null);
+        assertNull(last(sortedSet));
+
+        sortedSet = new TreeSet<>();
+        try {
+            last(sortedSet);
+            fail();
+        } catch (NoSuchElementException e) {}
+    }
+
+    @Test
+    public void testLast_String() {
+        aeq(last("o"), 'o');
+        try {
+            last("");
         } catch (StringIndexOutOfBoundsException e) {}
     }
 
