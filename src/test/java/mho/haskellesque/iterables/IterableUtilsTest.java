@@ -293,7 +293,15 @@ public class IterableUtilsTest {
         aeq(head(linkedHashSet), 5);
 
         linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(5));
+        aeq(head(linkedHashSet), 5);
+
+        linkedHashSet = new LinkedHashSet<>();
         linkedHashSet.addAll(Arrays.asList(null, 4, 3, 2, 1));
+        assertNull(head(linkedHashSet));
+
+        linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.add(null);
         assertNull(head(linkedHashSet));
 
         aeq(head((Iterable<Integer>) repeat(5)), 5);
@@ -309,8 +317,12 @@ public class IterableUtilsTest {
     public void testHead_List() {
         aeq(head((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 5);
         assertNull(head((List<Integer>) Arrays.asList(null, 4, 3, 2, 1)));
+        aeq(head((List<Integer>) Arrays.asList(5)), 5);
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        assertNull(head(nullList));
         try {
-            head(new ArrayList<>());
+            head(new ArrayList<Integer>());
             fail();
         } catch (IndexOutOfBoundsException e) {}
     }
@@ -326,6 +338,14 @@ public class IterableUtilsTest {
         assertNull(head(sortedSet));
 
         sortedSet = new TreeSet<>();
+        sortedSet.addAll(Arrays.asList(1));
+        aeq(head(sortedSet), 1);
+
+        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet.add(null);
+        assertNull(head(sortedSet));
+
+        sortedSet = new TreeSet<>();
         try {
             head(sortedSet);
             fail();
@@ -335,6 +355,7 @@ public class IterableUtilsTest {
     @Test
     public void testHead_String() {
         aeq(head("hello"), 'h');
+        aeq(head("h"), 'h');
         try {
             head("");
         } catch (StringIndexOutOfBoundsException e) {}
@@ -351,6 +372,14 @@ public class IterableUtilsTest {
         assertNull(last(linkedHashSet));
 
         linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(1));
+        aeq(last(linkedHashSet), 1);
+
+        linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.add(null);
+        assertNull(last(linkedHashSet));
+
+        linkedHashSet = new LinkedHashSet<>();
         try {
             assertNull(last(linkedHashSet));
             fail();
@@ -361,8 +390,12 @@ public class IterableUtilsTest {
     public void testLast_List() {
         aeq(last((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 1);
         assertNull(last((List<Integer>) Arrays.asList(5, 4, 3, 2, null)));
+        aeq(last((List<Integer>) Arrays.asList(1)), 1);
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        assertNull(last(nullList));
         try {
-            last(new ArrayList<>());
+            last(new ArrayList<Integer>());
             fail();
         } catch (IndexOutOfBoundsException e) {}
     }
@@ -378,6 +411,10 @@ public class IterableUtilsTest {
         assertNull(last(sortedSet));
 
         sortedSet = new TreeSet<>();
+        sortedSet.addAll(Arrays.asList(5));
+        aeq(last(sortedSet), 5);
+
+        sortedSet = new TreeSet<>();
         try {
             last(sortedSet);
             fail();
@@ -389,6 +426,30 @@ public class IterableUtilsTest {
         aeq(last("o"), 'o');
         try {
             last("");
+        } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testTail_Iterable() {
+        aeq(tail(Arrays.asList(5, 4, 3, 2, 1)), "[4, 3, 2, 1]");
+        aeq(tail(Arrays.asList(5, 4, null, 2, 1)), "[4, null, 2, 1]");
+        aeq(tail(Arrays.asList(5)), "[]");
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        aeq(tail(nullList), "[]");
+        try {
+            toList((Iterable<Integer>) tail(new ArrayList<Integer>())); //must force evaluation to get error
+            fail();
+        } catch (IllegalStateException e) {}
+    }
+
+    @Test
+    public void testTail_String() {
+        aeq(tail("hello"), "ello");
+        aeq(tail("h"), "");
+        try {
+            toList(tail(""));
+            fail();
         } catch (StringIndexOutOfBoundsException e) {}
     }
 
