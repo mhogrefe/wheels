@@ -1336,8 +1336,8 @@ public class IterableUtils {
         };
     }
 
-    public static <T> Iterable<List<T>> chunk(int size, Iterable<T> xs) {
-        return () -> new Iterator<List<T>>() {
+    public static <T> Iterable<Iterable<T>> chunk(int size, Iterable<T> xs) {
+        return () -> new Iterator<Iterable<T>>() {
             private Iterator<T> xsi = xs.iterator();
 
             @Override
@@ -1349,7 +1349,7 @@ public class IterableUtils {
             public List<T> next() {
                 List<T> chunk = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
-                    if (xsi.hasNext()) break;
+                    if (!xsi.hasNext()) break;
                     chunk.add(xsi.next());
                 }
                 return chunk;
@@ -1378,36 +1378,70 @@ public class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
-            private T next;
-            private boolean hasNext;
-            {
-                advanceNext();
-            }
+    public static <T> Iterable<Iterable<T>> chunkPadded(T pad, int size, Iterable<T> xs) {
+        return () -> new Iterator<Iterable<T>>() {
+            private Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
-                return hasNext;
+                return xsi.hasNext();
             }
 
             @Override
-            public T next() {
-                T current = next;
-                advanceNext();
-                return current;
-            }
-
-            private void advanceNext() {
-                while (xsi.hasNext()) {
-                    next = xsi.next();
-                    if (p.test(next)) {
-                        hasNext = true;
-                        return;
-                    }
+            public List<T> next() {
+                List<T> chunk = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    chunk.add(xsi.hasNext() ? xsi.next() : pad);
                 }
-                hasNext = false;
+                return chunk;
+            }
+        };
+    }
+
+    public static <T> Iterable<Iterable<T>> demux(int lines, Iterable<T> xs) {
+        return transpose(chunk(lines, xs));
+    }
+
+    public static <T> Iterable<Iterable<T>> demuxPadded(T pad, int lines, Iterable<T> xs) {
+        return transpose(chunkPadded(pad, lines, xs));
+    }
+
+    public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+
+                    {
+                        advanceNext();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advanceNext();
+                        return current;
+                    }
+
+                    private void advanceNext() {
+                        while (xsi.hasNext()) {
+                            next = xsi.next();
+                            if (p.test(next)) {
+                                hasNext = true;
+                                return;
+                            }
+                        }
+                        hasNext = false;
+                    }
+                };
             }
         };
     }
