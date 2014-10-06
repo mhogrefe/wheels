@@ -298,7 +298,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>List</tt>. Uses O(1)
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of a <tt>List</tt>. Uses O(1)
      * additional memory.
      *
      * <ul>
@@ -310,12 +310,12 @@ public class IterableUtils {
      * @param <T> the <tt>List</tt>'s element type.
      * @return the <tt>List</tt>'s first element.
      */
-    public static <T> T head(List<T> xs) {
+    public static @Nullable <T> T head(@NotNull List<T> xs) {
         return xs.get(0);
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>SortedSet</tt>. Uses O(1)
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of a <tt>SortedSet</tt>. Uses O(1)
      * additional memory.
      *
      * <ul>
@@ -327,12 +327,12 @@ public class IterableUtils {
      * @param <T> the <tt>SortedSet</tt>'s element type.
      * @return the <tt>SortedSet</tt>'s first element.
      */
-    public static <T> T head(SortedSet<T> xs) {
+    public static @Nullable <T> T head(@NotNull SortedSet<T> xs) {
         return xs.first();
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first character of an <tt>String</tt>. Uses O(1)
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first character of a <tt>String</tt>. Uses O(1)
      * additional memory.
      *
      * <ul>
@@ -343,26 +343,81 @@ public class IterableUtils {
      * @param s a <tt>String</tt>.
      * @return the <tt>String</tt>'s first character.
      */
-    public static char head(String s) {
+    public static char head(@NotNull String s) {
         return s.charAt(0);
     }
 
-    public static <T> T last(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of an <tt>Iterable</tt>. Only works on
+     * finite <tt>Iterable</tt>s. Uses O(1) additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty and finite.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>.
+     * @param <T> the <tt>Iterable</tt>'s element type.
+     * @return the <tt>Iterable</tt>'s last element.
+     */
+    public static @Nullable <T> T last(@NotNull Iterable<T> xs) {
         T previous = null;
+        boolean empty = true;
         for (T x : xs) {
+            empty = false;
             previous = x;
         }
+        if (empty)
+            throw new NoSuchElementException();
         return previous;
     }
 
-    public static <T> T last(List<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of a <tt>List</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs a <tt>List</tt>.
+     * @param <T> the <tt>List</tt>'s element type.
+     * @return the <tt>List</tt>'s last element.
+     */
+    public static @Nullable <T> T last(@NotNull List<T> xs) {
         return xs.get(xs.size() - 1);
     }
 
-    public static <T> T last(SortedSet<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of a <tt>SortedSet</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs a <tt>SortedSet</tt>.
+     * @param <T> the <tt>SortedSet</tt>'s element type.
+     * @return the <tt>SortedSet</tt>'s last element.
+     */
+    public static @Nullable <T> T last(@NotNull SortedSet<T> xs) {
         return xs.last();
     }
 
+    /**
+     * Equivalent of Haskell's <tt>last</tt> function. Returns the last character of a <tt>String</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-empty.</li>
+     *  <li>The result may be any <tt>char</tt>.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>.
+     * @return the <tt>String</tt>'s last character.
+     */
     public static char last(String s) {
         return s.charAt(s.length() - 1);
     }
