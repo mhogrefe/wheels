@@ -260,9 +260,9 @@ public class IterableUtilsTest {
         aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, 80, 70)), "[1, 2, 3, 90, 80, 70]");
         aeq(concat(Arrays.asList(1, null, 3), Arrays.asList(90, 80, 70)), "[1, null, 3, 90, 80, 70]");
         aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, null, 70)), "[1, 2, 3, 90, null, 70]");
-        aeq(concat(new ArrayList<>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
+        aeq(concat(new ArrayList<Integer>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
         aeq(concat(Arrays.asList(1, 2, 3), new ArrayList<>()), "[1, 2, 3]");
-        aeq(concat(new ArrayList<Integer>(), new ArrayList<>()), "[]");
+        aeq(concat(new ArrayList<Integer>(), new ArrayList<Integer>()), "[]");
         aeq(
                 take(10, (Iterable<Integer>) concat(Arrays.asList(1, 2, 3), repeat(5))),
                 "[1, 2, 3, 5, 5, 5, 5, 5, 5, 5]"
@@ -283,6 +283,60 @@ public class IterableUtilsTest {
         aeq(concat("Hello", ""), "Hello");
         aeq(concat("", "World"), "World");
         aeq(concat("", ""), "");
+    }
+
+    @Test
+    public void testHead_Iterable() {
+        LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(5, 4, 3, 2, 1));
+        aeq(head(linkedHashSet), 5);
+
+        linkedHashSet = new LinkedHashSet<>();
+        linkedHashSet.addAll(Arrays.asList(null, 4, 3, 2, 1));
+        assertNull(head(linkedHashSet));
+
+        aeq(head((Iterable<Integer>) repeat(5)), 5);
+
+        linkedHashSet = new LinkedHashSet<>();
+        try {
+            assertNull(head(linkedHashSet));
+            fail();
+        } catch (NoSuchElementException e) {}
+    }
+
+    @Test
+    public void testHead_List() {
+        aeq(head((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 5);
+        assertNull(head((List<Integer>) Arrays.asList(null, 4, 3, 2, 1)));
+        try {
+            head(new ArrayList<>());
+            fail();
+        } catch (IndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testHead_SortedSet() {
+        SortedSet<Integer> sortedSet = new TreeSet<>();
+        sortedSet.addAll(Arrays.asList(1, 2, 3, 4, 5));
+        aeq(head(sortedSet), 1);
+
+        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet.addAll(Arrays.asList(null, 2, 3, 4, 5));
+        assertNull(head(sortedSet));
+
+        sortedSet = new TreeSet<>();
+        try {
+            head(sortedSet);
+            fail();
+        } catch (NoSuchElementException e) {}
+    }
+
+    @Test
+    public void testHead_String() {
+        aeq(head("hello"), 'h');
+        try {
+            head("");
+        } catch (StringIndexOutOfBoundsException e) {}
     }
 
     private static void aeq(Iterable<?> a, Object b) {
