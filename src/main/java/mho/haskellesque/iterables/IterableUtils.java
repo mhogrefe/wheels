@@ -160,9 +160,10 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's (:) list constructor. Creates an <tt>Iterable</tt> whose first element is <tt>x</tt> and
-     * whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the result is also
-     * infinite. Uses O(1) additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's <tt>(:)</tt> list constructor. Creates an <tt>Iterable</tt> whose first element is
+     * <tt>x</tt> and whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the
+     * result is also infinite. Uses O(1) additional memory. The <tt>Iterable</tt> produced does not support removing
+     * elements.
      *
      * <ul>
      *  <li><tt>x</tt> can be anything.</li>
@@ -203,8 +204,9 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's (:) list constructor. Creates a <tt>String</tt> whose first character is <tt>c</tt> and
-     * whose remaining characters are given by <tt>cs</tt>. Uses O(n) additional memory, where n is the length of cs.
+     * Equivalent of Haskell's <tt>(:)</tt> list constructor. Creates a <tt>String</tt> whose first character is
+     * <tt>c</tt> and whose remaining characters are given by <tt>cs</tt>. Uses O(n) additional memory, where n is the
+     * length of cs.
      *
      * <ul>
      *  <li><tt>c</tt> can be anything.</li>
@@ -221,10 +223,10 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's (++) operator. Creates an <tt>Iterable</tt> consisting of <tt>xs</tt>'s elements
-     * followed by <tt>ys</tt>'s elements. <tt>xs</tt> may be infinite, in which case the result will be equal to
-     * <tt>xs</tt>. <tt>ys</tt> may be infinite, in which case the result will also be infinite. Uses O(1) additional
-     * memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's <tt>(++)</tt> operator. Creates an <tt>Iterable</tt> consisting of <tt>xs</tt>'s
+     * elements followed by <tt>ys</tt>'s elements. <tt>xs</tt> may be infinite, in which case the result will be equal
+     * to <tt>xs</tt>. <tt>ys</tt> may be infinite, in which case the result will also be infinite. Uses O(1)
+     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
      *
      * <ul>
      *  <li><tt>xs</tt> must be non-null.</li>
@@ -260,9 +262,9 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's (++) operator. Creates a <tt>String</tt> consisting of <tt>s</tt>'s characters followed
-     * by <tt>t</tt>'s characters. Uses O(n) additional memory, where n is the sum of the lengths of <tt>s</tt> and
-     * <tt>t</tt>.
+     * Equivalent of Haskell's <tt>(++)</tt> operator. Creates a <tt>String</tt> consisting of <tt>s</tt>'s characters
+     * followed by <tt>t</tt>'s characters. Uses O(n) additional memory, where n is the sum of the lengths of
+     * <tt>s</tt> and <tt>t</tt>.
      *
      * <ul>
      *  <li><tt>s</tt> must be non-null.</li>
@@ -278,18 +280,69 @@ public class IterableUtils {
         return s + t;
     }
 
-    public static <T> T head(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>Iterable</tt>. Works on
+     * infinite <tt>Iterable</tt>s. Uses O(1) additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>.
+     * @param <T> the <tt>Iterable</tt>'s element type.
+     * @return the <tt>Iterable</tt>'s first element.
+     */
+    public static @Nullable <T> T head(@NotNull Iterable<T> xs) {
         return xs.iterator().next();
     }
 
+    /**
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>List</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs a <tt>List</tt>.
+     * @param <T> the <tt>List</tt>'s element type.
+     * @return the <tt>List</tt>'s first element.
+     */
     public static <T> T head(List<T> xs) {
         return xs.get(0);
     }
 
+    /**
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>SortedSet</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result may be anything.</li>
+     * </ul>
+     *
+     * @param xs a <tt>SortedSet</tt>.
+     * @param <T> the <tt>SortedSet</tt>'s element type.
+     * @return the <tt>SortedSet</tt>'s first element.
+     */
     public static <T> T head(SortedSet<T> xs) {
         return xs.first();
     }
 
+    /**
+     * Equivalent of Haskell's <tt>head</tt> function. Returns the first character of an <tt>String</tt>. Uses O(1)
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-empty.</li>
+     *  <li>The result may be any <tt>char</tt>.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>.
+     * @return the <tt>String</tt>'s first character.
+     */
     public static char head(String s) {
         return s.charAt(0);
     }
