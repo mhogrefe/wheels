@@ -440,7 +440,7 @@ public class IterableUtilsTest {
         try {
             toList((Iterable<Integer>) tail(new ArrayList<Integer>())); //must force evaluation to get error
             fail();
-        } catch (IllegalStateException e) {}
+        } catch (NoSuchElementException e) {}
     }
 
     @Test
@@ -449,6 +449,30 @@ public class IterableUtilsTest {
         aeq(tail("h"), "");
         try {
             toList(tail(""));
+            fail();
+        } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testInit_Iterable() {
+        aeq(init(Arrays.asList(5, 4, 3, 2, 1)), "[5, 4, 3, 2]");
+        aeq(init(Arrays.asList(5, 4, null, 2, 1)), "[5, 4, null, 2]");
+        aeq(init(Arrays.asList(5)), "[]");
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        aeq(init(nullList), "[]");
+        try {
+            toList((Iterable<Integer>) init(new ArrayList<Integer>())); //must force evaluation to get error
+            fail();
+        } catch (NoSuchElementException e) {}
+    }
+
+    @Test
+    public void testInit_String() {
+        aeq(init("hello"), "hell");
+        aeq(init("h"), "");
+        try {
+            toList(init(""));
             fail();
         } catch (StringIndexOutOfBoundsException e) {}
     }
