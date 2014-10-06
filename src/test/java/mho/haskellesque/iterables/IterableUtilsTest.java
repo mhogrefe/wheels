@@ -4,7 +4,9 @@ import mho.haskellesque.ordering.NullHandlingComparator;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.*;
+import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.head;
@@ -536,6 +538,34 @@ public class IterableUtilsTest {
         assertFalse(isEmpty("hello"));
         assertFalse(isEmpty("h"));
         assertTrue(isEmpty(""));
+    }
+
+    @Test
+    public void testMap_Iterable() {
+        aeq(map(i -> i + 3, Arrays.asList(1, 5, 3, 1, 6)), "[4, 8, 6, 4, 9]");
+        aeq(map(i -> i == null ? -1 : i + 3, Arrays.asList(1, 5, null, 1, 6)), "[4, 8, -1, 4, 9]");
+        aeq(take(10, (Iterable<Integer>) map(i -> i + 3, repeat(5))), "[8, 8, 8, 8, 8, 8, 8, 8, 8, 8]");
+        aeq(map(s -> s + "!", Arrays.asList("BIFF", "BANG", "POW")), "[BIFF!, BANG!, POW!]");
+        aeq(map(s -> s + "!", new ArrayList<String>()), "[]");
+        try {
+            IterableUtils.toList((Iterable<Integer>) map(i -> i + 3, Arrays.asList(1, 5, null, 1, 6)));
+            fail();
+        } catch (NullPointerException e) {}
+    }
+
+    @Test
+    public void testMap_String() {
+        aeq(map(Character::toUpperCase, "hello"), "HELLO");
+        aeq(map(Character::toUpperCase, ""), "");
+        Function<Character, Character> f = c -> {
+            if (c == 'l')
+                throw new IllegalArgumentException("L exception");
+            return c;
+        };
+        try {
+            map(f, "hello");
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
 
     private static void aeq(Iterable<?> a, Object b) {
