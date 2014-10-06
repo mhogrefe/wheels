@@ -27,7 +27,7 @@ public final class Triple<A, B, C> {
         if (aOrdering != Ordering.EQ) return aOrdering.toInt();
         Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
         if (bOrdering != Ordering.EQ) return bOrdering.toInt();
-        return Ordering.compare(new NullHandlingComparator<C>(), p.c, q.c).toInt();
+        return Ordering.compare(new NullHandlingComparator<>(), p.c, q.c).toInt();
     }
 
     @Override
