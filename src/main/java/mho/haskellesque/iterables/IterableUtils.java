@@ -776,7 +776,24 @@ public class IterableUtils {
         return new String(reversed);
     }
 
-    public static <T> Iterable<T> intersperse(T sep, Iterable<T> xs) {
+    /**
+     * Equivalent to Haskell's <tt>intersperse</tt> function. Given an <tt>Iterable</tt> <tt>xs</tt> and a seperator
+     * <tt>sep</tt>, returns an <tt>Iterable</tt> consisting of the elements of <tt>xs</tt> with <tt>sep</tt> between
+     * every adjacent pair. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>sep</tt> may be anything.</li>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> whose odd-indexed (using 0-based indexing) elements are identical.</li>
+     * </ul>
+     *
+     * @param sep a separator
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return an <tt>Iterable</tt> consisting of the elements of <tt>xs</tt> interspersed with <tt>sep</tt>
+     */
+    public static @NotNull <T> Iterable<T> intersperse(@Nullable T sep, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             private boolean separating = false;
@@ -789,17 +806,37 @@ public class IterableUtils {
             @Override
             public T next() {
                 if (separating) {
-                    separating = !separating;
+                    separating = false;
                     return sep;
                 } else {
-                    separating = !separating;
+                    separating = true;
                     return xsi.next();
                 }
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
-    public static String intersperse(char sep, String s) {
+    /**
+     * Equivalent to Haskell's <tt>intersperse</tt> function. Given a <tt>String</tt> <tt>s</tt> and a seperator
+     * <tt>sep</tt>, returns a <tt>String</tt> consisting of the characters of <tt>s</tt> with <tt>sep</tt> between
+     * every adjacent pair. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
+     *
+     * <ul>
+     *  <li><tt>sep</tt> may be any <tt>char</tt>.</li>
+     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li>The result is a <tt>String</tt> whose odd-indexed (using 0-based indexing) characters are identical.</li>
+     * </ul>
+     *
+     * @param sep a separator
+     * @param s a <tt>String</tt>
+     * @return a <tt>String</tt> consisting of the characters of <tt>s</tt> interspersed with <tt>sep</tt>
+     */
+    public static @NotNull String intersperse(char sep, @NotNull String s) {
         if (s.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
         sb.append(s.charAt(0));
