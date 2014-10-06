@@ -571,7 +571,7 @@ public class IterableUtilsTest {
     @Test
     public void testReverse_Iterable() {
         aeq(reverse(Arrays.asList(5, 4, 3, 2, 1)), "[1, 2, 3, 4, 5]");
-        aeq(reverse(new ArrayList<>()), "[]");
+        aeq(reverse(new ArrayList<Integer>()), "[]");
     }
 
     @Test
@@ -579,6 +579,19 @@ public class IterableUtilsTest {
         aeq(reverse("hello"), "olleh");
         aeq(reverse("thanks"), "sknaht");
         aeq(reverse(""), "");
+    }
+
+    @Test
+    public void testIntersperse_Iterable() {
+        aeq(intersperse(0, Arrays.asList(1, 2, 3, 4, 5)), "[1, 0, 2, 0, 3, 0, 4, 0, 5]");
+        aeq(intersperse(0, new ArrayList<Integer>()), "[]");
+    }
+
+    @Test
+    public void testIntersperse_String() {
+        aeq(intersperse(',', "abcde"), "a,b,c,d,e");
+        aeq(intersperse('*', "MASH"), "M*A*S*H");
+        aeq(intersperse('*', ""), "");
     }
 
     private static void aeq(Iterable<?> a, Object b) {
