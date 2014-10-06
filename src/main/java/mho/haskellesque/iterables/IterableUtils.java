@@ -437,11 +437,11 @@ public class IterableUtils {
      * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first.
      */
     public static @NotNull <T> Iterable<T> tail(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs))
+            throw new NoSuchElementException();
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
-                if (!xsi.hasNext())
-                    throw new NoSuchElementException();
                 xsi.next();
             }
 
@@ -493,6 +493,8 @@ public class IterableUtils {
      * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the last.
      */
     public static @NotNull <T> Iterable<T> init(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs))
+            throw new NoSuchElementException();
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -537,12 +539,54 @@ public class IterableUtils {
         return s.substring(0, s.length() - 1);
     }
 
-    public static <T> boolean isEmpty(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>null</tt> function. Tests whether an <tt>Iterable</tt> contains no elements.
+     * <tt>xs</tt> may be infinite. Uses O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result may be either <tt>boolean</tt>.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>.
+     * @param <T> the <tt>Iterable</tt>'s element type.
+     * @return whether <tt>xs</tt> is empty.
+     */
+    public static <T> boolean isEmpty(@NotNull Iterable<T> xs) {
         return !xs.iterator().hasNext();
     }
 
-    public static <T> boolean isEmpty(Collection<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>null</tt> function. Tests whether a <tt>Collection</tt> contains no elements. Uses
+     * O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result may be either <tt>boolean</tt>.</li>
+     * </ul>
+     *
+     * @param xs a <tt>Collection</tt>.
+     * @param <T> the <tt>Collection</tt>'s element type.
+     * @return whether <tt>xs</tt> is empty.
+     */
+    public static <T> boolean isEmpty(@NotNull Collection<T> xs) {
         return xs.isEmpty();
+    }
+
+    /**
+     * Equivalent of Haskell's <tt>null</tt> function. Tests whether a <tt>String</tt> contains no characters. Uses
+     * O(1) additional space.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>The result may be either <tt>boolean</tt>.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>.
+     * @return whether <tt>s</tt> is empty.
+     */
+    public static boolean isEmpty(@NotNull String s) {
+        return s.isEmpty();
     }
 
     public static <T> int length(Iterable<T> xs) {
@@ -553,8 +597,20 @@ public class IterableUtils {
         return i;
     }
 
+    public static <T> BigInteger bigIntegerLength(Iterable<T> xs) {
+        BigInteger bi = BigInteger.ZERO;
+        for (T x : xs) {
+            bi = bi.add(BigInteger.ONE);
+        }
+        return bi;
+    }
+
     public static <T> int length(Collection<T> xs) {
         return xs.size();
+    }
+
+    public static int length(String s) {
+        return s.length();
     }
 
     public static <T, S> Iterable<S> map(Function<T, S> f, Iterable<T> xs) {
