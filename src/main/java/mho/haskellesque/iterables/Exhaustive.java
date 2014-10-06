@@ -143,11 +143,5 @@ public class Exhaustive {
 //            single(Float.NaN),
 //            iterate(MathUtils::successor, 0.0f)
 //    ));
-
-    public static void main(String[] args) {
-        for (byte b : BYTES) {
-            System.out.println(b);
-        }
-    }
 }
 
