@@ -153,12 +153,4 @@ public class BasicMath {
     public static Iterable<BigInteger> demux(int lines, BigInteger n) {
         return IterableUtils.map(BasicMath::fromBits, IterableUtils.demuxPadded(false, lines, bits(n)));
     }
-
-    public static void main(String[] args) {
-        System.out.println(toList(chunkPadded(false, 2, bits(BigInteger.ZERO))));
-        for (BigInteger i : range(BigInteger.valueOf(0), BigInteger.valueOf(100))) {
-//            System.out.println(toList(chunk(2, bits(i))));
-//            System.out.println(toList(demux(2, i)));
-        }
-    }
 }
