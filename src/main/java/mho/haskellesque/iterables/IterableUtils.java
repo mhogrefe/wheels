@@ -768,6 +768,69 @@ public class IterableUtils {
         };
     }
 
+    public static Iterable<String> transposeStrings(Iterable<String> strings) {
+        return map(
+                IterableUtils::charsToString,
+                transpose(map(s -> fromString(s), strings))
+        );
+    }
+
+    public static <T> Iterable<Iterable<T>> transposeTruncating(Iterable<Iterable<T>> xss) {
+        return () -> new Iterator<Iterable<T>>() {
+            private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
+
+            @Override
+            public boolean hasNext() {
+                return all(Iterator::hasNext, iterators);
+            }
+
+            @Override
+            public Iterable<T> next() {
+                Iterable<Pair<T, Iterator<T>>> advanced = map(
+                        it -> new Pair<>(it.next(), it),
+                        (Iterable<Iterator<T>>) filter(Iterator::hasNext, iterators)
+                );
+                iterators = map(p -> p.snd, advanced);
+                return (Iterable<T>) map(p -> p.fst, advanced);
+            }
+        };
+    }
+
+    public static Iterable<String> transposeStringsTruncating(Iterable<String> strings) {
+        return map(
+                IterableUtils::charsToString,
+                transposeTruncating(map(s -> fromString(s), strings))
+        );
+    }
+
+    public static <T> Iterable<Iterable<T>> transposePadded(T pad, Iterable<Iterable<T>> xss) {
+        return () -> new Iterator<Iterable<T>>() {
+            private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
+
+            @Override
+            public boolean hasNext() {
+                return any(Iterator::hasNext, iterators);
+            }
+
+            @Override
+            public Iterable<T> next() {
+                Iterable<Pair<T, Iterator<T>>> advanced = map(
+                        it -> new Pair<>(it.hasNext() ? it.next() : pad, it),
+                        iterators
+                );
+                iterators = map(p -> p.snd, advanced);
+                return (Iterable<T>) map(p -> p.fst, advanced);
+            }
+        };
+    }
+
+    public static Iterable<String> transposeStringsPadded(char pad, Iterable<String> strings) {
+        return map(
+                IterableUtils::charsToString,
+                transposePadded(pad, (Iterable<Iterable<Character>>) map(s -> fromString(s), strings))
+        );
+    }
+
     public static <T> Iterable<T> concat(Iterable<Iterable<T>> xss) {
         return () -> new Iterator<T>() {
             final Iterator<Iterable<T>> xssi = xss.iterator();
