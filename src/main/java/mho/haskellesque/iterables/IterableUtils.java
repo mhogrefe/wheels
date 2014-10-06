@@ -1,5 +1,6 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.tuples.Pair;
 import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
@@ -849,9 +850,9 @@ public class IterableUtils {
 
     /**
      * Equivalent of Haskell's <tt>intercalate</tt> function. Inserts an <tt>Iterable</tt> between every two adjacent
-     * <tt>Iterable</tt>s in an <tt>Iterable</tt> of <tt>Iterable</tt>s, flattening the result. <tt>xss</tt> or
-     * <tt>xs</tt> (or both) may be infinite, in which case the result is also infinite. Uses O(1) additional memory.
-     * The <tt>Iterable</tt> produced does not support removing elements.
+     * <tt>Iterable</tt>s in an <tt>Iterable</tt> of <tt>Iterable</tt>s, flattening the result. <tt>xss</tt>, any
+     * element of <tt>xss</tt>, or <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
      *
      * <ul>
      *  <li><tt>xs</tt> must be non-null.</li>
@@ -876,8 +877,8 @@ public class IterableUtils {
      * The <tt>Iterable</tt> produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li><tt>sep</tt> must be non-null.</li>
+     *  <li><tt>strings</tt> must be finite.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -889,7 +890,23 @@ public class IterableUtils {
         return concatStrings(intersperse(sep, strings));
     }
 
-    public static <T> Iterable<Iterable<T>> transpose(Iterable<Iterable<T>> xss) {
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements still end up in the
+     * result. See test cases for examples. <tt>xss</tt> may be infinite, in which case the result may contain infinite
+     * elements. Any element of <tt>xss</tt> may be infinite, in which case the result will be infinite. Uses O(1)
+     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
+     * </ul>
+     *
+     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
+     * @param <T> the <tt>Iterable</tt>'s elements' element type
+     * @return <tt>xss</tt>, transposed
+     */
+    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
 
@@ -907,17 +924,22 @@ public class IterableUtils {
                 iterators = map(p -> p.snd, advanced);
                 return (Iterable<T>) map(p -> p.fst, advanced);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static Iterable<String> transposeStrings(Iterable<String> strings) {
+    public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
                 transpose(map(s -> fromString(s), strings))
         );
     }
 
-    public static <T> Iterable<Iterable<T>> transposeTruncating(Iterable<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
 
@@ -935,17 +957,22 @@ public class IterableUtils {
                 iterators = map(p -> p.snd, advanced);
                 return (Iterable<T>) map(p -> p.fst, advanced);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static Iterable<String> transposeStringsTruncating(Iterable<String> strings) {
+    public static @NotNull Iterable<String> transposeStringsTruncating(@NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
                 transposeTruncating(map(s -> fromString(s), strings))
         );
     }
 
-    public static <T> Iterable<Iterable<T>> transposePadded(T pad, Iterable<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>> transposePadded(@Nullable T pad, @NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
 
@@ -963,10 +990,15 @@ public class IterableUtils {
                 iterators = map(p -> p.snd, advanced);
                 return (Iterable<T>) map(p -> p.fst, advanced);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static Iterable<String> transposeStringsPadded(char pad, Iterable<String> strings) {
+    public static @NotNull Iterable<String> transposeStringsPadded(char pad, @NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
                 transposePadded(pad, (Iterable<Iterable<Character>>) map(s -> fromString(s), strings))
