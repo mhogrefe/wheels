@@ -418,14 +418,30 @@ public class IterableUtils {
      * @param s a <tt>String</tt>.
      * @return the <tt>String</tt>'s last character.
      */
-    public static char last(String s) {
+    public static char last(@NotNull String s) {
         return s.charAt(s.length() - 1);
     }
 
-    public static <T> Iterable<T> tail(Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>tail</tt> function. Returns all elements of an <tt>Iterable</tt> but the first.
+     * <tt>xs</tt> may be infinite, in which the result will also be infinite. Uses O(1) additional memory. The
+     * <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>.
+     * @param <T> the <tt>Iterable</tt>'s element type.
+     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first.
+     */
+    public static @NotNull <T> Iterable<T> tail(@NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
+                if (!xsi.hasNext())
+                    throw new IllegalStateException();
                 xsi.next();
             }
 
@@ -438,10 +454,27 @@ public class IterableUtils {
             public T next() {
                 return xsi.next();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static String tail(String s) {
+    /**
+     * Equivalent of Haskell's <tt>tail</tt> function. Given a <tt>String</tt>, returns a <tt>String</tt> containing
+     * all of its characters but the first. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-empty.</li>
+     *  <li>The result may be any <tt>char</tt>.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>.
+     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the first.
+     */
+    public static @NotNull String tail(@NotNull String s) {
         return s.substring(1);
     }
 
