@@ -7,6 +7,7 @@ import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.head;
+import static mho.haskellesque.iterables.IterableUtils.isEmpty;
 import static org.junit.Assert.*;
 
 public class IterableUtilsTest {
@@ -438,7 +439,7 @@ public class IterableUtilsTest {
         nullList.add(null);
         aeq(tail(nullList), "[]");
         try {
-            toList((Iterable<Integer>) tail(new ArrayList<Integer>())); //must force evaluation to get error
+            tail(new ArrayList<Integer>());
             fail();
         } catch (NoSuchElementException e) {}
     }
@@ -461,8 +462,9 @@ public class IterableUtilsTest {
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         aeq(init(nullList), "[]");
+        aeq(take(10, (Iterable<Integer>) init(repeat(5))), "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]");
         try {
-            toList((Iterable<Integer>) init(new ArrayList<Integer>())); //must force evaluation to get error
+            init(new ArrayList<Integer>());
             fail();
         } catch (NoSuchElementException e) {}
     }
@@ -475,6 +477,32 @@ public class IterableUtilsTest {
             toList(init(""));
             fail();
         } catch (StringIndexOutOfBoundsException e) {}
+    }
+
+    @Test
+    public void testIsEmpty_Iterable() {
+        assertFalse(isEmpty((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))));
+        assertFalse(isEmpty((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))));
+        assertFalse(isEmpty(repeat(5)));
+        assertTrue(isEmpty(new ArrayList<>()));
+    }
+
+    @Test
+    public void testIsEmpty_Collection() {
+        assertFalse(isEmpty(Arrays.asList(5, 4, 3, 2, 1)));
+        assertFalse(isEmpty(Arrays.asList(5, 4, null, 2, 1)));
+        assertFalse(isEmpty(Arrays.asList(5)));
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        assertFalse(isEmpty(nullList));
+        assertTrue(isEmpty(new ArrayList<>()));
+    }
+
+    @Test
+    public void testIsEmpty_String() {
+        assertFalse(isEmpty("hello"));
+        assertFalse(isEmpty("h"));
+        assertTrue(isEmpty(""));
     }
 
     private static void aeq(Iterable<?> a, Object b) {
