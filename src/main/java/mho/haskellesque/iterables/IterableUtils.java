@@ -666,7 +666,25 @@ public class IterableUtils {
         return s.length();
     }
 
-    public static <T, S> Iterable<S> map(Function<T, S> f, Iterable<T> xs) {
+    /**
+     * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>Iterable</tt> into another by applying a
+     * function to each element. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>f</tt> must be non-null.</li>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li><tt>xs</tt> must only contain elements that are valid inputs for <tt>f</tt>.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param f the function that transforms each element in the <tt>Iterable</tt>
+     * @param xs the <tt>Iterable</tt>
+     * @param <T> the type of the original <tt>Iterable</tt>'s elements
+     * @param <S> the type of the output <tt>Iterable</tt>'s elements
+     * @return an <tt>Iterable</tt> containing the elements of <tt>xs</tt> transformed by <tt>f</tt>
+     */
+    public static @NotNull <T, S> Iterable<S> map(@NotNull Function<T, S> f, @NotNull Iterable<T> xs) {
         return () -> new Iterator<S>() {
             private final Iterator<T> xsi = xs.iterator();
 
@@ -679,10 +697,31 @@ public class IterableUtils {
             public S next() {
                 return f.apply(xsi.next());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static String map(Function<Character, Character> f, String s) {
+    /**
+     * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>String</tt> into another by applying a
+     * function to each character. Uses O(n) additional memory, where n is the length of the input string.
+     * additional memory.
+     *
+     * <ul>
+     *  <li><tt>f</tt> must be non-null.</li>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li><tt>xs</tt> must only contain characters that are valid inputs for <tt>f</tt>.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param f the function that transforms each character in the <tt>String</tt>
+     * @param s the <tt>String</tt>
+     * @return a <tt>String</tt> containing the characters of <tt>s</tt> transformed by <tt>f</tt>
+     */
+    public static @NotNull String map(@NotNull Function<Character, Character> f, @NotNull String s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             sb.append(f.apply(s.charAt(i)));
