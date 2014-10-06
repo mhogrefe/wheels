@@ -1,6 +1,7 @@
 package mho.haskellesque.iterables;
 
 import mho.haskellesque.tuples.Pair;
+import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1446,24 +1447,24 @@ public class IterableUtils {
         };
     }
 
-//    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4(Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
-//        return () -> new Iterator<Quadruple<A, B, C, D>>() {
-//            private Iterator<A> asi = as.iterator();
-//            private Iterator<B> bsi = bs.iterator();
-//            private Iterator<C> csi = cs.iterator();
-//            private Iterator<D> dsi = ds.iterator();
-//
-//            @Override
-//            public boolean hasNext() {
-//                return asi.hasNext() && bsi.hasNext() && csi.hasNext() && dsi.hasNext();
-//            }
-//
-//            @Override
-//            public Quadruple<A, B, C, D> next() {
-//                return Quadruple.of(asi.next(), bsi.next(), csi.next(), dsi.next());
-//            }
-//        };
-//    }
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4(Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+        return () -> new Iterator<Quadruple<A, B, C, D>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() && bsi.hasNext() && csi.hasNext() && dsi.hasNext();
+            }
+
+            @Override
+            public Quadruple<A, B, C, D> next() {
+                return new Quadruple<>(asi.next(), bsi.next(), csi.next(), dsi.next());
+            }
+        };
+    }
 
     public static <S, T> Iterable<Pair<S, T>> zipPadded(S fstPad, T sndPad, Iterable<S> fsts, Iterable<T> snds) {
         return () -> new Iterator<Pair<S, T>>() {
@@ -1505,28 +1506,28 @@ public class IterableUtils {
         };
     }
 
-//    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4Padded(A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
-//        return () -> new Iterator<Quadruple<A, B, C, D>>() {
-//            private Iterator<A> asi = as.iterator();
-//            private Iterator<B> bsi = bs.iterator();
-//            private Iterator<C> csi = cs.iterator();
-//            private Iterator<D> dsi = ds.iterator();
-//
-//            @Override
-//            public boolean hasNext() {
-//                return asi.hasNext() || bsi.hasNext() || csi.hasNext() || dsi.hasNext();
-//            }
-//
-//            @Override
-//            public Quadruple<A, B, C, D> next() {
-//                A a = asi.hasNext() ? asi.next() : aPad;
-//                B b = bsi.hasNext() ? bsi.next() : bPad;
-//                C c = csi.hasNext() ? csi.next() : cPad;
-//                D d = dsi.hasNext() ? dsi.next() : dPad;
-//                return Quadruple.of(a, b, c, d);
-//            }
-//        };
-//    }
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4Padded(A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+        return () -> new Iterator<Quadruple<A, B, C, D>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() || bsi.hasNext() || csi.hasNext() || dsi.hasNext();
+            }
+
+            @Override
+            public Quadruple<A, B, C, D> next() {
+                A a = asi.hasNext() ? asi.next() : aPad;
+                B b = bsi.hasNext() ? bsi.next() : bPad;
+                C c = csi.hasNext() ? csi.next() : cPad;
+                D d = dsi.hasNext() ? dsi.next() : dPad;
+                return new Quadruple<>(a, b, c, d);
+            }
+        };
+    }
 
     public static <S, T, O> Iterable<O> zipWith(Function<Pair<S, T>, O> f, Iterable<S> fsts, Iterable<T> snds) {
         return map(f, zip(fsts, snds));
@@ -1536,9 +1537,9 @@ public class IterableUtils {
         return map(f, zip3(as, bs, cs));
     }
 
-//    public static <A, B, C, D, O> Iterable<O> zipWith4(Function<Quadruple<A, B, C, D>, O> f, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
-//        return map(f, zip4(as, bs, cs, ds));
-//    }
+    public static <A, B, C, D, O> Iterable<O> zipWith4(Function<Quadruple<A, B, C, D>, O> f, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+        return map(f, zip4(as, bs, cs, ds));
+    }
 
     public static <S, T, O> Iterable<O> zipWithPadded(Function<Pair<S, T>, O> f, S fstPad, T sndPad, Iterable<S> fsts, Iterable<T> snds) {
         return map(f, zipPadded(fstPad, sndPad, fsts, snds));
@@ -1548,7 +1549,7 @@ public class IterableUtils {
         return map(f, zip3Padded(aPad, bPad, cPad, as, bs, cs));
     }
 
-//    public static <A, B, C, D, O> Iterable<O> zipWith4Padded(Function<Quadruple<A, B, C, D>, O> f, A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
-//        return map(f, zip4Padded(aPad, bPad, cPad, dPad, as, bs, cs, ds));
-//    }
+    public static <A, B, C, D, O> Iterable<O> zipWith4Padded(Function<Quadruple<A, B, C, D>, O> f, A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+        return map(f, zip4Padded(aPad, bPad, cPad, dPad, as, bs, cs, ds));
+    }
 }
