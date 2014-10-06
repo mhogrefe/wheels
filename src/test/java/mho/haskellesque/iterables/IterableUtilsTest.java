@@ -3,6 +3,7 @@ package mho.haskellesque.iterables;
 import mho.haskellesque.ordering.NullHandlingComparator;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -484,7 +485,7 @@ public class IterableUtilsTest {
         assertFalse(isEmpty((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))));
         assertFalse(isEmpty((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))));
         assertFalse(isEmpty(repeat(5)));
-        assertTrue(isEmpty(new ArrayList<>()));
+        assertTrue(isEmpty((Iterable<Integer>) tail(Arrays.asList(2))));
     }
 
     @Test
@@ -495,11 +496,43 @@ public class IterableUtilsTest {
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertFalse(isEmpty(nullList));
-        assertTrue(isEmpty(new ArrayList<>()));
+        assertTrue(isEmpty(new ArrayList<Integer>()));
     }
 
     @Test
     public void testIsEmpty_String() {
+        assertFalse(isEmpty("hello"));
+        assertFalse(isEmpty("h"));
+        assertTrue(isEmpty(""));
+    }
+
+    @Test
+    public void testLength_Iterable() {
+        assertEquals(length((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        assertEquals(length((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
+        assertEquals(length((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+    }
+
+    @Test
+    public void testBigIntegerLength() {
+        aeq(bigIntegerLength((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        aeq(bigIntegerLength((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
+        aeq(bigIntegerLength((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+    }
+
+    @Test
+    public void testLength_Collection() {
+        assertEquals(length(Arrays.asList(5, 4, 3, 2, 1)), 5);
+        assertEquals(length(Arrays.asList(5, 4, null, 2, 1)), 5);
+        assertEquals(length(Arrays.asList(5)), 1);
+        List<Integer> nullList = new ArrayList<>();
+        nullList.add(null);
+        assertEquals(length(nullList), 1);
+        assertEquals(length(new ArrayList<Integer>()), 0);
+    }
+
+    @Test
+    public void testLength_String() {
         assertFalse(isEmpty("hello"));
         assertFalse(isEmpty("h"));
         assertTrue(isEmpty(""));
