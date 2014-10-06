@@ -6,6 +6,22 @@ import java.util.Iterator;
 import static mho.haskellesque.iterables.IterableUtils.reverse;
 
 public class BasicMath {
+    public static int gcd(int x, int y) {
+        return positiveGcd(x < 0 ? -x : x, y < 0 ? -y : y);
+    }
+
+    private static int positiveGcd(int x, int y) {
+        return y == 0 ? x : positiveGcd(y, x % y);
+    }
+
+    public static BigInteger mod(BigInteger x, BigInteger y) {
+        if (x.signum() < 0) {
+            return y.subtract(x.negate()).mod(y);
+        } else {
+            return x.mod(y);
+        }
+    }
+
     public static Iterable<Boolean> bits(final int n) {
         return () -> new Iterator<Boolean>() {
             private int remaining = n;
@@ -129,21 +145,5 @@ public class BasicMath {
 
     public static BigInteger fromBigEndianDigits(BigInteger base, Iterable<BigInteger> digits) {
         return fromDigits(base, (Iterable<BigInteger>) reverse(digits));
-    }
-
-    public static int gcd(int x, int y) {
-        return positiveGcd(x < 0 ? -x : x, y < 0 ? -y : y);
-    }
-
-    private static int positiveGcd(int x, int y) {
-        return y == 0 ? x : positiveGcd(y, x % y);
-    }
-
-    public static BigInteger mod(BigInteger x, BigInteger y) {
-        if (x.signum() < 0) {
-            return y.subtract(x.negate()).mod(y);
-        } else {
-            return x.mod(y);
-        }
     }
 }
