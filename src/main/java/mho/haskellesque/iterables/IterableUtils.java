@@ -265,8 +265,8 @@ public class IterableUtils {
 
     /**
      * Equivalent of Haskell's <tt>(++)</tt> operator. Creates a <tt>String</tt> consisting of <tt>s</tt>'s characters
-     * followed by <tt>t</tt>'s characters. Uses O(n) additional memory, where n is the sum of the lengths of
-     * <tt>s</tt> and <tt>t</tt>.
+     * followed by <tt>t</tt>'s characters. Uses O(n+m) additional memory, where n is the length of <tt>s</tt> and m is
+     * the length of <tt>t</tt>.
      *
      * <ul>
      *  <li><tt>s</tt> must be non-null.</li>
@@ -731,7 +731,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent to Haskell's <tt>reverse</tt> function. Reverses an <tt>Iterable</tt>. <tt>xs</tt> must be finite.
+     * Equivalent of Haskell's <tt>reverse</tt> function. Reverses an <tt>Iterable</tt>. <tt>xs</tt> must be finite.
      * Uses O(n) additional memory, where n is the length of <tt>xs</tt>. The resulting list may be modified, but the
      * modifications will not affect the original <tt>Iterable</tt>.
      *
@@ -751,7 +751,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent to Haskell's <tt>reverse</tt> function. Reverses a <tt>String</tt>. Uses O(n) additional memory,
+     * Equivalent of Haskell's <tt>reverse</tt> function. Reverses a <tt>String</tt>. Uses O(n) additional memory,
      * where n is the length of <tt>s</tt>.
      *
      * <ul>
@@ -777,7 +777,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent to Haskell's <tt>intersperse</tt> function. Given an <tt>Iterable</tt> <tt>xs</tt> and a seperator
+     * Equivalent of Haskell's <tt>intersperse</tt> function. Given an <tt>Iterable</tt> <tt>xs</tt> and a seperator
      * <tt>sep</tt>, returns an <tt>Iterable</tt> consisting of the elements of <tt>xs</tt> with <tt>sep</tt> between
      * every adjacent pair. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
      * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
@@ -822,7 +822,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent to Haskell's <tt>intersperse</tt> function. Given a <tt>String</tt> <tt>s</tt> and a seperator
+     * Equivalent of Haskell's <tt>intersperse</tt> function. Given a <tt>String</tt> <tt>s</tt> and a seperator
      * <tt>sep</tt>, returns a <tt>String</tt> consisting of the characters of <tt>s</tt> with <tt>sep</tt> between
      * every adjacent pair. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
      *
@@ -847,11 +847,45 @@ public class IterableUtils {
         return sb.toString();
     }
 
-    public static <T> Iterable<T> intercalate(Iterable<T> xs, Iterable<Iterable<T>> xss) {
+    /**
+     * Equivalent of Haskell's <tt>intercalate</tt> function. Inserts an <tt>Iterable</tt> between every two adjacent
+     * <tt>Iterable</tt>s in an <tt>Iterable</tt> of <tt>Iterable</tt>s, flattening the result. <tt>xss</tt> or
+     * <tt>xs</tt> (or both) may be infinite, in which case the result is also infinite. Uses O(1) additional memory.
+     * The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param xs the separating <tt>Iterable</tt>
+     * @param xss the separated <tt>Iterable</tt>
+     * @param <T> the resulting <tt>Iterable</tt>'s element type
+     * @return <tt>xss</tt> intercalated by <tt>xs</tt>
+     */
+    public static @NotNull <T> Iterable<T> intercalate(@NotNull Iterable<T> xs, @NotNull Iterable<Iterable<T>> xss) {
         return concat(intersperse(xs, xss));
     }
 
-    public static String intercalate(String sep, Iterable<String> strings) {
+    /**
+     * Equivalent of Haskell's <tt>intercalate</tt> function. Inserts a <tt>String</tt> between every two adjacent
+     * <tt>String</tt>s in an <tt>Iterable</tt> of <tt>String</tt>s, flattening the result. Uses O(abc) additional
+     * memory, where a is the length of <tt>strings</tt>, b is the maximum length of any string in <tt>strings</tt>,
+     * and c is the length of <tt>sep</tt>.
+     * The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param sep the separating <tt>String</tt>
+     * @param strings the separated <tt>String</tt>s
+     * @return <tt>strings</tt> intercalated by <tt>sep</tt>
+     */
+    public static @NotNull String intercalate(@NotNull String sep, @NotNull Iterable<String> strings) {
         return concatStrings(intersperse(sep, strings));
     }
 
