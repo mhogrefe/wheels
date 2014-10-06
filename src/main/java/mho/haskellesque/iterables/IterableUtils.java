@@ -1335,6 +1335,48 @@ public class IterableUtils {
         };
     }
 
+    public static <T> Iterable<List<T>> chunk(int size, Iterable<T> xs) {
+        return () -> new Iterator<List<T>>() {
+            private Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> chunk = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    if (xsi.hasNext()) break;
+                    chunk.add(xsi.next());
+                }
+                return chunk;
+            }
+        };
+    }
+
+    public static <T> Iterable<String> chunk(int size, String s) {
+        return () -> new Iterator<String>() {
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i != s.length();
+            }
+
+            @Override
+            public String next() {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < size; j++) {
+                    if (i == s.length()) break;
+                    sb.append(s.charAt(i++));
+                }
+                return sb.toString();
+            }
+        };
+    }
+
     public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
