@@ -55,7 +55,8 @@ public class IterableUtils {
     }
 
     /**
-     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
+     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s. The resulting list
+     * may be modified, but the modifications will not affect the original <tt>Iterable</tt>.
      *
      * <ul>
      *  <li><tt>xs</tt> must be finite.</li>
@@ -729,18 +730,48 @@ public class IterableUtils {
         return sb.toString();
     }
 
-    public static <T> List<T> reverse(Iterable<T> xs) {
+    /**
+     * Equivalent to Haskell's <tt>reverse</tt> function. Reverses an <tt>Iterable</tt>. <tt>xs</tt> must be finite.
+     * Uses O(n) additional memory, where n is the length of <tt>xs</tt>. The resulting list may be modified, but the
+     * modifications will not affect the original <tt>Iterable</tt>.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param xs an <tt>Iterable</tt>
+     * @param <T> the <tt>Iterable</tt>'s element type
+     * @return a <tt>List</tt> containing <tt>xs</tt>'s elements in reverse order
+     */
+    public static @NotNull <T> List<T> reverse(@NotNull Iterable<T> xs) {
         List<T> list = toList(xs);
         Collections.reverse(list);
         return list;
     }
 
-    public static String reverse(String s) {
+    /**
+     * Equivalent to Haskell's <tt>reverse</tt> function. Reverses a <tt>String</tt>. Uses O(n) additional memory,
+     * where n is the length of <tt>s</tt>.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s a <tt>String</tt>
+     * @return a <tt>String</tt> containing <tt>s</tt>'s characters in reverse order
+     */
+    public static @NotNull String reverse(@NotNull String s) {
         char[] reversed = new char[s.length()];
         for (int i = 0; i < s.length() / 2; i++) {
             int j = s.length() - i - 1;
             reversed[i] = s.charAt(j);
             reversed[j] = s.charAt(i);
+        }
+        if ((s.length() & 1) == 1) {
+            int i = s.length() / 2;
+            reversed[i] = s.charAt(i);
         }
         return new String(reversed);
     }
