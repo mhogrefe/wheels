@@ -1,9 +1,12 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.math.BasicMath;
+import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -121,27 +124,52 @@ public class Exhaustive {
             concatMap(bi -> Arrays.asList(bi, bi.negate()), POSITIVE_BIG_INTEGERS)
     );
 
-//    public static @NotNull Generator<Float> floatsOrdered() {
-//        return Generator.cat(Generator.cat(new Generator<Float>(
-//                Float.NEGATIVE_INFINITY,
-//                f -> f.equals(Float.valueOf(-0.0f)),
-//                f -> !Float.isNaN(f) && (f < 0 || f.equals(Float.valueOf(-0.0f))),
-//                MathUtils::successor
-//        ),
-//                Generator.single(0.0f / 0.0f)),
-//                new Generator<Float>(
-//                        0.0f,
-//                        f -> f.equals(Float.valueOf(Float.POSITIVE_INFINITY)),
-//                        f -> !Float.isNaN(f) && (f > 0 || f.equals(Float.valueOf(0.0f))),
-//                        MathUtils::successor
-//                )
-//        );
-//    }
+    public static final Iterable<Float> ORDERED_FLOATS = () -> new Iterator<Float>() {
+        private Float next = Float.NEGATIVE_INFINITY;
 
-//    public static final Iterable<Float> ORDERED_FLOATS = concat(Arrays.asList(
-//            iterate(MathUtils::successor, Float.NEGATIVE_INFINITY),
-//            single(Float.NaN),
-//            iterate(MathUtils::successor, 0.0f)
-//    ));
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public Float next() {
+            Float current = next;
+            if (next > 0 && Float.isInfinite(next)) {
+                next = null;
+            } else if (next.equals(Float.valueOf(-0.0f))) {
+                next = Float.NaN;
+            } else if (Float.isNaN(next)) {
+                next = 0f;
+            } else {
+                next = Numbers.successor(next);
+            }
+            return current;
+        }
+    };
+
+    public static final Iterable<Double> ORDERED_DOUBLES = () -> new Iterator<Double>() {
+        private Double next = Double.NEGATIVE_INFINITY;
+
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public Double next() {
+            Double current = next;
+            if (next > 0 && Double.isInfinite(next)) {
+                next = null;
+            } else if (next.equals(Double.valueOf(-0.0))) {
+                next = Double.NaN;
+            } else if (Double.isNaN(next)) {
+                next = 0.0;
+            } else {
+                next = Numbers.successor(next);
+            }
+            return current;
+        }
+    };
 }
 
