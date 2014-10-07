@@ -1,5 +1,6 @@
 package mho.haskellesque.math;
 
+import mho.haskellesque.iterables.Exhaustive;
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.tuples.Pair;
 
@@ -70,7 +71,7 @@ public class BasicMath {
         return reverse(bits(n));
     }
 
-    public static BigInteger fromBits(Iterable<Boolean> bits) {
+    public static BigInteger fromBigEndianBits(Iterable<Boolean> bits) {
         BigInteger n = BigInteger.ZERO;
         for (boolean bit : bits) {
             n = n.shiftLeft(1);
@@ -79,8 +80,8 @@ public class BasicMath {
         return n;
     }
 
-    public static BigInteger fromBigEndianBits(Iterable<Boolean> bits) {
-        return fromBits(reverse(bits));
+    public static BigInteger fromBits(Iterable<Boolean> bits) {
+        return fromBigEndianBits(reverse(bits));
     }
 
     public static Iterable<Integer> digits(int base, final int n) {
@@ -157,7 +158,10 @@ public class BasicMath {
         return new Pair<>(n.shiftRight(snd + 1), BigInteger.valueOf(snd));
     }
 
-    public static Iterable<BigInteger> demux(int lines, BigInteger n) {
-        return IterableUtils.map(BasicMath::fromBits, IterableUtils.demuxPadded(false, lines, bits(n)));
+    public static List<BigInteger> demux(int lines, BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return toList(replicate(lines, BigInteger.ZERO));
+        }
+        return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demuxPadded(false, lines, bits(n))));
     }
 }
