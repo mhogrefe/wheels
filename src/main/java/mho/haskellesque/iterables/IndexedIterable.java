@@ -24,19 +24,28 @@ public class IndexedIterable<T> {
         return Optional.of(cache.get(i));
     }
 
-    public Iterable<T> get(Iterable<Integer> is) {
-        final Iterator<Integer> isi = is.iterator();
-        return () -> new Iterator<T>() {
-            @Override
-            public boolean hasNext() {
-                return isi.hasNext();
-            }
+    public Optional<List<T>> get(Iterable<Integer> is) {
+        List<T> list = new ArrayList<>();
+        for (int i : is) {
+            Optional<T> element = get(i);
+            if (!element.isPresent()) return Optional.empty();
+            list.add(element.get());
+        }
+        return Optional.of(list);
+    }
 
-            @Override
-            public T next() {
-                return get(isi.next()).get();
+    public Optional<List<T>> select(Iterable<Boolean> bs) {
+        List<T> elements = new ArrayList<>();
+        int i = 0;
+        for (boolean b : bs) {
+            if (b) {
+                Optional<T> element = get(i);
+                if (!element.isPresent()) return Optional.empty();
+                elements.add(element.get());
             }
-        };
+            i++;
+        }
+        return Optional.of(elements);
     }
 
     public void clearCache() {
