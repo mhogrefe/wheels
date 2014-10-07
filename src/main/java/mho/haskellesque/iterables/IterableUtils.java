@@ -1653,6 +1653,10 @@ public class IterableUtils {
         return s.charAt(i);
     }
 
+    public static <T> Iterable<T> select(Iterable<Boolean> bs, Iterable<T> xs) {
+        return map(p -> p.snd, filter(p -> p.fst, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
+    }
+
     public static <S, T> Iterable<Pair<S, T>> zip(Iterable<S> fsts, Iterable<T> snds) {
         return () -> new Iterator<Pair<S, T>>() {
             private final Iterator<S> fstsi = fsts.iterator();
