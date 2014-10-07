@@ -7,10 +7,8 @@ import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -241,5 +239,83 @@ public class Combinatorics {
                         (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
+    }
+
+    public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
+        return map(list -> (ArrayList<T>) list, lists(size, xs));
+    }
+
+    public static <T> Iterable<ArrayList<T>> arrayLists(Iterable<T> xs) {
+        return map(list -> (ArrayList<T>) list, lists(xs));
+    }
+
+    public static <T> Iterable<LinkedList<T>> linkedLists(int size, Iterable<T> xs) {
+        return map(list -> {
+            LinkedList<T> linkedList = new LinkedList<>();
+            addTo(list, linkedList);
+            return linkedList;
+        }, lists(size, xs));
+    }
+
+    public static <T> Iterable<LinkedList<T>> linkedLists(Iterable<T> xs) {
+        return map(list -> {
+            LinkedList<T> linkedList = new LinkedList<>();
+            addTo(list, linkedList);
+            return linkedList;
+        }, lists(xs));
+    }
+
+    public static <T> Iterable<CopyOnWriteArrayList<T>> copyOnWriteArrayLists(int size, Iterable<T> xs) {
+        return map(list -> {
+            CopyOnWriteArrayList<T> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
+            addTo(list, copyOnWriteArrayList);
+            return copyOnWriteArrayList;
+        }, lists(size, xs));
+    }
+
+    public static <T> Iterable<CopyOnWriteArrayList<T>> copyOnWriteArrayLists(Iterable<T> xs) {
+        return map(list -> {
+            CopyOnWriteArrayList<T> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
+            addTo(list, copyOnWriteArrayList);
+            return copyOnWriteArrayList;
+        }, lists(xs));
+    }
+
+    public static <T> Iterable<Stack<T>> stacks(int size, Iterable<T> xs) {
+        return map(list -> {
+            Stack<T> stack = new Stack<>();
+            addTo(list, stack);
+            return stack;
+        }, lists(size, xs));
+    }
+
+    public static <T> Iterable<Stack<T>> stacks(Iterable<T> xs) {
+        return map(list -> {
+            Stack<T> stack = new Stack<>();
+            addTo(list, stack);
+            return stack;
+        }, lists(xs));
+    }
+
+    public static <T> Iterable<Vector<T>> vectors(int size, Iterable<T> xs) {
+        return map(list -> {
+            Vector<T> vector = new Vector<>();
+            addTo(list, vector);
+            return vector;
+        }, lists(size, xs));
+    }
+
+    public static <T> Iterable<Vector<T>> vectors(Iterable<T> xs) {
+        return map(list -> {
+            Vector<T> vector = new Vector<>();
+            addTo(list, vector);
+            return vector;
+        }, lists(xs));
+    }
+
+    public static void main(String[] args) {
+        for (Vector vector : take(100, vectors(Exhaustive.INTEGERS))) {
+            System.out.println(vector);
+        }
     }
 }
