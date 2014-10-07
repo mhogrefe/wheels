@@ -7,6 +7,7 @@ import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -117,6 +118,28 @@ public class Combinatorics {
                 filter(
                         Optional<Pair<T, T>>::isPresent,
                         (Iterable<Optional<Pair<T, T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                )
+        );
+    }
+
+    public static <S, T> Iterable<Pair<S, T>> pairs(Iterable<S> fsts, Iterable<T> snds) {
+        IndexedIterable<S> fstii = new IndexedIterable<>(fsts);
+        IndexedIterable<T> sndii = new IndexedIterable<>(snds);
+        Function<BigInteger, Optional<Pair<S, T>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(2, bi);
+            assert p.get(0) != null;
+            Optional<S> optFst = fstii.get(p.get(0).intValue());
+            if (!optFst.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            Optional<T> optSnd = sndii.get(p.get(1).intValue());
+            if (!optSnd.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<S, T>(optFst.get(), optSnd.get()));
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<S, T>>::isPresent,
+                        (Iterable<Optional<Pair<S, T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
     }
