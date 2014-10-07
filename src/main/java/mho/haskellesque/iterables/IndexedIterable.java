@@ -24,6 +24,21 @@ public class IndexedIterable<T> {
         return Optional.of(cache.get(i));
     }
 
+    public Iterable<T> get(Iterable<Integer> is) {
+        final Iterator<Integer> isi = is.iterator();
+        return () -> new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return isi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                return get(isi.next()).get();
+            }
+        };
+    }
+
     public void clearCache() {
         cache.clear();
     }
