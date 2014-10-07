@@ -7,6 +7,8 @@ import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -202,6 +204,41 @@ public class Combinatorics {
                         Optional<Quadruple<A, B, C, D>>::isPresent,
                         (Iterable<Optional<Quadruple<A, B, C, D>>>)
                                 map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                )
+        );
+    }
+
+    public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
+        if (size == 0) {
+            return Arrays.asList(new ArrayList<T>());
+        }
+        IndexedIterable<T> ii = new IndexedIterable<>(xs);
+        Function<BigInteger, Optional<List<T>>> f = bi -> ii.get(map(BigInteger::intValue, BasicMath.demux(size, bi)));
+        return map(
+                Optional::get,
+                filter(
+                        Optional<List<T>>::isPresent,
+                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                )
+        );
+    }
+
+    public static <T> Iterable<List<T>> lists(Iterable<T> xs) {
+        IndexedIterable<T> ii = new IndexedIterable<>(xs);
+        Function<BigInteger, Optional<List<T>>> f = bi -> {
+            if (bi.equals(BigInteger.ZERO)) {
+                return Optional.of(new ArrayList<T>());
+            }
+            bi = bi.subtract(BigInteger.ONE);
+            Pair<BigInteger, BigInteger> sizeIndex = BasicMath.exponentialDemux(bi);
+            int size = sizeIndex.snd.intValue() + 1;
+            return ii.get(map(BigInteger::intValue, BasicMath.demux(size, sizeIndex.fst)));
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<List<T>>::isPresent,
+                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
     }
