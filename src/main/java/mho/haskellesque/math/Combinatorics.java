@@ -143,4 +143,66 @@ public class Combinatorics {
                 )
         );
     }
+
+    public static <A, B, C> Iterable<Triple<A, B, C>> triples(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+        IndexedIterable<A> aii = new IndexedIterable<>(as);
+        IndexedIterable<B> bii = new IndexedIterable<>(bs);
+        IndexedIterable<C> cii = new IndexedIterable<>(cs);
+        Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(3, bi);
+            assert p.get(0) != null;
+            Optional<A> optA = aii.get(p.get(0).intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            Optional<B> optB = bii.get(p.get(1).intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            assert p.get(2) != null;
+            Optional<C> optC = cii.get(p.get(2).intValue());
+            if (!optC.isPresent()) return Optional.empty();
+            return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Triple<A, B, C>>::isPresent,
+                        (Iterable<Optional<Triple<A, B, C>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                )
+        );
+    }
+
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
+        IndexedIterable<A> aii = new IndexedIterable<>(as);
+        IndexedIterable<B> bii = new IndexedIterable<>(bs);
+        IndexedIterable<C> cii = new IndexedIterable<>(cs);
+        IndexedIterable<D> dii = new IndexedIterable<>(ds);
+        Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(4, bi);
+            assert p.get(0) != null;
+            Optional<A> optA = aii.get(p.get(0).intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            Optional<B> optB = bii.get(p.get(1).intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            assert p.get(2) != null;
+            Optional<C> optC = cii.get(p.get(2).intValue());
+            if (!optC.isPresent()) return Optional.empty();
+            assert p.get(3) != null;
+            Optional<D> optD = dii.get(p.get(3).intValue());
+            if (!optD.isPresent()) return Optional.empty();
+            return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Quadruple<A, B, C, D>>::isPresent,
+                        (Iterable<Optional<Quadruple<A, B, C, D>>>)
+                                map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                )
+        );
+    }
 }
