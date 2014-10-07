@@ -1619,6 +1619,40 @@ public class IterableUtils {
         };
     }
 
+    public static <T> T get(Iterable<T> xs, int i) {
+        if (i < 0)
+            throw new IndexOutOfBoundsException();
+        Iterator<T> xsi = xs.iterator();
+        T element = null;
+        for (int j = 0; j <= i; j++) {
+            if (!xsi.hasNext())
+                throw new IndexOutOfBoundsException();
+            element = xsi.next();
+        }
+        return element;
+    }
+
+    public static <T> T get(Iterable<T> xs, BigInteger i) {
+        if (lt(i, BigInteger.ZERO))
+            throw new IndexOutOfBoundsException();
+        Iterator<T> xsi = xs.iterator();
+        T element = null;
+        for (BigInteger j = BigInteger.ZERO; le(j, i); j = j.add(BigInteger.ONE)) {
+            if (!xsi.hasNext())
+                throw new IndexOutOfBoundsException();
+            element = xsi.next();
+        }
+        return element;
+    }
+
+    public static <T> T get(List<T> xs, int i) {
+        return xs.get(i);
+    }
+
+    public static char get(String s, int i) {
+        return s.charAt(i);
+    }
+
     public static <S, T> Iterable<Pair<S, T>> zip(Iterable<S> fsts, Iterable<T> snds) {
         return () -> new Iterator<Pair<S, T>>() {
             private final Iterator<S> fstsi = fsts.iterator();
