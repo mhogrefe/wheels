@@ -241,81 +241,36 @@ public class Combinatorics {
         );
     }
 
-    public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
-        return map(list -> (ArrayList<T>) list, lists(size, xs));
-    }
+    public static <T> Iterable<List<T>> orderedSubsequences(Iterable<T> xs) {
+        if (isEmpty(xs))
+            return Arrays.asList(new ArrayList<T>());
+        final IndexedIterable<T> ii = new IndexedIterable(xs);
+        return () -> new Iterator<List<T>>() {
+            private List<Integer> indices = new ArrayList<>();
 
-    public static <T> Iterable<ArrayList<T>> arrayLists(Iterable<T> xs) {
-        return map(list -> (ArrayList<T>) list, lists(xs));
-    }
+            @Override
+            public boolean hasNext() {
+                return indices != null;
+            }
 
-    public static <T> Iterable<LinkedList<T>> linkedLists(int size, Iterable<T> xs) {
-        return map(list -> {
-            LinkedList<T> linkedList = new LinkedList<>();
-            addTo(list, linkedList);
-            return linkedList;
-        }, lists(size, xs));
-    }
-
-    public static <T> Iterable<LinkedList<T>> linkedLists(Iterable<T> xs) {
-        return map(list -> {
-            LinkedList<T> linkedList = new LinkedList<>();
-            addTo(list, linkedList);
-            return linkedList;
-        }, lists(xs));
-    }
-
-    public static <T> Iterable<CopyOnWriteArrayList<T>> copyOnWriteArrayLists(int size, Iterable<T> xs) {
-        return map(list -> {
-            CopyOnWriteArrayList<T> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
-            addTo(list, copyOnWriteArrayList);
-            return copyOnWriteArrayList;
-        }, lists(size, xs));
-    }
-
-    public static <T> Iterable<CopyOnWriteArrayList<T>> copyOnWriteArrayLists(Iterable<T> xs) {
-        return map(list -> {
-            CopyOnWriteArrayList<T> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
-            addTo(list, copyOnWriteArrayList);
-            return copyOnWriteArrayList;
-        }, lists(xs));
-    }
-
-    public static <T> Iterable<Stack<T>> stacks(int size, Iterable<T> xs) {
-        return map(list -> {
-            Stack<T> stack = new Stack<>();
-            addTo(list, stack);
-            return stack;
-        }, lists(size, xs));
-    }
-
-    public static <T> Iterable<Stack<T>> stacks(Iterable<T> xs) {
-        return map(list -> {
-            Stack<T> stack = new Stack<>();
-            addTo(list, stack);
-            return stack;
-        }, lists(xs));
-    }
-
-    public static <T> Iterable<Vector<T>> vectors(int size, Iterable<T> xs) {
-        return map(list -> {
-            Vector<T> vector = new Vector<>();
-            addTo(list, vector);
-            return vector;
-        }, lists(size, xs));
-    }
-
-    public static <T> Iterable<Vector<T>> vectors(Iterable<T> xs) {
-        return map(list -> {
-            Vector<T> vector = new Vector<>();
-            addTo(list, vector);
-            return vector;
-        }, lists(xs));
-    }
-
-    public static void main(String[] args) {
-        for (Vector vector : take(100, vectors(Exhaustive.INTEGERS))) {
-            System.out.println(vector);
-        }
+            @Override
+            public List<T> next() {
+                List<T> subsequence = ii.get(indices).get();
+                if (indices.isEmpty()) {
+                    indices.add(0);
+                } else {
+                    int lastIndex = last(indices);
+                    if (lastIndex < ii.size() - 1) {
+                        indices.add(lastIndex + 1);
+                    } else if (indices.size() == 1) {
+                        indices = null;
+                    } else {
+                        indices.remove(indices.size() - 1);
+                        indices.set(indices.size() - 1, last(indices) + 1);
+                    }
+                }
+                return subsequence;
+            }
+        };
     }
 }
