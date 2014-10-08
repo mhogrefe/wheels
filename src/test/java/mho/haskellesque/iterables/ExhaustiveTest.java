@@ -87,6 +87,13 @@ public class ExhaustiveTest {
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
+    @Test
+    public void testNegativeBytes() {
+        assertEquals(length(NEGATIVE_BYTES), 128);
+        aeq(take(20, NEGATIVE_BYTES),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
