@@ -1,15 +1,14 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.math.BasicMath;
+import mho.haskellesque.math.Combinatorics;
 import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.math.Combinatorics.*;
 
 public class Exhaustive {
     public static final List<Boolean> BOOLEANS = Arrays.asList(false, true);
@@ -171,5 +170,29 @@ public class Exhaustive {
             return current;
         }
     };
+
+    public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
+        return map(list -> (ArrayList<T>) list, lists(size, xs));
+    }
+
+    public static <T> Iterable<ArrayList<T>> arrayLists(Iterable<T> xs) {
+        return map(list -> (ArrayList<T>) list, lists(xs));
+    }
+
+    public static <T> Iterable<LinkedList<T>> linkedLists(int size, Iterable<T> xs) {
+        return map(list -> {
+            LinkedList<T> linkedList = new LinkedList<>();
+            addTo(list, linkedList);
+            return linkedList;
+        }, lists(size, xs));
+    }
+
+    public static <T> Iterable<LinkedList<T>> linkedLists(Iterable<T> xs) {
+        return map(list -> {
+            LinkedList<T> linkedList = new LinkedList<>();
+            addTo(list, linkedList);
+            return linkedList;
+        }, lists(xs));
+    }
 }
 
