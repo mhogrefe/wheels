@@ -1801,6 +1801,10 @@ public class IterableUtils {
         };
     }
 
+    public static <T> Iterable<T> mux(Iterable<Iterable<T>> xss) {
+        return concat(transpose(xss));
+    }
+
     public static <T> Iterable<Iterable<T>> demux(int lines, Iterable<T> xs) {
         return transpose(chunk(lines, xs));
     }
