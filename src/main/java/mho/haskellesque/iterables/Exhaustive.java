@@ -1,8 +1,8 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.math.Combinatorics;
 import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -10,12 +10,25 @@ import java.util.*;
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.Combinatorics.*;
 
+/**
+ * <tt>Iterable</tt>s that contain all (or some important subset) of a type's values. These are useful for exhaustive
+ * testing. Nulls are not included by default, but may easily be added via cons.
+ */
 public class Exhaustive {
-    public static final List<Boolean> BOOLEANS = Arrays.asList(false, true);
+    /**
+     * An <tt>Iterable</tt> that contains both <tt>Boolean</tt>s.
+     */
+    public static final @NotNull List<Boolean> BOOLEANS = Arrays.asList(false, true);
 
-    public static final List<Ordering> ORDERINGS = Arrays.asList(Ordering.EQ, Ordering.LT, Ordering.GT);
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s.
+     */
+    public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(Ordering.EQ, Ordering.LT, Ordering.GT);
 
-    public static final Iterable<Byte> ORDERED_BYTES = take(1 << 8, iterate(b -> (byte) (b + 1), Byte.MIN_VALUE));
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.
+     */
+    public static final Iterable<Byte> ORDERED_BYTES = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
     public static final Iterable<Short> ORDERED_SHORTS = take(1 << 16, iterate(s -> (short) (s + 1), Short.MIN_VALUE));
 
