@@ -57,22 +57,22 @@ public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
      */
-    public static final Iterable<Byte> POSITIVE_BYTES = range((byte) 1, Byte.MAX_VALUE);
+    public static final Iterable<Byte> POSITIVE_BYTES = range((byte) 1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s.
      */
-    public static final Iterable<Short> POSITIVE_SHORTS = range((short) 1, Short.MAX_VALUE);
+    public static final Iterable<Short> POSITIVE_SHORTS = range((short) 1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s.
      */
-    public static final Iterable<Integer> POSITIVE_INTEGERS = range(1, Integer.MAX_VALUE);
+    public static final Iterable<Integer> POSITIVE_INTEGERS = range(1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s.
      */
-    public static final Iterable<Long> POSITIVE_LONGS = range(1L, Long.MAX_VALUE);
+    public static final Iterable<Long> POSITIVE_LONGS = range(1L);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s.
@@ -82,22 +82,22 @@ public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s.
      */
-    public static final Iterable<Byte> NEGATIVE_BYTES = rangeBy((byte) -1, (byte) -1, Byte.MIN_VALUE);
+    public static final Iterable<Byte> NEGATIVE_BYTES = rangeBy((byte) -1, (byte) -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s.
      */
-    public static final Iterable<Short> NEGATIVE_SHORTS = rangeBy((short) -1, (short) -1, Short.MIN_VALUE);
+    public static final Iterable<Short> NEGATIVE_SHORTS = rangeBy((short) -1, (short) -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s.
      */
-    public static final Iterable<Integer> NEGATIVE_INTEGERS = rangeBy(-1, -1, Integer.MIN_VALUE);
+    public static final Iterable<Integer> NEGATIVE_INTEGERS = rangeBy(-1, -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s.
      */
-    public static final Iterable<Long> NEGATIVE_LONGS = rangeBy(-1L, -1L, Long.MIN_VALUE);
+    public static final Iterable<Long> NEGATIVE_LONGS = rangeBy(-1L, -1L);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s.
@@ -105,24 +105,30 @@ public class Exhaustive {
     public static final Iterable<BigInteger> NEGATIVE_BIG_INTEGERS =
             rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
 
-    public static final Iterable<Byte> NATURAL_BYTES = take(1 << 7, iterate(b -> (byte) (b + 1), (byte) 0));
+    /**
+     * An <tt>Iterable</tt> that contains all natural <tt>Byte</tt>s.
+     */
+    public static final Iterable<Byte> NATURAL_BYTES = range((byte) 0);
 
-    public static final Iterable<Short> NATURAL_SHORTS = take(1 << 15, iterate(s -> (short) (s + 1), (short) 0));
+    /**
+     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s.
+     */
+    public static final Iterable<Short> NATURAL_SHORTS = range((short) 0);
 
-    public static final Iterable<Integer> NATURAL_INTEGERS = take(
-            BigInteger.ONE.shiftLeft(31),
-            iterate(i -> i + 1, 0)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s.
+     */
+    public static final Iterable<Integer> NATURAL_INTEGERS = range(0);
 
-    public static final Iterable<Long> NATURAL_LONGS = take(
-            BigInteger.ONE.shiftLeft(63),
-            iterate(l -> l + 1, 0L)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s.
+     */
+    public static final Iterable<Long> NATURAL_LONGS = range(0L);
 
-    public static final Iterable<BigInteger> NATURAL_BIG_INTEGERS = iterate(
-            bi -> bi.add(BigInteger.ONE),
-            BigInteger.ZERO
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s.
+     */
+    public static final Iterable<BigInteger> NATURAL_BIG_INTEGERS = range(BigInteger.ZERO);
 
     public static final Iterable<Byte> BYTES = concat(
             cons(
