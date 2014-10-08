@@ -59,6 +59,34 @@ public class ExhaustiveTest {
                 " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789]");
     }
 
+    @Test
+    public void testPositiveBytes() {
+        assertEquals(length(POSITIVE_BYTES), 127);
+        aeq(take(20, POSITIVE_BYTES), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveShorts() {
+        assertEquals(length(POSITIVE_SHORTS), 32767);
+        aeq(take(20, POSITIVE_SHORTS), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveIntegers() {
+        aeq(take(20, POSITIVE_INTEGERS), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveLongs() {
+        aeq(take(20, POSITIVE_LONGS), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveBigIntegers() {
+        aeq(take(20, POSITIVE_BIG_INTEGERS),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
