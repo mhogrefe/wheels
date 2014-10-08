@@ -146,6 +146,21 @@ public class ExhaustiveTest {
         aeq(take(20, NATURAL_BIG_INTEGERS), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
+    @Test
+    public void testBytes() {
+        assertEquals(length(BYTES), 256);
+        aeq(take(5, (List<Byte>) reverse(BYTES)), "[-128, -127, 127, -126, 126]");
+        aeq(take(20, BYTES), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    //TODO
+    @Test
+    public void testShorts() {
+        assertEquals(length(SHORTS), 65536);
+        aeq(take(5, (List<Short>) reverse(SHORTS)), "[-128, -127, 127, -126, 126]");
+        aeq(take(20, SHORTS), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
