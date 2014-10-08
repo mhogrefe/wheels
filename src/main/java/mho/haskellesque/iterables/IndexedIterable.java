@@ -8,10 +8,12 @@ import java.util.Optional;
 public class IndexedIterable<T> {
     private Iterator<T> iterator;
     private List<T> cache;
+    private Integer size;
 
     public IndexedIterable(Iterable<T> iterable) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
+        size = null;
     }
 
     public Optional<T> get(int i) {
@@ -46,6 +48,15 @@ public class IndexedIterable<T> {
             i++;
         }
         return Optional.of(elements);
+    }
+
+    public int size() {
+        if (size != null) return size;
+        while (iterator.hasNext()) {
+            cache.add(iterator.next());
+        }
+        size = cache.size();
+        return size;
     }
 
     public void clearCache() {
