@@ -1238,17 +1238,39 @@ public class IterableUtils {
         };
     }
 
+    public static Iterable<Byte> range(byte a) {
+        return iterate(b -> (byte) (b + 1), a);
+    }
+
+    public static Iterable<Short> range(short a) {
+        return iterate(s -> (short) (s + 1), a);
+    }
+
+    public static Iterable<Integer> range(int a) {
+        return iterate(i -> i + 1, a);
+    }
+
+    public static Iterable<Long> range(long a) {
+        return iterate(l -> l + 1, a);
+    }
+
+    public static Iterable<BigInteger> range(BigInteger a) {
+        return iterate(bi -> bi.add(BigInteger.ONE), a);
+    }
+
     public static Iterable<Byte> range(byte a, byte b) {
         return () -> new Iterator<Byte>() {
             private byte x = a;
+            private boolean reachedEnd;
 
             @Override
             public boolean hasNext() {
-                return x != b;
+                return !reachedEnd;
             }
 
             @Override
             public Byte next() {
+                reachedEnd = x == b;
                 return x++;
             }
         };
@@ -1257,14 +1279,16 @@ public class IterableUtils {
     public static Iterable<Short> range(short a, short b) {
         return () -> new Iterator<Short>() {
             private short x = a;
+            private boolean reachedEnd;
 
             @Override
             public boolean hasNext() {
-                return x != b;
+                return !reachedEnd;
             }
 
             @Override
             public Short next() {
+                reachedEnd = x == b;
                 return x++;
             }
         };
@@ -1273,14 +1297,16 @@ public class IterableUtils {
     public static Iterable<Integer> range(int a, int b) {
         return () -> new Iterator<Integer>() {
             private int x = a;
+            private boolean reachedEnd;
 
             @Override
             public boolean hasNext() {
-                return x != b;
+                return !reachedEnd;
             }
 
             @Override
             public Integer next() {
+                reachedEnd = x == b;
                 return x++;
             }
         };
@@ -1289,14 +1315,16 @@ public class IterableUtils {
     public static Iterable<Long> range(long a, long b) {
         return () -> new Iterator<Long>() {
             private long x = a;
+            private boolean reachedEnd;
 
             @Override
             public boolean hasNext() {
-                return x != b;
+                return !reachedEnd;
             }
 
             @Override
             public Long next() {
+                reachedEnd = x == b;
                 return x++;
             }
         };
@@ -1305,14 +1333,16 @@ public class IterableUtils {
     public static Iterable<BigInteger> range(BigInteger a, BigInteger b) {
         return () -> new Iterator<BigInteger>() {
             private BigInteger x = a;
+            private boolean reachedEnd;
 
             @Override
             public boolean hasNext() {
-                return !x.equals(b);
+                return !reachedEnd;
             }
 
             @Override
             public BigInteger next() {
+                reachedEnd = x.equals(b);
                 BigInteger oldX = x;
                 x = x.add(BigInteger.ONE);
                 return oldX;

@@ -16,11 +16,11 @@ import static mho.haskellesque.ordering.Ordering.*;
 
 public class Combinatorics {
     public static BigInteger factorial(int n) {
-        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n).add(BigInteger.ONE)));
+        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
     }
 
     public static BigInteger factorial(BigInteger n) {
-        return productBigInteger(range(BigInteger.ONE, n.add(BigInteger.ONE)));
+        return productBigInteger(range(BigInteger.ONE, n));
     }
 
     public static BigInteger subfactorial(int n) {
