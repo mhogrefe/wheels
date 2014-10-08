@@ -82,16 +82,16 @@ public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s.
      */
-    public static final Iterable<Byte> NEGATIVE_BYTES = range((byte) -1, (byte) -1, Byte.MIN_VALUE);
+    public static final Iterable<Byte> NEGATIVE_BYTES = rangeBy((byte) -1, (byte) -1, Byte.MIN_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s.
      */
-    public static final Iterable<Short> NEGATIVE_SHORTS = range((short) -1, (short) -1, Short.MIN_VALUE);
+    public static final Iterable<Short> NEGATIVE_SHORTS = rangeBy((short) -1, (short) -1, Short.MIN_VALUE);
 
-    public static final Iterable<Integer> NEGATIVE_INTEGERS = range(-1, -1, Integer.MIN_VALUE);
+    public static final Iterable<Integer> NEGATIVE_INTEGERS = rangeBy(-1, -1, Integer.MIN_VALUE);
 
-    public static final Iterable<Long> NEGATIVE_LONGS = range(-1L, -1L, Long.MIN_VALUE);
+    public static final Iterable<Long> NEGATIVE_LONGS = rangeBy(-1L, -1L, Long.MIN_VALUE);
 
     public static final Iterable<BigInteger> NEGATIVE_BIG_INTEGERS = iterate(
             bi -> bi.subtract(BigInteger.ONE),

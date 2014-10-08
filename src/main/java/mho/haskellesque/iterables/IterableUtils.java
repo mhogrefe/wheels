@@ -1350,7 +1350,107 @@ public class IterableUtils {
         };
     }
 
-    public static Iterable<Byte> range(byte a, byte i, byte b) {
+    public static Iterable<Byte> rangeBy(byte a, byte i) {
+        return () -> new Iterator<Byte>() {
+            private byte x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                byte oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Short> rangeBy(short a, short i) {
+        return () -> new Iterator<Short>() {
+            private short x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                short oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Integer> rangeBy(int a, int i) {
+        return () -> new Iterator<Integer>() {
+            private int x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                int oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Long> rangeBy(long a, long i) {
+        return () -> new Iterator<Long>() {
+            private long x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                long oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i) {
+        return () -> new Iterator<BigInteger>() {
+            private BigInteger x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigInteger next() {
+                BigInteger oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
         return () -> new Iterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
@@ -1370,7 +1470,7 @@ public class IterableUtils {
         };
     }
 
-    public static Iterable<Short> range(short a, short i, short b) {
+    public static Iterable<Short> rangeBy(short a, short i, short b) {
         return () -> new Iterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
@@ -1390,7 +1490,7 @@ public class IterableUtils {
         };
     }
 
-    public static Iterable<Integer> range(int a, int i, int b) {
+    public static Iterable<Integer> rangeBy(int a, int i, int b) {
         return () -> new Iterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
@@ -1410,7 +1510,7 @@ public class IterableUtils {
         };
     }
 
-    public static Iterable<Long> range(long a, long i, long b) {
+    public static Iterable<Long> rangeBy(long a, long i, long b) {
         return () -> new Iterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
@@ -1430,7 +1530,7 @@ public class IterableUtils {
         };
     }
 
-    public static Iterable<BigInteger> range(BigInteger a, BigInteger i, BigInteger b) {
+    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
         return () -> new Iterator<BigInteger>() {
             private BigInteger x = a;
             private boolean reachedEnd;
