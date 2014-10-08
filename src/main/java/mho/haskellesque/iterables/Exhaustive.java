@@ -89,14 +89,21 @@ public class Exhaustive {
      */
     public static final Iterable<Short> NEGATIVE_SHORTS = rangeBy((short) -1, (short) -1, Short.MIN_VALUE);
 
+    /**
+     * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s.
+     */
     public static final Iterable<Integer> NEGATIVE_INTEGERS = rangeBy(-1, -1, Integer.MIN_VALUE);
 
+    /**
+     * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s.
+     */
     public static final Iterable<Long> NEGATIVE_LONGS = rangeBy(-1L, -1L, Long.MIN_VALUE);
 
-    public static final Iterable<BigInteger> NEGATIVE_BIG_INTEGERS = iterate(
-            bi -> bi.subtract(BigInteger.ONE),
-            BigInteger.ONE.negate()
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s.
+     */
+    public static final Iterable<BigInteger> NEGATIVE_BIG_INTEGERS =
+            rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
 
     public static final Iterable<Byte> NATURAL_BYTES = take(1 << 7, iterate(b -> (byte) (b + 1), (byte) 0));
 
