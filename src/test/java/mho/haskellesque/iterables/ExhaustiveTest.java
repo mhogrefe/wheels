@@ -94,6 +94,31 @@ public class ExhaustiveTest {
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
+    @Test
+    public void testNegativeShorts() {
+        assertEquals(length(NEGATIVE_SHORTS), 32768);
+        aeq(take(20, NEGATIVE_SHORTS),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeIntegers() {
+        aeq(take(20, NEGATIVE_INTEGERS),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeLongs() {
+        aeq(take(20, NEGATIVE_LONGS),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeBigIntegers() {
+        aeq(take(20, NEGATIVE_BIG_INTEGERS),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
