@@ -54,24 +54,30 @@ public class Exhaustive {
      */
     public static final Iterable<Long> ORDERED_LONGS = range(Long.MIN_VALUE, Long.MAX_VALUE);
 
-    public static final Iterable<Byte> POSITIVE_BYTES = take((1 << 7) - 1, iterate(b -> (byte) (b + 1), (byte) 1));
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
+     */
+    public static final Iterable<Byte> POSITIVE_BYTES = range((byte) 1, Byte.MAX_VALUE);
 
-    public static final Iterable<Short> POSITIVE_SHORTS = take((1 << 15) - 1, iterate(s -> (short) (s + 1), (short) 1));
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s.
+     */
+    public static final Iterable<Short> POSITIVE_SHORTS = range((short) 1, Short.MAX_VALUE);
 
-    public static final Iterable<Integer> POSITIVE_INTEGERS = take(
-            BigInteger.ONE.shiftLeft(31).subtract(BigInteger.ONE),
-            iterate(i -> i + 1, 1)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s.
+     */
+    public static final Iterable<Integer> POSITIVE_INTEGERS = range(1, Integer.MAX_VALUE);
 
-    public static final Iterable<Long> POSITIVE_LONGS = take(
-            BigInteger.ONE.shiftLeft(63).subtract(BigInteger.ONE),
-            iterate(l -> l + 1, 1L)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s.
+     */
+    public static final Iterable<Long> POSITIVE_LONGS = range(1L, Long.MAX_VALUE);
 
-    public static final Iterable<BigInteger> POSITIVE_BIG_INTEGERS = iterate(
-            bi -> bi.add(BigInteger.ONE),
-            BigInteger.ONE
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s.
+     */
+    public static final Iterable<BigInteger> POSITIVE_BIG_INTEGERS = range(BigInteger.ONE);
 
     public static final Iterable<Byte> NEGATIVE_BYTES = take(1 << 7, iterate(b -> (byte) (b - 1), (byte) -1));
 
