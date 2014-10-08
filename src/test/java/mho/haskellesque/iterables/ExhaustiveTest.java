@@ -119,6 +119,33 @@ public class ExhaustiveTest {
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
+    @Test
+    public void testNaturalBytes() {
+        assertEquals(length(NATURAL_BYTES), 128);
+        aeq(take(20, NATURAL_BYTES), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalShorts() {
+        assertEquals(length(NATURAL_SHORTS), 32768);
+        aeq(take(20, NATURAL_SHORTS), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalIntegers() {
+        aeq(take(20, NATURAL_INTEGERS), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalLongs() {
+        aeq(take(20, NATURAL_LONGS), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalBigIntegers() {
+        aeq(take(20, NATURAL_BIG_INTEGERS), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
