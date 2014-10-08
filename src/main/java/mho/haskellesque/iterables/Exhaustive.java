@@ -21,6 +21,15 @@ public class Exhaustive {
     public static final @NotNull List<Boolean> BOOLEANS = Arrays.asList(false, true);
 
     /**
+     * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s in ascending order.
+     */
+    public static final @NotNull List<Ordering> ORDERED_ORDERINGS = Arrays.asList(
+            Ordering.LT,
+            Ordering.EQ,
+            Ordering.GT
+    );
+
+    /**
      * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s.
      */
     public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(Ordering.EQ, Ordering.LT, Ordering.GT);
@@ -30,17 +39,20 @@ public class Exhaustive {
      */
     public static final Iterable<Byte> ORDERED_BYTES = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
-    public static final Iterable<Short> ORDERED_SHORTS = take(1 << 16, iterate(s -> (short) (s + 1), Short.MIN_VALUE));
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order.
+     */
+    public static final Iterable<Short> ORDERED_SHORTS = range(Short.MIN_VALUE, Short.MAX_VALUE);
 
-    public static final Iterable<Integer> ORDERED_INTEGERS = take(
-            BigInteger.ONE.shiftLeft(32),
-            iterate(i -> i + 1, Integer.MIN_VALUE)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order.
+     */
+    public static final Iterable<Integer> ORDERED_INTEGERS = range(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    public static final Iterable<Long> ORDERED_LONGS = take(
-            BigInteger.ONE.shiftLeft(64),
-            iterate(l -> l + 1, Long.MIN_VALUE)
-    );
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order.
+     */
+    public static final Iterable<Long> ORDERED_LONGS = range(Long.MIN_VALUE, Long.MAX_VALUE);
 
     public static final Iterable<Byte> POSITIVE_BYTES = take((1 << 7) - 1, iterate(b -> (byte) (b + 1), (byte) 1));
 
