@@ -154,8 +154,8 @@ public class BasicMath {
 
     public static Pair<BigInteger, BigInteger> exponentialDemux(BigInteger n) {
         n = n.add(BigInteger.ONE);
-        int snd = n.getLowestSetBit();
-        return new Pair<>(n.shiftRight(snd + 1), BigInteger.valueOf(snd));
+        int exp = n.getLowestSetBit();
+        return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
     }
 
     public static List<BigInteger> demux(int lines, BigInteger n) {

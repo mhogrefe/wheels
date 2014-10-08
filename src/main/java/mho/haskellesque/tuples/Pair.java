@@ -7,22 +7,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 
-public final class Pair<S, T> {
-    public final @Nullable S fst;
-    public final @Nullable T snd;
+public final class Pair<A, B> {
+    public final @Nullable A a;
+    public final @Nullable B b;
 
-    public Pair(@Nullable S fst, @Nullable T snd) {
-        this.fst = fst;
-        this.snd = snd;
+    public Pair(@Nullable A a, @Nullable B b) {
+        this.a = a;
+        this.b = b;
     }
 
-    private static <S extends Comparable<S>, T extends Comparable<T>> int compare(
-            @NotNull Pair<S, T> p,
-            @NotNull Pair<S, T> q
+    private static <A extends Comparable<A>, B extends Comparable<B>> int compare(
+            @NotNull Pair<A, B> p,
+            @NotNull Pair<A, B> q
     ) {
-        Ordering fstOrdering = Ordering.compare(new NullHandlingComparator<>(), p.fst, q.fst);
-        if (fstOrdering != Ordering.EQ) return fstOrdering.toInt();
-        return Ordering.compare(new NullHandlingComparator<>(), p.snd, q.snd).toInt();
+        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
+        if (aOrdering != Ordering.EQ) return aOrdering.toInt();
+        return Ordering.compare(new NullHandlingComparator<>(), p.b, q.b).toInt();
     }
 
     @Override
@@ -30,25 +30,25 @@ public final class Pair<S, T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pair pair = (Pair) o;
-        return (fst == null ? pair.fst == null : fst.equals(pair.fst)) &&
-               (snd == null ? pair.snd == null : snd.equals(pair.snd));
+        return (a == null ? pair.a == null : a.equals(pair.a)) &&
+               (b == null ? pair.b == null : b.equals(pair.b));
     }
 
     @Override
     public int hashCode() {
-        int result = fst == null ? 0 : fst.hashCode();
-        result = 31 * result + (snd == null ? 0 : snd.hashCode());
+        int result = a == null ? 0 : a.hashCode();
+        result = 31 * result + (b == null ? 0 : b.hashCode());
         return result;
     }
 
     public String toString() {
-        return "(" + fst + ", " + snd + ")";
+        return "(" + a + ", " + b + ")";
     }
 
-    public static class PairComparator<S extends Comparable<S>, T extends Comparable<T>>
-            implements Comparator<Pair<S, T>> {
+    public static class PairComparator<A extends Comparable<A>, B extends Comparable<B>>
+            implements Comparator<Pair<A, B>> {
         @Override
-        public int compare(@NotNull Pair<S, T> p, @NotNull Pair<S, T> q) {
+        public int compare(@NotNull Pair<A, B> p, @NotNull Pair<A, B> q) {
             return Pair.compare(p, q);
         }
 

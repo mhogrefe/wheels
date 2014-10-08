@@ -682,13 +682,13 @@ public class IterableUtils {
      *
      * @param f the function that transforms each element in the <tt>Iterable</tt>
      * @param xs the <tt>Iterable</tt>
-     * @param <T> the type of the original <tt>Iterable</tt>'s elements
-     * @param <S> the type of the output <tt>Iterable</tt>'s elements
+     * @param <A> the type of the original <tt>Iterable</tt>'s elements
+     * @param <B> the type of the output <tt>Iterable</tt>'s elements
      * @return an <tt>Iterable</tt> containing the elements of <tt>xs</tt> transformed by <tt>f</tt>
      */
-    public static @NotNull <T, S> Iterable<S> map(@NotNull Function<T, S> f, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<S>() {
-            private final Iterator<T> xsi = xs.iterator();
+    public static @NotNull <A, B> Iterable<B> map(@NotNull Function<A, B> f, @NotNull Iterable<A> xs) {
+        return () -> new Iterator<B>() {
+            private final Iterator<A> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -696,7 +696,7 @@ public class IterableUtils {
             }
 
             @Override
-            public S next() {
+            public B next() {
                 return f.apply(xsi.next());
             }
 
@@ -921,8 +921,8 @@ public class IterableUtils {
                         it -> new Pair<>(it.next(), it),
                         (Iterable<Iterator<T>>) filter(Iterator::hasNext, iterators)
                 );
-                iterators = map(p -> p.snd, advanced);
-                return (Iterable<T>) map(p -> p.fst, advanced);
+                iterators = map(p -> p.b, advanced);
+                return (Iterable<T>) map(p -> p.a, advanced);
             }
 
             @Override
@@ -954,8 +954,8 @@ public class IterableUtils {
                         it -> new Pair<>(it.next(), it),
                         (Iterable<Iterator<T>>) filter(Iterator::hasNext, iterators)
                 );
-                iterators = map(p -> p.snd, advanced);
-                return (Iterable<T>) map(p -> p.fst, advanced);
+                iterators = map(p -> p.b, advanced);
+                return (Iterable<T>) map(p -> p.a, advanced);
             }
 
             @Override
@@ -987,8 +987,8 @@ public class IterableUtils {
                         it -> new Pair<>(it.hasNext() ? it.next() : pad, it),
                         iterators
                 );
-                iterators = map(p -> p.snd, advanced);
-                return (Iterable<T>) map(p -> p.fst, advanced);
+                iterators = map(p -> p.b, advanced);
+                return (Iterable<T>) map(p -> p.a, advanced);
             }
 
             @Override
@@ -1036,7 +1036,7 @@ public class IterableUtils {
         return sb.toString();
     }
 
-    public static <T, S> Iterable<S> concatMap(Function<T, Iterable<S>> f, Iterable<T> xs) {
+    public static <A, B> Iterable<B> concatMap(Function<A, Iterable<B>> f, Iterable<A> xs) {
         return concat(map(f, xs));
     }
 
@@ -1654,22 +1654,22 @@ public class IterableUtils {
     }
 
     public static <T> Iterable<T> select(Iterable<Boolean> bs, Iterable<T> xs) {
-        return map(p -> p.snd, filter(p -> p.fst, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
+        return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
     }
 
-    public static <S, T> Iterable<Pair<S, T>> zip(Iterable<S> fsts, Iterable<T> snds) {
-        return () -> new Iterator<Pair<S, T>>() {
-            private final Iterator<S> fstsi = fsts.iterator();
-            private final Iterator<T> sndsi = snds.iterator();
+    public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
+        return () -> new Iterator<Pair<A, B>>() {
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
 
             @Override
             public boolean hasNext() {
-                return fstsi.hasNext() && sndsi.hasNext();
+                return asi.hasNext() && bsi.hasNext();
             }
 
             @Override
-            public Pair<S, T> next() {
-                return new Pair<>(fstsi.next(), sndsi.next());
+            public Pair<A, B> next() {
+                return new Pair<>(asi.next(), bsi.next());
             }
         };
     }
@@ -1711,21 +1711,21 @@ public class IterableUtils {
         };
     }
 
-    public static <S, T> Iterable<Pair<S, T>> zipPadded(S fstPad, T sndPad, Iterable<S> fsts, Iterable<T> snds) {
-        return () -> new Iterator<Pair<S, T>>() {
-            private final Iterator<S> fstsi = fsts.iterator();
-            private final Iterator<T> sndsi = snds.iterator();
+    public static <A, B> Iterable<Pair<A, B>> zipPadded(A aPad, B bPad, Iterable<A> as, Iterable<B> bs) {
+        return () -> new Iterator<Pair<A, B>>() {
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
 
             @Override
             public boolean hasNext() {
-                return fstsi.hasNext() || sndsi.hasNext();
+                return asi.hasNext() || bsi.hasNext();
             }
 
             @Override
-            public Pair<S, T> next() {
-                S fst = fstsi.hasNext() ? fstsi.next() : fstPad;
-                T snd = sndsi.hasNext() ? sndsi.next() : sndPad;
-                return new Pair<>(fst, snd);
+            public Pair<A, B> next() {
+                A a = asi.hasNext() ? asi.next() : aPad;
+                B b = bsi.hasNext() ? bsi.next() : bPad;
+                return new Pair<>(a, b);
             }
         };
     }
@@ -1774,34 +1774,73 @@ public class IterableUtils {
         };
     }
 
-    public static <S, T, O> Iterable<O> zipWith(Function<Pair<S, T>, O> f, Iterable<S> fsts, Iterable<T> snds) {
-        return map(f, zip(fsts, snds));
+    public static <A, B, O> Iterable<O> zipWith(
+            Function<Pair<A, B>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs
+    ) {
+        return map(f, zip(as, bs));
     }
 
-    public static <A, B, C, O> Iterable<O> zipWith3(Function<Triple<A, B, C>, O> f, Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+    public static <A, B, C, O> Iterable<O> zipWith3(
+            Function<Triple<A, B, C>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs
+    ) {
         return map(f, zip3(as, bs, cs));
     }
 
-    public static <A, B, C, D, O> Iterable<O> zipWith4(Function<Quadruple<A, B, C, D>, O> f, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+    public static <A, B, C, D, O> Iterable<O> zipWith4(
+            Function<Quadruple<A, B, C, D>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
         return map(f, zip4(as, bs, cs, ds));
     }
 
-    public static <S, T, O> Iterable<O> zipWithPadded(Function<Pair<S, T>, O> f, S fstPad, T sndPad, Iterable<S> fsts, Iterable<T> snds) {
-        return map(f, zipPadded(fstPad, sndPad, fsts, snds));
+    public static <A, B, O> Iterable<O> zipWithPadded(
+            Function<Pair<A, B>, O> f,
+            A aPad,
+            B bPad,
+            Iterable<A> as,
+            Iterable<B> bs
+    ) {
+        return map(f, zipPadded(aPad, bPad, as, bs));
     }
 
-    public static <A, B, C, O> Iterable<O> zipWith3Padded(Function<Triple<A, B, C>, O> f, A aPad, B bPad, C cPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+    public static <A, B, C, O> Iterable<O> zipWith3Padded(
+            Function<Triple<A, B, C>, O> f,
+            A aPad,
+            B bPad,
+            C cPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs
+    ) {
         return map(f, zip3Padded(aPad, bPad, cPad, as, bs, cs));
     }
 
-    public static <A, B, C, D, O> Iterable<O> zipWith4Padded(Function<Quadruple<A, B, C, D>, O> f, A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+    public static <A, B, C, D, O> Iterable<O> zipWith4Padded(
+            Function<Quadruple<A, B, C, D>, O> f,
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
         return map(f, zip4Padded(aPad, bPad, cPad, dPad, as, bs, cs, ds));
     }
 
-    public static <S, T> Pair<Iterable<S>, Iterable<T>> unzip(Iterable<Pair<S, T>> ps) {
+    public static <A, B> Pair<Iterable<A>, Iterable<B>> unzip(Iterable<Pair<A, B>> ps) {
         return new Pair<>(
-                map(p -> p.fst, ps),
-                map(p -> p.snd, ps)
+                map(p -> p.a, ps),
+                map(p -> p.b, ps)
         );
     }
 
