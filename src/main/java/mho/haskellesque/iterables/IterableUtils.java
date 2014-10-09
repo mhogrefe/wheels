@@ -890,7 +890,7 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of a <tt>List</tt> of
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
      * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements still end up in the
      * result. See test cases for examples. Any element of <tt>xss</tt> may be infinite, in which case the result will
      * be infinite. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the largest amount of
@@ -898,12 +898,12 @@ public class IterableUtils {
      * elements.
      *
      * <ul>
-     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li><tt>xss</tt> must be finite.</li>
      *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
      * </ul>
      *
-     * @param xss a <tt>List</tt> of <tt>Iterable</tt>s
-     * @param <T> the <tt>List</tt>'s elements' element type
+     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
+     * @param <T> the <tt>Iterable</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
     public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
@@ -917,11 +917,37 @@ public class IterableUtils {
 
             @Override
             public Iterable<T> next() {
-                return (Iterable<T>) map(Iterator::next, filter(Iterator::hasNext, iterators));
+                List<T> nextList = new ArrayList<>();
+                for (Iterator<T> iterator : iterators) {
+                    if (iterator.hasNext()) {
+                        nextList.add(iterator.next());
+                    }
+                }
+                return nextList;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>String</tt>s. If the rows have different lengths, then the "overhanging" characters still end up in the
+     * result. See test cases for examples. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m
+     * is the length of the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support
+     * removing elements.
+     *
+     * <ul>
+     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
+     * </ul>
+     *
+     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
+     * @return <tt>strings</tt>, transposed
+     */
     public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
@@ -929,22 +955,63 @@ public class IterableUtils {
         );
     }
 
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements will be truncated; the
+     * result's rows will all have equal lengths. See test cases for examples. Any element of <tt>xss</tt> may be
+     * infinite, in which case the result will be infinite. Uses O(nm) additional memory, where n is then length of
+     * <tt>xss</tt> and m is the largest amount of memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The
+     * <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xss</tt> must be finite.</li>
+     *  <li>The lengths of the result's elements are equal.</li>
+     * </ul>
+     *
+     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
+     * @param <T> the <tt>Iterable</tt>'s elements' element type
+     * @return <tt>xss</tt>, transposed
+     */
     public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
-                return all(Iterator::hasNext, iterators);
+                return !iterators.isEmpty() && all(Iterator::hasNext, iterators);
             }
 
             @Override
             public Iterable<T> next() {
-                return (Iterable<T>) map(Iterator::next, filter(Iterator::hasNext, iterators));
+                List<T> nextList = new ArrayList<>();
+                for (Iterator<T> iterator : iterators) {
+                    nextList.add(iterator.next());
+                }
+                return nextList;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>String</tt>s. If the rows have different lengths, then the "overhanging" characters will be truncated. See
+     * test cases for examples. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the
+     * length of the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing
+     * elements.
+     *
+     * <ul>
+     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>The lengths of the result's elements are equal.</li>
+     * </ul>
+     *
+     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
+     * @return <tt>strings</tt>, transposed
+     */
     public static @NotNull Iterable<String> transposeStringsTruncating(@NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
@@ -952,8 +1019,26 @@ public class IterableUtils {
         );
     }
 
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>Iterables</tt>. If the rows have different lengths, then the gaps will be padded; the result's rows will all
+     * have equal lengths. See test cases for examples. Any element of <tt>xss</tt> may be infinite, in which case the
+     * result will be infinite. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the
+     * largest amount of memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li><tt>xss</tt> must be finite.</li>
+     *  <li>The lengths of the result's elements are equal.</li>
+     * </ul>
+     *
+     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
+     * @param pad the padding
+     * @param <T> the <tt>Iterable</tt>'s elements' element type
+     * @return <tt>xss</tt>, transposed
+     */
     public static @NotNull <T> Iterable<Iterable<T>>
-    transposePadded(@Nullable T pad, @NotNull List<Iterable<T>> xss) {
+    transposePadded(@Nullable T pad, @NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
@@ -964,15 +1049,38 @@ public class IterableUtils {
 
             @Override
             public Iterable<T> next() {
-                return (Iterable<T>) map(it -> it.hasNext() ? it.next() : pad, iterators);
+                List<T> nextList = new ArrayList<>();
+                for (Iterator<T> iterator : iterators) {
+                    nextList.add(iterator.hasNext() ? iterator.next() : pad);
+                }
+                return nextList;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
+    /**
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * <tt>String</tt>s. If the rows have different lengths, then the gaps will be padded; the result's rows will all
+     * have equal lengths. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the length of
+     * the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * <ul>
+     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>The lengths of the result's elements are equal.</li>
+     * </ul>
+     *
+     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
+     * @return <tt>strings</tt>, transposed
+     */
     public static @NotNull Iterable<String> transposeStringsPadded(char pad, @NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
-                transposePadded(pad, toList(map(s -> fromString(s), strings)))
+                transposePadded(pad, map(s -> fromString(s), strings))
         );
     }
 
