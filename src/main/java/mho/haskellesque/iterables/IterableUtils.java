@@ -1385,6 +1385,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return new ArrayList<>();
         return () -> new Iterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
@@ -1403,6 +1404,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Short> range(short a, short b) {
+        if (a > b) return new ArrayList<>();
         return () -> new Iterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
@@ -1421,6 +1423,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Integer> range(int a, int b) {
+        if (a > b) return new ArrayList<>();
         return () -> new Iterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
@@ -1439,6 +1442,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Long> range(long a, long b) {
+        if (a > b) return new ArrayList<>();
         return () -> new Iterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
@@ -1457,6 +1461,7 @@ public class IterableUtils {
     }
 
     public static Iterable<BigInteger> range(BigInteger a, BigInteger b) {
+        if (gt(a, b)) return new ArrayList<>();
         return () -> new Iterator<BigInteger>() {
             private BigInteger x = a;
             private boolean reachedEnd;
@@ -1577,6 +1582,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
         return () -> new Iterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
@@ -1597,6 +1603,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Short> rangeBy(short a, short i, short b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
         return () -> new Iterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
@@ -1617,6 +1624,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Integer> rangeBy(int a, int i, int b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
         return () -> new Iterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
@@ -1637,6 +1645,7 @@ public class IterableUtils {
     }
 
     public static Iterable<Long> rangeBy(long a, long i, long b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
         return () -> new Iterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
@@ -1657,6 +1666,7 @@ public class IterableUtils {
     }
 
     public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
+        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
         return () -> new Iterator<BigInteger>() {
             private BigInteger x = a;
             private boolean reachedEnd;
