@@ -906,7 +906,7 @@ public class IterableUtils {
      * @param <T> the <tt>List</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
-    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull List<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
             private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
@@ -922,16 +922,16 @@ public class IterableUtils {
         };
     }
 
-//    public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
-//        return map(
-//                IterableUtils::charsToString,
-//                transpose(map(s -> fromString(s), strings))
-//        );
-//    }
+    public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
+        return map(
+                IterableUtils::charsToString,
+                transpose(map(s -> fromString(s), strings))
+        );
+    }
 
     public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
+            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -940,17 +940,7 @@ public class IterableUtils {
 
             @Override
             public Iterable<T> next() {
-                Iterable<Pair<T, Iterator<T>>> advanced = map(
-                        it -> new Pair<>(it.next(), it),
-                        (Iterable<Iterator<T>>) filter(Iterator::hasNext, iterators)
-                );
-                iterators = map(p -> p.b, advanced);
-                return (Iterable<T>) map(p -> p.a, advanced);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                return (Iterable<T>) map(Iterator::next, filter(Iterator::hasNext, iterators));
             }
         };
     }
@@ -962,9 +952,10 @@ public class IterableUtils {
         );
     }
 
-    public static @NotNull <T> Iterable<Iterable<T>> transposePadded(@Nullable T pad, @NotNull Iterable<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>>
+    transposePadded(@Nullable T pad, @NotNull List<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
+            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -973,17 +964,7 @@ public class IterableUtils {
 
             @Override
             public Iterable<T> next() {
-                Iterable<Pair<T, Iterator<T>>> advanced = map(
-                        it -> new Pair<>(it.hasNext() ? it.next() : pad, it),
-                        iterators
-                );
-                iterators = map(p -> p.b, advanced);
-                return (Iterable<T>) map(p -> p.a, advanced);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                return (Iterable<T>) map(it -> it.hasNext() ? it.next() : pad, iterators);
             }
         };
     }
@@ -991,7 +972,7 @@ public class IterableUtils {
     public static @NotNull Iterable<String> transposeStringsPadded(char pad, @NotNull Iterable<String> strings) {
         return map(
                 IterableUtils::charsToString,
-                transposePadded(pad, (Iterable<Iterable<Character>>) map(s -> fromString(s), strings))
+                transposePadded(pad, toList(map(s -> fromString(s), strings)))
         );
     }
 
