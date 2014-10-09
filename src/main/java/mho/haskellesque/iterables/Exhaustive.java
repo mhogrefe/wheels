@@ -19,11 +19,15 @@ import static mho.haskellesque.math.Combinatorics.*;
 public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains both <tt>Boolean</tt>s.
+     *
+     * Length is 2
      */
     public static final @NotNull List<Boolean> BOOLEANS = Arrays.asList(false, true);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s in ascending order.
+     *
+     * Length is 3
      */
     public static final @NotNull List<Ordering> ORDERINGS_ASCENDING = Arrays.asList(
             Ordering.LT,
@@ -33,127 +37,177 @@ public class Exhaustive {
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s.
+     *
+     * Length is 3
      */
     public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(Ordering.EQ, Ordering.LT, Ordering.GT);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.
+     *
+     * Length is 2<sup>8</sup>
      */
     public static final @NotNull Iterable<Byte> BYTES_ASCENDING = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order.
+     *
+     * Length is 2<sup>16</sup>
      */
     public static final @NotNull Iterable<Short> SHORTS_ASCENDING = range(Short.MIN_VALUE, Short.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order.
+     *
+     * Length is 2<sup>32</sup>
      */
     public static final @NotNull Iterable<Integer> INTEGERS_ASCENDING = range(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order.
+     *
+     * Length is 2<sup>64</sup>
      */
     public static final @NotNull Iterable<Long> LONGS_ASCENDING = range(Long.MIN_VALUE, Long.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
+     *
+     * Length is 2<sup>7</sup>&#x2212;1
      */
     public static final @NotNull Iterable<Byte> POSITIVE_BYTES = range((byte) 1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s.
+     *
+     * Length is 2<sup>15</sup>&#x2212;1
      */
     public static final @NotNull Iterable<Short> POSITIVE_SHORTS = range((short) 1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s.
+     *
+     * Length is 2<sup>31</sup>&#x2212;1
      */
     public static final @NotNull Iterable<Integer> POSITIVE_INTEGERS = range(1);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s.
+     *
+     * Length is 2<sup>63</sup>&#x2212;1
      */
     public static final @NotNull Iterable<Long> POSITIVE_LONGS = range(1L);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s.
+     *
+     * Length is infinite
      */
     public static final @NotNull Iterable<BigInteger> POSITIVE_BIG_INTEGERS = range(BigInteger.ONE);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s.
+     *
+     * Length is 2<sup>7</sup>
      */
     public static final @NotNull Iterable<Byte> NEGATIVE_BYTES = rangeBy((byte) -1, (byte) -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s.
+     *
+     * Length is 2<sup>15</sup>
      */
     public static final @NotNull Iterable<Short> NEGATIVE_SHORTS = rangeBy((short) -1, (short) -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s.
+     *
+     * Length is 2<sup>31</sup>
      */
     public static final @NotNull Iterable<Integer> NEGATIVE_INTEGERS = rangeBy(-1, -1);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s.
+     *
+     * Length is 2<sup>63</sup>
      */
     public static final @NotNull Iterable<Long> NEGATIVE_LONGS = rangeBy(-1L, -1L);
 
     /**
      * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s.
+     *
+     * Length is infinite
      */
     public static final @NotNull Iterable<BigInteger> NEGATIVE_BIG_INTEGERS =
             rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
 
     /**
      * An <tt>Iterable</tt> that contains all natural <tt>Byte</tt>s.
+     *
+     * Length is 2<sup>7</sup>
      */
     public static final @NotNull Iterable<Byte> NATURAL_BYTES = range((byte) 0);
 
     /**
      * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s.
+     *
+     * Length is 2<sup>15</sup>
      */
     public static final @NotNull Iterable<Short> NATURAL_SHORTS = range((short) 0);
 
     /**
      * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s.
+     *
+     * Length is 2<sup>31</sup>
      */
     public static final @NotNull Iterable<Integer> NATURAL_INTEGERS = range(0);
 
     /**
      * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s.
+     *
+     * Length is 2<sup>63</sup>
      */
     public static final @NotNull Iterable<Long> NATURAL_LONGS = range(0L);
 
     /**
      * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s.
+     *
+     * Length is infinite
      */
     public static final @NotNull Iterable<BigInteger> NATURAL_BIG_INTEGERS = range(BigInteger.ZERO);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s.
+     *
+     * Length is 2<sup>8</sup>
      */
     public static final @NotNull Iterable<Byte> BYTES = cons((byte) 0, mux(Arrays.asList(POSITIVE_BYTES, NEGATIVE_BYTES)));
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Short</tt>s.
+     *
+     * Length is 2<sup>16</sup>
      */
     public static final @NotNull Iterable<Short> SHORTS = cons((short) 0, mux(Arrays.asList(POSITIVE_SHORTS, NEGATIVE_SHORTS)));
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s.
+     *
+     * Length is 2<sup>32</sup>
      */
     public static final @NotNull Iterable<Integer> INTEGERS = cons(0, mux(Arrays.asList(POSITIVE_INTEGERS, NEGATIVE_INTEGERS)));
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Long</tt>s.
+     *
+     * Length is 2<sup>64</sup>
      */
     public static final @NotNull Iterable<Long> LONGS = cons(0L, mux(Arrays.asList(POSITIVE_LONGS, NEGATIVE_LONGS)));
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>BigInteger</tt>s.
+     *
+     * Length is infinite
      */
     public static final @NotNull Iterable<BigInteger> BIG_INTEGERS = cons(
             BigInteger.ZERO, mux(Arrays.asList(POSITIVE_BIG_INTEGERS, NEGATIVE_BIG_INTEGERS))
