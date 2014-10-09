@@ -157,7 +157,7 @@ public class ExhaustiveTest {
     @Test
     public void testShorts() {
         assertEquals(length(SHORTS), 65536);
-        aeq(take(5, (List<Short>) reverse(SHORTS)), "[-128, -127, 127, -126, 126]");
+        aeq(take(5, (List<Short>) reverse(SHORTS)), "[-32768, -32767, 32767, -32766, 32766]");
         aeq(take(20, SHORTS), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
