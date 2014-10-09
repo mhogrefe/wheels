@@ -13,39 +13,86 @@ import java.util.function.Function;
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.ordering.Ordering.*;
 
+/**
+ * Various combinatorial functions and <tt>Iterable</tt>s.
+ */
 public class Combinatorics {
+    /**
+     * The factorial function <tt>n</tt>!
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a factorial.</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return <tt>n</tt>!
+     */
     public static BigInteger factorial(int n) {
         return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
     }
 
+    /**
+     * The factorial function <tt>n</tt>!
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a factorial.</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return <tt>n</tt>!
+     */
     public static BigInteger factorial(BigInteger n) {
         return productBigInteger(range(BigInteger.ONE, n));
     }
 
+    /**
+     * The subfactorial function !<tt>n</tt>
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a subfactorial (rencontres number).</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return !<tt>n</tt>
+     */
     public static BigInteger subfactorial(int n) {
-        if (n == 0) return BigInteger.ONE;
-        BigInteger a = BigInteger.ONE;
-        BigInteger b = BigInteger.ZERO;
-        BigInteger c = b;
-        for (int i = 1; i < n; i++) {
-            c = BigInteger.valueOf(i).multiply(a.add(b));
-            a = b;
-            b = c;
+        BigInteger sf = BigInteger.ONE;
+        for (int i = 1; i <= n; i++) {
+            sf = sf.multiply(BigInteger.valueOf(i));
+            if ((i & 1) == 0) {
+                sf = sf.add(BigInteger.ONE);
+            } else {
+                sf = sf.subtract(BigInteger.ONE);
+            }
         }
-        return c;
+        return sf;
     }
 
+    /**
+     * The subfactorial function !<tt>n</tt>
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a subfactorial (rencontres number).</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return !<tt>n</tt>
+     */
     public static BigInteger subfactorial(BigInteger n) {
-        if (n.equals(BigInteger.ZERO)) return BigInteger.ONE;
-        BigInteger a = BigInteger.ONE;
-        BigInteger b = BigInteger.ZERO;
-        BigInteger c = b;
-        for (BigInteger i = BigInteger.ONE; lt(i, n); i = i.add(BigInteger.ONE)) {
-            c = i.multiply(a.add(b));
-            a = b;
-            b = c;
+        BigInteger sf = BigInteger.ONE;
+        for (BigInteger i = BigInteger.ONE; le(i, n); i = i.add(BigInteger.ONE)) {
+            sf = sf.multiply(i);
+            if (i.getLowestSetBit() != 0) {
+                sf = sf.add(BigInteger.ONE);
+            } else {
+                sf = sf.subtract(BigInteger.ONE);
+            }
         }
-        return c;
+        return sf;
     }
 
     public static <A, B> Iterable<Pair<A, B>> cartesianPairs(Iterable<A> as, Iterable<B> bs) {
