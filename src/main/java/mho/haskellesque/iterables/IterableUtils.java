@@ -1,6 +1,5 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.tuples.Pair;
 import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
@@ -891,24 +890,25 @@ public class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
+     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of a <tt>List</tt> of
      * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements still end up in the
-     * result. See test cases for examples. <tt>xss</tt> may be infinite, in which case the result may contain infinite
-     * elements. Any element of <tt>xss</tt> may be infinite, in which case the result will be infinite. Uses O(1)
-     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * result. See test cases for examples. Any element of <tt>xss</tt> may be infinite, in which case the result will
+     * be infinite. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the largest amount of
+     * memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing
+     * elements.
      *
      * <ul>
      *  <li><tt>xss</tt> must be non-null.</li>
      *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
      * </ul>
      *
-     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
-     * @param <T> the <tt>Iterable</tt>'s elements' element type
+     * @param xss a <tt>List</tt> of <tt>Iterable</tt>s
+     * @param <T> the <tt>List</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
-    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull List<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private Iterable<Iterator<T>> iterators = map(Iterable::iterator, xss);
+            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -917,27 +917,17 @@ public class IterableUtils {
 
             @Override
             public Iterable<T> next() {
-                Iterable<Pair<T, Iterator<T>>> advanced = map(
-                        it -> new Pair<>(it.next(), it),
-                        (Iterable<Iterator<T>>) filter(Iterator::hasNext, iterators)
-                );
-                iterators = map(p -> p.b, advanced);
-                return (Iterable<T>) map(p -> p.a, advanced);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                return (Iterable<T>) map(Iterator::next, filter(Iterator::hasNext, iterators));
             }
         };
     }
 
-    public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
-        return map(
-                IterableUtils::charsToString,
-                transpose(map(s -> fromString(s), strings))
-        );
-    }
+//    public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
+//        return map(
+//                IterableUtils::charsToString,
+//                transpose(map(s -> fromString(s), strings))
+//        );
+//    }
 
     public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
@@ -1801,17 +1791,22 @@ public class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> mux(Iterable<Iterable<T>> xss) {
+    public static <T> Iterable<T> mux(List<Iterable<T>> xss) {
         return concat(transpose(xss));
     }
 
-    public static <T> Iterable<Iterable<T>> demux(int lines, Iterable<T> xs) {
-        return transpose(chunk(lines, xs));
+    public static <T> List<Iterable<T>> demux(int lines, Iterable<T> xs) {
+        List<Iterable<T>> demuxed = new ArrayList<>();
+        for (int i = 0; i < lines; i++) {
+            Iterable<Boolean> mask = concat(replicate(i, false), cycle(cons(true, replicate(lines - 1, false))));
+            demuxed.add(select(mask, xs));
+        }
+        return demuxed;
     }
 
-    public static <T> Iterable<Iterable<T>> demuxPadded(T pad, int lines, Iterable<T> xs) {
-        return transpose(chunkPadded(pad, lines, xs));
-    }
+//    public static <T> List<Iterable<T>> demuxPadded(T pad, int lines, Iterable<T> xs) {
+//        return transpose(chunkPadded(pad, lines, xs));
+//    }
 
     public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
         return new Iterable<T>() {
