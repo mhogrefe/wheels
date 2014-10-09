@@ -162,6 +162,6 @@ public class BasicMath {
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(lines, BigInteger.ZERO));
         }
-        return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demuxPadded(false, lines, bits(n))));
+        return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demux(lines, bits(n))));
     }
 }
