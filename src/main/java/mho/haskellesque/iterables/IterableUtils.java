@@ -173,6 +173,8 @@ public class IterableUtils {
      *  <li>The result is a non-empty <tt>Iterable</tt>.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|+1
+     *
      * @param x the first element of the <tt>Iterable</tt> to be created
      * @param xs the second-through-last elements of the <tt>Iterable</tt> to be created
      * @param <T> the element type of the <tt>Iterable</tt> to be created
@@ -216,6 +218,8 @@ public class IterableUtils {
      *  <li>The result is a non-empty <tt>String</tt>.</li>
      * </ul>
      *
+     * Result length is |<tt>cs</tt>|+1
+     *
      * @param c the first character of the <tt>String</tt> to be created
      * @param cs the second-through-last characters of the <tt>String</tt> to be created
      * @return the <tt>String</tt> to be created
@@ -235,6 +239,8 @@ public class IterableUtils {
      *  <li><tt>ys</tt> must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
+     *
+     * Result length is |<tt>xs</tt>|+|<tt>ys</tt>|
      *
      * @param xs an <tt>Iterable</tt>
      * @param ys another <tt>Iterable</tt>
@@ -273,6 +279,8 @@ public class IterableUtils {
      *  <li><tt>t</tt> must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
+     *
+     * Result length is |<tt>s</tt>|+|<tt>t</tt>|
      *
      * @param s a <tt>String</tt>
      * @param t a <tt>String</tt>
@@ -434,6 +442,8 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|&#x2212;1
+     *
      * @param xs an <tt>Iterable</tt>
      * @param <T> the <tt>Iterable</tt>'s element type
      * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first
@@ -473,6 +483,8 @@ public class IterableUtils {
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
      *
+     * Result length is |<tt>s</tt>|&#x2212;1
+     *
      * @param s a <tt>String</tt>
      * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the first
      */
@@ -489,6 +501,8 @@ public class IterableUtils {
      *  <li><tt>xs</tt> must be non-empty.</li>
      *  <li>The result is non-null.</li>
      * </ul>
+     *
+     * Result length is |<tt>xs</tt>|&#x2212;1
      *
      * @param xs an <tt>Iterable</tt>
      * @param <T> the <tt>Iterable</tt>'s element type
@@ -533,6 +547,8 @@ public class IterableUtils {
      *  <li><tt>s</tt> must be non-empty.</li>
      *  <li>The result may be any <tt>char</tt>.</li>
      * </ul>
+     *
+     * Result length is |<tt>s</tt>|&#x2212;1
      *
      * @param s a <tt>String</tt>
      * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the last
@@ -679,6 +695,8 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|
+     *
      * @param f the function that transforms each element in the <tt>Iterable</tt>
      * @param xs the <tt>Iterable</tt>
      * @param <A> the type of the original <tt>Iterable</tt>'s elements
@@ -718,6 +736,8 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
+     * Result length is |<tt>s</tt>|
+     *
      * @param f the function that transforms each character in the <tt>String</tt>
      * @param s the <tt>String</tt>
      * @return a <tt>String</tt> containing the characters of <tt>s</tt> transformed by <tt>f</tt>
@@ -740,6 +760,8 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|
+     *
      * @param xs an <tt>Iterable</tt>
      * @param <T> the <tt>Iterable</tt>'s element type
      * @return a <tt>List</tt> containing <tt>xs</tt>'s elements in reverse order
@@ -758,6 +780,8 @@ public class IterableUtils {
      *  <li><tt>s</tt> must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
+     *
+     * Result length is |<tt>s</tt>|
      *
      * @param s a <tt>String</tt>
      * @return a <tt>String</tt> containing <tt>s</tt>'s characters in reverse order
@@ -787,6 +811,8 @@ public class IterableUtils {
      *  <li><tt>xs</tt> must be non-null.</li>
      *  <li>The result is an <tt>Iterable</tt> whose odd-indexed (using 0-based indexing) elements are identical.</li>
      * </ul>
+     *
+     * Result length is 0 when |<tt>xs</tt>|=0, 2|<tt>xs</tt>|&#x2212;1 otherwise
      *
      * @param sep a separator
      * @param xs an <tt>Iterable</tt>
@@ -832,6 +858,8 @@ public class IterableUtils {
      *  <li>The result is a <tt>String</tt> whose odd-indexed (using 0-based indexing) characters are identical.</li>
      * </ul>
      *
+     * Result length is 0 when |<tt>s</tt>|=0, 2|<tt>s</tt>|&#x2212;1 otherwise
+     *
      * @param sep a separator
      * @param s a <tt>String</tt>
      * @return a <tt>String</tt> consisting of the characters of <tt>s</tt> interspersed with <tt>sep</tt>
@@ -852,6 +880,9 @@ public class IterableUtils {
      * <tt>Iterable</tt>s in an <tt>Iterable</tt> of <tt>Iterable</tt>s, flattening the result. <tt>xss</tt>, any
      * element of <tt>xss</tt>, or <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
      * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     *
+     * Result length is the sum of the lengths of <tt>xs</tt>'s elements and (0 if |<tt>xss</tt>|=0,
+     * |<tt>xss</tt>|(|<tt>xs</tt>|&#x2212;1) otherwise)
      *
      * <ul>
      *  <li><tt>xs</tt> must be non-null.</li>
@@ -881,6 +912,9 @@ public class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
+     * Result length is the sum of the lengths of <tt>xs</tt>'s elements and (0 if |<tt>strings</tt>|=0,
+     * |<tt>strings</tt>|(|<tt>sep</tt>|&#x2212;1) otherwise)
+     *
      * @param sep the separating <tt>String</tt>
      * @param strings the separated <tt>String</tt>s
      * @return <tt>strings</tt> intercalated by <tt>sep</tt>
@@ -901,6 +935,8 @@ public class IterableUtils {
      *  <li><tt>xss</tt> must be finite.</li>
      *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
      * </ul>
+     *
+     * Result length is the maximum length of <tt>xss</tt>'s elements
      *
      * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
      * @param <T> the <tt>Iterable</tt>'s elements' element type
@@ -945,6 +981,8 @@ public class IterableUtils {
      *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
      * </ul>
      *
+     * Result length is the maximum length of <tt>strings</tt>'s elements
+     *
      * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
      * @return <tt>strings</tt>, transposed
      */
@@ -967,6 +1005,8 @@ public class IterableUtils {
      *  <li><tt>xss</tt> must be finite.</li>
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
+     *
+     * Result length is the minimum length of <tt>xss</tt>'s elements
      *
      * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
      * @param <T> the <tt>Iterable</tt>'s elements' element type
@@ -1009,6 +1049,8 @@ public class IterableUtils {
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
      *
+     * Result length is the minimum length of <tt>strings</tt>'s elements
+     *
      * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
      * @return <tt>strings</tt>, transposed
      */
@@ -1031,6 +1073,8 @@ public class IterableUtils {
      *  <li><tt>xss</tt> must be finite.</li>
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
+     *
+     * Result length is the maximum length of <tt>xss</tt>'s elements
      *
      * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
      * @param pad the padding
@@ -1074,7 +1118,10 @@ public class IterableUtils {
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
      *
+     * Result length is the maximum length of <tt>strings</tt>'s elements
+     *
      * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
+     * @param pad the padding
      * @return <tt>strings</tt>, transposed
      */
     public static @NotNull Iterable<String> transposeStringsPadded(char pad, @NotNull Iterable<String> strings) {
