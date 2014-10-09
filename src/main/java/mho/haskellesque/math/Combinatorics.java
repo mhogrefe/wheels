@@ -5,6 +5,7 @@ import mho.haskellesque.iterables.Exhaustive;
 import mho.haskellesque.tuples.Pair;
 import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -28,7 +29,9 @@ public class Combinatorics {
      * @param n the argument
      * @return <tt>n</tt>!
      */
-    public static BigInteger factorial(int n) {
+    public static @NotNull BigInteger factorial(int n) {
+        if (n < 0)
+            throw new ArithmeticException("cannot take factorial of " + n);
         return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
     }
 
@@ -43,7 +46,9 @@ public class Combinatorics {
      * @param n the argument
      * @return <tt>n</tt>!
      */
-    public static BigInteger factorial(BigInteger n) {
+    public static @NotNull BigInteger factorial(@NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot take factorial of " + n);
         return productBigInteger(range(BigInteger.ONE, n));
     }
 
@@ -58,7 +63,9 @@ public class Combinatorics {
      * @param n the argument
      * @return !<tt>n</tt>
      */
-    public static BigInteger subfactorial(int n) {
+    public static @NotNull BigInteger subfactorial(int n) {
+        if (n < 0)
+            throw new ArithmeticException("cannot take subfactorial of " + n);
         BigInteger sf = BigInteger.ONE;
         for (int i = 1; i <= n; i++) {
             sf = sf.multiply(BigInteger.valueOf(i));
@@ -82,7 +89,9 @@ public class Combinatorics {
      * @param n the argument
      * @return !<tt>n</tt>
      */
-    public static BigInteger subfactorial(BigInteger n) {
+    public static @NotNull BigInteger subfactorial(@NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot take subfactorial of " + n);
         BigInteger sf = BigInteger.ONE;
         for (BigInteger i = BigInteger.ONE; le(i, n); i = i.add(BigInteger.ONE)) {
             sf = sf.multiply(i);
@@ -95,14 +104,61 @@ public class Combinatorics {
         return sf;
     }
 
-    public static <A, B> Iterable<Pair<A, B>> pairsAscending(Iterable<A> as, Iterable<B> bs) {
+    /**
+     * Given two <tt>Iterable</tt>s, returns all ordered pairs of elements from these <tt>Iterable</tt>s in ascending
+     * order. Both <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li>The result is a sorted list of distinct pairs such that if a<sub>1</sub> appears in the first slot of some
+     *  pair and a<sub>2</sub> appears in the second slot of some pair, the pair (a<sub>1</sub>, a<sub>2</sub>) is also
+     *  present.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @return all ordered pairs of elements from <tt>as</tt> and <tt>bs</tt>
+     */
+    public static @NotNull <A, B> Iterable<Pair<A, B>> pairsAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
         return concatMap(p -> zip(repeat(p.a), p.b), zip(as, repeat(bs)));
     }
 
-    public static <A, B, C> Iterable<Triple<A, B, C>> triplesAscending(
-            Iterable<A> as,
-            Iterable<B> bs,
-            Iterable<C> cs
+    /**
+     * Given three <tt>Iterable</tt>s, returns all ordered triples of elements from these <tt>Iterable</tt>s in
+     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li>The result is a sorted list of distinct triples such that if a<sub>1</sub> appears in the first slot of
+     *  some triple, a<sub>2</sub> appears in the second slot of some triple, and a<sub>3</sub> appears in the third
+     *  slot of some triple, the triple (a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>) is also present.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param cs the third <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @return all ordered triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
+     */
+    public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs
     ) {
         return map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
@@ -110,11 +166,39 @@ public class Combinatorics {
         );
     }
 
-    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesAscending(
-            Iterable<A> as,
-            Iterable<B> bs,
-            Iterable<C> cs,
-            Iterable<D> ds
+    /**
+     * Given four <tt>Iterable</tt>s, returns all ordered quadruples of elements from these <tt>Iterable</tt>s in
+     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li><tt>ds</tt> must be non-null.</li>
+     *  <li>The result is a sorted list of distinct quadruples such that if a<sub>1</sub> appears in the first slot of
+     *  some quadruple, a<sub>2</sub> appears in the second slot of some quadruple, a<sub>3</sub> appears in the third
+     *  slot of some quadruple, and a<sub>4</sub> appears in the fourth slot of some quadruple, the quadruple
+     *  (a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>, a<sub>4</sub>) is also present.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param cs the third <tt>Iterable</tt>
+     * @param ds the fourth <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @return all ordered quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
+     */
+    public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds
     ) {
         return map(
                 p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b),
@@ -250,10 +334,6 @@ public class Combinatorics {
                                 map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
-    }
-
-    public static <T> Iterable<List<T>> listsAscending(int size, Iterable<T> xs) {
-        return null;
     }
 
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
