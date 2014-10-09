@@ -1,14 +1,13 @@
 package mho.haskellesque.math;
 
+import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
-import mho.haskellesque.iterables.IndexedIterable;
 import mho.haskellesque.tuples.Pair;
 import mho.haskellesque.tuples.Quadruple;
 import mho.haskellesque.tuples.Triple;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -80,8 +79,8 @@ public class Combinatorics {
     }
 
     public static <A, B> Iterable<Pair<A, B>> exponentialPairs(Iterable<A> as, Iterable<B> bs) {
-        IndexedIterable<A> aii = new IndexedIterable<>(as);
-        IndexedIterable<B> bii = new IndexedIterable<>(bs);
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = BasicMath.exponentialDemux(bi);
             assert p.a != null;
@@ -102,7 +101,7 @@ public class Combinatorics {
     }
 
     public static <T> Iterable<Pair<T, T>> exponentialPairs(Iterable<T> xs) {
-        IndexedIterable<T> ii = new IndexedIterable<>(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = BasicMath.exponentialDemux(bi);
             assert p.a != null;
@@ -123,8 +122,8 @@ public class Combinatorics {
     }
 
     public static <A, B> Iterable<Pair<A, B>> pairs(Iterable<A> as, Iterable<B> bs) {
-        IndexedIterable<A> aii = new IndexedIterable<>(as);
-        IndexedIterable<B> bii = new IndexedIterable<>(bs);
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(2, bi);
             assert p.get(0) != null;
@@ -144,10 +143,16 @@ public class Combinatorics {
         );
     }
 
+    public static void main(String[] args) {
+        for (Pair<Integer, Integer> p : pairs(Exhaustive.NATURAL_INTEGERS, Exhaustive.NATURAL_INTEGERS)) {
+            System.out.println(p);
+        }
+    }
+
     public static <A, B, C> Iterable<Triple<A, B, C>> triples(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
-        IndexedIterable<A> aii = new IndexedIterable<>(as);
-        IndexedIterable<B> bii = new IndexedIterable<>(bs);
-        IndexedIterable<C> cii = new IndexedIterable<>(cs);
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<C> cii = new CachedIterable<>(cs);
         Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(3, bi);
             assert p.get(0) != null;
@@ -176,10 +181,10 @@ public class Combinatorics {
             Iterable<C> cs,
             Iterable<D> ds
     ) {
-        IndexedIterable<A> aii = new IndexedIterable<>(as);
-        IndexedIterable<B> bii = new IndexedIterable<>(bs);
-        IndexedIterable<C> cii = new IndexedIterable<>(cs);
-        IndexedIterable<D> dii = new IndexedIterable<>(ds);
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<C> cii = new CachedIterable<>(cs);
+        CachedIterable<D> dii = new CachedIterable<>(ds);
         Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(4, bi);
             assert p.get(0) != null;
@@ -210,7 +215,7 @@ public class Combinatorics {
         if (size == 0) {
             return Arrays.asList(new ArrayList<T>());
         }
-        IndexedIterable<T> ii = new IndexedIterable<>(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> ii.get(map(BigInteger::intValue, BasicMath.demux(size, bi)));
         return map(
                 Optional::get,
@@ -222,7 +227,7 @@ public class Combinatorics {
     }
 
     public static <T> Iterable<List<T>> lists(Iterable<T> xs) {
-        IndexedIterable<T> ii = new IndexedIterable<>(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
             if (bi.equals(BigInteger.ZERO)) {
                 return Optional.of(new ArrayList<T>());
@@ -244,7 +249,7 @@ public class Combinatorics {
     public static <T> Iterable<List<T>> orderedSubsequences(Iterable<T> xs) {
         if (isEmpty(xs))
             return Arrays.asList(new ArrayList<T>());
-        final IndexedIterable<T> ii = new IndexedIterable(xs);
+        final CachedIterable<T> ii = new CachedIterable(xs);
         return () -> new Iterator<List<T>>() {
             private List<Integer> indices = new ArrayList<>();
 
