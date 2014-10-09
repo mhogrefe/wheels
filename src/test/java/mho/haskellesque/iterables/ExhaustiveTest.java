@@ -15,8 +15,8 @@ public class ExhaustiveTest {
     }
 
     @Test
-    public void testOrderingsInOrder() {
-        aeq(ORDERINGS_IN_ORDER, "[LT, EQ, GT]");
+    public void testOrderingsAscending() {
+        aeq(ORDERINGS_ASCENDING, "[LT, EQ, GT]");
     }
 
     @Test
@@ -25,24 +25,24 @@ public class ExhaustiveTest {
     }
 
     @Test
-    public void testBytesInOrder() {
-        assertEquals(length(BYTES_IN_ORDER), 256);
-        aeq(take(20, BYTES_IN_ORDER),
+    public void testBytesAscending() {
+        assertEquals(length(BYTES_ASCENDING), 256);
+        aeq(take(20, BYTES_ASCENDING),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
                 " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
     }
 
     @Test
-    public void testShortsInOrder() {
-        assertEquals(length(SHORTS_IN_ORDER), 65536);
-        aeq(take(20, SHORTS_IN_ORDER),
+    public void testShortsAscending() {
+        assertEquals(length(SHORTS_ASCENDING), 65536);
+        aeq(take(20, SHORTS_ASCENDING),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
                 " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
     }
 
     @Test
-    public void testIntegersInOrder() {
-        aeq(take(20, INTEGERS_IN_ORDER),
+    public void testIntegersAscending() {
+        aeq(take(20, INTEGERS_ASCENDING),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
                 " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
                 " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
@@ -50,8 +50,8 @@ public class ExhaustiveTest {
     }
 
     @Test
-    public void testLongsInOrder() {
-        aeq(take(20, LONGS_IN_ORDER),
+    public void testLongsAscending() {
+        aeq(take(20, LONGS_ASCENDING),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +

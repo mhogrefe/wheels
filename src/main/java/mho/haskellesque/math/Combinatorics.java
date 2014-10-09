@@ -95,22 +95,22 @@ public class Combinatorics {
         return sf;
     }
 
-    public static <A, B> Iterable<Pair<A, B>> cartesianPairs(Iterable<A> as, Iterable<B> bs) {
+    public static <A, B> Iterable<Pair<A, B>> pairsAscending(Iterable<A> as, Iterable<B> bs) {
         return concatMap(p -> zip(repeat(p.a), p.b), zip(as, repeat(bs)));
     }
 
-    public static <A, B, C> Iterable<Triple<A, B, C>> cartesianTriples(
+    public static <A, B, C> Iterable<Triple<A, B, C>> triplesAscending(
             Iterable<A> as,
             Iterable<B> bs,
             Iterable<C> cs
     ) {
         return map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
-                cartesianPairs(as, (Iterable<Pair<B, C>>) cartesianPairs(bs, cs))
+                pairsAscending(as, (Iterable<Pair<B, C>>) pairsAscending(bs, cs))
         );
     }
 
-    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> cartesianQuadruples(
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesAscending(
             Iterable<A> as,
             Iterable<B> bs,
             Iterable<C> cs,
@@ -118,14 +118,14 @@ public class Combinatorics {
     ) {
         return map(
                 p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b),
-                cartesianPairs(
-                        (Iterable<Pair<A, B>>)cartesianPairs(as, bs),
-                        (Iterable<Pair<C, D>>) cartesianPairs(cs, ds)
+                pairsAscending(
+                        (Iterable<Pair<A, B>>) pairsAscending(as, bs),
+                        (Iterable<Pair<C, D>>) pairsAscending(cs, ds)
                 )
         );
     }
 
-    public static <A, B> Iterable<Pair<A, B>> exponentialPairs(Iterable<A> as, Iterable<B> bs) {
+    public static <A, B> Iterable<Pair<A, B>> pairsExponentialOrder(Iterable<A> as, Iterable<B> bs) {
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
@@ -147,7 +147,7 @@ public class Combinatorics {
         );
     }
 
-    public static <T> Iterable<Pair<T, T>> exponentialPairs(Iterable<T> xs) {
+    public static <T> Iterable<Pair<T, T>> pairsExponentialOrder(Iterable<T> xs) {
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = BasicMath.exponentialDemux(bi);
@@ -188,12 +188,6 @@ public class Combinatorics {
                         (Iterable<Optional<Pair<A, B>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
-    }
-
-    public static void main(String[] args) {
-        for (Pair<Integer, Integer> p : pairs(Exhaustive.NATURAL_INTEGERS, Exhaustive.NATURAL_INTEGERS)) {
-            System.out.println(p);
-        }
     }
 
     public static <A, B, C> Iterable<Triple<A, B, C>> triples(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
@@ -256,6 +250,10 @@ public class Combinatorics {
                                 map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
+    }
+
+    public static <T> Iterable<List<T>> listsAscending(int size, Iterable<T> xs) {
+        return null;
     }
 
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
