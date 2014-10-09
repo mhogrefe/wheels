@@ -1,16 +1,17 @@
 package mho.haskellesque.iterables;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class IndexedIterable<T> {
+public class CachedIterable<T> {
     private Iterator<T> iterator;
     private List<T> cache;
     private Integer size;
 
-    public IndexedIterable(Iterable<T> iterable) {
+    public CachedIterable(Iterable<T> iterable) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
         size = null;
@@ -26,6 +27,10 @@ public class IndexedIterable<T> {
         return Optional.of(cache.get(i));
     }
 
+    public Optional<T> get(BigInteger i) {
+        return get(i.intValue());
+    }
+
     public Optional<List<T>> get(Iterable<Integer> is) {
         List<T> list = new ArrayList<>();
         for (int i : is) {
@@ -34,6 +39,10 @@ public class IndexedIterable<T> {
             list.add(element.get());
         }
         return Optional.of(list);
+    }
+
+    public Optional<List<T>> getBigInteger(Iterable<BigInteger> is) {
+        return get(IterableUtils.map(BigInteger::intValue, is));
     }
 
     public Optional<List<T>> select(Iterable<Boolean> bs) {
