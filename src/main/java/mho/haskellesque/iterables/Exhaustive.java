@@ -25,7 +25,7 @@ public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains all <tt>Ordering</tt>s in ascending order.
      */
-    public static final @NotNull List<Ordering> ORDERED_ORDERINGS = Arrays.asList(
+    public static final @NotNull List<Ordering> ORDERINGS_IN_ORDER = Arrays.asList(
             Ordering.LT,
             Ordering.EQ,
             Ordering.GT
@@ -39,22 +39,22 @@ public class Exhaustive {
     /**
      * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.
      */
-    public static final @NotNull Iterable<Byte> ORDERED_BYTES = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
+    public static final @NotNull Iterable<Byte> BYTES_IN_ORDER = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order.
      */
-    public static final @NotNull Iterable<Short> ORDERED_SHORTS = range(Short.MIN_VALUE, Short.MAX_VALUE);
+    public static final @NotNull Iterable<Short> SHORTS_IN_ORDER = range(Short.MIN_VALUE, Short.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order.
      */
-    public static final @NotNull Iterable<Integer> ORDERED_INTEGERS = range(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public static final @NotNull Iterable<Integer> INTEGERS_IN_ORDER = range(Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order.
      */
-    public static final @NotNull Iterable<Long> ORDERED_LONGS = range(Long.MIN_VALUE, Long.MAX_VALUE);
+    public static final @NotNull Iterable<Long> LONGS_IN_ORDER = range(Long.MIN_VALUE, Long.MAX_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
@@ -159,7 +159,7 @@ public class Exhaustive {
             BigInteger.ZERO, mux(Arrays.asList(POSITIVE_BIG_INTEGERS, NEGATIVE_BIG_INTEGERS))
     );
 
-    public static final Iterable<Float> ORDERED_FLOATS = () -> new Iterator<Float>() {
+    public static final Iterable<Float> FLOATS_IN_ORDER = () -> new Iterator<Float>() {
         private Float next = Float.NEGATIVE_INFINITY;
 
         @Override
@@ -183,7 +183,7 @@ public class Exhaustive {
         }
     };
 
-    public static final Iterable<Double> ORDERED_DOUBLES = () -> new Iterator<Double>() {
+    public static final Iterable<Double> DOUBLES_IN_ORDER = () -> new Iterator<Double>() {
         private Double next = Double.NEGATIVE_INFINITY;
 
         @Override
