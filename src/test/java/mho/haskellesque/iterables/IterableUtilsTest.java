@@ -649,6 +649,132 @@ public class IterableUtilsTest {
         aeq(intercalate("", new ArrayList<String>()), "");
     }
 
+    @Test
+    public void testTranspose() {
+        aeq(transpose(Arrays.asList(
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
+        aeq(transpose(Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, -2], [-1]]");
+        aeq(transpose(Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                new ArrayList<Integer>(),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 7], [2, 8], [3, 9], [-1, -2], [-1]]");
+        aeq(transpose(Arrays.asList(
+                new ArrayList<Integer>(),
+                new ArrayList<Integer>(),
+                new ArrayList<>()
+        )), "[]");
+        aeq(transpose(new ArrayList<Iterable<Integer>>()), "[]");
+        aeq(take(10, transpose(Arrays.asList(
+                (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6),
+                repeat(7)
+        ))), "[[1, 4, 7], [2, 5, 7], [3, 6, 7], [7], [7], [7], [7], [7], [7], [7]]");
+    }
+
+    @Test
+    public void testTransposeStrings() {
+        aeq(transposeStrings(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeq(transposeStrings(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn, eh, ro, u, s, e]");
+        aeq(transposeStrings(Arrays.asList("cater", "", "pen")), "[cp, ae, tn, e, r]");
+        aeq(transposeStrings(Arrays.asList("", "", "")), "[]");
+        aeq(transposeStrings(new ArrayList<String>()), "[]");
+    }
+
+    @Test
+    public void testTransposeTruncating() {
+        aeq(transposeTruncating(Arrays.asList(
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
+        aeq(transposeTruncating(Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
+        aeq(transposeTruncating(Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                new ArrayList<Integer>(),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[]");
+        aeq(transposeTruncating(Arrays.asList(
+                new ArrayList<Integer>(),
+                new ArrayList<Integer>(),
+                new ArrayList<>()
+        )), "[]");
+        aeq(transposeTruncating(new ArrayList<Iterable<Integer>>()), "[]");
+        aeq(transposeTruncating(Arrays.asList(
+                (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6),
+                repeat(7)
+        )), "[[1, 4, 7], [2, 5, 7], [3, 6, 7]]");
+    }
+
+    @Test
+    public void testTransposeStringsTruncating() {
+        aeq(transposeStringsTruncating(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeq(transposeStringsTruncating(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn]");
+        aeq(transposeStringsTruncating(Arrays.asList("cater", "", "pen")), "[]");
+        aeq(transposeStringsTruncating(Arrays.asList("", "", "")), "[]");
+        aeq(transposeStringsTruncating(new ArrayList<String>()), "[]");
+    }
+
+    @Test
+    public void testTransposePadded() {
+        aeq(transposePadded(0, Arrays.asList(
+                Arrays.asList(1, 2, 3),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
+        aeq(transposePadded(0, Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, 0, -2], [-1, 0, 0]]");
+        aeq(transposePadded(null, Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                Arrays.asList(4, 5, 6),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, null, -2], [-1, null, null]]");
+        aeq(transposePadded(0, Arrays.asList(
+                Arrays.asList(1, 2, 3, -1, -1),
+                new ArrayList<Integer>(),
+                Arrays.asList(7, 8, 9, -2)
+        )), "[[1, 0, 7], [2, 0, 8], [3, 0, 9], [-1, 0, -2], [-1, 0, 0]]");
+        aeq(transposePadded(0, Arrays.asList(
+                new ArrayList<Integer>(),
+                new ArrayList<Integer>(),
+                new ArrayList<Integer>()
+        )), "[]");
+        aeq(transposePadded(0, new ArrayList<Iterable<Integer>>()), "[]");
+        aeq(take(10, transposePadded(0, Arrays.asList(
+                (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                (Iterable<Integer>) Arrays.asList(4, 5, 6),
+                repeat(7)
+        ))), "[[1, 4, 7], [2, 5, 7], [3, 6, 7], [0, 0, 7], [0, 0, 7]," +
+             " [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7]]");
+    }
+
+    @Test
+    public void testTransposeStringsPadded() {
+        aeq(transposeStringsPadded('_', Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeq(
+                transposeStringsPadded('_', Arrays.asList("cater", "doghouse", "pen")),
+                "[cdp, aoe, tgn, eh_, ro_, _u_, _s_, _e_]"
+        );
+        aeq(transposeStringsPadded('_', Arrays.asList("cater", "", "pen")), "[c_p, a_e, t_n, e__, r__]");
+        aeq(transposeStringsPadded('_', Arrays.asList("", "", "")), "[]");
+        aeq(transposeStringsPadded('_', new ArrayList<String>()), "[]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
