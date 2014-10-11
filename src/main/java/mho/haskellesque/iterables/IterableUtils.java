@@ -1,8 +1,6 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.tuples.Pair;
-import mho.haskellesque.tuples.Quadruple;
-import mho.haskellesque.tuples.Triple;
+import mho.haskellesque.tuples.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -2067,7 +2065,12 @@ public class IterableUtils {
         };
     }
 
-    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4(Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
         return () -> new Iterator<Quadruple<A, B, C, D>>() {
             private Iterator<A> asi = as.iterator();
             private Iterator<B> bsi = bs.iterator();
@@ -2082,6 +2085,109 @@ public class IterableUtils {
             @Override
             public Quadruple<A, B, C, D> next() {
                 return new Quadruple<>(asi.next(), bsi.next(), csi.next(), dsi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> zip5(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es
+    ) {
+        return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() && bsi.hasNext() && csi.hasNext() && dsi.hasNext() && esi.hasNext();
+            }
+
+            @Override
+            public Quintuple<A, B, C, D, E> next() {
+                return new Quintuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> zip6(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs
+    ) {
+        return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+            private Iterator<F> fsi = fs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() &&
+                        bsi.hasNext() &&
+                        csi.hasNext() &&
+                        dsi.hasNext() &&
+                        esi.hasNext() &&
+                        fsi.hasNext();
+            }
+
+            @Override
+            public Sextuple<A, B, C, D, E, F> next() {
+                return new Sextuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next(), fsi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> zip7(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs,
+            Iterable<G> gs
+    ) {
+        return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+            private Iterator<F> fsi = fs.iterator();
+            private Iterator<G> gsi = gs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() &&
+                        bsi.hasNext() &&
+                        csi.hasNext() &&
+                        dsi.hasNext() &&
+                        esi.hasNext() &&
+                        fsi.hasNext() &&
+                        gsi.hasNext();
+            }
+
+            @Override
+            public Septuple<A, B, C, D, E, F, G> next() {
+                return new Septuple<>(
+                        asi.next(),
+                        bsi.next(),
+                        csi.next(),
+                        dsi.next(),
+                        esi.next(),
+                        fsi.next(),
+                        gsi.next()
+                );
             }
         };
     }
