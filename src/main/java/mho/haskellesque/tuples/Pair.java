@@ -120,7 +120,7 @@ public final class Pair<A, B> {
     }
 
     /**
-     * A comparator which compares two <tt>Pair</tt>s whose values' types <tt>A</tt> and <tt>B</tt> both implement
+     * A comparator which compares two <tt>Pair</tt>s whose values' types <tt>A</tt> and <tt>B</tt> all implement
      * <tt>Comparable</tt>.
      *
      * @param <A> the type of the <tt>Pair</tt>s' first components

@@ -135,7 +135,7 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * A comparator which compares two <tt>Triple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> both
+     * A comparator which compares two <tt>Triple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> all
      * implement <tt>Comparable</tt>.
      *
      * @param <A> the type of the <tt>Triple</tt>s' first components
