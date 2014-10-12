@@ -2255,6 +2255,134 @@ public class IterableUtils {
         };
     }
 
+    public static <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> zip5Padded(
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es) {
+        return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() || bsi.hasNext() || csi.hasNext() || dsi.hasNext() || esi.hasNext();
+            }
+
+            @Override
+            public Quintuple<A, B, C, D, E> next() {
+                A a = asi.hasNext() ? asi.next() : aPad;
+                B b = bsi.hasNext() ? bsi.next() : bPad;
+                C c = csi.hasNext() ? csi.next() : cPad;
+                D d = dsi.hasNext() ? dsi.next() : dPad;
+                E e = esi.hasNext() ? esi.next() : ePad;
+                return new Quintuple<>(a, b, c, d, e);
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> zip6Padded(
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            F fPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs) {
+        return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+            private Iterator<F> fsi = fs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() ||
+                        bsi.hasNext() ||
+                        csi.hasNext() ||
+                        dsi.hasNext() ||
+                        esi.hasNext() ||
+                        fsi.hasNext();
+            }
+
+            @Override
+            public Sextuple<A, B, C, D, E, F> next() {
+                A a = asi.hasNext() ? asi.next() : aPad;
+                B b = bsi.hasNext() ? bsi.next() : bPad;
+                C c = csi.hasNext() ? csi.next() : cPad;
+                D d = dsi.hasNext() ? dsi.next() : dPad;
+                E e = esi.hasNext() ? esi.next() : ePad;
+                F f = fsi.hasNext() ? fsi.next() : fPad;
+                return new Sextuple<>(a, b, c, d, e, f);
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> zip7Padded(
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            F fPad,
+            G gPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs,
+            Iterable<G> gs) {
+        return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
+            private Iterator<A> asi = as.iterator();
+            private Iterator<B> bsi = bs.iterator();
+            private Iterator<C> csi = cs.iterator();
+            private Iterator<D> dsi = ds.iterator();
+            private Iterator<E> esi = es.iterator();
+            private Iterator<F> fsi = fs.iterator();
+            private Iterator<G> gsi = gs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return asi.hasNext() ||
+                        bsi.hasNext() ||
+                        csi.hasNext() ||
+                        dsi.hasNext() ||
+                        esi.hasNext() ||
+                        fsi.hasNext() ||
+                        gsi.hasNext();
+            }
+
+            @Override
+            public Septuple<A, B, C, D, E, F, G> next() {
+                A a = asi.hasNext() ? asi.next() : aPad;
+                B b = bsi.hasNext() ? bsi.next() : bPad;
+                C c = csi.hasNext() ? csi.next() : cPad;
+                D d = dsi.hasNext() ? dsi.next() : dPad;
+                E e = esi.hasNext() ? esi.next() : ePad;
+                F f = fsi.hasNext() ? fsi.next() : fPad;
+                G g = gsi.hasNext() ? gsi.next() : gPad;
+                return new Septuple<>(a, b, c, d, e, f, g);
+            }
+        };
+    }
+
     public static <A, B, O> Iterable<O> zipWith(
             Function<Pair<A, B>, O> f,
             Iterable<A> as,
@@ -2344,6 +2472,60 @@ public class IterableUtils {
                 map(p -> p.b, ps),
                 map(p -> p.c, ps),
                 map(p -> p.d, ps)
+        );
+    }
+
+    public static <A, B, C, D, E> Quintuple<
+            Iterable<A>,
+            Iterable<B>,
+            Iterable<C>,
+            Iterable<D>,
+            Iterable<E>
+            > unzip5(Iterable<Quintuple<A, B, C, D, E>> ps) {
+        return new Quintuple<>(
+                map(p -> p.a, ps),
+                map(p -> p.b, ps),
+                map(p -> p.c, ps),
+                map(p -> p.d, ps),
+                map(p -> p.e, ps)
+        );
+    }
+
+    public static <A, B, C, D, E, F> Sextuple<
+            Iterable<A>,
+            Iterable<B>,
+            Iterable<C>,
+            Iterable<D>,
+            Iterable<E>,
+            Iterable<F>
+            > unzip6(Iterable<Sextuple<A, B, C, D, E, F>> ps) {
+        return new Sextuple<>(
+                map(p -> p.a, ps),
+                map(p -> p.b, ps),
+                map(p -> p.c, ps),
+                map(p -> p.d, ps),
+                map(p -> p.e, ps),
+                map(p -> p.f, ps)
+        );
+    }
+
+    public static <A, B, C, D, E, F, G> Septuple<
+            Iterable<A>,
+            Iterable<B>,
+            Iterable<C>,
+            Iterable<D>,
+            Iterable<E>,
+            Iterable<F>,
+            Iterable<G>
+            > unzip7(Iterable<Septuple<A, B, C, D, E, F, G>> ps) {
+        return new Septuple<>(
+                map(p -> p.a, ps),
+                map(p -> p.b, ps),
+                map(p -> p.c, ps),
+                map(p -> p.d, ps),
+                map(p -> p.e, ps),
+                map(p -> p.f, ps),
+                map(p -> p.g, ps)
         );
     }
 }
