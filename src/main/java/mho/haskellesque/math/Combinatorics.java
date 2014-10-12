@@ -107,9 +107,9 @@ public class Combinatorics {
      * order. Both <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of two <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of two finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>|
@@ -133,10 +133,10 @@ public class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of three <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li><tt>cs</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of three finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
@@ -166,11 +166,11 @@ public class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li><tt>ds</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of four <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li><tt>cs</tt> must be finite.</li>
+     *  <li><tt>ds</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of four finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
@@ -206,12 +206,12 @@ public class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li><tt>ds</tt> must be non-null.</li>
-     *  <li><tt>es</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of five <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li><tt>cs</tt> must be finite.</li>
+     *  <li><tt>ds</tt> must be finite.</li>
+     *  <li><tt>es</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of five finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
@@ -251,13 +251,13 @@ public class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li><tt>ds</tt> must be non-null.</li>
-     *  <li><tt>es</tt> must be non-null.</li>
-     *  <li><tt>fs</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of six <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li><tt>cs</tt> must be finite.</li>
+     *  <li><tt>ds</tt> must be finite.</li>
+     *  <li><tt>es</tt> must be finite.</li>
+     *  <li><tt>fs</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of six finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
@@ -300,14 +300,14 @@ public class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li><tt>ds</tt> must be non-null.</li>
-     *  <li><tt>es</tt> must be non-null.</li>
-     *  <li><tt>fs</tt> must be non-null.</li>
-     *  <li><tt>gs</tt> must be non-null.</li>
-     *  <li>The result is the Cartesian product of seven <tt>Iterable</tt>s.</li>
+     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>bs</tt> must be finite.</li>
+     *  <li><tt>cs</tt> must be finite.</li>
+     *  <li><tt>ds</tt> must be finite.</li>
+     *  <li><tt>es</tt> must be finite.</li>
+     *  <li><tt>fs</tt> must be finite.</li>
+     *  <li><tt>gs</tt> must be finite.</li>
+     *  <li>The result is the Cartesian product of seven finite <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>
@@ -347,7 +347,30 @@ public class Combinatorics {
         );
     }
 
-    public static <T> Iterable<List<T>> listsAscending(int length, Iterable<T> xs) {
+    /**
+     * Returns an <tt>Iterable</tt> containing all lists of a given length with elements from a given
+     * <tt>Iterable</tt>. The lists are ordered lexicographically, matching the order given by the original
+     * <tt>Iterable</tt>. The <tt>Iterable</tt> must be finite; using a long <tt>Iterable</tt> is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
+     *  entirely of one empty element.</li>
+     * </ul>
+     *
+     * @param length the length of the result lists
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all lists of a given length created from <tt>xs</tt>
+     */
+    public static @NotNull <T> Iterable<List<T>> listsAscending(int length, @NotNull Iterable<T> xs) {
+        if (length < 0)
+            throw new IllegalArgumentException("lists must have a non-negative length");
+        if (length == 0) {
+            return Arrays.asList(new ArrayList<T>());
+        }
         Function<T, List<T>> makeSingleton = x -> {
             List<T> list = new ArrayList<>();
             list.add(x);
@@ -362,7 +385,63 @@ public class Combinatorics {
         return last(intermediates);
     }
 
-    public static Iterable<String> listsAscending(int length, String s) {
+    /**
+     * Returns an <tt>Iterable</tt> containing all lists of a given length with elements from a given
+     * <tt>Iterable</tt>. The lists are ordered lexicographically, matching the order given by the original
+     * <tt>Iterable</tt>. The <tt>Iterable</tt> must be finite; using a long <tt>Iterable</tt> is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
+     *  entirely of one empty element.</li>
+     * </ul>
+     *
+     * @param length the length of the result lists
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all lists of a given length created from <tt>xs</tt>
+     */
+    public static @NotNull <T> Iterable<List<T>> listsAscending(@NotNull BigInteger length, @NotNull Iterable<T> xs) {
+        if (lt(length, BigInteger.ZERO))
+            throw new IllegalArgumentException("lists must have a non-negative length");
+        if (eq(length, BigInteger.ZERO)) {
+            return Arrays.asList(new ArrayList<T>());
+        }
+        Function<T, List<T>> makeSingleton = x -> {
+            List<T> list = new ArrayList<>();
+            list.add(x);
+            return list;
+        };
+        List<Iterable<List<T>>> intermediates = new ArrayList<>();
+        intermediates.add(map(makeSingleton, xs));
+        for (BigInteger i = BigInteger.ONE; lt(i, length); i = i.add(BigInteger.ONE)) {
+            Iterable<List<T>> lists = last(intermediates);
+            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
+        }
+        return last(intermediates);
+    }
+
+    /**
+     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s of a given length with characters from a given
+     * <tt>Iterable</tt>. The <tt>String</tt>s are ordered lexicographically, matching the order given by the original
+     * <tt>Iterable</tt>. Using long <tt>String</tt> is possible but discouraged.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>s</tt> is non-null.</li>
+     *  <li>The result is finite. All of its <tt>String</tt>s have the same length. None are empty, unless the result
+     *  consists entirely of one empty <tt>String</tt>.</li>
+     * </ul>
+     *
+     * @param length the length of the result <tt>String</tt>
+     * @param s the <tt>String</tt> from which characters are selected
+     * @return all Strings of a given length created from <tt>s</tt>
+     */
+    public static @NotNull Iterable<String> listsAscending(int length, @NotNull String s) {
+        if (length < 0)
+            throw new IllegalArgumentException("strings must have a non-negative length");
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
@@ -373,10 +452,45 @@ public class Combinatorics {
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
     }
 
-    public static void main(String[] args) {
-        for (String list : listsAscending(3, "abc")) {
-            System.out.println(list);
-        }
+    /**
+     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s of a given length with characters from a given
+     * <tt>Iterable</tt>. The <tt>String</tt>s are ordered lexicographically, matching the order given by the original
+     * <tt>Iterable</tt>. Using long <tt>String</tt> is possible but discouraged.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>s</tt> is non-null.</li>
+     *  <li>The result is finite. All of its <tt>String</tt>s have the same length. None are empty, unless the result
+     *  consists entirely of one empty <tt>String</tt>.</li>
+     * </ul>
+     *
+     * @param length the length of the result <tt>String</tt>
+     * @param s the <tt>String</tt> from which characters are selected
+     * @return all Strings of a given length created from <tt>s</tt>
+     */
+    public static @NotNull Iterable<String> listsAscending(@NotNull BigInteger length, @NotNull String s) {
+        if (lt(length, BigInteger.ZERO))
+            throw new IllegalArgumentException("strings must have a non-negative length");
+        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValue());
+        Function<BigInteger, String> f = bi -> charsToString(
+                map(
+                        i -> s.charAt(i.intValue()),
+                        BasicMath.bigEndianDigitsPadded(
+                                BigInteger.valueOf(length.intValue()),
+                                BigInteger.valueOf(s.length()),
+                                bi
+                        )
+                )
+        );
+        return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
+        return concatMap(i -> listsAscending(i, xs), Exhaustive.NATURAL_BIG_INTEGERS);
+    }
+
+    public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
+        return concatMap(i -> listsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
     public static <A, B> Iterable<Pair<A, B>> pairsExponentialOrder(Iterable<A> as, Iterable<B> bs) {
