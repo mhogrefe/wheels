@@ -2,9 +2,7 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
-import mho.haskellesque.tuples.Pair;
-import mho.haskellesque.tuples.Quadruple;
-import mho.haskellesque.tuples.Triple;
+import mho.haskellesque.tuples.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -111,9 +109,7 @@ public class Combinatorics {
      * <ul>
      *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be non-null.</li>
-     *  <li>The result is a sorted list of distinct pairs such that if a<sub>1</sub> appears in the first slot of some
-     *  pair and a<sub>2</sub> appears in the second slot of some pair, the pair (a<sub>1</sub>, a<sub>2</sub>) is also
-     *  present.</li>
+     *  <li>The result is the Cartesian product of two <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>|
@@ -140,9 +136,7 @@ public class Combinatorics {
      *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be non-null.</li>
      *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li>The result is a sorted list of distinct triples such that if a<sub>1</sub> appears in the first slot of
-     *  some triple, a<sub>2</sub> appears in the second slot of some triple, and a<sub>3</sub> appears in the third
-     *  slot of some triple, the triple (a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>) is also present.</li>
+     *  <li>The result is the Cartesian product of three <tt>Iterable</tt>s.</li>
      * </ul>
      *
      * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
@@ -176,13 +170,10 @@ public class Combinatorics {
      *  <li><tt>bs</tt> must be non-null.</li>
      *  <li><tt>cs</tt> must be non-null.</li>
      *  <li><tt>ds</tt> must be non-null.</li>
-     *  <li>The result is a sorted list of distinct quadruples such that if a<sub>1</sub> appears in the first slot of
-     *  some quadruple, a<sub>2</sub> appears in the second slot of some quadruple, a<sub>3</sub> appears in the third
-     *  slot of some quadruple, and a<sub>4</sub> appears in the fourth slot of some quadruple, the quadruple
-     *  (a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>, a<sub>4</sub>) is also present.</li>
+     *  <li>The result is the Cartesian product of four <tt>Iterable</tt>s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
      *
      * @param as the first <tt>Iterable</tt>
      * @param bs the second <tt>Iterable</tt>
@@ -205,6 +196,153 @@ public class Combinatorics {
                 pairsAscending(
                         (Iterable<Pair<A, B>>) pairsAscending(as, bs),
                         (Iterable<Pair<C, D>>) pairsAscending(cs, ds)
+                )
+        );
+    }
+
+    /**
+     * Given five <tt>Iterable</tt>s, returns all ordered quintuples of elements from these <tt>Iterable</tt>s in
+     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li><tt>ds</tt> must be non-null.</li>
+     *  <li><tt>es</tt> must be non-null.</li>
+     *  <li>The result is the Cartesian product of five <tt>Iterable</tt>s.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param cs the third <tt>Iterable</tt>
+     * @param ds the fourth <tt>Iterable</tt>
+     * @param es the fifth <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @return all ordered quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and
+     * <tt>es</tt>
+     */
+    public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es
+    ) {
+        return map(
+                p -> new Quintuple<>(p.a.a, p.a.b, p.b.a, p.b.b, p.b.c),
+                pairsAscending(
+                        (Iterable<Pair<A, B>>) pairsAscending(as, bs),
+                        (Iterable<Triple<C, D, E>>) triplesAscending(cs, ds, es)
+                )
+        );
+    }
+
+    /**
+     * Given six <tt>Iterable</tt>s, returns all ordered sextuples of elements from these <tt>Iterable</tt>s in
+     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li><tt>ds</tt> must be non-null.</li>
+     *  <li><tt>es</tt> must be non-null.</li>
+     *  <li><tt>fs</tt> must be non-null.</li>
+     *  <li>The result is the Cartesian product of six <tt>Iterable</tt>s.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param cs the third <tt>Iterable</tt>
+     * @param ds the fourth <tt>Iterable</tt>
+     * @param es the fifth <tt>Iterable</tt>
+     * @param fs the sixth <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
+     * @return all ordered sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
+     * and <tt>fs</tt>
+     */
+    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs
+    ) {
+        return map(
+                p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c),
+                pairsAscending(
+                        (Iterable<Triple<A, B, C>>) triplesAscending(as, bs, cs),
+                        (Iterable<Triple<D, E, F>>) triplesAscending(ds, es, fs)
+                )
+        );
+    }
+
+    /**
+     * Given seven <tt>Iterable</tt>s, returns all ordered septuples of elements from these <tt>Iterable</tt>s in
+     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li><tt>as</tt> must be non-null.</li>
+     *  <li><tt>bs</tt> must be non-null.</li>
+     *  <li><tt>cs</tt> must be non-null.</li>
+     *  <li><tt>ds</tt> must be non-null.</li>
+     *  <li><tt>es</tt> must be non-null.</li>
+     *  <li><tt>fs</tt> must be non-null.</li>
+     *  <li><tt>gs</tt> must be non-null.</li>
+     *  <li>The result is the Cartesian product of seven <tt>Iterable</tt>s.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>
+     *
+     * @param as the first <tt>Iterable</tt>
+     * @param bs the second <tt>Iterable</tt>
+     * @param cs the third <tt>Iterable</tt>
+     * @param ds the fourth <tt>Iterable</tt>
+     * @param es the fifth <tt>Iterable</tt>
+     * @param fs the sixth <tt>Iterable</tt>
+     * @param gs the seventh <tt>Iterable</tt>
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
+     * @param <G> the type of the seventh <tt>Iterable</tt>'s elements
+     * @return all ordered septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
+     * <tt>fs</tt>, and <tt>gs</tt>
+     */
+    public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesAscending(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull Iterable<F> gs
+    ) {
+        return map(
+                p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
+                pairsAscending(
+                        (Iterable<Triple<A, B, C>>) triplesAscending(as, bs, cs),
+                        (Iterable<Quadruple<D, E, F, G>>) quadruplesAscending(ds, es, fs, gs)
                 )
         );
     }
