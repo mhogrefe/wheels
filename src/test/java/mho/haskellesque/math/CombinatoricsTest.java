@@ -254,6 +254,108 @@ public class CombinatoricsTest {
         ), "[]");
     }
 
+    @Test
+    public void testListsAscending_Integer_Iterable() {
+        aeq(listsAscending(0, Arrays.asList(1, 2, 3)), "[[]]");
+        aeq(listsAscending(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
+        aeq(listsAscending(2, Arrays.asList(1, 2, 3)),
+                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
+        aeq(listsAscending(3, Arrays.asList(1, 2, 3)),
+                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
+                " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
+                " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
+                " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
+
+        aeq(listsAscending(0, Arrays.asList(1, null, 3)), "[[]]");
+        aeq(listsAscending(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
+        aeq(listsAscending(2, Arrays.asList(1, null, 3)),
+                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
+        aeq(listsAscending(3, Arrays.asList(1, null, 3)),
+                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
+                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
+                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
+                " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
+                " [3, 3, 3]]");
+
+        aeq(listsAscending(0, new ArrayList<Integer>()), "[[]]");
+        aeq(listsAscending(1, new ArrayList<Integer>()), "[]");
+        aeq(listsAscending(2, new ArrayList<Integer>()), "[]");
+        aeq(listsAscending(3, new ArrayList<Integer>()), "[]");
+        try {
+            listsAscending(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testListsAscending_BigInteger_Iterable() {
+        aeq(listsAscending(BigInteger.ZERO, Arrays.asList(1, 2, 3)), "[[]]");
+        aeq(listsAscending(BigInteger.ONE, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
+        aeq(listsAscending(BigInteger.valueOf(2), Arrays.asList(1, 2, 3)),
+                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
+        aeq(listsAscending(BigInteger.valueOf(3), Arrays.asList(1, 2, 3)),
+                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
+                " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
+                " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
+                " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
+
+        aeq(listsAscending(0, Arrays.asList(1, null, 3)), "[[]]");
+        aeq(listsAscending(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
+        aeq(listsAscending(2, Arrays.asList(1, null, 3)),
+                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
+        aeq(listsAscending(3, Arrays.asList(1, null, 3)),
+                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
+                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
+                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
+                " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
+                " [3, 3, 3]]");
+
+        aeq(listsAscending(BigInteger.ZERO, new ArrayList<Integer>()), "[[]]");
+        aeq(listsAscending(BigInteger.ONE, new ArrayList<Integer>()), "[]");
+        aeq(listsAscending(BigInteger.valueOf(2), new ArrayList<Integer>()), "[]");
+        aeq(listsAscending(BigInteger.valueOf(3), new ArrayList<Integer>()), "[]");
+        try {
+            listsAscending(BigInteger.valueOf(-1), Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testListsAscending_Integer_String() {
+        aeq(listsAscending(0, "abc"), "[]");
+        aeq(listsAscending(1, "abc"), "[a, b, c]");
+        aeq(listsAscending(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(listsAscending(3, "abc"),
+                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
+                " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        aeq(listsAscending(0, ""), "[]");
+        aeq(listsAscending(1, ""), "[]");
+        aeq(listsAscending(2, ""), "[]");
+        aeq(listsAscending(3, ""), "[]");
+        try {
+            listsAscending(-1, "");
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testListsAscending_BigInteger_String() {
+        aeq(listsAscending(BigInteger.ZERO, "abc"), "[]");
+        aeq(listsAscending(BigInteger.ONE, "abc"), "[a, b, c]");
+        aeq(listsAscending(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(listsAscending(BigInteger.valueOf(3), "abc"),
+                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
+                        " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        aeq(listsAscending(BigInteger.ZERO, ""), "[]");
+        aeq(listsAscending(BigInteger.ONE, ""), "[]");
+        aeq(listsAscending(BigInteger.valueOf(2), ""), "[]");
+        aeq(listsAscending(BigInteger.valueOf(3), ""), "[]");
+        try {
+            listsAscending(BigInteger.valueOf(-1), "");
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
