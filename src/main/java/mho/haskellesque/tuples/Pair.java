@@ -16,12 +16,12 @@ import java.util.Comparator;
  */
 public final class Pair<A, B> {
     /**
-     * The first component of the pair
+     * The first component of the <tt>Pair</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the pair
+     * The second component of the <tt>Pair</tt>
      */
     public final @Nullable B b;
 

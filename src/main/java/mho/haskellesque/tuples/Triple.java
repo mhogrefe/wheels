@@ -17,17 +17,17 @@ import java.util.Comparator;
  */
 public final class Triple<A, B, C> {
     /**
-     * The first component of the triple
+     * The first component of the <tt>Triple</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the triple
+     * The second component of the <tt>Triple</tt>
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the triple
+     * The third component of the <tt>Triple</tt>
      */
     public final @Nullable C c;
 

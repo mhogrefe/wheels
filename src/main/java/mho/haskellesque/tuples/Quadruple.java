@@ -18,22 +18,22 @@ import java.util.Comparator;
  */
 public final class Quadruple<A, B, C, D> {
     /**
-     * The first component of the quadruple
+     * The first component of the <tt>Quadruple</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the quadruple
+     * The second component of the <tt>Quadruple</tt>
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the quadruple
+     * The third component of the <tt>Quadruple</tt>
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the quadruple
+     * The fourth component of the <tt>Quadruple</tt>
      */
     public final @Nullable D d;
 

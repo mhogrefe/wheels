@@ -21,37 +21,37 @@ import java.util.Comparator;
  */
 public final class Septuple<A, B, C, D, E, F, G> {
     /**
-     * The first component of the Septuple
+     * The first component of the <tt>Septuple</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the Septuple
+     * The second component of the <tt>Septuple</tt>
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the Septuple
+     * The third component of the <tt>Septuple</tt>
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the Septuple
+     * The fourth component of the <tt>Septuple</tt>
      */
     public final @Nullable D d;
 
     /**
-     * The fifth component of the Septuple
+     * The fifth component of the <tt>Septuple</tt>
      */
     public final @Nullable E e;
 
     /**
-     * The fifth component of the Septuple
+     * The fifth component of the <tt>Septuple</tt>
      */
     public final @Nullable F f;
 
     /**
-     * The sixth component of the Septuple
+     * The sixth component of the <tt>Septuple</tt>
      */
     public final @Nullable G g;
 

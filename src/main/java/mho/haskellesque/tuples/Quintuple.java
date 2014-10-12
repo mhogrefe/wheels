@@ -19,27 +19,27 @@ import java.util.Comparator;
  */
 public final class Quintuple<A, B, C, D, E> {
     /**
-     * The first component of the Quintuple
+     * The first component of the <tt>Quintuple</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the Quintuple
+     * The second component of the <tt>Quintuple</tt>
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the Quintuple
+     * The third component of the <tt>Quintuple</tt>
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the Quintuple
+     * The fourth component of the <tt>Quintuple</tt>
      */
     public final @Nullable D d;
 
     /**
-     * The fifth component of the Quintuple
+     * The fifth component of the <tt>Quintuple</tt>
      */
     public final @Nullable E e;
 

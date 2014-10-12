@@ -20,32 +20,32 @@ import java.util.Comparator;
  */
 public final class Sextuple<A, B, C, D, E, F> {
     /**
-     * The first component of the Sextuple
+     * The first component of the <tt>Sextuple</tt>
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the Sextuple
+     * The second component of the <tt>Sextuple</tt>
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the Sextuple
+     * The third component of the <tt>Sextuple</tt>
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the Sextuple
+     * The fourth component of the <tt>Sextuple</tt>
      */
     public final @Nullable D d;
 
     /**
-     * The fifth component of the Sextuple
+     * The fifth component of the <tt>Sextuple</tt>
      */
     public final @Nullable E e;
 
     /**
-     * The fifth component of the Sextuple
+     * The fifth component of the <tt>Sextuple</tt>
      */
     public final @Nullable F f;
 
