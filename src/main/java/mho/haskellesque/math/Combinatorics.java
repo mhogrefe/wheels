@@ -347,6 +347,38 @@ public class Combinatorics {
         );
     }
 
+    public static <T> Iterable<List<T>> listsAscending(int length, Iterable<T> xs) {
+        Function<T, List<T>> makeSingleton = x -> {
+            List<T> list = new ArrayList<>();
+            list.add(x);
+            return list;
+        };
+        List<Iterable<List<T>>> intermediates = new ArrayList<>();
+        intermediates.add(map(makeSingleton, xs));
+        for (int i = 1; i < length; i++) {
+            Iterable<List<T>> lists = last(intermediates);
+            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
+        }
+        return last(intermediates);
+    }
+
+    public static Iterable<String> listsAscending(int length, String s) {
+        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
+        Function<BigInteger, String> f = bi -> charsToString(
+                map(
+                        i -> s.charAt(i.intValue()),
+                        BasicMath.bigEndianDigitsPadded(BigInteger.valueOf(length), BigInteger.valueOf(s.length()), bi)
+                )
+        );
+        return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
+    }
+
+    public static void main(String[] args) {
+        for (String list : listsAscending(3, "abc")) {
+            System.out.println(list);
+        }
+    }
+
     public static <A, B> Iterable<Pair<A, B>> pairsExponentialOrder(Iterable<A> as, Iterable<B> bs) {
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
