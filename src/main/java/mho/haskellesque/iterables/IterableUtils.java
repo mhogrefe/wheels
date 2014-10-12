@@ -1732,6 +1732,22 @@ public class IterableUtils {
         };
     }
 
+    public static String replicate(int n, char c) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    public static String replicate(BigInteger n, char c) {
+        StringBuilder sb = new StringBuilder();
+        for (BigInteger i = BigInteger.ZERO; lt(i, n); i = i.add(BigInteger.ONE)) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     public static <T> Iterable<T> cycle(Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
@@ -1785,6 +1801,14 @@ public class IterableUtils {
         };
     }
 
+    public static String take(int n, String s) {
+        return s.substring(0, n);
+    }
+
+    public static String take(BigInteger n, String s) {
+        return s.substring(0, n.intValue());
+    }
+
     public static <T> Iterable<T> drop(int n, Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
@@ -1831,6 +1855,26 @@ public class IterableUtils {
                 return xsi.next();
             }
         };
+    }
+
+    public static <T> Iterable<T> pad(T pad, int length, Iterable<T> xs) {
+        return take(length, concat(xs, repeat(pad)));
+    }
+
+    public static <T> Iterable<T> pad(T pad, BigInteger length, Iterable<T> xs) {
+        return take(length, (Iterable<T>) concat(xs, repeat(pad)));
+    }
+
+    public static <T> String pad(char pad, int length, String s) {
+        if (s.length() == length) return s;
+        if (s.length() > length) return take(length, s);
+        return s + replicate(length - s.length(), pad);
+    }
+
+    public static <T> String pad(char pad, BigInteger length, String s) {
+        if (s.length() == length.intValue()) return s;
+        if (s.length() > length.intValue()) return take(length, s);
+        return s + replicate(length.intValue() - s.length(), pad);
     }
 
     public static <T> Pair<Iterable<T>, Iterable<T>> splitAt(int n, Iterable<T> xs) {
@@ -1942,7 +1986,10 @@ public class IterableUtils {
     public static <T> List<Iterable<T>> demux(int lines, Iterable<T> xs) {
         List<Iterable<T>> demuxed = new ArrayList<>();
         for (int i = 0; i < lines; i++) {
-            Iterable<Boolean> mask = concat(replicate(i, false), cycle(cons(true, replicate(lines - 1, false))));
+            Iterable<Boolean> mask = concat(
+                    replicate(i, false),
+                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+            );
             demuxed.add(select(mask, xs));
         }
         return demuxed;
