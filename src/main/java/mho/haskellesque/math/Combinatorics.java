@@ -336,7 +336,7 @@ public class Combinatorics {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs,
-            @NotNull Iterable<F> gs
+            @NotNull Iterable<G> gs
     ) {
         return map(
                 p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
