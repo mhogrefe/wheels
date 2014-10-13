@@ -559,6 +559,22 @@ public class CombinatoricsTest {
         } catch (IllegalArgumentException e) {}
     }
 
+    @Test
+    public void testListsShortlex() {
+        aeq(take(20, listsShortlex(Arrays.asList(1, 2, 3))),
+                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2]," +
+                " [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1]]");
+        aeq(listsShortlex(new ArrayList<Integer>()), "[[]]");
+    }
+
+    @Test
+    public void testStringsShortlex() {
+        aeq(take(20, stringsShortlex("abc")),
+                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca]");
+        aeq(stringsShortlex(""), "[]");
+        aeq(length(stringsShortlex("")), 1);
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
