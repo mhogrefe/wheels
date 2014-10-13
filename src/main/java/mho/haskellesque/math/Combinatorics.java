@@ -485,10 +485,42 @@ public class Combinatorics {
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
     }
 
+    /**
+     * Returns an <tt>Iterable</tt> containing all lists with elements from a given <tt>Iterable</tt>. The lists are in
+     * shortlex order; that is, shorter lists precede longer lists, and lists of the same length are ordered
+     * lexicographically, matching the order given by the original <tt>Iterable</tt>. The <tt>Iterable</tt> must be
+     * finite; using a long <tt>Iterable</tt> is possible but discouraged.
+     *
+     * <ul>
+     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>The result either consists of a single empty list, or is infinite. It is in shortlex order (according to
+     *  some ordering of its elements) and contains every list of elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all lists created from <tt>xs</tt>
+     */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         return concatMap(i -> listsAscending(i, xs), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
+    /**
+     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s with characters from a given <tt>String</tt>. The
+     * <tt>String</tt>s are in shortlex order; that is, shorter <tt>String</tt>s precede longer <tt>String</tt>s, and
+     * <tt>String</tt>s of the same length are ordered lexicographically, matching the order given by the original
+     * <tt>String</tt>. Using a long <tt>String</tt> is possible but discouraged.
+     *
+     * <ul>
+     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li>The result either consists of a single empty <tt>String</tt>, or is infinite. It is in shortlex order
+     *  (according to some ordering of its characters) and contains every <tt>String</tt> with characters drawn from
+     *  some sequence.</li>
+     * </ul>
+     *
+     * @param s the <tt>String</tt> from which characters are selected
+     * @return all <tt>String</tt>s created from <tt>s</tt>
+     */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         return concatMap(i -> stringsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
     }
