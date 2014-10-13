@@ -3,7 +3,8 @@ haskellesque
 
 Some Haskell-inspired functionality for Java. Including all of Data.List implemented with Iterables!
 
-Disclaimer
+Status
 ----------
 
-This project is still very much in its early stages. Don't actually try to use it or it will crumble into dust
+So far, only the Pair class is fully documented and tested. Everything else is a work in progress. However, if a
+particular method has JavaDoc and a corresponding test method, it is safe to use.
