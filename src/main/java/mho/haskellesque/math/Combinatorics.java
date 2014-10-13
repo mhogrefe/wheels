@@ -502,6 +502,7 @@ public class Combinatorics {
      * @return all lists created from <tt>xs</tt>
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return concatMap(i -> listsAscending(i, xs), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
@@ -522,6 +523,7 @@ public class Combinatorics {
      * @return all <tt>String</tt>s created from <tt>s</tt>
      */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
+        if (isEmpty(s)) return Arrays.asList("");
         return concatMap(i -> stringsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
