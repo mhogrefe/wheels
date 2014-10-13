@@ -322,36 +322,47 @@ public class CombinatoricsTest {
 
     @Test
     public void testListsAscending_Integer_String() {
-        aeq(listsAscending(0, "abc"), "[]");
-        aeq(listsAscending(1, "abc"), "[a, b, c]");
-        aeq(listsAscending(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeq(listsAscending(3, "abc"),
+        aeq(stringsAscending(0, "abc"), "[]");
+        aeq(length(stringsAscending(0, "abc")), 1);
+        aeq(stringsAscending(1, "abc"), "[a, b, c]");
+        aeq(stringsAscending(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(stringsAscending(3, "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeq(listsAscending(0, ""), "[]");
-        aeq(listsAscending(1, ""), "[]");
-        aeq(listsAscending(2, ""), "[]");
-        aeq(listsAscending(3, ""), "[]");
+        aeq(stringsAscending(0, ""), "[]");
+        aeq(length(stringsAscending(0, "")), 1);
+        aeq(stringsAscending(1, ""), "[]");
+        aeq(length(stringsAscending(1, "")), 0);
+        aeq(stringsAscending(2, ""), "[]");
+        aeq(length(stringsAscending(2, "")), 0);
+        aeq(stringsAscending(3, ""), "[]");
+        aeq(length(stringsAscending(3, "")), 0);
         try {
-            listsAscending(-1, "");
+            stringsAscending(-1, "");
             fail();
         } catch (IllegalArgumentException e) {}
     }
 
     @Test
     public void testListsAscending_BigInteger_String() {
-        aeq(listsAscending(BigInteger.ZERO, "abc"), "[]");
-        aeq(listsAscending(BigInteger.ONE, "abc"), "[a, b, c]");
-        aeq(listsAscending(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeq(listsAscending(BigInteger.valueOf(3), "abc"),
+        aeq(stringsAscending(BigInteger.ZERO, "abc"), "[]");
+        aeq(length(stringsAscending(BigInteger.ZERO, "abc")), 1);
+        aeq(length(stringsAscending(0, "abc")), 1);
+        aeq(stringsAscending(BigInteger.ONE, "abc"), "[a, b, c]");
+        aeq(stringsAscending(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(stringsAscending(BigInteger.valueOf(3), "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
-                        " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeq(listsAscending(BigInteger.ZERO, ""), "[]");
-        aeq(listsAscending(BigInteger.ONE, ""), "[]");
-        aeq(listsAscending(BigInteger.valueOf(2), ""), "[]");
-        aeq(listsAscending(BigInteger.valueOf(3), ""), "[]");
+                " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        aeq(stringsAscending(BigInteger.ZERO, ""), "[]");
+        aeq(length(stringsAscending(BigInteger.ZERO, "")), 1);
+        aeq(stringsAscending(BigInteger.ONE, ""), "[]");
+        aeq(length(stringsAscending(BigInteger.ONE, "")), 0);
+        aeq(stringsAscending(BigInteger.valueOf(2), ""), "[]");
+        aeq(length(stringsAscending(BigInteger.valueOf(2), "")), 0);
+        aeq(stringsAscending(BigInteger.valueOf(3), ""), "[]");
+        aeq(length(stringsAscending(BigInteger.valueOf(3), "")), 0);
         try {
-            listsAscending(BigInteger.valueOf(-1), "");
+            stringsAscending(BigInteger.valueOf(-1), "");
             fail();
         } catch (IllegalArgumentException e) {}
     }

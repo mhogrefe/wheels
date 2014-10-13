@@ -439,7 +439,7 @@ public class Combinatorics {
      * @param s the <tt>String</tt> from which characters are selected
      * @return all Strings of a given length created from <tt>s</tt>
      */
-    public static @NotNull Iterable<String> listsAscending(int length, @NotNull String s) {
+    public static @NotNull Iterable<String> stringsAscending(int length, @NotNull String s) {
         if (length < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
@@ -468,7 +468,7 @@ public class Combinatorics {
      * @param s the <tt>String</tt> from which characters are selected
      * @return all Strings of a given length created from <tt>s</tt>
      */
-    public static @NotNull Iterable<String> listsAscending(@NotNull BigInteger length, @NotNull String s) {
+    public static @NotNull Iterable<String> stringsAscending(@NotNull BigInteger length, @NotNull String s) {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("strings must have a non-negative length");
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValue());
@@ -490,7 +490,7 @@ public class Combinatorics {
     }
 
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
-        return concatMap(i -> listsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
+        return concatMap(i -> stringsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
     public static <A, B> Iterable<Pair<A, B>> pairsExponentialOrder(Iterable<A> as, Iterable<B> bs) {
