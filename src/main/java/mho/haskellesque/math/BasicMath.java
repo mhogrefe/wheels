@@ -1,8 +1,7 @@
 package mho.haskellesque.math;
 
-import mho.haskellesque.iterables.Exhaustive;
 import mho.haskellesque.iterables.IterableUtils;
-import mho.haskellesque.tuples.Pair;
+import mho.haskellesque.structures.Pair;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -184,7 +183,7 @@ public class BasicMath {
         return fromBigEndianDigits(base, (Iterable<BigInteger>) reverse(digits));
     }
 
-    public static Pair<BigInteger, BigInteger> exponentialDemux(BigInteger n) {
+    public static Pair<BigInteger, BigInteger> logarithmicDemux(BigInteger n) {
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
         return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
