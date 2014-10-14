@@ -575,6 +575,37 @@ public class CombinatoricsTest {
         aeq(length(stringsShortlex("")), 1);
     }
 
+    @Test
+    public void testPairsLogarithmicOrder_Iterable() {
+        aeq(pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
+                "[(1, 1), (1, 2), (2, 1), (1, 3), (3, 1), (2, 2), (4, 1), (1, 4)," +
+                " (3, 2), (2, 3), (4, 2), (3, 3), (2, 4), (4, 3), (3, 4), (4, 4)]");
+        aeq(pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
+                "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4)," +
+                " (null, 2), (2, null), (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]");
+        aeq(pairsLogarithmicOrder(new ArrayList<Integer>()), "[]");
+        aeq(take(20, pairsLogarithmicOrder(Exhaustive.NATURAL_BIG_INTEGERS)),
+                "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1)," +
+                " (5, 0), (1, 2), (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2)]");
+        aeq(take(20, pairsLogarithmicOrder((Iterable<BigInteger>) cons(null, Exhaustive.NATURAL_BIG_INTEGERS))),
+                "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
+                " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
+                " (1, 1)]");
+    }
+
+    @Test
+    public void testPairsLogarithmicOrder_Iterable_Iterable() {
+        aeq(pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (1, c), (3, a), (2, b), (4, a), (1, d)," +
+                " (3, b), (2, c), (4, b), (3, c), (2, d), (4, c), (3, d), (4, d)]");
+        aeq(pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d)," +
+                " (null, b), (2, c), (4, b), (null, c), (2, d), (4, c), (null, d), (4, d)]");
+        aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
+        aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        //todo
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
