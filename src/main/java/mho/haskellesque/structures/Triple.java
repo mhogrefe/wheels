@@ -1,4 +1,4 @@
-package mho.haskellesque.tuples;
+package mho.haskellesque.structures;
 
 import mho.haskellesque.ordering.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
