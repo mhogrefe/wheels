@@ -2,14 +2,16 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
-import mho.haskellesque.tuples.*;
+import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.iterables.IterableUtils.isEmpty;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
@@ -418,7 +420,7 @@ public class Combinatorics {
         intermediates.add(map(makeSingleton, xs));
         for (BigInteger i = BigInteger.ONE; lt(i, length); i = i.add(BigInteger.ONE)) {
             Iterable<List<T>> lists = last(intermediates);
-            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
+            intermediates.add(concatMap(x -> map(list -> toList((Iterable<T>) cons(x, list)), lists), xs));
         }
         return last(intermediates);
     }
@@ -527,45 +529,107 @@ public class Combinatorics {
         return concatMap(i -> stringsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
     }
 
-    public static <A, B> Iterable<Pair<A, B>> pairsExponentialOrder(Iterable<A> as, Iterable<B> bs) {
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = BasicMath.exponentialDemux(bi);
-            assert p.a != null;
-            Optional<A> optA = aii.get(p.a.intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.b != null;
-            Optional<B> optB = bii.get(p.b.intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        (Iterable<Optional<Pair<A, B>>>) map(bi -> f.apply(bi), Exhaustive.BIG_INTEGERS)
-                )
-        );
-    }
-
-    public static <T> Iterable<Pair<T, T>> pairsExponentialOrder(Iterable<T> xs) {
+    /**
+     * Given an <tt>Iterable</tt>, returns all pairs of elements from the <tt>Iterable</tt> in such a way that the
+     * first component of the pairs grows linearly but the second grows logarithmically (hence the name).
+     *
+     * <ul>
+     *  <li><tt>xs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from some <tt>Iterable</tt>.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
+     *  <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>xs</tt> in logarithmic order
+     */
+    public static @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = BasicMath.exponentialDemux(bi);
+            Pair<BigInteger, BigInteger> p = BasicMath.logarithmicDemux(bi);
             assert p.a != null;
-            Optional<T> optA = ii.get(p.a.intValue());
+            NullableOptional<T> optA = ii.get(p.a.intValue());
             if (!optA.isPresent()) return Optional.empty();
             assert p.b != null;
-            Optional<T> optB = ii.get(p.b.intValue());
+            NullableOptional<T> optB = ii.get(p.b.intValue());
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<T, T> p = o.get();
+            Optional<Boolean> lastA = ii.isLast(p.a);
+            Optional<Boolean> lastB = ii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
         };
         return map(
                 Optional::get,
                 filter(
                         Optional<Pair<T, T>>::isPresent,
-                        (Iterable<Optional<Pair<T, T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<T, T>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
+                )
+        );
+    }
+
+    /**
+     * Given two <tt>Iterable</tt>s, returns all pairs of elements from the <tt>Iterable</tt>s in such a way that the
+     * first component, taken from the first <tt>Iterable</tt>, of the pairs grows linearly but the second, taken from
+     * the second <tt>Iterable</tt>, grows logarithmically.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
+     *  <tt>Iterable</tt>s.</li>
+     * </ul>
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in logarithmic order
+     */
+    public static @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = BasicMath.logarithmicDemux(bi);
+            assert p.a != null;
+            NullableOptional<A> optA = aii.get(p.a.intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.b != null;
+            NullableOptional<B> optB = bii.get(p.b.intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<A, B> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<A, B>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
                 )
         );
     }
@@ -576,10 +640,10 @@ public class Combinatorics {
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(2, bi);
             assert p.get(0) != null;
-            Optional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            Optional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
         };
@@ -599,13 +663,13 @@ public class Combinatorics {
         Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(3, bi);
             assert p.get(0) != null;
-            Optional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            Optional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            Optional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValue());
             if (!optC.isPresent()) return Optional.empty();
             return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
         };
@@ -631,16 +695,16 @@ public class Combinatorics {
         Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
             List<BigInteger> p = BasicMath.demux(4, bi);
             assert p.get(0) != null;
-            Optional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            Optional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            Optional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValue());
             if (!optC.isPresent()) return Optional.empty();
             assert p.get(3) != null;
-            Optional<D> optD = dii.get(p.get(3).intValue());
+            NullableOptional<D> optD = dii.get(p.get(3).intValue());
             if (!optD.isPresent()) return Optional.empty();
             return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
         };
@@ -676,7 +740,7 @@ public class Combinatorics {
                 return Optional.of(new ArrayList<T>());
             }
             bi = bi.subtract(BigInteger.ONE);
-            Pair<BigInteger, BigInteger> sizeIndex = BasicMath.exponentialDemux(bi);
+            Pair<BigInteger, BigInteger> sizeIndex = BasicMath.logarithmicDemux(bi);
             int size = sizeIndex.b.intValue() + 1;
             return ii.get(map(BigInteger::intValue, BasicMath.demux(size, sizeIndex.a)));
         };
