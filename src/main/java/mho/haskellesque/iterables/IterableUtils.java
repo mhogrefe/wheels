@@ -1,6 +1,6 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.tuples.*;
+import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -1886,33 +1886,77 @@ public class IterableUtils {
     }
 
     public static <T> Iterable<T> takeWhile(Predicate<T> p, Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
-            private T next;
-            private boolean hasNext;
-            {
-                advanceNext();
-            }
-
+        return new Iterable<T>() {
             @Override
-            public boolean hasNext() {
-                return hasNext;
-            }
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    {
+                        advanceNext();
+                    }
 
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advanceNext();
+                        return current;
+                    }
+
+                    private void advanceNext() {
+                        if (xsi.hasNext()) {
+                            next = xsi.next();
+                            hasNext = p.test(next);
+                        } else {
+                            hasNext = false;
+                        }
+                    }
+                };
+            }
+        };
+    }
+
+    public static <T> Iterable<T> stopAt(Predicate<T> p, Iterable<T> xs) {
+        return new Iterable<T>() {
             @Override
-            public T next() {
-                T current = next;
-                advanceNext();
-                return current;
-            }
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    {
+                        advanceNext();
+                    }
 
-            private void advanceNext() {
-                if (xsi.hasNext()) {
-                    next = xsi.next();
-                    hasNext = p.test(next);
-                } else {
-                    hasNext = false;
-                }
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advanceNext();
+                        return current;
+                    }
+
+                    private void advanceNext() {
+                        if (next != null && p.test(next)) {
+                            hasNext = false;
+                        } else {
+                            hasNext = xsi.hasNext();
+                            if (xsi.hasNext()) {
+                                next = xsi.next();
+                            }
+                        }
+                    }
+                };
             }
         };
     }
