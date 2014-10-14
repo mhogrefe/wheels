@@ -1,5 +1,8 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.structures.NullableOptional;
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,24 +20,24 @@ public class CachedIterable<T> {
         size = null;
     }
 
-    public Optional<T> get(int i) {
+    public NullableOptional<T> get(int i) {
         for (int j = cache.size(); j <= i; j++) {
             if (!iterator.hasNext()) {
-                return Optional.empty();
+                return NullableOptional.empty();
             }
             cache.add(iterator.next());
         }
-        return Optional.of(cache.get(i));
+        return NullableOptional.of(cache.get(i));
     }
 
-    public Optional<T> get(BigInteger i) {
+    public NullableOptional<T> get(BigInteger i) {
         return get(i.intValue());
     }
 
     public Optional<List<T>> get(Iterable<Integer> is) {
         List<T> list = new ArrayList<>();
         for (int i : is) {
-            Optional<T> element = get(i);
+            NullableOptional<T> element = get(i);
             if (!element.isPresent()) return Optional.empty();
             list.add(element.get());
         }
@@ -50,7 +53,7 @@ public class CachedIterable<T> {
         int i = 0;
         for (boolean b : bs) {
             if (b) {
-                Optional<T> element = get(i);
+                NullableOptional<T> element = get(i);
                 if (!element.isPresent()) return Optional.empty();
                 elements.add(element.get());
             }
@@ -66,6 +69,13 @@ public class CachedIterable<T> {
         }
         size = cache.size();
         return size;
+    }
+
+    public Optional<Boolean> isLast(T x) {
+        if (iterator.hasNext()) return Optional.empty();
+        if (cache.isEmpty()) return Optional.of(false);
+        T last = IterableUtils.last(cache);
+        return Optional.of(x == null ? last == null : x.equals(last));
     }
 
     public void clearCache() {
