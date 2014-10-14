@@ -1,4 +1,4 @@
-package mho.haskellesque.tuples;
+package mho.haskellesque.structures;
 
 import org.junit.Test;
 
