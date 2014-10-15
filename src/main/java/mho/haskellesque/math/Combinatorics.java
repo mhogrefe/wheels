@@ -106,10 +106,11 @@ public class Combinatorics {
 
     /**
      * Given two <tt>Iterable</tt>s, returns all ordered pairs of elements from these <tt>Iterable</tt>s in ascending
-     * order. Both <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but discouraged.
+     * order. The second <tt>Iterable</tt> must be finite; using a long second <tt>Iterable</tt> is possible but
+     * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li>The result is the Cartesian product of two finite <tt>Iterable</tt>s.</li>
      * </ul>
@@ -131,11 +132,11 @@ public class Combinatorics {
 
     /**
      * Given three <tt>Iterable</tt>s, returns all ordered triples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
-     * discouraged.
+     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li><tt>cs</tt> must be finite.</li>
      *  <li>The result is the Cartesian product of three finite <tt>Iterable</tt>s.</li>
@@ -164,11 +165,11 @@ public class Combinatorics {
 
     /**
      * Given four <tt>Iterable</tt>s, returns all ordered quadruples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
-     * discouraged.
+     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li><tt>cs</tt> must be finite.</li>
      *  <li><tt>ds</tt> must be finite.</li>
@@ -204,11 +205,11 @@ public class Combinatorics {
 
     /**
      * Given five <tt>Iterable</tt>s, returns all ordered quintuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
-     * discouraged.
+     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li><tt>cs</tt> must be finite.</li>
      *  <li><tt>ds</tt> must be finite.</li>
@@ -249,11 +250,11 @@ public class Combinatorics {
 
     /**
      * Given six <tt>Iterable</tt>s, returns all ordered sextuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
-     * discouraged.
+     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li><tt>cs</tt> must be finite.</li>
      *  <li><tt>ds</tt> must be finite.</li>
@@ -298,11 +299,11 @@ public class Combinatorics {
 
     /**
      * Given seven <tt>Iterable</tt>s, returns all ordered septuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s must be finite; using long <tt>Iterable</tt>s is possible but
-     * discouraged.
+     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be finite.</li>
+     *  <li><tt>as</tt> must be non-null.</li>
      *  <li><tt>bs</tt> must be finite.</li>
      *  <li><tt>cs</tt> must be finite.</li>
      *  <li><tt>ds</tt> must be finite.</li>
