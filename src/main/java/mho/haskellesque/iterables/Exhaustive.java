@@ -229,7 +229,7 @@ public class Exhaustive {
     public static final @NotNull Iterable<Character> ASCII_CHARACTERS = range((char) 0, (char) 127);
 
     /**
-     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in an order which places "friendly" characters
+     * An <tt>Iterable</tt> that contains all <tt>Characters</tt>s in an order which places "friendly" characters
      * first.
      *
      * Length is 2<sup>16</sup>
