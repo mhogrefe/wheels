@@ -603,7 +603,15 @@ public class CombinatoricsTest {
                 " (null, b), (2, c), (4, b), (null, c), (2, d), (4, c), (null, d), (4, d)]");
         aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
         aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
-        //todo
+        aeq(take(20, pairsLogarithmicOrder(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"))),
+                "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b)," +
+                " (5, a), (1, c), (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a)]");
+        aeq(take(20, pairsLogarithmicOrder(fromString("abcd"), Exhaustive.NATURAL_BIG_INTEGERS)),
+                "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2)," +
+                " (d, 1), (a, 4), (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6)]");
+        aeq(take(20, pairsLogarithmicOrder(Exhaustive.POSITIVE_BIG_INTEGERS, Exhaustive.NEGATIVE_BIG_INTEGERS)),
+                "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2)," +
+                " (6, -1), (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3)]");
     }
 
     private static void aeq(Iterable<?> a, Object b) {
