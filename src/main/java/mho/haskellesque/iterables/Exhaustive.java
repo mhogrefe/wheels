@@ -229,7 +229,8 @@ public class Exhaustive {
     public static final @NotNull Iterable<Character> ASCII_CHARACTERS = range((char) 0, (char) 127);
 
     /**
-     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in ascending order.
+     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in an order which places "friendly" characters
+     * first.
      *
      * Length is 2<sup>16</sup>
      */
@@ -238,12 +239,12 @@ public class Exhaustive {
                     range('a', 'z'),
                     range('A', 'Z'),
                     range('0', '9'),
-                    range('!', '/'),
-                    range(':', '@'),
-                    range('[', '`'),
-                    range('{', '~'),
-                    range((char) 0, (char) 32),
-                    range((char) 127)
+                    range('!', '/'),            // printable non-alphanumeric ASCII...
+                    range(':', '@'),            // ...
+                    range('[', '`'),            // ...
+                    range('{', '~'),            // ...
+                    range((char) 0, (char) 32), // non-printable and whitespace ASCII
+                    range((char) 127)           // DEL and non-ASCII
     ));
 
     public static final Iterable<Float> FLOATS_ASCENDING = () -> new Iterator<Float>() {
