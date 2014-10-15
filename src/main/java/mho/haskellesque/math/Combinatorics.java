@@ -2,6 +2,7 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
+import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,7 @@ import java.util.function.Predicate;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.isEmpty;
+import static mho.haskellesque.iterables.IterableUtils.map;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
@@ -593,6 +595,45 @@ public class Combinatorics {
         );
     }
 
+    //todo
+    private static @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
+            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
+            assert p.a != null;
+            NullableOptional<A> optA = aii.get(p.a.intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.b != null;
+            NullableOptional<B> optB = bii.get(p.b.intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<A, B> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<A, B>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<A, B>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
+                )
+        );
+    }
+
     /**
      * Given two <tt>Iterable</tt>s, returns all pairs of elements from the <tt>Iterable</tt>s in such a way that the
      * first component, taken from the first <tt>Iterable</tt>, of the pairs grows linearly but the second, taken from
@@ -619,61 +660,25 @@ public class Combinatorics {
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
-        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = BasicMath.logarithmicDemux(bi);
-            assert p.a != null;
-            NullableOptional<A> optA = aii.get(p.a.intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.b != null;
-            NullableOptional<B> optB = bii.get(p.b.intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
-                        )
-                )
+        return pairsByFunction(BasicMath::logarithmicDemux, as, bs);
+    }
+
+    public static @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return pairsByFunction(
+                bi -> {
+                    List<BigInteger> list = BasicMath.demux(2, bi);
+                    return new Pair<>(list.get(0), list.get(1));
+                },
+                as,
+                bs
         );
     }
 
-    public static <A, B> Iterable<Pair<A, B>> pairs(Iterable<A> as, Iterable<B> bs) {
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(2, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        (Iterable<Optional<Pair<A, B>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
-                )
-        );
-    }
-
-    public static <A, B, C> Iterable<Triple<A, B, C>> triples(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+    public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs
+    ) {
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
@@ -690,20 +695,37 @@ public class Combinatorics {
             if (!optC.isPresent()) return Optional.empty();
             return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
         };
+        Predicate<Optional<Triple<A, B, C>>> lastTriple = o -> {
+            if (!o.isPresent()) return false;
+            Triple<A, B, C> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            Optional<Boolean> lastC = cii.isLast(p.c);
+            return lastA.isPresent() &&
+                    lastB.isPresent() &&
+                    lastC.isPresent() &&
+                    lastA.get() &&
+                    lastB.get() &&
+                    lastC.get();
+        };
         return map(
                 Optional::get,
                 filter(
                         Optional<Triple<A, B, C>>::isPresent,
-                        (Iterable<Optional<Triple<A, B, C>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        stopAt(
+                                lastTriple,
+                                (Iterable<Optional<Triple<A, B, C>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
                 )
         );
     }
 
-    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
-            Iterable<A> as,
-            Iterable<B> bs,
-            Iterable<C> cs,
-            Iterable<D> ds
+    public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds
     ) {
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
@@ -725,12 +747,265 @@ public class Combinatorics {
             if (!optD.isPresent()) return Optional.empty();
             return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
         };
+        Predicate<Optional<Quadruple<A, B, C, D>>> lastQuadruple = o -> {
+            if (!o.isPresent()) return false;
+            Quadruple<A, B, C, D> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            Optional<Boolean> lastC = cii.isLast(p.c);
+            Optional<Boolean> lastD = dii.isLast(p.d);
+            return lastA.isPresent() &&
+                    lastB.isPresent() &&
+                    lastC.isPresent() &&
+                    lastD.isPresent() &&
+                    lastA.get() &&
+                    lastB.get() &&
+                    lastC.get() &&
+                    lastD.get();
+        };
         return map(
                 Optional::get,
                 filter(
                         Optional<Quadruple<A, B, C, D>>::isPresent,
-                        (Iterable<Optional<Quadruple<A, B, C, D>>>)
-                                map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        stopAt(
+                                lastQuadruple,
+                                (Iterable<Optional<Quadruple<A, B, C, D>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
+                )
+        );
+    }
+
+    public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es
+    ) {
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<C> cii = new CachedIterable<>(cs);
+        CachedIterable<D> dii = new CachedIterable<>(ds);
+        CachedIterable<E> eii = new CachedIterable<>(es);
+        Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(5, bi);
+            assert p.get(0) != null;
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            assert p.get(2) != null;
+            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            if (!optC.isPresent()) return Optional.empty();
+            assert p.get(3) != null;
+            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            if (!optD.isPresent()) return Optional.empty();
+            assert p.get(4) != null;
+            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            if (!optE.isPresent()) return Optional.empty();
+            return Optional.of(new Quintuple<A, B, C, D, E>(
+                    optA.get(),
+                    optB.get(),
+                    optC.get(),
+                    optD.get(),
+                    optE.get()
+            ));
+        };
+        Predicate<Optional<Quintuple<A, B, C, D, E>>> lastQuintuple = o -> {
+            if (!o.isPresent()) return false;
+            Quintuple<A, B, C, D, E> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            Optional<Boolean> lastC = cii.isLast(p.c);
+            Optional<Boolean> lastD = dii.isLast(p.d);
+            Optional<Boolean> lastE = eii.isLast(p.e);
+            return lastA.isPresent() &&
+                    lastB.isPresent() &&
+                    lastC.isPresent() &&
+                    lastD.isPresent() &&
+                    lastE.isPresent() &&
+                    lastA.get() &&
+                    lastB.get() &&
+                    lastC.get() &&
+                    lastD.get() &&
+                    lastE.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Quintuple<A, B, C, D, E>>::isPresent,
+                        stopAt(
+                                lastQuintuple,
+                                (Iterable<Optional<Quintuple<A, B, C, D, E>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
+                )
+        );
+    }
+
+    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs
+    ) {
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<C> cii = new CachedIterable<>(cs);
+        CachedIterable<D> dii = new CachedIterable<>(ds);
+        CachedIterable<E> eii = new CachedIterable<>(es);
+        CachedIterable<F> fii = new CachedIterable<>(fs);
+        Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(6, bi);
+            assert p.get(0) != null;
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            assert p.get(2) != null;
+            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            if (!optC.isPresent()) return Optional.empty();
+            assert p.get(3) != null;
+            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            if (!optD.isPresent()) return Optional.empty();
+            assert p.get(4) != null;
+            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            if (!optE.isPresent()) return Optional.empty();
+            assert p.get(5) != null;
+            NullableOptional<F> optF = fii.get(p.get(5).intValue());
+            if (!optF.isPresent()) return Optional.empty();
+            return Optional.of(new Sextuple<A, B, C, D, E, F>(
+                    optA.get(),
+                    optB.get(),
+                    optC.get(),
+                    optD.get(),
+                    optE.get(),
+                    optF.get()
+            ));
+        };
+        Predicate<Optional<Sextuple<A, B, C, D, E, F>>> lastSextuple = o -> {
+            if (!o.isPresent()) return false;
+            Sextuple<A, B, C, D, E, F> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            Optional<Boolean> lastC = cii.isLast(p.c);
+            Optional<Boolean> lastD = dii.isLast(p.d);
+            Optional<Boolean> lastE = eii.isLast(p.e);
+            Optional<Boolean> lastF = fii.isLast(p.f);
+            return lastA.isPresent() &&
+                    lastB.isPresent() &&
+                    lastC.isPresent() &&
+                    lastD.isPresent() &&
+                    lastE.isPresent() &&
+                    lastF.isPresent() &&
+                    lastA.get() &&
+                    lastB.get() &&
+                    lastC.get() &&
+                    lastD.get() &&
+                    lastE.get() &&
+                    lastF.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Sextuple<A, B, C, D, E, F>>::isPresent,
+                        stopAt(
+                                lastSextuple,
+                                (Iterable<Optional<Sextuple<A, B, C, D, E, F>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
+                )
+        );
+    }
+
+    public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull Iterable<G> gs
+    ) {
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<C> cii = new CachedIterable<>(cs);
+        CachedIterable<D> dii = new CachedIterable<>(ds);
+        CachedIterable<E> eii = new CachedIterable<>(es);
+        CachedIterable<F> fii = new CachedIterable<>(fs);
+        CachedIterable<G> gii = new CachedIterable<>(gs);
+        Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
+            List<BigInteger> p = BasicMath.demux(7, bi);
+            assert p.get(0) != null;
+            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.get(1) != null;
+            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            if (!optB.isPresent()) return Optional.empty();
+            assert p.get(2) != null;
+            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            if (!optC.isPresent()) return Optional.empty();
+            assert p.get(3) != null;
+            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            if (!optD.isPresent()) return Optional.empty();
+            assert p.get(4) != null;
+            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            if (!optE.isPresent()) return Optional.empty();
+            assert p.get(5) != null;
+            NullableOptional<F> optF = fii.get(p.get(5).intValue());
+            if (!optF.isPresent()) return Optional.empty();
+            assert p.get(6) != null;
+            NullableOptional<G> optG = gii.get(p.get(6).intValue());
+            if (!optG.isPresent()) return Optional.empty();
+            return Optional.of(new Septuple<A, B, C, D, E, F, G>(
+                    optA.get(),
+                    optB.get(),
+                    optC.get(),
+                    optD.get(),
+                    optE.get(),
+                    optF.get(),
+                    optG.get()
+            ));
+        };
+        Predicate<Optional<Septuple<A, B, C, D, E, F, G>>> lastSeptuple = o -> {
+            if (!o.isPresent()) return false;
+            Septuple<A, B, C, D, E, F, G> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            Optional<Boolean> lastC = cii.isLast(p.c);
+            Optional<Boolean> lastD = dii.isLast(p.d);
+            Optional<Boolean> lastE = eii.isLast(p.e);
+            Optional<Boolean> lastF = fii.isLast(p.f);
+            Optional<Boolean> lastG = gii.isLast(p.g);
+            return lastA.isPresent() &&
+                    lastB.isPresent() &&
+                    lastC.isPresent() &&
+                    lastD.isPresent() &&
+                    lastE.isPresent() &&
+                    lastF.isPresent() &&
+                    lastG.isPresent() &&
+                    lastA.get() &&
+                    lastB.get() &&
+                    lastC.get() &&
+                    lastD.get() &&
+                    lastE.get() &&
+                    lastF.get() &&
+                    lastG.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Septuple<A, B, C, D, E, F, G>>::isPresent,
+                        stopAt(
+                                lastSeptuple,
+                                (Iterable<Optional<Septuple<A, B, C, D, E, F, G>>>)
+                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        )
                 )
         );
     }
