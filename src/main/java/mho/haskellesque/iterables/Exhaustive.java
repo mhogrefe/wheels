@@ -213,6 +213,21 @@ public class Exhaustive {
             BigInteger.ZERO, mux(Arrays.asList(POSITIVE_BIG_INTEGERS, NEGATIVE_BIG_INTEGERS))
     );
 
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>Characters</tt>s in ascending order.
+     *
+     * Length is 2<sup>16</sup>
+     */
+    public static final @NotNull Iterable<Character> CHARACTERS_ASCENDING =
+            range(Character.MIN_VALUE, Character.MAX_VALUE);
+
+    /**
+     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in ascending order.
+     *
+     * Length is 2<sup>7</sup>
+     */
+    public static final @NotNull Iterable<Character> ASCII_CHARACTERS = range((char) 0, (char) 127);
+
     public static final Iterable<Float> FLOATS_ASCENDING = () -> new Iterator<Float>() {
         private Float next = Float.NEGATIVE_INFINITY;
 
