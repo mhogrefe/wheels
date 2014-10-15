@@ -1382,6 +1382,10 @@ public class IterableUtils {
         return iterate(bi -> bi.add(BigInteger.ONE), a);
     }
 
+    public static Iterable<Character> range(char a) {
+        return range(a, Character.MAX_VALUE);
+    }
+
     public static Iterable<Byte> range(byte a, byte b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Byte>() {
@@ -1475,6 +1479,25 @@ public class IterableUtils {
                 BigInteger oldX = x;
                 x = x.add(BigInteger.ONE);
                 return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Character> range(char a, char b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                reachedEnd = x == b;
+                return x++;
             }
         };
     }
@@ -1574,6 +1597,26 @@ public class IterableUtils {
                 BigInteger oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Character> rangeBy(char a, int i) {
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                char oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
         };
@@ -1679,6 +1722,27 @@ public class IterableUtils {
                 BigInteger oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
+                return oldX;
+            }
+        };
+    }
+
+    public static Iterable<Character> rangeBy(char a, int i, char b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                char oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
         };
