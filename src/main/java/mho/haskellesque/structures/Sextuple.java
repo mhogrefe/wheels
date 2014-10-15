@@ -53,12 +53,13 @@ public final class Sextuple<A, B, C, D, E, F> {
      * Constructs a <tt>Sextuple</tt> from six values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything</li>
-     *  <li><tt>b</tt> may be anything</li>
-     *  <li><tt>c</tt> may be anything</li>
-     *  <li><tt>d</tt> may be anything</li>
-     *  <li><tt>e</tt> may be anything</li>
-     *  <li><tt>f</tt> may be anything</li>
+     *  <li><tt>a</tt> may be anything.</li>
+     *  <li><tt>b</tt> may be anything.</li>
+     *  <li><tt>c</tt> may be anything.</li>
+     *  <li><tt>d</tt> may be anything.</li>
+     *  <li><tt>e</tt> may be anything.</li>
+     *  <li><tt>f</tt> may be anything.</li>
+     *  <li>Any <tt>Sextuple</tt> may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value

@@ -29,8 +29,9 @@ public final class Pair<A, B> {
      * Constructs a <tt>Pair</tt> from two values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything</li>
-     *  <li><tt>b</tt> may be anything</li>
+     *  <li><tt>a</tt> may be anything.</li>
+     *  <li><tt>b</tt> may be anything.</li>
+     *  <li>Any <tt>Pair</tt> may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value

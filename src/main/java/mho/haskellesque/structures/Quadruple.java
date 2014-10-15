@@ -41,10 +41,11 @@ public final class Quadruple<A, B, C, D> {
      * Constructs a <tt>Quadruple</tt> from four values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything</li>
-     *  <li><tt>b</tt> may be anything</li>
-     *  <li><tt>c</tt> may be anything</li>
-     *  <li><tt>d</tt> may be anything</li>
+     *  <li><tt>a</tt> may be anything.</li>
+     *  <li><tt>b</tt> may be anything.</li>
+     *  <li><tt>c</tt> may be anything.</li>
+     *  <li><tt>d</tt> may be anything.</li>
+     *  <li>Any <tt>Quadruple</tt> may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value

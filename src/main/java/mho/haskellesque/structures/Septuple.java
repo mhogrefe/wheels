@@ -59,13 +59,14 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * Constructs a <tt>Septuple</tt> from seven values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything</li>
-     *  <li><tt>b</tt> may be anything</li>
-     *  <li><tt>c</tt> may be anything</li>
-     *  <li><tt>d</tt> may be anything</li>
-     *  <li><tt>e</tt> may be anything</li>
-     *  <li><tt>f</tt> may be anything</li>
-     *  <li><tt>g</tt> may be anything</li>
+     *  <li><tt>a</tt> may be anything.</li>
+     *  <li><tt>b</tt> may be anything.</li>
+     *  <li><tt>c</tt> may be anything.</li>
+     *  <li><tt>d</tt> may be anything.</li>
+     *  <li><tt>e</tt> may be anything.</li>
+     *  <li><tt>f</tt> may be anything.</li>
+     *  <li><tt>g</tt> may be anything.</li>
+     *  <li>Any <tt>Septuple</tt> may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value
