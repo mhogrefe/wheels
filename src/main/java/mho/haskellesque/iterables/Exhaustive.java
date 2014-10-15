@@ -214,19 +214,37 @@ public class Exhaustive {
     );
 
     /**
+     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in ascending order.
+     *
+     * Length is 2<sup>7</sup>
+     */
+    public static final @NotNull Iterable<Character> ASCII_CHARACTERS_ASCENDING = range((char) 0, (char) 127);
+
+    /**
+     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in an order which places "friendly" characters
+     * first.
+     *
+     * Length is 2<sup>7</sup>
+     */
+    public static final @NotNull Iterable<Character> ASCII_CHARACTERS = concat(Arrays.asList(
+            range('a', 'z'),
+            range('A', 'Z'),
+            range('0', '9'),
+            range('!', '/'),            // printable non-alphanumeric ASCII...
+            range(':', '@'),            // ...
+            range('[', '`'),            // ...
+            range('{', '~'),            // ...
+            range((char) 0, (char) 32), // non-printable and whitespace ASCII
+            Arrays.asList((char) 127)   // DEL
+    ));
+
+    /**
      * An <tt>Iterable</tt> that contains all <tt>Characters</tt>s in ascending order.
      *
      * Length is 2<sup>16</sup>
      */
     public static final @NotNull Iterable<Character> CHARACTERS_ASCENDING =
             range(Character.MIN_VALUE, Character.MAX_VALUE);
-
-    /**
-     * An <tt>Iterable</tt> that contains all ASCII <tt>Characters</tt>s in ascending order.
-     *
-     * Length is 2<sup>7</sup>
-     */
-    public static final @NotNull Iterable<Character> ASCII_CHARACTERS = range((char) 0, (char) 127);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Characters</tt>s in an order which places "friendly" characters
