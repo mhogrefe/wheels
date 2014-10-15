@@ -363,6 +363,8 @@ public class Combinatorics {
      *  entirely of one empty element.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|<sup><tt>length</tt></sup>
+     *
      * @param length the length of the result lists
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
@@ -401,6 +403,8 @@ public class Combinatorics {
      *  entirely of one empty element.</li>
      * </ul>
      *
+     * Result length is |<tt>xs</tt>|<sup><tt>length</tt></sup>
+     *
      * @param length the length of the result lists
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
@@ -438,6 +442,8 @@ public class Combinatorics {
      *  consists entirely of one empty <tt>String</tt>.</li>
      * </ul>
      *
+     * Result length is |<tt>s</tt>|<sup><tt>length</tt></sup>
+     *
      * @param length the length of the result <tt>String</tt>
      * @param s the <tt>String</tt> from which characters are selected
      * @return all Strings of a given length created from <tt>s</tt>
@@ -466,6 +472,8 @@ public class Combinatorics {
      *  <li>The result is finite. All of its <tt>String</tt>s have the same length. None are empty, unless the result
      *  consists entirely of one empty <tt>String</tt>.</li>
      * </ul>
+     *
+     * Result length is |<tt>s</tt>|<sup><tt>length</tt></sup>
      *
      * @param length the length of the result <tt>String</tt>
      * @param s the <tt>String</tt> from which characters are selected
@@ -500,6 +508,8 @@ public class Combinatorics {
      *  some ordering of its elements) and contains every list of elements drawn from some sequence.</li>
      * </ul>
      *
+     * Result length is 1 if <tt>xs</tt> is empty, infinite otherwise
+     *
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
      * @return all lists created from <tt>xs</tt>
@@ -522,6 +532,8 @@ public class Combinatorics {
      *  some sequence.</li>
      * </ul>
      *
+     * Result length is 1 if <tt>s</tt> is empty, infinite otherwise
+     *
      * @param s the <tt>String</tt> from which characters are selected
      * @return all <tt>String</tt>s created from <tt>s</tt>
      */
@@ -541,6 +553,8 @@ public class Combinatorics {
      *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
      *  <tt>Iterable</tt>.</li>
      * </ul>
+     *
+     * Result length is |<tt>xs</tt>|<pow>2</pow>
      *
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
@@ -592,6 +606,8 @@ public class Combinatorics {
      *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
      *  <tt>Iterable</tt>s.</li>
      * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>|
      *
      * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
