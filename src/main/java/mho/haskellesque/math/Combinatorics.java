@@ -554,7 +554,7 @@ public class Combinatorics {
      *  <tt>Iterable</tt>.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|<pow>2</pow>
+     * Result length is |<tt>xs</tt>|<sup>2</sup>
      *
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
