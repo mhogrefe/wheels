@@ -95,6 +95,9 @@ public class CombinatoricsTest {
                 "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
         aeq(pairsAscending(Arrays.asList(1, null, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
+        aeq(take(20, pairsAscending(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abc"))),
+                "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
+                " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
         aeq(pairsAscending(new ArrayList<Integer>(), fromString("abc")), "[]");
         aeq(pairsAscending(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
     }
@@ -110,6 +113,11 @@ public class CombinatoricsTest {
                 " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
                 " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
                 " (3, c, true)]");
+        aeq(take(20, triplesAscending(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abc"), Exhaustive.BOOLEANS)),
+                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
+                " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
+                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
+                " (3, a, false), (3, a, true)]");
         aeq(triplesAscending(new ArrayList<Integer>(), fromString("abc"), Exhaustive.BOOLEANS), "[]");
         aeq(triplesAscending(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
     }
@@ -151,6 +159,16 @@ public class CombinatoricsTest {
                 " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
                 " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
+        aeq(take(20, quadruplesAscending(
+                Exhaustive.NATURAL_BIG_INTEGERS,
+                fromString("abc"),
+                Exhaustive.BOOLEANS,
+                Exhaustive.ORDERINGS
+        )),
+                "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
+                " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
+                " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
+                " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
         aeq(quadruplesAscending(
                 new ArrayList<Integer>(),
                 fromString("abc"),
@@ -238,6 +256,18 @@ public class CombinatoricsTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
+        aeq(take(20, quintuplesAscending(
+                Exhaustive.NATURAL_BIG_INTEGERS,
+                fromString("abc"),
+                Exhaustive.BOOLEANS,
+                Exhaustive.ORDERINGS,
+                Arrays.asList("yes", "no")
+        )),
+                "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
+                " (0, a, false, GT, yes), (0, a, false, GT, no), (0, a, true, EQ, yes), (0, a, true, EQ, no)," +
+                " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
+                " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
+                " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no)]");
         aeq(quintuplesAscending(
                 new ArrayList<Integer>(),
                 fromString("abc"),
