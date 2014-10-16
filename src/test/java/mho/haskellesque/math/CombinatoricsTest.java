@@ -1153,6 +1153,27 @@ public class CombinatoricsTest {
                 " (6, -1), (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3)]");
     }
 
+    @Test
+    public void testPairs() {
+        aeq(pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d)," +
+                " (3, a), (3, b), (4, a), (4, b), (3, c), (3, d), (4, c), (4, d)]");
+        aeq(pairs(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d)," +
+                " (null, a), (null, b), (4, a), (4, b), (null, c), (null, d), (4, c), (4, d)]");
+        aeq(pairs(new ArrayList<Integer>(), fromString("abcd")), "[]");
+        aeq(pairs(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        aeq(take(20, pairs(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"))),
+                "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b)," +
+                " (3, a), (3, b), (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
+        aeq(take(20, pairs(fromString("abcd"), Exhaustive.NATURAL_BIG_INTEGERS)),
+                "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1)," +
+                " (d, 0), (d, 1), (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
+        aeq(take(20, pairs(Exhaustive.POSITIVE_BIG_INTEGERS, Exhaustive.NEGATIVE_BIG_INTEGERS)),
+                "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2)," +
+                " (4, -1), (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
