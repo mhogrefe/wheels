@@ -1,5 +1,6 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.math.BasicMath;
 import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,7 @@ import java.util.*;
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.cons;
 import static mho.haskellesque.math.Combinatorics.*;
+import static mho.haskellesque.ordering.Ordering.*;
 
 /**
  * <tt>Iterable</tt>s that contain all (or some important subset) of a type's values. These are useful for exhaustive
@@ -30,9 +32,9 @@ public class Exhaustive {
      * Length is 3
      */
     public static final @NotNull List<Ordering> ORDERINGS_ASCENDING = Arrays.asList(
-            Ordering.LT,
-            Ordering.EQ,
-            Ordering.GT
+            LT,
+            EQ,
+            GT
     );
 
     /**
@@ -40,7 +42,7 @@ public class Exhaustive {
      *
      * Length is 3
      */
-    public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(Ordering.EQ, Ordering.LT, Ordering.GT);
+    public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(EQ, LT, GT);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.
@@ -252,66 +254,33 @@ public class Exhaustive {
      *
      * Length is 2<sup>16</sup>
      */
-    public static final @NotNull Iterable<Character> CHARACTERS =
-            concat(Arrays.asList(
-                    range('a', 'z'),
-                    range('A', 'Z'),
-                    range('0', '9'),
-                    range('!', '/'),            // printable non-alphanumeric ASCII...
-                    range(':', '@'),            // ...
-                    range('[', '`'),            // ...
-                    range('{', '~'),            // ...
-                    range((char) 0, (char) 32), // non-printable and whitespace ASCII
-                    range((char) 127)           // DEL and non-ASCII
+    public static final @NotNull Iterable<Character> CHARACTERS = concat(Arrays.asList(
+            range('a', 'z'),
+            range('A', 'Z'),
+            range('0', '9'),
+            range('!', '/'),            // printable non-alphanumeric ASCII...
+            range(':', '@'),            // ...
+            range('[', '`'),            // ...
+            range('{', '~'),            // ...
+            range((char) 0, (char) 32), // non-printable and whitespace ASCII
+            range((char) 127)           // DEL and non-ASCII
     ));
 
-    public static final Iterable<Float> FLOATS_ASCENDING = () -> new Iterator<Float>() {
-        private Float next = Float.NEGATIVE_INFINITY;
+    //2^32-2^24+3
+    public static final Iterable<Float> FLOATS_ASCENDING =
+            concat((Iterable<Iterable<Float>>) Arrays.asList(
+                    stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, Float.NEGATIVE_INFINITY)),
+                    Arrays.asList(-0.0f, Float.NaN, 0.0f),
+                    stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(Numbers::successor, Float.MIN_VALUE))
+            ));
 
-        @Override
-        public boolean hasNext() {
-            return next != null;
-        }
-
-        @Override
-        public Float next() {
-            Float current = next;
-            if (next > 0 && Float.isInfinite(next)) {
-                next = null;
-            } else if (next.equals(Float.valueOf(-0.0f))) {
-                next = Float.NaN;
-            } else if (Float.isNaN(next)) {
-                next = 0f;
-            } else {
-                next = Numbers.successor(next);
-            }
-            return current;
-        }
-    };
-
-    public static final Iterable<Double> DOUBLES_ASCENDING = () -> new Iterator<Double>() {
-        private Double next = Double.NEGATIVE_INFINITY;
-
-        @Override
-        public boolean hasNext() {
-            return next != null;
-        }
-
-        @Override
-        public Double next() {
-            Double current = next;
-            if (next > 0 && Double.isInfinite(next)) {
-                next = null;
-            } else if (next.equals(Double.valueOf(-0.0))) {
-                next = Double.NaN;
-            } else if (Double.isNaN(next)) {
-                next = 0.0;
-            } else {
-                next = Numbers.successor(next);
-            }
-            return current;
-        }
-    };
+    //2^64-2^53+3
+    public static final Iterable<Double> DOUBLES_ASCENDING =
+            concat((Iterable<Iterable<Double>>) Arrays.asList(
+                    stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, Double.NEGATIVE_INFINITY)),
+                    Arrays.asList(-0.0, Double.NaN, 0.0),
+                    stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(Numbers::successor, Double.MIN_VALUE))
+            ));
 
     public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
         return map(list -> (ArrayList<T>) list, lists(size, xs));
