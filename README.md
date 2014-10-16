@@ -6,5 +6,5 @@ Some Haskell-inspired functionality for Java. Including all of Data.List impleme
 Status
 ----------
 
-So far, only the Pair and Triple classes are fully documented and tested. Everything else is a work in progress.
-However, if a particular method has JavaDoc and a corresponding test method, it is safe to use.
+So far, only the Pair, Triple, and Quadruple classes are fully documented and tested. Everything else is a work in
+progress. However, if a particular method has JavaDoc and a corresponding test method, it is safe to use.

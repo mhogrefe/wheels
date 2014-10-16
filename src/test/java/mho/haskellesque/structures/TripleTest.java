@@ -77,7 +77,7 @@ public class TripleTest {
         Triple.TripleComparator<String, Integer, Boolean> pc = new Triple.TripleComparator<>();
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), 0);
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", null, true)), 1);
+        aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, null)), 1);
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, true)), 1);
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 4, true)), 1);
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, null)), 1);
@@ -140,7 +140,7 @@ public class TripleTest {
         aeq(pc.compare(new Triple<>(null, 3, true), new Triple<>(null, null, null)), 1);
         aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 3, true)), -1);
         aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 4, true)), -1);
-        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", null, null)), -1);
+        aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("hi", 3, null)), -1);
         aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 3, true)), -1);
         aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 4, true)), -1);
         aeq(pc.compare(new Triple<>(null, 4, true), new Triple<>("bye", 3, null)), -1);
