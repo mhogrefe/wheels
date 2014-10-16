@@ -2565,6 +2565,42 @@ public class IterableUtils {
         return map(f, zip4(as, bs, cs, ds));
     }
 
+    public static <A, B, C, D, E, O> Iterable<O> zipWith5(
+            Function<Quintuple<A, B, C, D, E>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es
+    ) {
+        return map(f, zip5(as, bs, cs, ds, es));
+    }
+
+    public static <A, B, C, D, E, F, O> Iterable<O> zipWith6(
+            Function<Sextuple<A, B, C, D, E, F>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs
+    ) {
+        return map(f, zip6(as, bs, cs, ds, es, fs));
+    }
+
+    public static <A, B, C, D, E, F, G, O> Iterable<O> zipWith6(
+            Function<Septuple<A, B, C, D, E, F, G>, O> f,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs,
+            Iterable<G> gs
+    ) {
+        return map(f, zip7(as, bs, cs, ds, es, fs, gs));
+    }
+
     public static <A, B, O> Iterable<O> zipWithPadded(
             Function<Pair<A, B>, O> f,
             A aPad,
@@ -2599,6 +2635,60 @@ public class IterableUtils {
             Iterable<D> ds
     ) {
         return map(f, zip4Padded(aPad, bPad, cPad, dPad, as, bs, cs, ds));
+    }
+
+    public static <A, B, C, D, E, O> Iterable<O> zipWith5Padded(
+            Function<Quintuple<A, B, C, D, E>, O> f,
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es
+    ) {
+        return map(f, zip5Padded(aPad, bPad, cPad, dPad, ePad, as, bs, cs, ds, es));
+    }
+
+    public static <A, B, C, D, E, F, O> Iterable<O> zipWith6Padded(
+            Function<Sextuple<A, B, C, D, E, F>, O> f,
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            F fPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs
+    ) {
+        return map(f, zip6Padded(aPad, bPad, cPad, dPad, ePad, fPad, as, bs, cs, ds, es, fs));
+    }
+
+    public static <A, B, C, D, E, F, G, O> Iterable<O> zipWith7Padded(
+            Function<Septuple<A, B, C, D, E, F, G>, O> f,
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            E ePad,
+            F fPad,
+            G gPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs,
+            Iterable<G> gs
+    ) {
+        return map(f, zip7Padded(aPad, bPad, cPad, dPad, ePad, fPad, gPad, as, bs, cs, ds, es, fs, gs));
     }
 
     public static <A, B> Pair<Iterable<A>, Iterable<B>> unzip(Iterable<Pair<A, B>> ps) {
