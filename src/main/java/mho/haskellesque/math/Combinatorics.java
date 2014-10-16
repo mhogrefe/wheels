@@ -545,8 +545,8 @@ public class Combinatorics {
     }
 
     /**
-     * Given an <tt>Iterable</tt>, returns all pairs of elements from the <tt>Iterable</tt> in such a way that the
-     * first component of the pairs grows linearly but the second grows logarithmically (hence the name).
+     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * linearly but the second grows logarithmically (hence the name).
      *
      * <ul>
      *  <li><tt>xs</tt> is non-null.</li>
@@ -635,14 +635,13 @@ public class Combinatorics {
     }
 
     /**
-     * Given two <tt>Iterable</tt>s, returns all pairs of elements from the <tt>Iterable</tt>s in such a way that the
-     * first component, taken from the first <tt>Iterable</tt>, of the pairs grows linearly but the second, taken from
-     * the second <tt>Iterable</tt>, grows logarithmically.
+     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * linearly but the second grows logarithmically.
      *
      * <ul>
      *  <li><tt>as</tt> is non-null.</li>
      *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>.
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
      *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
      *  <tt>Iterable</tt>s.</li>
@@ -663,6 +662,26 @@ public class Combinatorics {
         return pairsByFunction(BasicMath::logarithmicDemux, as, bs);
     }
 
+    /**
+     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that both components grow as the
+     * square root of the number of pairs iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
+     *  The elements are ordered by following a Z-curve through the pair space. The curve is computed by
+     *  un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt>
+     */
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return pairsByFunction(
                 bi -> {
@@ -674,6 +693,29 @@ public class Combinatorics {
         );
     }
 
+    /**
+     * Returns all triples of elements taken from three <tt>Iterable</tt>s in such a way that all components grow as
+     * the cube root of the number of triples iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li><tt>cs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all triples of elements taken from three <tt>Iterable</tt>s.
+     *  The elements are ordered by following a Z-curve through the triple space. The curve is computed by
+     *  un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the triples are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the triples are selected
+     * @param cs the <tt>Iterable</tt> from which the third components of the triples are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @return all triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
+     */
     public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -721,6 +763,32 @@ public class Combinatorics {
         );
     }
 
+    /**
+     * Returns all quadruples of elements taken from four <tt>Iterable</tt>s in such a way that all components grow as
+     * the fourth root of the number of quadruples iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li><tt>cs</tt> is non-null.</li>
+     *  <li><tt>ds</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all quadruples of elements taken from four
+     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quadruple space. The curve is
+     *  computed by un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the quadruples are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the quadruples are selected
+     * @param cs the <tt>Iterable</tt> from which the third components of the quadruples are selected
+     * @param ds the <tt>Iterable</tt> from which the fourth components of the quadruples are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @return all quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
+     */
     public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -776,6 +844,35 @@ public class Combinatorics {
         );
     }
 
+    /**
+     * Returns all quintuples of elements taken from five <tt>Iterable</tt>s in such a way that all components grow as
+     * the fifth root of the number of quintuples iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li><tt>cs</tt> is non-null.</li>
+     *  <li><tt>ds</tt> is non-null.</li>
+     *  <li><tt>es</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all quintuples of elements taken from five
+     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quintuple space. The curve is
+     *  computed by un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the quintuples are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the quintuples are selected
+     * @param cs the <tt>Iterable</tt> from which the third components of the quintuples are selected
+     * @param ds the <tt>Iterable</tt> from which the fourth components of the quintuples are selected
+     * @param es the <tt>Iterable</tt> from which the fifth components of the quintuples are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @return all quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and <tt>es</tt>
+     */
     public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -845,6 +942,39 @@ public class Combinatorics {
         );
     }
 
+    /**
+     * Returns all sextuples of elements taken from six <tt>Iterable</tt>s in such a way that all components grow as
+     * the sixth root of the number of sextuples iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li><tt>cs</tt> is non-null.</li>
+     *  <li><tt>ds</tt> is non-null.</li>
+     *  <li><tt>es</tt> is non-null.</li>
+     *  <li><tt>fs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all sextuples of elements taken from six <tt>Iterable</tt>s.
+     *  The elements are ordered by following a Z-curve through the sextuple space. The curve is computed by
+     *  un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the sextuples are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the sextuples are selected
+     * @param cs the <tt>Iterable</tt> from which the third components of the sextuples are selected
+     * @param ds the <tt>Iterable</tt> from which the fourth components of the sextuples are selected
+     * @param es the <tt>Iterable</tt> from which the fifth components of the sextuples are selected
+     * @param fs the <tt>Iterable</tt> from which the sixth components of the sextuples are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
+     * @return all sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>, and
+     * <tt>fs</tt>
+     */
     public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -923,6 +1053,42 @@ public class Combinatorics {
         );
     }
 
+    /**
+     * Returns all septuples of elements taken from seven <tt>Iterable</tt>s in such a way that all components grow as
+     * the seventh root of the number of septuples iterated.
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li><tt>cs</tt> is non-null.</li>
+     *  <li><tt>ds</tt> is non-null.</li>
+     *  <li><tt>es</tt> is non-null.</li>
+     *  <li><tt>fs</tt> is non-null.</li>
+     *  <li><tt>gs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all septuples of elements taken from seven
+     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the septuple space. The curve is
+     *  computed by un-interleaving bits of successive integers.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the septuples are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the septuples are selected
+     * @param cs the <tt>Iterable</tt> from which the third components of the septuples are selected
+     * @param ds the <tt>Iterable</tt> from which the fourth components of the septuples are selected
+     * @param es the <tt>Iterable</tt> from which the fifth components of the septuples are selected
+     * @param fs the <tt>Iterable</tt> from which the sixth components of the septuples are selected
+     * @param gs the <tt>Iterable</tt> from which the seventh components of the septuples are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @param <C> the type of the third <tt>Iterable</tt>'s elements
+     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
+     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
+     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
+     * @param <G> the type of the seventh <tt>Iterable</tt>'s elements
+     * @return all septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
+     * <tt>fs</tt>, and <tt>gs</tt>
+     */
     public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
