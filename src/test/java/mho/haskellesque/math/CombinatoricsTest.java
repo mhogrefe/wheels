@@ -1174,6 +1174,41 @@ public class CombinatoricsTest {
                 " (4, -1), (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
     }
 
+    @Test
+    public void testTriples() {
+        aeq(triples(Arrays.asList(1, 2, 3), fromString("abc"), Exhaustive.BOOLEANS),
+                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
+                " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
+                " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
+        aeq(triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), Exhaustive.BOOLEANS),
+                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
+                " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (1, d, false), (1, d, true)," +
+                " (2, c, false), (2, c, true), (2, d, false), (2, d, true), (null, a, false), (null, a, true)," +
+                " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
+                " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
+                " (4, c, true), (4, d, false), (4, d, true)]");
+        aeq(triples(new ArrayList<Integer>(), fromString("abcd"), Exhaustive.BOOLEANS), "[]");
+        aeq(triples(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
+        aeq(take(20, triples(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"), Exhaustive.BOOLEANS)),
+                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
+                " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
+                " (1, c, false), (1, c, true), (1, d, false), (1, d, true), (2, a, false), (2, a, true)," +
+                " (2, b, false), (2, b, true)]");
+        aeq(take(20, triples(fromString("abcd"), Exhaustive.BOOLEANS, Exhaustive.NATURAL_BIG_INTEGERS)),
+                "[(a, false, 0), (a, false, 1), (a, true, 0), (a, true, 1), (b, false, 0), (b, false, 1)," +
+                " (b, true, 0), (b, true, 1), (a, false, 2), (a, false, 3), (a, true, 2), (a, true, 3)," +
+                " (b, false, 2), (b, false, 3), (b, true, 2), (b, true, 3), (c, false, 0), (c, false, 1)," +
+                " (c, true, 0), (c, true, 1)]");
+        aeq(take(20, triples(
+                Exhaustive.POSITIVE_BIG_INTEGERS,
+                Exhaustive.NEGATIVE_BIG_INTEGERS,
+                Exhaustive.CHARACTERS
+        )),
+                "[(1, -1, a), (1, -1, b), (1, -2, a), (1, -2, b), (2, -1, a), (2, -1, b), (2, -2, a), (2, -2, b)," +
+                " (1, -1, c), (1, -1, d), (1, -2, c), (1, -2, d), (2, -1, c), (2, -1, d), (2, -2, c), (2, -2, d)," +
+                " (1, -3, a), (1, -3, b), (1, -4, a), (1, -4, b)]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
