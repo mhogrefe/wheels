@@ -10,9 +10,9 @@ public class TripleTest {
         aeq(new Triple<>("hi", 3, true).a, "hi");
         aeq(new Triple<>("hi", 3, true).b, 3);
         aeq(new Triple<>("hi", 3, true).c, true);
-        aeq(new Triple<>("hi", null, true).a, "hi");
-        assertNull(new Triple<>("hi", null, true).b);
-        aeq(new Triple<>("hi", null, true).c, true);
+        aeq(new Triple<>("hi", 3, null).a, "hi");
+        aeq(new Triple<>("hi", 3, null).b, 3);
+        assertNull(new Triple<>("hi", 3, null).c);
         assertNull(new Triple<>(null, 3, true).a);
         aeq(new Triple<>(null, 3, true).b, 3);
         aeq(new Triple<>(null, 3, true).c, true);

@@ -11,10 +11,10 @@ public class QuadrupleTest {
         aeq(new Quadruple<>("hi", 3, true, 'a').b, 3);
         aeq(new Quadruple<>("hi", 3, true, 'a').c, true);
         aeq(new Quadruple<>("hi", 3, true, 'a').d, 'a');
-        aeq(new Quadruple<>("hi", null, true, 'a').a, "hi");
-        assertNull(new Quadruple<>("hi", null, true, 'a').b);
-        aeq(new Quadruple<>("hi", null, true, 'a').c, true);
-        aeq(new Quadruple<>("hi", null, true, 'a').d, 'a');
+        aeq(new Quadruple<>("hi", 3, true, null).a, "hi");
+        aeq(new Quadruple<>("hi", 3, true, null).b, 3);
+        aeq(new Quadruple<>("hi", 3, true, null).c, true);
+        assertNull(new Quadruple<>("hi", 3, true, null).d);
         assertNull(new Quadruple<>(null, 3, true, 'a').a);
         aeq(new Quadruple<>(null, 3, true, 'a').b, 3);
         aeq(new Quadruple<>(null, 3, true, 'a').c, true);
