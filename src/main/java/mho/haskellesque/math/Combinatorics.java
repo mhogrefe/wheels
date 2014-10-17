@@ -721,6 +721,7 @@ public class Combinatorics {
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return new ArrayList<>();
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
@@ -795,6 +796,7 @@ public class Combinatorics {
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     ) {
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return new ArrayList<>();
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
@@ -880,6 +882,7 @@ public class Combinatorics {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     ) {
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return new ArrayList<>();
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
@@ -983,6 +986,14 @@ public class Combinatorics {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     ) {
+        if (
+                isEmpty(as) ||
+                isEmpty(bs) ||
+                isEmpty(cs) ||
+                isEmpty(ds) ||
+                isEmpty(es) ||
+                isEmpty(fs)
+           ) return new ArrayList<>();
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
@@ -1098,6 +1109,15 @@ public class Combinatorics {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     ) {
+        if (
+                isEmpty(as) ||
+                isEmpty(bs) ||
+                isEmpty(cs) ||
+                isEmpty(ds) ||
+                isEmpty(es) ||
+                isEmpty(fs) ||
+                isEmpty(gs)
+           ) return new ArrayList<>();
         CachedIterable<A> aii = new CachedIterable<>(as);
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
