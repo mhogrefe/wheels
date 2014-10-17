@@ -49,28 +49,28 @@ public class Exhaustive {
      *
      * Length is 2<sup>8</sup>
      */
-    public static final @NotNull Iterable<Byte> BYTES_ASCENDING = range(Byte.MIN_VALUE, Byte.MAX_VALUE);
+    public static final @NotNull Iterable<Byte> BYTES_ASCENDING = range(Byte.MIN_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order.
      *
      * Length is 2<sup>16</sup>
      */
-    public static final @NotNull Iterable<Short> SHORTS_ASCENDING = range(Short.MIN_VALUE, Short.MAX_VALUE);
+    public static final @NotNull Iterable<Short> SHORTS_ASCENDING = range(Short.MIN_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order.
      *
      * Length is 2<sup>32</sup>
      */
-    public static final @NotNull Iterable<Integer> INTEGERS_ASCENDING = range(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public static final @NotNull Iterable<Integer> INTEGERS_ASCENDING = range(Integer.MIN_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order.
      *
      * Length is 2<sup>64</sup>
      */
-    public static final @NotNull Iterable<Long> LONGS_ASCENDING = range(Long.MIN_VALUE, Long.MAX_VALUE);
+    public static final @NotNull Iterable<Long> LONGS_ASCENDING = range(Long.MIN_VALUE);
 
     /**
      * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
@@ -183,21 +183,30 @@ public class Exhaustive {
      *
      * Length is 2<sup>8</sup>
      */
-    public static final @NotNull Iterable<Byte> BYTES = cons((byte) 0, mux(Arrays.asList(POSITIVE_BYTES, NEGATIVE_BYTES)));
+    public static final @NotNull Iterable<Byte> BYTES = cons(
+            (byte) 0,
+            mux(Arrays.asList(POSITIVE_BYTES, NEGATIVE_BYTES))
+    );
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Short</tt>s.
      *
      * Length is 2<sup>16</sup>
      */
-    public static final @NotNull Iterable<Short> SHORTS = cons((short) 0, mux(Arrays.asList(POSITIVE_SHORTS, NEGATIVE_SHORTS)));
+    public static final @NotNull Iterable<Short> SHORTS = cons(
+            (short) 0,
+            mux(Arrays.asList(POSITIVE_SHORTS, NEGATIVE_SHORTS))
+    );
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s.
      *
      * Length is 2<sup>32</sup>
      */
-    public static final @NotNull Iterable<Integer> INTEGERS = cons(0, mux(Arrays.asList(POSITIVE_INTEGERS, NEGATIVE_INTEGERS)));
+    public static final @NotNull Iterable<Integer> INTEGERS = cons(
+            0,
+            mux(Arrays.asList(POSITIVE_INTEGERS, NEGATIVE_INTEGERS))
+    );
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Long</tt>s.
@@ -266,12 +275,44 @@ public class Exhaustive {
             range((char) 127)           // DEL and non-ASCII
     ));
 
+    //2^31-2^23-1
+    public static final Iterable<Float> POSITIVE_ORDINARY_FLOATS_ASCENDING =
+            stopAt(f -> f == Float.MAX_VALUE, iterate(Numbers::successor, Float.MIN_VALUE));
+
+    //2^31-2^23-1
+    public static final Iterable<Float> NEGATIVE_ORDINARY_FLOATS_ASCENDING =
+            stopAt(f -> f == -Float.MAX_VALUE, iterate(Numbers::predecessor, -Float.MIN_VALUE));
+
+    //2^32-2^24-1
+    public static final Iterable<Float> ORDINARY_FLOATS_ASCENDING =
+            concat((Iterable<Iterable<Float>>) Arrays.asList(
+                    stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, -Float.MAX_VALUE)),
+                    Arrays.asList(0.0f),
+                    stopAt(f -> f == Float.MAX_VALUE, iterate(Numbers::successor, Float.MIN_VALUE))
+            ));
+
     //2^32-2^24+3
     public static final Iterable<Float> FLOATS_ASCENDING =
             concat((Iterable<Iterable<Float>>) Arrays.asList(
                     stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, Float.NEGATIVE_INFINITY)),
                     Arrays.asList(-0.0f, Float.NaN, 0.0f),
                     stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(Numbers::successor, Float.MIN_VALUE))
+            ));
+
+    //2^63-2^52-1
+    public static final Iterable<Double> POSITIVE_ORDINARY_DOUBLES_ASCENDING =
+            stopAt(d -> d == Double.MAX_VALUE, iterate(Numbers::successor, Double.MIN_VALUE));
+
+    //2^63-2^52-1
+    public static final Iterable<Double> NEGATIVE_ORDINARY_DOUBLES_ASCENDING =
+            stopAt(d -> d == -Double.MAX_VALUE, iterate(Numbers::predecessor, -Double.MIN_VALUE));
+
+    //2^64-2^53-1
+    public static final Iterable<Double> ORDINARY_DOUBLES_ASCENDING =
+            concat((Iterable<Iterable<Double>>) Arrays.asList(
+                    stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, -Double.MAX_VALUE)),
+                    Arrays.asList(0.0),
+                    stopAt(d -> d == Double.MAX_VALUE, iterate(Numbers::successor, Double.MIN_VALUE))
             ));
 
     //2^64-2^53+3
@@ -281,6 +322,52 @@ public class Exhaustive {
                     Arrays.asList(-0.0, Double.NaN, 0.0),
                     stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(Numbers::successor, Double.MIN_VALUE))
             ));
+
+    private static final Iterable<Integer> FLOAT_MANTISSAS = rangeBy(1, 2, 1 << 24);
+
+    private static final Iterable<Integer> FLOAT_EXPONENTS = cons(
+            0,
+            mux(Arrays.asList(range(1, 127), rangeBy(-1, -1, -149)))
+    );
+
+    public static final Iterable<Float> POSITIVE_ORDINARY_FLOATS = map(
+            Optional::get,
+            filter(
+                    Optional::isPresent,
+                    (Iterable<Optional<Float>>) map(
+                            p -> Numbers.floatFromPair(p.a, p.b),
+                            pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
+                    )
+            )
+    );
+
+    public static final Iterable<Float> NEGATIVE_ORDINARY_FLOATS = map(f -> -f, POSITIVE_ORDINARY_FLOATS);
+
+    private static final Iterable<Long> DOUBLE_MANTISSAS = rangeBy(1L, 2, 1L << 53);
+
+    private static final Iterable<Integer> DOUBLE_EXPONENTS = cons(
+            0,
+            mux(Arrays.asList(range(1, 1023), rangeBy(-1, -1, -1074)))
+    );
+
+    public static final Iterable<Double> POSITIVE_ORDINARY_DOUBLES = map(
+            Optional::get,
+            filter(
+                    Optional::isPresent,
+                    (Iterable<Optional<Double>>) map(
+                            p -> Numbers.doubleFromPair(p.a, p.b),
+                            pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
+                    )
+            )
+    );
+
+    public static final Iterable<Double> NEGATIVE_ORDINARY_DOUBLES = map(d -> -d, POSITIVE_ORDINARY_DOUBLES);
+
+    public static void main(String[] args) {
+        for (float i : POSITIVE_ORDINARY_FLOATS) {
+            System.out.println(i);
+        }
+    }
 
     public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
         return map(list -> (ArrayList<T>) list, lists(size, xs));
