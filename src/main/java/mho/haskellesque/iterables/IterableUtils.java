@@ -725,7 +725,6 @@ public class IterableUtils {
     /**
      * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>String</tt> into another by applying a
      * function to each character. Uses O(n) additional memory, where n is the length of the input string.
-     * additional memory.
      *
      * <ul>
      *  <li><tt>f</tt> must be non-null.</li>
