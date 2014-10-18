@@ -152,28 +152,28 @@ public class Exhaustive {
     public static final @NotNull Iterable<Byte> NATURAL_BYTES = range((byte) 0);
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s.
+     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s (including 0).
      *
      * Length is 2<sup>15</sup> = 32,768
      */
     public static final @NotNull Iterable<Short> NATURAL_SHORTS = range((short) 0);
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s.
+     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s (including 0).
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
     public static final @NotNull Iterable<Integer> NATURAL_INTEGERS = range(0);
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s.
+     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s (including 0).
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
     public static final @NotNull Iterable<Long> NATURAL_LONGS = range(0L);
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s.
+     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s (including 0).
      *
      * Length is infinite
      */
@@ -320,6 +320,71 @@ public class Exhaustive {
             ));
 
     /**
+     * An <tt>Iterable</tt> that contains all possible positive float mantissas. A float's mantissa is the unique odd
+     * integer that, when multiplied by a power of 2, equals the float.
+     *
+     * Length is 2<sup>23</sup> = 8,388,608
+     */
+    private static final Iterable<Integer> FLOAT_MANTISSAS = rangeBy(1, 2, 1 << 24);
+
+    /**
+     * An <tt>Iterable</tt> that contains all possible float exponents. A positive float's exponent is the base-2
+     * logarithm of the float divided by its mantissa.
+     *
+     * Length is 2<sup>8</sup>+23&#x2212;2 = 277
+     */
+    private static final Iterable<Integer> FLOAT_EXPONENTS = cons(
+            0,
+            mux(Arrays.asList(range(1, 127), rangeBy(-1, -1, -149)))
+    );
+
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive floats.
+     *
+     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     */
+    public static final Iterable<Float> POSITIVE_ORDINARY_FLOATS = map(
+            Optional::get,
+            filter(
+                    Optional::isPresent,
+                    (Iterable<Optional<Float>>) map(
+                            p -> Numbers.floatFromPair(p.a, p.b),
+                            pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
+                    )
+            )
+    );
+
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative floats. Negative zero is not
+     * included.
+     *
+     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     */
+    public static final Iterable<Float> NEGATIVE_ORDINARY_FLOATS = map(f -> -f, POSITIVE_ORDINARY_FLOATS);
+
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) floats. Negative zero is not included,
+     * but positive zero is.
+     *
+     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
+     */
+    public static final Iterable<Float> ORDINARY_FLOATS = cons(0.0f, mux(Arrays.asList(
+            POSITIVE_ORDINARY_FLOATS,
+            NEGATIVE_ORDINARY_FLOATS
+    )));
+
+    /**
+     * An <tt>Iterable</tt> that contains all floats. NaN is traditionally unordered, but here it is placed between
+     * negative zero and positive zero.
+     *
+     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
+     */
+    public static final Iterable<Float> FLOATS = concat(
+            Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
+            (Iterable<Float>) tail(ORDINARY_FLOATS)
+    );
+
+    /**
      * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive doubles in ascending order.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
@@ -363,47 +428,6 @@ public class Exhaustive {
             ));
 
     /**
-     * An <tt>Iterable</tt> that contains all possible positive float mantissas. A float's mantissa is the unique odd
-     * integer that, when multiplied by a power of 2, equals the float.
-     *
-     * Length is 2<sup>23</sup> = 8,388,608
-     */
-    private static final Iterable<Integer> FLOAT_MANTISSAS = rangeBy(1, 2, 1 << 24);
-
-    //2^8+23-2 = 277
-    private static final Iterable<Integer> FLOAT_EXPONENTS = cons(
-            0,
-            mux(Arrays.asList(range(1, 127), rangeBy(-1, -1, -149)))
-    );
-
-    //2^31-2^23-1
-    public static final Iterable<Float> POSITIVE_ORDINARY_FLOATS = map(
-            Optional::get,
-            filter(
-                    Optional::isPresent,
-                    (Iterable<Optional<Float>>) map(
-                            p -> Numbers.floatFromPair(p.a, p.b),
-                            pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
-                    )
-            )
-    );
-
-    //2^31-2^23-1
-    public static final Iterable<Float> NEGATIVE_ORDINARY_FLOATS = map(f -> -f, POSITIVE_ORDINARY_FLOATS);
-
-    //2^32-2^24-1
-    public static final Iterable<Float> ORDINARY_FLOATS = cons(0.0f, mux(Arrays.asList(
-            POSITIVE_ORDINARY_FLOATS,
-            NEGATIVE_ORDINARY_FLOATS
-    )));
-
-    //2^32-2^24+3
-    public static final Iterable<Float> FLOATS = concat(
-            Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
-            (Iterable<Float>) tail(ORDINARY_FLOATS)
-    );
-
-    /**
      * An <tt>Iterable</tt> that contains all possible positive double mantissas. A double's mantissa is the unique odd
      * integer that, when multiplied by a power of 2, equals the double.
      *
@@ -411,13 +435,22 @@ public class Exhaustive {
      */
     private static final Iterable<Long> DOUBLE_MANTISSAS = rangeBy(1L, 2, 1L << 53);
 
-    //2^11+52-2 = 2098
+    /**
+     * An <tt>Iterable</tt> that contains all possible double exponents. A positive double's exponent is the base-2
+     * logarithm of the double divided by its mantissa.
+     *
+     * Length is 2<sup>11</sup>+52&#x2212;2 = 2,098
+     */
     private static final Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
             mux(Arrays.asList(range(1, 1023), rangeBy(-1, -1, -1074)))
     );
 
-    //2^63-2^52-1
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive doubles.
+     *
+     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     */
     public static final Iterable<Double> POSITIVE_ORDINARY_DOUBLES = map(
             Optional::get,
             filter(
@@ -429,16 +462,31 @@ public class Exhaustive {
             )
     );
 
-    //2^63-2^52-1
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative doubles in ascending order.
+     * Negative zero is not included.
+     *
+     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     */
     public static final Iterable<Double> NEGATIVE_ORDINARY_DOUBLES = map(d -> -d, POSITIVE_ORDINARY_DOUBLES);
 
-    //2^64-2^53-1
+    /**
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) doubles in ascending order. Negative zero
+     * is not included, but positive zero is.
+     *
+     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
+     */
     public static final Iterable<Double> ORDINARY_DOUBLES = cons(0.0, mux(Arrays.asList(
             POSITIVE_ORDINARY_DOUBLES,
             NEGATIVE_ORDINARY_DOUBLES
     )));
 
-    //2^64-2^53+3
+    /**
+     * An <tt>Iterable</tt> that contains all doubles in ascending order. NaN is traditionally unordered, but here it
+     * is placed between negative zero and positive zero.
+     *
+     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
+     */
     public static final Iterable<Double> DOUBLES = concat(
             Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
             (Iterable<Double>) tail(ORDINARY_DOUBLES)
