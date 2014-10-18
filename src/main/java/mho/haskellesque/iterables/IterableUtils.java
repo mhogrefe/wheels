@@ -1780,16 +1780,16 @@ public class IterableUtils {
 
     public static <T> Iterable<T> replicate(BigInteger n, T x) {
         return () -> new Iterator<T>() {
-            private BigInteger i = BigInteger.ZERO;
+            private BigInteger bi = BigInteger.ZERO;
 
             @Override
             public boolean hasNext() {
-                return lt(i, n);
+                return lt(bi, n);
             }
 
             @Override
             public T next() {
-                i = i.add(BigInteger.ONE);
+                bi = bi.add(BigInteger.ONE);
                 return x;
             }
         };
@@ -1805,7 +1805,7 @@ public class IterableUtils {
 
     public static String replicate(BigInteger n, char c) {
         StringBuilder sb = new StringBuilder();
-        for (BigInteger i = BigInteger.ZERO; lt(i, n); i = i.add(BigInteger.ONE)) {
+        for (BigInteger bi : range(BigInteger.ONE, n)) {
             sb.append(c);
         }
         return sb.toString();
@@ -1848,17 +1848,17 @@ public class IterableUtils {
 
     public static <T> Iterable<T> take(BigInteger n, Iterable<T> xs) {
         return () -> new Iterator<T>() {
-            private BigInteger i = BigInteger.ZERO;
+            private BigInteger bi = BigInteger.ZERO;
             private final Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
-                return lt(i, n) && xsi.hasNext();
+                return lt(bi, n) && xsi.hasNext();
             }
 
             @Override
             public T next() {
-                i = i.add(BigInteger.ONE);
+                bi = bi.add(BigInteger.ONE);
                 return xsi.next();
             }
         };
@@ -1900,11 +1900,11 @@ public class IterableUtils {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
-                BigInteger i = n;
+                BigInteger bi = n;
                 while (xsi.hasNext()) {
-                    if (le(i, BigInteger.ZERO)) break;
+                    if (le(bi, BigInteger.ZERO)) break;
                     xsi.next();
-                    i = i.subtract(BigInteger.ONE);
+                    bi = bi.subtract(BigInteger.ONE);
                 }
             }
 
@@ -2164,7 +2164,7 @@ public class IterableUtils {
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
         T element = null;
-        for (BigInteger j = BigInteger.ZERO; le(j, i); j = j.add(BigInteger.ONE)) {
+        for (BigInteger j : range(BigInteger.ONE, i)) {
             if (!xsi.hasNext())
                 throw new IndexOutOfBoundsException();
             element = xsi.next();
