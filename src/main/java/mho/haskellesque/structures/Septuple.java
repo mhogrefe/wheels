@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 
 /**
- * An ordered Septuple of values. Any combination of values may be null. If all of the values are immutable, then so
- * is the <tt>Septuple</tt>.
+ * An ordered Septuple of values. Any combination of values may be null. The <tt>Septuple</tt> is immutable iff all of
+ * its values are.
  *
  * @param <A> the type of the first value
  * @param <B> the type of the second value

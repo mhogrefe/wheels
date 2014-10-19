@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 
 /**
- * An ordered pair of values. Either value, or both, may be null. If the two values are immutable, then so is the
- * <tt>Pair</tt>.
+ * An ordered pair of values. Either value, or both, may be null. The <tt>Pair</tt> is immutable iff both of its values
+ * are.
  *
  * @param <A> the type of the first value
  * @param <B> the type of the second value
