@@ -2370,7 +2370,14 @@ public final class IterableUtils {
         };
     }
 
-    public static <A, B, C> Iterable<Triple<A, B, C>> zip3Padded(A aPad, B bPad, C cPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+    public static <A, B, C> Iterable<Triple<A, B, C>> zip3Padded(
+            A aPad,
+            B bPad,
+            C cPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs
+    ) {
         return () -> new Iterator<Triple<A, B, C>>() {
             private final Iterator<A> asi = as.iterator();
             private final Iterator<B> bsi = bs.iterator();
@@ -2391,7 +2398,16 @@ public final class IterableUtils {
         };
     }
 
-    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4Padded(A aPad, B bPad, C cPad, D dPad, Iterable<A> as, Iterable<B> bs, Iterable<C> cs, Iterable<D> ds) {
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4Padded(
+            A aPad,
+            B bPad,
+            C cPad,
+            D dPad,
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
         return () -> new Iterator<Quadruple<A, B, C, D>>() {
             private Iterator<A> asi = as.iterator();
             private Iterator<B> bsi = bs.iterator();
