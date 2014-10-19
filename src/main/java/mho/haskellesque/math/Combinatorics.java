@@ -2,7 +2,6 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
-import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +18,12 @@ import static mho.haskellesque.ordering.Ordering.*;
 /**
  * Various combinatorial functions and <tt>Iterable</tt>s.
  */
-public class Combinatorics {
+public final class Combinatorics {
+    /**
+     * Disallow instantiation
+     */
+    private Combinatorics() {}
+
     /**
      * The factorial function <tt>n</tt>!
      *

@@ -19,7 +19,12 @@ import static mho.haskellesque.ordering.Ordering.*;
  * testing. Nulls are not included by default, but may easily be added via cons. The <tt>Iterable</tt>'s elements are
  * typically in order of increasing complexity, unless otherwise specified. See the test class for examples.
  */
-public class Exhaustive {
+public final class Exhaustive {
+    /**
+     * Disallow instantiation
+     */
+    private Exhaustive() {}
+
     /**
      * An <tt>Iterable</tt> that contains both <tt>Boolean</tt>s.
      *

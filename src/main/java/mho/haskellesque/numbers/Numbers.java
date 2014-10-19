@@ -5,7 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 import java.util.Optional;
 
-public class Numbers {
+public final class Numbers {
+    /**
+     * Disallow instantiation
+     */
+    private Numbers() {}
+
     public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
         if (s.startsWith("0x") || s.startsWith("-0") || s.length() > 1 && s.charAt(0) == '0') return Optional.empty();
         try {

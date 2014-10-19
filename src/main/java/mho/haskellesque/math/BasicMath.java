@@ -9,7 +9,12 @@ import java.util.List;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 
-public class BasicMath {
+public final class BasicMath {
+    /**
+     * Disallow instantiation
+     */
+    private BasicMath() {}
+
     public static int gcd(int x, int y) {
         return positiveGcd(x < 0 ? -x : x, y < 0 ? -y : y);
     }

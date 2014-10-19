@@ -12,7 +12,12 @@ import java.util.function.Predicate;
 
 import static mho.haskellesque.ordering.Ordering.*;
 
-public class IterableUtils {
+public final class IterableUtils {
+    /**
+     * Disallow instantiation
+     */
+    private IterableUtils() {}
+
     /**
      * Adds an <tt>Iterable</tt>'s elements to a <tt>Collection</tt>, in the order that the elements appear in the
      * <tt>Iterable</tt>. Only works for finite <tt>Iterable</tt>s.
