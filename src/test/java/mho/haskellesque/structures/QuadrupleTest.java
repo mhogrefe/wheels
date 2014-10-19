@@ -58,17 +58,6 @@ public class QuadrupleTest {
     }
 
     @Test
-    public void testHashCode() {
-        aeq(new Quadruple<>("hi", 3, true, 'a').hashCode(), 99215380);
-        aeq(new Quadruple<>("hi", 4, true, 'a').hashCode(), 99216341);
-        aeq(new Quadruple<>("bye", 3, true, 'a').hashCode(), -1374514425);
-        aeq(new Quadruple<>("bye", 4, true, 'a').hashCode(), -1374513464);
-        aeq(new Quadruple<>("hi", 3, true, null).hashCode(), 99215283);
-        aeq(new Quadruple<>(null, 3, true, 'a').hashCode(), 41141);
-        aeq(new Quadruple<>(null, null, null, null).hashCode(), 0);
-    }
-
-    @Test
     public void testToString() {
         aeq(new Quadruple<>("hi", 3, true, 'a'), "(hi, 3, true, a)");
         aeq(new Quadruple<>("hi", 3, true, null), "(hi, 3, true, null)");

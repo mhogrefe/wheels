@@ -89,7 +89,7 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>.
+     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff both values' hash codes are.
      *
      * <ul>
      *  <li><tt>this</tt> may be any <tt>Pair</tt>.</li>

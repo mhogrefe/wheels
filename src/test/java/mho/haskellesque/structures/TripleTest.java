@@ -54,17 +54,6 @@ public class TripleTest {
     }
 
     @Test
-    public void testHashCode() {
-        aeq(new Triple<>("hi", 3, true).hashCode(), 3200493);
-        aeq(new Triple<>("hi", 4, true).hashCode(), 3200524);
-        aeq(new Triple<>("bye", 3, true).hashCode(), 94208154);
-        aeq(new Triple<>("bye", 4, true).hashCode(), 94208185);
-        aeq(new Triple<>("hi", 3, null).hashCode(), 3199262);
-        aeq(new Triple<>(null, 3, true).hashCode(), 1324);
-        aeq(new Triple<>(null, null, null).hashCode(), 0);
-    }
-
-    @Test
     public void testToString() {
         aeq(new Triple<>("hi", 3, true), "(hi, 3, true)");
         aeq(new Triple<>("hi", 3, null), "(hi, 3, null)");

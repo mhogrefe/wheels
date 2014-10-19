@@ -117,7 +117,7 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>.
+     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff all values' hash codes are.
      *
      * <ul>
      *  <li><tt>this</tt> may be any <tt>Quadruple</tt>.</li>

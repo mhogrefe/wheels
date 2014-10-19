@@ -168,7 +168,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>.
+     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff all values' hash codes are.
      *
      * <ul>
      *  <li><tt>this</tt> may be any <tt>Septuple</tt>.</li>

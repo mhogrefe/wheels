@@ -73,17 +73,6 @@ public class SextupleTest {
     }
 
     @Test
-    public void testHashCode() {
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).hashCode(), -339294218);
-        aeq(new Sextuple<>("hi", 4, true, 'a', GT, 0.5).hashCode(), -338370697);
-        aeq(new Sextuple<>("bye", 3, true, 'a', GT, 0.5).hashCode(), 745570857);
-        aeq(new Sextuple<>("bye", 4, true, 'a', GT, 0.5).hashCode(), 746494378);
-        aeq(new Sextuple<>("hi", 3, true, 'a', GT, null).hashCode(), -1410938890);
-        aeq(new Sextuple<>(null, 3, true, 'a', GT, 0.5).hashCode(), -1156457385);
-        aeq(new Sextuple<>(null, null, null, null, null, null).hashCode(), 0);
-    }
-
-    @Test
     public void testToString() {
         aeq(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), "(hi, 3, true, a, GT, 0.5)");
         aeq(new Sextuple<>("hi", 3, true, 'a', GT, null), "(hi, 3, true, a, GT, null)");

@@ -50,17 +50,6 @@ public class PairTest {
     }
 
     @Test
-    public void testHashCode() {
-        aeq(new Pair<>("hi", 3).hashCode(), 103202);
-        aeq(new Pair<>("hi", 4).hashCode(), 103203);
-        aeq(new Pair<>("bye", 3).hashCode(), 3038933);
-        aeq(new Pair<>("bye", 4).hashCode(), 3038934);
-        aeq(new Pair<>("hi", null).hashCode(), 103199);
-        aeq(new Pair<>(null, 3).hashCode(), 3);
-        aeq(new Pair<>(null, null).hashCode(), 0);
-    }
-
-    @Test
     public void testToString() {
         aeq(new Pair<>("hi", 3), "(hi, 3)");
         aeq(new Pair<>("hi", null), "(hi, null)");

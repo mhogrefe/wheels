@@ -65,17 +65,6 @@ public class QuintupleTest {
     }
 
     @Test
-    public void testHashCode() {
-        aeq(new Quintuple<>("hi", 3, true, 'a', GT).hashCode(), -322608822);
-        aeq(new Quintuple<>("hi", 4, true, 'a', GT).hashCode(), -322579031);
-        aeq(new Quintuple<>("bye", 3, true, 'a', GT).hashCode(), 1236407479);
-        aeq(new Quintuple<>("bye", 4, true, 'a', GT).hashCode(), 1236437270);
-        aeq(new Quintuple<>("hi", 3, true, 'a', null).hashCode(), -1219290516);
-        aeq(new Quintuple<>(null, 3, true, 'a', GT).hashCode(), 897957065);
-        aeq(new Quintuple<>(null, null, null, null, null).hashCode(), 0);
-    }
-
-    @Test
     public void testToString() {
         aeq(new Quintuple<>("hi", 3, true, 'a', GT), "(hi, 3, true, a, GT)");
         aeq(new Quintuple<>("hi", 3, true, 'a', null), "(hi, 3, true, a, null)");
