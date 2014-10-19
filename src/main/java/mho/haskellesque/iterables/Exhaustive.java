@@ -7,6 +7,7 @@ import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -49,6 +50,22 @@ public final class Exhaustive {
      * Length is 3
      */
     public static final @NotNull List<Ordering> ORDERINGS = Arrays.asList(EQ, LT, GT);
+
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>RoundingModes</tt>s.
+     *
+     * Length is 8
+     */
+    public static final @NotNull List<RoundingMode> ROUNDING_MODES = Arrays.asList(
+            RoundingMode.UNNECESSARY,
+            RoundingMode.UP,
+            RoundingMode.DOWN,
+            RoundingMode.CEILING,
+            RoundingMode.FLOOR,
+            RoundingMode.HALF_UP,
+            RoundingMode.HALF_DOWN,
+            RoundingMode.HALF_EVEN
+    );
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.

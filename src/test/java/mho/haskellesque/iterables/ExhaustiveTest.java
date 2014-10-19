@@ -25,6 +25,11 @@ public class ExhaustiveTest {
     }
 
     @Test
+    public void testRoundingModes() {
+        aeq(ROUNDING_MODES, "[UNNECESSARY, UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN]");
+    }
+
+    @Test
     public void testBytesAscending() {
         assertEquals(length(BYTES_ASCENDING), 256);
         aeq(take(20, BYTES_ASCENDING),
