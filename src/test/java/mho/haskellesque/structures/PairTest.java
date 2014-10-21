@@ -1,7 +1,12 @@
 package mho.haskellesque.structures;
 
+import mho.haskellesque.ordering.Ordering;
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
+import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class PairTest {
@@ -15,6 +20,26 @@ public class PairTest {
         aeq(new Pair<>(null, 3).b, 3);
         assertNull(new Pair<>(null, null).a);
         assertNull(new Pair<>(null, null).b);
+    }
+
+    @Test
+    public void testCompare() {
+        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("hi", 3)), EQ);
+        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("hi", 4)), LT);
+        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("bye", 3)), GT);
+        aeq(Pair.compare(new Pair<>("hi", 3), new Pair<>("bye", 4)), GT);
+        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("hi", 3)), GT);
+        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("hi", 4)), EQ);
+        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("bye", 3)), GT);
+        aeq(Pair.compare(new Pair<>("hi", 4), new Pair<>("bye", 4)), GT);
+        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("hi", 3)), LT);
+        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("hi", 4)), LT);
+        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("bye", 3)), EQ);
+        aeq(Pair.compare(new Pair<>("bye", 3), new Pair<>("bye", 4)), LT);
+        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("hi", 3)), LT);
+        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("hi", 4)), LT);
+        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("bye", 3)), GT);
+        aeq(Pair.compare(new Pair<>("bye", 4), new Pair<>("bye", 4)), EQ);
     }
 
     @Test
@@ -59,7 +84,10 @@ public class PairTest {
 
     @Test
     public void testPairComparator_compare() {
-        Pair.PairComparator<String, Integer> pc = new Pair.PairComparator<>();
+        Pair.PairComparator<String, Integer> pc = new Pair.PairComparator<>(
+                NullHandlingComparator.of(Comparator.<String>naturalOrder()),
+                NullHandlingComparator.of(Comparator.<Integer>naturalOrder())
+        );
         aeq(pc.compare(new Pair<>("hi", 3), new Pair<>("hi", 3)), 0);
         aeq(pc.compare(new Pair<>("hi", 3), new Pair<>("hi", 4)), -1);
         aeq(pc.compare(new Pair<>("hi", 3), new Pair<>("hi", null)), 1);

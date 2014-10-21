@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.*;
 
 /**
  * An ordered pair of values. Either value, or both, may be null. The <tt>Pair</tt> is immutable iff both of its values
@@ -43,12 +44,13 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Compares two <tt>Pair</tt>s, provided that <tt>A</tt> and <tt>B</tt> both extend <tt>Comparable</tt>. Either, or
-     * both, of the <tt>Pair</tt>s' components may be null.
+     * Compares two <tt>Pair</tt>s, provided that <tt>A</tt> and <tt>B</tt> both extend <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -58,13 +60,13 @@ public final class Pair<A, B> {
      * @param <B> the type of the second component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull <A extends Comparable<A>, B extends Comparable<B>> Ordering compare(
+    public static @NotNull <A extends Comparable<A>, B extends Comparable<B>> Ordering compare(
             @NotNull Pair<A, B> p,
             @NotNull Pair<A, B> q
     ) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        return Ordering.compare(new NullHandlingComparator<B>(), p.b, q.b);
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        return Ordering.compare(p.b, q.b);
     }
 
     /**
@@ -121,14 +123,39 @@ public final class Pair<A, B> {
     }
 
     /**
-     * A comparator which compares two <tt>Pair</tt>s whose values' types <tt>A</tt> and <tt>B</tt> all implement
-     * <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Pair</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Pair</tt>s' first components
      * @param <B> the type of the <tt>Pair</tt>s' second components
      */
-    public static class PairComparator<A extends Comparable<A>, B extends Comparable<B>>
-            implements Comparator<Pair<A, B>> {
+    public static class PairComparator<A, B> implements Comparator<Pair<A, B>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * Constructs a <tt>PairComparator</tt> from two <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>PairComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         */
+        public PairComparator(@NotNull Comparator<A> aComparator, @NotNull Comparator<B> bComparator) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+        }
+
         /**
          * Compares two <tt>Pair</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than", or
          * "equal to", respectively. Either, or both, of the <tt>Pair</tt>s' components may be null.
@@ -136,6 +163,8 @@ public final class Pair<A, B> {
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -145,7 +174,9 @@ public final class Pair<A, B> {
          */
         @Override
         public int compare(@NotNull Pair<A, B> p, @NotNull Pair<A, B> q) {
-            return Pair.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            return Ordering.compare(bComparator, p.b, q.b).toInt();
         }
     }
 }
