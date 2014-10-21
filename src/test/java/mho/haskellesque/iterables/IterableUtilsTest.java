@@ -1,10 +1,8 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.ordering.NullHandlingComparator;
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
-import java.math.BigInteger;
-import java.text.ParseException;
 import java.util.*;
 import java.util.function.Function;
 

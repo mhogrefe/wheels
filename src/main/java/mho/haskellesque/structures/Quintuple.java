@@ -1,6 +1,6 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.NullHandlingComparator;
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
