@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.EQ;
 
 /**
  * An ordered triple of values. Any combination of values may be null. The <tt>Triple</tt> is immutable iff all of its
@@ -52,12 +53,15 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * Compares two <tt>Triple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> all extend
-     * <tt>Comparable</tt>. Any combination of the <tt>Triple</tt>s' components may be null.
+     * Compares two <tt>Triple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> all implement
+     * <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -68,16 +72,19 @@ public final class Triple<A, B, C> {
      * @param <C> the type of the third component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull <
-                A extends Comparable<A>,
-                B extends Comparable<B>,
-                C extends Comparable<C>
-            > Ordering compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
-        if (bOrdering != Ordering.EQ) return bOrdering;
-        return Ordering.compare(new NullHandlingComparator<C>(), p.c, q.c);
+    public static @NotNull <
+            A extends Comparable<A>,
+            B extends Comparable<B>,
+            C extends Comparable<C>
+            > Ordering compare(
+            @NotNull Triple<A, B, C> p,
+            @NotNull Triple<A, B, C> q
+    ) {
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        Ordering bOrdering = Ordering.compare(p.b, q.b);
+        if (bOrdering != EQ) return bOrdering;
+        return Ordering.compare(p.c, q.c);
     }
 
     /**
@@ -136,25 +143,62 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * A comparator which compares two <tt>Triple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> all
-     * implement <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Triple</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Triple</tt>s' first components
      * @param <B> the type of the <tt>Triple</tt>s' second components
      * @param <C> the type of the <tt>Triple</tt>s' third components
      */
-    public static class TripleComparator<
-                A extends Comparable<A>,
-                B extends Comparable<B>,
-                C extends Comparable<C>
-            > implements Comparator<Triple<A, B, C>> {
+    public static class TripleComparator<A, B, C> implements Comparator<Triple<A, B, C>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The second component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * The third component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<C> cComparator;
+
+        /**
+         * Constructs a <tt>TripleComparator</tt> from three <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li><tt>cComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>TripleComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param cComparator the third component's <tt>Comparator</tt>
+         */
+        public TripleComparator(
+                @NotNull Comparator<A> aComparator,
+                @NotNull Comparator<B> bComparator,
+                @NotNull Comparator<C> cComparator
+        ) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+            this.cComparator = cComparator;
+        }
+
         /**
          * Compares two <tt>Triple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively. Any combination of the <tt>Triple</tt>s' components may be null.
+         * "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
+         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -164,7 +208,11 @@ public final class Triple<A, B, C> {
          */
         @Override
         public int compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {
-            return Triple.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            Ordering bOrdering = Ordering.compare(bComparator, p.b, q.b);
+            if (bOrdering != EQ) return bOrdering.toInt();
+            return Ordering.compare(cComparator, p.c, q.c).toInt();
         }
     }
 }

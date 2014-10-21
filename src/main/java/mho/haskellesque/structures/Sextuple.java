@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.EQ;
 
 /**
  * An ordered Sextuple of values. Any combination of values may be null. The <tt>Sextuple</tt> is immutable iff all of
@@ -79,12 +80,18 @@ public final class Sextuple<A, B, C, D, E, F> {
     }
 
     /**
-     * Compares two <tt>Sextuple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, and
-     * <tt>F</tt> all extend <tt>Comparable</tt>. Any combination of the <tt>Sextuple</tt>s' components may be null.
+     * Compares two <tt>Sextuples</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>, and
+     * <tt>F</tt> all implement <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -98,26 +105,28 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param <F> the type of the sixth component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull
-    <
+    public static @NotNull <
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>,
             D extends Comparable<D>,
             E extends Comparable<E>,
             F extends Comparable<F>
-            > Ordering compare(@NotNull Sextuple<A, B, C, D, E, F> p, @NotNull Sextuple<A, B, C, D, E, F> q) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
-        if (bOrdering != Ordering.EQ) return bOrdering;
-        Ordering cOrdering = Ordering.compare(new NullHandlingComparator<>(), p.c, q.c);
-        if (cOrdering != Ordering.EQ) return cOrdering;
-        Ordering dOrdering = Ordering.compare(new NullHandlingComparator<>(), p.d, q.d);
-        if (dOrdering != Ordering.EQ) return dOrdering;
-        Ordering eOrdering = Ordering.compare(new NullHandlingComparator<>(), p.e, q.e);
-        if (eOrdering != Ordering.EQ) return dOrdering;
-        return Ordering.compare(new NullHandlingComparator<>(), p.f, q.f);
+            > Ordering compare(
+            @NotNull Sextuple<A, B, C, D, E, F> p,
+            @NotNull Sextuple<A, B, C, D, E, F> q
+    ) {
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        Ordering bOrdering = Ordering.compare(p.b, q.b);
+        if (bOrdering != EQ) return bOrdering;
+        Ordering cOrdering = Ordering.compare(p.c, q.c);
+        if (cOrdering != EQ) return cOrdering;
+        Ordering dOrdering = Ordering.compare(p.d, q.d);
+        if (dOrdering != EQ) return dOrdering;
+        Ordering eOrdering = Ordering.compare(p.e, q.e);
+        if (eOrdering != EQ) return eOrdering;
+        return Ordering.compare(p.f, q.f);
     }
 
     /**
@@ -182,8 +191,7 @@ public final class Sextuple<A, B, C, D, E, F> {
     }
 
     /**
-     * A comparator which compares two <tt>Sextuple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, <tt>C</tt>,
-     * <tt>D</tt>, <tt>E</tt>, and <tt>F</tt> all implement <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Sextuple</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Sextuple</tt>s' first components
      * @param <B> the type of the <tt>Sextuple</tt>s' second components
@@ -192,21 +200,86 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param <E> the type of the <tt>Sextuple</tt>s' fifth components
      * @param <F> the type of the <tt>Sextuple</tt>s' sixth components
      */
-    public static class SextupleComparator<
-            A extends Comparable<A>,
-            B extends Comparable<B>,
-            C extends Comparable<C>,
-            D extends Comparable<D>,
-            E extends Comparable<E>,
-            F extends Comparable<F>
-            > implements Comparator<Sextuple<A, B, C, D, E, F>> {
+    public static class SextupleComparator<A, B, C, D, E, F> implements Comparator<Sextuple<A, B, C, D, E, F>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The second component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * The third component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<C> cComparator;
+
+        /**
+         * The fourth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<D> dComparator;
+
+        /**
+         * The fifth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<E> eComparator;
+
+        /**
+         * The sixth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<F> fComparator;
+
+        /**
+         * Constructs a <tt>SextupleComparator</tt> from six <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li><tt>cComparator</tt> must be non-null.</li>
+         *  <li><tt>dComparator</tt> must be non-null.</li>
+         *  <li><tt>eComparator</tt> must be non-null.</li>
+         *  <li><tt>fComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>SextupleComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param cComparator the third component's <tt>Comparator</tt>
+         * @param dComparator the fourth component's <tt>Comparator</tt>
+         * @param eComparator the fifth component's <tt>Comparator</tt>
+         * @param fComparator the sixth component's <tt>Comparator</tt>
+         */
+        public SextupleComparator(
+                @NotNull Comparator<A> aComparator,
+                @NotNull Comparator<B> bComparator,
+                @NotNull Comparator<C> cComparator,
+                @NotNull Comparator<D> dComparator,
+                @NotNull Comparator<E> eComparator,
+                @NotNull Comparator<F> fComparator
+        ) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+            this.cComparator = cComparator;
+            this.dComparator = dComparator;
+            this.eComparator = eComparator;
+            this.fComparator = fComparator;
+        }
+
         /**
          * Compares two <tt>Sextuple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively. Any combination of the <tt>Sextuple</tt>s' components may be null.
+         * or "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
+         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
+         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
+         *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by <tt>eComparator</tt>.</li>
+         *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by <tt>fComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -216,7 +289,17 @@ public final class Sextuple<A, B, C, D, E, F> {
          */
         @Override
         public int compare(@NotNull Sextuple<A, B, C, D, E, F> p, @NotNull Sextuple<A, B, C, D, E, F> q) {
-            return Sextuple.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            Ordering bOrdering = Ordering.compare(bComparator, p.b, q.b);
+            if (bOrdering != EQ) return bOrdering.toInt();
+            Ordering cOrdering = Ordering.compare(cComparator, p.c, q.c);
+            if (cOrdering != EQ) return cOrdering.toInt();
+            Ordering dOrdering = Ordering.compare(dComparator, p.d, q.d);
+            if (dOrdering != EQ) return dOrdering.toInt();
+            Ordering eOrdering = Ordering.compare(eComparator, p.e, q.e);
+            if (eOrdering != EQ) return eOrdering.toInt();
+            return Ordering.compare(fComparator, p.f, q.f).toInt();
         }
     }
 }

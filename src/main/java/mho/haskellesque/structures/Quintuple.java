@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.EQ;
 
 /**
  * An ordered Quintuple of values. Any combination of values may be null. The <tt>Quintuple</tt> is immutable iff all
@@ -70,12 +71,17 @@ public final class Quintuple<A, B, C, D, E> {
     }
 
     /**
-     * Compares two <tt>Quintuple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt> and <tt>E</tt>
-     * all extend <tt>Comparable</tt>. Any combination of the <tt>Quintuple</tt>s' components may be null.
+     * Compares two <tt>Quintuples</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, and <tt>E</tt>
+     * all implement <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -88,23 +94,25 @@ public final class Quintuple<A, B, C, D, E> {
      * @param <E> the type of the fifth component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull
-    <
+    public static @NotNull <
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>,
             D extends Comparable<D>,
             E extends Comparable<E>
-            > Ordering compare(@NotNull Quintuple<A, B, C, D, E> p, @NotNull Quintuple<A, B, C, D, E> q) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
-        if (bOrdering != Ordering.EQ) return bOrdering;
-        Ordering cOrdering = Ordering.compare(new NullHandlingComparator<>(), p.c, q.c);
-        if (cOrdering != Ordering.EQ) return cOrdering;
-        Ordering dOrdering = Ordering.compare(new NullHandlingComparator<>(), p.d, q.d);
-        if (dOrdering != Ordering.EQ) return dOrdering;
-        return Ordering.compare(new NullHandlingComparator<>(), p.e, q.e);
+            > Ordering compare(
+            @NotNull Quintuple<A, B, C, D, E> p,
+            @NotNull Quintuple<A, B, C, D, E> q
+    ) {
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        Ordering bOrdering = Ordering.compare(p.b, q.b);
+        if (bOrdering != EQ) return bOrdering;
+        Ordering cOrdering = Ordering.compare(p.c, q.c);
+        if (cOrdering != EQ) return cOrdering;
+        Ordering dOrdering = Ordering.compare(p.d, q.d);
+        if (dOrdering != EQ) return dOrdering;
+        return Ordering.compare(p.e, q.e);
     }
 
     /**
@@ -167,8 +175,7 @@ public final class Quintuple<A, B, C, D, E> {
     }
 
     /**
-     * A comparator which compares two <tt>Quintuple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, <tt>C</tt>,
-     * <tt>D</tt>, and <tt>E</tt> all implement <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Quintuple</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Quintuple</tt>s' first components
      * @param <B> the type of the <tt>Quintuple</tt>s' second components
@@ -176,20 +183,76 @@ public final class Quintuple<A, B, C, D, E> {
      * @param <D> the type of the <tt>Quintuple</tt>s' fourth components
      * @param <E> the type of the <tt>Quintuple</tt>s' fifth components
      */
-    public static class QuintupleComparator<
-            A extends Comparable<A>,
-            B extends Comparable<B>,
-            C extends Comparable<C>,
-            D extends Comparable<D>,
-            E extends Comparable<E>
-            > implements Comparator<Quintuple<A, B, C, D, E>> {
+    public static class QuintupleComparator<A, B, C, D, E> implements Comparator<Quintuple<A, B, C, D, E>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The second component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * The third component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<C> cComparator;
+
+        /**
+         * The fourth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<D> dComparator;
+
+        /**
+         * The fifth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<E> eComparator;
+
+        /**
+         * Constructs a <tt>QuintupleComparator</tt> from five <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li><tt>cComparator</tt> must be non-null.</li>
+         *  <li><tt>dComparator</tt> must be non-null.</li>
+         *  <li><tt>eComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>QuintupleComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param cComparator the third component's <tt>Comparator</tt>
+         * @param dComparator the fourth component's <tt>Comparator</tt>
+         * @param eComparator the fifth component's <tt>Comparator</tt>
+         */
+        public QuintupleComparator(
+                @NotNull Comparator<A> aComparator,
+                @NotNull Comparator<B> bComparator,
+                @NotNull Comparator<C> cComparator,
+                @NotNull Comparator<D> dComparator,
+                @NotNull Comparator<E> eComparator
+        ) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+            this.cComparator = cComparator;
+            this.dComparator = dComparator;
+            this.eComparator = eComparator;
+        }
+
         /**
          * Compares two <tt>Quintuple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively. Any combination of the <tt>Quintuple</tt>s' components may be null.
+         * or "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
+         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
+         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
+         *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by <tt>eComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -199,7 +262,15 @@ public final class Quintuple<A, B, C, D, E> {
          */
         @Override
         public int compare(@NotNull Quintuple<A, B, C, D, E> p, @NotNull Quintuple<A, B, C, D, E> q) {
-            return Quintuple.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            Ordering bOrdering = Ordering.compare(bComparator, p.b, q.b);
+            if (bOrdering != EQ) return bOrdering.toInt();
+            Ordering cOrdering = Ordering.compare(cComparator, p.c, q.c);
+            if (cOrdering != EQ) return cOrdering.toInt();
+            Ordering dOrdering = Ordering.compare(dComparator, p.d, q.d);
+            if (dOrdering != EQ) return dOrdering.toInt();
+            return Ordering.compare(eComparator, p.e, q.e).toInt();
         }
     }
 }

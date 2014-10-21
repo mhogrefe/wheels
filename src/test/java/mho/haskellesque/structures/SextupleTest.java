@@ -1,7 +1,10 @@
 package mho.haskellesque.structures;
 
 import mho.haskellesque.ordering.Ordering;
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
+
+import java.util.Comparator;
 
 import static mho.haskellesque.ordering.Ordering.GT;
 import static org.junit.Assert.*;
@@ -89,7 +92,14 @@ public class SextupleTest {
                 Character,
                 Ordering,
                 Double
-                > pc = new Sextuple.SextupleComparator<>();
+                > pc = new Sextuple.SextupleComparator<>(
+                    NullHandlingComparator.of(Comparator.<String>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Boolean>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Character>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Ordering>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Double>naturalOrder())
+                );
         aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, 0.5)), 0);
         aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
         aeq(pc.compare(new Sextuple<>("hi", 3, true, 'a', GT, 0.5), new Sextuple<>("hi", 3, true, 'a', GT, null)), 1);

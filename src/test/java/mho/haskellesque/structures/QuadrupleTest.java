@@ -1,6 +1,9 @@
 package mho.haskellesque.structures;
 
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
+
+import java.util.Comparator;
 
 import static org.junit.Assert.*;
 
@@ -67,7 +70,12 @@ public class QuadrupleTest {
 
     @Test
     public void testQuadrupleComparator_compare() {
-        Quadruple.QuadrupleComparator<String, Integer, Boolean, Character> pc = new Quadruple.QuadrupleComparator<>();
+        Quadruple.QuadrupleComparator<String, Integer, Boolean, Character> pc = new Quadruple.QuadrupleComparator<>(
+                NullHandlingComparator.of(Comparator.<String>naturalOrder()),
+                NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
+                NullHandlingComparator.of(Comparator.<Boolean>naturalOrder()),
+                NullHandlingComparator.of(Comparator.<Character>naturalOrder())
+        );
         aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), 0);
         aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), -1);
         aeq(pc.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, null)), 1);

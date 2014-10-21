@@ -44,7 +44,7 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Compares two <tt>Pair</tt>s, provided that <tt>A</tt> and <tt>B</tt> both extend <tt>Comparable</tt>.
+     * Compares two <tt>Pair</tt>s, provided that <tt>A</tt> and <tt>B</tt> both implement <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
@@ -135,7 +135,7 @@ public final class Pair<A, B> {
         private final @NotNull Comparator<A> aComparator;
 
         /**
-         * The first component's <tt>Comparator</tt>
+         * The second component's <tt>Comparator</tt>
          */
         private final @NotNull Comparator<B> bComparator;
 
@@ -158,7 +158,7 @@ public final class Pair<A, B> {
 
         /**
          * Compares two <tt>Pair</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively. Either, or both, of the <tt>Pair</tt>s' components may be null.
+         * "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>

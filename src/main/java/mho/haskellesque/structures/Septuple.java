@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.EQ;
 
 /**
  * An ordered Septuple of values. Any combination of values may be null. The <tt>Septuple</tt> is immutable iff all of
@@ -95,13 +96,19 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Compares two <tt>Septuple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>,
-     * <tt>F</tt>, and <tt>G</tt> all extend <tt>Comparable</tt>. Any combination of the <tt>Septuple</tt>s' components
-     * may be null.
+     * Compares two <tt>Septuples</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>,
+     * <tt>F</tt>, and <tt>G</tt> all implement <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.g</tt> and <tt>q.g</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -116,8 +123,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param <G> the type of the seventh component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull
-    <
+    public static @NotNull <
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>,
@@ -125,20 +131,23 @@ public final class Septuple<A, B, C, D, E, F, G> {
             E extends Comparable<E>,
             F extends Comparable<F>,
             G extends Comparable<G>
-            > Ordering compare(@NotNull Septuple<A, B, C, D, E, F, G> p, @NotNull Septuple<A, B, C, D, E, F, G> q) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
-        if (bOrdering != Ordering.EQ) return bOrdering;
-        Ordering cOrdering = Ordering.compare(new NullHandlingComparator<>(), p.c, q.c);
-        if (cOrdering != Ordering.EQ) return cOrdering;
-        Ordering dOrdering = Ordering.compare(new NullHandlingComparator<>(), p.d, q.d);
-        if (dOrdering != Ordering.EQ) return dOrdering;
-        Ordering eOrdering = Ordering.compare(new NullHandlingComparator<>(), p.e, q.e);
-        if (eOrdering != Ordering.EQ) return dOrdering;
-        Ordering fOrdering = Ordering.compare(new NullHandlingComparator<>(), p.f, q.f);
-        if (fOrdering != Ordering.EQ) return dOrdering;
-        return Ordering.compare(new NullHandlingComparator<>(), p.g, q.g);
+            > Ordering compare(
+            @NotNull Septuple<A, B, C, D, E, F, G> p,
+            @NotNull Septuple<A, B, C, D, E, F, G> q
+    ) {
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        Ordering bOrdering = Ordering.compare(p.b, q.b);
+        if (bOrdering != EQ) return bOrdering;
+        Ordering cOrdering = Ordering.compare(p.c, q.c);
+        if (cOrdering != EQ) return cOrdering;
+        Ordering dOrdering = Ordering.compare(p.d, q.d);
+        if (dOrdering != EQ) return dOrdering;
+        Ordering eOrdering = Ordering.compare(p.e, q.e);
+        if (eOrdering != EQ) return eOrdering;
+        Ordering fOrdering = Ordering.compare(p.f, q.f);
+        if (fOrdering != EQ) return fOrdering;
+        return Ordering.compare(p.g, q.g);
     }
 
     /**
@@ -205,8 +214,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * A comparator which compares two <tt>Septuple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, <tt>C</tt>,
-     * <tt>D</tt>, <tt>E</tt>, and <tt>F</tt> all implement <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Septuple</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Septuple</tt>s' first components
      * @param <B> the type of the <tt>Septuple</tt>s' second components
@@ -216,22 +224,96 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param <F> the type of the <tt>Septuple</tt>s' sixth components
      * @param <G> the type of the <tt>Septuple</tt>s' seventh components
      */
-    public static class SeptupleComparator<
-            A extends Comparable<A>,
-            B extends Comparable<B>,
-            C extends Comparable<C>,
-            D extends Comparable<D>,
-            E extends Comparable<E>,
-            F extends Comparable<F>,
-            G extends Comparable<G>
-            > implements Comparator<Septuple<A, B, C, D, E, F, G>> {
+    public static class SeptupleComparator<A, B, C, D, E, F, G> implements Comparator<Septuple<A, B, C, D, E, F, G>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The second component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * The third component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<C> cComparator;
+
+        /**
+         * The fourth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<D> dComparator;
+
+        /**
+         * The fifth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<E> eComparator;
+
+        /**
+         * The sixth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<F> fComparator;
+
+        /**
+         * The seventh component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<G> gComparator;
+
+        /**
+         * Constructs a <tt>SeptupleComparator</tt> from seven <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li><tt>cComparator</tt> must be non-null.</li>
+         *  <li><tt>dComparator</tt> must be non-null.</li>
+         *  <li><tt>eComparator</tt> must be non-null.</li>
+         *  <li><tt>fComparator</tt> must be non-null.</li>
+         *  <li><tt>gComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>SeptupleComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param cComparator the third component's <tt>Comparator</tt>
+         * @param dComparator the fourth component's <tt>Comparator</tt>
+         * @param eComparator the fifth component's <tt>Comparator</tt>
+         * @param fComparator the sixth component's <tt>Comparator</tt>
+         * @param gComparator the seventh component's <tt>Comparator</tt>
+         */
+        public SeptupleComparator(
+                @NotNull Comparator<A> aComparator,
+                @NotNull Comparator<B> bComparator,
+                @NotNull Comparator<C> cComparator,
+                @NotNull Comparator<D> dComparator,
+                @NotNull Comparator<E> eComparator,
+                @NotNull Comparator<F> fComparator,
+                @NotNull Comparator<G> gComparator
+        ) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+            this.cComparator = cComparator;
+            this.dComparator = dComparator;
+            this.eComparator = eComparator;
+            this.fComparator = fComparator;
+            this.gComparator = gComparator;
+        }
+
         /**
          * Compares two <tt>Septuple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively. Any combination of the <tt>Septuple</tt>s' components may be null.
+         * or "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
+         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
+         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
+         *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by <tt>eComparator</tt>.</li>
+         *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by <tt>fComparator</tt>.</li>
+         *  <li><tt>p.g</tt> and <tt>q.g</tt> must be comparable by <tt>gComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -241,7 +323,19 @@ public final class Septuple<A, B, C, D, E, F, G> {
          */
         @Override
         public int compare(@NotNull Septuple<A, B, C, D, E, F, G> p, @NotNull Septuple<A, B, C, D, E, F, G> q) {
-            return Septuple.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            Ordering bOrdering = Ordering.compare(bComparator, p.b, q.b);
+            if (bOrdering != EQ) return bOrdering.toInt();
+            Ordering cOrdering = Ordering.compare(cComparator, p.c, q.c);
+            if (cOrdering != EQ) return cOrdering.toInt();
+            Ordering dOrdering = Ordering.compare(dComparator, p.d, q.d);
+            if (dOrdering != EQ) return dOrdering.toInt();
+            Ordering eOrdering = Ordering.compare(eComparator, p.e, q.e);
+            if (eOrdering != EQ) return eOrdering.toInt();
+            Ordering fOrdering = Ordering.compare(fComparator, p.f, q.f);
+            if (fOrdering != EQ) return fOrdering.toInt();
+            return Ordering.compare(gComparator, p.g, q.g).toInt();
         }
     }
 }

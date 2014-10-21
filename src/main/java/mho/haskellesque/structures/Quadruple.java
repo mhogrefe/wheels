@@ -1,11 +1,12 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+
+import static mho.haskellesque.ordering.Ordering.EQ;
 
 /**
  * An ordered quadruple of values. Any combination of values may be null. The <tt>Quadruple</tt> is immutable iff all
@@ -61,12 +62,16 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * Compares two <tt>Quadruple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, and <tt>D</tt> all extend
-     * <tt>Comparable</tt>. Any combination of the <tt>Quadruple</tt>s' components may be null.
+     * Compares two <tt>Quadruple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, and <tt>D</tt> all implement
+     * <tt>Comparable</tt>.
      *
      * <ul>
      *  <li><tt>p</tt> must be non-null.</li>
      *  <li><tt>q</tt> must be non-null.</li>
+     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -78,19 +83,22 @@ public final class Quadruple<A, B, C, D> {
      * @param <D> the type of the fourth component of <tt>p</tt> and <tt>q</tt>
      * @return how <tt>p</tt> and <tt>q</tt> are ordered
      */
-    private static @NotNull <
+    public static @NotNull <
             A extends Comparable<A>,
             B extends Comparable<B>,
             C extends Comparable<C>,
             D extends Comparable<D>
-            > Ordering compare(@NotNull Quadruple<A, B, C, D> p, @NotNull Quadruple<A, B, C, D> q) {
-        Ordering aOrdering = Ordering.compare(new NullHandlingComparator<>(), p.a, q.a);
-        if (aOrdering != Ordering.EQ) return aOrdering;
-        Ordering bOrdering = Ordering.compare(new NullHandlingComparator<>(), p.b, q.b);
-        if (bOrdering != Ordering.EQ) return bOrdering;
-        Ordering cOrdering = Ordering.compare(new NullHandlingComparator<>(), p.c, q.c);
-        if (cOrdering != Ordering.EQ) return cOrdering;
-        return Ordering.compare(new NullHandlingComparator<D>(), p.d, q.d);
+            > Ordering compare(
+            @NotNull Quadruple<A, B, C, D> p,
+            @NotNull Quadruple<A, B, C, D> q
+    ) {
+        Ordering aOrdering = Ordering.compare(p.a, q.a);
+        if (aOrdering != EQ) return aOrdering;
+        Ordering bOrdering = Ordering.compare(p.b, q.b);
+        if (bOrdering != EQ) return bOrdering;
+        Ordering cOrdering = Ordering.compare(p.c, q.c);
+        if (cOrdering != EQ) return cOrdering;
+        return Ordering.compare(p.d, q.d);
     }
 
     /**
@@ -151,27 +159,73 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * A comparator which compares two <tt>Quadruple</tt>s whose values' types <tt>A</tt>, <tt>B</tt>, <tt>C</tt> and
-     * <tt>D</tt> all implement <tt>Comparable</tt>.
+     * A comparator which compares two <tt>Quadruple</tt>s via <tt>Comparators</tt> provided for each component.
      *
      * @param <A> the type of the <tt>Quadruple</tt>s' first components
      * @param <B> the type of the <tt>Quadruple</tt>s' second components
      * @param <C> the type of the <tt>Quadruple</tt>s' third components
      * @param <D> the type of the <tt>Quadruple</tt>s' fourth components
      */
-    public static class QuadrupleComparator<
-            A extends Comparable<A>,
-            B extends Comparable<B>,
-            C extends Comparable<C>,
-            D extends Comparable<D>
-            > implements Comparator<Quadruple<A, B, C, D>> {
+    public static class QuadrupleComparator<A, B, C, D> implements Comparator<Quadruple<A, B, C, D>> {
+        /**
+         * The first component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<A> aComparator;
+
+        /**
+         * The second component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<B> bComparator;
+
+        /**
+         * The third component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<C> cComparator;
+
+        /**
+         * The fourth component's <tt>Comparator</tt>
+         */
+        private final @NotNull Comparator<D> dComparator;
+
+        /**
+         * Constructs a <tt>QuadrupleComparator</tt> from four <tt>Comparator</tt>s.
+         *
+         * <ul>
+         *  <li><tt>aComparator</tt> must be non-null.</li>
+         *  <li><tt>bComparator</tt> must be non-null.</li>
+         *  <li><tt>cComparator</tt> must be non-null.</li>
+         *  <li><tt>dComparator</tt> must be non-null.</li>
+         *  <li>Any <tt>QuadrupleComparator</tt> may be constructed with this constructor.</li>
+         * </ul>
+         *
+         * @param aComparator the first component's <tt>Comparator</tt>
+         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param cComparator the third component's <tt>Comparator</tt>
+         * @param dComparator the fourth component's <tt>Comparator</tt>
+         */
+        public QuadrupleComparator(
+                @NotNull Comparator<A> aComparator,
+                @NotNull Comparator<B> bComparator,
+                @NotNull Comparator<C> cComparator,
+                @NotNull Comparator<D> dComparator
+        ) {
+            this.aComparator = aComparator;
+            this.bComparator = bComparator;
+            this.cComparator = cComparator;
+            this.dComparator = dComparator;
+        }
+
         /**
          * Compares two <tt>Quadruple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively. Any combination of the <tt>Quadruple</tt>s' components may be null.
+         * or "equal to", respectively.
          *
          * <ul>
          *  <li><tt>p</tt> must be non-null.</li>
          *  <li><tt>q</tt> must be non-null.</li>
+         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
+         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
+         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
+         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
          *  <li>The result is &#x2212;1, 0, or 1.</li>
          * </ul>
          *
@@ -181,7 +235,13 @@ public final class Quadruple<A, B, C, D> {
          */
         @Override
         public int compare(@NotNull Quadruple<A, B, C, D> p, @NotNull Quadruple<A, B, C, D> q) {
-            return Quadruple.compare(p, q).toInt();
+            Ordering aOrdering = Ordering.compare(aComparator, p.a, q.a);
+            if (aOrdering != EQ) return aOrdering.toInt();
+            Ordering bOrdering = Ordering.compare(bComparator, p.b, q.b);
+            if (bOrdering != EQ) return bOrdering.toInt();
+            Ordering cOrdering = Ordering.compare(cComparator, p.c, q.c);
+            if (cOrdering != EQ) return cOrdering.toInt();
+            return Ordering.compare(dComparator, p.d, q.d).toInt();
         }
     }
 }
