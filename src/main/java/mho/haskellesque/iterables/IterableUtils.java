@@ -946,7 +946,7 @@ public final class IterableUtils {
      */
     public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -1016,7 +1016,7 @@ public final class IterableUtils {
      */
     public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -1086,7 +1086,7 @@ public final class IterableUtils {
     public static @NotNull <T> Iterable<Iterable<T>>
     transposePadded(@Nullable T pad, @NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<Iterable<T>>() {
-            private List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -2031,7 +2031,7 @@ public final class IterableUtils {
 
     public static <T> Iterable<Iterable<T>> chunk(int size, Iterable<T> xs) {
         return () -> new Iterator<Iterable<T>>() {
-            private Iterator<T> xsi = xs.iterator();
+            private final Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2073,7 +2073,7 @@ public final class IterableUtils {
 
     public static <T> Iterable<Iterable<T>> chunkPadded(T pad, int size, Iterable<T> xs) {
         return () -> new Iterator<Iterable<T>>() {
-            private Iterator<T> xsi = xs.iterator();
+            private final Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2231,10 +2231,10 @@ public final class IterableUtils {
             Iterable<D> ds
     ) {
         return () -> new Iterator<Quadruple<A, B, C, D>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2256,11 +2256,11 @@ public final class IterableUtils {
             Iterable<E> es
     ) {
         return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2283,12 +2283,12 @@ public final class IterableUtils {
             Iterable<F> fs
     ) {
         return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
-            private Iterator<F> fsi = fs.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
+            private final Iterator<F> fsi = fs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2317,13 +2317,13 @@ public final class IterableUtils {
             Iterable<G> gs
     ) {
         return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
-            private Iterator<F> fsi = fs.iterator();
-            private Iterator<G> gsi = gs.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
+            private final Iterator<F> fsi = fs.iterator();
+            private final Iterator<G> gsi = gs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2409,10 +2409,10 @@ public final class IterableUtils {
             Iterable<D> ds
     ) {
         return () -> new Iterator<Quadruple<A, B, C, D>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2442,11 +2442,11 @@ public final class IterableUtils {
             Iterable<D> ds,
             Iterable<E> es) {
         return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2479,12 +2479,12 @@ public final class IterableUtils {
             Iterable<E> es,
             Iterable<F> fs) {
         return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
-            private Iterator<F> fsi = fs.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
+            private final Iterator<F> fsi = fs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2525,13 +2525,13 @@ public final class IterableUtils {
             Iterable<F> fs,
             Iterable<G> gs) {
         return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
-            private Iterator<A> asi = as.iterator();
-            private Iterator<B> bsi = bs.iterator();
-            private Iterator<C> csi = cs.iterator();
-            private Iterator<D> dsi = ds.iterator();
-            private Iterator<E> esi = es.iterator();
-            private Iterator<F> fsi = fs.iterator();
-            private Iterator<G> gsi = gs.iterator();
+            private final Iterator<A> asi = as.iterator();
+            private final Iterator<B> bsi = bs.iterator();
+            private final Iterator<C> csi = cs.iterator();
+            private final Iterator<D> dsi = ds.iterator();
+            private final Iterator<E> esi = es.iterator();
+            private final Iterator<F> fsi = fs.iterator();
+            private final Iterator<G> gsi = gs.iterator();
 
             @Override
             public boolean hasNext() {

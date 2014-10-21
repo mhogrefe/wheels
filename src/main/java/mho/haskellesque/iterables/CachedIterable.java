@@ -1,7 +1,6 @@
 package mho.haskellesque.iterables;
 
 import mho.haskellesque.structures.NullableOptional;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -10,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class CachedIterable<T> {
-    private Iterator<T> iterator;
-    private List<T> cache;
+    private final Iterator<T> iterator;
+    private final List<T> cache;
     private Integer size;
 
     public CachedIterable(Iterable<T> iterable) {
