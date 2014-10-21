@@ -2,6 +2,7 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
 import mho.haskellesque.iterables.Exhaustive;
+import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -1213,6 +1214,59 @@ public final class Combinatorics {
         );
     }
 
+    public static Iterable<String> strings(int size, Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, lists(size, cs));
+    }
+
+    public static Iterable<String> strings(int size, String s) {
+        return map(IterableUtils::charsToString, lists(size, fromString(s)));
+    }
+
+    public static Iterable<String> strings(int size) {
+        return strings(size, Exhaustive.CHARACTERS);
+    }
+
+    public static @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
+    }
+
+    public static @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
+    }
+
+    public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
+    }
+
+    public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                lists(5, xs)
+        );
+    }
+
+    public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                lists(6, xs)
+        );
+    }
+
+    public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                lists(7, xs)
+        );
+    }
+
     public static <T> Iterable<List<T>> lists(Iterable<T> xs) {
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
@@ -1231,6 +1285,14 @@ public final class Combinatorics {
                         (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
                 )
         );
+    }
+
+    public static Iterable<String> strings(Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, lists(cs));
+    }
+
+    public static Iterable<String> strings(String s) {
+        return map(IterableUtils::charsToString, lists(fromString(s)));
     }
 
     public static <T> Iterable<List<T>> orderedSubsequences(Iterable<T> xs) {

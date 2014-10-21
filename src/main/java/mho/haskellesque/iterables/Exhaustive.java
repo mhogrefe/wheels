@@ -511,6 +511,8 @@ public final class Exhaustive {
             (Iterable<Double>) tail(ORDINARY_DOUBLES)
     );
 
+    public static final Iterable<String> STRINGS = strings(Exhaustive.CHARACTERS);
+
     public static <T> Iterable<ArrayList<T>> arrayLists(int size, Iterable<T> xs) {
         return map(list -> (ArrayList<T>) list, lists(size, xs));
     }
