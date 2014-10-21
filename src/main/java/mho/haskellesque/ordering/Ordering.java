@@ -36,11 +36,7 @@ public enum Ordering {
         return fromInt(a.compareTo(b));
     }
 
-    public static @NotNull <T extends Comparable<T>> Ordering compare(
-            @NotNull Comparator<T> comparator,
-            @Nullable T a,
-            @Nullable T b
-    ) {
+    public static @NotNull <T> Ordering compare(@NotNull Comparator<T> comparator, @Nullable T a, @Nullable T b) {
         return fromInt(comparator.compare(a, b));
     }
 
