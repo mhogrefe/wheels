@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
+import static mho.haskellesque.ordering.Ordering.EQ;
+import static mho.haskellesque.ordering.Ordering.GT;
+import static mho.haskellesque.ordering.Ordering.LT;
 import static org.junit.Assert.*;
 
 public class QuadrupleTest {
@@ -26,6 +29,26 @@ public class QuadrupleTest {
         assertNull(new Quadruple<>(null, null, null, null).b);
         assertNull(new Quadruple<>(null, null, null, null).c);
         assertNull(new Quadruple<>(null, null, null, null).d);
+    }
+
+    @Test
+    public void testCompare() {
+        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), EQ);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), EQ);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("hi", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), EQ);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 3, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 3, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("hi", 4, true, 'a')), LT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 3, true, 'a')), GT);
+        aeq(Quadruple.compare(new Quadruple<>("bye", 4, true, 'a'), new Quadruple<>("bye", 4, true, 'a')), EQ);
     }
 
     @Test

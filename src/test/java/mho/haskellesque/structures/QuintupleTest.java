@@ -35,6 +35,26 @@ public class QuintupleTest {
     }
 
     @Test
+    public void testCompare() {
+        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), EQ);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), EQ);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("hi", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), EQ);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 3, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), LT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 3, true, 'a', GT)), GT);
+        aeq(Quintuple.compare(new Quintuple<>("bye", 4, true, 'a', GT), new Quintuple<>("bye", 4, true, 'a', GT)), EQ);
+    }
+
+    @Test
     public void testEquals() {
         assertTrue(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("hi", 3, true, 'a', GT)));
         assertFalse(new Quintuple<>("hi", 3, true, 'a', GT).equals(new Quintuple<>("hi", 4, true, 'a', GT)));

@@ -6,7 +6,9 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
+import static mho.haskellesque.ordering.Ordering.EQ;
 import static mho.haskellesque.ordering.Ordering.GT;
+import static mho.haskellesque.ordering.Ordering.LT;
 import static org.junit.Assert.*;
 
 public class SextupleTest {
@@ -39,6 +41,74 @@ public class SextupleTest {
     }
 
     @Test
+    public void testCompare() {
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
+        ), EQ);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
+        ), EQ);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
+        ), EQ);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 3, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("hi", 4, true, 'a', GT, 0.5)
+        ), LT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 3, true, 'a', GT, 0.5)
+        ), GT);
+        aeq(Sextuple.compare(
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5),
+                new Sextuple<>("bye", 4, true, 'a', GT, 0.5)
+        ), EQ);
+    }
+
+    @Test
     public void testEquals() {
         assertTrue(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
         assertFalse(new Sextuple<>("hi", 3, true, 'a', GT, 0.5).equals(new Sextuple<>("hi", 4, true, 'a', GT, 0.5)));
@@ -66,9 +136,12 @@ public class SextupleTest {
                 .equals(new Sextuple<>(null, null, null, null, null, null)));
         assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(null));
         assertFalse(new Sextuple<>(null, 3, true, 'a', GT, 0.5).equals(0.5));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
-        assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
+        assertFalse(new Sextuple<>(null, null, null, null, null, null)
+                .equals(new Sextuple<>("hi", 3, true, 'a', GT, 0.5)));
+        assertFalse(new Sextuple<>(null, null, null, null, null, null)
+                .equals(new Sextuple<>("hi", 3, true, 'a', GT, null)));
+        assertFalse(new Sextuple<>(null, null, null, null, null, null)
+                .equals(new Sextuple<>(null, 3, true, 'a', GT, 0.5)));
         assertTrue(new Sextuple<>(null, null, null, null, null, null)
                 .equals(new Sextuple<>(null, null, null, null, null, null)));
         assertFalse(new Sextuple<>(null, null, null, null, null, null).equals(null));

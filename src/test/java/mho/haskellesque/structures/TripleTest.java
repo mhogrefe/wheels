@@ -5,6 +5,9 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
+import static mho.haskellesque.ordering.Ordering.EQ;
+import static mho.haskellesque.ordering.Ordering.GT;
+import static mho.haskellesque.ordering.Ordering.LT;
 import static org.junit.Assert.*;
 
 public class TripleTest {
@@ -22,6 +25,26 @@ public class TripleTest {
         assertNull(new Triple<>(null, null, null).a);
         assertNull(new Triple<>(null, null, null).b);
         assertNull(new Triple<>(null, null, null).c);
+    }
+
+    @Test
+    public void testCompare() {
+        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), EQ);
+        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 4, true)), LT);
+        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 3, true)), GT);
+        aeq(Triple.compare(new Triple<>("hi", 3, true), new Triple<>("bye", 4, true)), GT);
+        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 3, true)), GT);
+        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("hi", 4, true)), EQ);
+        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 3, true)), GT);
+        aeq(Triple.compare(new Triple<>("hi", 4, true), new Triple<>("bye", 4, true)), GT);
+        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 3, true)), LT);
+        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("hi", 4, true)), LT);
+        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 3, true)), EQ);
+        aeq(Triple.compare(new Triple<>("bye", 3, true), new Triple<>("bye", 4, true)), LT);
+        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 3, true)), LT);
+        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("hi", 4, true)), LT);
+        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 3, true)), GT);
+        aeq(Triple.compare(new Triple<>("bye", 4, true), new Triple<>("bye", 4, true)), EQ);
     }
 
     @Test

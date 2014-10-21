@@ -1,12 +1,17 @@
 package mho.haskellesque.structures;
 
 import mho.haskellesque.ordering.Ordering;
+import mho.haskellesque.ordering.comparators.LexComparator;
+import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
+import static mho.haskellesque.ordering.Ordering.EQ;
 import static mho.haskellesque.ordering.Ordering.GT;
+import static mho.haskellesque.ordering.Ordering.LT;
 import static org.junit.Assert.*;
 
 public class SeptupleTest {
@@ -42,6 +47,74 @@ public class SeptupleTest {
         assertNull(new Septuple<>(null, null, null, null, null, null, null).e);
         assertNull(new Septuple<>(null, null, null, null, null, null, null).f);
         assertNull(new Septuple<>(null, null, null, null, null, null, null).g);
+    }
+
+    @Test
+    public void testCompare() {
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
+        ), EQ);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
+        ), EQ);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
+        ), EQ);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, "x")
+        ), LT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, "x")
+        ), GT);
+        aeq(Septuple.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x"),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, "x")
+        ), EQ);
     }
 
     @Test
@@ -104,195 +177,350 @@ public class SeptupleTest {
         aeq(new Septuple<>(null, null, null, null, null, null, null), "(null, null, null, null, null, null, null)");
     }
 
-//    @Test
-//    public void testSeptupleComparator_compare() {
-//        Septuple.SeptupleComparator<
-//                String,
-//                Integer,
-//                Boolean,
-//                Character,
-//                Ordering,
-//                Double,
-//                List<Integer>
-//                > pc = new Septuple.SeptupleComparator<>();
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("hi", 3, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 4, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("hi", 4, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>("hi", 3, true, 'a', GT, null)), 0);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("hi", 3, true, 'a', GT, null),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("hi", 3, true, 'a', GT, null), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("hi", 3, true, 'a', GT, null),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(
-//                "bye", 3, true, 'a', GT, 0.5),
-//                new Septuple<>("hi", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 4, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>("bye", 4, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5),
-//                new Septuple<>("hi", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 4, true, 'a', GT, 0.5), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 4, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 4, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, null)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>("hi", 3, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>("hi", 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(new Septuple<>(
-//                "bye", 3, true, 'a', GT, null),
-//                new Septuple<>("hi", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>("bye", 3, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), 0);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, null), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>("bye", 3, true, 'a', GT, null), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(
-//                new Septuple<>("bye", 3, true, 'a', GT, null),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, null)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, 3, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(new Septuple<>(null, 3, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, 3, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>("hi", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>("hi", 3, true, 'a', GT, null)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>("bye", 3, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>("bye", 4, true, 'a', GT, 0.5)), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, 4, true, 'a', GT, 0.5),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>(null, 3, true, 'a', GT, 0.5)), 1);
-//        aeq(pc.compare(new Septuple<>(null, 4, true, 'a', GT, 0.5), new Septuple<>(null, 4, true, 'a', GT, 0.5)), 0);
-//        aeq(pc.compare(
-//                new Septuple<>(null, 4, true, 'a', GT, 0.5),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("hi", 3, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("hi", 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("hi", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("bye", 3, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("bye", 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>("bye", 3, true, 'a', GT, null)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>(null, 3, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>(null, 4, true, 'a', GT, 0.5)
-//        ), -1);
-//        aeq(pc.compare(
-//                new Septuple<>(null, null, null, null, null, null),
-//                new Septuple<>(null, null, null, null, null, null)
-//        ), 0);
-//    }
+    @Test
+    public void testSeptupleComparator_compare() {
+        Septuple.SeptupleComparator<
+                String,
+                Integer,
+                Boolean,
+                Character,
+                Ordering,
+                Double,
+                Iterable<Integer>
+                > pc = new Septuple.SeptupleComparator<>(
+                    NullHandlingComparator.of(Comparator.<String>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Boolean>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Character>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Ordering>naturalOrder()),
+                    NullHandlingComparator.of(Comparator.<Double>naturalOrder()),
+                    NullHandlingComparator.of(new LexComparator<Integer>())
+                );
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(new Septuple<>(
+                "bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(new Septuple<>(
+                "bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), 0);
+        aeq(pc.compare(
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("hi", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("hi", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("bye", 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>("bye", 3, true, 'a', GT, 0.5, null)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>(null, 3, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>(null, 4, true, 'a', GT, 0.5, x)
+        ), -1);
+        aeq(pc.compare(
+                new Septuple<>(null, null, null, null, null, null, null),
+                new Septuple<>(null, null, null, null, null, null, null)
+        ), 0);
+    }
 
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
