@@ -5,8 +5,6 @@ import mho.haskellesque.ordering.Ordering;
 import java.math.RoundingMode;
 import java.util.Iterator;
 
-import static mho.haskellesque.iterables.IterableUtils.*;
-
 public final class Random {
     private Random() {}
 
@@ -24,10 +22,6 @@ public final class Random {
         };
     }
 
-    public static Iterable<Boolean> booleans() {
-        return booleans(new java.util.Random());
-    }
-
     public static Iterable<Ordering> orderings(java.util.Random generator) {
         return () -> new Iterator<Ordering>() {
             @Override
@@ -40,10 +34,6 @@ public final class Random {
                 return Ordering.fromInt(generator.nextInt(3) - 1);
             }
         };
-    }
-
-    public static Iterable<Ordering> orderings() {
-        return orderings(new java.util.Random());
     }
 
     public static Iterable<RoundingMode> roundingModes(java.util.Random generator) {
@@ -70,10 +60,6 @@ public final class Random {
         };
     }
 
-    public static Iterable<RoundingMode> roundingModes() {
-        return roundingModes(new java.util.Random());
-    }
-
     public static Iterable<Byte> positiveBytes(java.util.Random generator) {
         return () -> new Iterator<Byte>() {
             @Override
@@ -88,7 +74,45 @@ public final class Random {
         };
     }
 
-    public static Iterable<Byte> positiveBytes() {
-        return positiveBytes(new java.util.Random());
+    public static Iterable<Short> positiveShorts(java.util.Random generator) {
+        return () -> new Iterator<Short>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Short next() {
+                return (short) (generator.nextInt(65535) + 1);
+            }
+        };
+    }
+
+    public static Iterable<Integer> positiveIntegers(java.util.Random generator) {
+        return () -> new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return generator.nextInt(Integer.MAX_VALUE) + 1;
+            }
+        };
+    }
+
+    public static Iterable<Long> positiveLongs(java.util.Random generator) {
+        return () -> new Iterator<Long>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Long next() {
+                return (long) (generator.nextInt(Integer.MAX_VALUE) + 1) << 32 & generator.nextInt(); //todo test this
+            }
+        };
     }
 }
