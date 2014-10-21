@@ -1,6 +1,5 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.*;
@@ -96,7 +95,7 @@ public class IterableUtilsTest {
         assertTrue(fHashSet.contains(Float.valueOf(-5f)));
         assertTrue(fHashSet.contains(null));
         assertTrue(fHashSet.contains(Float.valueOf(1e30f)));
-        TreeSet<Float> fTreeSet = new TreeSet<>(new NullHandlingComparator<Float>());
+        TreeSet<Float> fTreeSet = new TreeSet<>(Comparator.nullsFirst(Comparator.<Float>naturalOrder()));
         addTo(lList, fTreeSet);
         assertEquals(fTreeSet.size(), 4);
         assertTrue(fTreeSet.contains(Float.valueOf(0.2f)));
@@ -334,7 +333,7 @@ public class IterableUtilsTest {
         sortedSet.addAll(Arrays.asList(1, 2, 3, 4, 5));
         aeq(head(sortedSet), 1);
 
-        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet = new TreeSet<>(Comparator.nullsFirst(Comparator.<Integer>naturalOrder()));
         sortedSet.addAll(Arrays.asList(null, 2, 3, 4, 5));
         assertNull(head(sortedSet));
 
@@ -342,7 +341,7 @@ public class IterableUtilsTest {
         sortedSet.addAll(Arrays.asList(1));
         aeq(head(sortedSet), 1);
 
-        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet = new TreeSet<>(Comparator.nullsFirst(Comparator.<Integer>naturalOrder()));
         sortedSet.add(null);
         assertNull(head(sortedSet));
 
@@ -407,7 +406,7 @@ public class IterableUtilsTest {
         sortedSet.addAll(Arrays.asList(1, 2, 3, 4, 5));
         aeq(last(sortedSet), 5);
 
-        sortedSet = new TreeSet<>(new NullHandlingComparator<Integer>());
+        sortedSet = new TreeSet<>(Comparator.nullsFirst(Comparator.<Integer>naturalOrder()));
         sortedSet.add(null);
         assertNull(last(sortedSet));
 

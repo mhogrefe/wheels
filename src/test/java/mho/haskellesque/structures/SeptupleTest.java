@@ -2,7 +2,6 @@ package mho.haskellesque.structures;
 
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.ordering.comparators.LexComparator;
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -188,13 +187,13 @@ public class SeptupleTest {
                 Double,
                 Iterable<Integer>
                 > pc = new Septuple.SeptupleComparator<>(
-                    NullHandlingComparator.of(Comparator.<String>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Boolean>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Character>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Ordering>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Double>naturalOrder()),
-                    NullHandlingComparator.of(new LexComparator<Integer>())
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Double>naturalOrder()),
+                    Comparator.nullsFirst(new LexComparator<Integer>())
                 );
         aeq(pc.compare(
                 new Septuple<>("hi", 3, true, 'a', GT, 0.5, x),

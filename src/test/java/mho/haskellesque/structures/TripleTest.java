@@ -1,6 +1,5 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -90,9 +89,9 @@ public class TripleTest {
     @Test
     public void testTripleComparator_compare() {
         Triple.TripleComparator<String, Integer, Boolean> pc = new Triple.TripleComparator<>(
-                NullHandlingComparator.of(Comparator.<String>naturalOrder()),
-                NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
-                NullHandlingComparator.of(Comparator.<Boolean>naturalOrder())
+                Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                Comparator.nullsFirst(Comparator.<Boolean>naturalOrder())
         );
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 3, true)), 0);
         aeq(pc.compare(new Triple<>("hi", 3, true), new Triple<>("hi", 4, true)), -1);

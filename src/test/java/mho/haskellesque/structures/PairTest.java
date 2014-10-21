@@ -1,7 +1,5 @@
 package mho.haskellesque.structures;
 
-import mho.haskellesque.ordering.Ordering;
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -85,8 +83,8 @@ public class PairTest {
     @Test
     public void testPairComparator_compare() {
         Pair.PairComparator<String, Integer> pc = new Pair.PairComparator<>(
-                NullHandlingComparator.of(Comparator.<String>naturalOrder()),
-                NullHandlingComparator.of(Comparator.<Integer>naturalOrder())
+                Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                Comparator.nullsFirst(Comparator.<Integer>naturalOrder())
         );
         aeq(pc.compare(new Pair<>("hi", 3), new Pair<>("hi", 3)), 0);
         aeq(pc.compare(new Pair<>("hi", 3), new Pair<>("hi", 4)), -1);

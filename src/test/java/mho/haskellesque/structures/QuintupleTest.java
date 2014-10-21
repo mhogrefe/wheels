@@ -1,7 +1,6 @@
 package mho.haskellesque.structures;
 
 import mho.haskellesque.ordering.Ordering;
-import mho.haskellesque.ordering.comparators.NullHandlingComparator;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -104,11 +103,11 @@ public class QuintupleTest {
                 Character,
                 Ordering
                 > pc = new Quintuple.QuintupleComparator<>(
-                    NullHandlingComparator.of(Comparator.<String>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Integer>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Boolean>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Character>naturalOrder()),
-                    NullHandlingComparator.of(Comparator.<Ordering>naturalOrder())
+                    Comparator.nullsFirst(Comparator.<String>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Integer>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Boolean>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Character>naturalOrder()),
+                    Comparator.nullsFirst(Comparator.<Ordering>naturalOrder())
                 );
         aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 3, true, 'a', GT)), 0);
         aeq(pc.compare(new Quintuple<>("hi", 3, true, 'a', GT), new Quintuple<>("hi", 4, true, 'a', GT)), -1);
