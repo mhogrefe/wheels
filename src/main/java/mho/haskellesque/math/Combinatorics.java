@@ -11,8 +11,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.isEmpty;
-import static mho.haskellesque.iterables.IterableUtils.map;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**

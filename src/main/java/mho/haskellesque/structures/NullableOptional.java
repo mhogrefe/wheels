@@ -1,7 +1,6 @@
 package mho.haskellesque.structures;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public class NullableOptional<T> {
     private boolean present;

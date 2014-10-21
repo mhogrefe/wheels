@@ -1,9 +1,7 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.math.BasicMath;
 import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
-import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -11,7 +9,6 @@ import java.math.RoundingMode;
 import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.cons;
 import static mho.haskellesque.math.Combinatorics.*;
 import static mho.haskellesque.ordering.Ordering.*;
 
