@@ -18,7 +18,7 @@ import static mho.haskellesque.iterables.IterableUtils.*;
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
 public final class RandomProvider implements IterableProvider {
-    private static final double BIG_INTEGER_TERMINATION_THRESHOLD = 0.02;
+    private static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
 
     private final @NotNull Random generator;
 
@@ -31,7 +31,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterator</tt> that generates both <tt>Boolean</tt>s. Does not support removal.
+     * An <tt>Iterator</tt> that generates both <tt>Boolean</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -56,7 +57,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterator</tt> that generates all <tt>Ordering</tt>s. Does not support removal.
+     * An <tt>Iterator</tt> that generates all <tt>Ordering</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -81,7 +83,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>RoundingMode</tt>s.
+     * An <tt>Iterable</tt> that generates all <tt>RoundingMode</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -116,7 +119,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Byte</tt>s. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>Byte</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -141,7 +145,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Short</tt>s. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>Short</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -166,7 +171,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -191,7 +197,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Long</tt>s. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>Long</tt>s from a uniform distribution from a uniform
+     * distribution. Does not support removal.
      *
      * Length is infinite
      */
@@ -220,12 +227,14 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s from a geometric distribution with mean
+     * bit size <tt>meanBitSize</tt>. Does not support removal.
+     *
+     * //todo
      *
      * Length is infinite
      */
-    @Override
-    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
+    public @NotNull Iterable<BigInteger> positiveBigIntegers(int meanBitSize) {
         return () -> new Iterator<BigInteger>() {
             @Override
             public boolean hasNext() {
@@ -237,7 +246,7 @@ public final class RandomProvider implements IterableProvider {
                 List<Boolean> bits = new ArrayList<>();
                 bits.add(true);
                 while (true) {
-                    if (generator.nextDouble() < BIG_INTEGER_TERMINATION_THRESHOLD) {
+                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
                         break;
                     } else {
                         bits.add(generator.nextBoolean());
@@ -253,76 +262,197 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
-    @NotNull
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s from a geometric distribution with mean
+     * bit size 64. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
-    public Iterable<Byte> negativeBytes() {
-        return null;
+    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
+        return positiveBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
-    @NotNull
     @Override
-    public Iterable<Short> negativeShorts() {
-        return null;
+    public @NotNull Iterable<Byte> negativeBytes() {
+        return () -> new Iterator<Byte>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Byte next() {
+                return (byte) (-1 - generator.nextInt(Byte.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
-    @NotNull
     @Override
-    public Iterable<Integer> negativeIntegers() {
-        return null;
+    public @NotNull Iterable<Short> negativeShorts() {
+        return () -> new Iterator<Short>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Short next() {
+                return (short) (-1 - generator.nextInt(Short.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
-    @NotNull
     @Override
-    public Iterable<Long> negativeLongs() {
-        return null;
+    public @NotNull Iterable<Integer> negativeIntegers() {
+        return filter(i -> i < 0, integers());
     }
 
-    @NotNull
     @Override
-    public Iterable<BigInteger> negativeBigIntegers() {
-        return null;
+    public @NotNull Iterable<Long> negativeLongs() {
+        return filter(l -> l < 0, longs());
     }
 
-    @NotNull
-    @Override
-    public Iterable<Byte> naturalBytes() {
-        return null;
+    public @NotNull Iterable<BigInteger> negativeBigIntegers(int meanBitSize) {
+        return map(BigInteger::negate, positiveBigIntegers(meanBitSize));
     }
 
-    @NotNull
     @Override
-    public Iterable<Short> naturalShorts() {
-        return null;
+    public @NotNull Iterable<BigInteger> negativeBigIntegers() {
+        return map(BigInteger::negate, positiveBigIntegers());
     }
 
-    @NotNull
     @Override
-    public Iterable<Integer> naturalIntegers() {
-        return null;
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return () -> new Iterator<Byte>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Byte next() {
+                return (byte) (generator.nextInt(Byte.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
-    @NotNull
     @Override
-    public Iterable<Long> naturalLongs() {
-        return null;
+    public @NotNull Iterable<Short> naturalShorts() {
+        return () -> new Iterator<Short>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Short next() {
+                return (short) (generator.nextInt(Short.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
-    @NotNull
     @Override
-    public Iterable<BigInteger> naturalBigIntegers() {
-        return null;
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return filter(i -> i >= 0, integers());
     }
 
-    @NotNull
     @Override
-    public Iterable<Byte> bytes() {
-        return null;
+    public @NotNull Iterable<Long> naturalLongs() {
+        return filter(l -> l >= 0, longs());
     }
 
-    @NotNull
+    public @NotNull Iterable<BigInteger> naturalBigIntegers(int meanBitSize) {
+        return () -> new Iterator<BigInteger>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigInteger next() {
+                List<Boolean> bits = new ArrayList<>();
+                bits.add(true);
+                while (true) {
+                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
+                        break;
+                    } else {
+                        bits.add(generator.nextBoolean());
+                    }
+                }
+                return BasicMath.fromBits(bits);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     @Override
-    public Iterable<Short> shorts() {
-        return null;
+    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        return naturalBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
+    }
+
+    @Override
+    public @NotNull Iterable<Byte> bytes() {
+        return () -> new Iterator<Byte>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Byte next() {
+                return (byte) (generator.nextInt(1 << 8) - (1 << 7));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull Iterable<Short> shorts() {
+        return () -> new Iterator<Short>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Short next() {
+                return (short) (generator.nextInt(1 << 16) - (1 << 15));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
     @Override
@@ -355,10 +485,29 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
-    @NotNull
+    public @NotNull Iterable<BigInteger> bigIntegers(int meanBitSize) {
+        return () -> new Iterator<BigInteger>() {
+            private Iterator<BigInteger> it = naturalBigIntegers(meanBitSize).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
+
+            @Override
+            public BigInteger next() {
+                BigInteger nbi = it.next();
+                if (generator.nextBoolean()) {
+                    nbi = nbi.negate();
+                }
+                return nbi;
+            }
+        };
+    }
+
     @Override
-    public Iterable<BigInteger> bigIntegers() {
-        return null;
+    public @NotNull Iterable<BigInteger> bigIntegers() {
+        return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
     @NotNull
