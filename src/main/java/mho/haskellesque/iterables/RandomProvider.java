@@ -553,8 +553,9 @@ public final class RandomProvider implements IterableProvider {
                 float next;
                 boolean problematicNaN;
                 do {
-                    next = generator.nextFloat();
-                    problematicNaN = Float.isNaN(next) && Float.floatToIntBits(next) != 0x7fc00000;
+                    int floatBits = generator.nextInt();
+                    next = Float.intBitsToFloat(floatBits);
+                    problematicNaN = Float.isNaN(next) && floatBits != 0x7fc00000;
                 } while (problematicNaN);
                 return next;
             }
@@ -579,9 +580,8 @@ public final class RandomProvider implements IterableProvider {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Double> doubles() {
+    public @NotNull Iterable<Double> doubles() {
         return () -> new Iterator<Double>() {
             @Override
             public boolean hasNext() {
@@ -593,8 +593,9 @@ public final class RandomProvider implements IterableProvider {
                 double next;
                 boolean problematicNaN;
                 do {
-                    next = generator.nextDouble();
-                    problematicNaN = Double.isNaN(next) && Double.doubleToLongBits(next) != 0x7ff8000000000000L;
+                    long doubleBits = generator.nextLong();
+                    next = Double.longBitsToDouble(doubleBits);
+                    problematicNaN = Double.isNaN(next) && doubleBits != 0x7ff8000000000000L;
                 } while (problematicNaN);
                 return next;
             }
