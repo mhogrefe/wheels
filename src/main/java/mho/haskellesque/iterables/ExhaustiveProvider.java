@@ -49,7 +49,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * A <tt>List</tt> that contains all <tt>RoundingModes</tt>s.
+     * A <tt>List</tt> that contains all <tt>RoundingMode</tt>s.
      *
      * Length is 8
      */
