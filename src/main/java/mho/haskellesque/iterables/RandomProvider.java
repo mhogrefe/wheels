@@ -8,6 +8,9 @@ import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
+ */
 public final class RandomProvider implements IterableProvider {
     private final @NotNull Random generator;
 
@@ -19,6 +22,11 @@ public final class RandomProvider implements IterableProvider {
         this.generator = generator;
     }
 
+    /**
+     * An <tt>Iterator</tt> that generates both <tt>Boolean</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
         return () -> new Iterator<Boolean>() {
@@ -31,9 +39,19 @@ public final class RandomProvider implements IterableProvider {
             public Boolean next() {
                 return generator.nextBoolean();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterator</tt> that generates all <tt>Ordering</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Ordering> orderings() {
         return () -> new Iterator<Ordering>() {
@@ -46,9 +64,19 @@ public final class RandomProvider implements IterableProvider {
             public Ordering next() {
                 return Ordering.fromInt(generator.nextInt(3) - 1);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all <tt>RoundingMode</tt>s.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
         return () -> new Iterator<RoundingMode>() {
@@ -71,9 +99,19 @@ public final class RandomProvider implements IterableProvider {
                     default: return RoundingMode.HALF_EVEN;
                 }
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>Byte</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
         return () -> new Iterator<Byte>() {
@@ -86,9 +124,19 @@ public final class RandomProvider implements IterableProvider {
             public Byte next() {
                 return (byte) (generator.nextInt(127) + 1);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>Short</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
         return () -> new Iterator<Short>() {
@@ -101,9 +149,19 @@ public final class RandomProvider implements IterableProvider {
             public Short next() {
                 return (short) (generator.nextInt(65535) + 1);
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
         return () -> new Iterator<Integer>() {
@@ -116,9 +174,19 @@ public final class RandomProvider implements IterableProvider {
             public Integer next() {
                 return generator.nextInt(Integer.MAX_VALUE) + 1;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>Long</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
         return () -> new Iterator<Long>() {
@@ -134,6 +202,11 @@ public final class RandomProvider implements IterableProvider {
                     next = Math.abs(generator.nextLong());
                 } while (next < 0);
                 return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

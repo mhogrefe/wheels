@@ -68,7 +68,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
      */
@@ -77,7 +77,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -86,7 +86,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -95,7 +95,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -104,7 +104,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s.
+     * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s. Does not support removal.
      *
      * Length is 2<sup>7</sup>&#x2212;1 = 127
      */
@@ -114,7 +114,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s.
+     * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s. Does not support removal.
      *
      * Length is 2<sup>15</sup>&#x2212;1 = 32,767
      */
@@ -124,7 +124,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s.
+     * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;1 = 2,147,483,647
      */
@@ -134,7 +134,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s.
+     * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;1 = 9,223,372,036,854,775,807
      */
@@ -144,7 +144,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s.
+     * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s. Does not support removal.
      *
      * Length is infinite
      */
@@ -154,7 +154,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s.
+     * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -164,7 +164,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s.
+     * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s. Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -174,7 +174,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s.
+     * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s. Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -184,7 +184,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s.
+     * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s. Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -194,7 +194,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s.
+     * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s. Does not support removal.
      *
      * Length is infinite
      */
@@ -204,7 +204,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Byte</tt>s.
+     * An <tt>Iterable</tt> that contains all natural <tt>Byte</tt>s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -214,7 +214,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s (including 0).
+     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s (including 0). Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -224,7 +224,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s (including 0).
+     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s (including 0). Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -234,7 +234,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s (including 0).
+     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s (including 0). Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -244,7 +244,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s (including 0).
+     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s (including 0). Does not support removal.
      *
      * Length is infinite
      */
@@ -254,7 +254,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s.
+     * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
@@ -267,7 +267,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Short</tt>s.
+     * An <tt>Iterable</tt> that contains all <tt>Short</tt>s. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -280,7 +280,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s.
+     * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -293,7 +293,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Long</tt>s.
+     * An <tt>Iterable</tt> that contains all <tt>Long</tt>s. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -303,7 +303,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>BigInteger</tt>s.
+     * An <tt>Iterable</tt> that contains all <tt>BigInteger</tt>s. Does not support removal.
      *
      * Length is infinite
      */
@@ -315,7 +315,8 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ASCII <tt>Character</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all ASCII <tt>Character</tt>s in ascending order. Does not support
+     * removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -325,7 +326,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all ASCII <tt>Character</tt>s in an order which places "friendly" characters
-     * first.
+     * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -345,7 +346,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Character</tt>s in ascending order.
+     * @return An <tt>Iterable</tt> that contains all <tt>Character</tt>s in ascending order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -355,7 +356,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all <tt>Character</tt>s in an order which places "friendly" characters
-     * first.
+     * first. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -376,7 +377,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive floats in ascending
-     * order.
+     * order. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
      */
@@ -386,7 +387,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative floats in ascending
-     * order. Negative zero is not included.
+     * order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
      */
@@ -396,7 +397,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) floats in ascending order.
-     * Negative zero is not included, but positive zero is.
+     * Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
      */
@@ -410,7 +411,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all floats in ascending order. NaN is traditionally unordered, but
-     * here it is placed between negative zero and positive zero.
+     * here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -424,7 +425,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all possible positive float mantissas. A float's mantissa is the unique odd
-     * integer that, when multiplied by a power of 2, equals the float.
+     * integer that, when multiplied by a power of 2, equals the float. Does not support removal.
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
@@ -432,7 +433,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all possible float exponents. A positive float's exponent is the base-2
-     * logarithm of the float divided by its mantissa.
+     * logarithm of the float divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>8</sup>+23&#x2212;2 = 277
      */
@@ -442,7 +443,7 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive floats.
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive floats. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
      */
@@ -462,7 +463,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative floats. Negative zero is not
-     * included.
+     * included. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
      */
@@ -473,7 +474,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) floats. Negative zero is not included,
-     * but positive zero is.
+     * but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
      */
@@ -484,7 +485,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all floats. NaN is traditionally unordered, but here it is placed between
-     * negative zero and positive zero.
+     * negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -498,7 +499,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive doubles in ascending
-     * order.
+     * order. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
      */
@@ -508,7 +509,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative doubles in ascending
-     * order. Negative zero is not included.
+     * order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
      */
@@ -518,7 +519,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) doubles in ascending order.
-     * Negative zero is not included, but positive zero is.
+     * Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
      */
@@ -532,7 +533,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An <tt>Iterable</tt> that contains all doubles in ascending order. NaN is traditionally unordered, but
-     * here it is placed between negative zero and positive zero.
+     * here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
@@ -546,7 +547,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all possible positive double mantissas. A double's mantissa is the unique odd
-     * integer that, when multiplied by a power of 2, equals the double.
+     * integer that, when multiplied by a power of 2, equals the double. Does not support removal.
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
@@ -554,7 +555,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all possible double exponents. A positive double's exponent is the base-2
-     * logarithm of the double divided by its mantissa.
+     * logarithm of the double divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>11</sup>+52&#x2212;2 = 2,098
      */
@@ -564,7 +565,8 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive doubles.
+     * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) positive doubles. Does not support
+     * removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
      */
@@ -584,7 +586,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) negative doubles in ascending order.
-     * Negative zero is not included.
+     * Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
      */
@@ -595,7 +597,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all ordinary (not NaN or infinite) doubles in ascending order. Negative zero
-     * is not included, but positive zero is.
+     * is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
      */
@@ -606,7 +608,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An <tt>Iterable</tt> that contains all doubles in ascending order. NaN is traditionally unordered, but here it
-     * is placed between negative zero and positive zero.
+     * is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
