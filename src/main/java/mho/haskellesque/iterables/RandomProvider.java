@@ -492,4 +492,40 @@ public final class RandomProvider implements IterableProvider {
     ) {
         return zip7(as, bs, cs, ds, es, fs, gs);
     }
+
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(2, xs);
+        return zip(xss.get(0), xss.get(1));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(3, xs);
+        return zip3(xss.get(0), xss.get(1), xss.get(2));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(4, xs);
+        return zip4(xss.get(0), xss.get(1), xss.get(2), xss.get(3));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(5, xs);
+        return zip5(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(6, xs);
+        return zip6(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(7, xs);
+        return zip7(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5), xss.get(6));
+    }
 }
