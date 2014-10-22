@@ -2,6 +2,7 @@ package mho.haskellesque.iterables;
 
 import mho.haskellesque.math.BasicMath;
 import mho.haskellesque.ordering.Ordering;
+import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import static mho.haskellesque.iterables.IterableUtils.*;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
@@ -416,5 +419,77 @@ public final class RandomProvider implements IterableProvider {
     @Override
     public Iterable<Double> doubles() {
         return null;
+    }
+
+    @NotNull
+    @Override
+    public <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        return zip(as, bs);
+    }
+
+    @Override
+    public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs
+    ) {
+        return zip3(as, bs, cs);
+    }
+
+    @Override
+    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds
+    ) {
+        return zip4(as, bs, cs, ds);
+    }
+
+    @Override
+    public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es
+    ) {
+        return zip5(as, bs, cs, ds, es);
+    }
+
+    @Override
+    public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs
+    ) {
+        return zip6(as, bs, cs, ds, es, fs);
+    }
+
+    @Override
+    public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs,
+            @NotNull Iterable<G> gs
+    ) {
+        return zip7(as, bs, cs, ds, es, fs, gs);
     }
 }
