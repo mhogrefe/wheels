@@ -138,9 +138,8 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
-    @NotNull
     @Override
-    public Iterable<BigInteger> positiveBigIntegers() {
+    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
         return null;
     }
 
@@ -216,16 +215,34 @@ public final class RandomProvider implements IterableProvider {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Integer> integers() {
-        return null;
+    public @NotNull Iterable<Integer> integers() {
+        return () -> new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return generator.nextInt();
+            }
+        };
     }
 
-    @NotNull
     @Override
-    public Iterable<Long> longs() {
-        return null;
+    public @NotNull Iterable<Long> longs() {
+        return () -> new Iterator<Long>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Long next() {
+                return generator.nextLong();
+            }
+        };
     }
 
     @NotNull
