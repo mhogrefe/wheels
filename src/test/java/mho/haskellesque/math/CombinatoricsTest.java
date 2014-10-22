@@ -1,8 +1,9 @@
 package mho.haskellesque.math;
 
-import mho.haskellesque.iterables.Exhaustive;
+import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.ordering.Ordering;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -16,6 +17,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class CombinatoricsTest {
+    private static final @NotNull ExhaustiveProvider P = new ExhaustiveProvider();
+    
+    
     @Test
     public void testFactorial_Int() {
         aeq(factorial(0), 1);
@@ -96,7 +100,7 @@ public class CombinatoricsTest {
                 "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
         aeq(pairsAscending(Arrays.asList(1, null, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
-        aeq(take(20, pairsAscending(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abc"))),
+        aeq(take(20, pairsAscending(P.naturalBigIntegers(), fromString("abc"))),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
                 " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
         aeq(pairsAscending(new ArrayList<Integer>(), fromString("abc")), "[]");
@@ -105,32 +109,27 @@ public class CombinatoricsTest {
 
     @Test
     public void testTriplesAscending() {
-        aeq(triplesAscending(Arrays.asList(1, 2, 3), fromString("abc"), Exhaustive.BOOLEANS),
+        aeq(triplesAscending(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeq(triplesAscending(Arrays.asList(1, null, 3), fromString("abc"), Exhaustive.BOOLEANS),
+        aeq(triplesAscending(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
                 " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
                 " (3, c, true)]");
-        aeq(take(20, triplesAscending(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abc"), Exhaustive.BOOLEANS)),
+        aeq(take(20, triplesAscending(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true)]");
-        aeq(triplesAscending(new ArrayList<Integer>(), fromString("abc"), Exhaustive.BOOLEANS), "[]");
+        aeq(triplesAscending(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
         aeq(triplesAscending(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
     }
 
     @Test
     public void testQuadruplesAscending() {
-        aeq(quadruplesAscending(
-                Arrays.asList(1, 2, 3),
-                fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS
-        ),
+        aeq(quadruplesAscending(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -142,12 +141,7 @@ public class CombinatoricsTest {
                 " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
                 " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
                 " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeq(quadruplesAscending(
-                Arrays.asList(1, null, 3),
-                fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS
-        ),
+        aeq(quadruplesAscending(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -160,22 +154,12 @@ public class CombinatoricsTest {
                 " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
                 " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeq(take(20, quadruplesAscending(
-                Exhaustive.NATURAL_BIG_INTEGERS,
-                fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS
-        )),
+        aeq(take(20, quadruplesAscending(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
-        aeq(quadruplesAscending(
-                new ArrayList<Integer>(),
-                fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS
-        ), "[]");
+        aeq(quadruplesAscending(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
         aeq(quadruplesAscending(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
@@ -189,8 +173,8 @@ public class CombinatoricsTest {
         aeq(quintuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no")
         ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
@@ -223,8 +207,8 @@ public class CombinatoricsTest {
         aeq(quintuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, null, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no")
         ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
@@ -258,10 +242,10 @@ public class CombinatoricsTest {
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
         aeq(take(20, quintuplesAscending(
-                Exhaustive.NATURAL_BIG_INTEGERS,
+                P.naturalBigIntegers(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no")
         )),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
@@ -272,8 +256,8 @@ public class CombinatoricsTest {
         aeq(quintuplesAscending(
                 new ArrayList<Integer>(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no")
         ), "[]");
         aeq(quintuplesAscending(
@@ -290,8 +274,8 @@ public class CombinatoricsTest {
         aeq(sextuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         ),
@@ -370,8 +354,8 @@ public class CombinatoricsTest {
         aeq(sextuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, null, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         ),
@@ -460,10 +444,10 @@ public class CombinatoricsTest {
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
         aeq(take(20, sextuplesAscending(
-                Exhaustive.NATURAL_BIG_INTEGERS,
+                P.naturalBigIntegers(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         )),
@@ -477,8 +461,8 @@ public class CombinatoricsTest {
         aeq(sextuplesAscending(
                 new ArrayList<Integer>(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         ), "[]");
@@ -499,8 +483,8 @@ public class CombinatoricsTest {
         aeq(septuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
@@ -724,8 +708,8 @@ public class CombinatoricsTest {
         aeq(septuplesAscending(
                 (Iterable<Integer>) Arrays.asList(1, null, 3),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
@@ -947,10 +931,10 @@ public class CombinatoricsTest {
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
         aeq(take(20, septuplesAscending(
-                Exhaustive.NATURAL_BIG_INTEGERS,
+                P.naturalBigIntegers(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
@@ -968,8 +952,8 @@ public class CombinatoricsTest {
         aeq(septuplesAscending(
                 new ArrayList<Integer>(),
                 fromString("abc"),
-                Exhaustive.BOOLEANS,
-                Exhaustive.ORDERINGS,
+                P.booleans(),
+                P.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
@@ -1123,10 +1107,10 @@ public class CombinatoricsTest {
                 "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4)," +
                 " (null, 2), (2, null), (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]");
         aeq(pairsLogarithmicOrder(new ArrayList<Integer>()), "[]");
-        aeq(take(20, pairsLogarithmicOrder(Exhaustive.NATURAL_BIG_INTEGERS)),
+        aeq(take(20, pairsLogarithmicOrder(P.naturalBigIntegers())),
                 "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1)," +
                 " (5, 0), (1, 2), (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2)]");
-        aeq(take(20, pairsLogarithmicOrder((Iterable<BigInteger>) cons(null, Exhaustive.NATURAL_BIG_INTEGERS))),
+        aeq(take(20, pairsLogarithmicOrder((Iterable<BigInteger>) cons(null, P.naturalBigIntegers()))),
                 "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
                 " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
                 " (1, 1)]");
@@ -1142,13 +1126,13 @@ public class CombinatoricsTest {
                 " (null, b), (2, c), (4, b), (null, c), (2, d), (4, c), (null, d), (4, d)]");
         aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
         aeq(pairsLogarithmicOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
-        aeq(take(20, pairsLogarithmicOrder(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"))),
+        aeq(take(20, pairsLogarithmicOrder(P.naturalBigIntegers(), fromString("abcd"))),
                 "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b)," +
                 " (5, a), (1, c), (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a)]");
-        aeq(take(20, pairsLogarithmicOrder(fromString("abcd"), Exhaustive.NATURAL_BIG_INTEGERS)),
+        aeq(take(20, pairsLogarithmicOrder(fromString("abcd"), P.naturalBigIntegers())),
                 "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2)," +
                 " (d, 1), (a, 4), (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6)]");
-        aeq(take(20, pairsLogarithmicOrder(Exhaustive.POSITIVE_BIG_INTEGERS, Exhaustive.NEGATIVE_BIG_INTEGERS)),
+        aeq(take(20, pairsLogarithmicOrder(P.positiveBigIntegers(), P.negativeBigIntegers())),
                 "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2)," +
                 " (6, -1), (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3)]");
     }
@@ -1163,47 +1147,43 @@ public class CombinatoricsTest {
                 " (null, a), (null, b), (4, a), (4, b), (null, c), (null, d), (4, c), (4, d)]");
         aeq(pairs(new ArrayList<Integer>(), fromString("abcd")), "[]");
         aeq(pairs(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
-        aeq(take(20, pairs(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"))),
+        aeq(take(20, pairs(P.naturalBigIntegers(), fromString("abcd"))),
                 "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b)," +
                 " (3, a), (3, b), (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
-        aeq(take(20, pairs(fromString("abcd"), Exhaustive.NATURAL_BIG_INTEGERS)),
+        aeq(take(20, pairs(fromString("abcd"), P.naturalBigIntegers())),
                 "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1)," +
                 " (d, 0), (d, 1), (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
-        aeq(take(20, pairs(Exhaustive.POSITIVE_BIG_INTEGERS, Exhaustive.NEGATIVE_BIG_INTEGERS)),
+        aeq(take(20, pairs(P.positiveBigIntegers(), P.negativeBigIntegers())),
                 "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2)," +
                 " (4, -1), (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
     }
 
     @Test
     public void testTriples() {
-        aeq(triples(Arrays.asList(1, 2, 3), fromString("abc"), Exhaustive.BOOLEANS),
+        aeq(triples(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeq(triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), Exhaustive.BOOLEANS),
+        aeq(triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (1, d, false), (1, d, true)," +
                 " (2, c, false), (2, c, true), (2, d, false), (2, d, true), (null, a, false), (null, a, true)," +
                 " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
                 " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
                 " (4, c, true), (4, d, false), (4, d, true)]");
-        aeq(triples(new ArrayList<Integer>(), fromString("abcd"), Exhaustive.BOOLEANS), "[]");
+        aeq(triples(new ArrayList<Integer>(), fromString("abcd"), P.booleans()), "[]");
         aeq(triples(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
-        aeq(take(20, triples(Exhaustive.NATURAL_BIG_INTEGERS, fromString("abcd"), Exhaustive.BOOLEANS)),
+        aeq(take(20, triples(P.naturalBigIntegers(), fromString("abcd"), P.booleans())),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
                 " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
                 " (1, c, false), (1, c, true), (1, d, false), (1, d, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true)]");
-        aeq(take(20, triples(fromString("abcd"), Exhaustive.BOOLEANS, Exhaustive.NATURAL_BIG_INTEGERS)),
+        aeq(take(20, triples(fromString("abcd"), P.booleans(), P.naturalBigIntegers())),
                 "[(a, false, 0), (a, false, 1), (a, true, 0), (a, true, 1), (b, false, 0), (b, false, 1)," +
                 " (b, true, 0), (b, true, 1), (a, false, 2), (a, false, 3), (a, true, 2), (a, true, 3)," +
                 " (b, false, 2), (b, false, 3), (b, true, 2), (b, true, 3), (c, false, 0), (c, false, 1)," +
                 " (c, true, 0), (c, true, 1)]");
-        aeq(take(20, triples(
-                Exhaustive.POSITIVE_BIG_INTEGERS,
-                Exhaustive.NEGATIVE_BIG_INTEGERS,
-                Exhaustive.CHARACTERS
-        )),
+        aeq(take(20, triples(P.positiveBigIntegers(), P.negativeBigIntegers(), P.characters())),
                 "[(1, -1, a), (1, -1, b), (1, -2, a), (1, -2, b), (2, -1, a), (2, -1, b), (2, -2, a), (2, -2, b)," +
                 " (1, -1, c), (1, -1, d), (1, -2, c), (1, -2, d), (2, -1, c), (2, -1, d), (2, -2, c), (2, -2, d)," +
                 " (1, -3, a), (1, -3, b), (1, -4, a), (1, -4, b)]");

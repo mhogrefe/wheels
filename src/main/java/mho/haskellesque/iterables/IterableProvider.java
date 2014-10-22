@@ -1,115 +1,75 @@
 package mho.haskellesque.iterables;
 
 import mho.haskellesque.ordering.Ordering;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Random;
 
-public class IterableProvider {
-    private enum IterableType {
-        EXHAUSTIVE, RANDOM
-    }
+public interface IterableProvider {
+    public abstract @NotNull Iterable<Boolean> booleans();
 
-    private IterableType iterableType;
+    public abstract @NotNull Iterable<Ordering> orderings();
 
-    private java.util.Random generator;
+    public abstract @NotNull Iterable<RoundingMode> roundingModes();
 
-    private IterableProvider() {}
+    public abstract @NotNull Iterable<Byte> positiveBytes();
 
-    public static IterableProvider exhaustive() {
-        IterableProvider iterableProvider = new IterableProvider();
-        iterableProvider.iterableType = IterableType.EXHAUSTIVE;
-        return iterableProvider;
-    }
+    public abstract @NotNull Iterable<Short> positiveShorts();
 
-    public static IterableProvider random() {
-        IterableProvider iterableProvider = new IterableProvider();
-        iterableProvider.iterableType = IterableType.RANDOM;
-        iterableProvider.generator = new Random();
-        return iterableProvider;
-    }
+    public abstract @NotNull Iterable<Integer> positiveIntegers();
 
-    public static IterableProvider random(Random generator) {
-        IterableProvider iterableProvider = new IterableProvider();
-        iterableProvider.iterableType = IterableType.RANDOM;
-        iterableProvider.generator = generator;
-        return iterableProvider;
-    }
+    public abstract @NotNull Iterable<Long> positiveLongs();
 
-    public Iterable<Boolean> booleans() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.BOOLEANS;
-        } else {
-            return mho.haskellesque.iterables.Random.booleans(generator);
-        }
-    }
+    public abstract @NotNull Iterable<BigInteger> positiveBigIntegers();
 
-    public Iterable<Ordering> orderings() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.ORDERINGS;
-        } else {
-            return mho.haskellesque.iterables.Random.orderings(generator);
-        }
-    }
+    public abstract @NotNull Iterable<Byte> negativeBytes();
 
-    public Iterable<RoundingMode> roundingModes() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.ROUNDING_MODES;
-        } else {
-            return mho.haskellesque.iterables.Random.roundingModes(generator);
-        }
-    }
+    public abstract @NotNull Iterable<Short> negativeShorts();
 
-    public Iterable<Byte> positiveBytes() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.POSITIVE_BYTES;
-        } else {
-            return mho.haskellesque.iterables.Random.positiveBytes(generator);
-        }
-    }
+    public abstract @NotNull Iterable<Integer> negativeIntegers();
 
-    public Iterable<Short> positiveShorts() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.POSITIVE_SHORTS;
-        } else {
-            return mho.haskellesque.iterables.Random.positiveShorts(generator);
-        }
-    }
+    public abstract @NotNull Iterable<Long> negativeLongs();
 
-    public Iterable<Integer> positiveIntegers() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.POSITIVE_INTEGERS;
-        } else {
-            return mho.haskellesque.iterables.Random.positiveIntegers(generator);
-        }
-    }
+    public abstract @NotNull Iterable<BigInteger> negativeBigIntegers();
 
-    public Iterable<Long> positiveLongs() {
-        if (iterableType == IterableType.EXHAUSTIVE) {
-            return Exhaustive.POSITIVE_LONGS;
-        } else {
-            return mho.haskellesque.iterables.Random.positiveLongs(generator);
-        }
-    }
+    public abstract @NotNull Iterable<Byte> naturalBytes();
 
-    public Iterable<BigInteger> positiveBigIntegers() {
-        return Exhaustive.POSITIVE_BIG_INTEGERS; //todo
-    }
+    public abstract @NotNull Iterable<Short> naturalShorts();
 
-    public Iterable<Integer> integers() {
-        return Exhaustive.INTEGERS; //todo
-    }
+    public abstract @NotNull Iterable<Integer> naturalIntegers();
 
-    public Iterable<BigInteger> bigIntegers() {
-        return Exhaustive.BIG_INTEGERS; //todo
-    }
+    public abstract @NotNull Iterable<Long> naturalLongs();
 
-    public Iterable<Float> floats() {
-        return Exhaustive.FLOATS; //todo
-    }
+    public abstract @NotNull Iterable<BigInteger> naturalBigIntegers();
 
-    public Iterable<Double> doubles() {
-        return Exhaustive.DOUBLES; //todo
-    }
+    public abstract @NotNull Iterable<Byte> bytes();
+
+    public abstract @NotNull Iterable<Short> shorts();
+
+    public abstract @NotNull Iterable<Integer> integers();
+
+    public abstract @NotNull Iterable<Long> longs();
+
+    public abstract @NotNull Iterable<BigInteger> bigIntegers();
+
+    public abstract @NotNull Iterable<Character> asciiCharacters();
+
+    public abstract @NotNull Iterable<Character> characters();
+
+    public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
+
+    public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();
+
+    public abstract @NotNull Iterable<Float> ordinaryFloats();
+
+    public abstract @NotNull Iterable<Float> floats();
+
+    public abstract @NotNull Iterable<Double> positiveOrdinaryDoubles();
+
+    public abstract @NotNull Iterable<Double> negativeOrdinaryDoubles();
+
+    public abstract @NotNull Iterable<Double> ordinaryDoubles();
+
+    public abstract @NotNull Iterable<Double> doubles();
 }

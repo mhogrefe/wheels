@@ -1,7 +1,7 @@
 package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.CachedIterable;
-import mho.haskellesque.iterables.Exhaustive;
+import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +18,11 @@ import static mho.haskellesque.ordering.Ordering.*;
  * Various combinatorial functions and <tt>Iterable</tt>s.
  */
 public final class Combinatorics {
+    /**
+     * A provider of <tt>Iterable</tt>s containing every value of some type.
+     */
+    private static final @NotNull ExhaustiveProvider P = new ExhaustiveProvider();
+
     /**
      * Disallow instantiation
      */
@@ -521,7 +526,7 @@ public final class Combinatorics {
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
-        return concatMap(i -> listsAscending(i, xs), Exhaustive.NATURAL_BIG_INTEGERS);
+        return concatMap(i -> listsAscending(i, xs), P.naturalBigIntegers());
     }
 
     /**
@@ -544,7 +549,7 @@ public final class Combinatorics {
      */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Arrays.asList("");
-        return concatMap(i -> stringsAscending(i, s), Exhaustive.NATURAL_BIG_INTEGERS);
+        return concatMap(i -> stringsAscending(i, s), P.naturalBigIntegers());
     }
 
     /**
@@ -592,7 +597,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastPair,
                                 (Iterable<Optional<Pair<T, T>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -631,7 +636,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastPair,
                                 (Iterable<Optional<Pair<A, B>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -761,7 +766,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastTriple,
                                 (Iterable<Optional<Triple<A, B, C>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -843,7 +848,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastQuadruple,
                                 (Iterable<Optional<Quadruple<A, B, C, D>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -942,7 +947,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastQuintuple,
                                 (Iterable<Optional<Quintuple<A, B, C, D, E>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -1061,7 +1066,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastSextuple,
                                 (Iterable<Optional<Sextuple<A, B, C, D, E, F>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -1193,7 +1198,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastSeptuple,
                                 (Iterable<Optional<Septuple<A, B, C, D, E, F, G>>>)
-                                        map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
                         )
                 )
         );
@@ -1209,7 +1214,7 @@ public final class Combinatorics {
                 Optional::get,
                 filter(
                         Optional<List<T>>::isPresent,
-                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), P.naturalBigIntegers())
                 )
         );
     }
@@ -1223,7 +1228,7 @@ public final class Combinatorics {
     }
 
     public static Iterable<String> strings(int size) {
-        return strings(size, Exhaustive.CHARACTERS);
+        return strings(size, P.characters());
     }
 
     public static @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
@@ -1282,7 +1287,7 @@ public final class Combinatorics {
                 Optional::get,
                 filter(
                         Optional<List<T>>::isPresent,
-                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), Exhaustive.NATURAL_BIG_INTEGERS)
+                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), P.naturalBigIntegers())
                 )
         );
     }
