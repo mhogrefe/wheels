@@ -1,17 +1,22 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.math.BasicMath;
 import mho.haskellesque.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
 public final class RandomProvider implements IterableProvider {
+    private static final double BIG_INTEGER_TERMINATION_THRESHOLD = 0.02;
+
     private final @NotNull Random generator;
 
     public RandomProvider() {
@@ -211,9 +216,38 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return null;
+        return () -> new Iterator<BigInteger>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigInteger next() {
+                List<Boolean> bits = new ArrayList<>();
+                bits.add(true);
+                while (true) {
+                    if (generator.nextDouble() < BIG_INTEGER_TERMINATION_THRESHOLD) {
+                        break;
+                    } else {
+                        bits.add(generator.nextBoolean());
+                    }
+                }
+                return BasicMath.fromBits(bits);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
     @NotNull
