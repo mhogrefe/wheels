@@ -643,6 +643,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
      * @return all pairs of elements from <tt>xs</tt> in logarithmic order
      */
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> ii = new CachedIterable<>(xs);
@@ -736,6 +737,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <B> the type of the second <tt>Iterable</tt>'s elements
      * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in logarithmic order
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
@@ -797,6 +799,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <C> the type of the third <tt>Iterable</tt>'s elements
      * @return all triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
      */
+    @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -871,6 +874,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
      * @return all quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
      */
+    @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -956,6 +960,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
      * @return all quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and <tt>es</tt>
      */
+    @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -1059,6 +1064,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return all sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>, and
      * <tt>fs</tt>
      */
+    @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -1181,6 +1187,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return all septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
      * <tt>fs</tt>, and <tt>gs</tt>
      */
+    @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
