@@ -491,7 +491,7 @@ public final class RandomProvider implements IterableProvider {
 
             @Override
             public boolean hasNext() {
-                return false;
+                return true;
             }
 
             @Override
