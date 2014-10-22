@@ -626,18 +626,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
-     * linearly but the second grows logarithmically (hence the name).
-     *
-     * <ul>
-     *  <li><tt>xs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from some <tt>Iterable</tt>.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>.</li>
-     * </ul>
-     *
-     * Result length is |<tt>xs</tt>|<sup>2</sup>
+     * See <tt>Combinatorics::pairsLogarithmicOrder</tt>
      *
      * @param xs the <tt>Iterable</tt> from which elements are selected
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
@@ -645,91 +634,11 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = BasicMath.logarithmicDemux(bi);
-            assert p.a != null;
-            NullableOptional<T> optA = ii.get(p.a.intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.b != null;
-            NullableOptional<T> optB = ii.get(p.b.intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<T, T> p = o.get();
-            Optional<Boolean> lastA = ii.isLast(p.a);
-            Optional<Boolean> lastB = ii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<T, T>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<T, T>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
-    }
-
-    //todo
-    private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
-            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
-        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
-            assert p.a != null;
-            NullableOptional<A> optA = aii.get(p.a.intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.b != null;
-            NullableOptional<B> optB = bii.get(p.b.intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<A, B>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
+        return Combinatorics.pairsLogarithmicOrder(xs);
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
-     * linearly but the second grows logarithmically.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>s.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * See <tt>Combinatorics::pairsLogarithmicOrder</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
@@ -742,22 +651,11 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
-        return pairsByFunction(BasicMath::logarithmicDemux, as, bs);
+        return Combinatorics.pairsLogarithmicOrder(as, bs);
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that both components grow as the
-     * square root of the number of pairs iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
-     *  The elements are ordered by following a Z-curve through the pair space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * See <tt>Combinatorics::pairs</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
@@ -765,31 +663,13 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <B> the type of the second <tt>Iterable</tt>'s elements
      * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt>
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return pairsByFunction(
-                bi -> {
-                    List<BigInteger> list = BasicMath.demux(2, bi);
-                    return new Pair<>(list.get(0), list.get(1));
-                },
-                as,
-                bs
-        );
+        return Combinatorics.pairs(as, bs);
     }
 
     /**
-     * Returns all triples of elements taken from three <tt>Iterable</tt>s in such a way that all components grow as
-     * the cube root of the number of triples iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all triples of elements taken from three <tt>Iterable</tt>s.
-     *  The elements are ordered by following a Z-curve through the triple space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
+     * See <tt>Combinatorics::triples</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the triples are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the triples are selected
@@ -805,64 +685,11 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(3, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
-            if (!optC.isPresent()) return Optional.empty();
-            return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
-        };
-        Predicate<Optional<Triple<A, B, C>>> lastTriple = o -> {
-            if (!o.isPresent()) return false;
-            Triple<A, B, C> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Triple<A, B, C>>::isPresent,
-                        stopAt(
-                                lastTriple,
-                                (Iterable<Optional<Triple<A, B, C>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
+        return Combinatorics.triples(as, bs, cs);
     }
 
     /**
-     * Returns all quadruples of elements taken from four <tt>Iterable</tt>s in such a way that all components grow as
-     * the fourth root of the number of quadruples iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all quadruples of elements taken from four
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quadruple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
+     * See <tt>Combinatorics::quadruples</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the quadruples are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the quadruples are selected
@@ -881,72 +708,11 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(4, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
-            if (!optC.isPresent()) return Optional.empty();
-            assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
-            if (!optD.isPresent()) return Optional.empty();
-            return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
-        };
-        Predicate<Optional<Quadruple<A, B, C, D>>> lastQuadruple = o -> {
-            if (!o.isPresent()) return false;
-            Quadruple<A, B, C, D> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Quadruple<A, B, C, D>>::isPresent,
-                        stopAt(
-                                lastQuadruple,
-                                (Iterable<Optional<Quadruple<A, B, C, D>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
+        return Combinatorics.quadruples(as, bs, cs, ds);
     }
 
     /**
-     * Returns all quintuples of elements taken from five <tt>Iterable</tt>s in such a way that all components grow as
-     * the fifth root of the number of quintuples iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all quintuples of elements taken from five
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quintuple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
+     * See <tt>Combinatorics::quintuples</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the quintuples are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the quintuples are selected
@@ -968,86 +734,11 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
-        Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(5, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
-            if (!optC.isPresent()) return Optional.empty();
-            assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
-            if (!optD.isPresent()) return Optional.empty();
-            assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
-            if (!optE.isPresent()) return Optional.empty();
-            return Optional.of(new Quintuple<A, B, C, D, E>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get()
-            ));
-        };
-        Predicate<Optional<Quintuple<A, B, C, D, E>>> lastQuintuple = o -> {
-            if (!o.isPresent()) return false;
-            Quintuple<A, B, C, D, E> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Quintuple<A, B, C, D, E>>::isPresent,
-                        stopAt(
-                                lastQuintuple,
-                                (Iterable<Optional<Quintuple<A, B, C, D, E>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
+        return Combinatorics.quintuples(as, bs, cs, ds, es);
     }
 
     /**
-     * Returns all sextuples of elements taken from six <tt>Iterable</tt>s in such a way that all components grow as
-     * the sixth root of the number of sextuples iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li><tt>fs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all sextuples of elements taken from six <tt>Iterable</tt>s.
-     *  The elements are ordered by following a Z-curve through the sextuple space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
+     * See <tt>Combinatorics::sextuples</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the sextuples are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the sextuples are selected
@@ -1073,102 +764,11 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     ) {
-        if (
-                isEmpty(as) ||
-                        isEmpty(bs) ||
-                        isEmpty(cs) ||
-                        isEmpty(ds) ||
-                        isEmpty(es) ||
-                        isEmpty(fs)
-                ) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
-        CachedIterable<F> fii = new CachedIterable<>(fs);
-        Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(6, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
-            if (!optC.isPresent()) return Optional.empty();
-            assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
-            if (!optD.isPresent()) return Optional.empty();
-            assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
-            if (!optE.isPresent()) return Optional.empty();
-            assert p.get(5) != null;
-            NullableOptional<F> optF = fii.get(p.get(5).intValue());
-            if (!optF.isPresent()) return Optional.empty();
-            return Optional.of(new Sextuple<A, B, C, D, E, F>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get(),
-                    optF.get()
-            ));
-        };
-        Predicate<Optional<Sextuple<A, B, C, D, E, F>>> lastSextuple = o -> {
-            if (!o.isPresent()) return false;
-            Sextuple<A, B, C, D, E, F> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            Optional<Boolean> lastF = fii.isLast(p.f);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastF.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get() &&
-                    lastF.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Sextuple<A, B, C, D, E, F>>::isPresent,
-                        stopAt(
-                                lastSextuple,
-                                (Iterable<Optional<Sextuple<A, B, C, D, E, F>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
+        return Combinatorics.sextuples(as, bs, cs, ds, es, fs);
     }
 
     /**
-     * Returns all septuples of elements taken from seven <tt>Iterable</tt>s in such a way that all components grow as
-     * the seventh root of the number of septuples iterated.
-     *
-     * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li><tt>fs</tt> is non-null.</li>
-     *  <li><tt>gs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all septuples of elements taken from seven
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the septuple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
-     * </ul>
-     *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>|
+     * See <tt>Combinatorics::septuples</tt>
      *
      * @param as the <tt>Iterable</tt> from which the first components of the septuples are selected
      * @param bs the <tt>Iterable</tt> from which the second components of the septuples are selected
@@ -1197,169 +797,40 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     ) {
-        if (
-                isEmpty(as) ||
-                        isEmpty(bs) ||
-                        isEmpty(cs) ||
-                        isEmpty(ds) ||
-                        isEmpty(es) ||
-                        isEmpty(fs) ||
-                        isEmpty(gs)
-                ) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
-        CachedIterable<F> fii = new CachedIterable<>(fs);
-        CachedIterable<G> gii = new CachedIterable<>(gs);
-        Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
-            List<BigInteger> p = BasicMath.demux(7, bi);
-            assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
-            if (!optB.isPresent()) return Optional.empty();
-            assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
-            if (!optC.isPresent()) return Optional.empty();
-            assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
-            if (!optD.isPresent()) return Optional.empty();
-            assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
-            if (!optE.isPresent()) return Optional.empty();
-            assert p.get(5) != null;
-            NullableOptional<F> optF = fii.get(p.get(5).intValue());
-            if (!optF.isPresent()) return Optional.empty();
-            assert p.get(6) != null;
-            NullableOptional<G> optG = gii.get(p.get(6).intValue());
-            if (!optG.isPresent()) return Optional.empty();
-            return Optional.of(new Septuple<A, B, C, D, E, F, G>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get(),
-                    optF.get(),
-                    optG.get()
-            ));
-        };
-        Predicate<Optional<Septuple<A, B, C, D, E, F, G>>> lastSeptuple = o -> {
-            if (!o.isPresent()) return false;
-            Septuple<A, B, C, D, E, F, G> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            Optional<Boolean> lastF = fii.isLast(p.f);
-            Optional<Boolean> lastG = gii.isLast(p.g);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastF.isPresent() &&
-                    lastG.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get() &&
-                    lastF.get() &&
-                    lastG.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Septuple<A, B, C, D, E, F, G>>::isPresent,
-                        stopAt(
-                                lastSeptuple,
-                                (Iterable<Optional<Septuple<A, B, C, D, E, F, G>>>)
-                                        map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
-    }
-
-    public <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
-        if (size == 0) {
-            return Arrays.asList(new ArrayList<T>());
-        }
-        CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi -> ii.get(map(BigInteger::intValue, BasicMath.demux(size, bi)));
-        return map(
-                Optional::get,
-                filter(
-                        Optional<List<T>>::isPresent,
-                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), naturalBigIntegers())
-                )
-        );
-    }
-
-    public Iterable<String> strings(int size, Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, lists(size, cs));
-    }
-
-    public Iterable<String> strings(int size, String s) {
-        return map(IterableUtils::charsToString, lists(size, fromString(s)));
-    }
-
-    public Iterable<String> strings(int size) {
-        return strings(size, characters());
+        return Combinatorics.septuples(as, bs, cs, ds, es, fs, gs);
     }
 
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
-        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
+        return Combinatorics.pairs(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
+        return Combinatorics.triples(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
+        return Combinatorics.quadruples(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                lists(5, xs)
-        );
+        return Combinatorics.quintuples(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                lists(6, xs)
-        );
+        return Combinatorics.sextuples(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                lists(7, xs)
-        );
+        return Combinatorics.septuples(xs);
     }
 
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
     }
 }
-
