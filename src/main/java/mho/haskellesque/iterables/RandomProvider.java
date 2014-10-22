@@ -122,7 +122,7 @@ public final class RandomProvider implements IterableProvider {
 
             @Override
             public Byte next() {
-                return (byte) (generator.nextInt(127) + 1);
+                return (byte) (generator.nextInt(Byte.MAX_VALUE) + 1);
             }
 
             @Override
@@ -147,7 +147,7 @@ public final class RandomProvider implements IterableProvider {
 
             @Override
             public Short next() {
-                return (short) (generator.nextInt(65535) + 1);
+                return (short) (generator.nextInt(Short.MAX_VALUE) + 1);
             }
 
             @Override
