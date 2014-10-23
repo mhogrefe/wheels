@@ -392,22 +392,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
-        return () -> new Iterator<Byte>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (generator.nextInt(Byte.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(i -> (byte) (i & 0x7f), integers());
     }
 
     /**
@@ -418,22 +403,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
-        return () -> new Iterator<Short>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (generator.nextInt(Short.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(i -> (short) (i & 0x7fff), integers());
     }
 
     /**
@@ -444,7 +414,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
-        return filter(i -> i >= 0, integers());
+        return map(i -> i & 0x7fffffff, integers());
     }
 
     /**
@@ -455,7 +425,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
-        return filter(l -> l >= 0, longs());
+        return map(l -> l & 0x7fffffffffffffffL, longs());
     }
 
     /**
@@ -519,22 +489,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return () -> new Iterator<Byte>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (generator.nextInt(1 << 8) - (1 << 7));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(i -> (byte) (i & 0xff), integers());
     }
 
     /**
@@ -544,22 +499,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return () -> new Iterator<Short>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (generator.nextInt(1 << 16) - (1 << 15));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(i -> (short) (i & 0xffff), integers());
     }
 
     /**
@@ -664,33 +604,28 @@ public final class RandomProvider implements IterableProvider {
         return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
-    @NotNull
     @Override
-    public Iterable<Character> asciiCharacters() {
+    public @NotNull Iterable<Character> asciiCharacters() {
+        return map(i -> (char) (i & 0xff), integers());
+    }
+
+    @Override
+    public @NotNull Iterable<Character> characters() {
+        return map(i -> (char) (i & 0xffff), integers());
+    }
+
+    @Override
+    public @NotNull Iterable<Float> positiveOrdinaryFloats() {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Character> characters() {
+    public @NotNull Iterable<Float> negativeOrdinaryFloats() {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Float> positiveOrdinaryFloats() {
-        return null;
-    }
-
-    @NotNull
-    @Override
-    public Iterable<Float> negativeOrdinaryFloats() {
-        return null;
-    }
-
-    @NotNull
-    @Override
-    public Iterable<Float> ordinaryFloats() {
+    public @NotNull Iterable<Float> ordinaryFloats() {
         return null;
     }
 
@@ -721,21 +656,18 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
-    @NotNull
     @Override
-    public Iterable<Double> positiveOrdinaryDoubles() {
+    public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Double> negativeOrdinaryDoubles() {
+    public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
         return null;
     }
 
-    @NotNull
     @Override
-    public Iterable<Double> ordinaryDoubles() {
+    public @NotNull Iterable<Double> ordinaryDoubles() {
         return null;
     }
 
@@ -766,15 +698,13 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
-    @NotNull
     @Override
-    public <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return null;
     }
 
-    @NotNull
     @Override
-    public <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return null;
     }
 
