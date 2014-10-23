@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigInteger;
-import java.util.List;
 import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
@@ -324,6 +322,25 @@ public class RandomProviderTest {
                 " -88557569903630551599799955827784349169626451040329715964313, 202, 60318599134," +
                 " 1640702634687943479, 30595542989985026728847, 0, -1063509394284735583548471, 1," +
                 " 12821954296221206544535, 819043558988, 0, 3, 582]");
+    }
+
+    @Test
+    public void testAsciiCharacters() {
+        aeq(charsToString(take(100, P.asciiCharacters())),
+                "PG1~AdF\f;{\13yx\33}\25&A0\26zW\3?\n~\24>\\\rvU9X!=G4*FV:3ByK$$YU\32cE" +
+                "S\37#\f\32\34\27\16Q\13 \20@p:PN\t\30YDC\f\30Wp,.d72\6}K$*#`4RUYh>IE}");
+    }
+
+    @Test
+    public void testCharacters() {
+        aeq(charsToString(take(100, P.characters())),
+                "\u45d0\uc047\u76b1\uc7fe\u71c1\u3be4\u99c6\ub78c\ue83b\uc7fb\uaa0b\ucc79\u41f8\ub01b\u00fd\u1a95" +
+                "\u9226\ubb41\uc6b0\u8f96\u907a\u0e57\ufc03\u033f\ud08a\u32fe\u7414\ua5be\u9a5c\u468d\u70f6\u7055" +
+                "\u3839\u9558\ud7a1\u7c3d\ucdc7\u2634\u2f2a\u63c6\u0c56\ufa3a\udf33\u11c2\u5879\u04cb\u61a4\ua324" +
+                "\u34d9\u1fd5\u5b9a\u3ee3\u0645\u8053\ud19f\u0823\u850c\u6f1a\ueb1c\u8e97\u6f8e\u49d1\uf90b\u6120" +
+                "\u5210\u1040\ub3f0\ua6ba\u77d0\u01ce\ue509\ue198\u5959\u0f44\ueec3\u408c\u1c18\u24d7\ue870\u22ac" +
+                "\uf72e\u9064\u4137\ub132\u9186\u07fd\u1e4b\ub3a4\uad2a\u14a3\ue860\u0234\ub3d2\ue555\ubc59\u3a68" +
+                "\uf8be\uce49\ub345\u99fd");
     }
 
     private static void aeq(Iterable<?> a, Object b) {

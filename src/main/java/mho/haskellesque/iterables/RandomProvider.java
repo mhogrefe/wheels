@@ -604,11 +604,23 @@ public final class RandomProvider implements IterableProvider {
         return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all ASCII <tt>Character</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
-        return map(i -> (char) (i & 0xff), integers());
+        return map(b -> (char) (byte) b, naturalBytes());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all <tt>Character</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Character> characters() {
         return map(i -> (char) (i & 0xffff), integers());
