@@ -200,4 +200,8 @@ public final class BasicMath {
         }
         return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demux(lines, bits(n))));
     }
+
+    public static boolean isAPowerOfTwo(BigInteger n) {
+        return n.getLowestSetBit() == n.bitLength() - 1;
+    }
 }
