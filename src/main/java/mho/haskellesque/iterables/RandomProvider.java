@@ -473,6 +473,11 @@ public final class RandomProvider implements IterableProvider {
             public Integer next() {
                 return generator.nextInt();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -487,6 +492,11 @@ public final class RandomProvider implements IterableProvider {
             @Override
             public Long next() {
                 return generator.nextLong();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -507,6 +517,11 @@ public final class RandomProvider implements IterableProvider {
                     nbi = nbi.negate();
                 }
                 return nbi;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -565,6 +580,11 @@ public final class RandomProvider implements IterableProvider {
                 } while (problematicNaN);
                 return next;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -604,6 +624,11 @@ public final class RandomProvider implements IterableProvider {
                     problematicNaN = Double.isNaN(next) && doubleBits != 0x7ff8000000000000L;
                 } while (problematicNaN);
                 return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
