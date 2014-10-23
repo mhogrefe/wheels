@@ -9,16 +9,50 @@ import java.util.List;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 
+/**
+ * Some mathematical utilities
+ */
 public final class BasicMath {
     /**
      * Disallow instantiation
      */
     private BasicMath() {}
 
+    /**
+     * The greatest common divisor of two <tt>int</tt>s. If both <tt>x</tt> and <tt>y</tt> are zero, the result is
+     * undefined. Otherwise, the result is positive.
+     *
+     * <ul>
+     *  <li><tt>x</tt> may be any <tt>int</tt>.</li>
+     *  <li><tt>y</tt> may be any <tt>int</tt>.</li>
+     *  <li><tt>x</tt> and <tt>y</tt> y may not both be zero.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return gcd(x, y)
+     */
     public static int gcd(int x, int y) {
-        return positiveGcd(x < 0 ? -x : x, y < 0 ? -y : y);
+        if (x == 0 && y == 0)
+            throw new ArithmeticException("cannot take gcd of 0 and 0");
+        return positiveGcd(Math.abs(x), Math.abs(y));
     }
 
+    /**
+     * The greatest common divisor of two non-negative <tt>int</tt>s.
+     *
+     * <ul>
+     *  <li><tt>x</tt> must be non-negative.</li>
+     *  <li><tt>y</tt> must be non-negative.</li>
+     *  <li><tt>x</tt> and <tt>y</tt> y may not both be zero.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return gcd(x, y)
+     */
     private static int positiveGcd(int x, int y) {
         return y == 0 ? x : positiveGcd(y, x % y);
     }
