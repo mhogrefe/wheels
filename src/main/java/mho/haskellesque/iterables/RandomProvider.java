@@ -384,6 +384,12 @@ public final class RandomProvider implements IterableProvider {
         return map(BigInteger::negate, positiveBigIntegers());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all natural <tt>Byte</tt>s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
         return () -> new Iterator<Byte>() {
@@ -404,6 +410,12 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all natural <tt>Short</tt>s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
         return () -> new Iterator<Short>() {
@@ -424,17 +436,45 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s (including 0) from a uniform distribution.
+     * Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
         return filter(i -> i >= 0, integers());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all natural <tt>Long</tt>s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
         return filter(l -> l >= 0, longs());
     }
 
+    /**
+     * @return An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is
+     * chosen from a geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual
+     * mean and <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
+     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
+     */
     public @NotNull Iterable<BigInteger> naturalBigIntegers(int meanBitSize) {
+        if (meanBitSize <= 2)
+            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             @Override
             public boolean hasNext() {
@@ -444,7 +484,6 @@ public final class RandomProvider implements IterableProvider {
             @Override
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
-                bits.add(true);
                 while (true) {
                     if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
                         break;
@@ -462,6 +501,12 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is chosen from
+     * a geometric distribution with mean approximately 64. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
         return naturalBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
