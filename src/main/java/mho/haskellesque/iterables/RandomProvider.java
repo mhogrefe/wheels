@@ -227,8 +227,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
+     * @return An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a
+     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
      * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
      *
      * <ul>
@@ -237,6 +237,8 @@ public final class RandomProvider implements IterableProvider {
      * </ul>
      *
      * Length is infinite
+     *
+     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers(int meanBitSize) {
         if (meanBitSize <= 2)
@@ -279,6 +281,12 @@ public final class RandomProvider implements IterableProvider {
         return positiveBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all negative <tt>Byte</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
         return () -> new Iterator<Byte>() {
@@ -299,6 +307,12 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all negative <tt>Short</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
         return () -> new Iterator<Short>() {
@@ -319,20 +333,52 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Integer> negativeIntegers() {
         return filter(i -> i < 0, integers());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all negative <tt>Long</tt>s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
         return filter(l -> l < 0, longs());
     }
 
+    /**
+     * @return An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a
+     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
+     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
+     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
+     */
     public @NotNull Iterable<BigInteger> negativeBigIntegers(int meanBitSize) {
         return map(BigInteger::negate, positiveBigIntegers(meanBitSize));
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a geometric
+     * distribution with mean approximately 64. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
         return map(BigInteger::negate, positiveBigIntegers());
