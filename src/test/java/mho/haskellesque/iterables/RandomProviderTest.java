@@ -4,10 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigInteger;
+import java.util.List;
 import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class RandomProviderTest {
     private @NotNull RandomProvider P;
@@ -68,12 +71,43 @@ public class RandomProviderTest {
     }
 
     @Test
+    public void testPositiveBigIntegers_Int() {
+        aeq(take(20, P.positiveBigIntegers(3)), "[15, 1, 7, 3, 1, 2, 8, 1, 13, 5, 20, 2, 1, 1, 1, 1, 1, 1, 3, 1]");
+        aeq(take(20, P.positiveBigIntegers(4)),
+                "[1, 1, 1, 6, 4, 94, 59, 4, 1, 1, 1, 43, 15, 1, 3, 1, 2, 103103, 393, 12]");
+        aeq(take(20, P.positiveBigIntegers(5)),
+                "[1, 2, 2821, 1, 13, 1, 273, 1, 3, 3, 1, 3, 15, 2, 6, 14, 5, 7, 1, 1]");
+        aeq(take(20, P.positiveBigIntegers(10)),
+                "[418, 1, 886, 15, 2, 1023538995542242, 2527383, 11, 2, 3411," +
+                " 10, 4891, 8, 2, 25, 3, 10, 349, 110732294, 3877]");
+        aeq(take(20, P.positiveBigIntegers(100)),
+                "[631847851262602872164, 62178362933629457256170097449498832870026795417, 547758176," +
+                " 2346149950119691144404, 311, 4742738, 67302549518065217887062796935441749979, 53471, 4223," +
+                " 17312403, 316463874199, 6, 447122575, 1176, 704610823827," +
+                " 31430331193008341986440693101333088795173295035345951291600655076040609838446721240723225651953502" +
+                "51261283498014102904063, 7517586777550828054626795662503, 741109, 101419744017795180979313623318," +
+                " 25612091393]");
+        try {
+            P.positiveBigIntegers(2);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.positiveBigIntegers(0);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.positiveBigIntegers(-4);
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
     public void testPositiveBigIntegers() {
         aeq(take(20, P.positiveBigIntegers()),
-                "[48652618031, 19, 1604523, 47342936008929411, 1, 5781660610793558447160696017748849152415," +
-                " 8670351559683419543527211, 71846825, 259," +
-                " 7532600913987301393787776023776380057180403400673862364081, 25237825, 1350400639," +
-                " 520713022518431, 2440457, 21776818515, 1980643, 2193505253511091, 900745, 15115, 32517]");
+                "[65649474733, 50, 1752003, 108680047959250986, 2, 169829217569110637456607575012447814909456," +
+                " 8046132249267142822265255, 78549137, 3080," +
+                " 6955247343603701669934693326084685760295830262297267296665, 547758176, 2133810949," +
+                " 547945394950967, 4742738, 27183283269, 1631119, 1811559053982367, 595931, 13367, 20607]");
     }
 
     private static void aeq(Iterable<?> a, Object b) {

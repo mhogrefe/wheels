@@ -227,14 +227,20 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s from a geometric distribution with mean
-     * bit size <tt>meanBitSize</tt>. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a geometric
+     * distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
+     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
      *
-     * //todo
+     * <ul>
+     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
+     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     * </ul>
      *
      * Length is infinite
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers(int meanBitSize) {
+        if (meanBitSize <= 2)
+            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             @Override
             public boolean hasNext() {
@@ -252,7 +258,7 @@ public final class RandomProvider implements IterableProvider {
                         bits.add(generator.nextBoolean());
                     }
                 }
-                return BasicMath.fromBits(bits);
+                return BasicMath.fromBigEndianBits(bits);
             }
 
             @Override
@@ -263,8 +269,8 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s from a geometric distribution with mean
-     * bit size 64. Does not support removal.
+     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a geometric
+     * distribution with mean approximately 64. Does not support removal.
      *
      * Length is infinite
      */
@@ -400,7 +406,7 @@ public final class RandomProvider implements IterableProvider {
                         bits.add(generator.nextBoolean());
                     }
                 }
-                return BasicMath.fromBits(bits);
+                return BasicMath.fromBigEndianBits(bits);
             }
 
             @Override
