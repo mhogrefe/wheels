@@ -21,6 +21,7 @@ import static mho.haskellesque.iterables.IterableUtils.map;
  */
 public final class RandomProvider implements IterableProvider {
     private static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
+    private static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
 
     private final @NotNull Random generator;
 
@@ -901,19 +902,37 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    public @NotNull Iterable<BigDecimal> positiveBigDecimals(int meanScale) {
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(negativeBigIntegers(), integersGeometric(meanScale))
+        );
+    }
+
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
-        return null;
+        return positiveBigDecimals(BIG_DECIMAL_MEAN_SCALE);
+    }
+
+    public @NotNull Iterable<BigDecimal> negativeBigDecimals(int meanScale) {
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(negativeBigIntegers(), integersGeometric(meanScale))
+        );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
-        return null;
+        return negativeBigDecimals(BIG_DECIMAL_MEAN_SCALE);
+    }
+
+    public @NotNull Iterable<BigDecimal> bigDecimals(int meanScale) {
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(meanScale)));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return null;
+        return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
     }
 
     @Override
