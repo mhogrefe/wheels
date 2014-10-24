@@ -4,6 +4,7 @@ import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
@@ -73,6 +74,12 @@ public interface IterableProvider {
     public abstract @NotNull Iterable<Double> ordinaryDoubles();
 
     public abstract @NotNull Iterable<Double> doubles();
+
+    public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
+
+    public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
+
+    public abstract @NotNull Iterable<BigDecimal> bigDecimals();
 
     public abstract @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs);
 

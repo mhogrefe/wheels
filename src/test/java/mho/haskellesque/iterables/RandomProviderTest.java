@@ -285,21 +285,19 @@ public class RandomProviderTest {
 
     @Test
     public void testBigIntegers_Int() {
-        aeq(take(20, P.bigIntegers(3)),
-                "[7, 0, 1, 0, 0, 0, 0, -5, 0, 6, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0]");
-        aeq(take(20, P.bigIntegers(4)),
-                "[1, 1, -6, 4, -1, 0, 10, 0, 0, 0, -1, -7, -5, 3, 0, 0, 0, 0, -1, 4]");
+        aeq(take(20, P.bigIntegers(3)), "[7, -1, 1, -1, 0, 0, -1, -6, -1, 6, -1, 0, -1, 0, -1, 1, 1, 1, 0, -1]");
+        aeq(take(20, P.bigIntegers(4)), "[1, 1, -7, 4, -2, 0, 10, -1, 0, 0, -2, -8, -6, 3, 0, -1, 0, 0, -2, 4]");
         aeq(take(20, P.bigIntegers(5)),
-                "[1, 773, 2, 0, 24, -9, 0, -1, 0, 1, -2, 3, -1, 7, 10, 2, 3271, 120, 11, 0]");
+                "[1, 773, 2, 0, 24, -10, -1, -2, -1, 1, -3, 3, -2, 7, 10, 2, 3271, 120, 11, 0]");
         aeq(take(20, P.bigIntegers(10)),
-                "[-1, 11, -453, -19342463127, -3411, 13, 0, -54, 0, -3," +
-                " 0, 3, 35, 0, -43623430, -7, 0, 19579, -28, 4]");
+                "[-2, 11, -454, -19342463128, -3412, 13, -1, -55, 0, -4," +
+                " 0, 3, 35, -1, -43623431, -8, 0, 19579, -29, 4]");
         aeq(take(20, P.bigIntegers(100)),
-                "[-88557569903630551599799955827784349169626451040329715964313, 202, 60318599134," +
-                " 1640702634687943479, -61191085979970053457694, 4254037577138942334193887, 12821954296221206544535," +
-                " -1638087117976, 3, 582, 230, 16168191, 26, 51481126197039749041591204, -71523839508501956928332," +
+                "[-88557569903630551599799955827784349169626451040329715964314, 202, 60318599134," +
+                " 1640702634687943479, -61191085979970053457695, 4254037577138942334193887, 12821954296221206544535," +
+                " -1638087117977, 3, 582, 230, 16168191, 26, 51481126197039749041591204, -71523839508501956928333," +
                 " 1325372505506602807026564, 3757547800543576, 4364599426705721714," +
-                " 113847612089673464000064561451248807, -400979282943760427063214761070268927754993665]");
+                " 113847612089673464000064561451248807, -400979282943760427063214761070268927754993666]");
         try {
             P.bigIntegers(2);
             fail();
@@ -317,11 +315,114 @@ public class RandomProviderTest {
     @Test
     public void testBigIntegers() {
         aeq(take(20, P.bigIntegers()),
-                "[31289736365, 1332686935725045463947306, -49774, -12910780249752364756421," +
-                " -23944809563965594065693683811078439335, 0, 320784164," +
-                " -88557569903630551599799955827784349169626451040329715964313, 202, 60318599134," +
-                " 1640702634687943479, 30595542989985026728847, 0, -1063509394284735583548471, 1," +
-                " 12821954296221206544535, 819043558988, 0, 3, 582]");
+                "[31289736365, 1332686935725045463947306, -49775, -12910780249752364756422," +
+                " -23944809563965594065693683811078439336, 0, 320784164," +
+                " -88557569903630551599799955827784349169626451040329715964314, 202, 60318599134," +
+                " 1640702634687943479, 30595542989985026728847, -1, -1063509394284735583548472, 1," +
+                " 12821954296221206544535, 819043558988, -1, 3, 582]");
+    }
+
+    @Test
+    public void testNaturalIntegersGeometric() {
+        aeq(take(20, P.naturalIntegersGeometric(2)), "[2, 2, 0, 3, 0, 0, 0, 1, 3, 0, 0, 0, 2, 7, 4, 0, 0, 0, 0, 0]");
+        aeq(take(20, P.naturalIntegersGeometric(3)), "[2, 0, 7, 1, 0, 2, 9, 4, 3, 2, 0, 0, 0, 0, 4, 3, 0, 2, 0, 0]");
+        aeq(take(20, P.naturalIntegersGeometric(4)), "[5, 2, 1, 18, 0, 4, 7, 4, 3, 1, 0, 2, 1, 0, 5, 6, 1, 0, 8, 3]");
+        aeq(take(20, P.naturalIntegersGeometric(5)),
+                "[0, 4, 0, 7, 1, 1, 2, 3, 0, 1, 1, 3, 1, 12, 0, 5, 13, 1, 14, 6]");
+        aeq(take(20, P.naturalIntegersGeometric(10)),
+                "[12, 26, 5, 2, 3, 14, 2, 19, 5, 8, 13, 11, 6, 1, 5, 5, 1, 2, 1, 11]");
+        aeq(take(20, P.naturalIntegersGeometric(100)),
+                "[222, 37, 133, 281, 103, 43, 193, 21, 16, 3, 7, 96, 151, 39, 5, 76, 173, 25, 82, 70]");
+        try {
+            P.naturalIntegersGeometric(1);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.naturalIntegersGeometric(0);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.naturalIntegersGeometric(-4);
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testPositiveIntegersGeometric() {
+        aeq(take(20, P.positiveIntegersGeometric(3)), "[3, 3, 1, 4, 1, 1, 1, 2, 4, 1, 1, 1, 3, 8, 5, 1, 1, 1, 1, 1]");
+        aeq(take(20, P.positiveIntegersGeometric(4)), "[3, 1, 8, 2, 1, 3, 10, 5, 4, 3, 1, 1, 1, 1, 5, 4, 1, 3, 1, 1]");
+        aeq(take(20, P.positiveIntegersGeometric(5)), "[6, 3, 2, 19, 1, 5, 8, 5, 4, 2, 1, 3, 2, 1, 6, 7, 2, 1, 9, 4]");
+        aeq(take(20, P.positiveIntegersGeometric(10)),
+                "[1, 5, 1, 12, 3, 9, 19, 1, 6, 14, 24, 13, 27, 6, 3, 4, 15, 3, 5, 15]");
+        aeq(take(20, P.positiveIntegersGeometric(100)),
+                "[6, 298, 38, 134, 282, 104, 44, 194, 22, 17, 4, 8, 97, 152, 40, 6, 77, 174, 26, 83]");
+        try {
+            P.positiveIntegersGeometric(2);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.positiveIntegersGeometric(0);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.positiveIntegersGeometric(-4);
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testNegativeIntegersGeometric() {
+        aeq(take(20, P.negativeIntegersGeometric(3)),
+                "[-3, -3, -1, -4, -1, -1, -1, -2, -4, -1, -1, -1, -3, -8, -5, -1, -1, -1, -1, -1]");
+        aeq(take(20, P.negativeIntegersGeometric(4)),
+                "[-3, -1, -8, -2, -1, -3, -10, -5, -4, -3, -1, -1, -1, -1, -5, -4, -1, -3, -1, -1]");
+        aeq(take(20, P.negativeIntegersGeometric(5)),
+                "[-6, -3, -2, -19, -1, -5, -8, -5, -4, -2, -1, -3, -2, -1, -6, -7, -2, -1, -9, -4]");
+        aeq(take(20, P.negativeIntegersGeometric(10)),
+                "[-1, -5, -1, -12, -3, -9, -19, -1, -6, -14, -24, -13, -27, -6, -3, -4, -15, -3, -5, -15]");
+        aeq(take(20, P.negativeIntegersGeometric(100)),
+                "[-6, -298, -38, -134, -282, -104, -44, -194, -22, -17," +
+                " -4, -8, -97, -152, -40, -6, -77, -174, -26, -83]");
+        try {
+            P.negativeIntegersGeometric(2);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.negativeIntegersGeometric(0);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.negativeIntegersGeometric(-4);
+            fail();
+        } catch (IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testIntegersGeometric() {
+        aeq(take(20, P.integersGeometric(2)),
+                "[-3, 0, 0, 2, 0, -2, -2, -2, 0, -1, -1, -1, -1, -2, -5, -3, 0, -2, 0, -1]");
+        aeq(take(20, P.integersGeometric(3)),
+                "[1, 2, 4, 1, -3, 2, -6, -5, -3, 7, -3, -3, -1, 0, 0, 3, 2, -3, -1, 3]");
+        aeq(take(20, P.integersGeometric(4)),
+                "[13, 6, -6, 5, 1, 6, -1, 7, 3, 1, 8, -5, 3, 1, -6, -2, -1, -2, 3, -6]");
+        aeq(take(20, P.integersGeometric(5)),
+                "[1, 4, 8, -8, 11, 1, -14, -6, -2, -3, 6, 2, -1, -1, -3, 2, -10, 1, -1, 5]");
+        aeq(take(20, P.integersGeometric(10)),
+                "[-1, 4, 12, -1, -1, -14, 4, 1, 2, 20, -1, 14, 2, 3, -3, 0, 3, -5, -1, 2]");
+        aeq(take(20, P.integersGeometric(100)),
+                "[-231, 184, -268, 88, 13, 22, -20, 34, 157, 175, -123, 201, 93, -50, 57, -100, 159, -36, -46, 141]");
+        try {
+            P.integersGeometric(1);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.integersGeometric(0);
+            fail();
+        } catch (IllegalArgumentException e) {}
+        try {
+            P.integersGeometric(-4);
+            fail();
+        } catch (IllegalArgumentException e) {}
     }
 
     @Test

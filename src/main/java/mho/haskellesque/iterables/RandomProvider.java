@@ -5,6 +5,7 @@ import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -363,7 +364,7 @@ public final class RandomProvider implements IterableProvider {
      *
      * <ul>
      *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
      * </ul>
      *
      * Length is infinite
@@ -436,7 +437,7 @@ public final class RandomProvider implements IterableProvider {
      *
      * <ul>
      *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
      * </ul>
      *
      * Length is infinite
@@ -554,13 +555,13 @@ public final class RandomProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s The bit size is chosen from a geometric
+     * @return An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s. The bit size is chosen from a geometric
      * distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
      * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
      *
      * <ul>
      *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
      * </ul>
      *
      * Length is infinite
@@ -582,7 +583,7 @@ public final class RandomProvider implements IterableProvider {
             public BigInteger next() {
                 BigInteger nbi = it.next();
                 if (generator.nextBoolean()) {
-                    nbi = nbi.negate();
+                    nbi = nbi.negate().subtract(BigInteger.ONE);
                 }
                 return nbi;
             }
@@ -603,6 +604,143 @@ public final class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
         return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
+    }
+
+    /**
+     * @return An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s chosen from a geometric distribution
+     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
+     * <tt>meanSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanSize</tt> must be greater than 1.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all natural <tt>Integers</tt>.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
+     */
+    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
+        if (meanSize <= 1)
+            throw new IllegalArgumentException("meanSize must be greater than 1.");
+        return () -> new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int i = 0;
+                while (generator.nextDouble() >= 1.0 / meanSize) {
+                    i++;
+                }
+                return i;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * @return An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s chosen from a geometric distribution
+     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
+     * <tt>meanSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanSize</tt> must be greater than 2.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all positive <tt>Integers</tt>.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanSize the approximate mean size of the <tt>Integer</tt>s generated
+     */
+    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
+        if (meanSize <= 2)
+            throw new IllegalArgumentException("meanSize must be greater than 2.");
+        return () -> new Iterator<Integer>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int i = 1;
+                while (generator.nextDouble() >= 1.0 / (meanSize - 1)) {
+                    i++;
+                }
+                return i;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * @return An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s chosen from a geometric distribution
+     * with absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and
+     * <tt>meanSize</tt> decreases as <tt>meanSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanSize</tt> must be greater than 2.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all negative <tt>Integers</tt>.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanSize the approximate absolute mean size of the <tt>Integer</tt>s generated
+     */
+    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
+        return map(i -> -i, positiveIntegersGeometric(meanSize));
+    }
+
+    /**
+     * @return An <tt>Iterable</tt> that generates all <tt>Integer</tt>s chosen from a geometric distribution with
+     * absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and <tt>meanSize</tt>
+     * decreases as <tt>meanSize</tt> increases). Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>meanSize</tt> must be greater than 1.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all <tt>Integers</tt>.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
+     */
+    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
+        if (meanSize <= 1)
+            throw new IllegalArgumentException("meanSize must be greater than 1.");
+        return () -> new Iterator<Integer>() {
+            private Iterator<Integer> it = naturalIntegersGeometric(meanSize).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                Integer ni = it.next();
+                if (generator.nextBoolean()) {
+                    ni = -ni - 1;
+                }
+                return ni;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
     /**
@@ -761,6 +899,21 @@ public final class RandomProvider implements IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> bigDecimals() {
+        return null;
     }
 
     @Override
