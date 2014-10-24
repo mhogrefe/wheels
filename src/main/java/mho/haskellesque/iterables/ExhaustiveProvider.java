@@ -7,6 +7,7 @@ import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
@@ -622,6 +623,33 @@ public class ExhaustiveProvider implements IterableProvider {
                 Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
                 (Iterable<Double>) tail(ordinaryDoubles())
         );
+    }
+
+    /**
+     * An <tt>Iterable</tt> that contains all positive <tt>BigDecimal</tt>s. Does not support removal.
+     *
+     * Length is infinite.
+     */
+    public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
+    }
+
+    /**
+     * An <tt>Iterable</tt> that contains all negative <tt>BigDecimal</tt>s. Does not support removal.
+     *
+     * Length is infinite.
+     */
+    public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
+    }
+
+    /**
+     * An <tt>Iterable</tt> that contains all <tt>BigDecimal</tt>s. Does not support removal.
+     *
+     * Length is infinite.
+     */
+    public @NotNull Iterable<BigDecimal> bigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
     }
 
     /**
