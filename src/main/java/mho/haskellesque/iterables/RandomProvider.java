@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.iterables.IterableUtils.map;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
@@ -612,7 +613,7 @@ public final class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
-        return map(b -> (char) (byte) b, naturalBytes());
+        return map(i -> (char) (i & 0x7f), integers());
     }
 
     /**
@@ -626,21 +627,47 @@ public final class RandomProvider implements IterableProvider {
         return map(i -> (char) (i & 0xffff), integers());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * distribution. Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Float> positiveOrdinaryFloats() {
-        return null;
+        return map(Math::abs, filter(
+                f -> Float.isFinite(f) && !Float.isNaN(f) && !f.equals(-0.0f) && !f.equals(0.0f),
+                floats()
+        ));
     }
 
+    /**
+     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
+     * uniform distribution. Negative zero is not included. Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Float> negativeOrdinaryFloats() {
-        return null;
+        return map(f -> -f, positiveOrdinaryFloats());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Float> ordinaryFloats() {
-        return null;
+        return filter(f -> Float.isFinite(f) && !Float.isNaN(f) && !f.equals(-0.0f), floats());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all <tt>Float</tt>s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> floats() {
         return () -> new Iterator<Float>() {
@@ -668,21 +695,47 @@ public final class RandomProvider implements IterableProvider {
         };
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * distribution. Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
-        return null;
+        return map(Math::abs, filter(
+                d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0f) && !d.equals(0.0f),
+                doubles()
+        ));
     }
 
+    /**
+     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
+     * uniform distribution. Negative zero is not included. Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
-        return null;
+        return map(d -> -d, positiveOrdinaryDoubles());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * Does not support removal.
+     *
+     * Length is infinite.
+     */
     @Override
     public @NotNull Iterable<Double> ordinaryDoubles() {
-        return null;
+        return filter(d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0), doubles());
     }
 
+    /**
+     * An <tt>Iterable</tt> that generates all <tt>Double</tt>s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> doubles() {
         return () -> new Iterator<Double>() {
