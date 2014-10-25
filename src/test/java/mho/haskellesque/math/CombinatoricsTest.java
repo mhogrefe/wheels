@@ -21,7 +21,7 @@ public class CombinatoricsTest {
     
     
     @Test
-    public void testFactorial_Int() {
+    public void testFactorial_int() {
         aeq(factorial(0), 1);
         aeq(factorial(1), 1);
         aeq(factorial(2), 2);
@@ -58,7 +58,7 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testSubfactorial_Int() {
+    public void testSubfactorial_int() {
         aeq(subfactorial(0), 1);
         aeq(subfactorial(1), 0);
         aeq(subfactorial(2), 1);
@@ -970,7 +970,7 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testListsAscending_Integer_Iterable() {
+    public void testListsAscending_int_Iterable() {
         aeq(listsAscending(0, Arrays.asList(1, 2, 3)), "[[]]");
         aeq(listsAscending(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
         aeq(listsAscending(2, Arrays.asList(1, 2, 3)),
@@ -1036,7 +1036,7 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testListsAscending_Integer_String() {
+    public void testListsAscending_int_String() {
         aeq(stringsAscending(0, "abc"), "[]");
         aeq(length(stringsAscending(0, "abc")), 1);
         aeq(stringsAscending(1, "abc"), "[a, b, c]");
