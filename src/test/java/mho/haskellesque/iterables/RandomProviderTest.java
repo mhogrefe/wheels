@@ -88,15 +88,15 @@ public class RandomProviderTest {
         try {
             P.positiveBigIntegers(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.positiveBigIntegers(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.positiveBigIntegers(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -161,15 +161,15 @@ public class RandomProviderTest {
         try {
             P.negativeBigIntegers(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.negativeBigIntegers(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.negativeBigIntegers(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -232,15 +232,15 @@ public class RandomProviderTest {
         try {
             P.naturalBigIntegers(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.naturalBigIntegers(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.naturalBigIntegers(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -301,15 +301,15 @@ public class RandomProviderTest {
         try {
             P.bigIntegers(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.bigIntegers(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.bigIntegers(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -336,15 +336,15 @@ public class RandomProviderTest {
         try {
             P.naturalIntegersGeometric(1);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.naturalIntegersGeometric(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.naturalIntegersGeometric(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -359,15 +359,15 @@ public class RandomProviderTest {
         try {
             P.positiveIntegersGeometric(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.positiveIntegersGeometric(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.positiveIntegersGeometric(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -386,15 +386,15 @@ public class RandomProviderTest {
         try {
             P.negativeIntegersGeometric(2);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.negativeIntegersGeometric(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.negativeIntegersGeometric(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -414,15 +414,15 @@ public class RandomProviderTest {
         try {
             P.integersGeometric(1);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.integersGeometric(0);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.integersGeometric(-4);
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

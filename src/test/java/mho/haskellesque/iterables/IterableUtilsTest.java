@@ -238,7 +238,7 @@ public class IterableUtilsTest {
         try {
             charsToString(Arrays.asList('h', null, 'l', 'l', 'o'));
             fail();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -310,7 +310,7 @@ public class IterableUtilsTest {
         try {
             assertNull(head(linkedHashSet));
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -324,7 +324,7 @@ public class IterableUtilsTest {
         try {
             head(new ArrayList<Integer>());
             fail();
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -349,7 +349,7 @@ public class IterableUtilsTest {
         try {
             head(sortedSet);
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -358,7 +358,7 @@ public class IterableUtilsTest {
         aeq(head("h"), 'h');
         try {
             head("");
-        } catch (StringIndexOutOfBoundsException e) {}
+        } catch (StringIndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -383,7 +383,7 @@ public class IterableUtilsTest {
         try {
             assertNull(last(linkedHashSet));
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -397,7 +397,7 @@ public class IterableUtilsTest {
         try {
             last(new ArrayList<Integer>());
             fail();
-        } catch (IndexOutOfBoundsException e) {}
+        } catch (IndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -418,7 +418,7 @@ public class IterableUtilsTest {
         try {
             last(sortedSet);
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -426,7 +426,7 @@ public class IterableUtilsTest {
         aeq(last("o"), 'o');
         try {
             last("");
-        } catch (StringIndexOutOfBoundsException e) {}
+        } catch (StringIndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -440,7 +440,7 @@ public class IterableUtilsTest {
         try {
             tail(new ArrayList<Integer>());
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -450,7 +450,7 @@ public class IterableUtilsTest {
         try {
             toList(tail(""));
             fail();
-        } catch (StringIndexOutOfBoundsException e) {}
+        } catch (StringIndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -465,7 +465,7 @@ public class IterableUtilsTest {
         try {
             init(new ArrayList<Integer>());
             fail();
-        } catch (NoSuchElementException e) {}
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
@@ -475,7 +475,7 @@ public class IterableUtilsTest {
         try {
             toList(init(""));
             fail();
-        } catch (StringIndexOutOfBoundsException e) {}
+        } catch (StringIndexOutOfBoundsException ignored) {}
     }
 
     @Test
@@ -546,7 +546,7 @@ public class IterableUtilsTest {
         try {
             IterableUtils.toList((Iterable<Integer>) map(i -> i + 3, Arrays.asList(1, 5, null, 1, 6)));
             fail();
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -561,7 +561,7 @@ public class IterableUtilsTest {
         try {
             map(f, "hello");
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

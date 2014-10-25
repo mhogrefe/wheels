@@ -23,7 +23,7 @@ public class BasicMathTest {
         try {
             gcd(0, 0);
             fail();
-        } catch (ArithmeticException e) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     private static void aeq(Object a, Object b) {

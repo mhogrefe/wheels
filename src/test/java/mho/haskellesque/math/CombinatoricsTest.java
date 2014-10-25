@@ -35,7 +35,7 @@ public class CombinatoricsTest {
         try {
             factorial(-1);
             fail();
-        } catch (ArithmeticException e) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -54,7 +54,7 @@ public class CombinatoricsTest {
         try {
             factorial(BigInteger.valueOf(-1));
             fail();
-        } catch (ArithmeticException e) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CombinatoricsTest {
         try {
             subfactorial(-1);
             fail();
-        } catch (ArithmeticException e) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -91,7 +91,7 @@ public class CombinatoricsTest {
         try {
             subfactorial(BigInteger.valueOf(-1));
             fail();
-        } catch (ArithmeticException e) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -999,7 +999,7 @@ public class CombinatoricsTest {
         try {
             listsAscending(-1, Arrays.asList(1, 2, 3));
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1032,7 +1032,7 @@ public class CombinatoricsTest {
         try {
             listsAscending(BigInteger.valueOf(-1), Arrays.asList(1, 2, 3));
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1055,7 +1055,7 @@ public class CombinatoricsTest {
         try {
             stringsAscending(-1, "");
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1079,7 +1079,7 @@ public class CombinatoricsTest {
         try {
             stringsAscending(BigInteger.valueOf(-1), "");
             fail();
-        } catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

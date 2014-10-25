@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.map;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
@@ -573,7 +572,7 @@ public final class RandomProvider implements IterableProvider {
         if (meanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
-            private Iterator<BigInteger> it = naturalBigIntegers(meanBitSize).iterator();
+            private final Iterator<BigInteger> it = naturalBigIntegers(meanBitSize).iterator();
 
             @Override
             public boolean hasNext() {
@@ -721,7 +720,7 @@ public final class RandomProvider implements IterableProvider {
         if (meanSize <= 1)
             throw new IllegalArgumentException("meanSize must be greater than 1.");
         return () -> new Iterator<Integer>() {
-            private Iterator<Integer> it = naturalIntegersGeometric(meanSize).iterator();
+            private final Iterator<Integer> it = naturalIntegersGeometric(meanSize).iterator();
 
             @Override
             public boolean hasNext() {
