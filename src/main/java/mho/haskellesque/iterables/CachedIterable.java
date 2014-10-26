@@ -77,6 +77,10 @@ public class CachedIterable<T> {
         return Optional.of(x == null ? last == null : x.equals(last));
     }
 
+    public T lastSoFar() {
+        return IterableUtils.last(cache);
+    }
+
     public void clearCache() {
         cache.clear();
     }
