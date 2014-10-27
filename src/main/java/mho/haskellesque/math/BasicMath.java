@@ -2,6 +2,7 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.structures.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -65,7 +66,7 @@ public final class BasicMath {
         }
     }
 
-    public static Iterable<Boolean> bits(final int n) {
+    public static @NotNull Iterable<Boolean> bits(final int n) {
         return () -> new Iterator<Boolean>() {
             private int remaining = n;
 
@@ -83,7 +84,7 @@ public final class BasicMath {
         };
     }
 
-    public static Iterable<Boolean> bits(final BigInteger n) {
+    public static @NotNull Iterable<Boolean> bits(final @NotNull BigInteger n) {
         return () -> new Iterator<Boolean>() {
             private BigInteger remaining = n;
 
@@ -101,31 +102,31 @@ public final class BasicMath {
         };
     }
 
-    public static Iterable<Boolean> bitsPadded(int length, int n) {
+    public static @NotNull Iterable<Boolean> bitsPadded(int length, int n) {
         return pad(false, length, bits(n));
     }
 
-    public static Iterable<Boolean> bitsPadded(BigInteger length, BigInteger n) {
+    public static @NotNull Iterable<Boolean> bitsPadded(BigInteger length, BigInteger n) {
         return pad(false, length, bits(n));
     }
 
-    public static Iterable<Boolean> bigEndianBits(final int n) {
+    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull final int n) {
         return reverse(bits(n));
     }
 
-    public static Iterable<Boolean> bigEndianBits(final BigInteger n) {
+    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull final BigInteger n) {
         return reverse(bits(n));
     }
 
-    public static Iterable<Boolean> bigEndianBitsPadded(int length, int n) {
+    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, int n) {
         return reverse(bitsPadded(length, n));
     }
 
-    public static Iterable<Boolean> bigEndianBitsPadded(BigInteger length, BigInteger n) {
+    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(BigInteger length, BigInteger n) {
         return reverse(bitsPadded(length, n));
     }
 
-    public static BigInteger fromBigEndianBits(Iterable<Boolean> bits) {
+    public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
         BigInteger n = BigInteger.ZERO;
         for (boolean bit : bits) {
             n = n.shiftLeft(1);
@@ -134,11 +135,11 @@ public final class BasicMath {
         return n;
     }
 
-    public static BigInteger fromBits(Iterable<Boolean> bits) {
+    public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
         return fromBigEndianBits(reverse(bits));
     }
 
-    public static Iterable<Integer> digits(int base, final int n) {
+    public static @NotNull Iterable<Integer> digits(int base, final int n) {
         return () -> new Iterator<Integer>() {
             private int remaining = n;
 
@@ -156,7 +157,7 @@ public final class BasicMath {
         };
     }
 
-    public static Iterable<BigInteger> digits(BigInteger base, final BigInteger n) {
+    public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
         return () -> new Iterator<BigInteger>() {
             private BigInteger remaining = n;
 
@@ -174,31 +175,39 @@ public final class BasicMath {
         };
     }
 
-    public static Iterable<Integer> digitsPadded(int length, int base, int n) {
+    public static @NotNull Iterable<Integer> digitsPadded(int length, int base, int n) {
         return pad(0, length, digits(base, n));
     }
 
-    public static Iterable<BigInteger> digitsPadded(BigInteger length, BigInteger base, BigInteger n) {
+    public static @NotNull Iterable<BigInteger> digitsPadded(
+            @NotNull BigInteger length,
+            @NotNull BigInteger base,
+            @NotNull BigInteger n
+    ) {
         return pad(BigInteger.ZERO, length, digits(base, n));
     }
 
-    public static List<Integer> bigEndianDigits(int base, final int n) {
+    public static @NotNull List<Integer> bigEndianDigits(int base, final int n) {
         return reverse(digits(base, n));
     }
 
-    public static List<BigInteger> bigEndianDigits(BigInteger base, final BigInteger n) {
+    public static @NotNull List<BigInteger> bigEndianDigits(@NotNull BigInteger base, final @NotNull BigInteger n) {
         return reverse(digits(base, n));
     }
 
-    public static Iterable<Integer> bigEndianDigitsPadded(int length, int base, int n) {
+    public static @NotNull Iterable<Integer> bigEndianDigitsPadded(int length, int base, int n) {
         return reverse(digitsPadded(length, base, n));
     }
 
-    public static Iterable<BigInteger> bigEndianDigitsPadded(BigInteger length, BigInteger base, BigInteger n) {
+    public static @NotNull Iterable<BigInteger> bigEndianDigitsPadded(
+            @NotNull BigInteger length,
+            @NotNull BigInteger base,
+            @NotNull BigInteger n
+    ) {
         return reverse(digitsPadded(length, base, n));
     }
 
-    public static BigInteger fromBigEndianDigits(int base, Iterable<Integer> digits) {
+    public static @NotNull BigInteger fromBigEndianDigits(int base, @NotNull Iterable<Integer> digits) {
         BigInteger n = BigInteger.ZERO;
         for (int digit : digits) {
             n = n.multiply(BigInteger.valueOf(base)).add(BigInteger.valueOf(digit));
@@ -206,7 +215,10 @@ public final class BasicMath {
         return n;
     }
 
-    public static BigInteger fromBigEndianDigits(BigInteger base, Iterable<BigInteger> digits) {
+    public static @NotNull BigInteger fromBigEndianDigits(
+            @NotNull BigInteger base,
+            @NotNull Iterable<BigInteger> digits
+    ) {
         BigInteger n = BigInteger.ZERO;
         for (BigInteger digit : digits) {
             n = n.multiply(base).add(digit);
@@ -214,28 +226,28 @@ public final class BasicMath {
         return n;
     }
 
-    public static BigInteger fromDigits(int base, Iterable<Integer> digits) {
+    public static @NotNull BigInteger fromDigits(int base, @NotNull Iterable<Integer> digits) {
         return fromBigEndianDigits(base, reverse(digits));
     }
 
-    public static BigInteger fromDigits(BigInteger base, Iterable<BigInteger> digits) {
+    public static @NotNull BigInteger fromDigits(@NotNull BigInteger base, @NotNull Iterable<BigInteger> digits) {
         return fromBigEndianDigits(base, (Iterable<BigInteger>) reverse(digits));
     }
 
-    public static Pair<BigInteger, BigInteger> logarithmicDemux(BigInteger n) {
+    public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
         return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
     }
 
-    public static List<BigInteger> demux(int lines, BigInteger n) {
+    public static @NotNull List<BigInteger> demux(int lines, @NotNull BigInteger n) {
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(lines, BigInteger.ZERO));
         }
         return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demux(lines, bits(n))));
     }
 
-    public static boolean isAPowerOfTwo(BigInteger n) {
+    public static boolean isAPowerOfTwo(@NotNull BigInteger n) {
         return n.getLowestSetBit() == n.bitLength() - 1;
     }
 }

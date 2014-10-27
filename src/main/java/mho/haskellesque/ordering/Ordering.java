@@ -136,43 +136,19 @@ public enum Ordering {
         return ge(comparator, a, b);
     }
 
-    public static <T extends Comparable<T>> T min(T... elements) {
-        if (elements.length == 0)
-            throw new IllegalArgumentException("element list cannot be empty");
-        T smallest = elements[0];
-        for (T element : elements) {
-            if (lt(element, smallest)) smallest = element;
-        }
-        return smallest;
+    public static <T extends Comparable<T>> T min(T a, T b) {
+        return lt(a, b) ? a : b;
     }
 
-    public static <T extends Comparable<T>> T max(T... elements) {
-        if (elements.length == 0)
-            throw new IllegalArgumentException("element list cannot be empty");
-        T largest = elements[0];
-        for (T element : elements) {
-            if (gt(element, largest)) largest = element;
-        }
-        return largest;
+    public static <T extends Comparable<T>> T max(T a, T b) {
+        return gt(a, b) ? a : b;
     }
 
-    public static <T> T min(Comparator<T> comparator, T... elements) {
-        if (elements.length == 0)
-            throw new IllegalArgumentException("element list cannot be empty");
-        T smallest = elements[0];
-        for (T element : elements) {
-            if (lt(comparator, element, smallest)) smallest = element;
-        }
-        return smallest;
+    public static <T> T min(Comparator<T> comparator, T a, T b) {
+        return lt(comparator, a, b) ? a : b;
     }
 
-    public static <T> T max(Comparator<T> comparator, T... elements) {
-        if (elements.length == 0)
-            throw new IllegalArgumentException("element list cannot be empty");
-        T largest = elements[0];
-        for (T element : elements) {
-            if (gt(comparator, element, largest)) largest = element;
-        }
-        return largest;
+    public static <T> T max(Comparator<T> comparator, T a, T b) {
+        return gt(comparator, a, b) ? a : b;
     }
 }

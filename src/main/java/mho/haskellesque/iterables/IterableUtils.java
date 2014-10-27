@@ -1,5 +1,6 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1133,7 +1134,45 @@ public final class IterableUtils {
         );
     }
 
-    public static <T> Iterable<T> concat(Iterable<Iterable<T>> xss) {
+    public static @Nullable <A, B> B foldl(
+            @NotNull Function<Pair<B, A>, B> f,
+            @Nullable B z,
+            @NotNull Iterable<A> xs
+    ) {
+        B result = z;
+        for (A x : xs) {
+            result = f.apply(new Pair<B, A>(result, x));
+        }
+        return result;
+    }
+
+    public static @Nullable <A> A foldl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+        A result = null;
+        boolean started = false;
+        for (A x : xs) {
+            if (started) {
+                result = f.apply(new Pair<A, A>(result, x));
+            } else {
+                result = x;
+                started = true;
+            }
+        }
+        return result;
+    }
+
+    public static @Nullable <A, B> B foldr(
+            @NotNull Function<Pair<A, B>, B> f,
+            @Nullable B z,
+            @NotNull Iterable<A> xs
+    ) {
+        return foldl(p -> f.apply(new Pair<>(p.b, p.a)), z, reverse(xs));
+    }
+
+    public static @Nullable <A> A foldr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+        return foldl1(p -> f.apply(new Pair<>(p.b, p.a)), reverse(xs));
+    }
+
+    public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<T>() {
             final Iterator<Iterable<T>> xssi = xss.iterator();
             Iterator<T> xsi = xssi.hasNext() ? xssi.next().iterator() : null;
@@ -1153,10 +1192,15 @@ public final class IterableUtils {
                 hasNext();
                 return xsi.next();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
-    public static String concatStrings(Iterable<String> strings) {
+    public static @NotNull String concatStrings(@NotNull Iterable<String> strings) {
         StringBuilder sb = new StringBuilder();
         for (String s : strings) {
             sb.append(s);
@@ -1164,185 +1208,164 @@ public final class IterableUtils {
         return sb.toString();
     }
 
-    public static <A, B> Iterable<B> concatMap(Function<A, Iterable<B>> f, Iterable<A> xs) {
+    public static @NotNull <A, B> Iterable<B> concatMap(@NotNull Function<A, Iterable<B>> f, @NotNull Iterable<A> xs) {
         return concat(map(f, xs));
     }
 
-    public static boolean and(Iterable<Boolean> xs) {
+    public static boolean and(@NotNull Iterable<Boolean> xs) {
         for (boolean x : xs) {
             if (!x) return false;
         }
         return true;
     }
 
-    public static boolean or(Iterable<Boolean> xs) {
+    public static boolean or(@NotNull Iterable<Boolean> xs) {
         for (boolean x : xs) {
             if (x) return true;
         }
         return false;
     }
 
-    public static <T> boolean any(Predicate<T> predicate, Iterable<T> xs) {
+    public static <T> boolean any(@NotNull Predicate<T> predicate, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (predicate.test(x)) return true;
         }
         return false;
     }
 
-    public static <T> boolean all(Predicate<T> predicate, Iterable<T> xs) {
+    public static <T> boolean all(@NotNull Predicate<T> predicate, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (!predicate.test(x)) return false;
         }
         return true;
     }
 
-    public static byte sumByte(Iterable<Byte> xs) {
-        byte sum = 0;
-        for (byte x : xs) {
-            sum += x;
-        }
-        return sum;
+    public static byte sumByte(@NotNull Iterable<Byte> xs) {
+        return foldl(p -> (byte) (p.a + p.b), (byte) 0, xs);
     }
 
-    public static short sumShort(Iterable<Short> xs) {
-        short sum = 0;
-        for (short x : xs) {
-            sum += x;
-        }
-        return sum;
+    public static short sumShort(@NotNull Iterable<Short> xs) {
+        return foldl(p -> (short) (p.a + p.b), (short) 0, xs);
     }
 
-    public static int sumInteger(Iterable<Integer> xs) {
-        int sum = 0;
-        for (int x : xs) {
-            sum += x;
-        }
-        return sum;
+    public static int sumInteger(@NotNull Iterable<Integer> xs) {
+        return foldl(p -> p.a + p.b, 0, xs);
     }
 
-    public static long sumLong(Iterable<Long> xs) {
-        long sum = 0;
-        for (long x : xs) {
-            sum += x;
-        }
-        return sum;
+    public static long sumLong(@NotNull Iterable<Long> xs) {
+        return foldl(p -> p.a + p.b, 0L, xs);
     }
 
-    public static float sumFloat(Iterable<Float> xs) {
-        float sum = 0;
-        for (float x : xs) {
-            sum += x;
-        }
-        return sum;
+    public static float sumFloat(@NotNull Iterable<Float> xs) {
+        return foldl(p -> p.a + p.b, 0.0f, xs);
     }
 
     public static double sumDouble(Iterable<Double> xs) {
-        double sum = 0;
-        for (double x : xs) {
-            sum += x;
-        }
-        return sum;
+        return foldl(p -> p.a + p.b, 0.0, xs);
     }
 
-    public static BigInteger sumBigInteger(Iterable<BigInteger> xs) {
-        BigInteger sum = BigInteger.ZERO;
-        for (BigInteger x : xs) {
-            sum = sum.add(x);
-        }
-        return sum;
+    public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
+        return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
     }
 
-    public static BigDecimal sumBigDecimal(Iterable<BigDecimal> xs) {
-        BigDecimal sum = BigDecimal.ZERO;
-        for (BigDecimal x : xs) {
-            sum = sum.add(x);
-        }
-        return sum;
+    public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
+        return foldl(p -> p.a.add(p.b), BigDecimal.ZERO, xs);
     }
 
-    public static byte productByte(Iterable<Byte> xs) {
-        byte product = 1;
-        for (byte x : xs) {
-            product *= x;
-        }
-        return product;
+    public static byte productByte(@NotNull Iterable<Byte> xs) {
+        return foldl(p -> (byte) (p.a * p.b), (byte) 1, xs);
     }
 
-    public static short productShort(Iterable<Short> xs) {
-        short product = 1;
-        for (short x : xs) {
-            product *= x;
-        }
-        return product;
+    public static short productShort(@NotNull Iterable<Short> xs) {
+        return foldl(p -> (short) (p.a * p.b), (short) 1, xs);
     }
 
-    public static int productInteger(Iterable<Integer> xs) {
-        int product = 1;
-        for (int x : xs) {
-            product *= x;
-        }
-        return product;
+    public static int productInteger(@NotNull Iterable<Integer> xs) {
+        return foldl(p -> p.a * p.b, 1, xs);
     }
 
-    public static long productLong(Iterable<Long> xs) {
-        long product = 1;
-        for (long x : xs) {
-            product *= x;
-        }
-        return product;
+    public static long productLong(@NotNull Iterable<Long> xs) {
+        return foldl(p -> p.a * p.b, 1L, xs);
     }
 
-    public static float productFloat(Iterable<Float> xs) {
-        float product = 1;
-        for (float x : xs) {
-            product *= x;
-        }
-        return product;
+    public static float productFloat(@NotNull Iterable<Float> xs) {
+        return foldl(p -> p.a * p.b, 1.0f, xs);
     }
 
-    public static double productDouble(Iterable<Double> xs) {
-        double product = 1;
-        for (double x : xs) {
-            product *= x;
-        }
-        return product;
+    public static double productDouble(@NotNull Iterable<Double> xs) {
+        return foldl(p -> p.a * p.b, 1.0, xs);
     }
 
-    public static BigInteger productBigInteger(Iterable<BigInteger> xs) {
-        BigInteger product = BigInteger.ONE;
-        for (BigInteger x : xs) {
-            product = product.multiply(x);
-        }
-        return product;
+    public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
+        return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
     }
 
-    public static BigDecimal productBigDecimal(Iterable<BigDecimal> xs) {
-        BigDecimal product = BigDecimal.ONE;
-        for (BigDecimal x : xs) {
-            product = product.multiply(x);
-        }
-        return product;
+    public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
+        return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(Iterable<T> xs) {
-        T max = null;
-        for (T x : xs) {
-            if (gt(x, max)) {
-                max = x;
+    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+        return foldl1(p -> max(p.a, p.b), xs);
+    }
+
+    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+        return foldl1(p -> min(p.a, p.b), xs);
+    }
+
+    public static @NotNull <A, B> Iterable<B> scanl(
+            @NotNull Function<Pair<B, A>, B> f,
+            @Nullable B z,
+            @NotNull Iterable<A> xs
+    ) {
+        return () -> new Iterator<B>() {
+            private Iterator<A> xsi = xs.iterator();
+            private B result = z;
+            private boolean firstTime = true;
+
+            @Override
+            public boolean hasNext() {
+                return firstTime || xsi.hasNext();
             }
-        }
-        return max;
+
+            @Override
+            public B next() {
+                if (firstTime) {
+                    firstTime = false;
+                    return result;
+                } else {
+                    result = f.apply(new Pair<B, A>(result, xsi.next()));
+                    return result;
+                }
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
     }
 
-    public static <T extends Comparable<T>> T minimum(Iterable<T> xs) {
-        T min = null;
-        for (T x : xs) {
-            if (lt(x, min)) {
-                min = x;
-            }
-        }
-        return min;
-    }
+//    public static @NotNull <A> Iterable<A> scanl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+//        return () -> new Iterator<A>() {
+//            private Iterator<A> xsi = xs.iterator();
+//            private A result = xsi.next();
+//
+//            @Override
+//            public boolean hasNext() {
+//                return false;
+//            }
+//
+//            @Override
+//            public A next() {
+//                return null;
+//            }
+//
+//            @Override
+//            public void remove() {
+//                throw new UnsupportedOperationException("cannot remove from this iterator");
+//            }
+//        };
+//    }
 
     public static <T> Iterable<T> iterate(Function<T, T> f, T x) {
         return () -> new Iterator<T>() {
@@ -1362,6 +1385,11 @@ public final class IterableUtils {
                     current = f.apply(current);
                 }
                 return current;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1406,6 +1434,11 @@ public final class IterableUtils {
                 reachedEnd = x == b;
                 return x++;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1424,6 +1457,11 @@ public final class IterableUtils {
             public Short next() {
                 reachedEnd = x == b;
                 return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1444,6 +1482,11 @@ public final class IterableUtils {
                 reachedEnd = x == b;
                 return x++;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1462,6 +1505,11 @@ public final class IterableUtils {
             public Long next() {
                 reachedEnd = x == b;
                 return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1484,6 +1532,11 @@ public final class IterableUtils {
                 x = x.add(BigInteger.ONE);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1502,6 +1555,11 @@ public final class IterableUtils {
             public Character next() {
                 reachedEnd = x == b;
                 return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1523,6 +1581,11 @@ public final class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1542,6 +1605,11 @@ public final class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1563,6 +1631,11 @@ public final class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1582,6 +1655,11 @@ public final class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1603,6 +1681,11 @@ public final class IterableUtils {
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1622,6 +1705,11 @@ public final class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1644,6 +1732,11 @@ public final class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1664,6 +1757,11 @@ public final class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1686,6 +1784,11 @@ public final class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1706,6 +1809,11 @@ public final class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1728,6 +1836,11 @@ public final class IterableUtils {
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1749,6 +1862,11 @@ public final class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1762,6 +1880,11 @@ public final class IterableUtils {
             @Override
             public T next() {
                 return x;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1780,6 +1903,11 @@ public final class IterableUtils {
                 i++;
                 return x;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1796,6 +1924,11 @@ public final class IterableUtils {
             public T next() {
                 bi = bi.add(BigInteger.ONE);
                 return x;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1830,6 +1963,11 @@ public final class IterableUtils {
                 if (!xsi.hasNext()) xsi = xs.iterator();
                 return xsi.next();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1848,6 +1986,11 @@ public final class IterableUtils {
                 i++;
                 return xsi.next();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1865,6 +2008,11 @@ public final class IterableUtils {
             public T next() {
                 bi = bi.add(BigInteger.ONE);
                 return xsi.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1898,6 +2046,11 @@ public final class IterableUtils {
             public T next() {
                 return xsi.next();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -1921,6 +2074,11 @@ public final class IterableUtils {
             @Override
             public T next() {
                 return xsi.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1985,6 +2143,11 @@ public final class IterableUtils {
                             hasNext = false;
                         }
                     }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
                 };
             }
         };
@@ -2024,6 +2187,11 @@ public final class IterableUtils {
                             }
                         }
                     }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
                 };
             }
         };
@@ -2047,6 +2215,11 @@ public final class IterableUtils {
                 }
                 return chunk;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -2068,6 +2241,11 @@ public final class IterableUtils {
                 }
                 return sb.toString();
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -2088,6 +2266,11 @@ public final class IterableUtils {
                 }
                 return chunk;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -2106,10 +2289,6 @@ public final class IterableUtils {
         }
         return demuxed;
     }
-
-//    public static <T> List<Iterable<T>> demuxPadded(T pad, int lines, Iterable<T> xs) {
-//        return transpose(chunkPadded(pad, lines, xs));
-//    }
 
     public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
         return new Iterable<T>() {
@@ -2145,6 +2324,11 @@ public final class IterableUtils {
                             }
                         }
                         hasNext = false;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -2203,6 +2387,11 @@ public final class IterableUtils {
             public Pair<A, B> next() {
                 return new Pair<>(asi.next(), bsi.next());
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -2220,6 +2409,11 @@ public final class IterableUtils {
             @Override
             public Triple<A, B, C> next() {
                 return new Triple<>(asi.next(), bsi.next(), csi.next());
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2244,6 +2438,11 @@ public final class IterableUtils {
             @Override
             public Quadruple<A, B, C, D> next() {
                 return new Quadruple<>(asi.next(), bsi.next(), csi.next(), dsi.next());
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2270,6 +2469,11 @@ public final class IterableUtils {
             @Override
             public Quintuple<A, B, C, D, E> next() {
                 return new Quintuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next());
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2303,6 +2507,11 @@ public final class IterableUtils {
             @Override
             public Sextuple<A, B, C, D, E, F> next() {
                 return new Sextuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next(), fsi.next());
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2348,6 +2557,11 @@ public final class IterableUtils {
                         gsi.next()
                 );
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -2366,6 +2580,11 @@ public final class IterableUtils {
                 A a = asi.hasNext() ? asi.next() : aPad;
                 B b = bsi.hasNext() ? bsi.next() : bPad;
                 return new Pair<>(a, b);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2394,6 +2613,11 @@ public final class IterableUtils {
                 B b = bsi.hasNext() ? bsi.next() : bPad;
                 C c = csi.hasNext() ? csi.next() : cPad;
                 return new Triple<>(a, b, c);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2426,6 +2650,11 @@ public final class IterableUtils {
                 C c = csi.hasNext() ? csi.next() : cPad;
                 D d = dsi.hasNext() ? dsi.next() : dPad;
                 return new Quadruple<>(a, b, c, d);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2461,6 +2690,11 @@ public final class IterableUtils {
                 D d = dsi.hasNext() ? dsi.next() : dPad;
                 E e = esi.hasNext() ? esi.next() : ePad;
                 return new Quintuple<>(a, b, c, d, e);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2505,6 +2739,11 @@ public final class IterableUtils {
                 E e = esi.hasNext() ? esi.next() : ePad;
                 F f = fsi.hasNext() ? fsi.next() : fPad;
                 return new Sextuple<>(a, b, c, d, e, f);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2554,6 +2793,11 @@ public final class IterableUtils {
                 F f = fsi.hasNext() ? fsi.next() : fPad;
                 G g = gsi.hasNext() ? gsi.next() : gPad;
                 return new Septuple<>(a, b, c, d, e, f, g);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
