@@ -1,6 +1,6 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.math.BasicMath;
+import mho.haskellesque.math.MathUtils;
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -262,7 +262,7 @@ public final class RandomProvider implements IterableProvider {
                         bits.add(generator.nextBoolean());
                     }
                 }
-                return BasicMath.fromBigEndianBits(bits);
+                return MathUtils.fromBigEndianBits(bits);
             }
 
             @Override
@@ -463,7 +463,7 @@ public final class RandomProvider implements IterableProvider {
                         bits.add(generator.nextBoolean());
                     }
                 }
-                return BasicMath.fromBigEndianBits(bits);
+                return MathUtils.fromBigEndianBits(bits);
             }
 
             @Override

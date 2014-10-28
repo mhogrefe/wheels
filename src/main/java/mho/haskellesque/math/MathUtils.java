@@ -13,11 +13,11 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 /**
  * Some mathematical utilities
  */
-public final class BasicMath {
+public final class MathUtils {
     /**
      * Disallow instantiation
      */
-    private BasicMath() {}
+    private MathUtils() {}
 
     /**
      * The greatest common divisor of two <tt>int</tt>s. If both <tt>x</tt> and <tt>y</tt> are zero, the result is
@@ -58,15 +58,23 @@ public final class BasicMath {
         return y == 0 ? x : positiveGcd(y, x % y);
     }
 
-    public static BigInteger mod(BigInteger x, BigInteger y) {
-        if (x.signum() < 0) {
-            return y.subtract(x.negate()).mod(y);
-        } else {
-            return x.mod(y);
-        }
-    }
-
+    /**
+     * Returns the bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is little-endian; the least-
+     * significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing unset bits.
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite iterable ending with <tt>true</tt>.</li>
+     * </ul>
+     *
+     * Result length is 0 if n is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<Boolean> bits(final int n) {
+        if (n < 0)
+            throw new ArithmeticException("cannot get bits of a negative number");
         return () -> new Iterator<Boolean>() {
             private int remaining = n;
 
@@ -84,7 +92,23 @@ public final class BasicMath {
         };
     }
 
+    /**
+     * Returns the bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing unset bits.
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite iterable ending with <tt>true</tt>.</li>
+     * </ul>
+     *
+     * Result length is 0 if n is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<Boolean> bits(final @NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot get bits of a negative number");
         return () -> new Iterator<Boolean>() {
             private BigInteger remaining = n;
 
@@ -244,7 +268,7 @@ public final class BasicMath {
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(lines, BigInteger.ZERO));
         }
-        return reverse(IterableUtils.map(BasicMath::fromBits, IterableUtils.demux(lines, bits(n))));
+        return reverse(IterableUtils.map(MathUtils::fromBits, IterableUtils.demux(lines, bits(n))));
     }
 
     public static boolean isAPowerOfTwo(@NotNull BigInteger n) {

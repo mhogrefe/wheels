@@ -1,6 +1,5 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.math.BasicMath;
 import mho.haskellesque.math.Combinatorics;
 import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
@@ -11,12 +10,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.map;
-import static mho.haskellesque.math.Combinatorics.*;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
