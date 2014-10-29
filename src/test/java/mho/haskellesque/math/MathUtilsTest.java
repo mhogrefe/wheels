@@ -55,6 +55,55 @@ public class MathUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    @Test
+    public void testBitsPadded_int_int() {
+        aeq(toList(bitsPadded(8, 0)), "[false, false, false, false, false, false, false, false]");
+        aeq(toList(bitsPadded(8, 1)), "[true, false, false, false, false, false, false, false]");
+        aeq(toList(bitsPadded(8, 6)), "[false, true, true, false, false, false, false, false]");
+        aeq(toList(bitsPadded(8, 105)), "[true, false, false, true, false, true, true, false]");
+        aeq(toList(bitsPadded(8, 1000)), "[false, false, false, true, false, true, true, true]");
+        aeq(toList(bitsPadded(2, 104)), "[false, false]");
+        aeq(toList(bitsPadded(2, 105)), "[true, false]");
+        aeq(toList(bitsPadded(1, 104)), "[false]");
+        aeq(toList(bitsPadded(1, 105)), "[true]");
+        aeq(toList(bitsPadded(0, 104)), "[]");
+        try {
+            bitsPadded(8, -1);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            bitsPadded(-1, 8);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBitsPadded_BigInteger_BigInteger() {
+        aeq(toList(bitsPadded(BigInteger.valueOf(8), BigInteger.ZERO)),
+                "[false, false, false, false, false, false, false, false]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(8), BigInteger.ONE)),
+                "[true, false, false, false, false, false, false, false]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(6))),
+                "[false, true, true, false, false, false, false, false]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(105))),
+                "[true, false, false, true, false, true, true, false]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(1000))),
+                "[false, false, false, true, false, true, true, true]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(104))), "[false, false]");
+        aeq(toList(bitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(105))), "[true, false]");
+        aeq(toList(bitsPadded(BigInteger.ONE, BigInteger.valueOf(104))), "[false]");
+        aeq(toList(bitsPadded(BigInteger.ONE, BigInteger.valueOf(105))), "[true]");
+        aeq(toList(bitsPadded(BigInteger.ZERO, BigInteger.valueOf(104))), "[]");
+        try {
+            bitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(-1));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            bitsPadded(BigInteger.valueOf(-1), BigInteger.valueOf(8));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

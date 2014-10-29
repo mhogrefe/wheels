@@ -60,14 +60,15 @@ public final class MathUtils {
 
     /**
      * Returns the bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is little-endian; the least-
-     * significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing unset bits.
+     * significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing unset bits. Does not
+     * support removal.
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite iterable ending with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> ending with <tt>true</tt>.</li>
      * </ul>
      *
-     * Result length is 0 if n is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
      *
      * @param n a number
      * @return <tt>n</tt>'s bits in little-endian order
@@ -89,19 +90,25 @@ public final class MathUtils {
                 remaining >>= 1;
                 return bit;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
     /**
      * Returns the bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is little-endian; the
      * least-significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing unset bits.
+     * Does not support removal.
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite iterable ending with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> ending with <tt>true</tt>.</li>
      * </ul>
      *
-     * Result length is 0 if n is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
      *
      * @param n a number
      * @return <tt>n</tt>'s bits in little-endian order
@@ -123,18 +130,59 @@ public final class MathUtils {
                 remaining = remaining.shiftRight(1);
                 return bit;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
+    /**
+     * Returns the lowest <tt>n</tt> bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and padded with zeroes
+     * (falses) if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<Boolean> bitsPadded(int length, int n) {
+        if (length < 0)
+            throw new ArithmeticException("cannot pad with a negative length");
         return pad(false, length, bits(n));
     }
 
-    public static @NotNull Iterable<Boolean> bitsPadded(BigInteger length, BigInteger n) {
+    /**
+     * Returns the lowest <tt>n</tt> bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and padded with zeroes
+     * (falses) if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
+    public static @NotNull Iterable<Boolean> bitsPadded(@NotNull BigInteger length, @NotNull BigInteger n) {
+        if (length.signum() == -1)
+            throw new ArithmeticException("cannot pad with a negative length");
         return pad(false, length, bits(n));
     }
 
-    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull final int n) {
+    public static @NotNull Iterable<Boolean> bigEndianBits(final int n) {
         return reverse(bits(n));
     }
 
