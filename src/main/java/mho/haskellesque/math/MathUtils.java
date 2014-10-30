@@ -445,4 +445,12 @@ public final class MathUtils {
         }
         return n;
     }
+
+    public static boolean isPrime(int n) {
+        return smallestPrimeFactor(n) == n;
+    }
+
+    public static boolean isPrime(@NotNull BigInteger n) {
+        return smallestPrimeFactor(n).equals(n);
+    }
 }
