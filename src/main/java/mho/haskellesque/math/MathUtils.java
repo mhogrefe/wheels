@@ -339,7 +339,8 @@ public final class MathUtils {
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,
             @NotNull BigInteger min,
-            @NotNull BigInteger max) {
+            @NotNull BigInteger max
+    ) {
         for (BigInteger x : range(min, max)) {
             BigInteger j = f.apply(x);
             if (ge(j, y)) {
@@ -356,5 +357,41 @@ public final class MathUtils {
                 BigInteger.ONE,
                 x //very loose bound
         );
+    }
+
+    public static @NotNull BigInteger ceilingInverse(
+            @NotNull Function<BigInteger, BigInteger> f,
+            @NotNull BigInteger y,
+            @NotNull BigInteger min,
+            @NotNull BigInteger max
+    ) {
+        while (true) {
+            if (min.equals(max)) return max;
+            BigInteger mid = min.add(max).shiftRight(1);
+            BigInteger fMid = f.apply(mid);
+            switch (compare(fMid, y)) {
+                case GT:
+                    max = mid; break;
+                case LT:
+                    min = mid.add(BigInteger.ONE); break;
+                default:
+                    return mid;
+            }
+        }
+    }
+
+    public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
+        return ceilingInverse(
+                i -> i.pow(r.intValue()),
+                x,
+                BigInteger.ZERO,
+                x //very loose bound
+        );
+    }
+
+    public static void main(String[] args) {
+        for (BigInteger i : range(BigInteger.ZERO, BigInteger.valueOf(1000))) {
+            System.out.println(i + ": " + ceilingRoot(BigInteger.valueOf(3), i));
+        }
     }
 }
