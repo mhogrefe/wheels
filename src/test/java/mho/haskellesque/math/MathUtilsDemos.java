@@ -12,14 +12,10 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.MathUtils.*;
 
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = false;
+    private static final boolean USE_RANDOM = true;
     private static int LIMIT;
 
     private static IterableProvider P;
-
-    public static void main(String[] args) {
-        demoBitsPadded_int_int();
-    }
 
     private static void initialize() {
         if (USE_RANDOM) {
@@ -57,10 +53,31 @@ public class MathUtilsDemos {
 
     private static void demoBitsPadded_int_int() {
         initialize();
-        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers()))) {
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
-            System.out.println("bitsPadded(" + p.a + ", " + p.b + ") = " + toList(bitsPadded(p.a, p.b)));
+            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
+        }
+    }
+
+    private static void demoBitsPadded_int_BigInteger() {
+        initialize();
+        Iterable<Pair<BigInteger, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
         }
     }
 }

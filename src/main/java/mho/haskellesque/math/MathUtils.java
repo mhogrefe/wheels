@@ -198,8 +198,8 @@ public final class MathUtils {
      * @param n a number
      * @return <tt>n</tt>'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bitsPadded(@NotNull BigInteger length, @NotNull BigInteger n) {
-        if (length.signum() == -1)
+    public static @NotNull Iterable<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
+        if (length < 0)
             throw new ArithmeticException("cannot pad with a negative length");
         return pad(false, length, bits(n));
     }
@@ -216,7 +216,7 @@ public final class MathUtils {
         return reverse(bitsPadded(length, n));
     }
 
-    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(BigInteger length, BigInteger n) {
+    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
         return reverse(bitsPadded(length, n));
     }
 
@@ -471,5 +471,13 @@ public final class MathUtils {
                 },
                 n
         );
+    }
+
+    public static @NotNull Iterable<Pair<Integer, Integer>> compactPrimeFactors(int n) {
+        return countAdjacent(primeFactors(n));
+    }
+
+    public static @NotNull Iterable<Pair<BigInteger, Integer>> compactPrimeFactors(@NotNull BigInteger n) {
+        return countAdjacent(primeFactors(n));
     }
 }

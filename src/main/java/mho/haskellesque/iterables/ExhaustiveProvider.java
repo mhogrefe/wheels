@@ -655,7 +655,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
      * @return all pairs of elements from <tt>xs</tt> in logarithmic order
      */
-    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsLogarithmicOrder(xs);
     }
@@ -669,12 +668,38 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <B> the type of the second <tt>Iterable</tt>'s elements
      * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in logarithmic order
      */
-    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return Combinatorics.pairsLogarithmicOrder(as, bs);
+    }
+
+    /**
+     * See <tt>Combinatorics::pairsSquareRootOrder</tt>
+     *
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>xs</tt> in square-root order
+     */
+    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        return Combinatorics.pairsSquareRootOrder(xs);
+    }
+
+    /**
+     * See <tt>Combinatorics::pairsSquareRootOrder</tt>
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in square-root order
+     */
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return Combinatorics.pairsSquareRootOrder(as, bs);
     }
 
     /**

@@ -81,13 +81,6 @@ public interface IterableProvider {
 
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
 
-    public abstract @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs);
-
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    );
-
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
 
     public abstract @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(

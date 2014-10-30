@@ -935,16 +935,6 @@ public final class RandomProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return null;
-    }
-
-    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
     }

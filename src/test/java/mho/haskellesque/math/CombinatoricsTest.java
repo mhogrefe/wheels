@@ -1138,6 +1138,44 @@ public class CombinatoricsTest {
     }
 
     @Test
+    public void testPairsSquareRootOrder_Iterable() {
+        aeq(pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2)," +
+                " (1, 3), (1, 4), (2, 3), (2, 4), (3, 3), (3, 4), (4, 3), (4, 4)]");
+        aeq(pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (null, 1), (null, 2), (4, 1), (4, 2)," +
+                " (1, null), (1, 4), (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]");
+        aeq(pairsSquareRootOrder(new ArrayList<Integer>()), "[]");
+        aeq(take(20, pairsSquareRootOrder(P.naturalBigIntegers())),
+                "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3)," +
+                " (1, 2), (1, 3), (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1)]");
+        aeq(take(20, pairsSquareRootOrder((Iterable<BigInteger>) cons(null, P.naturalBigIntegers()))),
+                "[(null, null), (null, 0), (0, null), (0, 0), (1, null), (1, 0), (2, null), (2, 0), (null, 1)," +
+                " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)]");
+    }
+
+    @Test
+    public void testPairsSquareRootOrder_Iterable_Iterable() {
+        aeq(pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b)," +
+                " (1, c), (1, d), (2, c), (2, d), (3, c), (3, d), (4, c), (4, d)]");
+        aeq(pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (null, a), (null, b), (4, a), (4, b)," +
+                " (1, c), (1, d), (2, c), (2, d), (null, c), (null, d), (4, c), (4, d)]");
+        aeq(pairsSquareRootOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
+        aeq(pairsSquareRootOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        aeq(take(20, pairsSquareRootOrder(P.naturalBigIntegers(), fromString("abcd"))),
+                "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d)," +
+                " (1, c), (1, d), (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
+        aeq(take(20, pairsSquareRootOrder(fromString("abcd"), P.naturalBigIntegers())),
+                "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3)," +
+                " (b, 2), (b, 3), (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
+        aeq(take(20, pairsSquareRootOrder(P.positiveBigIntegers(), P.negativeBigIntegers())),
+                "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4)," +
+                " (2, -3), (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2)]");
+    }
+
+    @Test
     public void testPairs() {
         aeq(pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d)," +

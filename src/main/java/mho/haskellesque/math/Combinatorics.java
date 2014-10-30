@@ -552,8 +552,47 @@ public final class Combinatorics {
         return concatMap(i -> stringsAscending(i, s), P.naturalBigIntegers());
     }
 
+    //todo
+    private static @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
+            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
+            assert p.a != null;
+            NullableOptional<A> optA = aii.get(p.a.intValueExact());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.b != null;
+            NullableOptional<B> optB = bii.get(p.b.intValueExact());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<A, B> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<A, B>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<A, B>>>)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
+                        )
+                )
+        );
+    }
+
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * Returns all pairs of elements taken from one <tt>Iterable</tt>s in such a way that the first component grows
      * linearly but the second grows logarithmically (hence the name).
      *
      * <ul>
@@ -603,45 +642,6 @@ public final class Combinatorics {
         );
     }
 
-    //todo
-    private static @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
-            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
-        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
-            assert p.a != null;
-            NullableOptional<A> optA = aii.get(p.a.intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            assert p.b != null;
-            NullableOptional<B> optB = bii.get(p.b.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<A, B>>>)
-                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
-                        )
-                )
-        );
-    }
-
     /**
      * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
      * linearly but the second grows logarithmically.
@@ -668,6 +668,85 @@ public final class Combinatorics {
             @NotNull Iterable<B> bs
     ) {
         return pairsByFunction(MathUtils::logarithmicDemux, as, bs);
+    }
+
+    /**
+     * Returns all pairs of elements taken from one <tt>Iterable</tt>s in such a way that the first component grows
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     *
+     * <ul>
+     *  <li><tt>xs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from some <tt>Iterable</tt>.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <tt>BasicMath.squareRootDemux</tt> and interpreting the resulting pairs as indices into the original
+     *  <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * Result length is |<tt>xs</tt>|<sup>2</sup>
+     *
+     * @param xs the <tt>Iterable</tt> from which elements are selected
+     * @param <T> the type of the given <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>xs</tt> in square-root order
+     */
+    public static @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        CachedIterable<T> ii = new CachedIterable<>(xs);
+        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(bi);
+            assert p.a != null;
+            NullableOptional<T> optA = ii.get(p.a.intValueExact());
+            if (!optA.isPresent()) return Optional.empty();
+            assert p.b != null;
+            NullableOptional<T> optB = ii.get(p.b.intValueExact());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<T, T> p = o.get();
+            Optional<Boolean> lastA = ii.isLast(p.a);
+            Optional<Boolean> lastB = ii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<T, T>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<T, T>>>)
+                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
+                        )
+                )
+        );
+    }
+
+    /**
+     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     *
+     * <ul>
+     *  <li><tt>as</tt> is non-null.</li>
+     *  <li><tt>bs</tt> is non-null.</li>
+     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <tt>BasicMath.squareRootDemux</tt> and interpreting the resulting pairs as indices into the original
+     *  <tt>Iterable</tt>s.</li>
+     * </ul>
+     *
+     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     *
+     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
+     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
+     * @param <A> the type of the first <tt>Iterable</tt>'s elements
+     * @param <B> the type of the second <tt>Iterable</tt>'s elements
+     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in square-root order
+     */
+    public static @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return pairsByFunction(MathUtils::squareRootDemux, as, bs);
     }
 
     /**
