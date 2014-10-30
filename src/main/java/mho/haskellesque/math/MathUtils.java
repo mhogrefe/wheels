@@ -1,6 +1,7 @@
 package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.IterableUtils;
+import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,8 +9,11 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.zip.ZipEntry;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.ordering.Ordering.*;
 
 /**
  * Some mathematical utilities
@@ -329,5 +333,28 @@ public final class MathUtils {
 
     public static boolean isAPowerOfTwo(@NotNull BigInteger n) {
         return n.getLowestSetBit() == n.bitLength() - 1;
+    }
+
+    public static @NotNull BigInteger fastGrowingCeilingInverse(
+            @NotNull Function<BigInteger, BigInteger> f,
+            @NotNull BigInteger y,
+            @NotNull BigInteger min,
+            @NotNull BigInteger max) {
+        for (BigInteger x : range(min, max)) {
+            BigInteger j = f.apply(x);
+            if (ge(j, y)) {
+                return x;
+            }
+        }
+        throw new IllegalArgumentException("inverse not found in range");
+    }
+
+    public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
+        return fastGrowingCeilingInverse(
+                i -> base.pow(i.intValue()),
+                x,
+                BigInteger.ONE,
+                x //very loose bound
+        );
     }
 }
