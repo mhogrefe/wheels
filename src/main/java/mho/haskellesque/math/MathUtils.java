@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -19,6 +20,20 @@ import static mho.haskellesque.ordering.Ordering.*;
  * Some mathematical utilities
  */
 public final class MathUtils {
+    private static final int PRIME_SIEVE_SIZE = 1 << 16;
+    private static final BitSet PRIME_SIEVE;
+    static {
+        PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
+        PRIME_SIEVE.set(2, PRIME_SIEVE_SIZE - 1);
+        int multiple;
+        for (multiple = 0; multiple < PRIME_SIEVE_SIZE; multiple++) {
+            while (!PRIME_SIEVE.get(multiple) && multiple < PRIME_SIEVE_SIZE) multiple++;
+            for (int i : rangeBy(multiple * 2, multiple, PRIME_SIEVE_SIZE - 1)) {
+                PRIME_SIEVE.clear(i);
+            }
+        }
+    }
+
     /**
      * Disallow instantiation
      */
@@ -387,11 +402,5 @@ public final class MathUtils {
                 BigInteger.ZERO,
                 x //very loose bound
         );
-    }
-
-    public static void main(String[] args) {
-        for (BigInteger i : range(BigInteger.ZERO, BigInteger.valueOf(1000))) {
-            System.out.println(i + ": " + ceilingRoot(BigInteger.valueOf(3), i));
-        }
     }
 }
