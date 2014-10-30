@@ -5,6 +5,7 @@ import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -310,6 +311,13 @@ public final class MathUtils {
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
         return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
+    }
+
+    public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
+        List<Boolean> bits = toList(bits(n));
+        Iterable<Boolean> aMask = cycle(Arrays.asList(true, false, false));
+        Iterable<Boolean> bMask = cycle(Arrays.asList(false, true, true));
+        return new Pair<>(fromBits(select(bMask, bits)), fromBits(select(aMask, bits)));
     }
 
     public static @NotNull List<BigInteger> demux(int lines, @NotNull BigInteger n) {

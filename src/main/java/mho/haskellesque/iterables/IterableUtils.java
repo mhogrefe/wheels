@@ -2197,8 +2197,8 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<Iterable<T>> chunk(int size, Iterable<T> xs) {
-        return () -> new Iterator<Iterable<T>>() {
+    public static <T> Iterable<List<T>> chunk(int size, Iterable<T> xs) {
+        return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
 
             @Override
@@ -2249,8 +2249,8 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<Iterable<T>> chunkPadded(T pad, int size, Iterable<T> xs) {
-        return () -> new Iterator<Iterable<T>>() {
+    public static <T> Iterable<List<T>> chunkPadded(T pad, int size, Iterable<T> xs) {
+        return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
 
             @Override
