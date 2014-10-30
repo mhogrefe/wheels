@@ -7,10 +7,7 @@ import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.zip.ZipEntry;
 
@@ -452,5 +449,27 @@ public final class MathUtils {
 
     public static boolean isPrime(@NotNull BigInteger n) {
         return smallestPrimeFactor(n).equals(n);
+    }
+
+    public static @NotNull Iterable<Integer> primeFactors(int n) {
+        return unfoldr(
+                i -> {
+                    if (i == 1) return Optional.empty();
+                    int spf = smallestPrimeFactor(i);
+                    return Optional.of(new Pair<>(spf, i / spf));
+                },
+                n
+        );
+    }
+
+    public static @NotNull Iterable<BigInteger> primeFactors(@NotNull BigInteger n) {
+        return unfoldr(
+                i -> {
+                    if (i.equals(BigInteger.ONE)) return Optional.empty();
+                    BigInteger spf = smallestPrimeFactor(i);
+                    return Optional.of(new Pair<>(spf, i.divide(spf)));
+                },
+                n
+        );
     }
 }
