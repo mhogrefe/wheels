@@ -1971,6 +1971,50 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull <A, B> Iterable<A> unfoldr(@NotNull Function<B, Optional<Pair<A, B>>> f, @NotNull B x) {
+        return new Iterable<A>() {
+            @Override
+            public Iterator<A> iterator() {
+                return new Iterator<A>() {
+                    private boolean hasNext = true;
+                    private A next;
+                    private B seed = x;
+
+                    {
+                        advanceNext();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public A next() {
+                        A oldNext = next;
+                        advanceNext();
+                        return oldNext;
+                    }
+
+                    private void advanceNext() {
+                        Optional<Pair<A, B>> p = f.apply(seed);
+                        if (p.isPresent()) {
+                            next = p.get().a;
+                            seed = p.get().b;
+                        } else {
+                            hasNext = false;
+                        }
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
     public static <T> Iterable<T> take(int n, Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private int i = 0;
