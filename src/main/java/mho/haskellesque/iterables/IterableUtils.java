@@ -2066,7 +2066,7 @@ public final class IterableUtils {
     }
 
     public static String take(BigInteger n, String s) {
-        return s.substring(0, n.intValue());
+        return s.substring(0, n.intValueExact());
     }
 
     public static <T> Iterable<T> drop(int n, Iterable<T> xs) {
@@ -2142,9 +2142,9 @@ public final class IterableUtils {
     }
 
     public static <T> String pad(char pad, BigInteger length, String s) {
-        if (s.length() == length.intValue()) return s;
-        if (s.length() > length.intValue()) return take(length, s);
-        return s + replicate(length.intValue() - s.length(), pad);
+        if (s.length() == length.intValueExact()) return s;
+        if (s.length() > length.intValueExact()) return take(length, s);
+        return s + replicate(length.intValueExact() - s.length(), pad);
     }
 
     public static <T> Pair<Iterable<T>, Iterable<T>> splitAt(int n, Iterable<T> xs) {

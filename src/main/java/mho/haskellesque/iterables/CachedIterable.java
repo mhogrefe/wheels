@@ -30,7 +30,7 @@ public class CachedIterable<T> {
     }
 
     public NullableOptional<T> get(BigInteger i) {
-        return get(i.intValue());
+        return get(i.intValueExact());
     }
 
     public Optional<List<T>> get(Iterable<Integer> is) {
@@ -44,7 +44,7 @@ public class CachedIterable<T> {
     }
 
     public Optional<List<T>> getBigInteger(Iterable<BigInteger> is) {
-        return get(IterableUtils.map(BigInteger::intValue, is));
+        return get(IterableUtils.map(BigInteger::intValueExact, is));
     }
 
     public Optional<List<T>> select(Iterable<Boolean> bs) {

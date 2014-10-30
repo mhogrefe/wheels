@@ -464,7 +464,7 @@ public final class Combinatorics {
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
-                        i -> s.charAt(i.intValue()),
+                        i -> s.charAt(i.intValueExact()),
                         MathUtils.bigEndianDigitsPadded(BigInteger.valueOf(length), BigInteger.valueOf(s.length()), bi)
                 )
         );
@@ -492,12 +492,12 @@ public final class Combinatorics {
     public static @NotNull Iterable<String> stringsAscending(@NotNull BigInteger length, @NotNull String s) {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("strings must have a non-negative length");
-        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValue());
+        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValueExact());
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
-                        i -> s.charAt(i.intValue()),
+                        i -> s.charAt(i.intValueExact()),
                         MathUtils.bigEndianDigitsPadded(
-                                BigInteger.valueOf(length.intValue()),
+                                BigInteger.valueOf(length.intValueExact()),
                                 BigInteger.valueOf(s.length()),
                                 bi
                         )
@@ -576,10 +576,10 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(bi);
             assert p.a != null;
-            NullableOptional<T> optA = ii.get(p.a.intValue());
+            NullableOptional<T> optA = ii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.b != null;
-            NullableOptional<T> optB = ii.get(p.b.intValue());
+            NullableOptional<T> optB = ii.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
         };
@@ -615,10 +615,10 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
             assert p.a != null;
-            NullableOptional<A> optA = aii.get(p.a.intValue());
+            NullableOptional<A> optA = aii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.b != null;
-            NullableOptional<B> optB = bii.get(p.b.intValue());
+            NullableOptional<B> optB = bii.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
         };
@@ -736,13 +736,13 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
             List<BigInteger> p = MathUtils.demux(3, bi);
             assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
             return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
         };
@@ -812,16 +812,16 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
             List<BigInteger> p = MathUtils.demux(4, bi);
             assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
             assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
             if (!optD.isPresent()) return Optional.empty();
             return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
         };
@@ -899,19 +899,19 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
             List<BigInteger> p = MathUtils.demux(5, bi);
             assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
             assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
             if (!optD.isPresent()) return Optional.empty();
             assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
             if (!optE.isPresent()) return Optional.empty();
             return Optional.of(new Quintuple<A, B, C, D, E>(
                     optA.get(),
@@ -1011,22 +1011,22 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
             List<BigInteger> p = MathUtils.demux(6, bi);
             assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
             assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
             if (!optD.isPresent()) return Optional.empty();
             assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
             if (!optE.isPresent()) return Optional.empty();
             assert p.get(5) != null;
-            NullableOptional<F> optF = fii.get(p.get(5).intValue());
+            NullableOptional<F> optF = fii.get(p.get(5).intValueExact());
             if (!optF.isPresent()) return Optional.empty();
             return Optional.of(new Sextuple<A, B, C, D, E, F>(
                     optA.get(),
@@ -1136,25 +1136,25 @@ public final class Combinatorics {
         Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
             List<BigInteger> p = MathUtils.demux(7, bi);
             assert p.get(0) != null;
-            NullableOptional<A> optA = aii.get(p.get(0).intValue());
+            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             assert p.get(1) != null;
-            NullableOptional<B> optB = bii.get(p.get(1).intValue());
+            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             assert p.get(2) != null;
-            NullableOptional<C> optC = cii.get(p.get(2).intValue());
+            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
             assert p.get(3) != null;
-            NullableOptional<D> optD = dii.get(p.get(3).intValue());
+            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
             if (!optD.isPresent()) return Optional.empty();
             assert p.get(4) != null;
-            NullableOptional<E> optE = eii.get(p.get(4).intValue());
+            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
             if (!optE.isPresent()) return Optional.empty();
             assert p.get(5) != null;
-            NullableOptional<F> optF = fii.get(p.get(5).intValue());
+            NullableOptional<F> optF = fii.get(p.get(5).intValueExact());
             if (!optF.isPresent()) return Optional.empty();
             assert p.get(6) != null;
-            NullableOptional<G> optG = gii.get(p.get(6).intValue());
+            NullableOptional<G> optG = gii.get(p.get(6).intValueExact());
             if (!optG.isPresent()) return Optional.empty();
             return Optional.of(new Septuple<A, B, C, D, E, F, G>(
                     optA.get(),
@@ -1215,12 +1215,12 @@ public final class Combinatorics {
         Function<Pair<BigInteger, BigInteger>, Optional<Pair<A, B>>> p2p = p -> {
             assert p.a != null;
             assert p.b != null;
-            NullableOptional<A> optA = as.get(p.a.intValue());
+            NullableOptional<A> optA = as.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<CachedIterable<B>> optBs = possibleBs.get(p.a.intValue());
+            NullableOptional<CachedIterable<B>> optBs = possibleBs.get(p.a.intValueExact());
             if (!optBs.isPresent()) return Optional.empty();
             CachedIterable<B> bs = optBs.get();
-            NullableOptional<B> optB = bs.get(p.b.intValue());
+            NullableOptional<B> optB = bs.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
         };
@@ -1247,7 +1247,8 @@ public final class Combinatorics {
             return Arrays.asList(new ArrayList<T>());
         }
         CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi -> ii.get(map(BigInteger::intValue, MathUtils.demux(size, bi)));
+        Function<BigInteger, Optional<List<T>>> f = bi ->
+                ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, bi)));
         return map(
                 Optional::get,
                 filter(
@@ -1318,8 +1319,8 @@ public final class Combinatorics {
             }
             bi = bi.subtract(BigInteger.ONE);
             Pair<BigInteger, BigInteger> sizeIndex = MathUtils.logarithmicDemux(bi);
-            int size = sizeIndex.b.intValue() + 1;
-            return ii.get(map(BigInteger::intValue, MathUtils.demux(size, sizeIndex.a)));
+            int size = sizeIndex.b.intValueExact() + 1;
+            return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
         };
         return map(
                 Optional::get,

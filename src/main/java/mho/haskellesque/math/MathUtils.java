@@ -369,7 +369,7 @@ public final class MathUtils {
 
     public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
         return fastGrowingCeilingInverse(
-                i -> base.pow(i.intValue()),
+                i -> base.pow(i.intValueExact()),
                 x,
                 BigInteger.ONE,
                 x //very loose bound
@@ -399,7 +399,7 @@ public final class MathUtils {
 
     public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
         return ceilingInverse(
-                i -> i.pow(r.intValue()),
+                i -> i.pow(r.intValueExact()),
                 x,
                 BigInteger.ZERO,
                 x //very loose bound
@@ -411,7 +411,7 @@ public final class MathUtils {
             throw new IllegalArgumentException("argument must be at least 2");
         if (n % 2 == 0) return 2;
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
-        int limit = ceilingRoot(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValue();
+        int limit = ceilingRoot(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact();
         for (int i = 3; i <= limit; i++) {
             if (PRIME_SIEVE.get(i) && n % i == 0) return i;
         }
@@ -420,11 +420,11 @@ public final class MathUtils {
 
     public static @NotNull BigInteger smallestPrimeFactor(@NotNull BigInteger n) {
         if (le(n, BigInteger.valueOf(Integer.MAX_VALUE))) {
-            return BigInteger.valueOf(smallestPrimeFactor(n.intValue()));
+            return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
         if (!n.testBit(0)) return BigInteger.valueOf(2);
         BigInteger limit = ceilingRoot(BigInteger.valueOf(2), n);
-        int sieveLimit = min(limit, BigInteger.valueOf(PRIME_SIEVE_SIZE - 1)).intValue();
+        int sieveLimit = min(limit, BigInteger.valueOf(PRIME_SIEVE_SIZE - 1)).intValueExact();
         for (int i = 3; i <= sieveLimit; i++) {
             BigInteger bi = BigInteger.valueOf(i);
             if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;

@@ -87,7 +87,7 @@ public final class Numbers {
         }
         int bits = rawExp;
         bits <<= 23;
-        bits |= rawMantissa.intValue();
+        bits |= rawMantissa.intValueExact();
         float f = Float.intBitsToFloat(bits);
         return Optional.of(sign ? f : -f);
     }
@@ -118,7 +118,7 @@ public final class Numbers {
         }
         long bits = rawExp;
         bits <<= 52;
-        bits |= rawMantissa.longValue();
+        bits |= rawMantissa.longValueExact();
         double d = Double.longBitsToDouble(bits);
         return Optional.of(sign ? d : -d);
     }
