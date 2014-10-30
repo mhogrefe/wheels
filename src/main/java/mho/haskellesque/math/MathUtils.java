@@ -1,5 +1,6 @@
 package mho.haskellesque.math;
 
+import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.Pair;
@@ -20,7 +21,11 @@ import static mho.haskellesque.ordering.Ordering.*;
  * Some mathematical utilities
  */
 public final class MathUtils {
+    private static final ExhaustiveProvider P = new ExhaustiveProvider();
+
+    //must be >= ceiling(sqrt(Integer.MAX_VALUE)) = 46,341
     private static final int PRIME_SIEVE_SIZE = 1 << 16;
+
     private static final BitSet PRIME_SIEVE;
     static {
         PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
@@ -402,5 +407,42 @@ public final class MathUtils {
                 BigInteger.ZERO,
                 x //very loose bound
         );
+    }
+
+    public static int smallestPrimeFactor(int n) {
+        if (n < 2)
+            throw new IllegalArgumentException("argument must be at least 2");
+        if (n % 2 == 0) return 2;
+        if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
+        int limit = ceilingRoot(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValue();
+        for (int i = 3; i <= limit; i++) {
+            if (PRIME_SIEVE.get(i) && n % i == 0) return i;
+        }
+        return n;
+    }
+
+    public static @NotNull BigInteger smallestPrimeFactor(@NotNull BigInteger n) {
+        if (le(n, BigInteger.valueOf(Integer.MAX_VALUE))) {
+            return BigInteger.valueOf(smallestPrimeFactor(n.intValue()));
+        }
+        if (!n.testBit(0)) return BigInteger.valueOf(2);
+        BigInteger limit = ceilingRoot(BigInteger.valueOf(2), n);
+        int sieveLimit = min(limit, BigInteger.valueOf(PRIME_SIEVE_SIZE - 1)).intValue();
+        for (int i = 3; i <= sieveLimit; i++) {
+            BigInteger bi = BigInteger.valueOf(i);
+            if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;
+        }
+        if (limit.equals(BigInteger.valueOf(sieveLimit))) return n;
+        Iterable<BigInteger> candidates = concatMap(
+                i -> {
+                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
+                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
+                },
+                range(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+        );
+        for (BigInteger candidate : takeWhile(i -> le(i, limit), candidates)) {
+            if (n.mod(candidate).equals(BigInteger.ZERO)) return candidate;
+        }
+        return n;
     }
 }
