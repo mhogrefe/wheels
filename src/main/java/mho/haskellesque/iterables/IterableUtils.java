@@ -1,6 +1,5 @@
 package mho.haskellesque.iterables;
 
-import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1979,9 +1978,8 @@ public final class IterableUtils {
                     private boolean hasNext = true;
                     private A next;
                     private B seed = x;
-
                     {
-                        advanceNext();
+                        advance();
                     }
 
                     @Override
@@ -1992,11 +1990,11 @@ public final class IterableUtils {
                     @Override
                     public A next() {
                         A oldNext = next;
-                        advanceNext();
+                        advance();
                         return oldNext;
                     }
 
-                    private void advanceNext() {
+                    private void advance() {
                         Optional<Pair<A, B>> p = f.apply(seed);
                         if (p.isPresent()) {
                             next = p.get().a;
@@ -2164,7 +2162,7 @@ public final class IterableUtils {
                     private T next;
                     private boolean hasNext;
                     {
-                        advanceNext();
+                        advance();
                     }
 
                     @Override
@@ -2175,11 +2173,11 @@ public final class IterableUtils {
                     @Override
                     public T next() {
                         T current = next;
-                        advanceNext();
+                        advance();
                         return current;
                     }
 
-                    private void advanceNext() {
+                    private void advance() {
                         if (xsi.hasNext()) {
                             next = xsi.next();
                             hasNext = p.test(next);
@@ -2206,7 +2204,7 @@ public final class IterableUtils {
                     private T next;
                     private boolean hasNext;
                     {
-                        advanceNext();
+                        advance();
                     }
 
                     @Override
@@ -2217,11 +2215,11 @@ public final class IterableUtils {
                     @Override
                     public T next() {
                         T current = next;
-                        advanceNext();
+                        advance();
                         return current;
                     }
 
-                    private void advanceNext() {
+                    private void advance() {
                         if (next != null && p.test(next)) {
                             hasNext = false;
                         } else {
@@ -2318,6 +2316,64 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<Pair<T, Integer>> countAdjacent(@NotNull Iterable<T> xs) {
+        return new Iterable<Pair<T, Integer>>() {
+            @Override
+            public Iterator<Pair<T, Integer>> iterator() {
+                return new Iterator<Pair<T, Integer>>() {
+                    private Iterator<T> xsi = xs.iterator();
+                    private boolean hasNext = xsi.hasNext();
+                    private boolean isLast = false;
+                    private T nextX = null;
+                    private Pair<T, Integer> next = null;
+
+                    {
+                        if (hasNext) {
+                            nextX = xsi.next();
+                        }
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public Pair<T, Integer> next() {
+                        if (isLast) {
+                            hasNext = false;
+                            return next;
+                        } else {
+                            Pair<T, Integer> oldNext = next;
+                            advance();
+                            return oldNext;
+                        }
+                    }
+
+                    private void advance() {
+                        T original = nextX;
+                        int count = 0;
+                        do {
+                            count++;
+                            if (!xsi.hasNext()) {
+                                isLast = true;
+                                break;
+                            }
+                            nextX = xsi.next();
+                        } while (original == null && nextX == null || original != null && original.equals(nextX));
+                        next = new Pair<>(original, count);
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
     public static <T> Iterable<T> mux(List<Iterable<T>> xss) {
         return concat(transpose(xss));
     }
@@ -2342,9 +2398,8 @@ public final class IterableUtils {
                     private final Iterator<T> xsi = xs.iterator();
                     private T next;
                     private boolean hasNext;
-
                     {
-                        advanceNext();
+                        advance();
                     }
 
                     @Override
@@ -2355,11 +2410,11 @@ public final class IterableUtils {
                     @Override
                     public T next() {
                         T current = next;
-                        advanceNext();
+                        advance();
                         return current;
                     }
 
-                    private void advanceNext() {
+                    private void advance() {
                         while (xsi.hasNext()) {
                             next = xsi.next();
                             if (p.test(next)) {
