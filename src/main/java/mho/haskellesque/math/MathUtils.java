@@ -162,8 +162,8 @@ public final class MathUtils {
 
     /**
      * Returns the lowest <tt>n</tt> bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is
-     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and padded with zeroes
-     * (falses) if necessary. Does not support removal.
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and right-padded with
+     * zeroes (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
@@ -184,8 +184,8 @@ public final class MathUtils {
 
     /**
      * Returns the lowest <tt>n</tt> bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is
-     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and padded with zeroes
-     * (falses) if necessary. Does not support removal.
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and right-padded with
+     * zeroes (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
@@ -204,18 +204,80 @@ public final class MathUtils {
         return pad(false, length, bits(n));
     }
 
-    public static @NotNull Iterable<Boolean> bigEndianBits(final int n) {
+    /**
+     * Returns the bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is big-endian; the most-
+     * significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no leading unset bits. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> beginning with <tt>true</tt>.</li>
+     * </ul>
+     *
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in big-endian order
+     */
+    public static @NotNull Iterable<Boolean> bigEndianBits(int n) {
         return reverse(bits(n));
     }
 
-    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull final BigInteger n) {
+    /**
+     * Returns the bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is big-endian; the
+     * most-significant bits come first. Zero gives an empty <tt>Iterable</tt>. There are no leading unset bits.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> beginning with <tt>true</tt>.</li>
+     * </ul>
+     *
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in big-endian order
+     */
+    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull BigInteger n) {
         return reverse(bits(n));
     }
 
+    /**
+     * Returns the lowest <tt>n</tt> bits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is
+     * big-endian; the most-significant bits come first. It is exactly <tt>n</tt> bits long, and left-padded with
+     * zeroes (falses) if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in big-endian order
+     */
     public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, int n) {
         return reverse(bitsPadded(length, n));
     }
 
+    /**
+     * Returns the lowest <tt>n</tt> bits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is
+     * big-endian; the most-significant bits come first. It is exactly <tt>n</tt> bits long, and left-padded with
+     * zeroes (falses) if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in big-endian order
+     */
     public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
         return reverse(bitsPadded(length, n));
     }

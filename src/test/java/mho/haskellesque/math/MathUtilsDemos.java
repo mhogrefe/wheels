@@ -12,7 +12,7 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.MathUtils.*;
 
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static int LIMIT;
 
     private static IterableProvider P;
@@ -78,6 +78,50 @@ public class MathUtilsDemos {
             assert p.a != null;
             assert p.b != null;
             System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
+        }
+    }
+
+    private static void demoBigEndianBits_int() {
+        initialize();
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            System.out.println("bigEndianBits(" + i + ") = " + toList(bigEndianBits(i)));
+        }
+    }
+
+    private static void demoBigEndianBits_BigInteger() {
+        initialize();
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            System.out.println("bigEndianBits(" + i + ") = " + toList(bigEndianBits(i)));
+        }
+    }
+
+    private static void demoBigEndianBitsPadded_int_int() {
+        initialize();
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + toList(bigEndianBitsPadded(p.b, p.a)));
+        }
+    }
+
+    private static void demoBigEndianBitsPadded_int_BigInteger() {
+        initialize();
+        Iterable<Pair<BigInteger, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + toList(bigEndianBitsPadded(p.b, p.a)));
         }
     }
 }
