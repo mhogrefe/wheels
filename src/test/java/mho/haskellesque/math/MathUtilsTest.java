@@ -99,6 +99,79 @@ public class MathUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    @Test
+    public void testBigEndianBits_int() {
+        aeq(toList(bigEndianBits(0)), "[]");
+        aeq(toList(bigEndianBits(1)), "[true]");
+        aeq(toList(bigEndianBits(6)), "[true, true, false]");
+        aeq(toList(bigEndianBits(105)), "[true, true, false, true, false, false, true]");
+        try {
+            bigEndianBits(-1);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBigEndianBits_BigInteger() {
+        aeq(toList(bigEndianBits(BigInteger.ZERO)), "[]");
+        aeq(toList(bigEndianBits(BigInteger.ONE)), "[true]");
+        aeq(toList(bigEndianBits(BigInteger.valueOf(6))), "[true, true, false]");
+        aeq(toList(bigEndianBits(BigInteger.valueOf(105))), "[true, true, false, true, false, false, true]");
+        try {
+            bigEndianBits(-1);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBigEndianBitsPadded_int_int() {
+        aeq(toList(bigEndianBitsPadded(8, 0)), "[false, false, false, false, false, false, false, false]");
+        aeq(toList(bigEndianBitsPadded(8, 1)), "[false, false, false, false, false, false, false, true]");
+        aeq(toList(bigEndianBitsPadded(8, 6)), "[false, false, false, false, false, true, true, false]");
+        aeq(toList(bigEndianBitsPadded(8, 105)), "[false, true, true, false, true, false, false, true]");
+        aeq(toList(bigEndianBitsPadded(8, 1000)), "[true, true, true, false, true, false, false, false]");
+        aeq(toList(bigEndianBitsPadded(2, 104)), "[false, false]");
+        aeq(toList(bigEndianBitsPadded(2, 105)), "[false, true]");
+        aeq(toList(bigEndianBitsPadded(1, 104)), "[false]");
+        aeq(toList(bigEndianBitsPadded(1, 105)), "[true]");
+        aeq(toList(bigEndianBitsPadded(0, 104)), "[]");
+        try {
+            bigEndianBitsPadded(8, -1);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            bigEndianBitsPadded(-1, 8);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBigEndianBitsPadded_BigInteger_BigInteger() {
+        aeq(toList(bigEndianBitsPadded(8, BigInteger.ZERO)),
+                "[false, false, false, false, false, false, false, false]");
+        aeq(toList(bigEndianBitsPadded(8, BigInteger.ONE)),
+                "[false, false, false, false, false, false, false, true]");
+        aeq(toList(bigEndianBitsPadded(8, BigInteger.valueOf(6))),
+                "[false, false, false, false, false, true, true, false]");
+        aeq(toList(bigEndianBitsPadded(8, BigInteger.valueOf(105))),
+                "[false, true, true, false, true, false, false, true]");
+        aeq(toList(bigEndianBitsPadded(8, BigInteger.valueOf(1000))),
+                "[true, true, true, false, true, false, false, false]");
+        aeq(toList(bigEndianBitsPadded(2, BigInteger.valueOf(104))), "[false, false]");
+        aeq(toList(bigEndianBitsPadded(2, BigInteger.valueOf(105))), "[false, true]");
+        aeq(toList(bigEndianBitsPadded(1, BigInteger.valueOf(104))), "[false]");
+        aeq(toList(bigEndianBitsPadded(1, BigInteger.valueOf(105))), "[true]");
+        aeq(toList(bigEndianBitsPadded(0, BigInteger.valueOf(104))), "[]");
+        try {
+            bigEndianBitsPadded(8, BigInteger.valueOf(-1));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            bigEndianBitsPadded(-1, BigInteger.valueOf(8));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }
