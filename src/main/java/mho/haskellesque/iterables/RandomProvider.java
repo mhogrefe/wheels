@@ -18,9 +18,9 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
-public final class RandomProvider implements IterableProvider {
-    public static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
-    public static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
+public class RandomProvider implements IterableProvider {
+    protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
+    protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
 
     private final @NotNull Random generator;
 
