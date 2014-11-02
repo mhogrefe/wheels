@@ -32,6 +32,15 @@ public enum Ordering {
         return 0; //doesn't happen
     }
 
+    public char toChar() {
+        switch (this) {
+            case LT: return '<';
+            case EQ: return '=';
+            case GT: return '>';
+        }
+        return 0; //doesn't happen
+    }
+
     public static @NotNull <T extends Comparable<T>> Ordering compare(@NotNull T a, @NotNull T b) {
         return fromInt(a.compareTo(b));
     }
