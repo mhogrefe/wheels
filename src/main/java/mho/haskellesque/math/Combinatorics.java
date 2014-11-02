@@ -1337,6 +1337,23 @@ public final class Combinatorics {
         );
     }
 
+    public static @NotNull <T> Iterable<List<T>> controlledListsAscending(@NotNull List<Iterable<T>> xss) {
+        if (xss.size() == 0) return Arrays.asList(new ArrayList<T>());
+        if (xss.size() == 1) return map(x -> Arrays.asList(x), xss.get(0));
+        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsAscending(xss.get(0), xss.get(1)));
+        List<Iterable<T>> leftList = new ArrayList<>();
+        List<Iterable<T>> rightList = new ArrayList<>();
+        for (int i = 0; i < xss.size() / 2; i++) {
+            leftList.add(xss.get(i));
+        }
+        for (int i = xss.size() / 2; i < xss.size(); i++) {
+            rightList.add(xss.get(i));
+        }
+        Iterable<List<T>> leftLists = controlledListsAscending(leftList);
+        Iterable<List<T>> rightLists = controlledListsAscending(rightList);
+        return map(p -> toList(concat(p.a, p.b)), pairsAscending(leftLists, rightLists));
+    }
+
     public static Iterable<String> strings(int size, Iterable<Character> cs) {
         return map(IterableUtils::charsToString, lists(size, cs));
     }
@@ -1447,6 +1464,11 @@ public final class Combinatorics {
                     }
                 }
                 return subsequence;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

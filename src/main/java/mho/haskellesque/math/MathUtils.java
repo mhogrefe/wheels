@@ -2,14 +2,12 @@ package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableUtils;
-import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
-import java.util.zip.ZipEntry;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.ordering.Ordering.*;
@@ -18,8 +16,6 @@ import static mho.haskellesque.ordering.Ordering.*;
  * Some mathematical utilities
  */
 public final class MathUtils {
-    private static final ExhaustiveProvider P = new ExhaustiveProvider();
-
     //must be >= ceiling(sqrt(Integer.MAX_VALUE)) = 46,341
     private static final int PRIME_SIEVE_SIZE = 1 << 16;
 
@@ -87,7 +83,7 @@ public final class MathUtils {
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt> ending with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>, containing no nulls, ending with <tt>true</tt>.</li>
      * </ul>
      *
      * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
@@ -95,7 +91,7 @@ public final class MathUtils {
      * @param n a number
      * @return <tt>n</tt>'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(final int n) {
+    public static @NotNull Iterable<Boolean> bits(int n) {
         if (n < 0)
             throw new ArithmeticException("cannot get bits of a negative number");
         return () -> new Iterator<Boolean>() {
@@ -127,7 +123,7 @@ public final class MathUtils {
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt> ending with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>, containing no nulls, ending with <tt>true</tt>.</li>
      * </ul>
      *
      * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
@@ -135,7 +131,7 @@ public final class MathUtils {
      * @param n a number
      * @return <tt>n</tt>'s bits in little-endian order
      */
-    public static @NotNull Iterable<Boolean> bits(final @NotNull BigInteger n) {
+    public static @NotNull Iterable<Boolean> bits(@NotNull BigInteger n) {
         if (n.signum() == -1)
             throw new ArithmeticException("cannot get bits of a negative number");
         return () -> new Iterator<Boolean>() {
@@ -168,7 +164,7 @@ public final class MathUtils {
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> containing no nulls.</li>
      * </ul>
      *
      * Result length is <tt>n</tt>
@@ -190,7 +186,7 @@ public final class MathUtils {
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> containing no nulls.</li>
      * </ul>
      *
      * Result length is <tt>n</tt>
@@ -211,7 +207,7 @@ public final class MathUtils {
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt> beginning with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>, containing no nulls, beginning with <tt>true</tt>.</li>
      * </ul>
      *
      * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
@@ -230,7 +226,7 @@ public final class MathUtils {
      *
      * <ul>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt> beginning with <tt>true</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt>, containing no nulls, beginning with <tt>true</tt>.</li>
      * </ul>
      *
      * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub>2</sub><tt>n</tt>&#x230B; otherwise
@@ -250,7 +246,7 @@ public final class MathUtils {
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> containing no nulls.</li>
      * </ul>
      *
      * Result length is <tt>n</tt>
@@ -270,7 +266,7 @@ public final class MathUtils {
      * <ul>
      *  <li><tt>length</tt> must be non-negative.</li>
      *  <li><tt>n</tt> must be non-negative.</li>
-     *  <li>The result is a finite <tt>Iterable</tt>.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> containing no nulls.</li>
      * </ul>
      *
      * Result length is <tt>n</tt>
@@ -319,7 +315,25 @@ public final class MathUtils {
         return fromBigEndianBits(reverse(bits));
     }
 
-    public static @NotNull Iterable<Integer> digits(int base, final int n) {
+    /**
+     * Returns the digits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is little-endian; the least-
+     * significant digits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing zero digits. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li><tt>base</tt> must be at least 2.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> whose elements are non-negative and whose last element is greater
+     *  than zero.</li>
+     * </ul>
+     *
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub><tt>base</tt></sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param base the base of the output digits
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
+    public static @NotNull Iterable<Integer> digits(int base, int n) {
         return () -> new Iterator<Integer>() {
             private int remaining = n;
 
@@ -337,6 +351,24 @@ public final class MathUtils {
         };
     }
 
+    /**
+     * Returns the digits of a non-negative <tt>BigInteger</tt>. The <tt>Iterable</tt> returned is little-endian;
+     * the least-significant digits come first. Zero gives an empty <tt>Iterable</tt>. There are no trailing zero
+     * digits. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>base</tt> must be at least 2.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> whose elements are non-negative and whose last element is non-
+     *  zero.</li>
+     * </ul>
+     *
+     * Result length is 0 if <tt>n</tt> is 0, or &#x230A;log<sub><tt>base</tt></sub><tt>n</tt>&#x230B; otherwise
+     *
+     * @param base the base of the output digits
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
         return () -> new Iterator<BigInteger>() {
             private BigInteger remaining = n;
@@ -355,10 +387,45 @@ public final class MathUtils {
         };
     }
 
+    /**
+     * Returns the lowest <tt>n</tt> digits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and left-padded with
+     * zeroes if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>base</tt> must be at least 2.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> whose elements are non-negative and less than
+     *  2<sup>31</sup>&#x2212;1.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<Integer> digitsPadded(int length, int base, int n) {
         return pad(0, length, digits(base, n));
     }
 
+    /**
+     * Returns the lowest <tt>n</tt> digits of a non-negative <tt>int</tt>. The <tt>Iterable</tt> returned is
+     * little-endian; the least-significant bits come first. It is exactly <tt>n</tt> bits long, and left-padded with
+     * zeroes if necessary. Does not support removal.
+     *
+     * <ul>
+     *  <li><tt>length</tt> must be non-negative.</li>
+     *  <li><tt>base</tt> must be at least 2.</li>
+     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>The result is a finite <tt>Iterable</tt> whose elements are non-negative.</li>
+     * </ul>
+     *
+     * Result length is <tt>n</tt>
+     *
+     * @param n a number
+     * @return <tt>n</tt>'s bits in little-endian order
+     */
     public static @NotNull Iterable<BigInteger> digitsPadded(
             @NotNull BigInteger length,
             @NotNull BigInteger base,
@@ -412,6 +479,48 @@ public final class MathUtils {
 
     public static @NotNull BigInteger fromDigits(@NotNull BigInteger base, @NotNull Iterable<BigInteger> digits) {
         return fromBigEndianDigits(base, (Iterable<BigInteger>) reverse(digits));
+    }
+
+    private static char toDigit(int i) {
+        return (char) (i < 10 ? '0' + i : 'A' + i - 10);
+    }
+
+    public static @NotNull String toStringBase(int base, int n) {
+        if (base < 2)
+            throw new IllegalArgumentException("base must be at least 2");
+        boolean bigBase = base > 36;
+        if (n == 0) {
+            return bigBase ? "(0)" : "0";
+        }
+        boolean negative = n < 0;
+        if (negative) n = -n;
+        List<Integer> digits = bigEndianDigits(base, n);
+        String absString;
+        if (bigBase) {
+            absString = concatStrings(map(d -> "(" + d + ")", digits));
+        } else {
+            absString = charsToString(map(MathUtils::toDigit, digits));
+        }
+        return negative ? cons('-', absString) : absString;
+    }
+
+    public static @NotNull String toStringBase(@NotNull BigInteger base, @NotNull BigInteger n) {
+        if (lt(base, BigInteger.valueOf(2)))
+            throw new IllegalArgumentException("base must be at least 2");
+        boolean bigBase = gt(base, BigInteger.valueOf(36));
+        if (n.equals(BigInteger.ZERO)) {
+            return bigBase ? "(0)" : "0";
+        }
+        boolean negative = n.signum() == -1;
+        if (negative) n = n.negate();
+        List<BigInteger> digits = bigEndianDigits(base, n);
+        String absString;
+        if (bigBase) {
+            absString = concatStrings(map(d -> "(" + d + ")", digits));
+        } else {
+            absString = charsToString(map(d -> toDigit(d.intValue()), digits));
+        }
+        return negative ? cons('-', absString) : absString;
     }
 
     public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
@@ -565,5 +674,33 @@ public final class MathUtils {
 
     public static @NotNull Iterable<Pair<BigInteger, Integer>> compactPrimeFactors(@NotNull BigInteger n) {
         return countAdjacent(primeFactors(n));
+    }
+
+    public static @NotNull List<Integer> factors(int n) {
+        List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
+        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsAscending(
+                toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
+        );
+        Function<List<Integer>, Integer> f = exponents -> productInteger(
+                zipWith(p -> BigInteger.valueOf(p.a).pow(p.b).intValueExact(), map(q -> q.a, cpf), exponents)
+        );
+        return sort(map(f, possibleExponents));
+    }
+
+    public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
+        List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
+        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsAscending(
+                toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
+        );
+        Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
+                zipWith(p -> p.a.pow(p.b), map(q -> q.a, cpf), exponents)
+        );
+        return sort(map(f, possibleExponents));
+    }
+
+    public static void main(String[] args) {
+        for (BigInteger i : range(new BigInteger("1000000000000000"))) {
+            System.out.println(factors(i));
+        }
     }
 }

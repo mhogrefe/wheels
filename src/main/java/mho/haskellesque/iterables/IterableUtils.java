@@ -3158,4 +3158,10 @@ public final class IterableUtils {
                 map(p -> p.g, ps)
         );
     }
+
+    public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
+        List<T> list = toList(xss);
+        Collections.sort(list);
+        return list;
+    }
 }
