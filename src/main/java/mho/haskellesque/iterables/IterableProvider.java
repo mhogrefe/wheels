@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.List;
 
 public interface IterableProvider {
     public abstract @NotNull Iterable<Boolean> booleans();
@@ -134,4 +135,16 @@ public interface IterableProvider {
     public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs);
 
     public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> strings(int size);
+
+    public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> strings();
 }

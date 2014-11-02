@@ -935,7 +935,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li><tt>xss</tt> must be finite.</li>
-     *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
+     *  <li>The lengths of the result's elements are finite, non-increasing, and never 0.</li>
      * </ul>
      *
      * Result length is the maximum length of <tt>xss</tt>'s elements
@@ -944,8 +944,8 @@ public final class IterableUtils {
      * @param <T> the <tt>Iterable</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
-    public static @NotNull <T> Iterable<Iterable<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
-        return () -> new Iterator<Iterable<T>>() {
+    public static @NotNull <T> Iterable<List<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
+        return () -> new Iterator<List<T>>() {
             private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
@@ -954,7 +954,7 @@ public final class IterableUtils {
             }
 
             @Override
-            public Iterable<T> next() {
+            public List<T> next() {
                 List<T> nextList = new ArrayList<>();
                 for (Iterator<T> iterator : iterators) {
                     if (iterator.hasNext()) {
@@ -1005,7 +1005,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li><tt>xss</tt> must be finite.</li>
-     *  <li>The lengths of the result's elements are equal.</li>
+     *  <li>The lengths of the result's elements are finite and equal.</li>
      * </ul>
      *
      * Result length is the minimum length of <tt>xss</tt>'s elements
@@ -1014,8 +1014,8 @@ public final class IterableUtils {
      * @param <T> the <tt>Iterable</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
-    public static @NotNull <T> Iterable<Iterable<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
-        return () -> new Iterator<Iterable<T>>() {
+    public static @NotNull <T> Iterable<List<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
+        return () -> new Iterator<List<T>>() {
             private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
@@ -1024,7 +1024,7 @@ public final class IterableUtils {
             }
 
             @Override
-            public Iterable<T> next() {
+            public List<T> next() {
                 List<T> nextList = new ArrayList<>();
                 for (Iterator<T> iterator : iterators) {
                     nextList.add(iterator.next());
@@ -2375,7 +2375,11 @@ public final class IterableUtils {
     }
 
     public static <T> Iterable<T> mux(List<Iterable<T>> xss) {
-        return concat(transpose(xss));
+        return concat(map(list -> list, transpose(xss)));
+    }
+
+    public static <T> String muxStrings(List<String> xss) {
+        return concatStrings(transposeStrings(xss));
     }
 
     public static <T> List<Iterable<T>> demux(int lines, Iterable<T> xs) {
@@ -2386,6 +2390,18 @@ public final class IterableUtils {
                     cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
             );
             demuxed.add(select(mask, xs));
+        }
+        return demuxed;
+    }
+
+    public static List<String> demux(int lines, String s) {
+        List<String> demuxed = new ArrayList<>();
+        for (int i = 0; i < lines; i++) {
+            Iterable<Boolean> mask = concat(
+                    replicate(i, false),
+                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+            );
+            demuxed.add(select(mask, s));
         }
         return demuxed;
     }
@@ -2470,6 +2486,12 @@ public final class IterableUtils {
 
     public static <T> Iterable<T> select(Iterable<Boolean> bs, Iterable<T> xs) {
         return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
+    }
+
+    public static <T> String select(Iterable<Boolean> bs, String s) {
+        return charsToString(
+                map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, Character>>) zip(bs, fromString(s))))
+        );
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {

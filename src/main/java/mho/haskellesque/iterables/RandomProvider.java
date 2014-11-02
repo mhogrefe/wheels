@@ -8,12 +8,10 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
+import static mho.haskellesque.iterables.IterableUtils.isEmpty;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
@@ -21,8 +19,9 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 public class RandomProvider implements IterableProvider {
     protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
     protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
+    protected static final int MEAN_LIST_SIZE = 10;
 
-    private final @NotNull Random generator;
+    protected final @NotNull Random generator;
 
     public RandomProvider() {
         generator = new Random();
@@ -1028,5 +1027,83 @@ public class RandomProvider implements IterableProvider {
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(7, xs);
         return zip7(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5), xss.get(6));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
+        return transpose(demux(size, xs));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        return () -> new Iterator<List<T>>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next();
+                List<T> list = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(xsi.next());
+                }
+                return list;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, transpose(demux(size, cs)));
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size) {
+        return strings(size, characters());
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
+        if (isEmpty(cs)) return Arrays.asList("");
+        return () -> new Iterator<String>() {
+            private Iterator<Character> csi = cs.iterator();
+            private Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings() {
+        return strings(characters());
     }
 }

@@ -21,6 +21,8 @@ import static mho.haskellesque.ordering.Ordering.*;
  * typically in order of increasing complexity, unless otherwise specified. See the test class for examples.
  */
 public class ExhaustiveProvider implements IterableProvider {
+    private static int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
+
     /**
      * A <tt>List</tt> that contains both <tt>Boolean</tt>s.
      *
@@ -878,6 +880,40 @@ public class ExhaustiveProvider implements IterableProvider {
         return Combinatorics.septuples(xs);
     }
 
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
+        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
+            return Combinatorics.listsAscending(size, xs);
+        } else {
+            return Combinatorics.lists(size, xs);
+        }
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
+        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
+            return Combinatorics.listsShortlex(xs);
+        } else {
+            return Combinatorics.lists(xs);
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
+        return Combinatorics.strings(size, cs);
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size) {
+        return Combinatorics.strings(size, characters());
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
+        return Combinatorics.strings(cs);
+    }
+
+    @Override
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
     }
