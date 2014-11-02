@@ -282,6 +282,18 @@ public final class MathUtils {
         return reverse(bitsPadded(length, n));
     }
 
+    /**
+     * Builds a <tt>BigInteger</tt> from an <tt>Iterable</tt> of bits in big-endian order (most significant bits
+     * first). Leading zero (false) bits are permitted. Zero may be represented by an empty <tt>Iterable</tt>.
+     *
+     * <ul>
+     *  <li><tt>bits</tt> must be finite.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param bits an <tt>Iterable</tt> of bits in big-endian order
+     * @return The <tt>BigInteger</tt> represented by <tt>bits</tt>
+     */
     public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
         BigInteger n = BigInteger.ZERO;
         for (boolean bit : bits) {
@@ -291,6 +303,18 @@ public final class MathUtils {
         return n;
     }
 
+    /**
+     * Builds a <tt>BigInteger</tt> from an <tt>Iterable</tt> of bits in little-endian order (least significant bits
+     * first). Trailing zero (false) bits are permitted. Zero may be represented by an empty <tt>Iterable</tt>.
+     *
+     * <ul>
+     *  <li><tt>bits</tt> must be finite.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param bits an <tt>Iterable</tt> of bits in little-endian order
+     * @return The <tt>BigInteger</tt> represented by <tt>bits</tt>
+     */
     public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
         return fromBigEndianBits(reverse(bits));
     }

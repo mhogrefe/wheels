@@ -6,16 +6,20 @@ import mho.haskellesque.iterables.RandomProvider;
 import mho.haskellesque.structures.Pair;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.MathUtils.*;
 
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = false;
+    private static final boolean USE_RANDOM = true;
     private static int LIMIT;
-
     private static IterableProvider P;
+
+    public static void main(String[] args) {
+        demoFromBits();
+    }
 
     private static void initialize() {
         if (USE_RANDOM) {
@@ -122,6 +126,22 @@ public class MathUtilsDemos {
             assert p.a != null;
             assert p.b != null;
             System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + toList(bigEndianBitsPadded(p.b, p.a)));
+        }
+    }
+
+    private static void demoFromBigEndianBits() {
+        initialize();
+        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(list.toString()));
+            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(list));
+        }
+    }
+
+    private static void demoFromBits() {
+        initialize();
+        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(list.toString()));
+            System.out.println("fromBits(" + listString + ") = " + fromBits(list));
         }
     }
 }
