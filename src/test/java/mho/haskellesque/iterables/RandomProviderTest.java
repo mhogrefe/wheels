@@ -33,8 +33,8 @@ public class RandomProviderTest {
     @Test
     public void testRoundingModes() {
         aeq(take(20, P.roundingModes()),
-                "[HALF_DOWN, HALF_EVEN, HALF_UP, HALF_UP, UNNECESSARY, HALF_UP, FLOOR, DOWN, HALF_DOWN, DOWN," +
-                " DOWN, DOWN, UNNECESSARY, FLOOR, HALF_DOWN, HALF_DOWN, FLOOR, UNNECESSARY, HALF_EVEN, CEILING]");
+                "[UNNECESSARY, HALF_EVEN, UP, HALF_DOWN, UP, FLOOR, HALF_DOWN, FLOOR, CEILING, CEILING," +
+                " CEILING, UP, UNNECESSARY, CEILING, HALF_UP, HALF_UP, HALF_DOWN, UP, UNNECESSARY, HALF_DOWN]");
     }
 
     @Test

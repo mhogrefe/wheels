@@ -21,7 +21,7 @@ public final class Combinatorics {
     /**
      * A provider of <tt>Iterable</tt>s containing every value of some type.
      */
-    private static final @NotNull ExhaustiveProvider P = new ExhaustiveProvider();
+    private static final @NotNull ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
 
     /**
      * Disallow instantiation

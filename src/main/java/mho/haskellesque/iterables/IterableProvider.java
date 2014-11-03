@@ -16,6 +16,58 @@ public interface IterableProvider {
 
     public abstract @NotNull Iterable<RoundingMode> roundingModes();
 
+    public abstract @NotNull Iterable<Byte> range(byte a);
+
+    public abstract @NotNull Iterable<Short> range(short a);
+
+    public abstract @NotNull Iterable<Integer> range(int a);
+
+    public abstract @NotNull Iterable<Long> range(long a);
+
+    public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a);
+
+    public abstract @NotNull Iterable<Character> range(char a);
+
+    public abstract @NotNull Iterable<Byte> range(byte a, byte b);
+
+    public abstract @NotNull Iterable<Short> range(short a, short b);
+
+    public abstract @NotNull Iterable<Integer> range(int a, int b);
+
+    public abstract @NotNull Iterable<Long> range(long a, long b);
+
+    public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
+
+    public abstract @NotNull Iterable<Character> range(char a, char b);
+
+    public abstract @NotNull Iterable<Byte> rangeBy(byte a, byte i);
+
+    public abstract @NotNull Iterable<Short> rangeBy(short a, short i);
+
+    public abstract @NotNull Iterable<Integer> rangeBy(int a, int i);
+
+    public abstract @NotNull Iterable<Long> rangeBy(long a, long i);
+
+    public abstract @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i);
+
+    public abstract @NotNull Iterable<Character> rangeBy(char a, int i);
+
+    public abstract @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b);
+
+    public abstract @NotNull Iterable<Short> rangeBy(short a, short i, short b);
+
+    public abstract @NotNull Iterable<Integer> rangeBy(int a, int i, int b);
+
+    public abstract @NotNull Iterable<Long> rangeBy(long a, long i, long b);
+
+    public abstract @NotNull Iterable<BigInteger> rangeBy(
+            @NotNull BigInteger a,
+            @NotNull BigInteger i,
+            @NotNull BigInteger b
+    );
+
+    public abstract @NotNull Iterable<Character> rangeBy(char a, int i, char b);
+
     public abstract @NotNull Iterable<Byte> positiveBytes();
 
     public abstract @NotNull Iterable<Short> positiveShorts();

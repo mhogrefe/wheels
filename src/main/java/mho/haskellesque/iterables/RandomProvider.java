@@ -9,9 +9,11 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.isEmpty;
+import static mho.haskellesque.ordering.Ordering.*;
 
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
@@ -73,7 +75,7 @@ public class RandomProvider implements IterableProvider {
 
             @Override
             public Ordering next() {
-                return Ordering.fromInt(generator.nextInt(3) - 1);
+                return fromInt(generator.nextInt(3) - 1);
             }
 
             @Override
@@ -91,32 +93,180 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
-        return () -> new Iterator<RoundingMode>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public RoundingMode next() {
-                int index = generator.nextInt(8);
-                switch (index) {
-                    case 0:  return RoundingMode.UNNECESSARY;
-                    case 1:  return RoundingMode.UP;
-                    case 2:  return RoundingMode.DOWN;
-                    case 3:  return RoundingMode.CEILING;
-                    case 4:  return RoundingMode.FLOOR;
-                    case 5:  return RoundingMode.HALF_UP;
-                    case 6:  return RoundingMode.HALF_DOWN;
-                    default: return RoundingMode.HALF_EVEN;
-                }
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+        Function<Integer, RoundingMode> lookup = i -> {
+            switch (i) {
+                case 0:  return RoundingMode.UNNECESSARY;
+                case 1:  return RoundingMode.UP;
+                case 2:  return RoundingMode.DOWN;
+                case 3:  return RoundingMode.CEILING;
+                case 4:  return RoundingMode.FLOOR;
+                case 5:  return RoundingMode.HALF_UP;
+                case 6:  return RoundingMode.HALF_DOWN;
+                default: return RoundingMode.HALF_EVEN;
             }
         };
+        return map(lookup, randomIntsPow2(3));
+    }
+
+    private @NotNull Iterable<Integer> randomIntsPow2(int bits) {
+        int mask = (1 << bits) - 1;
+        return map(i -> i & mask, integers());
+    }
+
+    private @NotNull Iterable<Long> randomLongsPow2(int bits) {
+        long mask = (1L << bits) - 1;
+        return map(l -> l & mask, longs());
+    }
+
+    private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
+        return map(MathUtils::fromBits, lists(bits, booleans()));
+    }
+
+    private @NotNull Iterable<Integer> randomInts(int n) {
+        return filter(
+                i -> i < n,
+                randomIntsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
+        );
+    }
+
+    private @NotNull Iterable<Long> randomLongs(long n) {
+        return filter(
+                l -> l < n,
+                randomLongsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
+        );
+    }
+
+    private @NotNull Iterable<BigInteger> randomBigIntegers(@NotNull BigInteger n) {
+        return filter(
+                i -> lt(i, n),
+                randomBigIntegersPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), n).intValueExact())
+        );
+    }
+
+    //2^7 - a
+    @Override
+    public @NotNull Iterable<Byte> range(byte a) {
+        return map(i -> (byte) (i + a), randomInts(128 - a));
+    }
+
+    //2^15 - a
+    @Override
+    public @NotNull Iterable<Short> range(short a) {
+        return map(i -> (short) (i + a), randomInts(32768 - a));
+    }
+
+    //2^31 - a
+    @Override
+    public @NotNull Iterable<Integer> range(int a) {
+        return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
+    }
+
+    //2^63 - a
+    @Override
+    public @NotNull Iterable<Long> range(long a) {
+        return map(
+                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
+                randomBigIntegers(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
+        );
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+        return map(i -> i.add(a), naturalBigIntegers());
+    }
+
+    @Override
+    public @NotNull Iterable<Character> range(char a) {
+        return IterableUtils.range(a);
+    }
+
+    @Override
+    public @NotNull Iterable<Byte> range(byte a, byte b) {
+        return IterableUtils.range(a, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Short> range(short a, short b) {
+        return IterableUtils.range(a, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> range(int a, int b) {
+        return IterableUtils.range(a, b);
+    }
+
+    public @NotNull Iterable<Long> range(long a, long b) {
+        return IterableUtils.range(a, b);
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        return IterableUtils.range(a, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Character> range(char a, char b) {
+        return IterableUtils.range(a, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeBy(short a, short i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeBy(int a, int i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeBy(long a, long i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeBy(char a, int i) {
+        return IterableUtils.rangeBy(a, i);
+    }
+
+    @Override
+    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
+        return IterableUtils.rangeBy(a, i, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
+        return IterableUtils.rangeBy(a, i, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
+        return IterableUtils.rangeBy(a, i, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
+        return IterableUtils.rangeBy(a, i, b);
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
+        return IterableUtils.rangeBy(a, i, b);
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
+        return IterableUtils.rangeBy(a, i, b);
     }
 
     /**
@@ -393,7 +543,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
-        return map(i -> (byte) (i & 0x7f), integers());
+        return map(Integer::byteValue, randomIntsPow2(7));
     }
 
     /**
@@ -404,7 +554,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
-        return map(i -> (short) (i & 0x7fff), integers());
+        return map(Integer::shortValue, randomIntsPow2(15));
     }
 
     /**
@@ -415,7 +565,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
-        return map(i -> i & 0x7fffffff, integers());
+        return randomIntsPow2(31);
     }
 
     /**
@@ -426,7 +576,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
-        return map(l -> l & 0x7fffffffffffffffL, longs());
+        return randomLongsPow2(63);
     }
 
     /**
@@ -490,7 +640,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return map(i -> (byte) (i & 0xff), integers());
+        return map(Integer::byteValue, randomIntsPow2(8));
     }
 
     /**
@@ -500,7 +650,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return map(i -> (short) (i & 0xffff), integers());
+        return map(Integer::shortValue, randomIntsPow2(16));
     }
 
     /**
@@ -750,7 +900,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
-        return map(i -> (char) (i & 0x7f), integers());
+        return map(i -> (char) (int) i, randomIntsPow2(7));
     }
 
     /**
@@ -761,7 +911,7 @@ public class RandomProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> characters() {
-        return map(i -> (char) (i & 0xffff), integers());
+        return map(i -> (char) (int) i, randomIntsPow2(16));
     }
 
     /**

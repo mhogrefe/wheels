@@ -17,9 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class CombinatoricsTest {
-    private static final @NotNull ExhaustiveProvider P = new ExhaustiveProvider();
-    
-    
+    private static final @NotNull ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
+
     @Test
     public void testFactorial_int() {
         aeq(factorial(0), 1);

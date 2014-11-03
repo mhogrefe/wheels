@@ -26,7 +26,7 @@ public class MathUtilsDemos {
             P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
             LIMIT = 1000;
         } else {
-            P = new ExhaustiveProvider();
+            P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
         }
     }

@@ -164,6 +164,482 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    public static @NotNull Iterable<Byte> range(byte a) {
+        return range(a, Byte.MAX_VALUE);
+    }
+
+    public static @NotNull Iterable<Short> range(short a) {
+        return range(a, Short.MAX_VALUE);
+    }
+
+    public static @NotNull Iterable<Integer> range(int a) {
+        return range(a, Integer.MAX_VALUE);
+    }
+
+    public static @NotNull Iterable<Long> range(long a) {
+        return range(a, Long.MAX_VALUE);
+    }
+
+    public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+        return iterate(bi -> bi.add(BigInteger.ONE), a);
+    }
+
+    public static @NotNull Iterable<Character> range(char a) {
+        return range(a, Character.MAX_VALUE);
+    }
+
+    public static @NotNull Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Byte>() {
+            private byte x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                reachedEnd = x == b;
+                return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Short> range(short a, short b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Short>() {
+            private short x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                reachedEnd = x == b;
+                return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Integer> range(int a, int b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Integer>() {
+            private int x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                reachedEnd = x == b;
+                return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Long> range(long a, long b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Long>() {
+            private long x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                reachedEnd = x == b;
+                return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) return new ArrayList<>();
+        return () -> new Iterator<BigInteger>() {
+            private BigInteger x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigInteger next() {
+                reachedEnd = x.equals(b);
+                BigInteger oldX = x;
+                x = x.add(BigInteger.ONE);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Character> range(char a, char b) {
+        if (a > b) return new ArrayList<>();
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                reachedEnd = x == b;
+                return x++;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
+        return () -> new Iterator<Byte>() {
+            private byte x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                byte oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Short> rangeBy(short a, short i) {
+        return () -> new Iterator<Short>() {
+            private short x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                short oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Integer> rangeBy(int a, int i) {
+        return () -> new Iterator<Integer>() {
+            private int x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                int oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Long> rangeBy(long a, long i) {
+        return () -> new Iterator<Long>() {
+            private long x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                long oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
+        return () -> new Iterator<BigInteger>() {
+            private BigInteger x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigInteger next() {
+                BigInteger oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<Character> rangeBy(char a, int i) {
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                char oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? x < a : x > a;
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Byte>() {
+            private byte x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Byte next() {
+                byte oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<Short> rangeBy(short a, short i, short b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Short>() {
+            private short x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Short next() {
+                short oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<Integer> rangeBy(int a, int i, int b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Integer>() {
+            private int x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Integer next() {
+                int oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<Long> rangeBy(long a, long i, long b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Long>() {
+            private long x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Long next() {
+                long oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
+        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
+        return () -> new Iterator<BigInteger>() {
+            private BigInteger x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigInteger next() {
+                BigInteger oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<Character> rangeBy(char a, int i, char b) {
+        if (i > 0 ? a > b : b > a) return new ArrayList<>();
+        return () -> new Iterator<Character>() {
+            private char x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Character next() {
+                char oldX = x;
+                x += i;
+                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     /**
      * Equivalent of Haskell's <tt>(:)</tt> list constructor. Creates an <tt>Iterable</tt> whose first element is
      * <tt>x</tt> and whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the
@@ -1384,482 +1860,6 @@ public final class IterableUtils {
                     current = f.apply(current);
                 }
                 return current;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Byte> range(byte a) {
-        return range(a, Byte.MAX_VALUE);
-    }
-
-    public static Iterable<Short> range(short a) {
-        return range(a, Short.MAX_VALUE);
-    }
-
-    public static Iterable<Integer> range(int a) {
-        return range(a, Integer.MAX_VALUE);
-    }
-
-    public static Iterable<Long> range(long a) {
-        return range(a, Long.MAX_VALUE);
-    }
-
-    public static Iterable<BigInteger> range(BigInteger a) {
-        return iterate(bi -> bi.add(BigInteger.ONE), a);
-    }
-
-    public static Iterable<Character> range(char a) {
-        return range(a, Character.MAX_VALUE);
-    }
-
-    public static Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                reachedEnd = x == b;
-                return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Short> range(short a, short b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                reachedEnd = x == b;
-                return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Integer> range(int a, int b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                reachedEnd = x == b;
-                return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Long> range(long a, long b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                reachedEnd = x == b;
-                return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<BigInteger> range(BigInteger a, BigInteger b) {
-        if (gt(a, b)) return new ArrayList<>();
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                reachedEnd = x.equals(b);
-                BigInteger oldX = x;
-                x = x.add(BigInteger.ONE);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Character> range(char a, char b) {
-        if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                reachedEnd = x == b;
-                return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Byte> rangeBy(byte a, byte i) {
-        return () -> new Iterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                byte oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Short> rangeBy(short a, short i) {
-        return () -> new Iterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                short oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Integer> rangeBy(int a, int i) {
-        return () -> new Iterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                int oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Long> rangeBy(long a, long i) {
-        return () -> new Iterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                long oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i) {
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                BigInteger oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Character> rangeBy(char a, int i) {
-        return () -> new Iterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                char oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? x < a : x > a;
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Byte>() {
-            private byte x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Byte next() {
-                byte oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Short> rangeBy(short a, short i, short b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Short>() {
-            private short x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Short next() {
-                short oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Integer> rangeBy(int a, int i, int b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Integer>() {
-            private int x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Integer next() {
-                int oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Long> rangeBy(long a, long i, long b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Long>() {
-            private long x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Long next() {
-                long oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
-        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public BigInteger next() {
-                BigInteger oldX = x;
-                x = x.add(i);
-                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
-                return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static Iterable<Character> rangeBy(char a, int i, char b) {
-        if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Character>() {
-            private char x = a;
-            private boolean reachedEnd;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public Character next() {
-                char oldX = x;
-                x += i;
-                reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
-                return oldX;
             }
 
             @Override
