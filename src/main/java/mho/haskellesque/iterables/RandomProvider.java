@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.isEmpty;
+import static mho.haskellesque.iterables.IterableUtils.range;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
@@ -175,30 +176,39 @@ public class RandomProvider implements IterableProvider {
         return map(i -> i.add(a), naturalBigIntegers());
     }
 
+    //2^16 - a
     @Override
     public @NotNull Iterable<Character> range(char a) {
-        return IterableUtils.range(a);
+        return map(i -> (char) (i + a), randomInts(65536 - a));
     }
 
+    //b - a + 1
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        return IterableUtils.range(a, b);
+        return map(i -> (byte) (i + a), randomInts((int) b - a + 1));
     }
 
+    //b - a + 1
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        return IterableUtils.range(a, b);
+        return map(i -> (short) (i + a), randomInts((int) b - a + 1));
     }
 
+    //b - a + 1
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        return IterableUtils.range(a, b);
+        return map(i -> (int) (i + a), randomLongs(b - a + 1));
     }
 
+    //b - a + 1
     public @NotNull Iterable<Long> range(long a, long b) {
-        return IterableUtils.range(a, b);
+        return map(
+                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
+                randomBigIntegers(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
+        );
     }
 
+    //b - a + 1
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
         return IterableUtils.range(a, b);
@@ -206,67 +216,86 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
-        return IterableUtils.range(a, b);
+        return map(i -> (char) (i + a), randomInts(b - a + 1));
     }
 
     @Override
     public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return IterableUtils.rangeBy(a, i);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
     }
 
     @Override
     public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
-        return IterableUtils.rangeBy(a, i, b);
+        return null;
+    }
+
+    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        return map(xs::get, range(0, xs.size() - 1));
+    }
+
+    public @NotNull <T> Iterable<Character> uniformSample(@NotNull String s) {
+        return map(s::charAt, range(0, s.length() - 1));
+    }
+
+    public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
+        CachedIterable<T> cxs = new CachedIterable<>(xs);
+        return map(
+                NullableOptional::get,
+                filter(
+                        NullableOptional::isPresent,
+                        (Iterable<NullableOptional<T>>) map(i -> cxs.get(i), naturalIntegersGeometric(meanIndex))
+                )
+        );
     }
 
     /**
