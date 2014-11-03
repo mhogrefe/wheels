@@ -3159,9 +3159,75 @@ public final class IterableUtils {
         );
     }
 
+    public static @NotNull <T> Iterable<T> nub(@NotNull Iterable<T> xs) {
+        Set<T> seen = new HashSet<>();
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+
+                    {
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advance();
+                        return current;
+                    }
+
+                    private void advance() {
+                        while (xsi.hasNext()) {
+                            next = xsi.next();
+                            if (!seen.contains(next)) {
+                                seen.add(next);
+                                hasNext = true;
+                                return;
+                            }
+                        }
+                        hasNext = false;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull <T> String nub(@NotNull String s) {
+        Set<Character> seen = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!seen.contains(c)) {
+                seen.add(c);
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list);
         return list;
+    }
+
+    public static @NotNull String sort(@NotNull String s) {
+        List<Character> list = toList(s);
+        Collections.sort(list);
+        return charsToString(list);
     }
 }
