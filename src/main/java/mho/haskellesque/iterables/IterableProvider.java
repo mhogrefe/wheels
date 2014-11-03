@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.function.Function;
 
 public interface IterableProvider {
     public abstract @NotNull Iterable<Boolean> booleans();
@@ -133,6 +134,11 @@ public interface IterableProvider {
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
 
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
+
+    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    );
 
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
 

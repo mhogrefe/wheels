@@ -1,5 +1,6 @@
 package mho.haskellesque.iterables;
 
+import mho.haskellesque.math.Combinatorics;
 import mho.haskellesque.math.MathUtils;
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
@@ -1110,6 +1111,14 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(xs, x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)));
     }
 
     @Override

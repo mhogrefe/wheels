@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.iterables.IterableUtils.map;
@@ -825,6 +826,14 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         return Combinatorics.pairsSquareRootOrder(as, bs);
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(xs, f);
     }
 
     /**
