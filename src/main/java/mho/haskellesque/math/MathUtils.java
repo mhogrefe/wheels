@@ -1,6 +1,5 @@
 package mho.haskellesque.math;
 
-import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableUtils;
 import mho.haskellesque.structures.Pair;
 import org.jetbrains.annotations.NotNull;

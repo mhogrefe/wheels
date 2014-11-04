@@ -1793,7 +1793,7 @@ public final class IterableUtils {
             @NotNull Iterable<A> xs
     ) {
         return () -> new Iterator<B>() {
-            private Iterator<A> xsi = xs.iterator();
+            private final Iterator<A> xsi = xs.iterator();
             private B result = z;
             private boolean firstTime = true;
 

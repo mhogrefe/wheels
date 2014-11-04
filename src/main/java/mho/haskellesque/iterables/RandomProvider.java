@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.isEmpty;
 import static mho.haskellesque.iterables.IterableUtils.range;
 import static mho.haskellesque.ordering.Ordering.*;
 
@@ -1021,7 +1020,7 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
         return map(Math::abs, filter(
-                d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0f) && !d.equals(0.0f),
+                d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0) && !d.equals(0.0),
                 doubles()
         ));
     }
@@ -1226,8 +1225,8 @@ public class RandomProvider implements IterableProvider {
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
-            private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<T> xsi = xs.iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1266,8 +1265,8 @@ public class RandomProvider implements IterableProvider {
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
-            private Iterator<Character> csi = cs.iterator();
-            private Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Character> csi = cs.iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override
             public boolean hasNext() {

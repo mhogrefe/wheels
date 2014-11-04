@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.map;
 import static mho.haskellesque.iterables.IterableUtils.range;
 import static mho.haskellesque.ordering.Ordering.*;
 
@@ -24,7 +23,7 @@ import static mho.haskellesque.ordering.Ordering.*;
  */
 public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
-    private static int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
+    private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
 
     protected ExhaustiveProvider() {}
 
