@@ -4,6 +4,8 @@ import mho.haskellesque.iterables.IterableUtils;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static mho.haskellesque.iterables.IterableUtils.toList;
@@ -170,6 +172,32 @@ public class MathUtilsTest {
             bigEndianBitsPadded(-1, BigInteger.valueOf(8));
             fail();
         } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testFromBigEndianBits() {
+        aeq(fromBigEndianBits(new ArrayList<>()), 0);
+        aeq(fromBigEndianBits(Arrays.asList(false, false)), 0);
+        aeq(fromBigEndianBits(Arrays.asList(false, true)), 1);
+        aeq(fromBigEndianBits(Arrays.asList(false, false, false, false, false, true, true, false)), 6);
+        aeq(fromBigEndianBits(Arrays.asList(true, true, false, true, false, false, true)), 105);
+        try {
+            fromBigEndianBits(Arrays.asList(true, null, true));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testFromBits() {
+        aeq(fromBits(new ArrayList<>()), 0);
+        aeq(fromBits(Arrays.asList(false, false)), 0);
+        aeq(fromBits(Arrays.asList(true, false)), 1);
+        aeq(fromBits(Arrays.asList(false, true, true, false, false, false, false, false)), 6);
+        aeq(fromBits(Arrays.asList(true, false, false, true, false, true, true)), 105);
+        try {
+            fromBits(Arrays.asList(true, null, true));
+            fail();
+        } catch (NullPointerException ignored) {}
     }
 
     private static void aeq(Object a, Object b) {
