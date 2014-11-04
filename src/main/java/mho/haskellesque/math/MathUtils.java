@@ -338,6 +338,10 @@ public final class MathUtils {
      * @return <tt>n</tt>'s digits in little-endian order
      */
     public static @NotNull Iterable<Integer> digits(int base, int n) {
+        if (base < 2)
+            throw new IllegalArgumentException("base must be at least 2");
+        if (n < 0)
+            throw new ArithmeticException("cannot get digits of a negative number");
         return () -> new Iterator<Integer>() {
             private int remaining = n;
 
@@ -374,6 +378,10 @@ public final class MathUtils {
      * @return <tt>n</tt>'s digits in little-endian order
      */
     public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
+        if (lt(base, BigInteger.valueOf(2)))
+            throw new IllegalArgumentException("base must be at least 2");
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot get digits of a negative number");
         return () -> new Iterator<BigInteger>() {
             private BigInteger remaining = n;
 

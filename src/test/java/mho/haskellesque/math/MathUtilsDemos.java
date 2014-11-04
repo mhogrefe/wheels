@@ -13,13 +13,9 @@ import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.MathUtils.*;
 
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static int LIMIT;
     private static IterableProvider P;
-
-    public static void main(String[] args) {
-        demoFromBits();
-    }
 
     private static void initialize() {
         if (USE_RANDOM) {
@@ -142,6 +138,41 @@ public class MathUtilsDemos {
         for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
             String listString = tail(init(list.toString()));
             System.out.println("fromBits(" + listString + ") = " + fromBits(list));
+        }
+    }
+
+    private static void demoDigits_int_int() {
+        initialize();
+
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+        } else {
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("digits(" + p.b + ", " + p.a + ") = " + toList(digits(p.b, p.a)));
+        }
+    }
+
+    private static void demoDigits_BigInteger_BigInteger() {
+        initialize();
+
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.range(BigInteger.valueOf(2)));
+        } else {
+            ps = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("digits(" + p.b + ", " + p.a + ") = " + toList(digits(p.b, p.a)));
         }
     }
 }

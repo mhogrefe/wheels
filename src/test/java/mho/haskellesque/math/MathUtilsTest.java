@@ -200,6 +200,98 @@ public class MathUtilsTest {
         } catch (NullPointerException ignored) {}
     }
 
+    @Test
+    public void testDigits_int_int() {
+        aeq(digits(2, 0), "[]");
+        aeq(digits(3, 0), "[]");
+        aeq(digits(8, 0), "[]");
+        aeq(digits(10, 0), "[]");
+        aeq(digits(12, 0), "[]");
+        aeq(digits(57, 0), "[]");
+        aeq(digits(2, 1), "[1]");
+        aeq(digits(3, 1), "[1]");
+        aeq(digits(8, 1), "[1]");
+        aeq(digits(10, 1), "[1]");
+        aeq(digits(12, 1), "[1]");
+        aeq(digits(57, 1), "[1]");
+        aeq(digits(2, 10), "[0, 1, 0, 1]");
+        aeq(digits(3, 10), "[1, 0, 1]");
+        aeq(digits(8, 10), "[2, 1]");
+        aeq(digits(10, 10), "[0, 1]");
+        aeq(digits(12, 10), "[10]");
+        aeq(digits(57, 10), "[10]");
+        aeq(digits(2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeq(digits(3, 187), "[1, 2, 2, 0, 2]");
+        aeq(digits(8, 187), "[3, 7, 2]");
+        aeq(digits(10, 187), "[7, 8, 1]");
+        aeq(digits(12, 187), "[7, 3, 1]");
+        aeq(digits(57, 187), "[16, 3]");
+        try {
+            digits(1, 10);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            digits(0, 10);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            digits(2, -1);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            digits(0, -1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testDigits_BigInteger_BigInteger() {
+        aeq(digits(BigInteger.valueOf(2), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(3), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(8), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(10), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(12), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(57), BigInteger.ZERO), "[]");
+        aeq(digits(BigInteger.valueOf(2), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(3), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(8), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(10), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(12), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(57), BigInteger.ONE), "[1]");
+        aeq(digits(BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1]");
+        aeq(digits(BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1]");
+        aeq(digits(BigInteger.valueOf(8), BigInteger.valueOf(10)), "[2, 1]");
+        aeq(digits(BigInteger.valueOf(10), BigInteger.valueOf(10)), "[0, 1]");
+        aeq(digits(BigInteger.valueOf(12), BigInteger.valueOf(10)), "[10]");
+        aeq(digits(BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
+        aeq(digits(BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeq(digits(BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2]");
+        aeq(digits(BigInteger.valueOf(8), BigInteger.valueOf(187)), "[3, 7, 2]");
+        aeq(digits(BigInteger.valueOf(10), BigInteger.valueOf(187)), "[7, 8, 1]");
+        aeq(digits(BigInteger.valueOf(12), BigInteger.valueOf(187)), "[7, 3, 1]");
+        aeq(digits(BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
+        try {
+            digits(BigInteger.ONE, BigInteger.valueOf(10));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            digits(BigInteger.ZERO, BigInteger.valueOf(10));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            digits(BigInteger.valueOf(2), BigInteger.valueOf(-1));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            digits(BigInteger.ZERO, BigInteger.valueOf(-1));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void aeq(Iterable<?> a, Object b) {
+        assertEquals(IterableUtils.toString(a), b.toString());
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

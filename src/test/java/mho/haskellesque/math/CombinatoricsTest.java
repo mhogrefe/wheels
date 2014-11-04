@@ -1043,6 +1043,10 @@ public class CombinatoricsTest {
         aeq(stringsAscending(3, "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        aeq(stringsAscending(0, "a"), "[]");
+        aeq(stringsAscending(1, "a"), "[a]");
+        aeq(stringsAscending(2, "a"), "[aa]");
+        aeq(stringsAscending(3, "a"), "[aaa]");
         aeq(stringsAscending(0, ""), "[]");
         aeq(length(stringsAscending(0, "")), 1);
         aeq(stringsAscending(1, ""), "[]");
@@ -1067,6 +1071,10 @@ public class CombinatoricsTest {
         aeq(stringsAscending(BigInteger.valueOf(3), "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        aeq(stringsAscending(BigInteger.ZERO, "a"), "[]");
+        aeq(stringsAscending(BigInteger.ONE, "a"), "[a]");
+        aeq(stringsAscending(BigInteger.valueOf(2), "a"), "[aa]");
+        aeq(stringsAscending(BigInteger.valueOf(3), "a"), "[aaa]");
         aeq(stringsAscending(BigInteger.ZERO, ""), "[]");
         aeq(length(stringsAscending(BigInteger.ZERO, "")), 1);
         aeq(stringsAscending(BigInteger.ONE, ""), "[]");

@@ -461,6 +461,12 @@ public final class Combinatorics {
     public static @NotNull Iterable<String> stringsAscending(int length, @NotNull String s) {
         if (length < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
+        if (s.isEmpty()) {
+            return length == 0 ? Arrays.asList("") : new ArrayList<>();
+        }
+        if (s.length() == 1) {
+            return Arrays.asList(replicate(length, s.charAt(0)));
+        }
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
@@ -492,6 +498,12 @@ public final class Combinatorics {
     public static @NotNull Iterable<String> stringsAscending(@NotNull BigInteger length, @NotNull String s) {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("strings must have a non-negative length");
+        if (s.isEmpty()) {
+            return length.equals(BigInteger.ZERO) ? Arrays.asList("") : new ArrayList<>();
+        }
+        if (s.length() == 1) {
+            return Arrays.asList(replicate(length, s.charAt(0)));
+        }
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValueExact());
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
