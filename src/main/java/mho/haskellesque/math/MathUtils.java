@@ -849,10 +849,4 @@ public final class MathUtils {
         );
         return sort(map(f, possibleExponents));
     }
-
-    public static void main(String[] args) {
-        for (BigInteger i : range(new BigInteger("1000000000000000"))) {
-            System.out.println(factors(i));
-        }
-    }
 }
