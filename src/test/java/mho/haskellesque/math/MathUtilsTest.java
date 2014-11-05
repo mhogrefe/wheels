@@ -288,6 +288,58 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    @Test
+    public void testDigitsPadded_int_int_int() {
+        aeq(digitsPadded(0, 2, 0), "[]");
+        aeq(digitsPadded(0, 3, 0), "[]");
+        aeq(digitsPadded(0, 57, 0), "[]");
+        aeq(digitsPadded(0, 2, 1), "[]");
+        aeq(digitsPadded(0, 3, 1), "[]");
+        aeq(digitsPadded(0, 57, 1), "[]");
+        aeq(digitsPadded(0, 2, 10), "[]");
+        aeq(digitsPadded(0, 3, 10), "[]");
+        aeq(digitsPadded(0, 57, 10), "[]");
+        aeq(digitsPadded(0, 2, 187), "[]");
+        aeq(digitsPadded(0, 3, 187), "[]");
+        aeq(digitsPadded(0, 57, 187), "[]");
+        aeq(digitsPadded(1, 2, 0), "[0]");
+        aeq(digitsPadded(1, 3, 0), "[0]");
+        aeq(digitsPadded(1, 57, 0), "[0]");
+        aeq(digitsPadded(1, 2, 1), "[1]");
+        aeq(digitsPadded(1, 3, 1), "[1]");
+        aeq(digitsPadded(1, 57, 1), "[1]");
+        aeq(digitsPadded(1, 2, 10), "[0]");
+        aeq(digitsPadded(1, 3, 10), "[1]");
+        aeq(digitsPadded(1, 57, 10), "[10]");
+        aeq(digitsPadded(1, 2, 187), "[1]");
+        aeq(digitsPadded(1, 3, 187), "[1]");
+        aeq(digitsPadded(1, 57, 187), "[16]");
+        aeq(digitsPadded(2, 2, 0), "[0, 0]");
+        aeq(digitsPadded(2, 3, 0), "[0, 0]");
+        aeq(digitsPadded(2, 57, 0), "[0, 0]");
+        aeq(digitsPadded(2, 2, 1), "[1, 0]");
+        aeq(digitsPadded(2, 3, 1), "[1, 0]");
+        aeq(digitsPadded(2, 57, 1), "[1, 0]");
+        aeq(digitsPadded(2, 2, 10), "[0, 1]");
+        aeq(digitsPadded(2, 3, 10), "[1, 0]");
+        aeq(digitsPadded(2, 57, 10), "[10, 0]");
+        aeq(digitsPadded(2, 2, 187), "[1, 1]");
+        aeq(digitsPadded(2, 3, 187), "[1, 2]");
+        aeq(digitsPadded(2, 57, 187), "[16, 3]");
+        aeq(digitsPadded(8, 2, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 3, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 57, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 2, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 3, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 57, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 2, 10), "[0, 1, 0, 1, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 3, 10), "[1, 0, 1, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 57, 10), "[10, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, 2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeq(digitsPadded(8, 3, 187), "[1, 2, 2, 0, 2, 0, 0, 0]");
+        aeq(digitsPadded(8, 57, 187), "[16, 3, 0, 0, 0, 0, 0, 0]");
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
