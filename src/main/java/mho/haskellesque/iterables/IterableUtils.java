@@ -2126,10 +2126,14 @@ public final class IterableUtils {
     }
 
     public static <T> Iterable<T> pad(T pad, int length, Iterable<T> xs) {
+        if (length < 0)
+            throw new IllegalArgumentException("cannot pad with a negative length");
         return take(length, concat(xs, repeat(pad)));
     }
 
     public static <T> Iterable<T> pad(T pad, BigInteger length, Iterable<T> xs) {
+        if (length.signum() == -1)
+            throw new IllegalArgumentException("cannot pad with a negative length");
         return take(length, (Iterable<T>) concat(xs, repeat(pad)));
     }
 
