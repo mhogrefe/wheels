@@ -13,13 +13,13 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
-import static mho.haskellesque.iterables.IterableUtils.range;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
- * <tt>Iterable</tt>s that contain all (or some important subset) of a type's values. These are useful for exhaustive
- * testing. Nulls are not included by default, but may easily be added via cons. The <tt>Iterable</tt>'s elements are
- * typically in order of increasing complexity, unless otherwise specified. See the test class for examples.
+ * {@link Iterable}s that contain all (or some important subset) of a type's values. These are useful for exhaustive
+ * testing. Nulls are not included by default, but may easily be added via
+ * {@link mho.haskellesque.iterables.IterableUtils#cons}. The {@code Iterable}'s elements are typically in order of
+ * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
  */
 public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
@@ -28,7 +28,7 @@ public class ExhaustiveProvider implements IterableProvider {
     protected ExhaustiveProvider() {}
 
     /**
-     * A <tt>List</tt> that contains both <tt>Boolean</tt>s.
+     * A {@link List} that contains both {@link Boolean}s.
      *
      * Length is 2
      */
@@ -38,16 +38,18 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return A <tt>List</tt> that contains all <tt>Ordering</tt>s in ascending order.
+     * A {@code List} that contains all {@link Ordering}s in ascending order.
      *
      * Length is 3
+     *
+     * @return the {@code List} described above.
      */
     public @NotNull List<Ordering> orderingsAscending() {
         return Arrays.asList(LT, EQ, GT);
     }
 
     /**
-     * A <tt>List</tt> that contains all <tt>Ordering</tt>s.
+     * A {@code List} that contains all {@code Ordering}s.
      *
      * Length is 3
      */
@@ -57,7 +59,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * A <tt>List</tt> that contains all <tt>RoundingMode</tt>s.
+     * A {@code List} that contains all {@link RoundingMode}s.
      *
      * Length is 8
      */
@@ -195,45 +197,53 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Byte</tt>s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Byte}s in ascending order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Byte> bytesAscending() {
         return range(Byte.MIN_VALUE);
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Short</tt>s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Short}s in ascending order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Short> shortsAscending() {
         return range(Short.MIN_VALUE);
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Integer</tt>s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Integer}s in ascending order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Integer> integersAscending() {
         return range(Integer.MIN_VALUE);
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Long</tt>s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Long}s in ascending order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Long> longsAscending() {
         return range(Long.MIN_VALUE);
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Byte</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@code Byte}s. Does not support removal.
      *
-     * Length is 2<sup>7</sup>&#x2212;1 = 127
+     * Length is 2<sup>7</sup>–1 = 127
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
@@ -241,9 +251,9 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Short</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@code Short}s. Does not support removal.
      *
-     * Length is 2<sup>15</sup>&#x2212;1 = 32,767
+     * Length is 2<sup>15</sup>–1 = 32,767
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
@@ -251,9 +261,9 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Integer</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@code Integer}s. Does not support removal.
      *
-     * Length is 2<sup>31</sup>&#x2212;1 = 2,147,483,647
+     * Length is 2<sup>31</sup>–1 = 2,147,483,647
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
@@ -261,9 +271,9 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>Long</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@code Long}s. Does not support removal.
      *
-     * Length is 2<sup>63</sup>&#x2212;1 = 9,223,372,036,854,775,807
+     * Length is 2<sup>63</sup>–1 = 9,223,372,036,854,775,807
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
@@ -271,7 +281,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>BigInteger</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@link BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -281,7 +291,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Byte</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -291,7 +301,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Short</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -301,7 +311,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Integer</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -311,7 +321,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>Long</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -321,7 +331,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>BigInteger</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -331,7 +341,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Byte</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -341,7 +351,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Short</tt>s (including 0). Does not support removal.
+     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -351,7 +361,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Integer</tt>s (including 0). Does not support removal.
+     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -361,7 +371,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>Long</tt>s (including 0). Does not support removal.
+     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -371,7 +381,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all natural <tt>BigInteger</tt>s (including 0). Does not support removal.
+     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
      *
      * Length is infinite
      */
@@ -381,7 +391,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Byte</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
@@ -394,7 +404,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Short</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -407,7 +417,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Integer</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -420,7 +430,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Long</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -430,7 +440,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>BigInteger</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -442,20 +452,24 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ASCII <tt>Character</tt>s in ascending order. Does not support
+     * An {@code Iterable} that contains all ASCII {@link Character}s in ascending order. Does not support
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> asciiCharactersAscending() {
         return range((char) 0, (char) 127);
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all ASCII <tt>Character</tt>s in an order which places "friendly" characters
+     * An {@code Iterable} that contains all ASCII {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
+     *
+     * @return the {@code Iterable} described above.
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
@@ -473,16 +487,18 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all <tt>Character</tt>s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@code Character}s in ascending order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> charactersAscending() {
         return range(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>Character</tt>s in an order which places "friendly" characters
+     * An {@code Iterable} that contains all {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
@@ -503,30 +519,36 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) positive floats in ascending
-     * order. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
+     * ascending order. Does not support removal.
      *
-     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> positiveOrdinaryFloatsAscending() {
         return stopAt(f -> f == Float.MAX_VALUE, iterate(Numbers::successor, Float.MIN_VALUE));
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) negative floats in ascending
-     * order. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s in
+     * ascending order. Negative zero is not included. Does not support removal.
      *
-     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> negativeOrdinaryFloatsAscending() {
         return stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, -Float.MAX_VALUE));
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) floats in ascending order.
-     * Negative zero is not included, but positive zero is. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code float}s in ascending
+     * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
-     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
+     * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> ordinaryFloatsAscending() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
@@ -537,10 +559,12 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all floats in ascending order. NaN is traditionally unordered, but
-     * here it is placed between negative zero and positive zero. Does not support removal.
+     * An {@code Iterable} that contains all {@code float}s in ascending order. {@code NaN} is traditionally unordered,
+     * but here it is placed between negative zero and positive zero. Does not support removal.
      *
-     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
+     * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
+     *
+     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> floatsAscending() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
@@ -551,15 +575,17 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all possible positive float mantissas. A float's mantissa is the unique odd
-     * integer that, when multiplied by a power of 2, equals the float. Does not support removal.
+     * An {@code Iterable} that contains all possible positive {@code float} mantissas. A {@code float}'s mantissa is
+     * the unique odd integer that, when multiplied by a power of 2, equals the {@code float}. Does not support
+     * removal.
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
     private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = INSTANCE.rangeBy(1, 2, 1 << 24);
 
+    //todo continue fixing JavaDoc
     /**
-     * An <tt>Iterable</tt> that contains all possible float exponents. A positive float's exponent is the base-2
+     * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
      * logarithm of the float divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>8</sup>+23&#x2212;2 = 277
@@ -570,7 +596,7 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) positive floats. Does not support
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive floats. Does not support
      * removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
@@ -590,7 +616,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) negative floats. Negative zero is not
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative floats. Negative zero is not
      * included. Does not support removal.
      *
      * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
@@ -601,7 +627,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) floats. Negative zero is not included,
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) floats. Negative zero is not included,
      * but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
@@ -612,7 +638,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all floats. Does not support removal.
+     * An {@code Iterable} that contains all floats. Does not support removal.
      *
      * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -625,7 +651,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) positive doubles in ascending
+     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive doubles in ascending
      * order. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
@@ -635,7 +661,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) negative doubles in ascending
+     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative doubles in ascending
      * order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
@@ -645,7 +671,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) doubles in ascending order.
+     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) doubles in ascending order.
      * Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
@@ -659,7 +685,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that contains all doubles in ascending order. NaN is traditionally unordered, but
+     * @return An {@code Iterable} that contains all doubles in ascending order. NaN is traditionally unordered, but
      * here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
@@ -673,7 +699,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all possible positive double mantissas. A double's mantissa is the unique odd
+     * An {@code Iterable} that contains all possible positive double mantissas. A double's mantissa is the unique odd
      * integer that, when multiplied by a power of 2, equals the double. Does not support removal.
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
@@ -681,7 +707,7 @@ public class ExhaustiveProvider implements IterableProvider {
     private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = INSTANCE.rangeBy(1L, 2, 1L << 53);
 
     /**
-     * An <tt>Iterable</tt> that contains all possible double exponents. A positive double's exponent is the base-2
+     * An {@code Iterable} that contains all possible double exponents. A positive double's exponent is the base-2
      * logarithm of the double divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>11</sup>+52&#x2212;2 = 2,098
@@ -692,7 +718,7 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) positive doubles. Does not support
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive doubles. Does not support
      * removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
@@ -712,7 +738,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) negative doubles in ascending order.
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative doubles in ascending order.
      * Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
@@ -723,7 +749,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all ordinary (neither NaN nor infinite) doubles in ascending order. Negative zero
+     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) doubles in ascending order. Negative zero
      * is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
@@ -734,7 +760,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all doubles. Does not support removal.
+     * An {@code Iterable} that contains all doubles. Does not support removal.
      *
      * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
@@ -747,7 +773,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all positive <tt>BigDecimal</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite.
      */
@@ -756,7 +782,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all negative <tt>BigDecimal</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all negative {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite.
      */
@@ -765,7 +791,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that contains all <tt>BigDecimal</tt>s. Does not support removal.
+     * An {@code Iterable} that contains all {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite.
      */
@@ -774,24 +800,24 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::pairsLogarithmicOrder</tt>
+     * See {@code Combinatorics::pairsLogarithmicOrder}
      *
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>xs</tt> in logarithmic order
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in logarithmic order
      */
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsLogarithmicOrder(xs);
     }
 
     /**
-     * See <tt>Combinatorics::pairsLogarithmicOrder</tt>
+     * See {@code Combinatorics::pairsLogarithmicOrder}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in logarithmic order
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
      */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
@@ -801,24 +827,24 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::pairsSquareRootOrder</tt>
+     * See {@code Combinatorics::pairsSquareRootOrder}
      *
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>xs</tt> in square-root order
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in square-root order
      */
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsSquareRootOrder(xs);
     }
 
     /**
-     * See <tt>Combinatorics::pairsSquareRootOrder</tt>
+     * See {@code Combinatorics::pairsSquareRootOrder}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in square-root order
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in square-root order
      */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
@@ -836,13 +862,13 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::pairs</tt>
+     * See {@code Combinatorics::pairs}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt>
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs}
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
@@ -850,15 +876,15 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::triples</tt>
+     * See {@code Combinatorics::triples}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the triples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the triples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the triples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @return all triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
+     * @param as the {@code Iterable} from which the first components of the triples are selected
+     * @param bs the {@code Iterable} from which the second components of the triples are selected
+     * @param cs the {@code Iterable} from which the third components of the triples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @return all triples of elements from {@code as}, {@code bs}, and {@code cs}
      */
     @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
@@ -870,17 +896,17 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::quadruples</tt>
+     * See {@code Combinatorics::quadruples}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the quadruples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the quadruples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the quadruples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the quadruples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @return all quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
+     * @param as the {@code Iterable} from which the first components of the quadruples are selected
+     * @param bs the {@code Iterable} from which the second components of the quadruples are selected
+     * @param cs the {@code Iterable} from which the third components of the quadruples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the quadruples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @return all quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
     @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
@@ -893,19 +919,19 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::quintuples</tt>
+     * See {@code Combinatorics::quintuples}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the quintuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the quintuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the quintuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the quintuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the quintuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @return all quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and <tt>es</tt>
+     * @param as the {@code Iterable} from which the first components of the quintuples are selected
+     * @param bs the {@code Iterable} from which the second components of the quintuples are selected
+     * @param cs the {@code Iterable} from which the third components of the quintuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the quintuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the quintuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @return all quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and {@code es}
      */
     @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
@@ -919,22 +945,22 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::sextuples</tt>
+     * See {@code Combinatorics::sextuples}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the sextuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the sextuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the sextuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the sextuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the sextuples are selected
-     * @param fs the <tt>Iterable</tt> from which the sixth components of the sextuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @return all sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>, and
-     * <tt>fs</tt>
+     * @param as the {@code Iterable} from which the first components of the sextuples are selected
+     * @param bs the {@code Iterable} from which the second components of the sextuples are selected
+     * @param cs the {@code Iterable} from which the third components of the sextuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the sextuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the sextuples are selected
+     * @param fs the {@code Iterable} from which the sixth components of the sextuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @return all sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es}, and
+     * {@code fs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
@@ -949,24 +975,24 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See <tt>Combinatorics::septuples</tt>
+     * See {@code Combinatorics::septuples}
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the septuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the septuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the septuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the septuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the septuples are selected
-     * @param fs the <tt>Iterable</tt> from which the sixth components of the septuples are selected
-     * @param gs the <tt>Iterable</tt> from which the seventh components of the septuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @param <G> the type of the seventh <tt>Iterable</tt>'s elements
-     * @return all septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
-     * <tt>fs</tt>, and <tt>gs</tt>
+     * @param as the {@code Iterable} from which the first components of the septuples are selected
+     * @param bs the {@code Iterable} from which the second components of the septuples are selected
+     * @param cs the {@code Iterable} from which the third components of the septuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the septuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the septuples are selected
+     * @param fs the {@code Iterable} from which the sixth components of the septuples are selected
+     * @param gs the {@code Iterable} from which the seventh components of the septuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     * @return all septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * {@code fs}, and {@code gs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
