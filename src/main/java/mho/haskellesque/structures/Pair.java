@@ -9,7 +9,7 @@ import java.util.Comparator;
 import static mho.haskellesque.ordering.Ordering.*;
 
 /**
- * An ordered pair of values. Either value, or both, may be null. The <tt>Pair</tt> is immutable iff both of its values
+ * An ordered pair of values. Either value, or both, may be null. The {@code Pair} is immutable iff both of its values
  * are.
  *
  * @param <A> the type of the first value
@@ -17,22 +17,22 @@ import static mho.haskellesque.ordering.Ordering.*;
  */
 public final class Pair<A, B> {
     /**
-     * The first component of the <tt>Pair</tt>
+     * The first component of the {@code Pair}
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the <tt>Pair</tt>
+     * The second component of the {@code Pair}
      */
     public final @Nullable B b;
 
     /**
-     * Constructs a <tt>Pair</tt> from two values.
+     * Constructs a {@code Pair} from two values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything.</li>
-     *  <li><tt>b</tt> may be anything.</li>
-     *  <li>Any <tt>Pair</tt> may be constructed with this constructor.</li>
+     *  <li>{@code a} may be anything.</li>
+     *  <li>{@code b} may be anything.</li>
+     *  <li>Any {@code Pair} may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value
@@ -44,21 +44,21 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Compares two <tt>Pair</tt>s, provided that <tt>A</tt> and <tt>B</tt> both implement <tt>Comparable</tt>.
+     * Compares two {@code Pair}s, provided that {@code A} and {@code B} both implement {@link java.lang.Comparable}.
      *
      * <ul>
-     *  <li><tt>p</tt> must be non-null.</li>
-     *  <li><tt>q</tt> must be non-null.</li>
-     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li>{@code p} must be non-null.</li>
+     *  <li>{@code q} must be non-null.</li>
+     *  <li>{@code p.a} and {@code q.a} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.b} and {@code q.b} must be comparable by their type's {@code compareTo} method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param p the first <tt>Pair</tt>
-     * @param q the second <tt>Pair</tt>
-     * @param <A> the type of the first component of <tt>p</tt> and <tt>q</tt>
-     * @param <B> the type of the second component of <tt>p</tt> and <tt>q</tt>
-     * @return how <tt>p</tt> and <tt>q</tt> are ordered
+     * @param p the first {@code Pair}
+     * @param q the second {@code Pair}
+     * @param <A> the type of the first component of {@code p} and {@code q}
+     * @param <B> the type of the second component of {@code p} and {@code q}
+     * @return how {@code p} and {@code q} are ordered
      */
     public static @NotNull <A extends Comparable<A>, B extends Comparable<B>> Ordering compare(
             @NotNull Pair<A, B> p,
@@ -70,16 +70,16 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Determines whether <tt>this</tt> is equal to <tt>that</tt>.
+     * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Pair</tt>.</li>
-     *  <li><tt>that</tt> may be any <tt>Object</tt>.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code this} may be any {@code Pair}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param that The <tt>Pair</tt> to be compared with <tt>this</tt>
-     * @return <tt>this</tt>=<tt>that</tt>
+     * @param that The {@code Pair} to be compared with {@code this}
+     * @return {@code this}={@code that}
      */
     @Override
     public boolean equals(@Nullable Object that) {
@@ -91,14 +91,14 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff both values' hash codes are.
+     * Calculates the hash code of {@code this}. The hash code is deterministic iff both values' hash codes are.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Pair</tt>.</li>
-     *  <li>(conjecture) The result may be any <tt>int</tt>.</li>
+     *  <li>{@code this} may be any {@code Pair}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return <tt>this</tt>'s hash code.
+     * @return {@code this}'s hash code.
      */
     @Override
     public int hashCode() {
@@ -108,48 +108,48 @@ public final class Pair<A, B> {
     }
 
     /**
-     * Creates a string representation of <tt>this</tt>.
+     * Creates a string representation of {@code this}.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Pair</tt>.</li>
+     *  <li>{@code this} may be any {@code Pair}.</li>
      *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
-     *  <tt>", "</tt>.</li>
+     *  {@code ", "}.</li>
      * </ul>
      *
-     * @return a string representation of <tt>this</tt>.
+     * @return a string representation of {@code this}.
      */
     public String toString() {
         return "(" + a + ", " + b + ")";
     }
 
     /**
-     * A comparator which compares two <tt>Pair</tt>s via <tt>Comparators</tt> provided for each component.
+     * A comparator which compares two {@code Pair}s via {@link java.util.Comparator}s provided for each component.
      *
-     * @param <A> the type of the <tt>Pair</tt>s' first components
-     * @param <B> the type of the <tt>Pair</tt>s' second components
+     * @param <A> the type of the {@code Pair}s' first components
+     * @param <B> the type of the {@code Pair}s' second components
      */
     public static class PairComparator<A, B> implements Comparator<Pair<A, B>> {
         /**
-         * The first component's <tt>Comparator</tt>
+         * The first component's {@code Comparator}
          */
         private final @NotNull Comparator<A> aComparator;
 
         /**
-         * The second component's <tt>Comparator</tt>
+         * The second component's {@code Comparator}
          */
         private final @NotNull Comparator<B> bComparator;
 
         /**
-         * Constructs a <tt>PairComparator</tt> from two <tt>Comparator</tt>s.
+         * Constructs a {@code PairComparator} from two {@code Comparator}s.
          *
          * <ul>
-         *  <li><tt>aComparator</tt> must be non-null.</li>
-         *  <li><tt>bComparator</tt> must be non-null.</li>
-         *  <li>Any <tt>PairComparator</tt> may be constructed with this constructor.</li>
+         *  <li>{@code aComparator} must be non-null.</li>
+         *  <li>{@code bComparator} must be non-null.</li>
+         *  <li>Any {@code PairComparator} may be constructed with this constructor.</li>
          * </ul>
          *
-         * @param aComparator the first component's <tt>Comparator</tt>
-         * @param bComparator the second component's <tt>Comparator</tt>
+         * @param aComparator the first component's {@code Comparator}
+         * @param bComparator the second component's {@code Comparator}
          */
         public PairComparator(@NotNull Comparator<A> aComparator, @NotNull Comparator<B> bComparator) {
             this.aComparator = aComparator;
@@ -157,20 +157,20 @@ public final class Pair<A, B> {
         }
 
         /**
-         * Compares two <tt>Pair</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than", or
+         * Compares two {@code Pair}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
          * "equal to", respectively.
          *
          * <ul>
-         *  <li><tt>p</tt> must be non-null.</li>
-         *  <li><tt>q</tt> must be non-null.</li>
-         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
-         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
-         *  <li>The result is &#x2212;1, 0, or 1.</li>
+         *  <li>{@code p} must be non-null.</li>
+         *  <li>{@code q} must be non-null.</li>
+         *  <li>{@code p.a} and {@code q.a} must be comparable by {@code aComparator}.</li>
+         *  <li>{@code p.b} and {@code q.b} must be comparable by {@code bComparator}.</li>
+         *  <li>The result is –1, 0, or 1.</li>
          * </ul>
          *
-         * @param p the first <tt>Pair</tt>
-         * @param q the second <tt>Pair</tt>
-         * @return <tt>this</tt> compared to <tt>that</tt>
+         * @param p the first {@code Pair}
+         * @param q the second {@code Pair}
+         * @return {@code this} compared to {@code that}
          */
         @Override
         public int compare(@NotNull Pair<A, B> p, @NotNull Pair<A, B> q) {
