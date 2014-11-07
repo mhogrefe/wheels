@@ -787,7 +787,7 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void testFromDigits_int_Iterable_BigInteger() {
+    public void testFromDigits_BigInteger_Iterable_BigInteger() {
         aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[0, 0]").get()), 0);
         aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[1, 0]").get()), 1);
         aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[1, 0, 1, 1, 1, 0]").get()), 29);

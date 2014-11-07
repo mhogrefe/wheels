@@ -3,6 +3,7 @@ package mho.haskellesque.math;
 import mho.haskellesque.iterables.ExhaustiveProvider;
 import mho.haskellesque.iterables.IterableProvider;
 import mho.haskellesque.iterables.RandomProvider;
+import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.Pair;
 import mho.haskellesque.structures.Triple;
 
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import static mho.haskellesque.iterables.IterableUtils.*;
 import static mho.haskellesque.math.MathUtils.*;
+import static mho.haskellesque.ordering.Ordering.*;
 
 public class MathUtilsDemos {
     private static final boolean USE_RANDOM = false;
@@ -24,7 +26,7 @@ public class MathUtilsDemos {
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
+            LIMIT = 1000000000;
         }
     }
 
@@ -325,6 +327,97 @@ public class MathUtilsDemos {
             assert t.c != null;
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     toList(bigEndianDigitsPadded(t.a, t.b, t.c)));
+        }
+    }
+
+    private static void demoFromBigEndianDigits_int_Iterable_Integer() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.naturalIntegers()),
+                    map(i -> i + 2, P.naturalIntegers())
+            );
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
+        }
+    }
+
+    private static void demoFromBigEndianDigits_BigInteger_Iterable_BigInteger() {
+        initialize();
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.naturalBigIntegers()),
+                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
+            );
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
+            assert p.a != null;
+            return all((BigInteger i) -> lt(i, p.b), p.a);
+        }, unfilteredPs);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
+        }
+    }
+
+    private static void demoFromDigits_int_Iterable_Integer() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.range(2));
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
+        }
+    }
+
+    private static void demoFromDigits_BigInteger_Iterable_BigInteger() {
+        initialize();
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.naturalBigIntegers()),
+                    P.range(BigInteger.valueOf(2))
+            );
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
+            assert p.a != null;
+            return all((BigInteger i) -> lt(i, p.b), p.a);
+        }, unfilteredPs);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
         }
     }
 }
