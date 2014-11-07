@@ -1,6 +1,8 @@
 package mho.haskellesque.iterables;
 
 import mho.haskellesque.structures.NullableOptional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -9,17 +11,17 @@ import java.util.List;
 import java.util.Optional;
 
 public class CachedIterable<T> {
-    private final Iterator<T> iterator;
-    private final List<T> cache;
-    private Integer size;
+    private final @NotNull Iterator<T> iterator;
+    private final @NotNull List<T> cache;
+    private @Nullable Integer size;
 
-    public CachedIterable(Iterable<T> iterable) {
+    public CachedIterable(@NotNull Iterable<T> iterable) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
         size = null;
     }
 
-    public NullableOptional<T> get(int i) {
+    public @NotNull NullableOptional<T> get(int i) {
         for (int j = cache.size(); j <= i; j++) {
             if (!iterator.hasNext()) {
                 return NullableOptional.empty();
@@ -29,11 +31,11 @@ public class CachedIterable<T> {
         return NullableOptional.of(cache.get(i));
     }
 
-    public NullableOptional<T> get(BigInteger i) {
+    public @NotNull NullableOptional<T> get(@NotNull BigInteger i) {
         return get(i.intValueExact());
     }
 
-    public Optional<List<T>> get(Iterable<Integer> is) {
+    public @NotNull Optional<List<T>> get(@NotNull Iterable<Integer> is) {
         List<T> list = new ArrayList<>();
         for (int i : is) {
             NullableOptional<T> element = get(i);
@@ -43,11 +45,11 @@ public class CachedIterable<T> {
         return Optional.of(list);
     }
 
-    public Optional<List<T>> getBigInteger(Iterable<BigInteger> is) {
+    public @NotNull Optional<List<T>> getBigInteger(@NotNull Iterable<BigInteger> is) {
         return get(IterableUtils.map(BigInteger::intValueExact, is));
     }
 
-    public Optional<List<T>> select(Iterable<Boolean> bs) {
+    public @NotNull Optional<List<T>> select(@NotNull Iterable<Boolean> bs) {
         List<T> elements = new ArrayList<>();
         int i = 0;
         for (boolean b : bs) {
@@ -70,14 +72,14 @@ public class CachedIterable<T> {
         return size;
     }
 
-    public Optional<Boolean> isLast(T x) {
+    public @NotNull Optional<Boolean> isLast(@Nullable T x) {
         if (iterator.hasNext()) return Optional.empty();
         if (cache.isEmpty()) return Optional.of(false);
         T last = IterableUtils.last(cache);
         return Optional.of(x == null ? last == null : x.equals(last));
     }
 
-    public T lastSoFar() {
+    public @Nullable T lastSoFar() {
         return IterableUtils.last(cache);
     }
 
