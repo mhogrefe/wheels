@@ -1,9 +1,14 @@
 package mho.haskellesque.numbers;
 
+import mho.haskellesque.iterables.IterableUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import static mho.haskellesque.iterables.IterableUtils.*;
 
 public final class Numbers {
     /**
@@ -27,6 +32,19 @@ public final class Numbers {
         } catch (NumberFormatException e) {
             return Optional.empty();
         }
+    }
+
+    private static @NotNull Optional<List<String>> splitListString(@NotNull String s) {
+        if (head(s) != '[' || last(s) != ']') return Optional.empty();
+        return Optional.of(Arrays.asList(init(tail(s)).split(", ")));
+    }
+
+    public static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
+        Optional<List<String>> optionalTokens = splitListString(s);
+        if (!optionalTokens.isPresent()) return Optional.empty();
+        List<Optional<BigInteger>> optionalNumbers = toList(map(Numbers::readBigInteger, optionalTokens.get()));
+        if (any(oi -> !oi.isPresent(), optionalNumbers)) return Optional.empty();
+        return Optional.of(toList((Iterable<BigInteger>) map(Optional::get, optionalNumbers)));
     }
 
     public static float successor(float f) {
