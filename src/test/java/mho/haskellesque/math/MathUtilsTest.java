@@ -1,6 +1,7 @@
 package mho.haskellesque.math;
 
 import mho.haskellesque.iterables.IterableUtils;
+import mho.haskellesque.numbers.Numbers;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -686,6 +687,72 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
         try {
             bigEndianDigitsPadded(BigInteger.valueOf(-1), BigInteger.ZERO, BigInteger.valueOf(-1));
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromBigEndianDigits_int_Iterable_Integer() {
+        aeq(fromBigEndianDigits(2, Arrays.asList(0, 0)), 0);
+        aeq(fromBigEndianDigits(2, Arrays.asList(0, 1)), 1);
+        aeq(fromBigEndianDigits(2, Arrays.asList(0, 1, 1, 1, 0, 1)), 29);
+        aeq(fromBigEndianDigits(10, Arrays.asList(3, 1, 4, 1, 5, 9)), 314159);
+        aeq(fromBigEndianDigits(70, Arrays.asList(43, 5, 20, 0, 8)), 1034243008);
+        aeq(fromBigEndianDigits(70, new ArrayList<Integer>()), 0);
+        try {
+            fromBigEndianDigits(1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(0, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(10, Arrays.asList(-1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(10, Arrays.asList(1, 2, 10));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromBigEndianDigits_int_Iterable_BigInteger() {
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[0, 0]").get()), 0);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[0, 1]").get()), 1);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[0, 1, 1, 1, 0, 1]").get()), 29);
+        aeq(
+                fromBigEndianDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[3, 1, 4, 1, 5, 9]").get()),
+                314159
+        );
+        aeq(
+                fromBigEndianDigits(BigInteger.valueOf(70), Numbers.readBigIntegerList("[43, 5, 20, 0, 8]").get()),
+                1034243008
+        );
+        aeq(fromBigEndianDigits(BigInteger.valueOf(70), new ArrayList<BigInteger>()), 0);
+        try {
+            fromBigEndianDigits(BigInteger.ONE, Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(BigInteger.ZERO, Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(BigInteger.valueOf(-1), Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[-1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromBigEndianDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[1, 2, 10]").get());
+            fail();
         } catch (IllegalArgumentException ignored) {}
     }
 

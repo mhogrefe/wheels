@@ -562,8 +562,12 @@ public final class MathUtils {
      * @return The {@code BigInteger} represented by {@code digits}
      */
     public static @NotNull BigInteger fromBigEndianDigits(int base, @NotNull Iterable<Integer> digits) {
+        if (base < 2)
+            throw new IllegalArgumentException("base must be at least 2");
         BigInteger n = BigInteger.ZERO;
         for (int digit : digits) {
+            if (digit < 0 || digit >= base)
+                throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             n = n.multiply(BigInteger.valueOf(base)).add(BigInteger.valueOf(digit));
         }
         return n;
@@ -588,8 +592,12 @@ public final class MathUtils {
             @NotNull BigInteger base,
             @NotNull Iterable<BigInteger> digits
     ) {
+        if (lt(base, BigInteger.valueOf(2)))
+            throw new IllegalArgumentException("base must be at least 2");
         BigInteger n = BigInteger.ZERO;
         for (BigInteger digit : digits) {
+            if (digit.signum() == -1 || ge(digit, base))
+                throw new IllegalArgumentException("every digit must be at least zero and less than the base");
             n = n.multiply(base).add(digit);
         }
         return n;
