@@ -756,6 +756,66 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    @Test
+    public void testFromDigits_int_Iterable_Integer() {
+        aeq(fromDigits(2, Arrays.asList(0, 0)), 0);
+        aeq(fromDigits(2, Arrays.asList(1, 0)), 1);
+        aeq(fromDigits(2, Arrays.asList(1, 0, 1, 1, 1, 0)), 29);
+        aeq(fromDigits(10, Arrays.asList(9, 5, 1, 4, 1, 3)), 314159);
+        aeq(fromDigits(70, Arrays.asList(8, 0, 20, 5, 43)), 1034243008);
+        aeq(fromDigits(70, new ArrayList<Integer>()), 0);
+        try {
+            fromDigits(1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(0, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(10, Arrays.asList(-1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(10, Arrays.asList(1, 2, 10));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromDigits_int_Iterable_BigInteger() {
+        aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[0, 0]").get()), 0);
+        aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[1, 0]").get()), 1);
+        aeq(fromDigits(BigInteger.valueOf(2), Numbers.readBigIntegerList("[1, 0, 1, 1, 1, 0]").get()), 29);
+        aeq(fromDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[9, 5, 1, 4, 1, 3]").get()), 314159);
+        aeq(fromDigits(BigInteger.valueOf(70), Numbers.readBigIntegerList("[8, 0, 20, 5, 43]").get()), 1034243008);
+        aeq(fromDigits(BigInteger.valueOf(70), new ArrayList<BigInteger>()), 0);
+        try {
+            fromDigits(BigInteger.ONE, Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(BigInteger.ZERO, Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(BigInteger.valueOf(-1), Numbers.readBigIntegerList("[1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[-1, 2, 3]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigits(BigInteger.valueOf(10), Numbers.readBigIntegerList("[1, 2, 10]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
