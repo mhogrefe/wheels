@@ -1820,29 +1820,44 @@ public final class IterableUtils {
         };
     }
 
-//    public static @NotNull <A> Iterable<A> scanl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
-//        return () -> new Iterator<A>() {
-//            private Iterator<A> xsi = xs.iterator();
-//            private A result = xsi.next();
-//
-//            @Override
-//            public boolean hasNext() {
-//                return false;
-//            }
-//
-//            @Override
-//            public A next() {
-//                return null;
-//            }
-//
-//            @Override
-//            public void remove() {
-//                throw new UnsupportedOperationException("cannot remove from this iterator");
-//            }
-//        };
-//    }
+    public static @NotNull <A> Iterable<A> scanl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+        return scanl(f, head(xs), tail(xs));
+    }
 
-    public static <T> Iterable<T> iterate(Function<T, T> f, T x) {
+    public static @NotNull <A, B> Iterable<B> scanr(
+            @NotNull Function<Pair<A, B>, B> f,
+            @NotNull B z,
+            @NotNull Iterable<A> xs
+    ) {
+        return scanl(p -> f.apply(new Pair<A, B>(p.b, p.a)), z, reverse(xs));
+    }
+
+    public static @NotNull <A> Iterable<A> scanr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+        return scanl1(p -> f.apply(new Pair<A, A>(p.b, p.a)), reverse(xs));
+    }
+
+    public static @NotNull <X, Y, ACC> Pair<ACC, List<Y>> mapAccumL(
+            @NotNull Function<Pair<ACC, X>, Pair<ACC, Y>> f,
+            @Nullable ACC s,
+            @NotNull Iterable<X> xs
+    ) {
+        List<Y> ys = new ArrayList<Y>();
+        for (X x : xs) {
+            Pair<ACC, Y> p = f.apply(new Pair<ACC, X>(s, x));
+            s = p.a;
+            ys.add(p.b);
+        }
+        return new Pair<>(s, ys);
+    }
+
+    public static @NotNull <X, Y, ACC> Pair<ACC, List<Y>> mapAccumR(
+            @NotNull Function<Pair<ACC, X>, Pair<ACC, Y>> f,
+            @Nullable ACC s,
+            @NotNull Iterable<X> xs) {
+        return mapAccumL(f, s, reverse(xs));
+    }
+
+    public static @NotNull <T> Iterable<T> iterate(@NotNull Function<T, T> f, @Nullable T x) {
         return () -> new Iterator<T>() {
             private T current = x;
             private boolean firstTime = true;
@@ -1869,7 +1884,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> repeat(T x) {
+    public static @NotNull <T> Iterable<T> repeat(@Nullable T x) {
         return () -> new Iterator<T>() {
             @Override
             public boolean hasNext() {
@@ -1888,7 +1903,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> replicate(int n, T x) {
+    public static @NotNull <T> Iterable<T> replicate(int n, @Nullable T x) {
         return () -> new Iterator<T>() {
             private int i = 0;
 
@@ -1910,7 +1925,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> replicate(BigInteger n, T x) {
+    public static @NotNull <T> Iterable<T> replicate(@NotNull BigInteger n, @Nullable T x) {
         return () -> new Iterator<T>() {
             private BigInteger bi = BigInteger.ZERO;
 
@@ -1932,7 +1947,7 @@ public final class IterableUtils {
         };
     }
 
-    public static String replicate(int n, char c) {
+    public static @NotNull String replicate(int n, char c) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {
             sb.append(c);
@@ -1940,7 +1955,7 @@ public final class IterableUtils {
         return sb.toString();
     }
 
-    public static String replicate(BigInteger n, char c) {
+    public static @NotNull String replicate(@NotNull BigInteger n, char c) {
         StringBuilder sb = new StringBuilder();
         for (BigInteger bi : range(BigInteger.ONE, n)) {
             sb.append(c);
@@ -1948,7 +1963,7 @@ public final class IterableUtils {
         return sb.toString();
     }
 
-    public static <T> Iterable<T> cycle(Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> cycle(@NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
 
@@ -2013,7 +2028,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> take(int n, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> take(int n, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private int i = 0;
             private final Iterator<T> xsi = xs.iterator();
@@ -2036,7 +2051,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> take(BigInteger n, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> take(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private BigInteger bi = BigInteger.ZERO;
             private final Iterator<T> xsi = xs.iterator();
@@ -2059,15 +2074,15 @@ public final class IterableUtils {
         };
     }
 
-    public static String take(int n, String s) {
+    public static @NotNull String take(int n, @NotNull String s) {
         return s.substring(0, n);
     }
 
-    public static String take(BigInteger n, String s) {
+    public static @NotNull String take(@NotNull BigInteger n, @NotNull String s) {
         return s.substring(0, n.intValueExact());
     }
 
-    public static <T> Iterable<T> drop(int n, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> drop(int n, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
@@ -2096,7 +2111,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> drop(BigInteger n, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> drop(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
@@ -2125,39 +2140,47 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> pad(T pad, int length, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> pad(@NotNull T pad, int length, @NotNull Iterable<T> xs) {
         if (length < 0)
             throw new IllegalArgumentException("cannot pad with a negative length");
         return take(length, concat(xs, repeat(pad)));
     }
 
-    public static <T> Iterable<T> pad(T pad, BigInteger length, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> pad(@NotNull T pad, @NotNull BigInteger length, @NotNull Iterable<T> xs) {
         if (length.signum() == -1)
             throw new IllegalArgumentException("cannot pad with a negative length");
         return take(length, (Iterable<T>) concat(xs, repeat(pad)));
     }
 
-    public static <T> String pad(char pad, int length, String s) {
+    public static @NotNull String pad(char pad, int length, @NotNull String s) {
         if (s.length() == length) return s;
         if (s.length() > length) return take(length, s);
         return s + replicate(length - s.length(), pad);
     }
 
-    public static <T> String pad(char pad, BigInteger length, String s) {
+    public static @NotNull String pad(char pad, @NotNull BigInteger length, @NotNull String s) {
         if (s.length() == length.intValueExact()) return s;
         if (s.length() > length.intValueExact()) return take(length, s);
         return s + replicate(length.intValueExact() - s.length(), pad);
     }
 
-    public static <T> Pair<Iterable<T>, Iterable<T>> splitAt(int n, Iterable<T> xs) {
+    public static @NotNull <T> Pair<Iterable<T>, Iterable<T>> splitAt(int n, @NotNull Iterable<T> xs) {
         return new Pair<>(take(n, xs), drop(n, xs));
     }
 
-    public static <T> Pair<Iterable<T>, Iterable<T>> splitAt(BigInteger n, Iterable<T> xs) {
+    public static @NotNull <T> Pair<Iterable<T>, Iterable<T>> splitAt(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
         return new Pair<>(take(n, xs), drop(n, xs));
     }
 
-    public static <T> Iterable<T> takeWhile(Predicate<T> p, Iterable<T> xs) {
+    public static @NotNull Pair<String, String> splitAt(int n, @NotNull String s) {
+        return new Pair<>(s.substring(0, n), s.substring(n));
+    }
+
+    public static @NotNull Pair<String, String> splitAt(@NotNull BigInteger i, @NotNull String s) {
+        return splitAt(i.intValueExact(), s);
+    }
+
+    public static @NotNull <T> Iterable<T> takeWhile(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -2199,7 +2222,17 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<T> stopAt(Predicate<T> p, Iterable<T> xs) {
+    public static @NotNull String takeWhile(@NotNull Predicate<Character> p, @NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!p.test(c)) break;
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    public static @NotNull <T> Iterable<T> stopAt(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -2243,7 +2276,65 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<List<T>> chunk(int size, Iterable<T> xs) {
+    public static @NotNull String stopAt(@NotNull Predicate<Character> p, @NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            sb.append(c);
+            if (p.test(c)) break;
+        }
+        return sb.toString();
+    }
+
+    public static @NotNull <T> Iterable<T> dropWhile(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private T x;
+            private boolean first = false;
+            {
+                while (xsi.hasNext()) {
+                    x = xsi.next();
+                    if (!p.test(x)) {
+                        first = true;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                return first || xsi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (first) {
+                    first = false;
+                    return x;
+                } else {
+                    return xsi.next();
+                }
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull String dropWhile(@NotNull Predicate<Character> p, @NotNull String s) {
+        int startIndex = -1;
+        for (int i = 0; i < s.length(); i++) {
+            if (p.test(s.charAt(i))) {
+                startIndex = i;
+                break;
+            }
+        }
+        return startIndex == -1 ? "" : s.substring(startIndex);
+    }
+
+    public static @NotNull <T> Iterable<List<T>> chunk(int size, @NotNull Iterable<T> xs) {
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
 
@@ -2269,7 +2360,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<String> chunk(int size, String s) {
+    public static @NotNull Iterable<String> chunk(int size, @NotNull String s) {
         return () -> new Iterator<String>() {
             private int i = 0;
 
@@ -2295,7 +2386,7 @@ public final class IterableUtils {
         };
     }
 
-    public static <T> Iterable<List<T>> chunkPadded(T pad, int size, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<List<T>> chunkPadded(@Nullable T pad, int size, @NotNull Iterable<T> xs) {
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
 
