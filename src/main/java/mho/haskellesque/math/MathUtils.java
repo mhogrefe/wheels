@@ -180,9 +180,9 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is
-     * little-endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with
-     * zeroes (falses) if necessary. Does not support removal.
+     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is little-
+     * endian; the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes
+     * (falses) if necessary. Does not support removal.
      *
      * <ul>
      *  <li>{@code length} must be non-negative.</li>
@@ -262,8 +262,8 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is
-     * big-endian; the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes
+     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is big-
+     * endian; the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes
      * (falses) if necessary. Does not support removal.
      *
      * <ul>

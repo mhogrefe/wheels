@@ -583,12 +583,11 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = INSTANCE.rangeBy(1, 2, 1 << 24);
 
-    //todo continue fixing JavaDoc
     /**
      * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
      * logarithm of the float divided by its mantissa. Does not support removal.
      *
-     * Length is 2<sup>8</sup>+23&#x2212;2 = 277
+     * Length is 2<sup>8</sup>+23–2 = 277
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
@@ -596,10 +595,10 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive floats. Does not support
-     * removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code float}s. Does
+     * not support removal.
      *
-     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
     @Override
     public @NotNull Iterable<Float> positiveOrdinaryFloats() {
@@ -616,10 +615,10 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative floats. Negative zero is not
-     * included. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s.
+     * Negative zero is not included. Does not support removal.
      *
-     * Length is 2<sup>31</sup>&#x2212;2<sup>23</sup>&#x2212;1 = 2,139,095,039
+     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
     @Override
     public @NotNull Iterable<Float> negativeOrdinaryFloats() {
@@ -627,10 +626,10 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) floats. Negative zero is not included,
-     * but positive zero is. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) floats. Negative zero is not
+     * included, but positive zero is. Does not support removal.
      *
-     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>&#x2212;1 = 4,278,190,079
+     * Length is 2<sup>32</sup>–2<sup>24</sup>–1 = 4,278,190,079
      */
     @Override
     public @NotNull Iterable<Float> ordinaryFloats() {
@@ -638,9 +637,9 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all floats. Does not support removal.
+     * An {@code Iterable} that contains all {@code float}s. Does not support removal.
      *
-     * Length is 2<sup>32</sup>&#x2212;2<sup>24</sup>+3 = 4,278,190,083
+     * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
      */
     @Override
     public @NotNull Iterable<Float> floats() {
@@ -651,30 +650,30 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive doubles in ascending
-     * order. Does not support removal.
+     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive
+     * {@link double}s in ascending order. Does not support removal.
      *
-     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     public @NotNull Iterable<Double> positiveOrdinaryDoublesAscending() {
         return stopAt(d -> d == Double.MAX_VALUE, iterate(Numbers::successor, Double.MIN_VALUE));
     }
 
     /**
-     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative doubles in ascending
-     * order. Negative zero is not included. Does not support removal.
+     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative
+     * {@code double}s in ascending order. Negative zero is not included. Does not support removal.
      *
-     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     public @NotNull Iterable<Double> negativeOrdinaryDoublesAscending() {
         return stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, -Double.MAX_VALUE));
     }
 
     /**
-     * @return An {@code Iterable} that contains all ordinary (neither NaN nor infinite) doubles in ascending order.
-     * Negative zero is not included, but positive zero is. Does not support removal.
+     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in
+     * ascending order. Negative zero is not included, but positive zero is. Does not support removal.
      *
-     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
+     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
      */
     public @NotNull Iterable<Double> ordinaryDoublesAscending() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
@@ -685,10 +684,10 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that contains all doubles in ascending order. NaN is traditionally unordered, but
-     * here it is placed between negative zero and positive zero. Does not support removal.
+     * @return An {@code Iterable} that contains all {@code double}s in ascending order. {@code NaN} is traditionally
+     * unordered, but here it is placed between negative zero and positive zero. Does not support removal.
      *
-     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
+     * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
     public @NotNull Iterable<Double> doublesAscending() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
@@ -699,18 +698,19 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all possible positive double mantissas. A double's mantissa is the unique odd
-     * integer that, when multiplied by a power of 2, equals the double. Does not support removal.
+     * An {@code Iterable} that contains all possible positive {@code double} mantissas. A {@code double}'s mantissa is
+     * the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
+     * removal.
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
     private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = INSTANCE.rangeBy(1L, 2, 1L << 53);
 
     /**
-     * An {@code Iterable} that contains all possible double exponents. A positive double's exponent is the base-2
-     * logarithm of the double divided by its mantissa. Does not support removal.
+     * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
+     * the base-2 logarithm of the {@code double" divided by its mantissa. Does not support removal.
      *
-     * Length is 2<sup>11</sup>+52&#x2212;2 = 2,098
+     * Length is 2<sup>11</sup>+52–2 = 2,098
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
@@ -718,10 +718,10 @@ public class ExhaustiveProvider implements IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) positive doubles. Does not support
-     * removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code double}s. Does
+     * not support removal.
      *
-     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     @Override
     public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
@@ -738,10 +738,10 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) negative doubles in ascending order.
-     * Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code double}s in
+     * ascending order. Negative zero is not included. Does not support removal.
      *
-     * Length is 2<sup>63</sup>&#x2212;2<sup>52</sup>&#x2212;1 = 9,218,868,437,227,405,311
+     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     @Override
     public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
@@ -749,10 +749,10 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither NaN nor infinite) doubles in ascending order. Negative zero
-     * is not included, but positive zero is. Does not support removal.
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in ascending
+     * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
-     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>&#x2212;1 = 18,437,736,874,454,810,623
+     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
      */
     @Override
     public @NotNull Iterable<Double> ordinaryDoubles() {
@@ -760,9 +760,9 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all doubles. Does not support removal.
+     * An {@code Iterable} that contains all {@code double}s. Does not support removal.
      *
-     * Length is 2<sup>64</sup>&#x2212;2<sup>53</sup>+3 = 18,437,736,874,454,810,627
+     * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
@@ -773,7 +773,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that contains all positive {@link BigDecimal}s. Does not support removal.
      *
      * Length is infinite.
      */
@@ -800,7 +800,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::pairsLogarithmicOrder}
+     * See {@link mho.haskellesque.math.Combinatorics#pairsLogarithmicOrder(Iterable)}
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
@@ -811,7 +811,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::pairsLogarithmicOrder}
+     * See {@link mho.haskellesque.math.Combinatorics#pairsLogarithmicOrder(Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the pairs are selected
      * @param bs the {@code Iterable} from which the second components of the pairs are selected
@@ -827,7 +827,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::pairsSquareRootOrder}
+     * See {@link mho.haskellesque.math.Combinatorics#pairsSquareRootOrder(Iterable)}
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
@@ -838,7 +838,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::pairsSquareRootOrder}
+     * See {@link mho.haskellesque.math.Combinatorics#pairsSquareRootOrder(Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the pairs are selected
      * @param bs the {@code Iterable} from which the second components of the pairs are selected
@@ -862,7 +862,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::pairs}
+     * See {@link mho.haskellesque.math.Combinatorics#pairs(Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the pairs are selected
      * @param bs the {@code Iterable} from which the second components of the pairs are selected
@@ -876,7 +876,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::triples}
+     * See {@link mho.haskellesque.math.Combinatorics#triples(Iterable, Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the triples are selected
      * @param bs the {@code Iterable} from which the second components of the triples are selected
@@ -896,7 +896,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::quadruples}
+     * See {@link mho.haskellesque.math.Combinatorics#quadruples(Iterable, Iterable, Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the quadruples are selected
      * @param bs the {@code Iterable} from which the second components of the quadruples are selected
@@ -919,7 +919,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::quintuples}
+     * See {@link mho.haskellesque.math.Combinatorics#quintuples(Iterable, Iterable, Iterable, Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the quintuples are selected
      * @param bs the {@code Iterable} from which the second components of the quintuples are selected
@@ -945,7 +945,8 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::sextuples}
+     * See {@link mho.haskellesque.math.Combinatorics#sextuples(Iterable, Iterable, Iterable, Iterable, Iterable,
+     * Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the sextuples are selected
      * @param bs the {@code Iterable} from which the second components of the sextuples are selected
@@ -975,7 +976,8 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * See {@code Combinatorics::septuples}
+     * See {@link mho.haskellesque.math.Combinatorics#septuples(Iterable, Iterable, Iterable, Iterable, Iterable,
+     * Iterable, Iterable)}
      *
      * @param as the {@code Iterable} from which the first components of the septuples are selected
      * @param bs the {@code Iterable} from which the second components of the septuples are selected
