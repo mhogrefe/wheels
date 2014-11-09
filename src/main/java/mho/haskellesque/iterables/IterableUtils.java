@@ -4,6 +4,7 @@ import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
@@ -2622,15 +2623,15 @@ public final class IterableUtils {
         return t.contains(s);
     }
 
-    public static <T> Iterable<T> mux(List<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<T> mux(@NotNull List<Iterable<T>> xss) {
         return concat(map(list -> list, transpose(xss)));
     }
 
-    public static <T> String muxStrings(List<String> xss) {
+    public static @NotNull String muxStrings(@NotNull List<String> xss) {
         return concatStrings(transposeStrings(xss));
     }
 
-    public static <T> List<Iterable<T>> demux(int lines, Iterable<T> xs) {
+    public static @NotNull <T> List<Iterable<T>> demux(int lines, @NotNull Iterable<T> xs) {
         List<Iterable<T>> demuxed = new ArrayList<>();
         for (int i = 0; i < lines; i++) {
             Iterable<Boolean> mask = concat(
@@ -2642,7 +2643,7 @@ public final class IterableUtils {
         return demuxed;
     }
 
-    public static List<String> demux(int lines, String s) {
+    public static @NotNull List<String> demux(int lines, @NotNull String s) {
         List<String> demuxed = new ArrayList<>();
         for (int i = 0; i < lines; i++) {
             Iterable<Boolean> mask = concat(
@@ -2654,7 +2655,22 @@ public final class IterableUtils {
         return demuxed;
     }
 
-    public static <T> Iterable<T> filter(Predicate<T> p, Iterable<T> xs) {
+    public static @NotNull <T> Optional<T> find(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        for (T x : xs) {
+            if (p.test(x)) return Optional.of(x);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull Optional<Character> find(@NotNull Predicate<Character> p, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (p.test(c)) return Optional.of(c);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Iterable<T> filter(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
@@ -2696,6 +2712,31 @@ public final class IterableUtils {
                 };
             }
         };
+    }
+
+    public static @NotNull String filter(@NotNull Predicate<Character> p, @NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (p.test(c)) sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    public static @NotNull <T> Pair<Iterable<T>, Iterable<T>> partition(
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs) {
+        return new Pair<>(filter(p, xs), filter(x -> !p.test(x), xs));
+    }
+
+    public static @NotNull Pair<String, String> partition(@NotNull Predicate<Character> p, @NotNull String s) {
+        StringBuilder sba = new StringBuilder();
+        StringBuilder sbb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            (p.test(c) ? sba : sbb).append(c);
+        }
+        return new Pair<>(sba.toString(), sbb.toString());
     }
 
     public static <T> T get(Iterable<T> xs, int i) {
