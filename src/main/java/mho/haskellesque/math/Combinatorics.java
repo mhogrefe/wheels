@@ -1450,8 +1450,8 @@ public final class Combinatorics {
     public static <T> Iterable<List<T>> orderedSubsequences(Iterable<T> xs) {
         if (isEmpty(xs))
             return Arrays.asList(new ArrayList<T>());
-        final CachedIterable<T> ii = new CachedIterable(xs);
         return () -> new Iterator<List<T>>() {
+            private CachedIterable<T> ii = new CachedIterable(xs);
             private List<Integer> indices = new ArrayList<>();
 
             @Override

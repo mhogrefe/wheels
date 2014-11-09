@@ -1162,6 +1162,24 @@ public final class IterableUtils {
         return s.length();
     }
 
+    //todo docs
+    public static <T> boolean lengthAtLeast(int length, @NotNull Iterable<T> xs) {
+        int i = 0;
+        for (T x : xs) {
+            i++;
+            if (i >= length) return true;
+        }
+        return false;
+    }
+
+    public static <T> boolean lengthAtLeast(int length, @NotNull Collection<T> xs) {
+        return xs.size() >= length;
+    }
+
+    public static <T> boolean lengthAtLeast(int length, @NotNull String s) {
+        return s.length() >= length;
+    }
+
     /**
      * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>Iterable</tt> into another by applying a
      * function to each element. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
@@ -1559,8 +1577,10 @@ public final class IterableUtils {
      * @param <T> the <tt>Iterable</tt>'s elements' element type
      * @return <tt>xss</tt>, transposed
      */
-    public static @NotNull <T> Iterable<Iterable<T>>
-    transposePadded(@Nullable T pad, @NotNull Iterable<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<Iterable<T>> transposePadded(
+            @Nullable T pad,
+            @NotNull Iterable<Iterable<T>> xss
+    ) {
         return () -> new Iterator<Iterable<T>>() {
             private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
@@ -2140,6 +2160,14 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull String drop(int n, @NotNull String s) {
+        return s.substring(n);
+    }
+
+    public static @NotNull String drop(@NotNull BigInteger n, @NotNull String s) {
+        return s.substring(n.intValueExact());
+    }
+
     public static @NotNull <T> Iterable<T> pad(@NotNull T pad, int length, @NotNull Iterable<T> xs) {
         if (length < 0)
             throw new IllegalArgumentException("cannot pad with a negative length");
@@ -2334,6 +2362,29 @@ public final class IterableUtils {
         return startIndex == -1 ? "" : s.substring(startIndex);
     }
 
+    public static @NotNull <T> Iterable<T> dropWhileEnd(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        List<T> list = toList(xs);
+        int index = -1;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (!p.test(list.get(i))) {
+                index = i;
+                break;
+            }
+        }
+        return take(index + 1, list);
+    }
+
+    public static @NotNull String dropWhileEnd(@NotNull Predicate<Character> p, @NotNull String s) {
+        int index = -1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (!p.test(s.charAt(i))) {
+                index = i;
+                break;
+            }
+        }
+        return take(index + 1, s);
+    }
+
     public static @NotNull <T> Iterable<List<T>> chunk(int size, @NotNull Iterable<T> xs) {
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
@@ -2411,6 +2462,26 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Pair<Iterable<T>, Iterable<T>> span(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return new Pair<>(takeWhile(p, xs), dropWhile(p, xs));
+    }
+
+    public static @NotNull Pair<String, String> span(@NotNull Predicate<Character> p, @NotNull String s) {
+        return new Pair<>(takeWhile(p, s), dropWhile(p, s));
+    }
+
+    public static @NotNull <T> Pair<Iterable<T>, Iterable<T>> breakIterable(Predicate<T> p, Iterable<T> xs) {
+        return span(p.negate(), xs);
+    }
+
+    public static @NotNull Pair<String, String> breakString(@NotNull Predicate<Character> p, @NotNull String s) {
+        return span(p.negate(), s);
+    }
+
+    public static @NotNull <T> Optional<Iterable<T>> stripPrefix(Iterable<T> prefix, Iterable<T> xs) {
+        return isPrefixOf(prefix, xs) ? Optional.of(take(length(prefix), xs)) : Optional.<Iterable<T>>empty();
+    }
+
     public static @NotNull <T> Iterable<Pair<T, Integer>> countAdjacent(@NotNull Iterable<T> xs) {
         return new Iterable<Pair<T, Integer>>() {
             @Override
@@ -2456,7 +2527,7 @@ public final class IterableUtils {
                                 break;
                             }
                             nextX = xsi.next();
-                        } while (original == null && nextX == null || original != null && original.equals(nextX));
+                        } while (Objects.equals(original, nextX));
                         next = new Pair<>(original, count);
                     }
 
@@ -2467,6 +2538,88 @@ public final class IterableUtils {
                 };
             }
         };
+    }
+
+    public static <T> boolean isPrefixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        Iterator<T> xsi = xs.iterator();
+        Iterator<T> ysi = ys.iterator();
+        while (xsi.hasNext()) {
+            if (!ysi.hasNext()) return false;
+            T x = xsi.next();
+            T y = ysi.next();
+            if (!Objects.equals(x, y)) return false;
+        }
+        return true;
+    }
+
+    public static boolean isPrefixOf(@NotNull String s, @NotNull String t) {
+        return s.length() <= t.length() && s.substring(0, t.length()).equals(t);
+    }
+
+    public static <T> boolean isSuffixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return isPrefixOf(reverse(xs), reverse(ys));
+    }
+
+    public static boolean isSuffixOf(@NotNull String s, @NotNull String t) {
+        return s.length() <= t.length() && s.substring(t.length() - s.length()).equals(t);
+    }
+
+    public static @NotNull <T> Iterable<List<T>> windows(int size, @NotNull Iterable<T> xs) {
+        List<T> firstWindow = toList(take(size, xs));
+        if (firstWindow.size() < size) return new ArrayList<>();
+        return cons(firstWindow, () -> new Iterator<List<T>>() {
+            Iterator<T> xsi = drop(size, xs).iterator();
+            List<T> previousWindow = firstWindow;
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public List<T> next() {
+                previousWindow = toList(concat(tail(previousWindow), Arrays.asList(xsi.next())));
+                return previousWindow;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        });
+    }
+
+    public static @NotNull Iterable<String> windows(int size, @NotNull String s) {
+        String firstWindow = take(size, s);
+        if (firstWindow.length() < size) return new ArrayList<>();
+        return cons(firstWindow, () -> new Iterator<String>() {
+            Iterator<Character> xsi = fromString(drop(size, s)).iterator();
+            String previousWindow = firstWindow;
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public String next() {
+                previousWindow = concat(tail(previousWindow), Character.toString(xsi.next()));
+                return previousWindow;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        });
+    }
+
+    public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return any(zs -> equal(xs, zs), windows(length(xs), ys));
+    }
+
+    public static boolean isInfixOf(@NotNull String s, @NotNull String t) {
+        return t.contains(s);
     }
 
     public static <T> Iterable<T> mux(List<Iterable<T>> xss) {
@@ -3255,8 +3408,8 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> nub(@NotNull Iterable<T> xs) {
-        Set<T> seen = new HashSet<>();
         return new Iterable<T>() {
+            private Set<T> seen = new HashSet<>();
             @Override
             public Iterator<T> iterator() {
                 return new Iterator<T>() {
@@ -3301,7 +3454,7 @@ public final class IterableUtils {
         };
     }
 
-    public static @NotNull <T> String nub(@NotNull String s) {
+    public static @NotNull String nub(@NotNull String s) {
         Set<Character> seen = new HashSet<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
@@ -3314,6 +3467,20 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        HashSet<T> set = new HashSet<>();
+        addTo(xs, set);
+        for (T y : ys) {
+            set.remove(y);
+            if (set.isEmpty()) return true;
+        }
+        return false;
+    }
+
+    public static <T> boolean isSubsetOf(@NotNull String s, @NotNull String t) {
+        return isSubsetOf(fromString(s), fromString(t));
+    }
+
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list);
@@ -3324,5 +3491,17 @@ public final class IterableUtils {
         List<Character> list = toList(s);
         Collections.sort(list);
         return charsToString(list);
+    }
+
+    public static <T> boolean equal(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        Iterator<T> xsi = xs.iterator();
+        Iterator<T> ysi = ys.iterator();
+        while (xsi.hasNext()) {
+            if (!ysi.hasNext()) return false;
+            T x = xsi.next();
+            T y = ysi.next();
+            if (!Objects.equals(x, y)) return false;
+        }
+        return !ysi.hasNext();
     }
 }
