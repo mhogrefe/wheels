@@ -5,6 +5,7 @@ import mho.haskellesque.math.MathUtils;
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,6 +24,7 @@ public class RandomProvider implements IterableProvider {
     protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
     protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
     protected static final int MEAN_LIST_SIZE = 10;
+    protected static final int EMPTY_ELEMENT_RATIO = 50;
 
     protected final @NotNull Random generator;
 
@@ -1110,6 +1112,48 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
+    }
+
+    private @NotNull <T> Iterable<T> addEmptyElement(@Nullable T x, @NotNull Iterable<T> xs) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<Integer> emptySelector = randomInts(EMPTY_ELEMENT_RATIO).iterator();
+            boolean emptySelection = emptySelector.next() == 0;
+
+            @Override
+            public boolean hasNext() {
+                return emptySelection || xsi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                boolean previousSelection = emptySelection;
+                emptySelection = emptySelector.next() == 0;
+                return previousSelection ? x : xsi.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
+        return addEmptyElement(Optional.<T>empty(), map(Optional::of, xs));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
+        return addEmptyElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+    }
+
+    public static void main(String[] args) {
+        RandomProvider p = new RandomProvider();
+        for (NullableOptional<Integer> oi : take(1000, p.nullableOptionals(p.integers()))) {
+            System.out.println(oi);
+        }
     }
 
     @Override
