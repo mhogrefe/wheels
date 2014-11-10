@@ -182,7 +182,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
-        return iterate(bi -> bi.add(BigInteger.ONE), a);
+        return iterate(i -> i.add(BigInteger.ONE), a);
     }
 
     public static @NotNull Iterable<Character> range(char a) {
@@ -1123,11 +1123,11 @@ public final class IterableUtils {
      * @return the <tt>Iterable</tt>'s length
      */
     public static @NotNull <T> BigInteger bigIntegerLength(@NotNull Iterable<T> xs) {
-        BigInteger bi = BigInteger.ZERO;
+        BigInteger i = BigInteger.ZERO;
         for (T x : xs) {
-            bi = bi.add(BigInteger.ONE);
+            i = i.add(BigInteger.ONE);
         }
-        return bi;
+        return i;
     }
 
     /**
@@ -1948,16 +1948,16 @@ public final class IterableUtils {
 
     public static @NotNull <T> Iterable<T> replicate(@NotNull BigInteger n, @Nullable T x) {
         return () -> new Iterator<T>() {
-            private BigInteger bi = BigInteger.ZERO;
+            private BigInteger i = BigInteger.ZERO;
 
             @Override
             public boolean hasNext() {
-                return lt(bi, n);
+                return lt(i, n);
             }
 
             @Override
             public T next() {
-                bi = bi.add(BigInteger.ONE);
+                i = i.add(BigInteger.ONE);
                 return x;
             }
 
@@ -1978,7 +1978,7 @@ public final class IterableUtils {
 
     public static @NotNull String replicate(@NotNull BigInteger n, char c) {
         StringBuilder sb = new StringBuilder();
-        for (BigInteger bi : range(BigInteger.ONE, n)) {
+        for (BigInteger i : range(BigInteger.ONE, n)) {
             sb.append(c);
         }
         return sb.toString();
@@ -2074,17 +2074,17 @@ public final class IterableUtils {
 
     public static @NotNull <T> Iterable<T> take(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
-            private BigInteger bi = BigInteger.ZERO;
+            private BigInteger i = BigInteger.ZERO;
             private final Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
-                return lt(bi, n) && xsi.hasNext();
+                return lt(i, n) && xsi.hasNext();
             }
 
             @Override
             public T next() {
-                bi = bi.add(BigInteger.ONE);
+                i = i.add(BigInteger.ONE);
                 return xsi.next();
             }
 
@@ -2136,11 +2136,11 @@ public final class IterableUtils {
         return () -> new Iterator<T>() {
             private final Iterator<T> xsi = xs.iterator();
             {
-                BigInteger bi = n;
+                BigInteger i = n;
                 while (xsi.hasNext()) {
-                    if (le(bi, BigInteger.ZERO)) break;
+                    if (le(i, BigInteger.ZERO)) break;
                     xsi.next();
-                    bi = bi.subtract(BigInteger.ONE);
+                    i = i.subtract(BigInteger.ONE);
                 }
             }
 
