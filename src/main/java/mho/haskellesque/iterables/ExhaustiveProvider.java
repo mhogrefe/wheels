@@ -5,6 +5,7 @@ import mho.haskellesque.numbers.Numbers;
 import mho.haskellesque.ordering.Ordering;
 import mho.haskellesque.structures.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -797,6 +798,16 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
+        return cons(Optional.<T>empty(), map(Optional::of, xs));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
+        return cons(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     /**

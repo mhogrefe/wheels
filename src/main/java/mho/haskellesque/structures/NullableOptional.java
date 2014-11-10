@@ -46,6 +46,6 @@ public class NullableOptional<T> {
 
     @Override
     public String toString() {
-        return present ? String.format("Optional[%s]", x) : "Optional.empty";
+        return present ? String.format("NullableOptional[%s]", x) : "NullableOptional.empty";
     }
 }
