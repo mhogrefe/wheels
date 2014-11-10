@@ -356,6 +356,11 @@ public final class MathUtils {
                 remaining /= base;
                 return digit;
             }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
         };
     }
 
@@ -395,6 +400,11 @@ public final class MathUtils {
                 BigInteger digit = remaining.mod(base);
                 remaining = remaining.divide(base);
                 return digit;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -766,8 +776,9 @@ public final class MathUtils {
             throw new IllegalArgumentException("argument must be at least 2");
         if (n % 2 == 0) return 2;
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
-        int limit = ceilingRoot(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact();
-        for (int i = 3; i <= limit; i++) {
+        for (int i = 3; ; i += 2) {
+            int square = i * i;
+            if (square > i || square < 0) break;
             if (PRIME_SIEVE.get(i) && n % i == 0) return i;
         }
         return n;
@@ -778,13 +789,12 @@ public final class MathUtils {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
         if (!n.testBit(0)) return BigInteger.valueOf(2);
-        BigInteger limit = ceilingRoot(BigInteger.valueOf(2), n);
-        int sieveLimit = min(limit, BigInteger.valueOf(PRIME_SIEVE_SIZE - 1)).intValueExact();
-        for (int i = 3; i <= sieveLimit; i++) {
+        for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             BigInteger bi = BigInteger.valueOf(i);
+            if (gt(bi.pow(2), n)) return n;
             if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;
         }
-        if (limit.equals(BigInteger.valueOf(sieveLimit))) return n;
+        BigInteger limit = ceilingRoot(BigInteger.valueOf(2), n);
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
@@ -856,5 +866,28 @@ public final class MathUtils {
                 zipWith(p -> p.a.pow(p.b), map(q -> q.a, cpf), exponents)
         );
         return sort(map(f, possibleExponents));
+    }
+
+    public static @NotNull Iterable<Integer> intPrimes() {
+        int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
+        return concat(
+                filter(PRIME_SIEVE::get, range(2, PRIME_SIEVE_SIZE - 1)),
+                filter(MathUtils::isPrime, rangeBy(start, 2))
+        );
+    }
+
+    public static @NotNull Iterable<BigInteger> primes() {
+        Iterable<BigInteger> candidates = concatMap(
+                i -> {
+                    BigInteger sixI = i.multiply(BigInteger.valueOf(6));
+                    return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
+                },
+                range(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+        );
+        return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filter(MathUtils::isPrime, candidates));
+    }
+
+    public static void main(String[] args) {
+        System.out.println(factors(new BigInteger("31680639320")));
     }
 }
