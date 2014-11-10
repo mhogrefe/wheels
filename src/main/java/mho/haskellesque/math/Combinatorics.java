@@ -103,9 +103,9 @@ public final class Combinatorics {
         if (n.signum() == -1)
             throw new ArithmeticException("cannot take subfactorial of " + n);
         BigInteger sf = BigInteger.ONE;
-        for (BigInteger bi : range(BigInteger.ONE, n)) {
-            sf = sf.multiply(bi);
-            if (bi.getLowestSetBit() != 0) {
+        for (BigInteger i : range(BigInteger.ONE, n)) {
+            sf = sf.multiply(i);
+            if (i.getLowestSetBit() != 0) {
                 sf = sf.add(BigInteger.ONE);
             } else {
                 sf = sf.subtract(BigInteger.ONE);
@@ -433,7 +433,7 @@ public final class Combinatorics {
         };
         List<Iterable<List<T>>> intermediates = new ArrayList<>();
         intermediates.add(map(makeSingleton, xs));
-        for (BigInteger bi : range(BigInteger.ONE, length.subtract(BigInteger.ONE))) {
+        for (BigInteger i : range(BigInteger.ONE, length.subtract(BigInteger.ONE))) {
             Iterable<List<T>> lists = last(intermediates);
             intermediates.add(concatMap(x -> map(list -> toList((Iterable<T>) cons(x, list)), lists), xs));
         }
