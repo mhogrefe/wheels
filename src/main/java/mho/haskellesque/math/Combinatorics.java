@@ -1299,30 +1299,64 @@ public final class Combinatorics {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        CachedIterable<A> as = new CachedIterable<>(xs);
-        CachedIterable<CachedIterable<B>> possibleBs = new CachedIterable<>(
-                (Iterable<CachedIterable<B>>) map(x -> new CachedIterable<B>(f.apply(x)), xs)
+//        CachedIterable<A> as = new CachedIterable<>(xs);
+//        CachedIterable<CachedIterable<B>> possibleBs = new CachedIterable<>(
+//                (Iterable<CachedIterable<B>>) map(x -> new CachedIterable<B>(f.apply(x)), xs)
+//        );
+//        Function<Pair<BigInteger, BigInteger>, Optional<Pair<A, B>>> p2p = p -> {
+//            assert p.a != null;
+//            assert p.b != null;
+//            NullableOptional<A> optA = as.get(p.a.intValueExact());
+//            if (!optA.isPresent()) return Optional.empty();
+//            NullableOptional<CachedIterable<B>> optBs = possibleBs.get(p.a.intValueExact());
+//            if (!optBs.isPresent()) return Optional.empty();
+//            CachedIterable<B> bs = optBs.get();
+//            NullableOptional<B> optB = bs.get(p.b.intValueExact());
+//            if (!optB.isPresent()) return Optional.empty();
+//            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+//        };
+//        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
+//            if (!o.isPresent()) return false;
+//            Pair<A, B> p = o.get();
+//            Optional<Boolean> lastA = as.isLast(p.a);
+//            if (!lastA.isPresent() || !lastA.get()) return false;
+//            if (possibleBs.size() == 0) return false;
+//            Optional<Boolean> lastB = possibleBs.lastSoFar().isLast(p.b);
+//            return lastB.isPresent() && lastB.get();
+//        };
+//        return map(
+//                Optional::get,
+//                filter(
+//                        Optional<Pair<A, B>>::isPresent,
+//                        stopAt(lastPair, map(p2p, P.pairs(P.naturalBigIntegers())))
+//                )
+//        );
+        CachedIterable<Pair<A, CachedIterable<B>>> pairs = new CachedIterable<>(
+                map(x -> new Pair<A, CachedIterable<B>>(x, new CachedIterable<B>(f.apply(x))), xs)
         );
         Function<Pair<BigInteger, BigInteger>, Optional<Pair<A, B>>> p2p = p -> {
             assert p.a != null;
             assert p.b != null;
-            NullableOptional<A> optA = as.get(p.a.intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<CachedIterable<B>> optBs = possibleBs.get(p.a.intValueExact());
-            if (!optBs.isPresent()) return Optional.empty();
-            CachedIterable<B> bs = optBs.get();
-            NullableOptional<B> optB = bs.get(p.b.intValueExact());
+            NullableOptional<Pair<A, CachedIterable<B>>> optPair = pairs.get(p.a.intValueExact());
+            if (!optPair.isPresent()) return Optional.empty();
+            Pair<A, CachedIterable<B>> pair = optPair.get();
+            assert pair.a != null;
+            assert pair.b != null;
+            NullableOptional<B> optB = pair.b.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+            return Optional.of(new Pair<A, B>(pair.a, optB.get()));
         };
         Predicate<Optional<Pair<A, B>>> lastPair = o -> {
             if (!o.isPresent()) return false;
             Pair<A, B> p = o.get();
-            Optional<Boolean> lastA = as.isLast(p.a);
-            if (!lastA.isPresent() || !lastA.get()) return false;
-            if (possibleBs.size() == 0) return false;
-            Optional<Boolean> lastB = possibleBs.lastSoFar().isLast(p.b);
-            return lastB.isPresent() && lastB.get();
+            NullableOptional<Pair<A, CachedIterable<B>>> optLast = pairs.getLast();
+            if (!optLast.isPresent()) return false;
+            Pair<A, CachedIterable<B>> last = optLast.get();
+            assert last.a != null;
+            assert last.b != null;
+            if (!Objects.equals(last.a, p.a)) return false;
+            NullableOptional<B> optLastB = last.b.getLast();
+            return optLastB.isPresent() && Objects.equals(optLastB.get(), p.b);
         };
         return map(
                 Optional::get,

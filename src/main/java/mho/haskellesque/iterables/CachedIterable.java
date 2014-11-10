@@ -5,10 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class CachedIterable<T> {
     private final @NotNull Iterator<T> iterator;
@@ -72,11 +70,15 @@ public class CachedIterable<T> {
         return size;
     }
 
+    public @NotNull NullableOptional<T> getLast() {
+        if (iterator.hasNext() || cache.isEmpty()) return NullableOptional.empty();
+        return NullableOptional.of(IterableUtils.last(cache));
+    }
+
     public @NotNull Optional<Boolean> isLast(@Nullable T x) {
-        if (iterator.hasNext()) return Optional.empty();
-        if (cache.isEmpty()) return Optional.of(false);
-        T last = IterableUtils.last(cache);
-        return Optional.of(x == null ? last == null : x.equals(last));
+        NullableOptional<T> last = getLast();
+        if (!last.isPresent()) return Optional.empty();
+        return Optional.of(Objects.equals(last.get(), x));
     }
 
     public @Nullable T lastSoFar() {
