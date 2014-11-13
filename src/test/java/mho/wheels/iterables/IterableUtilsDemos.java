@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.init;
+import static mho.wheels.iterables.IterableUtils.tail;
 
 public class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;
@@ -51,9 +53,9 @@ public class IterableUtilsDemos {
 
     public static void demoToList_Iterable() {
         initialize();
-        for (List<Integer> list : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("toList(" + listString + ") = " + toList(list));
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("toList(" + listString + ") = " + toList(is));
         }
     }
 
@@ -66,9 +68,9 @@ public class IterableUtilsDemos {
 
     public static void demoToString() {
         initialize();
-        for (List<Integer> list : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("toString(" + listString + ") = " + IterableUtils.toString(list));
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("toString(" + listString + ") = " + IterableUtils.toString(is));
         }
     }
 
@@ -76,6 +78,14 @@ public class IterableUtilsDemos {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("fromString(" + s + ") = " + toList(fromString(s)));
+        }
+    }
+
+    public static void demoCharsToString() {
+        initialize();
+        for (List<Character> cs : take(LIMIT, P.lists(P.characters()))) {
+            String listString = tail(init(cs.toString()));
+            System.out.println("charsToString(" + listString + ") = " + charsToString(cs));
         }
     }
 }
