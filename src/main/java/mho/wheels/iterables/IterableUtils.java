@@ -117,6 +117,37 @@ public final class IterableUtils {
     }
 
     /**
+     * Creates a {@code String} representation of {@code xs}, displaying at most {@code size} elements. The first
+     * {@code size} elements are converted to a {@code String} and those {@code String}s are placed in a
+     * comma-separated list surrounded by square brackets. If the {@code Iterable} contains more than {@code size}
+     * elements, an ellipsis ({@code ...}) is added at the end of the list.
+     *
+     * <ul>
+     *  <li>{@code size} must be non-negative.</li>
+     *  <li>{@code xs} may be any {@code Iterable}.</li>
+     *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
+     * </ul>
+     *
+     * @param size the maximum number of elements displayed
+     * @param xs the {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return a {@code String} representation of {@code xs}
+     */
+    public static @NotNull <T> String toString(int size, @NotNull Iterable<T> xs) {
+        if (size < 0)
+            throw new IllegalArgumentException("size cannot be negative");
+        if (size == 0) {
+            return isEmpty(xs) ? "[]" : "[...]";
+        }
+        List<T> list = toList(take(size + 1, xs));
+        String listString = toList(take(size, list)).toString();
+        if (list.size() > size) {
+            listString = init(listString) + ", ...]";
+        }
+        return listString;
+    }
+
+    /**
      * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
      * preserved. Uses O(1) additional memory. The {@code Iterable} produced does not support removing elements.
      *
@@ -175,7 +206,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
-     *  <li>The result is a list of consecutive ascending {@code Byte}s.</li>
+     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Byte}s ending in
+     *  2<sup>7</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>7</sup>–{@code a}
@@ -193,7 +225,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
-     *  <li>The result is a list of consecutive ascending {@code Short}s.</li>
+     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Short}s ending in
+     *  2<sup>15</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>15</sup>–{@code a}
@@ -211,7 +244,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>The result is a list of consecutive ascending {@code Integer}s.</li>
+     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Integer}s ending in
+     *  2<sup>31</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>31</sup>–{@code a}
@@ -229,7 +263,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
-     *  <li>The result is a list of consecutive ascending {@code Long}s.</li>
+     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Long}s ending in
+     *  2<sup>63</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>63</sup>–{@code a}
@@ -243,6 +278,10 @@ public final class IterableUtils {
 
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
         return iterate(i -> i.add(BigInteger.ONE), a);
+    }
+
+    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a) {
+        return iterate(i -> i.add(BigDecimal.ONE), a);
     }
 
     public static @NotNull Iterable<Character> range(char a) {
@@ -361,6 +400,32 @@ public final class IterableUtils {
                 reachedEnd = x.equals(b);
                 BigInteger oldX = x;
                 x = x.add(BigInteger.ONE);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) return new ArrayList<>();
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                reachedEnd = x.equals(b);
+                BigDecimal oldX = x;
+                x = x.add(BigDecimal.ONE);
                 return oldX;
             }
 
@@ -520,6 +585,31 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull Iterable<BigDecimal> rangeBy(@NotNull BigDecimal a, @NotNull BigDecimal i) {
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                BigDecimal oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     public static @NotNull Iterable<Character> rangeBy(char a, int i) {
         return () -> new Iterator<Character>() {
             private char x = a;
@@ -663,6 +753,32 @@ public final class IterableUtils {
             @Override
             public BigInteger next() {
                 BigInteger oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static Iterable<BigDecimal> rangeBy(BigDecimal a, BigDecimal i, BigDecimal b) {
+        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                BigDecimal oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
                 return oldX;
@@ -2045,6 +2161,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> cycle(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return xs;
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
 

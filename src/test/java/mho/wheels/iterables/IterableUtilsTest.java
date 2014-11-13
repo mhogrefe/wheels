@@ -214,7 +214,7 @@ public class IterableUtilsTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToString_Iterable() {
         assertEquals(IterableUtils.toString(Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
         assertEquals(IterableUtils.toString(new HashSet<Integer>()), "[]");
         LinkedList<Float> lList = new LinkedList<>();
@@ -223,6 +223,38 @@ public class IterableUtilsTest {
         lList.add(null);
         lList.add(1e30f);
         assertEquals(IterableUtils.toString(lList), "[0.2, -5.0, null, 1.0E30]");
+    }
+
+    @Test
+    public void testToString_int_Iterable() {
+        aeq(IterableUtils.toString(10, Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
+        aeq(IterableUtils.toString(5, Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
+        aeq(IterableUtils.toString(4, Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, ...]");
+        aeq(IterableUtils.toString(3, Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, ...]");
+        aeq(IterableUtils.toString(1, Arrays.asList(4, 1, 5, 9, 2)), "[4, ...]");
+        aeq(IterableUtils.toString(0, Arrays.asList(4, 1, 5, 9, 2)), "[...]");
+        aeq(IterableUtils.toString(10, new HashSet<Integer>()), "[]");
+        aeq(IterableUtils.toString(1, new HashSet<Integer>()), "[]");
+        aeq(IterableUtils.toString(0, new HashSet<Integer>()), "[]");
+        LinkedList<Float> lList = new LinkedList<>();
+        lList.add(0.2f);
+        lList.add(-5f);
+        lList.add(null);
+        lList.add(1e30f);
+        aeq(IterableUtils.toString(10, lList), "[0.2, -5.0, null, 1.0E30]");
+        aeq(IterableUtils.toString(4, lList), "[0.2, -5.0, null, 1.0E30]");
+        aeq(IterableUtils.toString(2, lList), "[0.2, -5.0, ...]");
+        aeq(IterableUtils.toString(1, lList), "[0.2, ...]");
+        aeq(IterableUtils.toString(0, lList), "[...]");
+        aeq(IterableUtils.toString(10, range(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ...]");
+        aeq(IterableUtils.toString(2, range(0)), "[0, 1, ...]");
+        aeq(IterableUtils.toString(1, range(0)), "[0, ...]");
+        aeq(IterableUtils.toString(0, range(0)), "[...]");
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            IterableUtils.toString(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
