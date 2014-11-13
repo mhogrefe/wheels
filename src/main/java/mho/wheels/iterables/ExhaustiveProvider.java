@@ -783,7 +783,7 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all positive {@link BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
@@ -792,7 +792,7 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all negative {@code BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
@@ -801,7 +801,7 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all {@code BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));

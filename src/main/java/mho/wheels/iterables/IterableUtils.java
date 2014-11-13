@@ -169,19 +169,74 @@ public final class IterableUtils {
         return sb.toString();
     }
 
-    //todo continue fixing JavaDoc
+    /**
+     * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Byte.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a list of consecutive ascending {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression.
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     */
     public static @NotNull Iterable<Byte> range(byte a) {
         return range(a, Byte.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Short}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Short.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a list of consecutive ascending {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression.
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     */
     public static @NotNull Iterable<Short> range(short a) {
         return range(a, Short.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Integer}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Integer.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a list of consecutive ascending {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression.
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     */
     public static @NotNull Iterable<Integer> range(int a) {
         return range(a, Integer.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Long}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Long.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a list of consecutive ascending {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression.
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     */
     public static @NotNull Iterable<Long> range(long a) {
         return range(a, Long.MAX_VALUE);
     }
