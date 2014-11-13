@@ -206,14 +206,13 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
-     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Byte}s ending in
-     *  2<sup>7</sup>–1.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Byte}s ending in 2<sup>7</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>7</sup>–{@code a}
      *
-     * @param a the starting value of this arithmetic progression.
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Byte> range(byte a) {
         return range(a, Byte.MAX_VALUE);
@@ -225,14 +224,13 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
-     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Short}s ending in
-     *  2<sup>15</sup>–1.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Short}s ending in 2<sup>15</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>15</sup>–{@code a}
      *
-     * @param a the starting value of this arithmetic progression.
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Short> range(short a) {
         return range(a, Short.MAX_VALUE);
@@ -244,14 +242,14 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Integer}s ending in
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Integer}s ending in
      *  2<sup>31</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>31</sup>–{@code a}
      *
-     * @param a the starting value of this arithmetic progression.
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Integer> range(int a) {
         return range(a, Integer.MAX_VALUE);
@@ -263,27 +261,69 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
-     *  <li>The result is a nonempty {@code Iterable} of consecutive ascending {@code Long}s ending in
-     *  2<sup>63</sup>–1.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Long}s ending in 2<sup>63</sup>–1.</li>
      * </ul>
      *
      * Length is 2<sup>63</sup>–{@code a}
      *
-     * @param a the starting value of this arithmetic progression.
-     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive).
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Long> range(long a) {
         return range(a, Long.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>The result is an infinite {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
         return iterate(i -> i.add(BigInteger.ONE), a);
     }
 
+    /**
+     * Generates all {@link BigDecimal}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>The result is an infinite {@code Iterable} of ascending {@code BigDecimal}s differing by 1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a) {
         return iterate(i -> i.add(BigDecimal.ONE), a);
     }
 
+    /**
+     * Generates all {@link Character}s greater than or equal to {@code a}, in order. Does not wrap around after
+     * reaching {@code Character.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Character}s ending in
+     *  {@code \uffff}.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the starting value of this {@code Character} sequence
+     * @return an sequence of consecutive {@code Character}s, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Character> range(char a) {
         return range(a, Character.MAX_VALUE);
     }
