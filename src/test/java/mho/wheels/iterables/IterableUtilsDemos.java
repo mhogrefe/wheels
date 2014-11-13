@@ -2,6 +2,8 @@ package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,14 +12,10 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.range;
 
 public class IterableUtilsDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static int LIMIT;
 
     private static IterableProvider P;
-
-    public static void main(String[] args) {
-        demoToString_int_infinite_Iterable();
-    }
 
     private static void initialize() {
         if (USE_RANDOM) {
@@ -165,6 +163,27 @@ public class IterableUtilsDemos {
         initialize();
         for (long l : take(LIMIT, P.longs())) {
             System.out.println("range(" + l + ") = " + IterableUtils.toString(20, range(l)));
+        }
+    }
+
+    public static void demoRange_BigInteger() {
+        initialize();
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            System.out.println("range(" + i + ") = " + IterableUtils.toString(20, range(i)));
+        }
+    }
+
+    public static void demoRange_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            System.out.println("range(" + bd + ") = " + IterableUtils.toString(20, range(bd)));
+        }
+    }
+
+    public static void demoRange_char() {
+        initialize();
+        for (char c : take(LIMIT, P.characters())) {
+            System.out.println("range(" + c + ") = " + IterableUtils.toString(20, range(c)));
         }
     }
 }
