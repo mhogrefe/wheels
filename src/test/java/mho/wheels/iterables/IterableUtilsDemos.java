@@ -9,14 +9,10 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 
 public class IterableUtilsDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static int LIMIT;
 
     private static IterableProvider P;
-
-    public static void main(String[] args) {
-        demoAddTo_Collection_String();
-    }
 
     private static void initialize() {
         if (USE_RANDOM) {
@@ -30,7 +26,7 @@ public class IterableUtilsDemos {
 
     public static void demoAddTo_Collection_Iterable() {
         initialize();
-        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.integers())))) {
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {
             assert p.a != null;
             assert p.b != null;
             List<Integer> list = new ArrayList<>();
@@ -42,13 +38,7 @@ public class IterableUtilsDemos {
 
     public static void demoAddTo_Collection_String() {
         initialize();
-        Iterable<Pair<String, List<Character>>> ps = map(
-                p -> {
-                    assert p.a != null;
-                    return new Pair<>(charsToString(p.a), p.b);
-                },
-                P.pairs(P.lists(P.characters()))
-        );
+        Iterable<Pair<String, List<Character>>> ps = P.pairs(P.strings(), P.lists(P.withNull(P.characters())));
         for (Pair<String, List<Character>> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;

@@ -63,7 +63,7 @@ public final class IterableUtils {
     }
 
     /**
-     * Converts an {@code Iterable} to a {@code List}. Only works for finite {@code Iterable}s. The resulting list may
+     * Converts an {@code Iterable} to a {@link List}. Only works for finite {@code Iterable}s. The resulting list may
      * be modified, but the modifications will not affect the original {@code Iterable}.
      *
      * <ul>
@@ -81,7 +81,6 @@ public final class IterableUtils {
         return list;
     }
 
-    //todo continue fixing JavaDoc
     /**
      * Converts an {@code Iterable} to a {@code List}. Only works for finite {@code Iterable}s.
      *
@@ -101,12 +100,12 @@ public final class IterableUtils {
 
     /**
      * Creates a {@code String} representation of {@code xs}. Each element is converted to a {@code String} and
-     * those strings are placed in a comma-separated list surrounded by square brackets. Only works for finite
+     * those {@code String}s are placed in a comma-separated list surrounded by square brackets. Only works for finite
      * {@code Iterable}s.
      *
      * <ul>
      *  <li>{@code xs} must be finite.</li>
-     *  <li>The result begins with '[' and ends with ']'.</li>
+     *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
      * </ul>
      *
      * @param xs the {@code Iterable}
@@ -118,8 +117,8 @@ public final class IterableUtils {
     }
 
     /**
-     * Converts a {@code String} to an {@code Iterable} of characters. The order of the characters is preserved. Uses
-     * O(1) additional memory. The {@code Iterable} produced does not support removing elements.
+     * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
+     * preserved. Uses O(1) additional memory. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -151,15 +150,15 @@ public final class IterableUtils {
     }
 
     /**
-     * Creates a {@code String} from an {@code Iterable} of characters. The order of the characters is preserved.
-     * Only works for finite {@code Iterable}s.
+     * Creates a {@code String} from an {@code Iterable} of {@code Character}s. The order of the characters is
+     * preserved. Only works for finite {@code Iterable}s.
      *
      * <ul>
      *  <li>{@code cs} must be finite and cannot contain nulls.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param cs the {@code Iterable} of characters
+     * @param cs the {@code Iterable} of {@code Character}s
      * @return the {@code String} containing all of {@code chars}'s characters in their original order
      */
     public static @NotNull String charsToString(@NotNull Iterable<Character> cs) {
@@ -170,6 +169,7 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    //todo continue fixing JavaDoc
     public static @NotNull Iterable<Byte> range(byte a) {
         return range(a, Byte.MAX_VALUE);
     }

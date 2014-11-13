@@ -808,6 +808,11 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
+        return cons(null, xs);
+    }
+
+    @Override
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
         return cons(Optional.<T>empty(), map(Optional::of, xs));
     }
