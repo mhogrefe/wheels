@@ -328,6 +328,24 @@ public final class IterableUtils {
         return range(a, Character.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Byte>() {
@@ -352,6 +370,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Short}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Short> range(short a, short b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Short>() {
@@ -376,6 +412,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Integer}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Integer> range(int a, int b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Integer>() {
@@ -400,6 +454,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Long}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Long> range(long a, long b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Long>() {
@@ -424,6 +496,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code BigInteger}s greater than or equal to {@code a} and less than or equal to {@code b}, in
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>{@code b} must be non-null.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
         if (gt(a, b)) return new ArrayList<>();
         return () -> new Iterator<BigInteger>() {
@@ -450,6 +540,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b}, in
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>{@code b} must be non-null.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (gt(a, b)) return new ArrayList<>();
         return () -> new Iterator<BigDecimal>() {
@@ -476,6 +584,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Character}s greater than or equal to {@code a} and less than or equal to {@code b}, in
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this {@code Character} sequence
+     * @param a the ending value of this {@code Character} sequence
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Character> range(char a, char b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Character>() {
@@ -1138,7 +1264,7 @@ public final class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|&#x2212;1
+     * Result length is |{@code xs}|–1
      *
      * @param xs an {@code Iterable}
      * @param <T> the {@code Iterable}'s element type
@@ -1179,7 +1305,7 @@ public final class IterableUtils {
      *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * Result length is |{@code s}|&#x2212;1
+     * Result length is |{@code s}|–1
      *
      * @param s a {@code String}
      * @return a {@code String} containing all characters of {@code s} but the first
@@ -1198,7 +1324,7 @@ public final class IterableUtils {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|&#x2212;1
+     * Result length is |{@code xs}|–1
      *
      * @param xs an {@code Iterable}
      * @param <T> the {@code Iterable}'s element type
@@ -1244,7 +1370,7 @@ public final class IterableUtils {
      *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * Result length is |{@code s}|&#x2212;1
+     * Result length is |{@code s}|–1
      *
      * @param s a {@code String}
      * @return a {@code String} containing all characters of {@code s} but the last
@@ -1525,7 +1651,7 @@ public final class IterableUtils {
      *  <li>The result is an {@code Iterable} whose odd-indexed (using 0-based indexing) elements are identical.</li>
      * </ul>
      *
-     * Result length is 0 when |{@code xs}|=0, 2|{@code xs}|&#x2212;1 otherwise
+     * Result length is 0 when |{@code xs}|=0, 2|{@code xs}|–1 otherwise
      *
      * @param sep a separator
      * @param xs an {@code Iterable}
@@ -1571,7 +1697,7 @@ public final class IterableUtils {
      *  <li>The result is a {@code String} whose odd-indexed (using 0-based indexing) characters are identical.</li>
      * </ul>
      *
-     * Result length is 0 when |{@code s}|=0, 2|{@code s}|&#x2212;1 otherwise
+     * Result length is 0 when |{@code s}|=0, 2|{@code s}|–1 otherwise
      *
      * @param sep a separator
      * @param s a {@code String}
@@ -1595,7 +1721,7 @@ public final class IterableUtils {
      * additional memory. The {@code Iterable} produced does not support removing elements.
      *
      * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code xss}|=0,
-     * |{@code xss}|(|{@code xs}|&#x2212;1) otherwise)
+     * |{@code xss}|(|{@code xs}|–1) otherwise)
      *
      * <ul>
      *  <li>{@code xs} must be non-null.</li>
@@ -1626,7 +1752,7 @@ public final class IterableUtils {
      * </ul>
      *
      * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code strings}|=0,
-     * |{@code strings}|(|{@code sep}|&#x2212;1) otherwise)
+     * |{@code strings}|(|{@code sep}|–1) otherwise)
      *
      * @param sep the separating {@code String}
      * @param strings the separated {@code String}s
