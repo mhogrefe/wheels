@@ -333,8 +333,9 @@ public final class IterableUtils {
      * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
      * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
      * {@code float}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
-     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. {@code NaN} is not a legal input. The
-     * {@code Iterable} produced does not support removing elements.
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
+     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
+     * produced does not support removing elements.
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
@@ -348,10 +349,13 @@ public final class IterableUtils {
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Float> range(float a) {
+        if (Float.isNaN(a))
+            throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
             return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
         }
-        return map(BigDecimal::floatValue, range(BigDecimal.valueOf(a)));
+        Iterable<Float> fs = map(BigDecimal::floatValue, range(new BigDecimal(Float.toString(a))));
+        return a == -0.0f ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -359,8 +363,9 @@ public final class IterableUtils {
      * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
      * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
      * {@code double}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
-     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. {@code NaN} is not a legal input. The
-     * {@code Iterable} produced does not support removing elements.
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
+     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
+     * produced does not support removing elements.
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
@@ -374,10 +379,13 @@ public final class IterableUtils {
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
     public static @NotNull Iterable<Double> range(double a) {
+        if (Double.isNaN(a))
+            throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
             return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
         }
-        return map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
+        Iterable<Double> ds = map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
+        return a == 0.0 ? cons(-0.0, tail(ds)) : ds;
     }
 
     /**
