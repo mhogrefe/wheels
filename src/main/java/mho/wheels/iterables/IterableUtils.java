@@ -329,6 +329,58 @@ public final class IterableUtils {
     }
 
     /**
+     * Generates all {@link float}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
+     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
+     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
+     * {@code float}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. {@code NaN} is not a legal input. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
+     *  {@code Iterable} of ascending {@code float}s roughly differing by 1.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
+    public static @NotNull Iterable<Float> range(float a) {
+        if (Float.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+        }
+        return map(BigDecimal::floatValue, range(BigDecimal.valueOf(a)));
+    }
+
+    /**
+     * Generates all {@link double}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
+     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
+     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
+     * {@code double}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. {@code NaN} is not a legal input. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
+     *  {@code Iterable} of ascending {@code double}s roughly differing by 1.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
+    public static @NotNull Iterable<Double> range(double a) {
+        if (Double.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+        }
+        return map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
+    }
+
+    /**
      * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
      * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
      * support removing elements.
