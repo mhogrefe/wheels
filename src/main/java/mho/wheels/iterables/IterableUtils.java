@@ -348,6 +348,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
+    //todo fix -0.0f
     public static @NotNull Iterable<Float> range(float a) {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");

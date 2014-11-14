@@ -27,6 +27,10 @@ public class IterableUtilsDemos {
         }
     }
 
+    public static void main(String[] args) {
+        demoRange_float();
+    }
+
     public static void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {
@@ -184,6 +188,20 @@ public class IterableUtilsDemos {
         initialize();
         for (char c : take(LIMIT, P.characters())) {
             System.out.println("range(" + c + ") = " + IterableUtils.toString(20, range(c)));
+        }
+    }
+
+    public static void demoRange_float() {
+        initialize();
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("range(" + f + ") = " + IterableUtils.toString(20, range(f)));
+        }
+    }
+
+    public static void demoRange_double() {
+        initialize();
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("range(" + d + ") = " + IterableUtils.toString(20, range(d)));
         }
     }
 }
