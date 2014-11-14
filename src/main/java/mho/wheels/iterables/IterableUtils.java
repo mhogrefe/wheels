@@ -292,8 +292,8 @@ public final class IterableUtils {
     }
 
     /**
-     * Generates all {@link BigDecimal}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
-     * does not support removing elements.
+     * Generates all {@link BigDecimal}s of the form {@code a}+n where n is a non-negative integer, in order. The
+     * {@code Iterable} produced does not support removing elements.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -541,17 +541,17 @@ public final class IterableUtils {
     }
 
     /**
-     * Generates all {@code BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
-     * does not support removing elements.
+     * Generates all {@link BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b} of the
+     * form {@code a}+n where n is an integer, in order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable}
+     * is returned. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
      *  <li>{@code b} must be non-null.</li>
-     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code BigDecimal}s.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive {@code BigDecimal}s differing by 1.</li>
      * </ul>
      *
-     * Length is max({@code b}–{@code a}+1, 0)
+     * Length is max(⌊{@code b}–{@code a}⌋+1, 0)
      *
      * @param a the starting value of this arithmetic progression
      * @param b the ending value of this arithmetic progression
@@ -571,7 +571,7 @@ public final class IterableUtils {
 
             @Override
             public BigDecimal next() {
-                reachedEnd = x.equals(b);
+                reachedEnd = gt(x.add(BigDecimal.ONE), b);
                 BigDecimal oldX = x;
                 x = x.add(BigDecimal.ONE);
                 return oldX;
@@ -598,7 +598,7 @@ public final class IterableUtils {
      * Length is max({@code b}–{@code a}+1, 0)
      *
      * @param a the starting value of this {@code Character} sequence
-     * @param a the ending value of this {@code Character} sequence
+     * @param b the ending value of this {@code Character} sequence
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
      * {@code b} (inclusive)
      */

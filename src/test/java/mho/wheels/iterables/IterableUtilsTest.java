@@ -375,6 +375,79 @@ public class IterableUtilsTest {
     }
 
     @Test
+    public void testRange_byte_byte() {
+        aeq(range((byte) 1, (byte) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range((byte) 1, (byte) 1), "[1]");
+        aeq(range(Byte.MIN_VALUE, (byte) (Byte.MIN_VALUE + 3)), "[-128, -127, -126, -125]");
+        aeq(range((byte) (Byte.MAX_VALUE - 3), Byte.MAX_VALUE), "[124, 125, 126, 127]");
+        aeq(range((byte) 10, (byte) 1), "[]");
+    }
+
+    @Test
+    public void testRange_short_short() {
+        aeq(range((short) 1, (short) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range((short) 1, (short) 1), "[1]");
+        aeq(range(Short.MIN_VALUE, (short) (Short.MIN_VALUE + 3)), "[-32768, -32767, -32766, -32765]");
+        aeq(range((short) (Short.MAX_VALUE - 3), Short.MAX_VALUE), "[32764, 32765, 32766, 32767]");
+        aeq(range((short) 10, (short) 1), "[]");
+    }
+
+    @Test
+    public void testRange_int_int() {
+        aeq(range(1, 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range(1, 1), "[1]");
+        aeq(range(Integer.MIN_VALUE, Integer.MIN_VALUE + 3), "[-2147483648, -2147483647, -2147483646, -2147483645]");
+        aeq(range(Integer.MAX_VALUE - 3, Integer.MAX_VALUE), "[2147483644, 2147483645, 2147483646, 2147483647]");
+        aeq(range(10, 1), "[]");
+    }
+
+    @Test
+    public void testRange_long_long() {
+        aeq(range(1L, 10L), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range(1L, 1L), "[1]");
+        aeq(range(Long.MIN_VALUE, Long.MIN_VALUE + 3),
+                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805]");
+        aeq(range(Long.MAX_VALUE - 3, Long.MAX_VALUE),
+                "[9223372036854775804, 9223372036854775805, 9223372036854775806, 9223372036854775807]");
+        aeq(range(10L, 1L), "[]");
+    }
+
+    @Test
+    public void testRange_BigInteger_BigInteger() {
+        aeq(range(BigInteger.ONE, BigInteger.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range(BigInteger.ONE, BigInteger.ONE), "[1]");
+        BigInteger trillion = BigInteger.TEN.pow(12);
+        aeq(range(trillion.negate(), trillion.negate().add(BigInteger.valueOf(3))),
+                "[-1000000000000, -999999999999, -999999999998, -999999999997]");
+        aeq(range(trillion.subtract(BigInteger.valueOf(3)), trillion),
+                "[999999999997, 999999999998, 999999999999, 1000000000000]");
+        aeq(range(BigInteger.TEN, BigInteger.ONE), "[]");
+    }
+
+    @Test
+    public void testRange_BigDecimal_BigDecimal() {
+        aeq(range(BigDecimal.ONE, BigDecimal.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeq(range(BigDecimal.ONE, BigDecimal.ONE), "[1]");
+        BigDecimal trillion = BigDecimal.TEN.pow(12);
+        aeq(range(trillion.negate(), trillion.negate().add(BigDecimal.valueOf(3))),
+                "[-1000000000000, -999999999999, -999999999998, -999999999997]");
+        aeq(range(trillion.subtract(BigDecimal.valueOf(3)), trillion),
+                "[999999999997, 999999999998, 999999999999, 1000000000000]");
+        aeq(range(new BigDecimal("1.327"), new BigDecimal("8.609")),
+                "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327]");
+        aeq(range(BigDecimal.TEN, BigDecimal.ONE), "[]");
+    }
+
+    @Test
+    public void testRange_char_char() {
+        aeq(range('a', 'z'), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]");
+        aeq(range('a', 'a'), "[a]");
+        aeq(range('\0', '\3'), "[\0, \1, \2, \3]");
+        aeq(range('\uFFFC', '\uFFFF'), "[\uFFFC, \uFFFD, \uFFFE, \uFFFF]");
+        aeq(range('z', 'a'), "[]");
+    }
+
+    @Test
     public void testCons_Iterable() {
         aeq(cons(5, Arrays.asList(1, 2, 3, 4, 5)), "[5, 1, 2, 3, 4, 5]");
         aeq(cons(null, Arrays.asList(1, 2, 3, 4, 5)), "[null, 1, 2, 3, 4, 5]");
