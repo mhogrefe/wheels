@@ -2,6 +2,8 @@ package mho.wheels.iterables;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
 
@@ -274,7 +276,7 @@ public class IterableUtilsTest {
     }
 
     @Test
-    public void testRange_bytes() {
+    public void testRange_byte() {
         aeq(take(20, range((byte) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(range((byte) 0)), 1 << 7);
         aeq(take(20, range(Byte.MIN_VALUE)),
@@ -286,7 +288,7 @@ public class IterableUtilsTest {
     }
 
     @Test
-    public void testRange_shorts() {
+    public void testRange_short() {
         aeq(take(20, range((short) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(range((short) 0)), 1 << 15);
         aeq(take(20, range(Short.MIN_VALUE)),
@@ -299,7 +301,7 @@ public class IterableUtilsTest {
     }
 
     @Test
-    public void testRange_ints() {
+    public void testRange_int() {
         aeq(take(20, range(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(take(20, range(Integer.MIN_VALUE)),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
@@ -312,7 +314,7 @@ public class IterableUtilsTest {
     }
 
     @Test
-    public void testRange_longs() {
+    public void testRange_long() {
         aeq(take(20, range(0L)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(take(20, range(Long.MIN_VALUE)),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
@@ -325,6 +327,51 @@ public class IterableUtilsTest {
                 " 9223372036854775801, 9223372036854775802, 9223372036854775803, 9223372036854775804," +
                 " 9223372036854775805, 9223372036854775806, 9223372036854775807]");
         aeq(range(Long.MAX_VALUE), "[9223372036854775807]");
+    }
+
+    @Test
+    public void testRange_BigInteger() {
+        aeq(take(20, range(BigInteger.ZERO)),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeq(take(20, range(BigInteger.TEN.pow(12).negate())),
+                "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
+                " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
+                " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
+                " -999999999982, -999999999981]");
+        aeq(take(20, range(BigInteger.TEN.pow(12))),
+                "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
+                " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
+                " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
+                " 1000000000018, 1000000000019]");
+    }
+
+    @Test
+    public void testRange_BigDecimal() {
+        aeq(take(20, range(BigDecimal.ZERO)),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeq(take(20, range(BigDecimal.TEN.pow(12).negate())),
+                "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
+                " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
+                " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
+                " -999999999982, -999999999981]");
+        aeq(take(20, range(BigDecimal.TEN.pow(12))),
+                "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
+                " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
+                " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
+                " 1000000000018, 1000000000019]");
+        aeq(take(20, range(new BigDecimal("1.327"))),
+                "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327, 9.327, 10.327," +
+                " 11.327, 12.327, 13.327, 14.327, 15.327, 16.327, 17.327, 18.327, 19.327, 20.327]");
+    }
+
+    @Test
+    public void testRange_char() {
+        aeq(take(20, range('a')), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]");
+        aeq(take(20, range('\0')),
+                "[\0, \1, \2, \3, \4, \5, \6, \7, \b, \t, \n, \13, \f, \r, \16, \17, \20, \21, \22, \23]");
+        aeq(range((char) (Character.MAX_VALUE - 10)),
+                "[\uFFF5, \uFFF6, \uFFF7, \uFFF8, \uFFF9, \uFFFA, \uFFFB, \uFFFC, \uFFFD, \uFFFE, \uFFFF]");
+        aeq(range(Character.MAX_VALUE), "[\uFFFF]");
     }
 
     @Test
