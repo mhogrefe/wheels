@@ -356,7 +356,7 @@ public final class IterableUtils {
             return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, range(new BigDecimal(Float.toString(a))));
-        return a == -0.0f ? cons(-0.0f, tail(fs)): fs;
+        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -386,7 +386,7 @@ public final class IterableUtils {
             return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
-        return a == 0.0 ? cons(-0.0, tail(ds)) : ds;
+        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
     }
 
     /**

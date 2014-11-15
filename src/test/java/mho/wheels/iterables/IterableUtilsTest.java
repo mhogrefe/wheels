@@ -388,6 +388,9 @@ public class IterableUtilsTest {
                 " 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8]");
         aeq(take(5, range(Float.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
         aeq(range(Float.POSITIVE_INFINITY), "[Infinity]");
+        aeq(take(20, range(0.0f)),
+                "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
+                        " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
         aeq(take(20, range(-0.0f)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
@@ -413,6 +416,9 @@ public class IterableUtilsTest {
                 " 1.0000000000000016E16, 1.0000000000000018E16, 1.000000000000002E16]");
         aeq(take(5, range(Double.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
         aeq(range(Double.POSITIVE_INFINITY), "[Infinity]");
+        aeq(take(20, range(0.0)),
+                "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
+                        " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
         aeq(take(20, range(-0.0)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
