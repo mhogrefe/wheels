@@ -67,6 +67,10 @@ public final class Pair<A, B> {
             @NotNull Pair<A, B> p,
             @NotNull Pair<A, B> q
     ) {
+        assert p.a != null;
+        assert p.b != null;
+        assert q.a != null;
+        assert q.b != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         return Ordering.compare(p.b, q.b);

@@ -5,11 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
+import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.EQ;
 
 /**
- * An ordered triple of values. Any combination of values may be null. The <tt>Triple</tt> is immutable iff all of its
+ * An ordered triple of values. Any combination of values may be null. The {@code Triple} is immutable iff all of its
  * values are.
  *
  * @param <A> the type of the first value
@@ -18,28 +21,28 @@ import static mho.wheels.ordering.Ordering.EQ;
  */
 public final class Triple<A, B, C> {
     /**
-     * The first component of the <tt>Triple</tt>
+     * The first component of the {@code Triple}
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the <tt>Triple</tt>
+     * The second component of the {@code Triple}
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the <tt>Triple</tt>
+     * The third component of the {@code Triple}
      */
     public final @Nullable C c;
 
     /**
-     * Constructs a <tt>Triple</tt> from three values.
+     * Constructs a {@code Triple} from three values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything.</li>
-     *  <li><tt>b</tt> may be anything.</li>
-     *  <li><tt>c</tt> may be anything.</li>
-     *  <li>Any <tt>Triple</tt> may be constructed with this constructor.</li>
+     *  <li>{@code a} may be anything.</li>
+     *  <li>{@code b} may be anything.</li>
+     *  <li>{@code c} may be anything.</li>
+     *  <li>Any {@code Triple} may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value
@@ -53,24 +56,24 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * Compares two <tt>Triple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, and <tt>C</tt> all implement
-     * <tt>Comparable</tt>.
+     * Compares two {@code Triple}s, provided that {@code A}, {@code B}, and {@code C} all implement
+     * {@code Comparable}.
      *
      * <ul>
-     *  <li><tt>p</tt> must be non-null.</li>
-     *  <li><tt>q</tt> must be non-null.</li>
-     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li>{@code p} must be non-null.</li>
+     *  <li>{@code q} must be non-null.</li>
+     *  <li>{@code p.a} and {@code q.a} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.b} and {@code q.b} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.c} and {@code q.c} must be comparable by their type's {@code compareTo} method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param p the first <tt>Triple</tt>
-     * @param q the second <tt>Triple</tt>
-     * @param <A> the type of the first component of <tt>p</tt> and <tt>q</tt>
-     * @param <B> the type of the second component of <tt>p</tt> and <tt>q</tt>
-     * @param <C> the type of the third component of <tt>p</tt> and <tt>q</tt>
-     * @return how <tt>p</tt> and <tt>q</tt> are ordered
+     * @param p the first {@code Triple}
+     * @param q the second {@code Triple}
+     * @param <A> the type of the first component of {@code p} and {@code q}
+     * @param <B> the type of the second component of {@code p} and {@code q}
+     * @param <C> the type of the third component of {@code p} and {@code q}
+     * @return how {@code p} and {@code q} are ordered
      */
     public static @NotNull <
             A extends Comparable<A>,
@@ -80,6 +83,12 @@ public final class Triple<A, B, C> {
             @NotNull Triple<A, B, C> p,
             @NotNull Triple<A, B, C> q
     ) {
+        assert p.a != null;
+        assert p.b != null;
+        assert p.c != null;
+        assert q.a != null;
+        assert q.b != null;
+        assert q.c != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -88,16 +97,16 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * Determines whether <tt>this</tt> is equal to <tt>that</tt>.
+     * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Triple</tt>.</li>
-     *  <li><tt>that</tt> may be any <tt>Object</tt>.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code this} may be any {@code Triple}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param that The <tt>Triple</tt> to be compared with <tt>this</tt>
-     * @return <tt>this</tt>=<tt>that</tt>
+     * @param that The {@code Triple} to be compared with {@code this}
+     * @return {@code this}={@code that}
      */
     @Override
     public boolean equals(Object that) {
@@ -110,14 +119,14 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff all values' hash codes are.
+     * Calculates the hash code of {@code this}. The hash code is deterministic iff all values' hash codes are.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Triple</tt>.</li>
-     *  <li>(conjecture) The result may be any <tt>int</tt>.</li>
+     *  <li>{@code this} may be any {@code Triple}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return <tt>this</tt>'s hash code.
+     * @return {@code this}'s hash code
      */
     @Override
     public int hashCode() {
@@ -128,56 +137,95 @@ public final class Triple<A, B, C> {
     }
 
     /**
-     * Creates a string representation of <tt>this</tt>.
+     * Creates a {@code Triple} from a {@code String}. Valid strings are of the form
+     * {@code "(" + a + ", " + b + ", " + c + ")"}, where {@code a}, {@code b}, and {@code c} are valid {@code String}s
+     * for their types. If the {@code String} is invalid, the method returns Optional.empty() without throwing an
+     * exception; this aids composability.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Triple</tt>.</li>
-     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
-     *  <tt>", "</tt> at least twice.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result may contain any {@code Triple}, or be empty.</li>
      * </ul>
      *
-     * @return a string representation of <tt>this</tt>.
+     * @param s a string representation of a {@code Triple}
+     * @param readA a function which reads a {@code String} which represents null or a value of type {@code A}
+     * @param readB a function which reads a {@code String} which represents null or a value of type {@code B}
+     * @param readC a function which reads a {@code String} which represents null or a value of type {@code C}
+     * @param <A> the type of the {@code Triple}'s first value
+     * @param <B> the type of the {@code Triple}'s second value
+     * @param <C> the type of the {@code Triple}'s third value
+     * @return the {@code Triple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
+     */
+    public static @NotNull <A, B, C> Optional<Triple<A, B, C>> read(
+            @NotNull String s,
+            @NotNull Function<String, NullableOptional<A>> readA,
+            @NotNull Function<String, NullableOptional<B>> readB,
+            @NotNull Function<String, NullableOptional<C>> readC
+    ) {
+        if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
+        s = tail(init(s));
+        String[] tokens = s.split(", ");
+        if (tokens.length != 3) return Optional.empty();
+        NullableOptional<A> oa = readA.apply(tokens[0]);
+        if (!oa.isPresent()) return Optional.empty();
+        NullableOptional<B> ob = readB.apply(tokens[1]);
+        if (!ob.isPresent()) return Optional.empty();
+        NullableOptional<C> oc = readC.apply(tokens[2]);
+        if (!oc.isPresent()) return Optional.empty();
+        return Optional.of(new Triple<>(oa.get(), ob.get(), oc.get()));
+    }
+
+    /**
+     * Creates a string representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code Triple}.</li>
+     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
+     *  {@code ", "} at least twice.</li>
+     * </ul>
+     *
+     * @return a string representation of {@code this}
      */
     public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ")";
     }
 
     /**
-     * A comparator which compares two <tt>Triple</tt>s via <tt>Comparators</tt> provided for each component.
+     * A comparator which compares two {@code Triple}s via {@code Comparators} provided for each component.
      *
-     * @param <A> the type of the <tt>Triple</tt>s' first components
-     * @param <B> the type of the <tt>Triple</tt>s' second components
-     * @param <C> the type of the <tt>Triple</tt>s' third components
+     * @param <A> the type of the {@code Triple}s' first components
+     * @param <B> the type of the {@code Triple}s' second components
+     * @param <C> the type of the {@code Triple}s' third components
      */
     public static class TripleComparator<A, B, C> implements Comparator<Triple<A, B, C>> {
         /**
-         * The first component's <tt>Comparator</tt>
+         * The first component's {@code Comparator}
          */
         private final @NotNull Comparator<A> aComparator;
 
         /**
-         * The second component's <tt>Comparator</tt>
+         * The second component's {@code Comparator}
          */
         private final @NotNull Comparator<B> bComparator;
 
         /**
-         * The third component's <tt>Comparator</tt>
+         * The third component's {@code Comparator}
          */
         private final @NotNull Comparator<C> cComparator;
 
         /**
-         * Constructs a <tt>TripleComparator</tt> from three <tt>Comparator</tt>s.
+         * Constructs a {@code TripleComparator} from three {@code Comparator}s.
          *
          * <ul>
-         *  <li><tt>aComparator</tt> must be non-null.</li>
-         *  <li><tt>bComparator</tt> must be non-null.</li>
-         *  <li><tt>cComparator</tt> must be non-null.</li>
-         *  <li>Any <tt>TripleComparator</tt> may be constructed with this constructor.</li>
+         *  <li>{@code aComparator} must be non-null.</li>
+         *  <li>{@code bComparator} must be non-null.</li>
+         *  <li>{@code cComparator} must be non-null.</li>
+         *  <li>Any {@code TripleComparator} may be constructed with this constructor.</li>
          * </ul>
          *
-         * @param aComparator the first component's <tt>Comparator</tt>
-         * @param bComparator the second component's <tt>Comparator</tt>
-         * @param cComparator the third component's <tt>Comparator</tt>
+         * @param aComparator the first component's {@code Comparator}
+         * @param bComparator the second component's {@code Comparator}
+         * @param cComparator the third component's {@code Comparator}
          */
         public TripleComparator(
                 @NotNull Comparator<A> aComparator,
@@ -190,21 +238,21 @@ public final class Triple<A, B, C> {
         }
 
         /**
-         * Compares two <tt>Triple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than", or
-         * "equal to", respectively.
+         * Compares two {@code Triple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or "equal
+         * to", respectively.
          *
          * <ul>
-         *  <li><tt>p</tt> must be non-null.</li>
-         *  <li><tt>q</tt> must be non-null.</li>
-         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
-         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
-         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
-         *  <li>The result is &#x2212;1, 0, or 1.</li>
+         *  <li>{@code p} must be non-null.</li>
+         *  <li>{@code q} must be non-null.</li>
+         *  <li>{@code p.a} and {@code q.a} must be comparable by {@code aComparator}.</li>
+         *  <li>{@code p.b} and {@code q.b} must be comparable by {@code bComparator}.</li>
+         *  <li>{@code p.c} and {@code q.c} must be comparable by {@code cComparator}.</li>
+         *  <li>The result is –1, 0, or 1.</li>
          * </ul>
          *
-         * @param p the first <tt>Triple</tt>
-         * @param q the second <tt>Triple</tt>
-         * @return <tt>this</tt> compared to <tt>that</tt>
+         * @param p the first {@code Triple}
+         * @param q the second {@code Triple}
+         * @return {@code this} compared to {@code that}
          */
         @Override
         public int compare(@NotNull Triple<A, B, C> p, @NotNull Triple<A, B, C> q) {

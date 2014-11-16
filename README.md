@@ -26,8 +26,8 @@ Progress
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Pair                     | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Quadruple                | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Quadruple                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Quintuple                | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Triple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Triple                   | ✔       | ✘       | ✘     | ✘     | ✘          |
