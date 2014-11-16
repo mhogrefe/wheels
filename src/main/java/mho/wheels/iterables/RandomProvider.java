@@ -1140,6 +1140,11 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
+        return addEmptyElement(null, xs);
+    }
+
+    @Override
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
         return addEmptyElement(Optional.<T>empty(), map(Optional::of, xs));
     }

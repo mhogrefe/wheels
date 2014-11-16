@@ -26,13 +26,6 @@ public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
 
-    public static void main(String[] args) {
-        IterableProvider P = new ExhaustiveProvider();
-        for (Triple<BigDecimal, Float, Character> t : P.triples(P.bigDecimals(), P.floats(), P.asciiCharacters())) {
-            System.out.println(t);
-        }
-    }
-
     protected ExhaustiveProvider() {}
 
     /**
@@ -783,7 +776,7 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all positive {@link BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
@@ -792,7 +785,7 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all negative {@code BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
@@ -801,10 +794,15 @@ public class ExhaustiveProvider implements IterableProvider {
     /**
      * An {@code Iterable} that contains all {@code BigDecimal}s. Does not support removal.
      *
-     * Length is infinite.
+     * Length is infinite
      */
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
+        return cons(null, xs);
     }
 
     @Override
