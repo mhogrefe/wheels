@@ -27,10 +27,6 @@ public class IterableUtilsDemos {
         }
     }
 
-    public static void main(String[] args) {
-        demoRange_float();
-    }
-
     public static void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {

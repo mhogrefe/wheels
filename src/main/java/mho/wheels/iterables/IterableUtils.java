@@ -339,8 +339,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
-     *  {@code Iterable} of nondescending {@code float}s roughly differing by 1.</li>
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code float}s
+     *  roughly differing by 1.</li>
      * </ul>
      *
      * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
@@ -348,7 +348,6 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    //todo fix -0.0f
     public static @NotNull Iterable<Float> range(float a) {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
@@ -370,8 +369,8 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
-     *  {@code Iterable} of nondescending {@code double}s roughly differing by 1.</li>
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code double}s
+     *  roughly differing by 1.</li>
      * </ul>
      *
      * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
@@ -685,6 +684,94 @@ public final class IterableUtils {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
+    }
+
+    /**
+     * Generates all {@code float}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
+     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
+     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
+     * results: for example, if {@code a} is large, the result might contain runs of identical {@code float}s. If
+     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
+     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code float}s roughly differing by
+     *  1.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
+     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
+     * otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
+     * largest {@code float} an integer away from {@code a} and less than or equal to {@code b}.
+     */
+    public static @NotNull Iterable<Float> range(float a, float b) {
+        if (Float.isNaN(a) || Float.isNaN(b))
+            throw new IllegalArgumentException("cannot begin or end a range with NaN");
+        if (a == b) return Arrays.asList(a);
+        if (a > b) return new ArrayList<>();
+        if (Float.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+        }
+        if (Float.isInfinite(b)) {
+            return range(a);
+        }
+        Iterable<Float> fs = map(
+                BigDecimal::floatValue,
+                range(new BigDecimal(Float.toString(a)), new BigDecimal(Float.toString(b)))
+        );
+        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+    }
+
+    /**
+     * Generates all {@code double}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
+     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
+     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
+     * results: for example, if {@code a} is large, the result might contain runs of identical {@code double}s. If
+     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
+     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code double}s roughly differing by
+     *  1.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
+     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
+     * otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
+     * largest {@code double} an integer away from {@code a} and less than or equal to {@code b}.
+     */
+    public static @NotNull Iterable<Double> range(double a, double b) {
+        if (Double.isNaN(a) || Double.isNaN(b))
+            throw new IllegalArgumentException("cannot begin or end a range with NaN");
+        if (a == b) return Arrays.asList(a);
+        if (a > b) return new ArrayList<>();
+        if (Double.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+        }
+        if (Double.isInfinite(b)) {
+            return range(a);
+        }
+        Iterable<Double> ds = map(
+                BigDecimal::doubleValue,
+                range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
+        );
+        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)): ds;
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {

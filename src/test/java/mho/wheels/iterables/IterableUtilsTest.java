@@ -438,7 +438,6 @@ public class IterableUtilsTest {
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308]");
-        System.out.println(BigDecimal.TEN.pow(1000).doubleValue());
         try {
             range(Double.NaN);
             fail();
@@ -516,6 +515,95 @@ public class IterableUtilsTest {
         aeq(range('\0', '\3'), "[\0, \1, \2, \3]");
         aeq(range('\uFFFC', '\uFFFF'), "[\uFFFC, \uFFFD, \uFFFE, \uFFFF]");
         aeq(range('z', 'a'), "[]");
+    }
+
+    @Test
+    public void testRange_float_float() {
+        aeq(range(1.0f, 10.0f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(1.0f, 9.9f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeq(range(1.0f, 1.0f), "[1.0]");
+        aeq(range(-8.329f, 2.05f),
+                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
+        aeq(range(-8.329f, -8.0f), "[-8.329]");
+        aeq(range(10.0f, 1.0f), "[]");
+        aeq(range(1.0e8f, 1.00000008e8f),
+                "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8]");
+        aeq(range(0.0f, 10.0f), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(-0.0f, 10.0f), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(0.0f, 0.0f), "[0.0]");
+        aeq(range(-0.0f, 0.0f), "[-0.0]");
+        aeq(range(-0.0f, -0.0f), "[-0.0]");
+        aeq(range(0.0f, -0.0f), "[0.0]");
+        aeq(range(Float.MIN_VALUE, Float.MIN_VALUE), "[1.4E-45]");
+        aeq(range(Float.MIN_VALUE, 10.0f), "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeq(range(Float.MAX_VALUE, Float.MAX_VALUE), "[3.4028235E38]");
+        aeq(take(20, range(Float.MAX_VALUE, Float.POSITIVE_INFINITY)),
+                "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
+                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
+                " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38]");
+        aeq(take(20, range(Float.NEGATIVE_INFINITY, 10.0f)),
+                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
+                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
+                " -Infinity, -Infinity]");
+        aeq(range(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY), "[-Infinity]");
+        aeq(range(Float.POSITIVE_INFINITY, Float.MAX_VALUE), "[]");
+        try {
+            range(Float.NaN, 10.0f);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            range(10.0f, Float.NaN);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            range(Float.NaN, Float.NaN);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testRange_double_double() {
+        aeq(range(1.0, 10.0), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(1.0, 9.9), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeq(range(1.0, 1.0), "[1.0]");
+        aeq(range(-8.329, 2.05),
+                "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
+        aeq(range(-8.329, -8.0), "[-8.329]");
+        aeq(range(10.0, 1.0), "[]");
+        aeq(range(1.0e16, 1.0000000000000002e16), "[1.0E16, 1.0E16, 1.0000000000000002E16]");
+        aeq(range(0.0, 10.0), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(-0.0, 10.0), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeq(range(0.0, 0.0), "[0.0]");
+        aeq(range(-0.0, 0.0), "[-0.0]");
+        aeq(range(-0.0, -0.0), "[-0.0]");
+        aeq(range(0.0, -0.0), "[0.0]");
+        aeq(range(Double.MIN_VALUE, Double.MIN_VALUE), "[4.9E-324]");
+        aeq(range(Double.MIN_VALUE, 10.0), "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeq(range(Double.MAX_VALUE, Double.MAX_VALUE), "[1.7976931348623157E308]");
+        aeq(take(20, range(Double.MAX_VALUE, Double.POSITIVE_INFINITY)),
+                "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
+                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
+                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
+                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
+                " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308]");
+        aeq(take(20, range(Double.NEGATIVE_INFINITY, 10.0)),
+                "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
+                " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
+                " -Infinity, -Infinity]");
+        aeq(range(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), "[-Infinity]");
+        aeq(range(Double.POSITIVE_INFINITY, Double.MAX_VALUE), "[]");
+        try {
+            range(Double.NaN, 10.0);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            range(10.0, Double.NaN);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            range(Double.NaN, Double.NaN);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
