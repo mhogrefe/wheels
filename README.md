@@ -18,7 +18,8 @@ Progress
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Numbers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| FloatUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator       | ✔       | ✘       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -30,4 +31,3 @@ Progress
 | Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Triple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
-
