@@ -138,7 +138,7 @@ public final class Triple<A, B, C> {
      *
      * @return a string representation of <tt>this</tt>.
      */
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ")";
     }
 
