@@ -1,7 +1,5 @@
 package mho.wheels.structures;
 
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.numbers.Numbers;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,6 +67,10 @@ public final class Pair<A, B> {
             @NotNull Pair<A, B> p,
             @NotNull Pair<A, B> q
     ) {
+        assert p.a != null;
+        assert p.b != null;
+        assert q.a != null;
+        assert q.b != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         return Ordering.compare(p.b, q.b);
@@ -103,7 +105,7 @@ public final class Pair<A, B> {
      *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return {@code this}'s hash code.
+     * @return {@code this}'s hash code
      */
     @Override
     public int hashCode() {
@@ -112,20 +114,37 @@ public final class Pair<A, B> {
         return result;
     }
 
-    public static @NotNull <S, T> Optional<Pair<S, T>> read(
+    /**
+     * Creates a {@code Pair} from a {@code String}. Valid strings are of the form {@code "(" + a + ", " + b + ")"},
+     * where {@code a} and {@code b} are valid {@code String}s for their types. If the {@code String} is invalid, the
+     * method returns Optional.empty() without throwing an exception; this aids composability.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result may contain any {@code Pair}, or be empty.</li>
+     * </ul>
+     *
+     * @param s a string representation of a {@code Pair}
+     * @param readA a function which reads a {@code String} which represents null or a value of type {@code A}
+     * @param readB a function which reads a {@code String} which represents null or a value of type {@code B}
+     * @param <A> the type of the {@code Pair}'s first value
+     * @param <B> the type of the {@code Pair}'s second value
+     * @return the {@code Pair} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
+     */
+    public static @NotNull <A, B> Optional<Pair<A, B>> read(
             @NotNull String s,
-            @NotNull Function<String, NullableOptional<S>> readS,
-            @NotNull Function<String, NullableOptional<T>> readT
+            @NotNull Function<String, NullableOptional<A>> readA,
+            @NotNull Function<String, NullableOptional<B>> readB
     ) {
         if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
         s = tail(init(s));
         String[] tokens = s.split(", ");
         if (tokens.length != 2) return Optional.empty();
-        NullableOptional<S> os = readS.apply(tokens[0]);
-        if (!os.isPresent()) return Optional.empty();
-        NullableOptional<T> ot = readT.apply(tokens[1]);
-        if (!ot.isPresent()) return Optional.empty();
-        return Optional.of(new Pair<>(os.get(), ot.get()));
+        NullableOptional<A> oa = readA.apply(tokens[0]);
+        if (!oa.isPresent()) return Optional.empty();
+        NullableOptional<B> ob = readB.apply(tokens[1]);
+        if (!ob.isPresent()) return Optional.empty();
+        return Optional.of(new Pair<>(oa.get(), ob.get()));
     }
 
     /**
@@ -137,7 +156,7 @@ public final class Pair<A, B> {
      *  {@code ", "}.</li>
      * </ul>
      *
-     * @return a string representation of {@code this}.
+     * @return a string representation of {@code this}
      */
     public @NotNull String toString() {
         return "(" + a + ", " + b + ")";

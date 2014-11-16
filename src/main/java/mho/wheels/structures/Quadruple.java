@@ -5,12 +5,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
+import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.EQ;
 
 /**
- * An ordered quadruple of values. Any combination of values may be null. The <tt>Quadruple</tt> is immutable iff all
- * of its values are.
+ * An ordered quadruple of values. Any combination of values may be null. The {@code Quadruple} is immutable iff all of
+ * its values are.
  *
  * @param <A> the type of the first value
  * @param <B> the type of the second value
@@ -19,34 +22,34 @@ import static mho.wheels.ordering.Ordering.EQ;
  */
 public final class Quadruple<A, B, C, D> {
     /**
-     * The first component of the <tt>Quadruple</tt>
+     * The first component of the {@code Quadruple}
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the <tt>Quadruple</tt>
+     * The second component of the {@code Quadruple}
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the <tt>Quadruple</tt>
+     * The third component of the {@code Quadruple}
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the <tt>Quadruple</tt>
+     * The fourth component of the {@code Quadruple}
      */
     public final @Nullable D d;
 
     /**
-     * Constructs a <tt>Quadruple</tt> from four values.
+     * Constructs a {@code Quadruple} from four values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything.</li>
-     *  <li><tt>b</tt> may be anything.</li>
-     *  <li><tt>c</tt> may be anything.</li>
-     *  <li><tt>d</tt> may be anything.</li>
-     *  <li>Any <tt>Quadruple</tt> may be constructed with this constructor.</li>
+     *  <li>{@code a} may be anything.</li>
+     *  <li>{@code b} may be anything.</li>
+     *  <li>{@code c} may be anything.</li>
+     *  <li>{@code d} may be anything.</li>
+     *  <li>Any {@code Quadruple} may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value
@@ -62,26 +65,26 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * Compares two <tt>Quadruple</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, and <tt>D</tt> all implement
-     * <tt>Comparable</tt>.
+     * Compares two {@code Quadruple}s, provided that {@code A}, {@code B}, {@code C}, and {@code D} all implement
+     * {@code Comparable}.
      *
      * <ul>
-     *  <li><tt>p</tt> must be non-null.</li>
-     *  <li><tt>q</tt> must be non-null.</li>
-     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li>{@code p} must be non-null.</li>
+     *  <li>{@code q} must be non-null.</li>
+     *  <li>{@code p.a} and {@code q.a} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.b} and {@code q.b} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.c} and {@code q.c} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.d} and {@code q.d} must be comparable by their type's {@code compareTo} method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param p the first <tt>Quadruple</tt>
-     * @param q the second <tt>Quadruple</tt>
-     * @param <A> the type of the first component of <tt>p</tt> and <tt>q</tt>
-     * @param <B> the type of the second component of <tt>p</tt> and <tt>q</tt>
-     * @param <C> the type of the third component of <tt>p</tt> and <tt>q</tt>
-     * @param <D> the type of the fourth component of <tt>p</tt> and <tt>q</tt>
-     * @return how <tt>p</tt> and <tt>q</tt> are ordered
+     * @param p the first {@code Quadruple}
+     * @param q the second {@code Quadruple}
+     * @param <A> the type of the first component of {@code p} and {@code q}
+     * @param <B> the type of the second component of {@code p} and {@code q}
+     * @param <C> the type of the third component of {@code p} and {@code q}
+     * @param <D> the type of the fourth component of {@code p} and {@code q}
+     * @return how {@code p} and {@code q} are ordered
      */
     public static @NotNull <
             A extends Comparable<A>,
@@ -92,6 +95,14 @@ public final class Quadruple<A, B, C, D> {
             @NotNull Quadruple<A, B, C, D> p,
             @NotNull Quadruple<A, B, C, D> q
     ) {
+        assert p.a != null;
+        assert p.b != null;
+        assert p.c != null;
+        assert p.d != null;
+        assert q.a != null;
+        assert q.b != null;
+        assert q.c != null;
+        assert q.d != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);
@@ -102,16 +113,16 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * Determines whether <tt>this</tt> is equal to <tt>that</tt>.
+     * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Quadruple</tt>.</li>
-     *  <li><tt>that</tt> may be any <tt>Object</tt>.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code this} may be any {@code Quadruple}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param that The <tt>Quadruple</tt> to be compared with <tt>this</tt>
-     * @return <tt>this</tt>=<tt>that</tt>
+     * @param that The {@code Quadruple} to be compared with {@code this}
+     * @return {@code this}={@code that}
      */
     @Override
     public boolean equals(Object that) {
@@ -125,14 +136,14 @@ public final class Quadruple<A, B, C, D> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff all values' hash codes are.
+     * Calculates the hash code of {@code this}. The hash code is deterministic iff all values' hash codes are.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Quadruple</tt>.</li>
-     *  <li>(conjecture) The result may be any <tt>int</tt>.</li>
+     *  <li>{@code this} may be any {@code Quadruple}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return <tt>this</tt>'s hash code.
+     * @return {@code this}'s hash code.
      */
     @Override
     public int hashCode() {
@@ -143,65 +154,110 @@ public final class Quadruple<A, B, C, D> {
         return result;
     }
 
+
     /**
-     * Creates a string representation of <tt>this</tt>.
+     * Creates a {@code Quadruple} from a {@code String}. Valid strings are of the form
+     * {@code "(" + a + ", " + b + ", " + c + ", " + d + ")"}, where {@code a}, {@code b}, {@code c}, and {@code d} are
+     * valid {@code String}s for their types. If the {@code String} is invalid, the method returns Optional.empty()
+     * without throwing an exception; this aids composability.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Quadruple</tt>.</li>
-     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
-     *  <tt>", "</tt> at least three times.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result may contain any {@code Quadruple}, or be empty.</li>
      * </ul>
      *
-     * @return a string representation of <tt>this</tt>.
+     * @param s a string representation of a {@code Quadruple}
+     * @param readA a function which reads a {@code String} which represents null or a value of type {@code A}
+     * @param readB a function which reads a {@code String} which represents null or a value of type {@code B}
+     * @param readC a function which reads a {@code String} which represents null or a value of type {@code C}
+     * @param readD a function which reads a {@code String} which represents null or a value of type {@code D}
+     * @param <A> the type of the {@code Quadruple}'s first value
+     * @param <B> the type of the {@code Quadruple}'s second value
+     * @param <C> the type of the {@code Quadruple}'s third value
+     * @param <D> the type of the {@code Quadruple}'s fourth value
+     * @return the {@code Quadruple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
+     */
+    public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> read(
+            @NotNull String s,
+            @NotNull Function<String, NullableOptional<A>> readA,
+            @NotNull Function<String, NullableOptional<B>> readB,
+            @NotNull Function<String, NullableOptional<C>> readC,
+            @NotNull Function<String, NullableOptional<D>> readD
+    ) {
+        if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
+        s = tail(init(s));
+        String[] tokens = s.split(", ");
+        if (tokens.length != 4) return Optional.empty();
+        NullableOptional<A> oa = readA.apply(tokens[0]);
+        if (!oa.isPresent()) return Optional.empty();
+        NullableOptional<B> ob = readB.apply(tokens[1]);
+        if (!ob.isPresent()) return Optional.empty();
+        NullableOptional<C> oc = readC.apply(tokens[2]);
+        if (!oc.isPresent()) return Optional.empty();
+        NullableOptional<D> od = readD.apply(tokens[3]);
+        if (!od.isPresent()) return Optional.empty();
+        return Optional.of(new Quadruple<>(oa.get(), ob.get(), oc.get(), od.get()));
+    }
+
+    /**
+     * Creates a string representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code Quadruple}.</li>
+     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
+     *  {@code ", "} at least three times.</li>
+     * </ul>
+     *
+     * @return a string representation of {@code this}.
      */
     public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ", " + d + ")";
     }
 
     /**
-     * A comparator which compares two <tt>Quadruple</tt>s via <tt>Comparators</tt> provided for each component.
+     * A comparator which compares two {@code Quadruple}s via {@code Comparators} provided for each component.
      *
-     * @param <A> the type of the <tt>Quadruple</tt>s' first components
-     * @param <B> the type of the <tt>Quadruple</tt>s' second components
-     * @param <C> the type of the <tt>Quadruple</tt>s' third components
-     * @param <D> the type of the <tt>Quadruple</tt>s' fourth components
+     * @param <A> the type of the {@code Quadruple}s' first components
+     * @param <B> the type of the {@code Quadruple}s' second components
+     * @param <C> the type of the {@code Quadruple}s' third components
+     * @param <D> the type of the {@code Quadruple}s' fourth components
      */
     public static class QuadrupleComparator<A, B, C, D> implements Comparator<Quadruple<A, B, C, D>> {
         /**
-         * The first component's <tt>Comparator</tt>
+         * The first component's {@code Comparator}
          */
         private final @NotNull Comparator<A> aComparator;
 
         /**
-         * The second component's <tt>Comparator</tt>
+         * The second component's {@code Comparator}
          */
         private final @NotNull Comparator<B> bComparator;
 
         /**
-         * The third component's <tt>Comparator</tt>
+         * The third component's {@code Comparator}
          */
         private final @NotNull Comparator<C> cComparator;
 
         /**
-         * The fourth component's <tt>Comparator</tt>
+         * The fourth component's {@code Comparator}
          */
         private final @NotNull Comparator<D> dComparator;
 
         /**
-         * Constructs a <tt>QuadrupleComparator</tt> from four <tt>Comparator</tt>s.
+         * Constructs a {@code QuadrupleComparator} from four {@code Comparator}s.
          *
          * <ul>
-         *  <li><tt>aComparator</tt> must be non-null.</li>
-         *  <li><tt>bComparator</tt> must be non-null.</li>
-         *  <li><tt>cComparator</tt> must be non-null.</li>
-         *  <li><tt>dComparator</tt> must be non-null.</li>
-         *  <li>Any <tt>QuadrupleComparator</tt> may be constructed with this constructor.</li>
+         *  <li>{@code aComparator} must be non-null.</li>
+         *  <li>{@code bComparator} must be non-null.</li>
+         *  <li>{@code cComparator} must be non-null.</li>
+         *  <li>{@code dComparator} must be non-null.</li>
+         *  <li>Any {@code QuadrupleComparator} may be constructed with this constructor.</li>
          * </ul>
          *
-         * @param aComparator the first component's <tt>Comparator</tt>
-         * @param bComparator the second component's <tt>Comparator</tt>
-         * @param cComparator the third component's <tt>Comparator</tt>
-         * @param dComparator the fourth component's <tt>Comparator</tt>
+         * @param aComparator the first component's {@code Comparator}
+         * @param bComparator the second component's {@code Comparator}
+         * @param cComparator the third component's {@code Comparator}
+         * @param dComparator the fourth component's {@code Comparator}
          */
         public QuadrupleComparator(
                 @NotNull Comparator<A> aComparator,
@@ -216,22 +272,22 @@ public final class Quadruple<A, B, C, D> {
         }
 
         /**
-         * Compares two <tt>Quadruple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively.
+         * Compares two {@code Quadruple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
+         * "equal to", respectively.
          *
          * <ul>
-         *  <li><tt>p</tt> must be non-null.</li>
-         *  <li><tt>q</tt> must be non-null.</li>
-         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
-         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
-         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
-         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
-         *  <li>The result is &#x2212;1, 0, or 1.</li>
+         *  <li>{@code p} must be non-null.</li>
+         *  <li>{@code q} must be non-null.</li>
+         *  <li>{@code p.a} and {@code q.a} must be comparable by {@code aComparator}.</li>
+         *  <li>{@code p.b} and {@code q.b} must be comparable by {@code bComparator}.</li>
+         *  <li>{@code p.c} and {@code q.c} must be comparable by {@code cComparator}.</li>
+         *  <li>{@code p.d} and {@code q.d} must be comparable by {@code dComparator}.</li>
+         *  <li>The result is –1, 0, or 1.</li>
          * </ul>
          *
-         * @param p the first <tt>Quadruple</tt>
-         * @param q the second <tt>Quadruple</tt>
-         * @return <tt>this</tt> compared to <tt>that</tt>
+         * @param p the first {@code Quadruple}
+         * @param q the second {@code Quadruple}
+         * @return {@code this} compared to {@code that}
          */
         @Override
         public int compare(@NotNull Quadruple<A, B, C, D> p, @NotNull Quadruple<A, B, C, D> q) {

@@ -1,7 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
-import mho.wheels.numbers.Numbers;
+import mho.wheels.misc.FloatUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -527,7 +527,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> positiveOrdinaryFloatsAscending() {
-        return stopAt(f -> f == Float.MAX_VALUE, iterate(Numbers::successor, Float.MIN_VALUE));
+        return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatUtils::successor, Float.MIN_VALUE));
     }
 
     /**
@@ -539,7 +539,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> negativeOrdinaryFloatsAscending() {
-        return stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, -Float.MAX_VALUE));
+        return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, -Float.MAX_VALUE));
     }
 
     /**
@@ -552,9 +552,9 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     public @NotNull Iterable<Float> ordinaryFloatsAscending() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, -Float.MAX_VALUE)),
+                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, -Float.MAX_VALUE)),
                 Arrays.asList(0.0f),
-                stopAt(f -> f == Float.MAX_VALUE, iterate(Numbers::successor, Float.MIN_VALUE))
+                stopAt(f -> f == Float.MAX_VALUE, iterate(FloatUtils::successor, Float.MIN_VALUE))
         ));
     }
 
@@ -568,9 +568,9 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     public @NotNull Iterable<Float> floatsAscending() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(Numbers::successor, Float.NEGATIVE_INFINITY)),
+                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, Float.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0f, Float.NaN, 0.0f),
-                stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(Numbers::successor, Float.MIN_VALUE))
+                stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(FloatUtils::successor, Float.MIN_VALUE))
         ));
     }
 
@@ -607,7 +607,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 filter(
                         Optional::isPresent,
                         (Iterable<Optional<Float>>) map(
-                                p -> Numbers.floatFromPair(p.a, p.b),
+                                p -> FloatUtils.floatFromPair(p.a, p.b),
                                 pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
                         )
                 )
@@ -656,7 +656,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     public @NotNull Iterable<Double> positiveOrdinaryDoublesAscending() {
-        return stopAt(d -> d == Double.MAX_VALUE, iterate(Numbers::successor, Double.MIN_VALUE));
+        return stopAt(d -> d == Double.MAX_VALUE, iterate(FloatUtils::successor, Double.MIN_VALUE));
     }
 
     /**
@@ -666,7 +666,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
     public @NotNull Iterable<Double> negativeOrdinaryDoublesAscending() {
-        return stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, -Double.MAX_VALUE));
+        return stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, -Double.MAX_VALUE));
     }
 
     /**
@@ -677,9 +677,9 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     public @NotNull Iterable<Double> ordinaryDoublesAscending() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, -Double.MAX_VALUE)),
+                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, -Double.MAX_VALUE)),
                 Arrays.asList(0.0),
-                stopAt(d -> d == Double.MAX_VALUE, iterate(Numbers::successor, Double.MIN_VALUE))
+                stopAt(d -> d == Double.MAX_VALUE, iterate(FloatUtils::successor, Double.MIN_VALUE))
         ));
     }
 
@@ -691,9 +691,9 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     public @NotNull Iterable<Double> doublesAscending() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(Numbers::successor, Double.NEGATIVE_INFINITY)),
+                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, Double.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0, Double.NaN, 0.0),
-                stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(Numbers::successor, Double.MIN_VALUE))
+                stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(FloatUtils::successor, Double.MIN_VALUE))
         ));
     }
 
@@ -730,7 +730,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 filter(
                         Optional::isPresent,
                         (Iterable<Optional<Double>>) map(
-                                p -> Numbers.doubleFromPair(p.a, p.b),
+                                p -> FloatUtils.doubleFromPair(p.a, p.b),
                                 pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
                         )
                 )

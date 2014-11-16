@@ -18,16 +18,16 @@ Progress
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Numbers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| FloatUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator       | ✔       | ✘       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Pair                     | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Quadruple                | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Pair                     | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Quadruple                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Quintuple                | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Triple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
-
+| Triple                   | ✔       | ✘       | ✘     | ✘     | ✘          |

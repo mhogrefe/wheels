@@ -1,4 +1,4 @@
-package mho.wheels.numbers;
+package mho.wheels.misc;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -9,42 +9,11 @@ import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
 
-public final class Numbers {
+public final class FloatUtils {
     /**
      * Disallow instantiation
      */
-    private Numbers() {}
-
-    public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
-        if (s.startsWith("0x") || s.startsWith("-0") || s.length() > 1 && s.charAt(0) == '0') return Optional.empty();
-        try {
-            return Optional.of(Integer.parseInt(s));
-        } catch (NumberFormatException e) {
-            return Optional.empty();
-        }
-    }
-
-    public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
-        if (s.startsWith("0x") || s.startsWith("-0") || s.length() > 1 && s.charAt(0) == '0') return Optional.empty();
-        try {
-            return Optional.of(new BigInteger(s));
-        } catch (NumberFormatException e) {
-            return Optional.empty();
-        }
-    }
-
-    private static @NotNull Optional<List<String>> splitListString(@NotNull String s) {
-        if (head(s) != '[' || last(s) != ']') return Optional.empty();
-        return Optional.of(Arrays.asList(init(tail(s)).split(", ")));
-    }
-
-    public static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        Optional<List<String>> optionalTokens = splitListString(s);
-        if (!optionalTokens.isPresent()) return Optional.empty();
-        List<Optional<BigInteger>> optionalNumbers = toList(map(Numbers::readBigInteger, optionalTokens.get()));
-        if (any(oi -> !oi.isPresent(), optionalNumbers)) return Optional.empty();
-        return Optional.of(toList((Iterable<BigInteger>) map(Optional::get, optionalNumbers)));
-    }
+    private FloatUtils() {}
 
     public static float successor(float f) {
         if (Float.isNaN(f) || f > 0 && Float.isInfinite(f))
