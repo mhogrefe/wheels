@@ -340,7 +340,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
-     *  {@code Iterable} of ascending {@code float}s roughly differing by 1.</li>
+     *  {@code Iterable} of nondescending {@code float}s roughly differing by 1.</li>
      * </ul>
      *
      * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
@@ -371,7 +371,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>The result is either {@code [-Infinity, -Infinity, -Infinity, ...]}, {@code [+Infinity]}, or an infinite
-     *  {@code Iterable} of ascending {@code double}s roughly differing by 1.</li>
+     *  {@code Iterable} of nondescending {@code double}s roughly differing by 1.</li>
      * </ul>
      *
      * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
