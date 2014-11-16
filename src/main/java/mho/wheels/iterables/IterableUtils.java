@@ -12,6 +12,11 @@ import java.util.function.Predicate;
 
 import static mho.wheels.ordering.Ordering.*;
 
+/**
+ * Methods for generating and manipulating {@link Iterable}s. The equivalents of every function in Haskell's
+ * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
+ * {@link mho.wheels.math.Combinatorics}).
+ */
 public final class IterableUtils {
     /**
      * Disallow instantiation
@@ -19,18 +24,18 @@ public final class IterableUtils {
     private IterableUtils() {}
 
     /**
-     * Adds an <tt>Iterable</tt>'s elements to a <tt>Collection</tt>, in the order that the elements appear in the
-     * <tt>Iterable</tt>. Only works for finite <tt>Iterable</tt>s.
+     * Adds an {@code Iterable}'s elements to a {@link Collection}, in the order that the elements appear in the
+     * {@code Iterable}. Only works for finite {@code Iterable}s.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
-     *  <li><tt>collection</tt> must be non-null.</li>
-     *  <li><tt>collection</tt> must be able to hold every element of <tt>xs</tt>.</li>
+     *  <li>{@code xs} must be finite.</li>
+     *  <li>{@code collection} must be non-null.</li>
+     *  <li>{@code collection} must be able to hold every element of {@code xs}.</li>
      * </ul>
      *
-     * @param xs the iterable
-     * @param collection the collection to which the <tt>Iterable</tt>'s elements are added
-     * @param <T> the <tt>Iterable</tt>'s element type
+     * @param xs the {@code Iterable}
+     * @param collection the {@code Collection} to which the {@code Iterable}'s elements are added
+     * @param <T> the {@code Iterable}'s element type
      */
     public static <T> void addTo(@NotNull Iterable<T> xs, @NotNull Collection<T> collection) {
         for (T x : xs) {
@@ -39,17 +44,17 @@ public final class IterableUtils {
     }
 
     /**
-     * Adds a <tt>String</tt>'s characters to a <tt>Collection</tt>, in the order that the characters appear in the
-     * <tt>String</tt>.
+     * Adds a {@code String}'s characters to a {@code Collection}, in the order that the characters appear in the
+     * {@code String}.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-null.</li>
-     *  <li><tt>collection</tt> must be non-null.</li>
-     *  <li><tt>collection</tt> must be able to hold every character of <tt>s</tt>.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>{@code collection} must be non-null.</li>
+     *  <li>{@code collection} must be able to hold every character of {@code s}.</li>
      * </ul>
      *
      * @param s the string
-     * @param collection the collection to which the <tt>String</tt>'s characters are added
+     * @param collection the collection to which the {@code String}'s characters are added
      */
     public static void addTo(@NotNull String s, @NotNull Collection<Character> collection) {
         for (int i = 0; i < s.length(); i++) {
@@ -58,17 +63,17 @@ public final class IterableUtils {
     }
 
     /**
-     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s. The resulting list
-     * may be modified, but the modifications will not affect the original <tt>Iterable</tt>.
+     * Converts an {@code Iterable} to a {@link List}. Only works for finite {@code Iterable}s. The resulting list may
+     * be modified, but the modifications will not affect the original {@code Iterable}.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param xs the <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return a <tt>List</tt> containing the elements of the <tt>Iterable</tt> in their original order
+     * @param xs the {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return a {@code List} containing the elements of the {@code Iterable} in their original order
      */
     public static @NotNull <T> List<T> toList(@NotNull Iterable<T> xs) {
         List<T> list = new ArrayList<>();
@@ -77,15 +82,15 @@ public final class IterableUtils {
     }
 
     /**
-     * Converts an <tt>Iterable</tt> to a <tt>List</tt>. Only works for finite <tt>Iterable</tt>s.
+     * Converts an {@code Iterable} to a {@code List}. Only works for finite {@code Iterable}s.
      *
      * <ul>
-     *  <li><tt>s</tt> may be any <tt>String</tt>.</li>
+     *  <li>{@code s} may be any {@code String}.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param s the <tt>String</tt>
-     * @return a <tt>List</tt> containing the characters of <tt>s</tt> in their original order
+     * @param s the {@code String}
+     * @return a {@code List} containing the characters of {@code s} in their original order
      */
     public static @NotNull List<Character> toList(@NotNull String s) {
         List<Character> list = new ArrayList<>();
@@ -94,34 +99,65 @@ public final class IterableUtils {
     }
 
     /**
-     * Creates a <tt>String</tt> representation of <tt>xs</tt>. Each element is converted to a <tt>String</tt> and
-     * those strings are placed in a comma-separated list surrounded by square brackets. Only works for finite
-     * <tt>Iterable</tt>s.
+     * Creates a {@code String} representation of {@code xs}. Each element is converted to a {@code String} and
+     * those {@code String}s are placed in a comma-separated list surrounded by square brackets. Only works for finite
+     * {@code Iterable}s.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
-     *  <li>The result begins with '[' and ends with ']'.</li>
+     *  <li>{@code xs} must be finite.</li>
+     *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
      * </ul>
      *
-     * @param xs the <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return a <tt>String</tt> representation of <tt>xs</tt>
+     * @param xs the {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return a {@code String} representation of {@code xs}
      */
     public static @NotNull <T> String toString(@NotNull Iterable<T> xs) {
         return toList(xs).toString();
     }
 
     /**
-     * Converts a <tt>String</tt> to an <tt>Iterable</tt> of characters. The order of the characters is preserved. Uses
-     * O(1) additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Creates a {@code String} representation of {@code xs}, displaying at most {@code size} elements. The first
+     * {@code size} elements are converted to a {@code String} and those {@code String}s are placed in a
+     * comma-separated list surrounded by square brackets. If the {@code Iterable} contains more than {@code size}
+     * elements, an ellipsis ({@code ...}) is added at the end of the list.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li>{@code size} must be non-negative.</li>
+     *  <li>{@code xs} may be any {@code Iterable}.</li>
+     *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
+     * </ul>
+     *
+     * @param size the maximum number of elements displayed
+     * @param xs the {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return a {@code String} representation of {@code xs}
+     */
+    public static @NotNull <T> String toString(int size, @NotNull Iterable<T> xs) {
+        if (size < 0)
+            throw new IllegalArgumentException("size cannot be negative");
+        if (size == 0) {
+            return isEmpty(xs) ? "[]" : "[...]";
+        }
+        List<T> list = toList(take(size + 1, xs));
+        String listString = toList(take(size, list)).toString();
+        if (list.size() > size) {
+            listString = init(listString) + ", ...]";
+        }
+        return listString;
+    }
+
+    /**
+     * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
+     * preserved. Uses O(1) additional memory. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
-     * @param s the <tt>String</tt>
-     * @return an <tt>Iterable</tt> containing all the <tt>String</tt>'s characters in their original order
+     * @param s the {@code String}
+     * @return an {@code Iterable} containing all the {@code String}'s characters in their original order
      */
     public static @NotNull Iterable<Character> fromString(@NotNull String s) {
         return () -> new Iterator<Character>() {
@@ -145,16 +181,16 @@ public final class IterableUtils {
     }
 
     /**
-     * Creates a <tt>String</tt> from an <tt>Iterable</tt> of characters. The order of the characters is preserved.
-     * Only works for finite <tt>Iterable</tt>s.
+     * Creates a {@code String} from an {@code Iterable} of {@code Character}s. The order of the characters is
+     * preserved. Only works for finite {@code Iterable}s.
      *
      * <ul>
-     *  <li><tt>cs</tt> must be finite and cannot contain nulls.</li>
+     *  <li>{@code cs} must be finite and cannot contain nulls.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param cs the <tt>Iterable</tt> of characters
-     * @return the <tt>String</tt> containing all of <tt>chars</tt>'s characters in their original order
+     * @param cs the {@code Iterable} of {@code Character}s
+     * @return the {@code String} containing all of {@code chars}'s characters in their original order
      */
     public static @NotNull String charsToString(@NotNull Iterable<Character> cs) {
         StringBuilder sb = new StringBuilder();
@@ -164,30 +200,212 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    /**
+     * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Byte.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Byte}s ending in 2<sup>7</sup>–1.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Byte> range(byte a) {
         return range(a, Byte.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Short}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Short.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Short}s ending in 2<sup>15</sup>–1.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Short> range(short a) {
         return range(a, Short.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Integer}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Integer.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Integer}s ending in
+     *  2<sup>31</sup>–1.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Integer> range(int a) {
         return range(a, Integer.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link Long}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
+     * {@code Long.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Long}s ending in 2<sup>63</sup>–1.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Long> range(long a) {
         return range(a, Long.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>The result is an infinite {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
         return iterate(i -> i.add(BigInteger.ONE), a);
     }
 
+    /**
+     * Generates all {@link BigDecimal}s of the form {@code a}+n where n is a non-negative integer, in order. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>The result is an infinite {@code Iterable} of ascending {@code BigDecimal}s differing by 1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
+    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a) {
+        return iterate(i -> i.add(BigDecimal.ONE), a);
+    }
+
+    /**
+     * Generates all {@link Character}s greater than or equal to {@code a}, in order. Does not wrap around after
+     * reaching {@code Character.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an {@code Iterable} of consecutive ascending {@code Character}s ending in
+     *  {@code \uffff}.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the starting value of this {@code Character} sequence
+     * @return an sequence of consecutive {@code Character}s, starting at {@code a} (inclusive)
+     */
     public static @NotNull Iterable<Character> range(char a) {
         return range(a, Character.MAX_VALUE);
     }
 
+    /**
+     * Generates all {@link float}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
+     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
+     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
+     * {@code float}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
+     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
+     * produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code float}s
+     *  roughly differing by 1.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
+    public static @NotNull Iterable<Float> range(float a) {
+        if (Float.isNaN(a))
+            throw new IllegalArgumentException("cannot begin a range with NaN");
+        if (Float.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+        }
+        Iterable<Float> fs = map(BigDecimal::floatValue, range(new BigDecimal(Float.toString(a))));
+        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+    }
+
+    /**
+     * Generates all {@link double}s roughly of the form {@code a}+n where n is a non-negative integer, in order.
+     * {@code a} is converted to a {@code BigDecimal} internally to minimize rounding errors. Nonetheless, rounding may
+     * produce some odd-seeming results: for example, if {@code a} is large, the result might contain runs of identical
+     * {@code double}s. If {@code a} is {@code -Infinity}, the result is {@code -Infinity} repeating forever. If
+     * {@code a} is {@code +Infinity}, the result is a single {@code +Infinity}. If {@code a} is negative zero, the
+     * first element of the result is also negative zero. {@code NaN} is not a legal input. The {@code Iterable}
+     * produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code double}s
+     *  roughly differing by 1.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code a} is {@code +Infinity}, infinite otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
+     */
+    public static @NotNull Iterable<Double> range(double a) {
+        if (Double.isNaN(a))
+            throw new IllegalArgumentException("cannot begin a range with NaN");
+        if (Double.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+        }
+        Iterable<Double> ds = map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
+        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
+    }
+
+    /**
+     * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Byte>() {
@@ -212,6 +430,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Short}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Short> range(short a, short b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Short>() {
@@ -236,6 +472,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Integer}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Integer> range(int a, int b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Integer>() {
@@ -260,6 +514,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code Long}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
+     * support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Long> range(long a, long b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Long>() {
@@ -284,6 +556,24 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@code BigInteger}s greater than or equal to {@code a} and less than or equal to {@code b}, in
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>{@code b} must be non-null.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
         if (gt(a, b)) return new ArrayList<>();
         return () -> new Iterator<BigInteger>() {
@@ -310,6 +600,68 @@ public final class IterableUtils {
         };
     }
 
+    /**
+     * Generates all {@link BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b} of the
+     * form {@code a}+n where n is an integer, in order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable}
+     * is returned. The {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} must be non-null.</li>
+     *  <li>{@code b} must be non-null.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive {@code BigDecimal}s differing by 1.</li>
+     * </ul>
+     *
+     * Length is max(⌊{@code b}–{@code a}⌋+1, 0)
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
+    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) return new ArrayList<>();
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                reachedEnd = gt(x.add(BigDecimal.ONE), b);
+                BigDecimal oldX = x;
+                x = x.add(BigDecimal.ONE);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * Generates all {@code Character}s greater than or equal to {@code a} and less than or equal to {@code b}, in
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
+     * does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is a possibly-empty {@code Iterable} of consecutive ascending {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is max({@code b}–{@code a}+1, 0)
+     *
+     * @param a the starting value of this {@code Character} sequence
+     * @param b the ending value of this {@code Character} sequence
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at
+     * {@code b} (inclusive)
+     */
     public static @NotNull Iterable<Character> range(char a, char b) {
         if (a > b) return new ArrayList<>();
         return () -> new Iterator<Character>() {
@@ -332,6 +684,96 @@ public final class IterableUtils {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
+    }
+
+    /**
+     * Generates all {@code float}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
+     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
+     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
+     * results: for example, if {@code a} is large, the result might contain runs of identical {@code float}s. If
+     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
+     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code float}s roughly differing by
+     *  1.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
+     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
+     * otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
+     * largest {@code float} an integer away from {@code a} and less than or equal to {@code b}.
+     */
+    public static @NotNull Iterable<Float> range(float a, float b) {
+        if (Float.isNaN(a) || Float.isNaN(b))
+            throw new IllegalArgumentException("cannot begin or end a range with NaN");
+        if (a == b) return Arrays.asList(a);
+        if (a > b) return new ArrayList<>();
+        if (Float.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+        }
+        if (Float.isInfinite(b)) {
+            return range(a);
+        }
+        Iterable<Float> fs = map(
+                BigDecimal::floatValue,
+                range(new BigDecimal(Float.toString(a)), new BigDecimal(Float.toString(b)))
+        );
+        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+    }
+
+    /**
+     * Generates all {@code double}s greater than or equal to {@code a} and less than or equal to {@code b} roughly of
+     * the form {@code a}+n where n is a non-negative integer, in order. {@code a} and {@code b} are converted to
+     * {@code BigDecimal}s internally to minimize rounding errors. Nonetheless, rounding may produce some odd-seeming
+     * results: for example, if {@code a} is large, the result might contain runs of identical {@code double}s. If
+     * {@code a}{@literal >}{@code b}, the result is empty. If {@code a}={@code b}, an {@code Iterable} containing only
+     * {@code a} is returned. If {@code a} is {@code -Infinity} and {@code b} is not {@code -Infinity}, the result is
+     * {@code -Infinity} repeating forever. If {@code a} is negative zero and {@code b} is nonnegative, the first
+     * element of the result is also negative zero. Neither {@code a} nor {@code b} may be {@code NaN}. The
+     * {@code Iterable} produced does not support removing elements.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code double}s roughly differing by
+     *  1.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code a}{@literal >}{@code b}, 1 if {@code a}={@code b}, infinite if {@code a} is
+     * {@code -Infinity} or {@code b} is {@code Infinity}, and ⌊{@code new BigDecimal(b)}–{@code new BigDecimal(a)}⌋+1
+     * otherwise
+     *
+     * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
+     * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
+     * largest {@code double} an integer away from {@code a} and less than or equal to {@code b}.
+     */
+    public static @NotNull Iterable<Double> range(double a, double b) {
+        if (Double.isNaN(a) || Double.isNaN(b))
+            throw new IllegalArgumentException("cannot begin or end a range with NaN");
+        if (a == b) return Arrays.asList(a);
+        if (a > b) return new ArrayList<>();
+        if (Double.isInfinite(a)) {
+            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+        }
+        if (Double.isInfinite(b)) {
+            return range(a);
+        }
+        Iterable<Double> ds = map(
+                BigDecimal::doubleValue,
+                range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
+        );
+        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)): ds;
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
@@ -447,6 +889,31 @@ public final class IterableUtils {
             @Override
             public BigInteger next() {
                 BigInteger oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<BigDecimal> rangeBy(@NotNull BigDecimal a, @NotNull BigDecimal i) {
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                BigDecimal oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
                 return oldX;
@@ -614,6 +1081,32 @@ public final class IterableUtils {
         };
     }
 
+    public static Iterable<BigDecimal> rangeBy(BigDecimal a, BigDecimal i, BigDecimal b) {
+        if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
+        return () -> new Iterator<BigDecimal>() {
+            private BigDecimal x = a;
+            private boolean reachedEnd;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public BigDecimal next() {
+                BigDecimal oldX = x;
+                x = x.add(i);
+                reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
+                return oldX;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     public static Iterable<Character> rangeBy(char a, int i, char b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
         return () -> new Iterator<Character>() {
@@ -641,23 +1134,23 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>(:)</tt> list constructor. Creates an <tt>Iterable</tt> whose first element is
-     * <tt>x</tt> and whose remaining elements are given by <tt>xs</tt>. <tt>xs</tt> may be infinite, in which case the
-     * result is also infinite. Uses O(1) additional memory. The <tt>Iterable</tt> produced does not support removing
+     * Equivalent of Haskell's {@code (:)} list constructor. Creates an {@code Iterable} whose first element is
+     * {@code x} and whose remaining elements are given by {@code xs}. {@code xs} may be infinite, in which case the
+     * result is also infinite. Uses O(1) additional memory. The {@code Iterable} produced does not support removing
      * elements.
      *
      * <ul>
-     *  <li><tt>x</tt> can be anything.</li>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li>The result is a non-empty <tt>Iterable</tt>.</li>
+     *  <li>{@code x} can be anything.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result is a non-empty {@code Iterable}.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|+1
+     * Result length is |{@code xs}|+1
      *
-     * @param x the first element of the <tt>Iterable</tt> to be created
-     * @param xs the second-through-last elements of the <tt>Iterable</tt> to be created
-     * @param <T> the element type of the <tt>Iterable</tt> to be created
-     * @return the <tt>Iterable</tt> to be created
+     * @param x the first element of the {@code Iterable} to be created
+     * @param xs the second-through-last elements of the {@code Iterable} to be created
+     * @param <T> the element type of the {@code Iterable} to be created
+     * @return the {@code Iterable} to be created
      */
     public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
@@ -687,44 +1180,44 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>(:)</tt> list constructor. Creates a <tt>String</tt> whose first character is
-     * <tt>c</tt> and whose remaining characters are given by <tt>cs</tt>. Uses O(n) additional memory, where n is the
+     * Equivalent of Haskell's {@code (:)} list constructor. Creates a {@code String} whose first character is
+     * {@code c} and whose remaining characters are given by {@code cs}. Uses O(n) additional memory, where n is the
      * length of cs.
      *
      * <ul>
-     *  <li><tt>c</tt> can be anything.</li>
-     *  <li><tt>cs</tt> must be non-null.</li>
-     *  <li>The result is a non-empty <tt>String</tt>.</li>
+     *  <li>{@code c} can be anything.</li>
+     *  <li>{@code cs} must be non-null.</li>
+     *  <li>The result is a non-empty {@code String}.</li>
      * </ul>
      *
-     * Result length is |<tt>cs</tt>|+1
+     * Result length is |{@code cs}|+1
      *
-     * @param c the first character of the <tt>String</tt> to be created
-     * @param cs the second-through-last characters of the <tt>String</tt> to be created
-     * @return the <tt>String</tt> to be created
+     * @param c the first character of the {@code String} to be created
+     * @param cs the second-through-last characters of the {@code String} to be created
+     * @return the {@code String} to be created
      */
     public static @NotNull String cons(char c, @NotNull String cs) {
         return Character.toString(c) + cs;
     }
 
     /**
-     * Equivalent of Haskell's <tt>(++)</tt> operator. Creates an <tt>Iterable</tt> consisting of <tt>xs</tt>'s
-     * elements followed by <tt>ys</tt>'s elements. <tt>xs</tt> may be infinite, in which case the result will be equal
-     * to <tt>xs</tt>. <tt>ys</tt> may be infinite, in which case the result will also be infinite. Uses O(1)
-     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code (++)} operator. Creates an {@code Iterable} consisting of {@code xs}'s
+     * elements followed by {@code ys}'s elements. {@code xs} may be infinite, in which case the result will be equal
+     * to {@code xs}. {@code ys} may be infinite, in which case the result will also be infinite. Uses O(1)
+     * additional memory. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li><tt>ys</tt> must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>{@code ys} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|+|<tt>ys</tt>|
+     * Result length is |{@code xs}|+|{@code ys}|
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param ys another <tt>Iterable</tt>
-     * @param <T> the element type of the <tt>Iterable</tt> to be created
-     * @return <tt>xs</tt> concatenated with <tt>ys</tt>
+     * @param xs an {@code Iterable}
+     * @param ys another {@code Iterable}
+     * @param <T> the element type of the {@code Iterable} to be created
+     * @return {@code xs} concatenated with {@code ys}
      */
     public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return () -> new Iterator<T>() {
@@ -749,105 +1242,105 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>(++)</tt> operator. Creates a <tt>String</tt> consisting of <tt>s</tt>'s characters
-     * followed by <tt>t</tt>'s characters. Uses O(n+m) additional memory, where n is the length of <tt>s</tt> and m is
-     * the length of <tt>t</tt>.
+     * Equivalent of Haskell's {@code (++)} operator. Creates a {@code String} consisting of {@code s}'s characters
+     * followed by {@code t}'s characters. Uses O(n+m) additional memory, where n is the length of {@code s} and m is
+     * the length of {@code t}.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-null.</li>
-     *  <li><tt>t</tt> must be non-null.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>{@code t} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|+|<tt>t</tt>|
+     * Result length is |{@code s}|+|{@code t}|
      *
-     * @param s a <tt>String</tt>
-     * @param t a <tt>String</tt>
-     * @return <tt>s</tt> concatenated with <tt>t</tt>
+     * @param s a {@code String}
+     * @param t a {@code String}
+     * @return {@code s} concatenated with {@code t}
      */
     public static @NotNull String concat(@NotNull String s, @NotNull String t) {
         return s + t;
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of an <tt>Iterable</tt>. Works on
-     * infinite <tt>Iterable</tt>s. Uses O(1) additional memory.
+     * Equivalent of Haskell's {@code head} function. Returns the first element of an {@code Iterable}. Works on
+     * infinite {@code Iterable}s. Uses O(1) additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return the <tt>Iterable</tt>'s first element
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return the {@code Iterable}'s first element
      */
     public static @Nullable <T> T head(@NotNull Iterable<T> xs) {
         return xs.iterator().next();
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of a <tt>List</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code head} function. Returns the first element of a {@code List}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>List</tt>
-     * @param <T> the <tt>List</tt>'s element type
-     * @return the <tt>List</tt>'s first element
+     * @param xs a {@code List}
+     * @param <T> the {@code List}'s element type
+     * @return the {@code List}'s first element
      */
     public static @Nullable <T> T head(@NotNull List<T> xs) {
         return xs.get(0);
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first element of a <tt>SortedSet</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code head} function. Returns the first element of a {@code SortedSet}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>SortedSet</tt>
-     * @param <T> the <tt>SortedSet</tt>'s element type
-     * @return the <tt>SortedSet</tt>'s first element
+     * @param xs a {@code SortedSet}
+     * @param <T> the {@code SortedSet}'s element type
+     * @return the {@code SortedSet}'s first element
      */
     public static @Nullable <T> T head(@NotNull SortedSet<T> xs) {
         return xs.first();
     }
 
     /**
-     * Equivalent of Haskell's <tt>head</tt> function. Returns the first character of a <tt>String</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code head} function. Returns the first character of a {@code String}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-empty.</li>
-     *  <li>The result may be any <tt>char</tt>.</li>
+     *  <li>{@code s} must be non-empty.</li>
+     *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>
-     * @return the <tt>String</tt>'s first character
+     * @param s a {@code String}
+     * @return the {@code String}'s first character
      */
     public static char head(@NotNull String s) {
         return s.charAt(0);
     }
 
     /**
-     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of an <tt>Iterable</tt>. Only works on
-     * finite <tt>Iterable</tt>s. Uses O(1) additional memory.
+     * Equivalent of Haskell's {@code last} function. Returns the last element of an {@code Iterable}. Only works on
+     * finite {@code Iterable}s. Uses O(1) additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty and finite.</li>
+     *  <li>{@code xs} must be non-empty and finite.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return the <tt>Iterable</tt>'s last element
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return the {@code Iterable}'s last element
      */
     public static @Nullable <T> T last(@NotNull Iterable<T> xs) {
         T previous = null;
@@ -862,70 +1355,70 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of a <tt>List</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code last} function. Returns the last element of a {@code List}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>List</tt>
-     * @param <T> the <tt>List</tt>'s element type
-     * @return the <tt>List</tt>'s last element
+     * @param xs a {@code List}
+     * @param <T> the {@code List}'s element type
+     * @return the {@code List}'s last element
      */
     public static @Nullable <T> T last(@NotNull List<T> xs) {
         return xs.get(xs.size() - 1);
     }
 
     /**
-     * Equivalent of Haskell's <tt>last</tt> function. Returns the last element of a <tt>SortedSet</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code last} function. Returns the last element of a {@code SortedSet}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result may be anything.</li>
      * </ul>
      *
-     * @param xs a <tt>SortedSet</tt>
-     * @param <T> the <tt>SortedSet</tt>'s element type
-     * @return the <tt>SortedSet</tt>'s last element
+     * @param xs a {@code SortedSet}
+     * @param <T> the {@code SortedSet}'s element type
+     * @return the {@code SortedSet}'s last element
      */
     public static @Nullable <T> T last(@NotNull SortedSet<T> xs) {
         return xs.last();
     }
 
     /**
-     * Equivalent of Haskell's <tt>last</tt> function. Returns the last character of a <tt>String</tt>. Uses O(1)
+     * Equivalent of Haskell's {@code last} function. Returns the last character of a {@code String}. Uses O(1)
      * additional memory.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-empty.</li>
-     *  <li>The result may be any <tt>char</tt>.</li>
+     *  <li>{@code s} must be non-empty.</li>
+     *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>
-     * @return the <tt>String</tt>'s last character
+     * @param s a {@code String}
+     * @return the {@code String}'s last character
      */
     public static char last(@NotNull String s) {
         return s.charAt(s.length() - 1);
     }
 
     /**
-     * Equivalent of Haskell's <tt>tail</tt> function. Returns all elements of an <tt>Iterable</tt> but the first.
-     * <tt>xs</tt> may be infinite, in which the result will also be infinite. Uses O(1) additional memory. The
-     * <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code tail} function. Returns all elements of an {@code Iterable} but the first.
+     * {@code xs} may be infinite, in which the result will also be infinite. Uses O(1) additional memory. The
+     * {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|&#x2212;1
+     * Result length is |{@code xs}|–1
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the first
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return an {@code Iterable} containing all elements of {@code xs} but the first
      */
     public static @NotNull <T> Iterable<T> tail(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -954,38 +1447,38 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>tail</tt> function. Given a <tt>String</tt>, returns a <tt>String</tt> containing
-     * all of its characters but the first. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
+     * Equivalent of Haskell's {@code tail} function. Given a {@code String}, returns a {@code String} containing
+     * all of its characters but the first. Uses O(n) additional memory, where n is the length of {@code s}.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-empty.</li>
-     *  <li>The result may be any <tt>char</tt>.</li>
+     *  <li>{@code s} must be non-empty.</li>
+     *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|&#x2212;1
+     * Result length is |{@code s}|–1
      *
-     * @param s a <tt>String</tt>
-     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the first
+     * @param s a {@code String}
+     * @return a {@code String} containing all characters of {@code s} but the first
      */
     public static @NotNull String tail(@NotNull String s) {
         return s.substring(1);
     }
 
     /**
-     * Equivalent of Haskell's <tt>init</tt> function. Returns all elements of an <tt>Iterable</tt> but the last.
-     * <tt>xs</tt> may be infinite, in which the result will be <tt>xs</tt>. Uses O(1) additional memory. The
-     * <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code init} function. Returns all elements of an {@code Iterable} but the last.
+     * {@code xs} may be infinite, in which the result will be {@code xs}. Uses O(1) additional memory. The
+     * {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-empty.</li>
+     *  <li>{@code xs} must be non-empty.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|&#x2212;1
+     * Result length is |{@code xs}|–1
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return an <tt>Iterable</tt> containing all elements of <tt>xs</tt> but the last
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return an {@code Iterable} containing all elements of {@code xs} but the last
      */
     public static @NotNull <T> Iterable<T> init(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -1019,85 +1512,85 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>tail</tt> function. Given a <tt>String</tt>, returns a <tt>String</tt> containing
-     * all of its characters but the last. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
+     * Equivalent of Haskell's {@code tail} function. Given a {@code String}, returns a {@code String} containing
+     * all of its characters but the last. Uses O(n) additional memory, where n is the length of {@code s}.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-empty.</li>
-     *  <li>The result may be any <tt>char</tt>.</li>
+     *  <li>{@code s} must be non-empty.</li>
+     *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|&#x2212;1
+     * Result length is |{@code s}|–1
      *
-     * @param s a <tt>String</tt>
-     * @return a <tt>String</tt> containing all characters of <tt>s</tt> but the last
+     * @param s a {@code String}
+     * @return a {@code String} containing all characters of {@code s} but the last
      */
     public static @NotNull String init(@NotNull String s) {
         return s.substring(0, s.length() - 1);
     }
 
     /**
-     * Equivalent of Haskell's <tt>null</tt> function. Tests whether an <tt>Iterable</tt> contains no elements.
-     * <tt>xs</tt> may be infinite. Uses O(1) additional space.
+     * Equivalent of Haskell's {@code null} function. Tests whether an {@code Iterable} contains no elements.
+     * {@code xs} may be infinite. Uses O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return whether <tt>xs</tt> is empty
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return whether {@code xs} is empty
      */
     public static <T> boolean isEmpty(@NotNull Iterable<T> xs) {
         return !xs.iterator().hasNext();
     }
 
     /**
-     * Equivalent of Haskell's <tt>null</tt> function. Tests whether a <tt>Collection</tt> contains no elements. Uses
+     * Equivalent of Haskell's {@code null} function. Tests whether a {@code Collection} contains no elements. Uses
      * O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param xs a <tt>Collection</tt>
-     * @param <T> the <tt>Collection</tt>'s element type
-     * @return whether <tt>xs</tt> is empty
+     * @param xs a {@code Collection}
+     * @param <T> the {@code Collection}'s element type
+     * @return whether {@code xs} is empty
      */
     public static <T> boolean isEmpty(@NotNull Collection<T> xs) {
         return xs.isEmpty();
     }
 
     /**
-     * Equivalent of Haskell's <tt>null</tt> function. Tests whether a <tt>String</tt> contains no characters. Uses
+     * Equivalent of Haskell's {@code null} function. Tests whether a {@code String} contains no characters. Uses
      * O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>
-     * @return whether <tt>s</tt> is empty
+     * @param s a {@code String}
+     * @return whether {@code s} is empty
      */
     public static boolean isEmpty(@NotNull String s) {
         return s.isEmpty();
     }
 
     /**
-     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in an <tt>Iterable</tt>. Only
-     * works on finite <tt>Iterable</tt>s. Uses O(1) additional space.
+     * Equivalent of Haskell's {@code length} function. Returns the number of elements in an {@code Iterable}. Only
+     * works on finite {@code Iterable}s. Uses O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return the <tt>Iterable</tt>'s length
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return the {@code Iterable}'s length
      */
     public static <T> int length(@NotNull Iterable<T> xs) {
         int i = 0;
@@ -1108,18 +1601,18 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in an <tt>Iterable</tt>. Only
-     * works on finite <tt>Iterable</tt>s. Uses O(log(n)) additional space, where n is <tt>xs</tt>'s length; but it's
+     * Equivalent of Haskell's {@code length} function. Returns the number of elements in an {@code Iterable}. Only
+     * works on finite {@code Iterable}s. Uses O(log(n)) additional space, where n is {@code xs}'s length; but it's
      * effectively constant space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return the <tt>Iterable</tt>'s length
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return the {@code Iterable}'s length
      */
     public static @NotNull <T> BigInteger bigIntegerLength(@NotNull Iterable<T> xs) {
         BigInteger i = BigInteger.ZERO;
@@ -1130,33 +1623,33 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of elements in a <tt>Collection</tt>. Uses
+     * Equivalent of Haskell's {@code length} function. Returns the number of elements in a {@code Collection}. Uses
      * O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param xs a <tt>Collection</tt>
-     * @param <T> the <tt>Collection</tt>'s element type
-     * @return the <tt>Collection</tt>'s length
+     * @param xs a {@code Collection}
+     * @param <T> the {@code Collection}'s element type
+     * @return the {@code Collection}'s length
      */
     public static <T> int length(@NotNull Collection<T> xs) {
         return xs.size();
     }
 
     /**
-     * Equivalent of Haskell's <tt>length</tt> function. Returns the number of characters in a <tt>String</tt>. Uses
+     * Equivalent of Haskell's {@code length} function. Returns the number of characters in a {@code String}. Uses
      * O(1) additional space.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * @param s a <tt>String</tt>
-     * @return the <tt>String</tt>'s length
+     * @param s a {@code String}
+     * @return the {@code String}'s length
      */
     public static int length(@NotNull String s) {
         return s.length();
@@ -1181,24 +1674,24 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>Iterable</tt> into another by applying a
-     * function to each element. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code map} function. Transforms one {@code Iterable} into another by applying a
+     * function to each element. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>f</tt> must be non-null.</li>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li><tt>xs</tt> must only contain elements that are valid inputs for <tt>f</tt>.</li>
+     *  <li>{@code f} must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>{@code xs} must only contain elements that are valid inputs for {@code f}.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|
+     * Result length is |{@code xs}|
      *
-     * @param f the function that transforms each element in the <tt>Iterable</tt>
-     * @param xs the <tt>Iterable</tt>
-     * @param <A> the type of the original <tt>Iterable</tt>'s elements
-     * @param <B> the type of the output <tt>Iterable</tt>'s elements
-     * @return an <tt>Iterable</tt> containing the elements of <tt>xs</tt> transformed by <tt>f</tt>
+     * @param f the function that transforms each element in the {@code Iterable}
+     * @param xs the {@code Iterable}
+     * @param <A> the type of the original {@code Iterable}'s elements
+     * @param <B> the type of the output {@code Iterable}'s elements
+     * @return an {@code Iterable} containing the elements of {@code xs} transformed by {@code f}
      */
     public static @NotNull <A, B> Iterable<B> map(@NotNull Function<A, B> f, @NotNull Iterable<A> xs) {
         return () -> new Iterator<B>() {
@@ -1222,21 +1715,21 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>map</tt> function. Transforms one <tt>String</tt> into another by applying a
+     * Equivalent of Haskell's {@code map} function. Transforms one {@code String} into another by applying a
      * function to each character. Uses O(n) additional memory, where n is the length of the input string.
      *
      * <ul>
-     *  <li><tt>f</tt> must be non-null.</li>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li><tt>xs</tt> must only contain characters that are valid inputs for <tt>f</tt>.</li>
+     *  <li>{@code f} must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>{@code xs} must only contain characters that are valid inputs for {@code f}.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|
+     * Result length is |{@code s}|
      *
-     * @param f the function that transforms each character in the <tt>String</tt>
-     * @param s the <tt>String</tt>
-     * @return a <tt>String</tt> containing the characters of <tt>s</tt> transformed by <tt>f</tt>
+     * @param f the function that transforms each character in the {@code String}
+     * @param s the {@code String}
+     * @return a {@code String} containing the characters of {@code s} transformed by {@code f}
      */
     public static @NotNull String map(@NotNull Function<Character, Character> f, @NotNull String s) {
         StringBuilder sb = new StringBuilder();
@@ -1247,20 +1740,20 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>reverse</tt> function. Reverses an <tt>Iterable</tt>. <tt>xs</tt> must be finite.
-     * Uses O(n) additional memory, where n is the length of <tt>xs</tt>. The resulting list may be modified, but the
-     * modifications will not affect the original <tt>Iterable</tt>.
+     * Equivalent of Haskell's {@code reverse} function. Reverses an {@code Iterable}. {@code xs} must be finite.
+     * Uses O(n) additional memory, where n is the length of {@code xs}. The resulting list may be modified, but the
+     * modifications will not affect the original {@code Iterable}.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|
+     * Result length is |{@code xs}|
      *
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return a <tt>List</tt> containing <tt>xs</tt>'s elements in reverse order
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return a {@code List} containing {@code xs}'s elements in reverse order
      */
     public static @NotNull <T> List<T> reverse(@NotNull Iterable<T> xs) {
         List<T> list = toList(xs);
@@ -1269,18 +1762,18 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>reverse</tt> function. Reverses a <tt>String</tt>. Uses O(n) additional memory,
-     * where n is the length of <tt>s</tt>.
+     * Equivalent of Haskell's {@code reverse} function. Reverses a {@code String}. Uses O(n) additional memory,
+     * where n is the length of {@code s}.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-null.</li>
+     *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|
+     * Result length is |{@code s}|
      *
-     * @param s a <tt>String</tt>
-     * @return a <tt>String</tt> containing <tt>s</tt>'s characters in reverse order
+     * @param s a {@code String}
+     * @return a {@code String} containing {@code s}'s characters in reverse order
      */
     public static @NotNull String reverse(@NotNull String s) {
         char[] reversed = new char[s.length()];
@@ -1297,23 +1790,23 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>intersperse</tt> function. Given an <tt>Iterable</tt> <tt>xs</tt> and a seperator
-     * <tt>sep</tt>, returns an <tt>Iterable</tt> consisting of the elements of <tt>xs</tt> with <tt>sep</tt> between
-     * every adjacent pair. <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code intersperse} function. Given an {@code Iterable} {@code xs} and a seperator
+     * {@code sep}, returns an {@code Iterable} consisting of the elements of {@code xs} with {@code sep} between
+     * every adjacent pair. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>sep</tt> may be anything.</li>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> whose odd-indexed (using 0-based indexing) elements are identical.</li>
+     *  <li>{@code sep} may be anything.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result is an {@code Iterable} whose odd-indexed (using 0-based indexing) elements are identical.</li>
      * </ul>
      *
-     * Result length is 0 when |<tt>xs</tt>|=0, 2|<tt>xs</tt>|&#x2212;1 otherwise
+     * Result length is 0 when |{@code xs}|=0, 2|{@code xs}|–1 otherwise
      *
      * @param sep a separator
-     * @param xs an <tt>Iterable</tt>
-     * @param <T> the <tt>Iterable</tt>'s element type
-     * @return an <tt>Iterable</tt> consisting of the elements of <tt>xs</tt> interspersed with <tt>sep</tt>
+     * @param xs an {@code Iterable}
+     * @param <T> the {@code Iterable}'s element type
+     * @return an {@code Iterable} consisting of the elements of {@code xs} interspersed with {@code sep}
      */
     public static @NotNull <T> Iterable<T> intersperse(@Nullable T sep, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
@@ -1344,21 +1837,21 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>intersperse</tt> function. Given a <tt>String</tt> <tt>s</tt> and a seperator
-     * <tt>sep</tt>, returns a <tt>String</tt> consisting of the characters of <tt>s</tt> with <tt>sep</tt> between
-     * every adjacent pair. Uses O(n) additional memory, where n is the length of <tt>s</tt>.
+     * Equivalent of Haskell's {@code intersperse} function. Given a {@code String} {@code s} and a seperator
+     * {@code sep}, returns a {@code String} consisting of the characters of {@code s} with {@code sep} between
+     * every adjacent pair. Uses O(n) additional memory, where n is the length of {@code s}.
      *
      * <ul>
-     *  <li><tt>sep</tt> may be any <tt>char</tt>.</li>
-     *  <li><tt>s</tt> must be non-null.</li>
-     *  <li>The result is a <tt>String</tt> whose odd-indexed (using 0-based indexing) characters are identical.</li>
+     *  <li>{@code sep} may be any {@code char}.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is a {@code String} whose odd-indexed (using 0-based indexing) characters are identical.</li>
      * </ul>
      *
-     * Result length is 0 when |<tt>s</tt>|=0, 2|<tt>s</tt>|&#x2212;1 otherwise
+     * Result length is 0 when |{@code s}|=0, 2|{@code s}|–1 otherwise
      *
      * @param sep a separator
-     * @param s a <tt>String</tt>
-     * @return a <tt>String</tt> consisting of the characters of <tt>s</tt> interspersed with <tt>sep</tt>
+     * @param s a {@code String}
+     * @return a {@code String} consisting of the characters of {@code s} interspersed with {@code sep}
      */
     public static @NotNull String intersperse(char sep, @NotNull String s) {
         if (s.isEmpty()) return "";
@@ -1372,71 +1865,71 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>intercalate</tt> function. Inserts an <tt>Iterable</tt> between every two adjacent
-     * <tt>Iterable</tt>s in an <tt>Iterable</tt> of <tt>Iterable</tt>s, flattening the result. <tt>xss</tt>, any
-     * element of <tt>xss</tt>, or <tt>xs</tt> may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code intercalate} function. Inserts an {@code Iterable} between every two adjacent
+     * {@code Iterable}s in an {@code Iterable} of {@code Iterable}s, flattening the result. {@code xss}, any
+     * element of {@code xss}, or {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
+     * additional memory. The {@code Iterable} produced does not support removing elements.
      *
-     * Result length is the sum of the lengths of <tt>xs</tt>'s elements and (0 if |<tt>xss</tt>|=0,
-     * |<tt>xss</tt>|(|<tt>xs</tt>|&#x2212;1) otherwise)
+     * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code xss}|=0,
+     * |{@code xss}|(|{@code xs}|–1) otherwise)
      *
      * <ul>
-     *  <li><tt>xs</tt> must be non-null.</li>
-     *  <li><tt>xss</tt> must be non-null.</li>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>{@code xss} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param xs the separating <tt>Iterable</tt>
-     * @param xss the separated <tt>Iterable</tt>
-     * @param <T> the resulting <tt>Iterable</tt>'s element type
-     * @return <tt>xss</tt> intercalated by <tt>xs</tt>
+     * @param xs the separating {@code Iterable}
+     * @param xss the separated {@code Iterable}
+     * @param <T> the resulting {@code Iterable}'s element type
+     * @return {@code xss} intercalated by {@code xs}
      */
     public static @NotNull <T> Iterable<T> intercalate(@NotNull Iterable<T> xs, @NotNull Iterable<Iterable<T>> xss) {
         return concat(intersperse(xs, xss));
     }
 
     /**
-     * Equivalent of Haskell's <tt>intercalate</tt> function. Inserts a <tt>String</tt> between every two adjacent
-     * <tt>String</tt>s in an <tt>Iterable</tt> of <tt>String</tt>s, flattening the result. Uses O(abc) additional
-     * memory, where a is the length of <tt>strings</tt>, b is the maximum length of any string in <tt>strings</tt>,
-     * and c is the length of <tt>sep</tt>.
-     * The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code intercalate} function. Inserts a {@code String} between every two adjacent
+     * {@code String}s in an {@code Iterable} of {@code String}s, flattening the result. Uses O(abc) additional
+     * memory, where a is the length of {@code strings}, b is the maximum length of any string in {@code strings},
+     * and c is the length of {@code sep}.
+     * The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>sep</tt> must be non-null.</li>
-     *  <li><tt>strings</tt> must be finite.</li>
+     *  <li>{@code sep} must be non-null.</li>
+     *  <li>{@code strings} must be finite.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * Result length is the sum of the lengths of <tt>xs</tt>'s elements and (0 if |<tt>strings</tt>|=0,
-     * |<tt>strings</tt>|(|<tt>sep</tt>|&#x2212;1) otherwise)
+     * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code strings}|=0,
+     * |{@code strings}|(|{@code sep}|–1) otherwise)
      *
-     * @param sep the separating <tt>String</tt>
-     * @param strings the separated <tt>String</tt>s
-     * @return <tt>strings</tt> intercalated by <tt>sep</tt>
+     * @param sep the separating {@code String}
+     * @param strings the separated {@code String}s
+     * @return {@code strings} intercalated by {@code sep}
      */
     public static @NotNull String intercalate(@NotNull String sep, @NotNull Iterable<String> strings) {
         return concatStrings(intersperse(sep, strings));
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements still end up in the
-     * result. See test cases for examples. Any element of <tt>xss</tt> may be infinite, in which case the result will
-     * be infinite. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the largest amount of
-     * memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code Iterables}. If the rows have different lengths, then the "overhanging" elements still end up in the
+     * result. See test cases for examples. Any element of {@code xss} may be infinite, in which case the result will
+     * be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the largest amount of
+     * memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not support removing
      * elements.
      *
      * <ul>
-     *  <li><tt>xss</tt> must be finite.</li>
+     *  <li>{@code xss} must be finite.</li>
      *  <li>The lengths of the result's elements are finite, non-increasing, and never 0.</li>
      * </ul>
      *
-     * Result length is the maximum length of <tt>xss</tt>'s elements
+     * Result length is the maximum length of {@code xss}'s elements
      *
-     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
-     * @param <T> the <tt>Iterable</tt>'s elements' element type
-     * @return <tt>xss</tt>, transposed
+     * @param xss an {@code Iterable} of {@code Iterable}s
+     * @param <T> the {@code Iterable}'s elements' element type
+     * @return {@code xss}, transposed
      */
     public static @NotNull <T> Iterable<List<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<List<T>>() {
@@ -1466,21 +1959,21 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>String</tt>s. If the rows have different lengths, then the "overhanging" characters still end up in the
-     * result. See test cases for examples. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m
-     * is the length of the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code String}s. If the rows have different lengths, then the "overhanging" characters still end up in the
+     * result. See test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m
+     * is the length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support
      * removing elements.
      *
      * <ul>
-     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>{@code strings} must be non-null.</li>
      *  <li>The lengths of the result's elements are non-increasing and never 0.</li>
      * </ul>
      *
-     * Result length is the maximum length of <tt>strings</tt>'s elements
+     * Result length is the maximum length of {@code strings}'s elements
      *
-     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
-     * @return <tt>strings</tt>, transposed
+     * @param strings an {@code Iterable} of {@code String}s
+     * @return {@code strings}, transposed
      */
     public static @NotNull Iterable<String> transposeStrings(@NotNull Iterable<String> strings) {
         return map(
@@ -1490,23 +1983,23 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>Iterables</tt>. If the rows have different lengths, then the "overhanging" elements will be truncated; the
-     * result's rows will all have equal lengths. See test cases for examples. Any element of <tt>xss</tt> may be
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code Iterables}. If the rows have different lengths, then the "overhanging" elements will be truncated; the
+     * result's rows will all have equal lengths. See test cases for examples. Any element of {@code xss} may be
      * infinite, in which case the result will be infinite. Uses O(nm) additional memory, where n is then length of
-     * <tt>xss</tt> and m is the largest amount of memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The
-     * <tt>Iterable</tt> produced does not support removing elements.
+     * {@code xss} and m is the largest amount of memory used by any {@code Iterable} in {@code xss}. The
+     * {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>xss</tt> must be finite.</li>
+     *  <li>{@code xss} must be finite.</li>
      *  <li>The lengths of the result's elements are finite and equal.</li>
      * </ul>
      *
-     * Result length is the minimum length of <tt>xss</tt>'s elements
+     * Result length is the minimum length of {@code xss}'s elements
      *
-     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
-     * @param <T> the <tt>Iterable</tt>'s elements' element type
-     * @return <tt>xss</tt>, transposed
+     * @param xss an {@code Iterable} of {@code Iterable}s
+     * @param <T> the {@code Iterable}'s elements' element type
+     * @return {@code xss}, transposed
      */
     public static @NotNull <T> Iterable<List<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
         return () -> new Iterator<List<T>>() {
@@ -1534,21 +2027,21 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>String</tt>s. If the rows have different lengths, then the "overhanging" characters will be truncated. See
-     * test cases for examples. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the
-     * length of the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code String}s. If the rows have different lengths, then the "overhanging" characters will be truncated. See
+     * test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
+     * length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing
      * elements.
      *
      * <ul>
-     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>{@code strings} must be non-null.</li>
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
      *
-     * Result length is the minimum length of <tt>strings</tt>'s elements
+     * Result length is the minimum length of {@code strings}'s elements
      *
-     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
-     * @return <tt>strings</tt>, transposed
+     * @param strings an {@code Iterable} of {@code String}s
+     * @return {@code strings}, transposed
      */
     public static @NotNull Iterable<String> transposeStringsTruncating(@NotNull Iterable<String> strings) {
         return map(
@@ -1558,24 +2051,24 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>Iterables</tt>. If the rows have different lengths, then the gaps will be padded; the result's rows will all
-     * have equal lengths. See test cases for examples. Any element of <tt>xss</tt> may be infinite, in which case the
-     * result will be infinite. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the
-     * largest amount of memory used by any <tt>Iterable</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code Iterables}. If the rows have different lengths, then the gaps will be padded; the result's rows will all
+     * have equal lengths. See test cases for examples. Any element of {@code xss} may be infinite, in which case the
+     * result will be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
+     * largest amount of memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not
      * support removing elements.
      *
      * <ul>
-     *  <li><tt>xss</tt> must be finite.</li>
+     *  <li>{@code xss} must be finite.</li>
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
      *
-     * Result length is the maximum length of <tt>xss</tt>'s elements
+     * Result length is the maximum length of {@code xss}'s elements
      *
-     * @param xss an <tt>Iterable</tt> of <tt>Iterable</tt>s
+     * @param xss an {@code Iterable} of {@code Iterable}s
      * @param pad the padding
-     * @param <T> the <tt>Iterable</tt>'s elements' element type
-     * @return <tt>xss</tt>, transposed
+     * @param <T> the {@code Iterable}'s elements' element type
+     * @return {@code xss}, transposed
      */
     public static @NotNull <T> Iterable<Iterable<T>> transposePadded(
             @Nullable T pad,
@@ -1606,21 +2099,21 @@ public final class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's <tt>transpose</tt> function. Swaps rows and columns of an <tt>Iterable</tt> of
-     * <tt>String</tt>s. If the rows have different lengths, then the gaps will be padded; the result's rows will all
-     * have equal lengths. Uses O(nm) additional memory, where n is then length of <tt>xss</tt> and m is the length of
-     * the longest <tt>String</tt> in <tt>xss</tt>. The <tt>Iterable</tt> produced does not support removing elements.
+     * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
+     * {@code String}s. If the rows have different lengths, then the gaps will be padded; the result's rows will all
+     * have equal lengths. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the length of
+     * the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing elements.
      *
      * <ul>
-     *  <li><tt>strings</tt> must be non-null.</li>
+     *  <li>{@code strings} must be non-null.</li>
      *  <li>The lengths of the result's elements are equal.</li>
      * </ul>
      *
-     * Result length is the maximum length of <tt>strings</tt>'s elements
+     * Result length is the maximum length of {@code strings}'s elements
      *
-     * @param strings an <tt>Iterable</tt> of <tt>String</tt>s
+     * @param strings an {@code Iterable} of {@code String}s
      * @param pad the padding
-     * @return <tt>strings</tt>, transposed
+     * @return {@code strings}, transposed
      */
     public static @NotNull Iterable<String> transposeStringsPadded(char pad, @NotNull Iterable<String> strings) {
         return map(
@@ -1984,6 +2477,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> cycle(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return xs;
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
 
