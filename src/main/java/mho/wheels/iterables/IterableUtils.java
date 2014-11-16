@@ -709,6 +709,7 @@ public final class IterableUtils {
      * otherwise
      *
      * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
      * largest {@code float} an integer away from {@code a} and less than or equal to {@code b}.
      */
@@ -753,6 +754,7 @@ public final class IterableUtils {
      * otherwise
      *
      * @param a the starting value of this arithmetic progression
+     * @param b the ending value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive) and ending at the
      * largest {@code double} an integer away from {@code a} and less than or equal to {@code b}.
      */
