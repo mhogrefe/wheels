@@ -26,13 +26,6 @@ public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
 
-    public static void main(String[] args) {
-        IterableProvider P = new ExhaustiveProvider();
-        for (Triple<BigDecimal, Float, Character> t : P.triples(P.bigDecimals(), P.floats(), P.asciiCharacters())) {
-            System.out.println(t);
-        }
-    }
-
     protected ExhaustiveProvider() {}
 
     /**
