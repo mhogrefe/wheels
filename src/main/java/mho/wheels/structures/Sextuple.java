@@ -186,7 +186,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      *
      * @return a string representation of <tt>this</tt>.
      */
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ")";
     }
 

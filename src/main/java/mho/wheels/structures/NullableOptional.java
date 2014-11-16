@@ -1,19 +1,23 @@
 package mho.wheels.structures;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class NullableOptional<T> {
     private boolean present;
-    private T x;
+    private @Nullable T x;
 
-    public static <T> NullableOptional<T> of(T x) {
+    public static @NotNull <T> NullableOptional<T> of(T x) {
         NullableOptional<T> optional = new NullableOptional<>();
         optional.x = x;
         optional.present = true;
         return optional;
     }
 
-    public static <T> NullableOptional<T> empty() {
+    public static @NotNull <T> NullableOptional<T> empty() {
         NullableOptional<T> optional = new NullableOptional<>();
         optional.present = false;
         return optional;
@@ -23,14 +27,18 @@ public class NullableOptional<T> {
         return present;
     }
 
-    public T get() {
+    public @Nullable T get() {
         if (!present)
             throw new NoSuchElementException("no value present");
         return x;
     }
 
+    public static @NotNull <T> NullableOptional<T> fromOptional(@NotNull Optional<T> ot) {
+        return ot.isPresent() ? of(ot.get()) : empty();
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NullableOptional that = (NullableOptional) o;
@@ -45,7 +53,7 @@ public class NullableOptional<T> {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return present ? String.format("NullableOptional[%s]", x) : "NullableOptional.empty";
     }
 }

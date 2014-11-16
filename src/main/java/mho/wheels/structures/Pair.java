@@ -1,11 +1,16 @@
 package mho.wheels.structures;
 
+import mho.wheels.iterables.IterableUtils;
+import mho.wheels.numbers.Numbers;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
+import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 /**
@@ -107,6 +112,22 @@ public final class Pair<A, B> {
         return result;
     }
 
+    public static @NotNull <S, T> Optional<Pair<S, T>> read(
+            @NotNull String s,
+            @NotNull Function<String, NullableOptional<S>> readS,
+            @NotNull Function<String, NullableOptional<T>> readT
+    ) {
+        if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
+        s = tail(init(s));
+        String[] tokens = s.split(", ");
+        if (tokens.length != 2) return Optional.empty();
+        NullableOptional<S> os = readS.apply(tokens[0]);
+        if (!os.isPresent()) return Optional.empty();
+        NullableOptional<T> ot = readT.apply(tokens[1]);
+        if (!ot.isPresent()) return Optional.empty();
+        return Optional.of(new Pair<>(os.get(), ot.get()));
+    }
+
     /**
      * Creates a string representation of {@code this}.
      *
@@ -118,7 +139,7 @@ public final class Pair<A, B> {
      *
      * @return a string representation of {@code this}.
      */
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ")";
     }
 

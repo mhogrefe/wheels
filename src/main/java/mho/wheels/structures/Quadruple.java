@@ -154,7 +154,7 @@ public final class Quadruple<A, B, C, D> {
      *
      * @return a string representation of <tt>this</tt>.
      */
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ", " + d + ")";
     }
 

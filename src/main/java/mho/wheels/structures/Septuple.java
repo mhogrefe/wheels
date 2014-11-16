@@ -209,7 +209,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      *
      * @return a string representation of <tt>this</tt>.
      */
-    public String toString() {
+    public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")";
     }
 
