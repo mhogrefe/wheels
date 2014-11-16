@@ -9,6 +9,7 @@ Useful stuff. Highlights:
 Class Status
 ============
 
-| Class          | JavaDoc | Tests | Demos | Properties |
-|:-------------- |:-------:|:-----:|:-----:|:----------:|
-| CachedIterable | ✗       | ✗     | ✗     | ✗          |
+| Class              | Methods | JavaDoc | Tests | Demos | Properties |
+|:------------------ |:-------:|:-------:|:-----:|:-----:|:----------:|
+| CachedIterable     | ✘       | ✘       | ✘     | ✘     | ✘         |
+| ExhaustiveProvider | ✔       | ✘       | ✘     | ✘     | ✘         |
