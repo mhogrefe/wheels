@@ -3053,6 +3053,54 @@ public final class IterableUtils {
         return group(p -> p.a == p.b, s);
     }
 
+    public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
+        return cons(new ArrayList<T>(), ()-> new Iterator<List<T>>() {
+            private Iterator<T> xsi = xs.iterator();
+            private List<T> currentList = new ArrayList<>();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> nextList = new ArrayList<>();
+                nextList.addAll(currentList);
+                nextList.add(xsi.next());
+                currentList = nextList;
+                return currentList;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        });
+    }
+
+    public static @NotNull Iterable<String> inits(@NotNull String s) {
+        return map(i -> s.substring(0, i), range(0, s.length()));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> tails(@NotNull Iterable<T> xs) {
+        List<T> list = toList(xs);
+        return map(
+                i -> {
+                    List<T> subList = new ArrayList<T>();
+                    for (int j = i; j < list.size(); j++) {
+                        subList.add(list.get(j));
+                    }
+                    return subList;
+                },
+                range(0, list.size())
+        );
+    }
+
+    public static @NotNull Iterable<String> tails(@NotNull String s) {
+        return map(s::substring, range(0, s.length()));
+    }
+
     public static <T> boolean isPrefixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         Iterator<T> xsi = xs.iterator();
         Iterator<T> ysi = ys.iterator();
