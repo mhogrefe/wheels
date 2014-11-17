@@ -2200,6 +2200,14 @@ public final class IterableUtils {
         return concat(map(f, xs));
     }
 
+    public static @NotNull <T> String concatMapStrings(@NotNull Function<T, String> f, @NotNull Iterable<T> xs) {
+        StringBuilder sb = new StringBuilder();
+        for (T x : xs) {
+            sb.append(f.apply(x));
+        }
+        return sb.toString();
+    }
+
     public static boolean and(@NotNull Iterable<Boolean> xs) {
         for (boolean x : xs) {
             if (!x) return false;
@@ -4117,6 +4125,28 @@ public final class IterableUtils {
                 map(p -> p.f, ps),
                 map(p -> p.g, ps)
         );
+    }
+
+    public static @NotNull Iterable<String> lines(@NotNull String s) {
+        Iterable<String> grouped = group(p -> (p.a == '\n') == (p.b == '\n'), s);
+        Iterable<Boolean> selection = cycle(Arrays.asList(true, false));
+        if (head(head(grouped)) == '\n') selection = tail(selection);
+        return select(selection, grouped);
+    }
+
+    public static @NotNull Iterable<String> words(@NotNull String s) {
+        Iterable<String> grouped = group(p -> Character.isWhitespace(p.a) == Character.isWhitespace(p.b), s);
+        Iterable<Boolean> selection = cycle(Arrays.asList(true, false));
+        if (head(head(grouped)) == '\n') selection = tail(selection);
+        return select(selection, grouped);
+    }
+
+    public static @NotNull String unlines(@NotNull Iterable<String> lines) {
+        return concatMapStrings(line -> line + "\n", lines);
+    }
+
+    public static @NotNull String unwords(@NotNull Iterable<String> words) {
+        return intercalate(" ", words);
     }
 
     public static @NotNull <T> Iterable<T> nub(@NotNull Iterable<T> xs) {
