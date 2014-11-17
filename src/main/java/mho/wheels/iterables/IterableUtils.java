@@ -3399,6 +3399,61 @@ public final class IterableUtils {
         return Optional.empty();
     }
 
+    public static @NotNull <T> Iterable<Integer> elemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(0), xs)));
+    }
+
+    public static @NotNull <T> Iterable<BigInteger> bigIntegerElemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(BigInteger.ZERO), xs)));
+    }
+
+    public static @NotNull Iterable<Integer> elemIndices(char c, @NotNull String s) {
+        return map(p -> p.a, filter(p -> p.b == c, zip(range(0), fromString(s))));
+    }
+
+    public static @NotNull <T> Optional<Integer> findIndex(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        int i = 0;
+        for (T x : xs) {
+            if (p.test(x)) return Optional.of(i);
+            i++;
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Optional<BigInteger> bigIntegerFindIndex(
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        BigInteger i = BigInteger.ZERO;
+        for (T x : xs) {
+            if (p.test(x)) return Optional.of(i);
+            i = i.add(BigInteger.ONE);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull Optional<Integer> findIndex(@NotNull Predicate<Character> p, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (p.test(s.charAt(i))) return Optional.of(i);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Iterable<Integer> findIndices(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), xs)));
+    }
+
+    public static @NotNull <T> Iterable<BigInteger> bigIntegerFindIndices(
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(BigInteger.ZERO), xs)));
+    }
+
+    public static @NotNull Iterable<Integer> findIndices(@NotNull Predicate<Character> p, @NotNull String s) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), fromString(s))));
+    }
+
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
         return () -> new Iterator<Pair<A, B>>() {
             private final Iterator<A> asi = as.iterator();
