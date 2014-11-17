@@ -2292,12 +2292,20 @@ public final class IterableUtils {
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1(p -> max(p.a, p.b), xs);
     }
 
-    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static char maximum(@NotNull String s) {
+        return foldl1(p -> max(p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1(p -> min(p.a, p.b), xs);
+    }
+
+    public static char minimum(@NotNull String s) {
+        return foldl1(p -> min(p.a, p.b), fromString(s));
     }
 
     public static @NotNull <A, B> Iterable<B> scanl(
@@ -4037,7 +4045,7 @@ public final class IterableUtils {
         return !ysi.hasNext();
     }
 
-    public static @NotNull <T> Iterable<T> nubBy(@NotNull Predicate<Pair<T, T>> p, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> nub(@NotNull Predicate<Pair<T, T>> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             private Set<T> seen = new HashSet<>();
             @Override
@@ -4084,7 +4092,7 @@ public final class IterableUtils {
         };
     }
 
-    public static @NotNull String nubBy(@NotNull Predicate<Pair<Character, Character>> p, @NotNull String s) {
+    public static @NotNull String nub(@NotNull Predicate<Pair<Character, Character>> p, @NotNull String s) {
         Set<Character> seen = new HashSet<>();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
@@ -4095,5 +4103,42 @@ public final class IterableUtils {
             }
         }
         return sb.toString();
+    }
+
+    public static @NotNull <T extends Comparable<T>> List<T> sort(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xss
+    ) {
+        List<T> list = toList(xss);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public static @NotNull String sort(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        List<Character> list = toList(s);
+        Collections.sort(list, comparator);
+        return charsToString(list);
+    }
+
+    public static @NotNull <T extends Comparable<T>> T maximum(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return foldl1(p -> max(comparator, p.a, p.b), xs);
+    }
+
+    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1(p -> max(comparator, p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T extends Comparable<T>> T minimum(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return foldl1(p -> min(comparator, p.a, p.b), xs);
+    }
+
+    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1(p -> min(comparator, p.a, p.b), fromString(s));
     }
 }
