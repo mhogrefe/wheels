@@ -3183,6 +3183,49 @@ public final class IterableUtils {
         });
     }
 
+    public static @NotNull <A, B> Iterable<B> adjacentPairsWith(
+            @NotNull Function<Pair<A, A>, B> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return map(list -> f.apply(new Pair<A, A>(list.get(0), list.get(1))), windows(2, xs));
+    }
+
+    public static @NotNull Iterable<Byte> deltaBytes(@NotNull Iterable<Byte> xs) {
+        return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
+    }
+
+    public static @NotNull Iterable<Short> deltaShorts(@NotNull Iterable<Short> xs) {
+        return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
+    }
+
+    public static @NotNull Iterable<Integer> deltaIntegers(@NotNull Iterable<Integer> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static @NotNull Iterable<Long> deltaLongs(@NotNull Iterable<Long> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static @NotNull Iterable<BigInteger> deltaBigIntegers(@NotNull Iterable<BigInteger> xs) {
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+    }
+
+    public static @NotNull Iterable<BigDecimal> deltaBigDecimals(@NotNull Iterable<BigDecimal> xs) {
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+    }
+
+    public static @NotNull Iterable<Float> deltaFloats(@NotNull Iterable<Float> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static @NotNull Iterable<Double> deltaDoubles(@NotNull Iterable<Double> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static @NotNull Iterable<Integer> deltaCharacters(@NotNull Iterable<Character> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return any(zs -> equal(xs, zs), windows(length(xs), ys));
     }
