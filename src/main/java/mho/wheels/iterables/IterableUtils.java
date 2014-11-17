@@ -4295,6 +4295,25 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    public static <T> boolean unique(@NotNull Iterable<T> xs) {
+        Set<T> seen = new HashSet<>();
+        for (T x : xs) {
+            if (seen.contains(x)) return false;
+            seen.add(x);
+        }
+        return true;
+    }
+
+    public static boolean unique(@NotNull String s) {
+        Set<Character> seen = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (seen.contains(c)) return false;
+            seen.add(c);
+        }
+        return true;
+    }
+
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         HashSet<T> set = new HashSet<>();
         addTo(xs, set);
