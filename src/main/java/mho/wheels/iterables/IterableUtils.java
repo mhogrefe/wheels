@@ -3041,6 +3041,18 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull Iterable<Pair<Character, Integer>> countAdjacent(@NotNull String s) {
+        return countAdjacent(fromString(s));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> group(@NotNull Iterable<T> xs) {
+        return group(p -> Objects.equals(p.a, p.b), xs);
+    }
+
+    public static @NotNull <T> Iterable<String> group(@NotNull String s) {
+        return group(p -> p.a == p.b, s);
+    }
+
     public static <T> boolean isPrefixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         Iterator<T> xsi = xs.iterator();
         Iterator<T> ysi = ys.iterator();
@@ -4033,18 +4045,6 @@ public final class IterableUtils {
         return charsToString(list);
     }
 
-    public static <T> boolean equal(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
-        Iterator<T> xsi = xs.iterator();
-        Iterator<T> ysi = ys.iterator();
-        while (xsi.hasNext()) {
-            if (!ysi.hasNext()) return false;
-            T x = xsi.next();
-            T y = ysi.next();
-            if (!Objects.equals(x, y)) return false;
-        }
-        return !ysi.hasNext();
-    }
-
     public static @NotNull <T> Iterable<T> nub(@NotNull Predicate<Pair<T, T>> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             private Set<T> seen = new HashSet<>();
@@ -4140,5 +4140,84 @@ public final class IterableUtils {
 
     public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
         return foldl1(p -> min(comparator, p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> group(
+            @NotNull Predicate<Pair<T, T>> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return new Iterable<List<T>>() {
+            @Override
+            public Iterator<List<T>> iterator() {
+                return new Iterator<List<T>>() {
+                    private Iterator<T> xsi = xs.iterator();
+                    private boolean hasNext = xsi.hasNext();
+                    private boolean isLast = false;
+                    private T nextX = null;
+                    private List<T> next = null;
+                    {
+                        if (hasNext) {
+                            nextX = xsi.next();
+                        }
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public List<T> next() {
+                        if (isLast) {
+                            hasNext = false;
+                            return next;
+                        } else {
+                            List<T> oldNext = next;
+                            advance();
+                            return oldNext;
+                        }
+                    }
+
+                    private void advance() {
+                        T original = nextX;
+                        List<T> list = new ArrayList<>();
+                        do {
+                            list.add(nextX);
+                            if (!xsi.hasNext()) {
+                                isLast = true;
+                                break;
+                            }
+                            nextX = xsi.next();
+                        } while (p.test(new Pair<T, T>(original, nextX)));
+                        next = list;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull Iterable<String> group(
+            @NotNull Predicate<Pair<Character, Character>> p,
+            @NotNull String s
+    ) {
+        return map(IterableUtils::charsToString, group(p, fromString(s)));
+    }
+
+    public static <T> boolean equal(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        Iterator<T> xsi = xs.iterator();
+        Iterator<T> ysi = ys.iterator();
+        while (xsi.hasNext()) {
+            if (!ysi.hasNext()) return false;
+            T x = xsi.next();
+            T y = ysi.next();
+            if (!Objects.equals(x, y)) return false;
+        }
+        return !ysi.hasNext();
     }
 }
