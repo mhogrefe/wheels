@@ -3330,7 +3330,7 @@ public final class IterableUtils {
         return new Pair<>(sba.toString(), sbb.toString());
     }
 
-    public static <T> T get(Iterable<T> xs, int i) {
+    public static @Nullable <T> T get(@NotNull Iterable<T> xs, int i) {
         if (i < 0)
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3343,7 +3343,7 @@ public final class IterableUtils {
         return element;
     }
 
-    public static <T> T get(Iterable<T> xs, BigInteger i) {
+    public static @Nullable <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
         if (lt(i, BigInteger.ZERO))
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3356,22 +3356,47 @@ public final class IterableUtils {
         return element;
     }
 
-    public static <T> T get(List<T> xs, int i) {
+    public static @Nullable <T> T get(@NotNull List<T> xs, int i) {
         return xs.get(i);
     }
 
-    public static char get(String s, int i) {
+    public static char get(@NotNull String s, int i) {
         return s.charAt(i);
     }
 
-    public static <T> Iterable<T> select(Iterable<Boolean> bs, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> select(@NotNull Iterable<Boolean> bs, @NotNull Iterable<T> xs) {
         return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
     }
 
-    public static <T> String select(Iterable<Boolean> bs, String s) {
+    public static @NotNull String select(@NotNull Iterable<Boolean> bs, @NotNull String s) {
         return charsToString(
                 map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, Character>>) zip(bs, fromString(s))))
         );
+    }
+
+    public static @NotNull <T> Optional<Integer> elemIndex(@Nullable T x, @NotNull Iterable<T> xs) {
+        int i = 0;
+        for (T y : xs) {
+            if (Objects.equals(x, y)) return Optional.of(i);
+            i++;
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Optional<BigInteger> bigIntegerElemIndex(@Nullable T x, @NotNull Iterable<T> xs) {
+        BigInteger i = BigInteger.ZERO;
+        for (T y : xs) {
+            if (Objects.equals(x, y)) return Optional.of(i);
+            i = i.add(BigInteger.ONE);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull Optional<Integer> elemIndex(char c, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c) return Optional.of(i);
+        }
+        return Optional.empty();
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
