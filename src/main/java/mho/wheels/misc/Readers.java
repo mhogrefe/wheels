@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,29 @@ public class Readers {
                 return Optional.of(Ordering.EQ);
             case "GT":
                 return Optional.of(Ordering.GT);
+            default:
+                return Optional.empty();
+        }
+    }
+
+    public @NotNull Optional<RoundingMode> readRoundingMode(@NotNull String s) {
+        switch (s) {
+            case "UP":
+                return Optional.of(RoundingMode.UP);
+            case "DOWN":
+                return Optional.of(RoundingMode.DOWN);
+            case "CEILING":
+                return Optional.of(RoundingMode.CEILING);
+            case "FLOOR":
+                return Optional.of(RoundingMode.FLOOR);
+            case "HALF_UP":
+                return Optional.of(RoundingMode.HALF_UP);
+            case "HALF_DOWN":
+                return Optional.of(RoundingMode.HALF_DOWN);
+            case "HALF_EVEN":
+                return Optional.of(RoundingMode.HALF_EVEN);
+            case "UNNECESSARY":
+                return Optional.of(RoundingMode.UNNECESSARY);
             default:
                 return Optional.empty();
         }
