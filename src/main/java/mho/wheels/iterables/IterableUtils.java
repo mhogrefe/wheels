@@ -3215,6 +3215,37 @@ public final class IterableUtils {
         return demuxed;
     }
 
+    public static <T> boolean elem(@Nullable T x, @NotNull Iterable<T> xs) {
+        return any(y -> Objects.equals(x, y), xs);
+    }
+
+    public static <T> boolean elem(@Nullable T x, @NotNull Collection<T> xs) {
+        return xs.contains(x);
+    }
+
+    public static boolean elem(char c, @NotNull String s) {
+        return s.indexOf(c) != -1;
+    }
+
+    public static <T> boolean notElem(@Nullable T x, @NotNull Iterable<T> xs) {
+        return all(y -> !Objects.equals(x, y), xs);
+    }
+
+    public static <T> boolean notElem(@Nullable T x, @NotNull Collection<T> xs) {
+        return !xs.contains(x);
+    }
+
+    public static boolean notElem(char c, @NotNull String s) {
+        return s.indexOf(c) == -1;
+    }
+
+    public static @NotNull <A, B> NullableOptional<B> lookup(@Nullable A x, @NotNull Iterable<Pair<A, B>> xys) {
+        for (Pair<A, B> xy : xys) {
+            if (Objects.equals(x, xy.a)) return NullableOptional.of(xy.b);
+        }
+        return NullableOptional.empty();
+    }
+
     public static @NotNull <T> Optional<T> find(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (p.test(x)) return Optional.of(x);
