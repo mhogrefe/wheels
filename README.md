@@ -25,9 +25,9 @@ Progress
 | StringShortlexComparator | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Pair                     | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Quadruple                | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Pair                     | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Quadruple                | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Quintuple                | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Triple                   | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Triple                   | ✔       | ✔       | ✘     | ✘     | ✘          |

@@ -2986,7 +2986,6 @@ public final class IterableUtils {
                     private boolean isLast = false;
                     private T nextX = null;
                     private Pair<T, Integer> next = null;
-
                     {
                         if (hasNext) {
                             nextX = xsi.next();
@@ -3950,7 +3949,6 @@ public final class IterableUtils {
                     private final Iterator<T> xsi = xs.iterator();
                     private T next;
                     private boolean hasNext;
-
                     {
                         advance();
                     }
@@ -4037,5 +4035,65 @@ public final class IterableUtils {
             if (!Objects.equals(x, y)) return false;
         }
         return !ysi.hasNext();
+    }
+
+    public static @NotNull <T> Iterable<T> nubBy(@NotNull Predicate<Pair<T, T>> p, @NotNull Iterable<T> xs) {
+        return new Iterable<T>() {
+            private Set<T> seen = new HashSet<>();
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    {
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advance();
+                        return current;
+                    }
+
+                    private void advance() {
+                        while (xsi.hasNext()) {
+                            next = xsi.next();
+                            boolean good = !seen.contains(next) && !any(x -> p.test(new Pair<T, T>(next, x)), seen);
+                            if (good) {
+                                seen.add(next);
+                                hasNext = true;
+                                return;
+                            }
+                        }
+                        hasNext = false;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull String nubBy(@NotNull Predicate<Pair<Character, Character>> p, @NotNull String s) {
+        Set<Character> seen = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!seen.contains(c) && !any(x -> p.test(new Pair<Character, Character>(c, x)), seen)) {
+                seen.add(c);
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }
