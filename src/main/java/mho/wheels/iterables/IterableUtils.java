@@ -3226,6 +3226,50 @@ public final class IterableUtils {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> lt(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> gt(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nondecreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> le(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nonincreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean increasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> lt(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean decreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> gt(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nondecreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> le(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nonincreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> ge(comparator, p.a, p.b), xs));
+    }
+
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return any(zs -> equal(xs, zs), windows(length(xs), ys));
     }
