@@ -5,11 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
+import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.EQ;
 
 /**
- * An ordered Septuple of values. Any combination of values may be null. The <tt>Septuple</tt> is immutable iff all of
+ * An ordered Septuple of values. Any combination of values may be null. The {@code Septuple} is immutable iff all of
  * its values are.
  *
  * @param <A> the type of the first value
@@ -22,52 +25,52 @@ import static mho.wheels.ordering.Ordering.EQ;
  */
 public final class Septuple<A, B, C, D, E, F, G> {
     /**
-     * The first component of the <tt>Septuple</tt>
+     * The first component of the {@code Septuple}
      */
     public final @Nullable A a;
 
     /**
-     * The second component of the <tt>Septuple</tt>
+     * The second component of the {@code Septuple}
      */
     public final @Nullable B b;
 
     /**
-     * The third component of the <tt>Septuple</tt>
+     * The third component of the {@code Septuple}
      */
     public final @Nullable C c;
 
     /**
-     * The fourth component of the <tt>Septuple</tt>
+     * The fourth component of the {@code Septuple}
      */
     public final @Nullable D d;
 
     /**
-     * The fifth component of the <tt>Septuple</tt>
+     * The fifth component of the {@code Septuple}
      */
     public final @Nullable E e;
 
     /**
-     * The fifth component of the <tt>Septuple</tt>
+     * The fifth component of the {@code Septuple}
      */
     public final @Nullable F f;
 
     /**
-     * The sixth component of the <tt>Septuple</tt>
+     * The sixth component of the {@code Septuple}
      */
     public final @Nullable G g;
 
     /**
-     * Constructs a <tt>Septuple</tt> from seven values.
+     * Constructs a {@code Septuple} from seven values.
      *
      * <ul>
-     *  <li><tt>a</tt> may be anything.</li>
-     *  <li><tt>b</tt> may be anything.</li>
-     *  <li><tt>c</tt> may be anything.</li>
-     *  <li><tt>d</tt> may be anything.</li>
-     *  <li><tt>e</tt> may be anything.</li>
-     *  <li><tt>f</tt> may be anything.</li>
-     *  <li><tt>g</tt> may be anything.</li>
-     *  <li>Any <tt>Septuple</tt> may be constructed with this constructor.</li>
+     *  <li>{@code a} may be anything.</li>
+     *  <li>{@code b} may be anything.</li>
+     *  <li>{@code c} may be anything.</li>
+     *  <li>{@code d} may be anything.</li>
+     *  <li>{@code e} may be anything.</li>
+     *  <li>{@code f} may be anything.</li>
+     *  <li>{@code g} may be anything.</li>
+     *  <li>Any {@code Septuple} may be constructed with this constructor.</li>
      * </ul>
      *
      * @param a the first value
@@ -96,32 +99,32 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Compares two <tt>Septuples</tt>s, provided that <tt>A</tt>, <tt>B</tt>, <tt>C</tt>, <tt>D</tt>, <tt>E</tt>,
-     * <tt>F</tt>, and <tt>G</tt> all implement <tt>Comparable</tt>.
+     * Compares two {@code Septuples}s, provided that {@code A}, {@code B}, {@code C}, {@code D}, {@code E}, {@code F},
+     * and {@code G} all implement {@code Comparable}.
      *
      * <ul>
-     *  <li><tt>p</tt> must be non-null.</li>
-     *  <li><tt>q</tt> must be non-null.</li>
-     *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
-     *  <li><tt>p.g</tt> and <tt>q.g</tt> must be comparable by their type's <tt>compareTo</tt> method.</li>
+     *  <li>{@code p} must be non-null.</li>
+     *  <li>{@code q} must be non-null.</li>
+     *  <li>{@code p.a} and {@code q.a} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.b} and {@code q.b} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.c} and {@code q.c} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.d} and {@code q.d} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.e} and {@code q.e} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.f} and {@code q.f} must be comparable by their type's {@code compareTo} method.</li>
+     *  <li>{@code p.g} and {@code q.g} must be comparable by their type's {@code compareTo} method.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param p the first <tt>Septuple</tt>
-     * @param q the second <tt>Septuple</tt>
-     * @param <A> the type of the first component of <tt>p</tt> and <tt>q</tt>
-     * @param <B> the type of the second component of <tt>p</tt> and <tt>q</tt>
-     * @param <C> the type of the third component of <tt>p</tt> and <tt>q</tt>
-     * @param <D> the type of the fourth component of <tt>p</tt> and <tt>q</tt>
-     * @param <E> the type of the fifth component of <tt>p</tt> and <tt>q</tt>
-     * @param <F> the type of the sixth component of <tt>p</tt> and <tt>q</tt>
-     * @param <G> the type of the seventh component of <tt>p</tt> and <tt>q</tt>
-     * @return how <tt>p</tt> and <tt>q</tt> are ordered
+     * @param p the first {@code Septuple}
+     * @param q the second {@code Septuple}
+     * @param <A> the type of the first component of {@code p} and {@code q}
+     * @param <B> the type of the second component of {@code p} and {@code q}
+     * @param <C> the type of the third component of {@code p} and {@code q}
+     * @param <D> the type of the fourth component of {@code p} and {@code q}
+     * @param <E> the type of the fifth component of {@code p} and {@code q}
+     * @param <F> the type of the sixth component of {@code p} and {@code q}
+     * @param <G> the type of the seventh component of {@code p} and {@code q}
+     * @return how {@code p} and {@code q} are ordered
      */
     public static @NotNull <
             A extends Comparable<A>,
@@ -151,16 +154,16 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Determines whether <tt>this</tt> is equal to <tt>that</tt>.
+     * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Septuple</tt>.</li>
-     *  <li><tt>that</tt> may be any <tt>Object</tt>.</li>
-     *  <li>The result may be either <tt>boolean</tt>.</li>
+     *  <li>{@code this} may be any {@code Septuple}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param that The <tt>Septuple</tt> to be compared with <tt>this</tt>
-     * @return <tt>this</tt>=<tt>that</tt>
+     * @param that The {@code Septuple} to be compared with {@code this}
+     * @return {@code this}={@code that}
      */
     @Override
     public boolean equals(Object that) {
@@ -177,14 +180,14 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Calculates the hash code of <tt>this</tt>. The hash code is deterministic iff all values' hash codes are.
+     * Calculates the hash code of {@code this}. The hash code is deterministic iff all values' hash codes are.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Septuple</tt>.</li>
-     *  <li>(conjecture) The result may be any <tt>int</tt>.</li>
+     *  <li>{@code this} may be any {@code Septuple}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return <tt>this</tt>'s hash code.
+     * @return {@code this}'s hash code
      */
     @Override
     public int hashCode() {
@@ -199,88 +202,148 @@ public final class Septuple<A, B, C, D, E, F, G> {
     }
 
     /**
-     * Creates a string representation of <tt>this</tt>.
+     * Creates a {@code Septuple} from a {@code String}. Valid strings are of the form
+     * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")"}, where {@code a},
+     * {@code b}, {@code c}, {@code d}, {@code e}, {@code f}, and {@code g} are valid {@code String}s for their types.
+     * If the {@code String} is invalid, the method returns Optional.empty() without throwing an exception; this aids
+     * composability.
      *
      * <ul>
-     *  <li><tt>this</tt> may be any <tt>Septuple</tt>.</li>
-     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
-     *  <tt>", "</tt> at least six times.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result may contain any {@code Septuple}, or be empty.</li>
      * </ul>
      *
-     * @return a string representation of <tt>this</tt>.
+     * @param s a string representation of a {@code Septuple}
+     * @param readA a function which reads a {@code String} which represents null or a value of type {@code A}
+     * @param readB a function which reads a {@code String} which represents null or a value of type {@code B}
+     * @param readC a function which reads a {@code String} which represents null or a value of type {@code C}
+     * @param readD a function which reads a {@code String} which represents null or a value of type {@code D}
+     * @param readE a function which reads a {@code String} which represents null or a value of type {@code E}
+     * @param readF a function which reads a {@code String} which represents null or a value of type {@code F}
+     * @param readG a function which reads a {@code String} which represents null or a value of type {@code G}
+     * @param <A> the type of the {@code Septuple}'s first value
+     * @param <B> the type of the {@code Septuple}'s second value
+     * @param <C> the type of the {@code Septuple}'s third value
+     * @param <D> the type of the {@code Septuple}'s fourth value
+     * @param <E> the type of the {@code Septuple}'s fifth value
+     * @param <F> the type of the {@code Septuple}'s sixth value
+     * @param <G> the type of the {@code Septuple}'s seventh value
+     * @return the {@code Septuple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
+     */
+    public static @NotNull <A, B, C, D, E, F, G> Optional<Septuple<A, B, C, D, E, F, G>> read(
+            @NotNull String s,
+            @NotNull Function<String, NullableOptional<A>> readA,
+            @NotNull Function<String, NullableOptional<B>> readB,
+            @NotNull Function<String, NullableOptional<C>> readC,
+            @NotNull Function<String, NullableOptional<D>> readD,
+            @NotNull Function<String, NullableOptional<E>> readE,
+            @NotNull Function<String, NullableOptional<F>> readF,
+            @NotNull Function<String, NullableOptional<G>> readG
+    ) {
+        if (s.length() < 2 || head(s) != '(' || last(s) != ')') return Optional.empty();
+        s = tail(init(s));
+        String[] tokens = s.split(", ");
+        if (tokens.length != 7) return Optional.empty();
+        NullableOptional<A> oa = readA.apply(tokens[0]);
+        if (!oa.isPresent()) return Optional.empty();
+        NullableOptional<B> ob = readB.apply(tokens[1]);
+        if (!ob.isPresent()) return Optional.empty();
+        NullableOptional<C> oc = readC.apply(tokens[2]);
+        if (!oc.isPresent()) return Optional.empty();
+        NullableOptional<D> od = readD.apply(tokens[3]);
+        if (!od.isPresent()) return Optional.empty();
+        NullableOptional<E> oe = readE.apply(tokens[4]);
+        if (!oe.isPresent()) return Optional.empty();
+        NullableOptional<F> of = readF.apply(tokens[5]);
+        if (!of.isPresent()) return Optional.empty();
+        NullableOptional<G> og = readG.apply(tokens[6]);
+        if (!og.isPresent()) return Optional.empty();
+        return Optional.of(new Septuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get(), og.get()));
+    }
+
+    /**
+     * Creates a string representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code Septuple}.</li>
+     *  <li>The result begins with a left parenthesis, ends with a right parenthesis, and contains the string
+     *  {@code ", "} at least six times.</li>
+     * </ul>
+     *
+     * @return a string representation of {@code this}.
      */
     public @NotNull String toString() {
         return "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")";
     }
 
     /**
-     * A comparator which compares two <tt>Septuple</tt>s via <tt>Comparators</tt> provided for each component.
+     * A comparator which compares two {@code Septuple}s via {@code Comparators} provided for each component.
      *
-     * @param <A> the type of the <tt>Septuple</tt>s' first components
-     * @param <B> the type of the <tt>Septuple</tt>s' second components
-     * @param <C> the type of the <tt>Septuple</tt>s' third components
-     * @param <D> the type of the <tt>Septuple</tt>s' fourth components
-     * @param <E> the type of the <tt>Septuple</tt>s' fifth components
-     * @param <F> the type of the <tt>Septuple</tt>s' sixth components
-     * @param <G> the type of the <tt>Septuple</tt>s' seventh components
+     * @param <A> the type of the {@code Septuple}s' first components
+     * @param <B> the type of the {@code Septuple}s' second components
+     * @param <C> the type of the {@code Septuple}s' third components
+     * @param <D> the type of the {@code Septuple}s' fourth components
+     * @param <E> the type of the {@code Septuple}s' fifth components
+     * @param <F> the type of the {@code Septuple}s' sixth components
+     * @param <G> the type of the {@code Septuple}s' seventh components
      */
     public static class SeptupleComparator<A, B, C, D, E, F, G> implements Comparator<Septuple<A, B, C, D, E, F, G>> {
         /**
-         * The first component's <tt>Comparator</tt>
+         * The first component's {@code Comparator}
          */
         private final @NotNull Comparator<A> aComparator;
 
         /**
-         * The second component's <tt>Comparator</tt>
+         * The second component's {@code Comparator}
          */
         private final @NotNull Comparator<B> bComparator;
 
         /**
-         * The third component's <tt>Comparator</tt>
+         * The third component's {@code Comparator}
          */
         private final @NotNull Comparator<C> cComparator;
 
         /**
-         * The fourth component's <tt>Comparator</tt>
+         * The fourth component's {@code Comparator}
          */
         private final @NotNull Comparator<D> dComparator;
 
         /**
-         * The fifth component's <tt>Comparator</tt>
+         * The fifth component's {@code Comparator}
          */
         private final @NotNull Comparator<E> eComparator;
 
         /**
-         * The sixth component's <tt>Comparator</tt>
+         * The sixth component's {@code Comparator}
          */
         private final @NotNull Comparator<F> fComparator;
 
         /**
-         * The seventh component's <tt>Comparator</tt>
+         * The seventh component's {@code Comparator}
          */
         private final @NotNull Comparator<G> gComparator;
 
         /**
-         * Constructs a <tt>SeptupleComparator</tt> from seven <tt>Comparator</tt>s.
+         * Constructs a {@code SeptupleComparator} from seven {@code Comparator}s.
          *
          * <ul>
-         *  <li><tt>aComparator</tt> must be non-null.</li>
-         *  <li><tt>bComparator</tt> must be non-null.</li>
-         *  <li><tt>cComparator</tt> must be non-null.</li>
-         *  <li><tt>dComparator</tt> must be non-null.</li>
-         *  <li><tt>eComparator</tt> must be non-null.</li>
-         *  <li><tt>fComparator</tt> must be non-null.</li>
-         *  <li><tt>gComparator</tt> must be non-null.</li>
-         *  <li>Any <tt>SeptupleComparator</tt> may be constructed with this constructor.</li>
+         *  <li>{@code aComparator} must be non-null.</li>
+         *  <li>{@code bComparator} must be non-null.</li>
+         *  <li>{@code cComparator} must be non-null.</li>
+         *  <li>{@code dComparator} must be non-null.</li>
+         *  <li>{@code eComparator} must be non-null.</li>
+         *  <li>{@code fComparator} must be non-null.</li>
+         *  <li>{@code gComparator} must be non-null.</li>
+         *  <li>Any {@code SeptupleComparator} may be constructed with this constructor.</li>
          * </ul>
          *
-         * @param aComparator the first component's <tt>Comparator</tt>
-         * @param bComparator the second component's <tt>Comparator</tt>
-         * @param cComparator the third component's <tt>Comparator</tt>
-         * @param dComparator the fourth component's <tt>Comparator</tt>
-         * @param eComparator the fifth component's <tt>Comparator</tt>
-         * @param fComparator the sixth component's <tt>Comparator</tt>
-         * @param gComparator the seventh component's <tt>Comparator</tt>
+         * @param aComparator the first component's {@code Comparator}
+         * @param bComparator the second component's {@code Comparator}
+         * @param cComparator the third component's {@code Comparator}
+         * @param dComparator the fourth component's {@code Comparator}
+         * @param eComparator the fifth component's {@code Comparator}
+         * @param fComparator the sixth component's {@code Comparator}
+         * @param gComparator the seventh component's {@code Comparator}
          */
         public SeptupleComparator(
                 @NotNull Comparator<A> aComparator,
@@ -301,25 +364,25 @@ public final class Septuple<A, B, C, D, E, F, G> {
         }
 
         /**
-         * Compares two <tt>Septuple</tt>s, returning 1, &#x2212;1, or 0 if the answer is "greater than", "less than",
-         * or "equal to", respectively.
+         * Compares two {@code Septuple}s, returning 1, –1, or 0 if the answer is "greater than", "less than", or
+         * "equal to", respectively.
          *
          * <ul>
-         *  <li><tt>p</tt> must be non-null.</li>
-         *  <li><tt>q</tt> must be non-null.</li>
-         *  <li><tt>p.a</tt> and <tt>q.a</tt> must be comparable by <tt>aComparator</tt>.</li>
-         *  <li><tt>p.b</tt> and <tt>q.b</tt> must be comparable by <tt>bComparator</tt>.</li>
-         *  <li><tt>p.c</tt> and <tt>q.c</tt> must be comparable by <tt>cComparator</tt>.</li>
-         *  <li><tt>p.d</tt> and <tt>q.d</tt> must be comparable by <tt>dComparator</tt>.</li>
-         *  <li><tt>p.e</tt> and <tt>q.e</tt> must be comparable by <tt>eComparator</tt>.</li>
-         *  <li><tt>p.f</tt> and <tt>q.f</tt> must be comparable by <tt>fComparator</tt>.</li>
-         *  <li><tt>p.g</tt> and <tt>q.g</tt> must be comparable by <tt>gComparator</tt>.</li>
-         *  <li>The result is &#x2212;1, 0, or 1.</li>
+         *  <li>{@code p} must be non-null.</li>
+         *  <li>{@code q} must be non-null.</li>
+         *  <li>{@code p.a} and {@code q.a} must be comparable by {@code aComparator}.</li>
+         *  <li>{@code p.b} and {@code q.b} must be comparable by {@code bComparator}.</li>
+         *  <li>{@code p.c} and {@code q.c} must be comparable by {@code cComparator}.</li>
+         *  <li>{@code p.d} and {@code q.d} must be comparable by {@code dComparator}.</li>
+         *  <li>{@code p.e} and {@code q.e} must be comparable by {@code eComparator}.</li>
+         *  <li>{@code p.f} and {@code q.f} must be comparable by {@code fComparator}.</li>
+         *  <li>{@code p.g} and {@code q.g} must be comparable by {@code gComparator}.</li>
+         *  <li>The result is –1, 0, or 1.</li>
          * </ul>
          *
-         * @param p the first <tt>Septuple</tt>
-         * @param q the second <tt>Septuple</tt>
-         * @return <tt>this</tt> compared to <tt>that</tt>
+         * @param p the first {@code Septuple}
+         * @param q the second {@code Septuple}
+         * @return {@code this} compared to {@code that}
          */
         @Override
         public int compare(@NotNull Septuple<A, B, C, D, E, F, G> p, @NotNull Septuple<A, B, C, D, E, F, G> q) {
