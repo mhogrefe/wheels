@@ -16,8 +16,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testOrderingsAscending() {
-        aeq(P.orderingsAscending(), "[LT, EQ, GT]");
+    public void testOrderingsIncreasing() {
+        aeq(P.orderingsIncreasing(), "[LT, EQ, GT]");
     }
 
     @Test
@@ -31,24 +31,24 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testBytesAscending() {
-        assertEquals(length(P.bytesAscending()), 256);
-        aeq(take(20, P.bytesAscending()),
+    public void testBytesIncreasing() {
+        assertEquals(length(P.bytesIncreasing()), 256);
+        aeq(take(20, P.bytesIncreasing()),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
                 " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
     }
 
     @Test
-    public void testShortsAscending() {
-        assertEquals(length(P.shortsAscending()), 65536);
-        aeq(take(20, P.shortsAscending()),
+    public void testShortsIncreasing() {
+        assertEquals(length(P.shortsIncreasing()), 65536);
+        aeq(take(20, P.shortsIncreasing()),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
                 " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
     }
 
     @Test
-    public void testIntegersAscending() {
-        aeq(take(20, P.integersAscending()),
+    public void testIntegersIncreasing() {
+        aeq(take(20, P.integersIncreasing()),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
                 " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
                 " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
@@ -56,8 +56,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testLongsAscending() {
-        aeq(take(20, P.longsAscending()),
+    public void testLongsIncreasing() {
+        aeq(take(20, P.longsIncreasing()),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
@@ -183,9 +183,9 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testAsciiCharactersAscending() {
-        aeq(length(P.asciiCharactersAscending()), 128);
-        aeq(charsToString(P.asciiCharactersAscending()),
+    public void testAsciiCharactersIncreasing() {
+        aeq(length(P.asciiCharactersIncreasing()), 128);
+        aeq(charsToString(P.asciiCharactersIncreasing()),
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
                 "\177"
@@ -202,9 +202,9 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testCharactersAscending() {
-        aeq(length(P.charactersAscending()), 65536);
-        aeq(charsToString(take(256, P.charactersAscending())),
+    public void testCharactersIncreasing() {
+        aeq(length(P.charactersIncreasing()), 65536);
+        aeq(charsToString(take(256, P.charactersIncreasing())),
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
                 "\177" +
@@ -227,15 +227,15 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testPositiveOrdinaryFloatsAscending() {
-        aeq(take(20, P.positiveOrdinaryFloatsAscending()),
+    public void testPositiveOrdinaryFloatsIncreasing() {
+        aeq(take(20, P.positiveOrdinaryFloatsIncreasing()),
                 "[1.4E-45, 2.8E-45, 4.2E-45, 5.6E-45, 7.0E-45, 8.4E-45, 9.8E-45, 1.1E-44, 1.3E-44, 1.4E-44," +
                 " 1.5E-44, 1.7E-44, 1.8E-44, 2.0E-44, 2.1E-44, 2.24E-44, 2.4E-44, 2.5E-44, 2.7E-44, 2.8E-44]");
     }
 
     @Test
-    public void testNegativeOrdinaryFloatsAscending() {
-        aeq(take(20, P.negativeOrdinaryFloatsAscending()),
+    public void testNegativeOrdinaryFloatsIncreasing() {
+        aeq(take(20, P.negativeOrdinaryFloatsIncreasing()),
                 "[-3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38, -3.4028225E38," +
                 " -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38, -3.4028212E38," +
                 " -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38, -3.40282E38," +
@@ -243,8 +243,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testOrdinaryFloatsAscending() {
-        aeq(take(20, P.ordinaryFloatsAscending()),
+    public void testOrdinaryFloatsIncreasing() {
+        aeq(take(20, P.ordinaryFloatsIncreasing()),
                 "[-3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38, -3.4028225E38," +
                 " -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38, -3.4028212E38," +
                 " -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38, -3.40282E38," +
@@ -252,8 +252,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testFloatsAscending() {
-        aeq(take(20, P.floatsAscending()),
+    public void testFloatsIncreasing() {
+        aeq(take(20, P.floatsIncreasing()),
                 "[-Infinity, -3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38," +
                 " -3.4028225E38, -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38," +
                 " -3.4028212E38, -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38," +
@@ -296,16 +296,16 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testPositiveOrdinaryDoublesAscending() {
-        aeq(take(20, P.positiveOrdinaryDoublesAscending()),
+    public void testPositiveOrdinaryDoublesIncreasing() {
+        aeq(take(20, P.positiveOrdinaryDoublesIncreasing()),
                 "[4.9E-324, 1.0E-323, 1.5E-323, 2.0E-323, 2.5E-323, 3.0E-323, 3.5E-323, 4.0E-323, 4.4E-323," +
                 " 4.9E-323, 5.4E-323, 5.9E-323, 6.4E-323, 6.9E-323, 7.4E-323, 7.9E-323, 8.4E-323, 8.9E-323," +
                 " 9.4E-323, 1.0E-322]");
     }
 
     @Test
-    public void testNegativeOrdinaryDoublesAscending() {
-        aeq(take(20, P.negativeOrdinaryDoublesAscending()),
+    public void testNegativeOrdinaryDoublesIncreasing() {
+        aeq(take(20, P.negativeOrdinaryDoublesIncreasing()),
                 "[-1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +
@@ -316,8 +316,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testOrdinaryDoublesAscending() {
-        aeq(take(20, P.ordinaryDoublesAscending()),
+    public void testOrdinaryDoublesIncreasing() {
+        aeq(take(20, P.ordinaryDoublesIncreasing()),
                 "[-1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +
@@ -328,8 +328,8 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testDoublesAscending() {
-        aeq(take(20, P.doublesAscending()),
+    public void testDoublesIncreasing() {
+        aeq(take(20, P.doublesIncreasing()),
                 "[-Infinity, -1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +

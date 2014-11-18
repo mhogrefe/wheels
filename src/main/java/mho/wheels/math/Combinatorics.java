@@ -115,7 +115,7 @@ public final class Combinatorics {
     }
 
     /**
-     * Given two <tt>Iterable</tt>s, returns all ordered pairs of elements from these <tt>Iterable</tt>s in ascending
+     * Given two <tt>Iterable</tt>s, returns all ordered pairs of elements from these <tt>Iterable</tt>s in increasing
      * order. The second <tt>Iterable</tt> must be finite; using a long second <tt>Iterable</tt> is possible but
      * discouraged.
      *
@@ -133,7 +133,7 @@ public final class Combinatorics {
      * @param <B> the type of the second <tt>Iterable</tt>'s elements
      * @return all ordered pairs of elements from <tt>as</tt> and <tt>bs</tt>
      */
-    public static @NotNull <A, B> Iterable<Pair<A, B>> pairsAscending(
+    public static @NotNull <A, B> Iterable<Pair<A, B>> pairsIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
@@ -142,7 +142,7 @@ public final class Combinatorics {
 
     /**
      * Given three <tt>Iterable</tt>s, returns all ordered triples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
@@ -162,20 +162,20 @@ public final class Combinatorics {
      * @param <C> the type of the third <tt>Iterable</tt>'s elements
      * @return all ordered triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
      */
-    public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesAscending(
+    public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
         return map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
-                pairsAscending(as, (Iterable<Pair<B, C>>) pairsAscending(bs, cs))
+                pairsIncreasing(as, (Iterable<Pair<B, C>>) pairsIncreasing(bs, cs))
         );
     }
 
     /**
      * Given four <tt>Iterable</tt>s, returns all ordered quadruples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
@@ -198,7 +198,7 @@ public final class Combinatorics {
      * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
      * @return all ordered quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
      */
-    public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesAscending(
+    public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -206,16 +206,16 @@ public final class Combinatorics {
     ) {
         return map(
                 p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b),
-                pairsAscending(
-                        (Iterable<Pair<A, B>>) pairsAscending(as, bs),
-                        (Iterable<Pair<C, D>>) pairsAscending(cs, ds)
+                pairsIncreasing(
+                        (Iterable<Pair<A, B>>) pairsIncreasing(as, bs),
+                        (Iterable<Pair<C, D>>) pairsIncreasing(cs, ds)
                 )
         );
     }
 
     /**
      * Given five <tt>Iterable</tt>s, returns all ordered quintuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
@@ -242,7 +242,7 @@ public final class Combinatorics {
      * @return all ordered quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and
      * <tt>es</tt>
      */
-    public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesAscending(
+    public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -251,16 +251,16 @@ public final class Combinatorics {
     ) {
         return map(
                 p -> new Quintuple<>(p.a.a, p.a.b, p.b.a, p.b.b, p.b.c),
-                pairsAscending(
-                        (Iterable<Pair<A, B>>) pairsAscending(as, bs),
-                        (Iterable<Triple<C, D, E>>) triplesAscending(cs, ds, es)
+                pairsIncreasing(
+                        (Iterable<Pair<A, B>>) pairsIncreasing(as, bs),
+                        (Iterable<Triple<C, D, E>>) triplesIncreasing(cs, ds, es)
                 )
         );
     }
 
     /**
      * Given six <tt>Iterable</tt>s, returns all ordered sextuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
@@ -290,7 +290,7 @@ public final class Combinatorics {
      * @return all ordered sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
      * and <tt>fs</tt>
      */
-    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesAscending(
+    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -300,16 +300,16 @@ public final class Combinatorics {
     ) {
         return map(
                 p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c),
-                pairsAscending(
-                        (Iterable<Triple<A, B, C>>) triplesAscending(as, bs, cs),
-                        (Iterable<Triple<D, E, F>>) triplesAscending(ds, es, fs)
+                pairsIncreasing(
+                        (Iterable<Triple<A, B, C>>) triplesIncreasing(as, bs, cs),
+                        (Iterable<Triple<D, E, F>>) triplesIncreasing(ds, es, fs)
                 )
         );
     }
 
     /**
      * Given seven <tt>Iterable</tt>s, returns all ordered septuples of elements from these <tt>Iterable</tt>s in
-     * ascending order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
@@ -342,7 +342,7 @@ public final class Combinatorics {
      * @return all ordered septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
      * <tt>fs</tt>, and <tt>gs</tt>
      */
-    public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesAscending(
+    public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesIncreasing(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -353,9 +353,9 @@ public final class Combinatorics {
     ) {
         return map(
                 p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
-                pairsAscending(
-                        (Iterable<Triple<A, B, C>>) triplesAscending(as, bs, cs),
-                        (Iterable<Quadruple<D, E, F, G>>) quadruplesAscending(ds, es, fs, gs)
+                pairsIncreasing(
+                        (Iterable<Triple<A, B, C>>) triplesIncreasing(as, bs, cs),
+                        (Iterable<Quadruple<D, E, F, G>>) quadruplesIncreasing(ds, es, fs, gs)
                 )
         );
     }
@@ -380,7 +380,7 @@ public final class Combinatorics {
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
      * @return all lists of a given length created from <tt>xs</tt>
      */
-    public static @NotNull <T> Iterable<List<T>> listsAscending(int length, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> Iterable<List<T>> listsIncreasing(int length, @NotNull Iterable<T> xs) {
         if (length < 0)
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (length == 0) {
@@ -420,7 +420,7 @@ public final class Combinatorics {
      * @param <T> the type of the given <tt>Iterable</tt>'s elements
      * @return all lists of a given length created from <tt>xs</tt>
      */
-    public static @NotNull <T> Iterable<List<T>> listsAscending(@NotNull BigInteger length, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> Iterable<List<T>> listsIncreasing(@NotNull BigInteger length, @NotNull Iterable<T> xs) {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (eq(length, BigInteger.ZERO)) {
@@ -458,7 +458,7 @@ public final class Combinatorics {
      * @param s the <tt>String</tt> from which characters are selected
      * @return all Strings of a given length created from <tt>s</tt>
      */
-    public static @NotNull Iterable<String> stringsAscending(int length, @NotNull String s) {
+    public static @NotNull Iterable<String> stringsIncreasing(int length, @NotNull String s) {
         if (length < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
@@ -495,7 +495,7 @@ public final class Combinatorics {
      * @param s the <tt>String</tt> from which characters are selected
      * @return all Strings of a given length created from <tt>s</tt>
      */
-    public static @NotNull Iterable<String> stringsAscending(@NotNull BigInteger length, @NotNull String s) {
+    public static @NotNull Iterable<String> stringsIncreasing(@NotNull BigInteger length, @NotNull String s) {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
@@ -538,7 +538,7 @@ public final class Combinatorics {
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
-        return concatMap(i -> listsAscending(i, xs), P.naturalBigIntegers());
+        return concatMap(i -> listsIncreasing(i, xs), P.naturalBigIntegers());
     }
 
     /**
@@ -561,7 +561,7 @@ public final class Combinatorics {
      */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Arrays.asList("");
-        return concatMap(i -> stringsAscending(i, s), P.naturalBigIntegers());
+        return concatMap(i -> stringsIncreasing(i, s), P.naturalBigIntegers());
     }
 
     //todo
@@ -1383,10 +1383,10 @@ public final class Combinatorics {
         );
     }
 
-    public static @NotNull <T> Iterable<List<T>> controlledListsAscending(@NotNull List<Iterable<T>> xss) {
+    public static @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
         if (xss.size() == 0) return Arrays.asList(new ArrayList<T>());
         if (xss.size() == 1) return map(x -> Arrays.asList(x), xss.get(0));
-        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsAscending(xss.get(0), xss.get(1)));
+        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsIncreasing(xss.get(0), xss.get(1)));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
         for (int i = 0; i < xss.size() / 2; i++) {
@@ -1395,9 +1395,9 @@ public final class Combinatorics {
         for (int i = xss.size() / 2; i < xss.size(); i++) {
             rightList.add(xss.get(i));
         }
-        Iterable<List<T>> leftLists = controlledListsAscending(leftList);
-        Iterable<List<T>> rightLists = controlledListsAscending(rightList);
-        return map(p -> toList(concat(p.a, p.b)), pairsAscending(leftLists, rightLists));
+        Iterable<List<T>> leftLists = controlledListsIncreasing(leftList);
+        Iterable<List<T>> rightLists = controlledListsIncreasing(rightList);
+        return map(p -> toList(concat(p.a, p.b)), pairsIncreasing(leftLists, rightLists));
     }
 
     public static Iterable<String> strings(int size, Iterable<Character> cs) {

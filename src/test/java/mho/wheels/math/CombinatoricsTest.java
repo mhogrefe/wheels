@@ -94,41 +94,41 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testPairsAscending() {
-        aeq(pairsAscending(Arrays.asList(1, 2, 3), fromString("abc")),
+    public void testPairsIncreasing() {
+        aeq(pairsIncreasing(Arrays.asList(1, 2, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
-        aeq(pairsAscending(Arrays.asList(1, null, 3), fromString("abc")),
+        aeq(pairsIncreasing(Arrays.asList(1, null, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
-        aeq(take(20, pairsAscending(P.naturalBigIntegers(), fromString("abc"))),
+        aeq(take(20, pairsIncreasing(P.naturalBigIntegers(), fromString("abc"))),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
                 " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
-        aeq(pairsAscending(new ArrayList<Integer>(), fromString("abc")), "[]");
-        aeq(pairsAscending(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        aeq(pairsIncreasing(new ArrayList<Integer>(), fromString("abc")), "[]");
+        aeq(pairsIncreasing(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
     }
 
     @Test
-    public void testTriplesAscending() {
-        aeq(triplesAscending(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
+    public void testTriplesIncreasing() {
+        aeq(triplesIncreasing(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeq(triplesAscending(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
+        aeq(triplesIncreasing(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
                 " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
                 " (3, c, true)]");
-        aeq(take(20, triplesAscending(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
+        aeq(take(20, triplesIncreasing(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true)]");
-        aeq(triplesAscending(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
-        aeq(triplesAscending(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
+        aeq(triplesIncreasing(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
+        aeq(triplesIncreasing(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
     }
 
     @Test
-    public void testQuadruplesAscending() {
-        aeq(quadruplesAscending(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
+    public void testQuadruplesIncreasing() {
+        aeq(quadruplesIncreasing(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -140,7 +140,7 @@ public class CombinatoricsTest {
                 " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
                 " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
                 " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeq(quadruplesAscending(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
+        aeq(quadruplesIncreasing(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -153,13 +153,13 @@ public class CombinatoricsTest {
                 " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
                 " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeq(take(20, quadruplesAscending(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
+        aeq(take(20, quadruplesIncreasing(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
-        aeq(quadruplesAscending(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
-        aeq(quadruplesAscending(
+        aeq(quadruplesIncreasing(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
+        aeq(quadruplesIncreasing(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -168,14 +168,14 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testQuintuplesAscending() {
-        aeq(quintuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, 2, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no")
-        ),
+    public void testQuintuplesIncreasing() {
+        aeq(quintuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no")
+                ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
                 " (1, a, true, LT, yes), (1, a, true, LT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
@@ -203,13 +203,13 @@ public class CombinatoricsTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeq(quintuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, null, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no")
-        ),
+        aeq(quintuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no")
+                ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
                 " (1, a, true, LT, yes), (1, a, true, LT, no), (1, a, true, GT, yes), (1, a, true, GT, no)," +
@@ -240,26 +240,26 @@ public class CombinatoricsTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeq(take(20, quintuplesAscending(
-                P.naturalBigIntegers(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no")
-        )),
+        aeq(take(20, quintuplesIncreasing(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no")
+                )),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
                 " (0, a, false, GT, yes), (0, a, false, GT, no), (0, a, true, EQ, yes), (0, a, true, EQ, no)," +
                 " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no)]");
-        aeq(quintuplesAscending(
+        aeq(quintuplesIncreasing(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
                 P.orderings(),
                 Arrays.asList("yes", "no")
         ), "[]");
-        aeq(quintuplesAscending(
+        aeq(quintuplesIncreasing(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -269,15 +269,15 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testSextuplesAscending() {
-        aeq(sextuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, 2, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-        ),
+    public void testSextuplesIncreasing() {
+        aeq(sextuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                ),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
                 " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
                 " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, false, GT, yes, Infinity)," +
@@ -350,14 +350,14 @@ public class CombinatoricsTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeq(sextuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, null, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-        ),
+        aeq(sextuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                ),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
                 " (1, a, false, EQ, no, NaN), (1, a, false, LT, yes, Infinity), (1, a, false, LT, yes, NaN)," +
                 " (1, a, false, LT, no, Infinity), (1, a, false, LT, no, NaN), (1, a, false, GT, yes, Infinity)," +
@@ -442,14 +442,14 @@ public class CombinatoricsTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeq(take(20, sextuplesAscending(
-                P.naturalBigIntegers(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-        )),
+        aeq(take(20, sextuplesIncreasing(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                )),
                 "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
                 " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
                 " (0, a, false, LT, no, Infinity), (0, a, false, LT, no, NaN), (0, a, false, GT, yes, Infinity)," +
@@ -457,7 +457,7 @@ public class CombinatoricsTest {
                 " (0, a, true, EQ, yes, Infinity), (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity)," +
                 " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
                 " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN)]");
-        aeq(sextuplesAscending(
+        aeq(sextuplesIncreasing(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
@@ -465,7 +465,7 @@ public class CombinatoricsTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         ), "[]");
-        aeq(sextuplesAscending(
+        aeq(sextuplesIncreasing(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -476,18 +476,18 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testSeptuplesAscending() {
+    public void testSeptuplesIncreasing() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
-        aeq(septuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, 2, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                (Iterable<List<Integer>>) Arrays.asList(x, y)
-        ),
+        aeq(septuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        (Iterable<List<Integer>>) Arrays.asList(x, y)
+                ),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
                 " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
@@ -704,15 +704,15 @@ public class CombinatoricsTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeq(septuplesAscending(
-                (Iterable<Integer>) Arrays.asList(1, null, 3),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                (Iterable<List<Integer>>) Arrays.asList(x, y)
-        ),
+        aeq(septuplesIncreasing(
+                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        (Iterable<List<Integer>>) Arrays.asList(x, y)
+                ),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
                 " (1, a, false, EQ, no, Infinity, [1, 0]), (1, a, false, EQ, no, Infinity, [0, 1])," +
@@ -929,15 +929,15 @@ public class CombinatoricsTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeq(take(20, septuplesAscending(
-                P.naturalBigIntegers(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                (Iterable<List<Integer>>) Arrays.asList(x, y)
-        )),
+        aeq(take(20, septuplesIncreasing(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        (Iterable<List<Integer>>) Arrays.asList(x, y)
+                )),
                 "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
                 " (0, a, false, EQ, no, Infinity, [1, 0]), (0, a, false, EQ, no, Infinity, [0, 1])," +
@@ -948,7 +948,7 @@ public class CombinatoricsTest {
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
                 " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1])]");
-        aeq(septuplesAscending(
+        aeq(septuplesIncreasing(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
@@ -957,7 +957,7 @@ public class CombinatoricsTest {
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
         ), "[]");
-        aeq(septuplesAscending(
+        aeq(septuplesIncreasing(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -969,122 +969,122 @@ public class CombinatoricsTest {
     }
 
     @Test
-    public void testListsAscending_int_Iterable() {
-        aeq(listsAscending(0, Arrays.asList(1, 2, 3)), "[[]]");
-        aeq(listsAscending(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeq(listsAscending(2, Arrays.asList(1, 2, 3)),
+    public void testListsIncreasing_int_Iterable() {
+        aeq(listsIncreasing(0, Arrays.asList(1, 2, 3)), "[[]]");
+        aeq(listsIncreasing(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
+        aeq(listsIncreasing(2, Arrays.asList(1, 2, 3)),
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        aeq(listsAscending(3, Arrays.asList(1, 2, 3)),
+        aeq(listsIncreasing(3, Arrays.asList(1, 2, 3)),
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
                 " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
                 " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
                 " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
 
-        aeq(listsAscending(0, Arrays.asList(1, null, 3)), "[[]]");
-        aeq(listsAscending(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
-        aeq(listsAscending(2, Arrays.asList(1, null, 3)),
+        aeq(listsIncreasing(0, Arrays.asList(1, null, 3)), "[[]]");
+        aeq(listsIncreasing(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
+        aeq(listsIncreasing(2, Arrays.asList(1, null, 3)),
                 "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        aeq(listsAscending(3, Arrays.asList(1, null, 3)),
+        aeq(listsIncreasing(3, Arrays.asList(1, null, 3)),
                 "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
                 " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        aeq(listsAscending(0, new ArrayList<Integer>()), "[[]]");
-        aeq(listsAscending(1, new ArrayList<Integer>()), "[]");
-        aeq(listsAscending(2, new ArrayList<Integer>()), "[]");
-        aeq(listsAscending(3, new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(0, new ArrayList<Integer>()), "[[]]");
+        aeq(listsIncreasing(1, new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(2, new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(3, new ArrayList<Integer>()), "[]");
         try {
-            listsAscending(-1, Arrays.asList(1, 2, 3));
+            listsIncreasing(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
-    public void testListsAscending_BigInteger_Iterable() {
-        aeq(listsAscending(BigInteger.ZERO, Arrays.asList(1, 2, 3)), "[[]]");
-        aeq(listsAscending(BigInteger.ONE, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeq(listsAscending(BigInteger.valueOf(2), Arrays.asList(1, 2, 3)),
+    public void testListsIncreasing_BigInteger_Iterable() {
+        aeq(listsIncreasing(BigInteger.ZERO, Arrays.asList(1, 2, 3)), "[[]]");
+        aeq(listsIncreasing(BigInteger.ONE, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
+        aeq(listsIncreasing(BigInteger.valueOf(2), Arrays.asList(1, 2, 3)),
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        aeq(listsAscending(BigInteger.valueOf(3), Arrays.asList(1, 2, 3)),
+        aeq(listsIncreasing(BigInteger.valueOf(3), Arrays.asList(1, 2, 3)),
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
                 " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
                 " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
                 " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
 
-        aeq(listsAscending(0, Arrays.asList(1, null, 3)), "[[]]");
-        aeq(listsAscending(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
-        aeq(listsAscending(2, Arrays.asList(1, null, 3)),
+        aeq(listsIncreasing(0, Arrays.asList(1, null, 3)), "[[]]");
+        aeq(listsIncreasing(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
+        aeq(listsIncreasing(2, Arrays.asList(1, null, 3)),
                 "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        aeq(listsAscending(3, Arrays.asList(1, null, 3)),
+        aeq(listsIncreasing(3, Arrays.asList(1, null, 3)),
                 "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
                 " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        aeq(listsAscending(BigInteger.ZERO, new ArrayList<Integer>()), "[[]]");
-        aeq(listsAscending(BigInteger.ONE, new ArrayList<Integer>()), "[]");
-        aeq(listsAscending(BigInteger.valueOf(2), new ArrayList<Integer>()), "[]");
-        aeq(listsAscending(BigInteger.valueOf(3), new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(BigInteger.ZERO, new ArrayList<Integer>()), "[[]]");
+        aeq(listsIncreasing(BigInteger.ONE, new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(BigInteger.valueOf(2), new ArrayList<Integer>()), "[]");
+        aeq(listsIncreasing(BigInteger.valueOf(3), new ArrayList<Integer>()), "[]");
         try {
-            listsAscending(BigInteger.valueOf(-1), Arrays.asList(1, 2, 3));
+            listsIncreasing(BigInteger.valueOf(-1), Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
-    public void testListsAscending_int_String() {
-        aeq(stringsAscending(0, "abc"), "[]");
-        aeq(length(stringsAscending(0, "abc")), 1);
-        aeq(stringsAscending(1, "abc"), "[a, b, c]");
-        aeq(stringsAscending(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeq(stringsAscending(3, "abc"),
+    public void testListsIncreasing_int_String() {
+        aeq(stringsIncreasing(0, "abc"), "[]");
+        aeq(length(stringsIncreasing(0, "abc")), 1);
+        aeq(stringsIncreasing(1, "abc"), "[a, b, c]");
+        aeq(stringsIncreasing(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(stringsIncreasing(3, "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeq(stringsAscending(0, "a"), "[]");
-        aeq(stringsAscending(1, "a"), "[a]");
-        aeq(stringsAscending(2, "a"), "[aa]");
-        aeq(stringsAscending(3, "a"), "[aaa]");
-        aeq(stringsAscending(0, ""), "[]");
-        aeq(length(stringsAscending(0, "")), 1);
-        aeq(stringsAscending(1, ""), "[]");
-        aeq(length(stringsAscending(1, "")), 0);
-        aeq(stringsAscending(2, ""), "[]");
-        aeq(length(stringsAscending(2, "")), 0);
-        aeq(stringsAscending(3, ""), "[]");
-        aeq(length(stringsAscending(3, "")), 0);
+        aeq(stringsIncreasing(0, "a"), "[]");
+        aeq(stringsIncreasing(1, "a"), "[a]");
+        aeq(stringsIncreasing(2, "a"), "[aa]");
+        aeq(stringsIncreasing(3, "a"), "[aaa]");
+        aeq(stringsIncreasing(0, ""), "[]");
+        aeq(length(stringsIncreasing(0, "")), 1);
+        aeq(stringsIncreasing(1, ""), "[]");
+        aeq(length(stringsIncreasing(1, "")), 0);
+        aeq(stringsIncreasing(2, ""), "[]");
+        aeq(length(stringsIncreasing(2, "")), 0);
+        aeq(stringsIncreasing(3, ""), "[]");
+        aeq(length(stringsIncreasing(3, "")), 0);
         try {
-            stringsAscending(-1, "");
+            stringsIncreasing(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
-    public void testListsAscending_BigInteger_String() {
-        aeq(stringsAscending(BigInteger.ZERO, "abc"), "[]");
-        aeq(length(stringsAscending(BigInteger.ZERO, "abc")), 1);
-        aeq(length(stringsAscending(0, "abc")), 1);
-        aeq(stringsAscending(BigInteger.ONE, "abc"), "[a, b, c]");
-        aeq(stringsAscending(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeq(stringsAscending(BigInteger.valueOf(3), "abc"),
+    public void testListsIncreasing_BigInteger_String() {
+        aeq(stringsIncreasing(BigInteger.ZERO, "abc"), "[]");
+        aeq(length(stringsIncreasing(BigInteger.ZERO, "abc")), 1);
+        aeq(length(stringsIncreasing(0, "abc")), 1);
+        aeq(stringsIncreasing(BigInteger.ONE, "abc"), "[a, b, c]");
+        aeq(stringsIncreasing(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeq(stringsIncreasing(BigInteger.valueOf(3), "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeq(stringsAscending(BigInteger.ZERO, "a"), "[]");
-        aeq(stringsAscending(BigInteger.ONE, "a"), "[a]");
-        aeq(stringsAscending(BigInteger.valueOf(2), "a"), "[aa]");
-        aeq(stringsAscending(BigInteger.valueOf(3), "a"), "[aaa]");
-        aeq(stringsAscending(BigInteger.ZERO, ""), "[]");
-        aeq(length(stringsAscending(BigInteger.ZERO, "")), 1);
-        aeq(stringsAscending(BigInteger.ONE, ""), "[]");
-        aeq(length(stringsAscending(BigInteger.ONE, "")), 0);
-        aeq(stringsAscending(BigInteger.valueOf(2), ""), "[]");
-        aeq(length(stringsAscending(BigInteger.valueOf(2), "")), 0);
-        aeq(stringsAscending(BigInteger.valueOf(3), ""), "[]");
-        aeq(length(stringsAscending(BigInteger.valueOf(3), "")), 0);
+        aeq(stringsIncreasing(BigInteger.ZERO, "a"), "[]");
+        aeq(stringsIncreasing(BigInteger.ONE, "a"), "[a]");
+        aeq(stringsIncreasing(BigInteger.valueOf(2), "a"), "[aa]");
+        aeq(stringsIncreasing(BigInteger.valueOf(3), "a"), "[aaa]");
+        aeq(stringsIncreasing(BigInteger.ZERO, ""), "[]");
+        aeq(length(stringsIncreasing(BigInteger.ZERO, "")), 1);
+        aeq(stringsIncreasing(BigInteger.ONE, ""), "[]");
+        aeq(length(stringsIncreasing(BigInteger.ONE, "")), 0);
+        aeq(stringsIncreasing(BigInteger.valueOf(2), ""), "[]");
+        aeq(length(stringsIncreasing(BigInteger.valueOf(2), "")), 0);
+        aeq(stringsIncreasing(BigInteger.valueOf(3), ""), "[]");
+        aeq(length(stringsIncreasing(BigInteger.valueOf(3), "")), 0);
         try {
-            stringsAscending(BigInteger.valueOf(-1), "");
+            stringsIncreasing(BigInteger.valueOf(-1), "");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

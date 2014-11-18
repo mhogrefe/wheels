@@ -338,7 +338,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code float}s
+     *  <li>The result is either {@code [+Infinity]}, or an infinite nondecreasing {@code Iterable} of {@code float}s
      *  roughly differing by 1.</li>
      * </ul>
      *
@@ -368,7 +368,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code double}s
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-decreasing {@code Iterable} of {@code double}s
      *  roughly differing by 1.</li>
      * </ul>
      *
@@ -693,7 +693,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code float}s roughly differing by
+     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code float}s roughly differing by
      *  1.</li>
      * </ul>
      *
@@ -738,7 +738,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code double}s roughly differing by
+     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code double}s roughly differing by
      *  1.</li>
      * </ul>
      *

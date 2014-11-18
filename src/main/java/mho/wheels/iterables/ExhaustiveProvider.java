@@ -38,13 +38,13 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * A {@code List} that contains all {@link Ordering}s in ascending order.
+     * A {@code List} that contains all {@link Ordering}s in increasing order.
      *
      * Length is 3
      *
      * @return the {@code List} described above.
      */
-    public @NotNull List<Ordering> orderingsAscending() {
+    public @NotNull List<Ordering> orderingsIncreasing() {
         return Arrays.asList(LT, EQ, GT);
     }
 
@@ -197,46 +197,46 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Byte}s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Byte> bytesAscending() {
+    public @NotNull Iterable<Byte> bytesIncreasing() {
         return range(Byte.MIN_VALUE);
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Short}s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Short> shortsAscending() {
+    public @NotNull Iterable<Short> shortsIncreasing() {
         return range(Short.MIN_VALUE);
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Integer}s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Integer> integersAscending() {
+    public @NotNull Iterable<Integer> integersIncreasing() {
         return range(Integer.MIN_VALUE);
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Long}s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Long> longsAscending() {
+    public @NotNull Iterable<Long> longsIncreasing() {
         return range(Long.MIN_VALUE);
     }
 
@@ -452,14 +452,14 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ASCII {@link Character}s in ascending order. Does not support
+     * An {@code Iterable} that contains all ASCII {@link Character}s in increasing order. Does not support
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Character> asciiCharactersAscending() {
+    public @NotNull Iterable<Character> asciiCharactersIncreasing() {
         return range((char) 0, (char) 127);
     }
 
@@ -487,13 +487,13 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Character}s in ascending order. Does not support removal.
+     * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Character> charactersAscending() {
+    public @NotNull Iterable<Character> charactersIncreasing() {
         return range(Character.MIN_VALUE, Character.MAX_VALUE);
     }
 
@@ -520,37 +520,37 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
-     * ascending order. Does not support removal.
+     * increasing order. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Float> positiveOrdinaryFloatsAscending() {
+    public @NotNull Iterable<Float> positiveOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatUtils::successor, Float.MIN_VALUE));
     }
 
     /**
      * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s in
-     * ascending order. Negative zero is not included. Does not support removal.
+     * increasing order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Float> negativeOrdinaryFloatsAscending() {
+    public @NotNull Iterable<Float> negativeOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, -Float.MAX_VALUE));
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code float}s in ascending
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code float}s in increasing
      * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Float> ordinaryFloatsAscending() {
+    public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, -Float.MAX_VALUE)),
                 Arrays.asList(0.0f),
@@ -559,14 +559,14 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code float}s in ascending order. {@code NaN} is traditionally unordered,
+     * An {@code Iterable} that contains all {@code float}s in increasing order. {@code NaN} is traditionally unordered,
      * but here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
      *
      * @return the {@code Iterable} described above.
      */
-    public @NotNull Iterable<Float> floatsAscending() {
+    public @NotNull Iterable<Float> floatsIncreasing() {
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatUtils::successor, Float.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0f, Float.NaN, 0.0f),
@@ -651,31 +651,31 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive
-     * {@link double}s in ascending order. Does not support removal.
+     * {@link double}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    public @NotNull Iterable<Double> positiveOrdinaryDoublesAscending() {
+    public @NotNull Iterable<Double> positiveOrdinaryDoublesIncreasing() {
         return stopAt(d -> d == Double.MAX_VALUE, iterate(FloatUtils::successor, Double.MIN_VALUE));
     }
 
     /**
      * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative
-     * {@code double}s in ascending order. Negative zero is not included. Does not support removal.
+     * {@code double}s in increasing order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    public @NotNull Iterable<Double> negativeOrdinaryDoublesAscending() {
+    public @NotNull Iterable<Double> negativeOrdinaryDoublesIncreasing() {
         return stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, -Double.MAX_VALUE));
     }
 
     /**
      * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in
-     * ascending order. Negative zero is not included, but positive zero is. Does not support removal.
+     * increasing order. Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
      */
-    public @NotNull Iterable<Double> ordinaryDoublesAscending() {
+    public @NotNull Iterable<Double> ordinaryDoublesIncreasing() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, -Double.MAX_VALUE)),
                 Arrays.asList(0.0),
@@ -684,12 +684,12 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that contains all {@code double}s in ascending order. {@code NaN} is traditionally
+     * @return An {@code Iterable} that contains all {@code double}s in increasing order. {@code NaN} is traditionally
      * unordered, but here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
-    public @NotNull Iterable<Double> doublesAscending() {
+    public @NotNull Iterable<Double> doublesIncreasing() {
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatUtils::successor, Double.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0, Double.NaN, 0.0),
@@ -739,7 +739,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code double}s in
-     * ascending order. Negative zero is not included. Does not support removal.
+     * increasing order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
@@ -749,7 +749,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in ascending
+     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in increasing
      * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
@@ -1057,7 +1057,7 @@ public class ExhaustiveProvider implements IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
-            return Combinatorics.listsAscending(size, xs);
+            return Combinatorics.listsIncreasing(size, xs);
         } else {
             return Combinatorics.lists(size, xs);
         }
