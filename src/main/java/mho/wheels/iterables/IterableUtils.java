@@ -2236,66 +2236,246 @@ public final class IterableUtils {
         return true;
     }
 
+    /**
+     * Returns the sum of all the {@code Byte}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Σxs
+     */
     public static byte sumByte(@NotNull Iterable<Byte> xs) {
         return foldl(p -> (byte) (p.a + p.b), (byte) 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Short}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Σxs
+     */
     public static short sumShort(@NotNull Iterable<Short> xs) {
         return foldl(p -> (short) (p.a + p.b), (short) 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Integer}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Σxs
+     */
     public static int sumInteger(@NotNull Iterable<Integer> xs) {
         return foldl(p -> p.a + p.b, 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Long}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Σxs
+     */
     public static long sumLong(@NotNull Iterable<Long> xs) {
         return foldl(p -> p.a + p.b, 0L, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code Float}s in {@code xs}. If {@code xs} is empty, 0.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code float}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Σxs
+     */
     public static float sumFloat(@NotNull Iterable<Float> xs) {
         return foldl(p -> p.a + p.b, 0.0f, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code Double}s in {@code xs}. If {@code xs} is empty, 0.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code double}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Σxs
+     */
     public static double sumDouble(Iterable<Double> xs) {
         return foldl(p -> p.a + p.b, 0.0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code BigInteger}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Σxs
+     */
     public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
         return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code BigDecimal}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Σxs
+     */
     public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         return foldl(p -> p.a.add(p.b), BigDecimal.ZERO, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Byte}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Πxs
+     */
     public static byte productByte(@NotNull Iterable<Byte> xs) {
         return foldl(p -> (byte) (p.a * p.b), (byte) 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Short}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Πxs
+     */
     public static short productShort(@NotNull Iterable<Short> xs) {
         return foldl(p -> (short) (p.a * p.b), (short) 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Integer}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Πxs
+     */
     public static int productInteger(@NotNull Iterable<Integer> xs) {
         return foldl(p -> p.a * p.b, 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Long}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Πxs
+     */
     public static long productLong(@NotNull Iterable<Long> xs) {
         return foldl(p -> p.a * p.b, 1L, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. If {@code xs} is empty, 1.0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code float}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Πxs
+     */
     public static float productFloat(@NotNull Iterable<Float> xs) {
         return foldl(p -> p.a * p.b, 1.0f, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. If {@code xs} is empty, 1.0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code double}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Πxs
+     */
     public static double productDouble(@NotNull Iterable<Double> xs) {
         return foldl(p -> p.a * p.b, 1.0, xs);
     }
 
+    /**
+     * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code BigInteger}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Πxs
+     */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
         return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>The result may be any {@code BigDecimal}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Πxs
+     */
     public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
