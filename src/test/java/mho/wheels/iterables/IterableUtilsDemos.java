@@ -200,4 +200,87 @@ public class IterableUtilsDemos {
             System.out.println("range(" + d + ") = " + IterableUtils.toString(20, range(d)));
         }
     }
+
+    public static void demoRange_byte_byte() {
+        initialize();
+        for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_short_short() {
+        initialize();
+        for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_int_int() {
+        initialize();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_long_long() {
+        initialize();
+        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_BigInteger_BigInteger() {
+        initialize();
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_BigDecimal_BigDecimal() {
+        initialize();
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_char_char() {
+        initialize();
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_float_float() {
+        initialize();
+        Iterable<Pair<Float, Float>> ps = P.pairs(filter(f -> !Float.isNaN(f), P.floats()));
+        for (Pair<Float, Float> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoRange_double_double() {
+        initialize();
+        Iterable<Pair<Double, Double>> ps = P.pairs(filter(d -> !Double.isNaN(d), P.doubles()));
+        for (Pair<Double, Double> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
 }
