@@ -149,7 +149,7 @@ public final class IterableUtils {
 
     /**
      * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
-     * preserved. Uses O(1) additional memory. The {@code Iterable} produced does not support removing elements.
+     * preserved. Uses O(1) additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -202,7 +202,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Byte.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Byte.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
@@ -220,7 +220,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Short}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Short.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Short.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
@@ -238,7 +238,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Integer}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Integer.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
@@ -257,7 +257,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Long}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Long.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Long.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
@@ -274,8 +274,7 @@ public final class IterableUtils {
     }
 
     /**
-     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
-     * does not support removing elements.
+     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -311,7 +310,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Character}s greater than or equal to {@code a}, in order. Does not wrap around after
-     * reaching {@code Character.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * reaching {@code Character.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code char}.</li>
@@ -390,8 +389,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
@@ -432,8 +430,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Short}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
@@ -474,8 +471,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Integer}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
@@ -516,8 +512,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Long}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
@@ -558,8 +553,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code BigInteger}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
-     * does not support removing elements.
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -603,7 +597,7 @@ public final class IterableUtils {
     /**
      * Generates all {@link BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b} of the
      * form {@code a}+n where n is an integer, in order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable}
-     * is returned. The {@code Iterable} produced does not support removing elements.
+     * is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -646,8 +640,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Character}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
-     * does not support removing elements.
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code char}.</li>
@@ -1136,8 +1129,7 @@ public final class IterableUtils {
     /**
      * Equivalent of Haskell's {@code (:)} list constructor. Creates an {@code Iterable} whose first element is
      * {@code x} and whose remaining elements are given by {@code xs}. {@code xs} may be infinite, in which case the
-     * result is also infinite. Uses O(1) additional memory. The {@code Iterable} produced does not support removing
-     * elements.
+     * result is also infinite. Uses O(1) additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code x} can be anything.</li>
@@ -1204,7 +1196,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code (++)} operator. Creates an {@code Iterable} consisting of {@code xs}'s
      * elements followed by {@code ys}'s elements. {@code xs} may be infinite, in which case the result will be equal
      * to {@code xs}. {@code ys} may be infinite, in which case the result will also be infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} must be non-null.</li>
@@ -1676,7 +1668,7 @@ public final class IterableUtils {
     /**
      * Equivalent of Haskell's {@code map} function. Transforms one {@code Iterable} into another by applying a
      * function to each element. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code f} must be non-null.</li>
@@ -1793,7 +1785,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code intersperse} function. Given an {@code Iterable} {@code xs} and a seperator
      * {@code sep}, returns an {@code Iterable} consisting of the elements of {@code xs} with {@code sep} between
      * every adjacent pair. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code sep} may be anything.</li>
@@ -1868,7 +1860,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code intercalate} function. Inserts an {@code Iterable} between every two adjacent
      * {@code Iterable}s in an {@code Iterable} of {@code Iterable}s, flattening the result. {@code xss}, any
      * element of {@code xss}, or {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code xss}|=0,
      * |{@code xss}|(|{@code xs}|–1) otherwise)
@@ -1893,7 +1885,7 @@ public final class IterableUtils {
      * {@code String}s in an {@code Iterable} of {@code String}s, flattening the result. Uses O(abc) additional
      * memory, where a is the length of {@code strings}, b is the maximum length of any string in {@code strings},
      * and c is the length of {@code sep}.
-     * The {@code Iterable} produced does not support removing elements.
+     * Does not support removal.
      *
      * <ul>
      *  <li>{@code sep} must be non-null.</li>
@@ -1917,8 +1909,7 @@ public final class IterableUtils {
      * {@code Iterables}. If the rows have different lengths, then the "overhanging" elements still end up in the
      * result. See test cases for examples. Any element of {@code xss} may be infinite, in which case the result will
      * be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the largest amount of
-     * memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not support removing
-     * elements.
+     * memory used by any {@code Iterable} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code xss} must be finite.</li>
@@ -1962,8 +1953,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the "overhanging" characters still end up in the
      * result. See test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m
-     * is the length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support
-     * removing elements.
+     * is the length of the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2030,8 +2020,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the "overhanging" characters will be truncated. See
      * test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
-     * length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing
-     * elements.
+     * length of the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2055,8 +2044,7 @@ public final class IterableUtils {
      * {@code Iterables}. If the rows have different lengths, then the gaps will be padded; the result's rows will all
      * have equal lengths. See test cases for examples. Any element of {@code xss} may be infinite, in which case the
      * result will be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
-     * largest amount of memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not
-     * support removing elements.
+     * largest amount of memory used by any {@code Iterable} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code xss} must be finite.</li>
@@ -2102,7 +2090,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the gaps will be padded; the result's rows will all
      * have equal lengths. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the length of
-     * the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing elements.
+     * the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2237,10 +2225,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the sum of all the {@code Byte}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     * Returns the sum of all the {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2252,10 +2241,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the sum of all the {@code Short}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     * Returns the sum of all the {@code Short}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2267,10 +2257,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the sum of all the {@code Integer}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     * Returns the sum of all the {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2282,10 +2273,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the sum of all the {@code Long}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     * Returns the sum of all the {@code Long}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2297,10 +2289,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right sum of all the {@code Float}s in {@code xs}. If {@code xs} is empty, 0.0 is returned.
+     * Returns the left-to-right sum of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2312,10 +2305,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right sum of all the {@code Double}s in {@code xs}. If {@code xs} is empty, 0.0 is returned.
+     * Returns the left-to-right sum of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2330,7 +2324,7 @@ public final class IterableUtils {
      * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2346,7 +2340,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -2358,10 +2352,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the product of all the {@code Byte}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     * Returns the product of all the {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2373,10 +2368,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the product of all the {@code Short}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     * Returns the product of all the {@code Short}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2388,10 +2384,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the product of all the {@code Integer}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     * Returns the product of all the {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2403,10 +2400,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the product of all the {@code Long}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     * Returns the product of all the {@code Long}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2418,11 +2416,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. If {@code xs} is empty, 1.0 is
-     * returned.
+     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2434,11 +2432,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. If {@code xs} is empty, 1.0 is
-     * returned.
+     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2453,7 +2451,7 @@ public final class IterableUtils {
      * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2469,7 +2467,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} must be non-null and may not contain any null elements.</li>
+     *  <li>{@code xs} may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -3370,38 +3368,152 @@ public final class IterableUtils {
         return map(list -> f.apply(new Pair<A, A>(list.get(0), list.get(1))), windows(2, xs));
     }
 
+    /**
+     * Returns the differences between successive {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Byte}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Byte> deltaBytes(@NotNull Iterable<Byte> xs) {
         return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Short}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Short}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Short> deltaShorts(@NotNull Iterable<Short> xs) {
         return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Integer}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Integer> deltaIntegers(@NotNull Iterable<Integer> xs) {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Long}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Long}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Long> deltaLongs(@NotNull Iterable<Long> xs) {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    /**
+     * Returns the differences between successive {@code BigInteger}s in {@code xs}. If {@code xs} contains a single
+     * {@code BigInteger}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<BigInteger> deltaBigIntegers(@NotNull Iterable<BigInteger> xs) {
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
+    /**
+     * Returns the differences between successive {@code BigDecimal}s in {@code xs}. If {@code xs} contains a single
+     * {@code BigDecimal}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<BigDecimal> deltaBigDecimals(@NotNull Iterable<BigDecimal> xs) {
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow or may occur. If {@code xs}
+     * contains a single {@code Float}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Float> deltaFloats(@NotNull Iterable<Float> xs) {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Double}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Double}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Double> deltaDoubles(@NotNull Iterable<Double> xs) {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    /**
+     * Returns the differences between successive {@code Character}s in {@code xs}. If {@code xs} contains a single
+     * {@code Character}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Δxs
+     */
     public static @NotNull Iterable<Integer> deltaCharacters(@NotNull Iterable<Character> xs) {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
