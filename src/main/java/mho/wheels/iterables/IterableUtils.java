@@ -149,7 +149,7 @@ public final class IterableUtils {
 
     /**
      * Converts a {@code String} to an {@code Iterable} of {@code Character}s. The order of the characters is
-     * preserved. Uses O(1) additional memory. The {@code Iterable} produced does not support removing elements.
+     * preserved. Uses O(1) additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -202,7 +202,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Byte.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Byte.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
@@ -220,7 +220,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Short}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Short.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Short.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
@@ -238,7 +238,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Integer}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Integer.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
@@ -257,7 +257,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Long}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
-     * {@code Long.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * {@code Long.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
@@ -274,8 +274,7 @@ public final class IterableUtils {
     }
 
     /**
-     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. The {@code Iterable} produced
-     * does not support removing elements.
+     * Generates all {@link BigInteger}s greater than or equal to {@code a}, in order. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -311,7 +310,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@link Character}s greater than or equal to {@code a}, in order. Does not wrap around after
-     * reaching {@code Character.MAX_VALUE}. The {@code Iterable} produced does not support removing elements.
+     * reaching {@code Character.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code char}.</li>
@@ -339,7 +338,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code float}s
+     *  <li>The result is either {@code [+Infinity]}, or an infinite nondecreasing {@code Iterable} of {@code float}s
      *  roughly differing by 1.</li>
      * </ul>
      *
@@ -369,7 +368,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is either {@code [+Infinity]}, or an infinite non-descending {@code Iterable} of {@code double}s
+     *  <li>The result is either {@code [+Infinity]}, or an infinite non-decreasing {@code Iterable} of {@code double}s
      *  roughly differing by 1.</li>
      * </ul>
      *
@@ -390,8 +389,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Byte}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
@@ -432,8 +430,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Short}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
@@ -474,8 +471,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Integer}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
@@ -516,8 +512,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Long}s greater than or equal to {@code a} and less than or equal to {@code b}, in order.
-     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced does not
-     * support removing elements.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
@@ -558,8 +553,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code BigInteger}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
-     * does not support removing elements.
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -603,7 +597,7 @@ public final class IterableUtils {
     /**
      * Generates all {@link BigDecimal}s greater than or equal to {@code a} and less than or equal to {@code b} of the
      * form {@code a}+n where n is an integer, in order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable}
-     * is returned. The {@code Iterable} produced does not support removing elements.
+     * is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} must be non-null.</li>
@@ -646,8 +640,7 @@ public final class IterableUtils {
 
     /**
      * Generates all {@code Character}s greater than or equal to {@code a} and less than or equal to {@code b}, in
-     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. The {@code Iterable} produced
-     * does not support removing elements.
+     * order. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code char}.</li>
@@ -700,7 +693,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code float}s roughly differing by
+     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code float}s roughly differing by
      *  1.</li>
      * </ul>
      *
@@ -745,7 +738,7 @@ public final class IterableUtils {
      * <ul>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is a possibly-empty non-descending {@code Iterable} of {@code double}s roughly differing by
+     *  <li>The result is a possibly-empty non-decreasing {@code Iterable} of {@code double}s roughly differing by
      *  1.</li>
      * </ul>
      *
@@ -1136,8 +1129,7 @@ public final class IterableUtils {
     /**
      * Equivalent of Haskell's {@code (:)} list constructor. Creates an {@code Iterable} whose first element is
      * {@code x} and whose remaining elements are given by {@code xs}. {@code xs} may be infinite, in which case the
-     * result is also infinite. Uses O(1) additional memory. The {@code Iterable} produced does not support removing
-     * elements.
+     * result is also infinite. Uses O(1) additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code x} can be anything.</li>
@@ -1204,7 +1196,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code (++)} operator. Creates an {@code Iterable} consisting of {@code xs}'s
      * elements followed by {@code ys}'s elements. {@code xs} may be infinite, in which case the result will be equal
      * to {@code xs}. {@code ys} may be infinite, in which case the result will also be infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} must be non-null.</li>
@@ -1676,7 +1668,7 @@ public final class IterableUtils {
     /**
      * Equivalent of Haskell's {@code map} function. Transforms one {@code Iterable} into another by applying a
      * function to each element. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code f} must be non-null.</li>
@@ -1793,7 +1785,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code intersperse} function. Given an {@code Iterable} {@code xs} and a seperator
      * {@code sep}, returns an {@code Iterable} consisting of the elements of {@code xs} with {@code sep} between
      * every adjacent pair. {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * <ul>
      *  <li>{@code sep} may be anything.</li>
@@ -1868,7 +1860,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code intercalate} function. Inserts an {@code Iterable} between every two adjacent
      * {@code Iterable}s in an {@code Iterable} of {@code Iterable}s, flattening the result. {@code xss}, any
      * element of {@code xss}, or {@code xs} may be infinite, in which case the result is also infinite. Uses O(1)
-     * additional memory. The {@code Iterable} produced does not support removing elements.
+     * additional memory. Does not support removal.
      *
      * Result length is the sum of the lengths of {@code xs}'s elements and (0 if |{@code xss}|=0,
      * |{@code xss}|(|{@code xs}|–1) otherwise)
@@ -1893,7 +1885,7 @@ public final class IterableUtils {
      * {@code String}s in an {@code Iterable} of {@code String}s, flattening the result. Uses O(abc) additional
      * memory, where a is the length of {@code strings}, b is the maximum length of any string in {@code strings},
      * and c is the length of {@code sep}.
-     * The {@code Iterable} produced does not support removing elements.
+     * Does not support removal.
      *
      * <ul>
      *  <li>{@code sep} must be non-null.</li>
@@ -1917,8 +1909,7 @@ public final class IterableUtils {
      * {@code Iterables}. If the rows have different lengths, then the "overhanging" elements still end up in the
      * result. See test cases for examples. Any element of {@code xss} may be infinite, in which case the result will
      * be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the largest amount of
-     * memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not support removing
-     * elements.
+     * memory used by any {@code Iterable} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code xss} must be finite.</li>
@@ -1962,8 +1953,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the "overhanging" characters still end up in the
      * result. See test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m
-     * is the length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support
-     * removing elements.
+     * is the length of the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2030,8 +2020,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the "overhanging" characters will be truncated. See
      * test cases for examples. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
-     * length of the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing
-     * elements.
+     * length of the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2055,8 +2044,7 @@ public final class IterableUtils {
      * {@code Iterables}. If the rows have different lengths, then the gaps will be padded; the result's rows will all
      * have equal lengths. See test cases for examples. Any element of {@code xss} may be infinite, in which case the
      * result will be infinite. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the
-     * largest amount of memory used by any {@code Iterable} in {@code xss}. The {@code Iterable} produced does not
-     * support removing elements.
+     * largest amount of memory used by any {@code Iterable} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code xss} must be finite.</li>
@@ -2102,7 +2090,7 @@ public final class IterableUtils {
      * Equivalent of Haskell's {@code transpose} function. Swaps rows and columns of an {@code Iterable} of
      * {@code String}s. If the rows have different lengths, then the gaps will be padded; the result's rows will all
      * have equal lengths. Uses O(nm) additional memory, where n is then length of {@code xss} and m is the length of
-     * the longest {@code String} in {@code xss}. The {@code Iterable} produced does not support removing elements.
+     * the longest {@code String} in {@code xss}. Does not support removal.
      *
      * <ul>
      *  <li>{@code strings} must be non-null.</li>
@@ -2200,6 +2188,14 @@ public final class IterableUtils {
         return concat(map(f, xs));
     }
 
+    public static @NotNull <T> String concatMapStrings(@NotNull Function<T, String> f, @NotNull Iterable<T> xs) {
+        StringBuilder sb = new StringBuilder();
+        for (T x : xs) {
+            sb.append(f.apply(x));
+        }
+        return sb.toString();
+    }
+
     public static boolean and(@NotNull Iterable<Boolean> xs) {
         for (boolean x : xs) {
             if (!x) return false;
@@ -2228,76 +2224,274 @@ public final class IterableUtils {
         return true;
     }
 
+    /**
+     * Returns the sum of all the {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Σxs
+     */
     public static byte sumByte(@NotNull Iterable<Byte> xs) {
         return foldl(p -> (byte) (p.a + p.b), (byte) 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Short}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Σxs
+     */
     public static short sumShort(@NotNull Iterable<Short> xs) {
         return foldl(p -> (short) (p.a + p.b), (short) 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Σxs
+     */
     public static int sumInteger(@NotNull Iterable<Integer> xs) {
         return foldl(p -> p.a + p.b, 0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code Long}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Σxs
+     */
     public static long sumLong(@NotNull Iterable<Long> xs) {
         return foldl(p -> p.a + p.b, 0L, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 0.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code float}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Σxs
+     */
     public static float sumFloat(@NotNull Iterable<Float> xs) {
         return foldl(p -> p.a + p.b, 0.0f, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 0.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code double}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Σxs
+     */
     public static double sumDouble(Iterable<Double> xs) {
         return foldl(p -> p.a + p.b, 0.0, xs);
     }
 
+    /**
+     * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code BigInteger}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Σxs
+     */
     public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
         return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
     }
 
+    /**
+     * Returns the left-to-right sum of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 0 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code BigDecimal}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Σxs
+     */
     public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         return foldl(p -> p.a.add(p.b), BigDecimal.ZERO, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Πxs
+     */
     public static byte productByte(@NotNull Iterable<Byte> xs) {
         return foldl(p -> (byte) (p.a * p.b), (byte) 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Short}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Πxs
+     */
     public static short productShort(@NotNull Iterable<Short> xs) {
         return foldl(p -> (short) (p.a * p.b), (short) 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Πxs
+     */
     public static int productInteger(@NotNull Iterable<Integer> xs) {
         return foldl(p -> p.a * p.b, 1, xs);
     }
 
+    /**
+     * Returns the product of all the {@code Long}s in {@code xs}. Overflow may occur. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Πxs
+     */
     public static long productLong(@NotNull Iterable<Long> xs) {
         return foldl(p -> p.a * p.b, 1L, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 1.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code float}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Πxs
+     */
     public static float productFloat(@NotNull Iterable<Float> xs) {
         return foldl(p -> p.a * p.b, 1.0f, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
+     * empty, 1.0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code double}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Πxs
+     */
     public static double productDouble(@NotNull Iterable<Double> xs) {
         return foldl(p -> p.a * p.b, 1.0, xs);
     }
 
+    /**
+     * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code BigInteger}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Πxs
+     */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
         return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
     }
 
+    /**
+     * Returns the left-to-right product of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 1 is
+     * returned.
+     *
+     * <ul>
+     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>The result may be any {@code BigDecimal}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Πxs
+     */
     public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
-    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1(p -> max(p.a, p.b), xs);
     }
 
-    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static char maximum(@NotNull String s) {
+        return foldl1(p -> max(p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1(p -> min(p.a, p.b), xs);
+    }
+
+    public static char minimum(@NotNull String s) {
+        return foldl1(p -> min(p.a, p.b), fromString(s));
     }
 
     public static @NotNull <A, B> Iterable<B> scanl(
@@ -2986,7 +3180,6 @@ public final class IterableUtils {
                     private boolean isLast = false;
                     private T nextX = null;
                     private Pair<T, Integer> next = null;
-
                     {
                         if (hasNext) {
                             nextX = xsi.next();
@@ -3032,6 +3225,66 @@ public final class IterableUtils {
                 };
             }
         };
+    }
+
+    public static @NotNull Iterable<Pair<Character, Integer>> countAdjacent(@NotNull String s) {
+        return countAdjacent(fromString(s));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> group(@NotNull Iterable<T> xs) {
+        return group(p -> Objects.equals(p.a, p.b), xs);
+    }
+
+    public static @NotNull <T> Iterable<String> group(@NotNull String s) {
+        return group(p -> p.a == p.b, s);
+    }
+
+    public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
+        return cons(new ArrayList<T>(), ()-> new Iterator<List<T>>() {
+            private Iterator<T> xsi = xs.iterator();
+            private List<T> currentList = new ArrayList<>();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> nextList = new ArrayList<>();
+                nextList.addAll(currentList);
+                nextList.add(xsi.next());
+                currentList = nextList;
+                return currentList;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        });
+    }
+
+    public static @NotNull Iterable<String> inits(@NotNull String s) {
+        return map(i -> s.substring(0, i), range(0, s.length()));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> tails(@NotNull Iterable<T> xs) {
+        List<T> list = toList(xs);
+        return map(
+                i -> {
+                    List<T> subList = new ArrayList<T>();
+                    for (int j = i; j < list.size(); j++) {
+                        subList.add(list.get(j));
+                    }
+                    return subList;
+                },
+                range(0, list.size())
+        );
+    }
+
+    public static @NotNull Iterable<String> tails(@NotNull String s) {
+        return map(s::substring, range(0, s.length()));
     }
 
     public static <T> boolean isPrefixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
@@ -3108,6 +3361,207 @@ public final class IterableUtils {
         });
     }
 
+    public static @NotNull <A, B> Iterable<B> adjacentPairsWith(
+            @NotNull Function<Pair<A, A>, B> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return map(list -> f.apply(new Pair<A, A>(list.get(0), list.get(1))), windows(2, xs));
+    }
+
+    /**
+     * Returns the differences between successive {@code Byte}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Byte}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Byte}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Byte> deltaBytes(@NotNull Iterable<Byte> xs) {
+        return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Short}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Short}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Short}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Short> deltaShorts(@NotNull Iterable<Short> xs) {
+        return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Integer}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Integer}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Integer> deltaIntegers(@NotNull Iterable<Integer> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Long}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Long}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Long}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Long> deltaLongs(@NotNull Iterable<Long> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code BigInteger}s in {@code xs}. If {@code xs} contains a single
+     * {@code BigInteger}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigInteger}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<BigInteger> deltaBigIntegers(@NotNull Iterable<BigInteger> xs) {
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code BigDecimal}s in {@code xs}. If {@code xs} contains a single
+     * {@code BigDecimal}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BigDecimal}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<BigDecimal> deltaBigDecimals(@NotNull Iterable<BigDecimal> xs) {
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow or may occur. If {@code xs}
+     * contains a single {@code Float}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Float}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Float> deltaFloats(@NotNull Iterable<Float> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Double}s in {@code xs}. Overflow may occur. If {@code xs}
+     * contains a single {@code Double}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result does not contain any nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Double}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Double> deltaDoubles(@NotNull Iterable<Double> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    /**
+     * Returns the differences between successive {@code Character}s in {@code xs}. If {@code xs} contains a single
+     * {@code Character}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code Integer}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<Integer> deltaCharacters(@NotNull Iterable<Character> xs) {
+        return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> lt(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> gt(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nondecreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> le(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nonincreasing(@NotNull Iterable<T> xs) {
+        return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean increasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> lt(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean decreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> gt(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nondecreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> le(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean nonincreasing(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return and(adjacentPairsWith(p -> ge(comparator, p.a, p.b), xs));
+    }
+
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return any(zs -> equal(xs, zs), windows(length(xs), ys));
     }
@@ -3146,6 +3600,37 @@ public final class IterableUtils {
             demuxed.add(select(mask, s));
         }
         return demuxed;
+    }
+
+    public static <T> boolean elem(@Nullable T x, @NotNull Iterable<T> xs) {
+        return any(y -> Objects.equals(x, y), xs);
+    }
+
+    public static <T> boolean elem(@Nullable T x, @NotNull Collection<T> xs) {
+        return xs.contains(x);
+    }
+
+    public static boolean elem(char c, @NotNull String s) {
+        return s.indexOf(c) != -1;
+    }
+
+    public static <T> boolean notElem(@Nullable T x, @NotNull Iterable<T> xs) {
+        return all(y -> !Objects.equals(x, y), xs);
+    }
+
+    public static <T> boolean notElem(@Nullable T x, @NotNull Collection<T> xs) {
+        return !xs.contains(x);
+    }
+
+    public static boolean notElem(char c, @NotNull String s) {
+        return s.indexOf(c) == -1;
+    }
+
+    public static @NotNull <A, B> NullableOptional<B> lookup(@Nullable A x, @NotNull Iterable<Pair<A, B>> xys) {
+        for (Pair<A, B> xy : xys) {
+            if (Objects.equals(x, xy.a)) return NullableOptional.of(xy.b);
+        }
+        return NullableOptional.empty();
     }
 
     public static @NotNull <T> Optional<T> find(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
@@ -3232,7 +3717,7 @@ public final class IterableUtils {
         return new Pair<>(sba.toString(), sbb.toString());
     }
 
-    public static <T> T get(Iterable<T> xs, int i) {
+    public static @Nullable <T> T get(@NotNull Iterable<T> xs, int i) {
         if (i < 0)
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3245,7 +3730,7 @@ public final class IterableUtils {
         return element;
     }
 
-    public static <T> T get(Iterable<T> xs, BigInteger i) {
+    public static @Nullable <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
         if (lt(i, BigInteger.ZERO))
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3258,22 +3743,102 @@ public final class IterableUtils {
         return element;
     }
 
-    public static <T> T get(List<T> xs, int i) {
+    public static @Nullable <T> T get(@NotNull List<T> xs, int i) {
         return xs.get(i);
     }
 
-    public static char get(String s, int i) {
+    public static char get(@NotNull String s, int i) {
         return s.charAt(i);
     }
 
-    public static <T> Iterable<T> select(Iterable<Boolean> bs, Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> select(@NotNull Iterable<Boolean> bs, @NotNull Iterable<T> xs) {
         return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
     }
 
-    public static <T> String select(Iterable<Boolean> bs, String s) {
+    public static @NotNull String select(@NotNull Iterable<Boolean> bs, @NotNull String s) {
         return charsToString(
                 map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, Character>>) zip(bs, fromString(s))))
         );
+    }
+
+    public static @NotNull <T> Optional<Integer> elemIndex(@Nullable T x, @NotNull Iterable<T> xs) {
+        int i = 0;
+        for (T y : xs) {
+            if (Objects.equals(x, y)) return Optional.of(i);
+            i++;
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Optional<BigInteger> bigIntegerElemIndex(@Nullable T x, @NotNull Iterable<T> xs) {
+        BigInteger i = BigInteger.ZERO;
+        for (T y : xs) {
+            if (Objects.equals(x, y)) return Optional.of(i);
+            i = i.add(BigInteger.ONE);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull Optional<Integer> elemIndex(char c, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c) return Optional.of(i);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Iterable<Integer> elemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(0), xs)));
+    }
+
+    public static @NotNull <T> Iterable<BigInteger> bigIntegerElemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(BigInteger.ZERO), xs)));
+    }
+
+    public static @NotNull Iterable<Integer> elemIndices(char c, @NotNull String s) {
+        return map(p -> p.a, filter(p -> p.b == c, zip(range(0), fromString(s))));
+    }
+
+    public static @NotNull <T> Optional<Integer> findIndex(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        int i = 0;
+        for (T x : xs) {
+            if (p.test(x)) return Optional.of(i);
+            i++;
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Optional<BigInteger> bigIntegerFindIndex(
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        BigInteger i = BigInteger.ZERO;
+        for (T x : xs) {
+            if (p.test(x)) return Optional.of(i);
+            i = i.add(BigInteger.ONE);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull Optional<Integer> findIndex(@NotNull Predicate<Character> p, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (p.test(s.charAt(i))) return Optional.of(i);
+        }
+        return Optional.empty();
+    }
+
+    public static @NotNull <T> Iterable<Integer> findIndices(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), xs)));
+    }
+
+    public static @NotNull <T> Iterable<BigInteger> bigIntegerFindIndices(
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(BigInteger.ZERO), xs)));
+    }
+
+    public static @NotNull Iterable<Integer> findIndices(@NotNull Predicate<Character> p, @NotNull String s) {
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), fromString(s))));
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
@@ -3941,6 +4506,28 @@ public final class IterableUtils {
         );
     }
 
+    public static @NotNull Iterable<String> lines(@NotNull String s) {
+        Iterable<String> grouped = group(p -> (p.a == '\n') == (p.b == '\n'), s);
+        Iterable<Boolean> selection = cycle(Arrays.asList(true, false));
+        if (head(head(grouped)) == '\n') selection = tail(selection);
+        return select(selection, grouped);
+    }
+
+    public static @NotNull Iterable<String> words(@NotNull String s) {
+        Iterable<String> grouped = group(p -> Character.isWhitespace(p.a) == Character.isWhitespace(p.b), s);
+        Iterable<Boolean> selection = cycle(Arrays.asList(true, false));
+        if (head(head(grouped)) == '\n') selection = tail(selection);
+        return select(selection, grouped);
+    }
+
+    public static @NotNull String unlines(@NotNull Iterable<String> lines) {
+        return concatMapStrings(line -> line + "\n", lines);
+    }
+
+    public static @NotNull String unwords(@NotNull Iterable<String> words) {
+        return intercalate(" ", words);
+    }
+
     public static @NotNull <T> Iterable<T> nub(@NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             private Set<T> seen = new HashSet<>();
@@ -3950,7 +4537,6 @@ public final class IterableUtils {
                     private final Iterator<T> xsi = xs.iterator();
                     private T next;
                     private boolean hasNext;
-
                     {
                         advance();
                     }
@@ -4001,6 +4587,25 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    public static <T> boolean unique(@NotNull Iterable<T> xs) {
+        Set<T> seen = new HashSet<>();
+        for (T x : xs) {
+            if (seen.contains(x)) return false;
+            seen.add(x);
+        }
+        return true;
+    }
+
+    public static boolean unique(@NotNull String s) {
+        Set<Character> seen = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (seen.contains(c)) return false;
+            seen.add(c);
+        }
+        return true;
+    }
+
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         HashSet<T> set = new HashSet<>();
         addTo(xs, set);
@@ -4025,6 +4630,170 @@ public final class IterableUtils {
         List<Character> list = toList(s);
         Collections.sort(list);
         return charsToString(list);
+    }
+
+    public static @NotNull <T> Iterable<T> nub(@NotNull Predicate<Pair<T, T>> p, @NotNull Iterable<T> xs) {
+        return new Iterable<T>() {
+            private Set<T> seen = new HashSet<>();
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    {
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T current = next;
+                        advance();
+                        return current;
+                    }
+
+                    private void advance() {
+                        while (xsi.hasNext()) {
+                            next = xsi.next();
+                            boolean good = !seen.contains(next) && !any(x -> p.test(new Pair<T, T>(next, x)), seen);
+                            if (good) {
+                                seen.add(next);
+                                hasNext = true;
+                                return;
+                            }
+                        }
+                        hasNext = false;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull String nub(@NotNull Predicate<Pair<Character, Character>> p, @NotNull String s) {
+        Set<Character> seen = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!seen.contains(c) && !any(x -> p.test(new Pair<Character, Character>(c, x)), seen)) {
+                seen.add(c);
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static @NotNull <T extends Comparable<T>> List<T> sort(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xss
+    ) {
+        List<T> list = toList(xss);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public static @NotNull String sort(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        List<Character> list = toList(s);
+        Collections.sort(list, comparator);
+        return charsToString(list);
+    }
+
+    public static @NotNull <T extends Comparable<T>> T maximum(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return foldl1(p -> max(comparator, p.a, p.b), xs);
+    }
+
+    public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1(p -> max(comparator, p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T extends Comparable<T>> T minimum(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        return foldl1(p -> min(comparator, p.a, p.b), xs);
+    }
+
+    public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
+        return foldl1(p -> min(comparator, p.a, p.b), fromString(s));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> group(
+            @NotNull Predicate<Pair<T, T>> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return new Iterable<List<T>>() {
+            @Override
+            public Iterator<List<T>> iterator() {
+                return new Iterator<List<T>>() {
+                    private Iterator<T> xsi = xs.iterator();
+                    private boolean hasNext = xsi.hasNext();
+                    private boolean isLast = false;
+                    private T nextX = null;
+                    private List<T> next = null;
+                    {
+                        if (hasNext) {
+                            nextX = xsi.next();
+                        }
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public List<T> next() {
+                        if (isLast) {
+                            hasNext = false;
+                            return next;
+                        } else {
+                            List<T> oldNext = next;
+                            advance();
+                            return oldNext;
+                        }
+                    }
+
+                    private void advance() {
+                        T original = nextX;
+                        List<T> list = new ArrayList<>();
+                        do {
+                            list.add(nextX);
+                            if (!xsi.hasNext()) {
+                                isLast = true;
+                                break;
+                            }
+                            nextX = xsi.next();
+                        } while (p.test(new Pair<T, T>(original, nextX)));
+                        next = list;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull Iterable<String> group(
+            @NotNull Predicate<Pair<Character, Character>> p,
+            @NotNull String s
+    ) {
+        return map(IterableUtils::charsToString, group(p, fromString(s)));
     }
 
     public static <T> boolean equal(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {

@@ -848,7 +848,7 @@ public final class MathUtils {
 
     public static @NotNull List<Integer> factors(int n) {
         List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsAscending(
+        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
                 toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
@@ -859,7 +859,7 @@ public final class MathUtils {
 
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
         List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsAscending(
+        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
                 toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(

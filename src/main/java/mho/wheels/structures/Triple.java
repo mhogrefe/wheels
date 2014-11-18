@@ -154,7 +154,7 @@ public final class Triple<A, B, C> {
      * @param <A> the type of the {@code Triple}'s first value
      * @param <B> the type of the {@code Triple}'s second value
      * @param <C> the type of the {@code Triple}'s third value
-     * @return the {@code Triple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
+     * @return the {@code Triple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
     public static @NotNull <A, B, C> Optional<Triple<A, B, C>> read(
             @NotNull String s,

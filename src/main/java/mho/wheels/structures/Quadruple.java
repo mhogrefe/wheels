@@ -143,7 +143,7 @@ public final class Quadruple<A, B, C, D> {
      *  <li>(conjecture) The result may be any {@code int}.</li>
      * </ul>
      *
-     * @return {@code this}'s hash code.
+     * @return {@code this}'s hash code
      */
     @Override
     public int hashCode() {
@@ -175,7 +175,7 @@ public final class Quadruple<A, B, C, D> {
      * @param <B> the type of the {@code Quadruple}'s second value
      * @param <C> the type of the {@code Quadruple}'s third value
      * @param <D> the type of the {@code Quadruple}'s fourth value
-     * @return the {@code Quadruple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid.
+     * @return the {@code Quadruple} represented by {@code s}, or an empty {@code Optional} if {@code s} is invalid
      */
     public static @NotNull <A, B, C, D> Optional<Quadruple<A, B, C, D>> read(
             @NotNull String s,
