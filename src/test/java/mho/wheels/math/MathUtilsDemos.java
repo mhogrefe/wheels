@@ -25,7 +25,7 @@ public class MathUtilsDemos {
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 1000000000;
+            LIMIT = 10000;
         }
     }
 
