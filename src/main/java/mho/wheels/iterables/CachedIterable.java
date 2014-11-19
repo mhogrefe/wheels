@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class CachedIterable<T> {
     private final @NotNull Iterator<T> iterator;

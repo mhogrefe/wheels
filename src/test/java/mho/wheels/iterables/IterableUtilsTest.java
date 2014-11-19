@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.take;
 import static org.junit.Assert.*;
 
 public class IterableUtilsTest {

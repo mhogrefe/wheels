@@ -1,7 +1,6 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.IterableUtils;
-import mho.wheels.misc.FloatUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;

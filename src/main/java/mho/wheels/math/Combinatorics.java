@@ -12,7 +12,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.eq;
+import static mho.wheels.ordering.Ordering.lt;
 
 /**
  * Various combinatorial functions and <tt>Iterable</tt>s.

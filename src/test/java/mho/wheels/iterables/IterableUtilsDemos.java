@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.range;
 
 public class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;

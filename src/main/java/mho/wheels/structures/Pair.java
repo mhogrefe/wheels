@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * An ordered pair of values. Either value, or both, may be null. The {@code Pair} is immutable iff both of its values
