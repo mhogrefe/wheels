@@ -2229,7 +2229,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2245,7 +2245,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2261,7 +2261,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2277,7 +2277,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2293,7 +2293,7 @@ public final class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2309,7 +2309,7 @@ public final class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2324,7 +2324,7 @@ public final class IterableUtils {
      * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2340,7 +2340,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -2356,7 +2356,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2372,7 +2372,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2388,7 +2388,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2404,7 +2404,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2420,7 +2420,7 @@ public final class IterableUtils {
      * empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2436,7 +2436,7 @@ public final class IterableUtils {
      * empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2451,7 +2451,7 @@ public final class IterableUtils {
      * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2467,7 +2467,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -3391,7 +3391,7 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3408,7 +3408,7 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3425,7 +3425,7 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3441,7 +3441,7 @@ public final class IterableUtils {
      * {@code BigInteger}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3457,7 +3457,7 @@ public final class IterableUtils {
      * {@code BigDecimal}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3474,7 +3474,7 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3491,7 +3491,7 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result does not contain any nulls.</li>
      * </ul>
      *
@@ -3507,7 +3507,7 @@ public final class IterableUtils {
      * {@code Character}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
      * </ul>
      *
