@@ -609,7 +609,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 filter(
                         Optional::isPresent,
                         (Iterable<Optional<Float>>) map(
-                                p -> FloatUtils.floatFromPair(p.a, p.b),
+                                p -> FloatUtils.floatFromME(p.a, p.b),
                                 pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
                         )
                 )
@@ -732,7 +732,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 filter(
                         Optional::isPresent,
                         (Iterable<Optional<Double>>) map(
-                                p -> FloatUtils.doubleFromPair(p.a, p.b),
+                                p -> FloatUtils.doubleFromME(p.a, p.b),
                                 pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
                         )
                 )

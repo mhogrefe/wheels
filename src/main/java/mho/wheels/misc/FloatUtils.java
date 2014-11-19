@@ -5,12 +5,27 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 import java.util.Optional;
 
+/**
+ * Methods for manipulating and analyzing {@link float}s and {@link double}s.
+ */
 public final class FloatUtils {
     /**
      * Disallow instantiation
      */
     private FloatUtils() {}
 
+    /**
+     * Returns the next-largest {@code float} after {@code f}. The successor of {@code -Float.MIN_VALUE} is negative
+     * zero. The successor of negative infinity is {@code -Float.MAX_VALUE}.
+     *
+     * <ul>
+     *  <li>{@code f} may not be {@code NaN} or {@code +Infinity}.</li>
+     *  <li>The result may be any {@code float} other than 0.0, {@code NaN}, or {@code -Infinity}.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return min{g|g{@literal >}{@code f}}
+     */
     public static float successor(float f) {
         if (Float.isNaN(f) || f > 0 && Float.isInfinite(f))
             throw new ArithmeticException(f + " does not have a successor");
@@ -19,6 +34,18 @@ public final class FloatUtils {
         return Float.intBitsToFloat(f > 0 ? floatBits + 1 : floatBits - 1);
     }
 
+    /**
+     * Returns the next-smallest {@code float} before {@code f}. The predecessor of positive infinity is
+     * {@code Float.MAX_VALUE}.
+     *
+     * <ul>
+     *  <li>{@code f} may not be {@code NaN} or {@code -Infinity}.</li>
+     *  <li>The result may be any {@code float} other than negative zero, {@code NaN}, or {@code +Infinity}.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return max{g|g{@literal <}{@code f}}
+     */
     public static float predecessor(float f) {
         if (Float.isNaN(f) || f < 0 && Float.isInfinite(f))
             throw new ArithmeticException(f + " does not have a predecessor");
@@ -27,6 +54,18 @@ public final class FloatUtils {
         return Float.intBitsToFloat(f > 0 ? floatBits - 1 : floatBits + 1);
     }
 
+    /**
+     * Returns the next-largest {@code double} after {@code d}. The successor of {@code -Double.MIN_VALUE} is negative
+     * zero. The successor of negative infinity is {@code -Double.MAX_VALUE}.
+     *
+     * <ul>
+     *  <li>{@code d} may not be {@code NaN} or {@code +Infinity}.</li>
+     *  <li>The result may be any {@code double} other than 0.0, {@code NaN} or {@code -Infinity}.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return min{e|e{@literal >}{@code d}}
+     */
     public static double successor(double d) {
         if (Double.isNaN(d) || d > 0 && Double.isInfinite(d))
             throw new ArithmeticException(d + " does not have a successor");
@@ -35,6 +74,18 @@ public final class FloatUtils {
         return Double.longBitsToDouble(d > 0 ? doubleBits + 1 : doubleBits - 1);
     }
 
+    /**
+     * Returns the next-smallest {@code double} before {@code d}. The predecessor of positive infinity is
+     * {@code Double.MAX_VALUE}.
+     *
+     * <ul>
+     *  <li>{@code d} may not be {@code NaN} or {@code -Infinity}.</li>
+     *  <li>The result may be any {@code double} other than negative zero, {@code NaN}, or {@code +Infinity}.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return max{e|e{@literal <}{@code d}}
+     */
     public static double predecessor(double d) {
         if (Double.isNaN(d) || d < 0 && Double.isInfinite(d))
             throw new ArithmeticException(d + " does not have a predecessor");
@@ -43,7 +94,22 @@ public final class FloatUtils {
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
     }
 
-    public static @NotNull Optional<Float> floatFromPair(int mantissa, int exponent) {
+    /**
+     * Constructs a {@code float} from its mantissa and exponent. The {@code float} is equal to
+     * {@code mantissa}×2<pow>{@code exponent}</pow>. If the given mantissa and exponent do not form a valid
+     * {@code float}, an empty {@code Optional} is returned.
+     *
+     * <ul>
+     *  <li>{@code mantissa} may be any {@code int}.</li>
+     *  <li>{@code exponent} may be any {@code int}.</li>
+     *  <li>The result is not {@code NaN}, negative zero, or infinite.</li>
+     * </ul>
+     *
+     * @param mantissa a {@code float}'s mantissa
+     * @param exponent a {@code float}'s exponent
+     * @return The {@code float} with the given expoent and mantissa
+     */
+    public static @NotNull Optional<Float> floatFromME(int mantissa, int exponent) {
         if ((mantissa & 1) == 0) {
             return Optional.empty();
         }
@@ -74,7 +140,22 @@ public final class FloatUtils {
         return Optional.of(sign ? f : -f);
     }
 
-    public static @NotNull Optional<Double> doubleFromPair(long mantissa, int exponent) {
+    /**
+     * Constructs a {@code double} from its mantissa and exponent. The {@code double} is equal to
+     * {@code mantissa}×2<pow>{@code exponent}</pow>. If the given mantissa and exponent do not form a valid
+     * {@code double}, an empty {@code Optional} is returned.
+     *
+     * <ul>
+     *  <li>{@code mantissa} may be any {@code long}.</li>
+     *  <li>{@code exponent} may be any {@code int}.</li>
+     *  <li>The result is not {@code NaN}, negative zero, or infinite.</li>
+     * </ul>
+     *
+     * @param mantissa a {@code double}'s mantissa
+     * @param exponent a {@code double}'s exponent
+     * @return The {@code float} with the given expoent and mantissa
+     */
+    public static @NotNull Optional<Double> doubleFromME(long mantissa, int exponent) {
         if ((mantissa & 1) == 0) {
             return Optional.empty();
         }
