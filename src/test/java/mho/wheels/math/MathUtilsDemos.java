@@ -129,17 +129,17 @@ public class MathUtilsDemos {
 
     private static void demoFromBigEndianBits() {
         initialize();
-        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(list));
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(bs));
         }
     }
 
     private static void demoFromBits() {
         initialize();
-        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("fromBits(" + listString + ") = " + fromBits(list));
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("fromBits(" + listString + ") = " + fromBits(bs));
         }
     }
 

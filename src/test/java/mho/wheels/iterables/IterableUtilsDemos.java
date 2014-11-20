@@ -118,7 +118,8 @@ public class IterableUtilsDemos {
         for (Pair<Integer, Iterable<Integer>> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
-            System.out.println("toString(" + p.a + ", " + IterableUtils.toString(10, p.b) + ") = " + IterableUtils.toString(p.a, p.b));
+            System.out.println("toString(" + p.a + ", " + IterableUtils.toString(10, p.b) + ") = " +
+                    IterableUtils.toString(p.a, p.b));
         }
     }
 
@@ -280,6 +281,134 @@ public class IterableUtilsDemos {
             assert p.a != null;
             assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoSumByte() {
+        initialize();
+        for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumByte(bs));
+        }
+    }
+
+    public static void demoSumShort() {
+        initialize();
+        for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
+            String listString = tail(init(ss.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumShort(ss));
+        }
+    }
+
+    public static void demoSumInteger() {
+        initialize();
+        for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumInteger(is));
+        }
+    }
+
+    public static void demoSumLong() {
+        initialize();
+        for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
+            String listString = tail(init(ls.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumLong(ls));
+        }
+    }
+
+    public static void demoSumFloat() {
+        initialize();
+        for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
+            String listString = tail(init(fs.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumFloat(fs));
+        }
+    }
+
+    public static void demoSumDouble() {
+        initialize();
+        for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
+            String listString = tail(init(ds.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumDouble(ds));
+        }
+    }
+
+    public static void demoSumBigInteger() {
+        initialize();
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumBigInteger(is));
+        }
+    }
+
+    public static void demoSumBigDecimal() {
+        initialize();
+        for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
+            String listString = tail(init(bds.toString()));
+            System.out.println("Σ(" + listString + ") = " + sumBigDecimal(bds));
+        }
+    }
+
+    public static void demoProductByte() {
+        initialize();
+        for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("Π(" + listString + ") = " + productByte(bs));
+        }
+    }
+
+    public static void demoProductShort() {
+        initialize();
+        for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
+            String listString = tail(init(ss.toString()));
+            System.out.println("Π(" + listString + ") = " + productShort(ss));
+        }
+    }
+
+    public static void demoProductInteger() {
+        initialize();
+        for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("Π(" + listString + ") = " + productInteger(is));
+        }
+    }
+
+    public static void demoProductLong() {
+        initialize();
+        for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
+            String listString = tail(init(ls.toString()));
+            System.out.println("Π(" + listString + ") = " + productLong(ls));
+        }
+    }
+
+    public static void demoProductFloat() {
+        initialize();
+        for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
+            String listString = tail(init(fs.toString()));
+            System.out.println("Π(" + listString + ") = " + productFloat(fs));
+        }
+    }
+
+    public static void demoProductDouble() {
+        initialize();
+        for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
+            String listString = tail(init(ds.toString()));
+            System.out.println("Π(" + listString + ") = " + productDouble(ds));
+        }
+    }
+
+    public static void demoProductBigInteger() {
+        initialize();
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("Π(" + listString + ") = " + productBigInteger(is));
+        }
+    }
+
+    public static void demoProductBigDecimal() {
+        initialize();
+        for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
+            String listString = tail(init(bds.toString()));
+            System.out.println("Π(" + listString + ") = " + productBigDecimal(bds));
         }
     }
 }
