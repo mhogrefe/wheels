@@ -3375,7 +3375,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Byte}s.
@@ -3392,7 +3392,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Short}s.
@@ -3409,7 +3409,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Integer}s.
@@ -3426,7 +3426,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Long}s.
@@ -3442,7 +3442,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code BigInteger}s.
@@ -3458,7 +3458,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code BigDecimal}s.
@@ -3475,7 +3475,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Float}s.
@@ -3492,7 +3492,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Double}s.
@@ -3508,7 +3508,7 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
+     *  <li>The result is finite and only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Integer}s.
