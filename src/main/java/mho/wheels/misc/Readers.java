@@ -157,14 +157,14 @@ public class Readers {
     }
 
     public static @NotNull <T> Optional<List<T>> readListWithNulls(
-            @NotNull Function<String, NullableOptional<T>> read,
+            @NotNull Function<String, Optional<T>> read,
             @NotNull String s
     ) {
         if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
         s = tail(init(s));
         List<T> list = new ArrayList<>();
         for (String token : s.split(", ")) {
-            NullableOptional<T> ox = read.apply(token);
+            NullableOptional<T> ox = readWithNull(read, token);
             if (!ox.isPresent()) return Optional.empty();
             list.add(ox.get());
         }

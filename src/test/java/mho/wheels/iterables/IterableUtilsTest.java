@@ -1,5 +1,7 @@
 package mho.wheels.iterables;
 
+import mho.wheels.misc.Readers;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -1136,11 +1138,125 @@ public class IterableUtilsTest {
         aeq(transposeStringsPadded('_', new ArrayList<String>()), "[]");
     }
 
+    @Test
+    public void testSumByte() {
+        aeq(sumByte(Arrays.asList((byte) 10, (byte) 11, (byte) 12)), 33);
+        aeq(sumByte(Arrays.asList((byte) -4, (byte) 6, (byte) -8)), -6);
+        aeq(sumByte(Arrays.asList(Byte.MAX_VALUE, (byte) 1)), Byte.MIN_VALUE);
+        aeq(sumByte(new ArrayList<>()), 0);
+        try {
+            sumByte(Arrays.asList((byte) 10, null, (byte) 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumShort() {
+        aeq(sumShort(Arrays.asList((short) 10, (short) 11, (short) 12)), 33);
+        aeq(sumShort(Arrays.asList((short) -4, (short) 6, (short) -8)), -6);
+        aeq(sumShort(Arrays.asList(Short.MAX_VALUE, (short) 1)), Short.MIN_VALUE);
+        aeq(sumShort(new ArrayList<>()), 0);
+        try {
+            sumShort(Arrays.asList((short) 10, null, (short) 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumInteger() {
+        aeq(sumInteger(Arrays.asList(10, 11, 12)), 33);
+        aeq(sumInteger(Arrays.asList(-4, 6, -8)), -6);
+        aeq(sumInteger(Arrays.asList(Integer.MAX_VALUE, 1)), Integer.MIN_VALUE);
+        aeq(sumInteger(new ArrayList<>()), 0);
+        try {
+            sumInteger(Arrays.asList(10, null, 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumLong() {
+        aeq(sumLong(Arrays.asList(10L, 11L, 12L)), 33);
+        aeq(sumLong(Arrays.asList(-4L, 6L, -8L)), -6);
+        aeq(sumLong(Arrays.asList(Long.MAX_VALUE, 1L)), Long.MIN_VALUE);
+        aeq(sumLong(new ArrayList<>()), 0);
+        try {
+            sumLong(Arrays.asList(10L, null, 12L));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumFloat() {
+        aeq(sumFloat(Arrays.asList(10.0f, 10.5f, 11.0f)), 31.5);
+        aeq(sumFloat(Arrays.asList(-4.0f, 6.0f, -8.0f)), -6.0);
+        aeq(sumFloat(Arrays.asList(1.0e9f, 1.0f)), 1.0e9f);
+        aeq(sumFloat(Arrays.asList(32.0f, 32.0f, 1.0e9f)), 1.00000006E9);
+        aeq(sumFloat(Arrays.asList(1.0e9f, 32.0f, 32.0f)), 1.0e9f);
+        aeq(sumFloat(new ArrayList<>()), 0.0f);
+        try {
+            sumFloat(Arrays.asList(10.0f, null, 11.0f));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumDouble() {
+        aeq(sumDouble(Arrays.asList(10.0, 10.5, 11.0)), 31.5);
+        aeq(sumDouble(Arrays.asList(-4.0, 6.0, -8.0)), -6.0);
+        aeq(sumDouble(Arrays.asList(1.0e16, 1.0)), 1.0e16);
+        aeq(sumDouble(Arrays.asList(1.0, 1.0, 1.0e16)), 1.0000000000000002E16);
+        aeq(sumDouble(Arrays.asList(1.0e16, 1.0, 1.0)), 1.0e16);
+        aeq(sumDouble(new ArrayList<>()), 0.0);
+        try {
+            sumDouble(Arrays.asList(10.0, null, 11.0));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumBigInteger() {
+        aeq(sumBigInteger(readBigIntegerList("[10, 11, 12]").get()), 33);
+        aeq(sumBigInteger(readBigIntegerList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigInteger(new ArrayList<>()), 0);
+        try {
+            sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSumBigDecimal() {
+        aeq(sumBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 31.5);
+        aeq(sumBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigDecimal(new ArrayList<>()), 0);
+        try {
+            sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
 
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
+    }
+
+    private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readBigInteger, s);
+    }
+
+    private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigInteger, s);
+    }
+
+    private static @NotNull Optional<List<BigDecimal>> readBigDecimalList(@NotNull String s) {
+        return Readers.readList(Readers::readBigDecimal, s);
+    }
+
+    private static @NotNull Optional<List<BigDecimal>> readBigDecimalListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigDecimal, s);
     }
 }
