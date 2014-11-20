@@ -116,8 +116,9 @@ public final class Pair<A, B> {
 
     /**
      * Creates a {@code Pair} from a {@code String}. Valid strings are of the form {@code "(" + a + ", " + b + ")"},
-     * where {@code a} and {@code b} are valid {@code String}s for their types. If the {@code String} is invalid, the
-     * method returns Optional.empty() without throwing an exception; this aids composability.
+     * where {@code a} and {@code b} are valid {@code String}s for their types. {@code a} must not contain the
+     * {@code String} {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method
+     * returns {@code Optional.empty()} without throwing an exception; this aids composability.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>

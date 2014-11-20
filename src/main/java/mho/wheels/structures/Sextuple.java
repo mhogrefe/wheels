@@ -181,8 +181,10 @@ public final class Sextuple<A, B, C, D, E, F> {
     /**
      * Creates a {@code Sextuple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ")"}, where {@code a}, {@code b},
-     * {@code c}, {@code d}, {@code e}, and {@code f} are valid {@code String}s for their types. If the {@code String}
-     * is invalid, the method returns Optional.empty() without throwing an exception; this aids composability.
+     * {@code c}, {@code d}, {@code e}, and {@code f} are valid {@code String}s for their types. {@code a}, {@code b},
+     * {@code c}, {@code d}, and {@code e} must not contain the {@code String} {@code ", "}, because this will confuse
+     * the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without throwing an
+     * exception; this aids composability.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
