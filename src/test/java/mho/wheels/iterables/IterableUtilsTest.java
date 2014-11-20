@@ -1188,10 +1188,10 @@ public class IterableUtilsTest {
 
     @Test
     public void testSumFloat() {
-        aeq(sumFloat(Arrays.asList(10.0f, 10.5f, 11.0f)), 31.5);
-        aeq(sumFloat(Arrays.asList(-4.0f, 6.0f, -8.0f)), -6.0);
+        aeq(sumFloat(Arrays.asList(10.0f, 10.5f, 11.0f)), 31.5f);
+        aeq(sumFloat(Arrays.asList(-4.0f, 6.0f, -8.0f)), -6.0f);
         aeq(sumFloat(Arrays.asList(1.0e9f, 1.0f)), 1.0e9f);
-        aeq(sumFloat(Arrays.asList(32.0f, 32.0f, 1.0e9f)), 1.00000006E9);
+        aeq(sumFloat(Arrays.asList(32.0f, 32.0f, 1.0e9f)), 1.00000006e9f);
         aeq(sumFloat(Arrays.asList(1.0e9f, 32.0f, 32.0f)), 1.0e9f);
         aeq(sumFloat(new ArrayList<>()), 0.0f);
         try {
@@ -1205,7 +1205,7 @@ public class IterableUtilsTest {
         aeq(sumDouble(Arrays.asList(10.0, 10.5, 11.0)), 31.5);
         aeq(sumDouble(Arrays.asList(-4.0, 6.0, -8.0)), -6.0);
         aeq(sumDouble(Arrays.asList(1.0e16, 1.0)), 1.0e16);
-        aeq(sumDouble(Arrays.asList(1.0, 1.0, 1.0e16)), 1.0000000000000002E16);
+        aeq(sumDouble(Arrays.asList(1.0, 1.0, 1.0e16)), 1.0000000000000002e16);
         aeq(sumDouble(Arrays.asList(1.0e16, 1.0, 1.0)), 1.0e16);
         aeq(sumDouble(new ArrayList<>()), 0.0);
         try {
@@ -1232,6 +1232,105 @@ public class IterableUtilsTest {
         aeq(sumBigDecimal(new ArrayList<>()), 0);
         try {
             sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+     public void testProductByte() {
+        aeq(productByte(Arrays.asList((byte) 2, (byte) 5, (byte) 12)), 120);
+        aeq(productByte(Arrays.asList((byte) -3, (byte) 5, (byte) -7)), 105);
+        aeq(productByte(Arrays.asList((byte) (1 << 6), (byte) 2)), Byte.MIN_VALUE);
+        aeq(productByte(new ArrayList<>()), 1);
+        try {
+            productByte(Arrays.asList((byte) 10, null, (byte) 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductShort() {
+        aeq(productShort(Arrays.asList((short) 2, (short) 5, (short) 12)), 120);
+        aeq(productShort(Arrays.asList((short) -3, (short) 5, (short) -7)), 105);
+        aeq(productShort(Arrays.asList((short) (1 << 14), (short) 2)), Short.MIN_VALUE);
+        aeq(productShort(new ArrayList<>()), 1);
+        try {
+            productShort(Arrays.asList((short) 10, null, (short) 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductInteger() {
+        aeq(productInteger(Arrays.asList(2, 5, 12)), 120);
+        aeq(productInteger(Arrays.asList(-3, 5, -7)), 105);
+        aeq(productInteger(Arrays.asList(1 << 30, 2)), Integer.MIN_VALUE);
+        aeq(productInteger(new ArrayList<>()), 1);
+        try {
+            productInteger(Arrays.asList(10, null, 12));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductLong() {
+        aeq(productLong(Arrays.asList(2L, 5L, 12L)), 120);
+        aeq(productLong(Arrays.asList(-3L, 5L, -7L)), 105);
+        aeq(productLong(Arrays.asList(1L << 62, 2L)), Long.MIN_VALUE);
+        aeq(productLong(new ArrayList<>()), 1);
+        try {
+            productLong(Arrays.asList(10L, null, 12L));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+
+    @Test
+    public void testProductFloat() {
+        aeq(productFloat(Arrays.asList(10.0f, 10.5f, 11.0f)), 1155.0f);
+        aeq(productFloat(Arrays.asList(-4.0f, 6.0f, -8.0f)), 192.0f);
+        aeq(productFloat(Arrays.asList(Float.MAX_VALUE, 2.0f)), Float.POSITIVE_INFINITY);
+        aeq(productFloat(Arrays.asList(2.0f, 0.5f, Float.MAX_VALUE)), 3.4028235E38f);
+        aeq(productFloat(Arrays.asList(Float.MAX_VALUE, 2.0f, 0.5f)), Float.POSITIVE_INFINITY);
+        aeq(productFloat(new ArrayList<>()), 1.0f);
+        try {
+            productFloat(Arrays.asList(10.0f, null, 11.0f));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductDouble() {
+        aeq(productDouble(Arrays.asList(10.0, 10.5, 11.0)), 1155.0);
+        aeq(productDouble(Arrays.asList(-4.0, 6.0, -8.0)), 192.0);
+        aeq(productDouble(Arrays.asList(Double.MAX_VALUE, 2.0)), Double.POSITIVE_INFINITY);
+        aeq(productDouble(Arrays.asList(0.2, 0.5, Double.MAX_VALUE)), 1.7976931348623158E307);
+        aeq(productDouble(Arrays.asList(Double.MAX_VALUE, 2.0, 0.5)), Float.POSITIVE_INFINITY);
+        aeq(productDouble(new ArrayList<>()), 1.0);
+        try {
+            productDouble(Arrays.asList(10.0, null, 11.0));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductBigInteger() {
+        aeq(productBigInteger(readBigIntegerList("[10, 11, 12]").get()), 1320);
+        aeq(productBigInteger(readBigIntegerList("[-4, 6, -8]").get()), 192);
+        aeq(productBigInteger(new ArrayList<>()), 1);
+        try {
+            productBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testProductBigDecimal() {
+        aeq(productBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 1155.0);
+        aeq(productBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), 192);
+        aeq(productBigDecimal(new ArrayList<>()), 1);
+        try {
+            productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
             fail();
         } catch (NullPointerException ignored) {}
     }
