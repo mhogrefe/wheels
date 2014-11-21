@@ -2416,8 +2416,8 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
-     * empty, 1.0 is returned.
+     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow or underflow may occur. If
+     * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls.</li>
@@ -2432,8 +2432,8 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
-     * empty, 1.0 is returned.
+     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow or underflow may occur. If
+     * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls.</li>
