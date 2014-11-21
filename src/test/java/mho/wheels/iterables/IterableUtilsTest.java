@@ -1193,6 +1193,7 @@ public class IterableUtilsTest {
         aeq(sumFloat(Arrays.asList(1.0e9f, 1.0f)), 1.0e9f);
         aeq(sumFloat(Arrays.asList(32.0f, 32.0f, 1.0e9f)), 1.00000006e9f);
         aeq(sumFloat(Arrays.asList(1.0e9f, 32.0f, 32.0f)), 1.0e9f);
+        aeq(sumFloat(Arrays.asList(1.0e9f, Float.NaN, 32.0f)), Float.NaN);
         aeq(sumFloat(new ArrayList<>()), 0.0f);
         try {
             sumFloat(Arrays.asList(10.0f, null, 11.0f));
@@ -1207,6 +1208,7 @@ public class IterableUtilsTest {
         aeq(sumDouble(Arrays.asList(1.0e16, 1.0)), 1.0e16);
         aeq(sumDouble(Arrays.asList(1.0, 1.0, 1.0e16)), 1.0000000000000002e16);
         aeq(sumDouble(Arrays.asList(1.0e16, 1.0, 1.0)), 1.0e16);
+        aeq(sumDouble(Arrays.asList(1.0e16, Double.NaN, 1.0)), Double.NaN);
         aeq(sumDouble(new ArrayList<>()), 0.0);
         try {
             sumDouble(Arrays.asList(10.0, null, 11.0));
@@ -1292,6 +1294,7 @@ public class IterableUtilsTest {
         aeq(productFloat(Arrays.asList(Float.MAX_VALUE, 2.0f)), Float.POSITIVE_INFINITY);
         aeq(productFloat(Arrays.asList(2.0f, 0.5f, Float.MAX_VALUE)), 3.4028235E38f);
         aeq(productFloat(Arrays.asList(Float.MAX_VALUE, 2.0f, 0.5f)), Float.POSITIVE_INFINITY);
+        aeq(productFloat(Arrays.asList(Float.MAX_VALUE, Float.NaN, 0.5f)), Float.NaN);
         aeq(productFloat(new ArrayList<>()), 1.0f);
         try {
             productFloat(Arrays.asList(10.0f, null, 11.0f));
@@ -1305,7 +1308,8 @@ public class IterableUtilsTest {
         aeq(productDouble(Arrays.asList(-4.0, 6.0, -8.0)), 192.0);
         aeq(productDouble(Arrays.asList(Double.MAX_VALUE, 2.0)), Double.POSITIVE_INFINITY);
         aeq(productDouble(Arrays.asList(0.2, 0.5, Double.MAX_VALUE)), 1.7976931348623158E307);
-        aeq(productDouble(Arrays.asList(Double.MAX_VALUE, 2.0, 0.5)), Float.POSITIVE_INFINITY);
+        aeq(productDouble(Arrays.asList(Double.MAX_VALUE, 2.0, 0.5)), Double.POSITIVE_INFINITY);
+        aeq(productDouble(Arrays.asList(Double.MAX_VALUE, Double.NaN, 0.5)), Double.NaN);
         aeq(productDouble(new ArrayList<>()), 1.0);
         try {
             productDouble(Arrays.asList(10.0, null, 11.0));
@@ -1331,6 +1335,143 @@ public class IterableUtilsTest {
         aeq(productBigDecimal(new ArrayList<>()), 1);
         try {
             productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaByte() {
+        aeq(deltaByte(Arrays.asList((byte) 3, (byte) 1, (byte) 4, (byte) 1, (byte) 5, (byte) 9, (byte) 3)),
+                "[-2, 3, -3, 4, 4, -6]");
+        aeq(deltaByte(Arrays.asList(Byte.MIN_VALUE, Byte.MAX_VALUE)), "[-1]");
+        aeq(deltaByte(Arrays.asList((byte) 3)), "[]");
+        try {
+            deltaByte(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaByte(Arrays.asList((byte) 10, null, (byte) 12)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaShort() {
+        aeq(deltaShort(Arrays.asList((short) 3, (short) 1, (short) 4, (short) 1, (short) 5, (short) 9, (short) 3)),
+                "[-2, 3, -3, 4, 4, -6]");
+        aeq(deltaShort(Arrays.asList(Short.MIN_VALUE, Short.MAX_VALUE)), "[-1]");
+        aeq(deltaShort(Arrays.asList((short) 3)), "[]");
+        try {
+            deltaShort(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaShort(Arrays.asList((short) 10, null, (short) 12)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaInteger() {
+        aeq(deltaInteger(Arrays.asList(3, 1, 4, 1, 5, 9, 3)), "[-2, 3, -3, 4, 4, -6]");
+        aeq(deltaInteger(Arrays.asList(Integer.MIN_VALUE, Integer.MAX_VALUE)), "[-1]");
+        aeq(deltaInteger(Arrays.asList(3)), "[]");
+        try {
+            deltaInteger(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaInteger(Arrays.asList(10, null, 12)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaLong() {
+        aeq(deltaLong(Arrays.asList(3L, 1L, 4L, 1L, 5L, 9L, 3L)), "[-2, 3, -3, 4, 4, -6]");
+        aeq(deltaLong(Arrays.asList(Long.MIN_VALUE, Long.MAX_VALUE)), "[-1]");
+        aeq(deltaLong(Arrays.asList(3L)), "[]");
+        try {
+            deltaLong(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaLong(Arrays.asList(10L, null, 12L)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaBigInteger() {
+        aeq(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]").get()), "[-2, 3, -3, 4, 4, -6]");
+        aeq(deltaBigInteger(Arrays.asList(BigInteger.valueOf(3))), "[]");
+        try {
+            deltaBigInteger(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get()));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaBigDecimal() {
+        aeq(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]").get()), "[1.0, 1.8, -3.6]");
+        aeq(deltaBigDecimal(Arrays.asList(BigDecimal.valueOf(3))), "[]");
+        try {
+            deltaBigDecimal(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]").get()));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaFloat() {
+        aeq(deltaFloat(Arrays.asList(3.1f, 4.1f, 5.9f, 2.3f)), "[1.0, 1.8000002, -3.6000001]");
+        aeq(deltaFloat(Arrays.asList(-Float.MAX_VALUE, Float.MAX_VALUE)), "[Infinity]");
+        aeq(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
+        aeq(deltaFloat(Arrays.asList(3.0f)), "[]");
+        try {
+            deltaFloat(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaFloat(Arrays.asList(10.0f, null, 12.0f)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaDouble() {
+        aeq(deltaDouble(Arrays.asList(3.1, 4.1, 5.9, 2.3)),
+                "[0.9999999999999996, 1.8000000000000007, -3.6000000000000005]");
+        aeq(deltaDouble(Arrays.asList(-Double.MAX_VALUE, Double.MAX_VALUE)), "[Infinity]");
+        aeq(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
+        aeq(deltaDouble(Arrays.asList(3.0)), "[]");
+        try {
+            deltaDouble(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaDouble(Arrays.asList(10.0, null, 12.0)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDeltaCharacter() {
+        aeq(deltaCharacter(fromString("hello")), "[-3, 7, 0, 3]");
+        aeq(deltaCharacter(Arrays.asList('a')), "[]");
+        try {
+            deltaCharacter(new ArrayList<>());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(deltaCharacter(Arrays.asList('a', null, 'z')));
             fail();
         } catch (NullPointerException ignored) {}
     }
