@@ -205,8 +205,9 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * Creates a {@code Septuple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f + ", " + g + ")"}, where {@code a},
      * {@code b}, {@code c}, {@code d}, {@code e}, {@code f}, and {@code g} are valid {@code String}s for their types.
-     * If the {@code String} is invalid, the method returns Optional.empty() without throwing an exception; this aids
-     * composability.
+     * {@code a}, {@code b}, {@code c}, {@code d}, {@code e}, and {@code f} must not contain the {@code String}
+     * {@code ", "}, because this will confuse the parser. If the {@code String} is invalid, the method returns
+     * {@code Optional.empty()} without throwing an exception; this aids composability.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>

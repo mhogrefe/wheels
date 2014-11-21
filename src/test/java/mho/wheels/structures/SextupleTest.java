@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.EQ;
-import static mho.wheels.ordering.Ordering.GT;
-import static mho.wheels.ordering.Ordering.LT;
+import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class SextupleTest {

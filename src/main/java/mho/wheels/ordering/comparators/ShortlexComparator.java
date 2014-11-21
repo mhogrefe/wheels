@@ -5,9 +5,7 @@ import mho.wheels.ordering.Ordering;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import static mho.wheels.ordering.Ordering.EQ;
-import static mho.wheels.ordering.Ordering.GT;
-import static mho.wheels.ordering.Ordering.LT;
+import static mho.wheels.ordering.Ordering.*;
 
 public class ShortlexComparator<T extends Comparable<T>> implements Comparator<Iterable<T>> {
     private final Comparator<T> elementComparator;

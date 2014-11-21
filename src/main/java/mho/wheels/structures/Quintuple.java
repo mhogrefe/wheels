@@ -165,8 +165,10 @@ public final class Quintuple<A, B, C, D, E> {
     /**
      * Creates a {@code Quintuple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ", " + e + ")"}, where {@code a}, {@code b}, {@code c},
-     * {@code d}, and {@code e} are valid {@code String}s for their types. If the {@code String} is invalid, the method
-     * returns Optional.empty() without throwing an exception; this aids composability.
+     * {@code d}, and {@code e} are valid {@code String}s for their types. {@code a}, {@code b}, {@code c}, and
+     * {@code d} must not contain the {@code String} {@code ", "}, because this will confuse the parser. If the
+     * {@code String} is invalid, the method returns {@code Optional.empty()} without throwing an exception; this aids
+     * composability.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>

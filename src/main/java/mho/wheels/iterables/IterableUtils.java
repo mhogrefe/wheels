@@ -2229,7 +2229,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2245,7 +2245,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2261,7 +2261,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2277,7 +2277,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2293,7 +2293,7 @@ public final class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2309,7 +2309,7 @@ public final class IterableUtils {
      * empty, 0.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2324,7 +2324,7 @@ public final class IterableUtils {
      * Returns the sum of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2340,7 +2340,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -2356,7 +2356,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
@@ -2372,7 +2372,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
@@ -2388,7 +2388,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -2404,7 +2404,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
@@ -2416,11 +2416,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow may occur. If {@code xs} is
-     * empty, 1.0 is returned.
+     * Returns the left-to-right product of all the {@code Float}s in {@code xs}. Overflow or underflow may occur. If
+     * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code float}.</li>
      * </ul>
      *
@@ -2432,11 +2432,11 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow may occur. If {@code xs} is
-     * empty, 1.0 is returned.
+     * Returns the left-to-right product of all the {@code Double}s in {@code xs}. Overflow or underflow may occur. If
+     * {@code xs} is empty, 1.0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code double}.</li>
      * </ul>
      *
@@ -2451,7 +2451,7 @@ public final class IterableUtils {
      * Returns the product of all the {@code BigInteger}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigInteger}.</li>
      * </ul>
      *
@@ -2467,7 +2467,7 @@ public final class IterableUtils {
      * returned.
      *
      * <ul>
-     *  <li>{@code xs} may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
      *  <li>The result may be any {@code BigDecimal}.</li>
      * </ul>
      *
@@ -3375,13 +3375,15 @@ public final class IterableUtils {
      *
      * <ul>
      *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Byte}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Byte> deltaBytes(@NotNull Iterable<Byte> xs) {
+    public static @NotNull Iterable<Byte> deltaByte(@NotNull Iterable<Byte> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
     }
 
@@ -3391,14 +3393,16 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Short}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Short> deltaShorts(@NotNull Iterable<Short> xs) {
+    public static @NotNull Iterable<Short> deltaShort(@NotNull Iterable<Short> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
     }
 
@@ -3408,14 +3412,16 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Integer}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Integer> deltaIntegers(@NotNull Iterable<Integer> xs) {
+    public static @NotNull Iterable<Integer> deltaInteger(@NotNull Iterable<Integer> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3425,14 +3431,16 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Long}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Long> deltaLongs(@NotNull Iterable<Long> xs) {
+    public static @NotNull Iterable<Long> deltaLong(@NotNull Iterable<Long> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3441,14 +3449,16 @@ public final class IterableUtils {
      * {@code BigInteger}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code BigInteger}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<BigInteger> deltaBigIntegers(@NotNull Iterable<BigInteger> xs) {
+    public static @NotNull Iterable<BigInteger> deltaBigInteger(@NotNull Iterable<BigInteger> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3457,14 +3467,16 @@ public final class IterableUtils {
      * {@code BigDecimal}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code BigDecimal}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<BigDecimal> deltaBigDecimals(@NotNull Iterable<BigDecimal> xs) {
+    public static @NotNull Iterable<BigDecimal> deltaBigDecimal(@NotNull Iterable<BigDecimal> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3474,14 +3486,16 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Float}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Float> deltaFloats(@NotNull Iterable<Float> xs) {
+    public static @NotNull Iterable<Float> deltaFloat(@NotNull Iterable<Float> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3491,14 +3505,16 @@ public final class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Double}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Double> deltaDoubles(@NotNull Iterable<Double> xs) {
+    public static @NotNull Iterable<Double> deltaDouble(@NotNull Iterable<Double> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3507,14 +3523,16 @@ public final class IterableUtils {
      * {@code Character}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
-     *  <li>The result only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
+     *  <li>The result is finite and only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of {@code Integer}s.
      * @return Δxs
      */
-    public static @NotNull Iterable<Integer> deltaCharacters(@NotNull Iterable<Character> xs) {
+    public static @NotNull Iterable<Integer> deltaCharacter(@NotNull Iterable<Character> xs) {
+        if (isEmpty(xs))
+            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -4604,6 +4622,69 @@ public final class IterableUtils {
             seen.add(c);
         }
         return true;
+    }
+
+    public static @NotNull <T> Iterable<T> delete(@Nullable T x, @NotNull Iterable<T> xs) {
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    private boolean seenOnce;
+
+                    {
+                        hasNext = true;
+                        seenOnce = false;
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T oldNext = next;
+                        advance();
+                        return oldNext;
+                    }
+
+                    private void advance() {
+                        if (!xsi.hasNext()) {
+                            hasNext = false;
+                            return;
+                        }
+                        next = xsi.next();
+                        if (!seenOnce && Objects.equals(next, x)) {
+                            seenOnce = true;
+                            advance();
+                        }
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull String delete(char c, @NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        boolean seenOnce = false;
+        for (int i = 0; i < s.length(); i++) {
+            char d = s.charAt(i);
+            if (!seenOnce && c == d) {
+                seenOnce = true;
+                continue;
+            }
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {

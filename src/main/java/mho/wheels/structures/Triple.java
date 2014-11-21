@@ -139,8 +139,9 @@ public final class Triple<A, B, C> {
     /**
      * Creates a {@code Triple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ")"}, where {@code a}, {@code b}, and {@code c} are valid {@code String}s
-     * for their types. If the {@code String} is invalid, the method returns Optional.empty() without throwing an
-     * exception; this aids composability.
+     * for their types. {@code a} and {@code b} must not contain the {@code String} {@code ", "}, because this will
+     * confuse the parser. If the {@code String} is invalid, the method returns {@code Optional.empty()} without
+     * throwing an exception; this aids composability.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>

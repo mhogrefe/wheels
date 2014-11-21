@@ -886,8 +886,4 @@ public final class MathUtils {
         );
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filter(MathUtils::isPrime, candidates));
     }
-
-    public static void main(String[] args) {
-        System.out.println(factors(new BigInteger("31680639320")));
-    }
 }

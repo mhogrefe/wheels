@@ -12,7 +12,7 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.lt;
 
 public class MathUtilsDemos {
     private static final boolean USE_RANDOM = false;
@@ -25,7 +25,7 @@ public class MathUtilsDemos {
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 1000000000;
+            LIMIT = 10000;
         }
     }
 
@@ -129,17 +129,17 @@ public class MathUtilsDemos {
 
     private static void demoFromBigEndianBits() {
         initialize();
-        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(list));
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("fromBigEndianBits(" + listString + ") = " + fromBigEndianBits(bs));
         }
     }
 
     private static void demoFromBits() {
         initialize();
-        for (List<Boolean> list : take(LIMIT, P.lists(P.booleans()))) {
-            String listString = tail(init(list.toString()));
-            System.out.println("fromBits(" + listString + ") = " + fromBits(list));
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            String listString = tail(init(bs.toString()));
+            System.out.println("fromBits(" + listString + ") = " + fromBits(bs));
         }
     }
 
