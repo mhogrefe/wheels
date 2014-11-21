@@ -1454,7 +1454,7 @@ public final class Combinatorics {
         );
     }
 
-    public static <T> Iterable<List<T>> lists(Iterable<T> xs) {
+    public static @NotNull <T> Iterable<List<T>> lists(Iterable<T> xs) {
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
             if (bi.equals(BigInteger.ZERO)) {
@@ -1474,15 +1474,15 @@ public final class Combinatorics {
         );
     }
 
-    public static Iterable<String> strings(Iterable<Character> cs) {
+    public static @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         return map(IterableUtils::charsToString, lists(cs));
     }
 
-    public static Iterable<String> strings(String s) {
+    public static @NotNull Iterable<String> strings(@NotNull String s) {
         return map(IterableUtils::charsToString, lists(fromString(s)));
     }
 
-    public static <T> Iterable<List<T>> orderedSubsequences(Iterable<T> xs) {
+    public static @NotNull <T> Iterable<List<T>> orderedSubsequences(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
@@ -1518,5 +1518,9 @@ public final class Combinatorics {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
+    }
+
+    public static @NotNull <T> Iterable<String> orderedSubstrings(@NotNull String s) {
+        return map(t -> charsToString(t), orderedSubsequences(fromString(s)));
     }
 }
