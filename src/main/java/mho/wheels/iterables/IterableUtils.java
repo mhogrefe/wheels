@@ -4606,6 +4606,69 @@ public final class IterableUtils {
         return true;
     }
 
+    public static @NotNull <T> Iterable<T> delete(@Nullable T x, @NotNull Iterable<T> xs) {
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private Iterator<T> xsi = xs.iterator();
+                    private T next;
+                    private boolean hasNext;
+                    private boolean seenOnce;
+
+                    {
+                        hasNext = true;
+                        seenOnce = false;
+                        advance();
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return hasNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        T oldNext = next;
+                        advance();
+                        return oldNext;
+                    }
+
+                    private void advance() {
+                        if (!xsi.hasNext()) {
+                            hasNext = false;
+                            return;
+                        }
+                        next = xsi.next();
+                        if (!seenOnce && Objects.equals(next, x)) {
+                            seenOnce = true;
+                            advance();
+                        }
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
+    public static @NotNull String delete(char c, @NotNull String s) {
+        StringBuilder sb = new StringBuilder();
+        boolean seenOnce = false;
+        for (int i = 0; i < s.length(); i++) {
+            char d = s.charAt(i);
+            if (!seenOnce && c == d) {
+                seenOnce = true;
+                continue;
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         HashSet<T> set = new HashSet<>();
         addTo(xs, set);

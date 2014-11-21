@@ -1486,7 +1486,7 @@ public final class Combinatorics {
         if (isEmpty(xs))
             return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
-            private CachedIterable<T> ii = new CachedIterable(xs);
+            private CachedIterable<T> cxs = new CachedIterable<T>(xs);
             private List<Integer> indices = new ArrayList<>();
 
             @Override
@@ -1496,12 +1496,12 @@ public final class Combinatorics {
 
             @Override
             public List<T> next() {
-                List<T> subsequence = ii.get(indices).get();
+                List<T> subsequence = cxs.get(indices).get();
                 if (indices.isEmpty()) {
                     indices.add(0);
                 } else {
                     int lastIndex = last(indices);
-                    if (lastIndex < ii.size() - 1) {
+                    if (lastIndex < cxs.size() - 1) {
                         indices.add(lastIndex + 1);
                     } else if (indices.size() == 1) {
                         indices = null;
@@ -1521,6 +1521,57 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<String> orderedSubstrings(@NotNull String s) {
-        return map(t -> charsToString(t), orderedSubsequences(fromString(s)));
+        return map(IterableUtils::charsToString, orderedSubsequences(fromString(s)));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
+        int size = length(xs);
+        return () -> new Iterator<List<T>>() {
+            private CachedIterable<T> cxs = new CachedIterable<>(xs);
+            private List<Integer> indices = toList(range(0, size - 1));
+
+            @Override
+            public boolean hasNext() {
+                return indices != null;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> next = cxs.get(indices).get();
+                if (decreasing(indices)) {
+                    indices = null;
+                } else {
+                    int i;
+                    int previous = -1;
+                    for (i = indices.size() - 1; i >= 0; i--) {
+                        if (indices.get(i) < previous) break;
+                        previous = indices.get(i);
+                    }
+                    i++;
+                    Iterable<Integer> prefix = take(i - 1, indices);
+                    Iterable<Integer> suffix = drop(i - 1, indices);
+                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
+                    indices = toList(
+                            concat(
+                                    (Iterable<Iterable<Integer>>) Arrays.asList(
+                                            prefix,
+                                            Arrays.asList(pivot),
+                                            sort(delete(pivot, suffix))
+                                    )
+                            )
+                    );
+                }
+                return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull Iterable<String> permutationsIncreasing(@NotNull String s) {
+        return map(IterableUtils::charsToString, permutationsIncreasing(fromString(s)));
     }
 }
