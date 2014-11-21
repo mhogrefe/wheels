@@ -3383,7 +3383,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Byte> deltaByte(@NotNull Iterable<Byte> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
     }
 
@@ -3402,7 +3402,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Short> deltaShort(@NotNull Iterable<Short> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
     }
 
@@ -3421,7 +3421,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Integer> deltaInteger(@NotNull Iterable<Integer> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3440,7 +3440,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Long> deltaLong(@NotNull Iterable<Long> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3458,7 +3458,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<BigInteger> deltaBigInteger(@NotNull Iterable<BigInteger> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3476,7 +3476,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<BigDecimal> deltaBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3495,7 +3495,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Float> deltaFloat(@NotNull Iterable<Float> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3514,7 +3514,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Double> deltaDouble(@NotNull Iterable<Double> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3532,7 +3532,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Integer> deltaCharacter(@NotNull Iterable<Character> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
