@@ -79,7 +79,7 @@ public class IterableUtilsDemos {
         Iterable<Pair<Integer, List<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
-                    p -> new Pair<>(p.b, p.a),
+                    p -> new Pair<Integer, List<Integer>>(p.b, p.a),
                     ((ExhaustiveProvider) P).pairsSquareRootOrder(
                             P.lists(P.withNull(P.integers())),
                             P.naturalIntegers()
@@ -102,7 +102,7 @@ public class IterableUtilsDemos {
             ps = map(
                     p -> {
                         assert p.a != null;
-                        return new Pair<>(p.b, cycle(p.a));
+                        return new Pair<>(p.b, cycle((List<Integer>) p.a));
                     },
                     ((ExhaustiveProvider) P).pairsSquareRootOrder(
                             P.lists(P.withNull(P.integers())),
