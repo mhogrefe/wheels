@@ -200,6 +200,35 @@ public final class IterableUtils {
         return sb.toString();
     }
 
+    //todo docs
+    public static @NotNull <A, B> Map<A, B> toMap(@NotNull Iterable<Pair<A, B>> ps) {
+        Map<A, B> map = new HashMap<>();
+        for (Pair<A, B> p : ps) {
+            map.put(p.a, p.b);
+        }
+        return map;
+    }
+
+    public static @NotNull <A extends Comparable<A>, B> SortedMap<A, B> toSortedMap(@NotNull Iterable<Pair<A, B>> ps) {
+        SortedMap<A, B> map = new TreeMap<>();
+        for (Pair<A, B> p : ps) {
+            map.put(p.a, p.b);
+        }
+        return map;
+    }
+
+    public static @NotNull <A, B> Map<A, B> toMapPreservingOrder(@NotNull Iterable<Pair<A, B>> ps) {
+        Map<A, B> map = new LinkedHashMap<>();
+        for (Pair<A, B> p : ps) {
+            map.put(p.a, p.b);
+        }
+        return map;
+    }
+
+    public static @NotNull <A, B> Iterable<Pair<A, B>> fromMap(@NotNull Map<A, B> map) {
+        return map(entry -> new Pair<A, B>(entry.getKey(), entry.getValue()), map.entrySet());
+    }
+
     /**
      * Generates all {@link Byte}s greater than or equal to {@code a}, in order. Does not wrap around after reaching
      * {@code Byte.MAX_VALUE}. Does not support removal.
@@ -2301,7 +2330,8 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static float sumFloat(@NotNull Iterable<Float> xs) {
-        return foldl(p -> p.a + p.b, 0.0f, xs);
+        if (isEmpty(xs)) return 0.0f;
+        return foldl1(p -> p.a + p.b, xs);
     }
 
     /**
@@ -2317,7 +2347,8 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static double sumDouble(Iterable<Double> xs) {
-        return foldl(p -> p.a + p.b, 0.0, xs);
+        if (isEmpty(xs)) return 0.0;
+        return foldl1(p -> p.a + p.b, xs);
     }
 
     /**
@@ -2336,8 +2367,7 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right sum of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 0 is
-     * returned.
+     * Returns the sum of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls.</li>
@@ -2348,7 +2378,8 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
-        return foldl(p -> p.a.add(p.b), BigDecimal.ZERO, xs);
+        if (isEmpty(xs)) return BigDecimal.ZERO;
+        return foldl1(p -> p.a.add(p.b), xs);
     }
 
     /**
@@ -2463,8 +2494,7 @@ public final class IterableUtils {
     }
 
     /**
-     * Returns the left-to-right product of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 1 is
-     * returned.
+     * Returns the product of all the {@code BigDecimal}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls.</li>
@@ -3383,7 +3413,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Byte> deltaByte(@NotNull Iterable<Byte> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
     }
 
@@ -3402,7 +3432,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Short> deltaShort(@NotNull Iterable<Short> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
     }
 
@@ -3421,7 +3451,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Integer> deltaInteger(@NotNull Iterable<Integer> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3440,7 +3470,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Long> deltaLong(@NotNull Iterable<Long> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3458,7 +3488,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<BigInteger> deltaBigInteger(@NotNull Iterable<BigInteger> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3476,7 +3506,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<BigDecimal> deltaBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3495,7 +3525,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Float> deltaFloat(@NotNull Iterable<Float> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3514,7 +3544,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Double> deltaDouble(@NotNull Iterable<Double> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3532,7 +3562,7 @@ public final class IterableUtils {
      */
     public static @NotNull Iterable<Integer> deltaCharacter(@NotNull Iterable<Character> xs) {
         if (isEmpty(xs))
-            throw new IllegalArgumentException("cannot get deltas of empty Iterable");
+            throw new IllegalArgumentException("cannot get delta of empty Iterable");
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3767,6 +3797,57 @@ public final class IterableUtils {
 
     public static char get(@NotNull String s, int i) {
         return s.charAt(i);
+    }
+
+    public static @NotNull <T> Iterable<T> set(@NotNull Iterable<T> xs, int i, @Nullable T x) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private int j = 0;
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                T originalNext = xsi.next();
+                T next = i == j ? x : originalNext;
+                j++;
+                return next;
+            }
+        };
+    }
+
+    public static @NotNull String set(@NotNull String s, int i, char c) {
+        StringBuilder sb = new StringBuilder(s);
+        sb.setCharAt(i, c);
+        return sb.toString();
+    }
+
+    public static @NotNull <T> Iterable<T> insert(@NotNull Iterable<T> xs, int i, @Nullable T x) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private int j = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i == j || xsi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                T next = i == j ? x : xsi.next();
+                j++;
+                return next;
+            }
+        };
+    }
+
+    public static @NotNull String insert(@NotNull String s, int i, char c) {
+        StringBuilder sb = new StringBuilder(s);
+        sb.insert(i, c);
+        return sb.toString();
     }
 
     public static @NotNull <T> Iterable<T> select(@NotNull Iterable<Boolean> bs, @NotNull Iterable<T> xs) {

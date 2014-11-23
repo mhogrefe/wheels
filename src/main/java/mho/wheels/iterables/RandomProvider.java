@@ -282,14 +282,17 @@ public class RandomProvider implements IterableProvider {
     }
 
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(xs::get, range(0, xs.size() - 1));
     }
 
-    public @NotNull <T> Iterable<Character> uniformSample(@NotNull String s) {
+    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
+        if (s.isEmpty()) return new ArrayList<>();
         return map(s::charAt, range(0, s.length() - 1));
     }
 
     public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
                 NullableOptional::get,
@@ -1166,7 +1169,26 @@ public class RandomProvider implements IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        return Combinatorics.dependentPairs(xs, x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)));
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                (BigInteger i) -> {
+                    List<BigInteger> list = MathUtils.demux(2, i);
+                    return new Pair<>(list.get(0), list.get(1));
+                }
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                MathUtils::logarithmicDemux
+        );
     }
 
     @Override

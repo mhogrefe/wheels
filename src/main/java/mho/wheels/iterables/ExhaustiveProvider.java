@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
+import mho.wheels.math.MathUtils;
 import mho.wheels.misc.FloatUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
@@ -875,7 +876,26 @@ public class ExhaustiveProvider implements IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        return Combinatorics.dependentPairs(xs, f);
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                (BigInteger i) -> {
+                    List<BigInteger> list = MathUtils.demux(2, i);
+                    return new Pair<>(list.get(0), list.get(1));
+                }
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                MathUtils::logarithmicDemux
+        );
     }
 
     /**
