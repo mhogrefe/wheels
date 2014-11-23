@@ -147,6 +147,11 @@ public interface IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     );
 
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    );
+
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
 
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
