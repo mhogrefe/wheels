@@ -171,7 +171,19 @@ public class Readers {
         return genericFindIn(Arrays.asList(Ordering.values()), s);
     }
 
-    public @NotNull Optional<RoundingMode> readRoundingMode(@NotNull String s) {
+    /**
+     * Reads a {@link java.math.RoundingMode} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code RoundingMode} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code RoundingMode}
+     */
+    public static @NotNull Optional<RoundingMode> readRoundingMode(@NotNull String s) {
         switch (s) {
             case "UP":
                 return Optional.of(RoundingMode.UP);
@@ -192,6 +204,23 @@ public class Readers {
             default:
                 return Optional.empty();
         }
+    }
+
+    /**
+     * Finds the first occurrence of a {@code RoundingMode} in a {@code String} and returns the {@code RoundingMode}
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code RoundingMode} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<RoundingMode, Integer>> findRoundingModeIn(@NotNull String s) {
+        return genericFindIn(Arrays.asList(RoundingMode.values()), s);
     }
 
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {

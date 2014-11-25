@@ -48,6 +48,27 @@ public class ReadersTest {
         aeq(findOrderingIn(""), "Optional.empty");
     }
 
+    public void testReadRoundingMode() {
+        aeq(readRoundingMode("UP"), "Optional[UP]");
+        aeq(readRoundingMode("UNNECESSARY"), "Optional[UNNECESSARY]");
+        aeq(readRoundingMode("HALF_EVEN"), "Optional[HALF_EVEN]");
+        assertFalse(readRoundingMode(" DOWN").isPresent());
+        assertFalse(readRoundingMode("HALF-EVEN").isPresent());
+        assertFalse(readRoundingMode("FLOOR ").isPresent());
+        assertFalse(readRoundingMode("").isPresent());
+        assertFalse(readRoundingMode("dsfsdfgd").isPresent());
+    }
+
+    @Test
+    public void testFindRoundingModeIn() {
+        aeq(findRoundingModeIn("HALF_UP"), "Optional[(HALF_UP, 0)]");
+        aeq(findRoundingModeIn("CEILING"), "Optional[(CEILING, 0)]");
+        aeq(findRoundingModeIn("UPSIDE-DOWN"), "Optional[(UP, 0)]");
+        aeq(findRoundingModeIn("JLNUIDOWNJLNILN"), "Optional[(DOWN, 5)]");
+        aeq(findRoundingModeIn("hello"), "Optional.empty");
+        aeq(findRoundingModeIn(""), "Optional.empty");
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

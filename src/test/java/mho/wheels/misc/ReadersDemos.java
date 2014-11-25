@@ -13,6 +13,7 @@ public class ReadersDemos {
     private static final boolean USE_RANDOM = false;
     private static final String BOOLEAN_CHARS = "aeflrstu";
     private static final String ORDERING_CHARS = "EGLQT";
+    private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -103,6 +104,46 @@ public class ReadersDemos {
         }
         for (String s : take(LIMIT, P.strings(cs))) {
             System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
+        }
+    }
+
+    private static void demoReadRoundingMode() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
+        }
+    }
+
+    public static void demoReadRoundingMode_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(ROUNDING_MODE_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(ROUNDING_MODE_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
+        }
+    }
+
+    private static void demoFindRoundingModeIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
+        }
+    }
+
+    public static void demoFindRoundingModeIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(ROUNDING_MODE_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(ROUNDING_MODE_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
         }
     }
 }
