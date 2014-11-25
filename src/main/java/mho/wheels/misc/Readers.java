@@ -223,6 +223,68 @@ public class Readers {
         return genericFindIn(Arrays.asList(RoundingMode.values()), s);
     }
 
+    /**
+     * Reads a {@link java.math.BigInteger} from a {@code String}. Leading zeros, octal, and hexadecimal are not
+     * allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code BigInteger} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code BigInteger}
+     */
+    public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
+        return genericRead(BigInteger::new, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code BigInteger} in a {@code String} and returns the {@code BigInteger}
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     * Leading zeros, octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code BigInteger} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<BigInteger, Integer>> findBigIntegerIn(@NotNull String s) {
+        int zeroIndex = s.indexOf('0');
+        int nonzeroDigitIndex = -1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= '1' && c <= '9') {
+                nonzeroDigitIndex = i;
+                break;
+            }
+        }
+        if (zeroIndex == -1 && nonzeroDigitIndex == -1) {
+            return Optional.empty();
+        } else if (zeroIndex != -1 && (nonzeroDigitIndex == -1 || zeroIndex < nonzeroDigitIndex)) {
+            return Optional.of(new Pair<>(BigInteger.ZERO, zeroIndex));
+        } else {
+            int endIndex = s.length() - 1;
+            for (int i = nonzeroDigitIndex + 1; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if (c < '0' || c > '9') {
+                    endIndex = i - 1;
+                    break;
+                }
+            }
+            if (nonzeroDigitIndex != 0 && s.charAt(nonzeroDigitIndex - 1) == '-') {
+                nonzeroDigitIndex--;
+            }
+            BigInteger i = new BigInteger(s.substring(nonzeroDigitIndex, endIndex + 1));
+            return Optional.of(new Pair<BigInteger, Integer>(i, nonzeroDigitIndex));
+        }
+    }
+
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {
         return genericRead(Byte::parseByte, s);
     }
@@ -237,10 +299,6 @@ public class Readers {
 
     public static @NotNull Optional<Long> readLong(@NotNull String s) {
         return genericRead(Long::parseLong, s);
-    }
-
-    public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
-        return genericRead(BigInteger::new, s);
     }
 
     public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {

@@ -8,8 +8,8 @@ import static org.junit.Assert.*;
 public class ReadersTest {
     @Test
     public void testReadBoolean() {
-        aeq(readBoolean("false"), "Optional[false]");
-        aeq(readBoolean("true"), "Optional[true]");
+        aeq(readBoolean("false").get(), "false");
+        aeq(readBoolean("true").get(), "true");
         assertFalse(readBoolean(" true").isPresent());
         assertFalse(readBoolean("TRUE").isPresent());
         assertFalse(readBoolean("true ").isPresent());
@@ -19,18 +19,18 @@ public class ReadersTest {
 
     @Test
     public void testFindBooleanIn() {
-        aeq(findBooleanIn("true"), "Optional[(true, 0)]");
-        aeq(findBooleanIn("false"), "Optional[(false, 0)]");
-        aeq(findBooleanIn("xxtruefalsexx"), "Optional[(true, 2)]");
-        aeq(findBooleanIn("xxfalsetruexx"), "Optional[(false, 2)]");
-        aeq(findBooleanIn("hello"), "Optional.empty");
-        aeq(findBooleanIn(""), "Optional.empty");
+        aeq(findBooleanIn("true").get(), "(true, 0)");
+        aeq(findBooleanIn("false").get(), "(false, 0)");
+        aeq(findBooleanIn("xxtruefalsexx").get(), "(true, 2)");
+        aeq(findBooleanIn("xxfalsetruexx").get(), "(false, 2)");
+        assertFalse(findOrderingIn("hello").isPresent());
+        assertFalse(findOrderingIn("").isPresent());
     }
 
     public void testReadOrdering() {
-        aeq(readOrdering("LT"), "Optional[LT]");
-        aeq(readOrdering("EQ"), "Optional[EQ]");
-        aeq(readOrdering("GT"), "Optional[GT]");
+        aeq(readOrdering("LT").get(), "LT");
+        aeq(readOrdering("EQ").get(), "EQ");
+        aeq(readOrdering("GT").get(), "GT");
         assertFalse(readOrdering(" LT").isPresent());
         assertFalse(readOrdering("eq").isPresent());
         assertFalse(readOrdering("gt ").isPresent());
@@ -40,18 +40,18 @@ public class ReadersTest {
 
     @Test
     public void testFindOrderingIn() {
-        aeq(findOrderingIn("EQ"), "Optional[(EQ, 0)]");
-        aeq(findOrderingIn("LT"), "Optional[(LT, 0)]");
-        aeq(findOrderingIn("BELT"), "Optional[(LT, 2)]");
-        aeq(findOrderingIn("EGGTOWER"), "Optional[(GT, 2)]");
-        aeq(findOrderingIn("hello"), "Optional.empty");
-        aeq(findOrderingIn(""), "Optional.empty");
+        aeq(findOrderingIn("EQ").get(), "(EQ, 0)");
+        aeq(findOrderingIn("LT").get(), "(LT, 0)");
+        aeq(findOrderingIn("BELT").get(), "(LT, 2)");
+        aeq(findOrderingIn("EGGTOWER").get(), "(GT, 2)");
+        assertFalse(findOrderingIn("hello").isPresent());
+        assertFalse(findOrderingIn("").isPresent());
     }
 
     public void testReadRoundingMode() {
-        aeq(readRoundingMode("UP"), "Optional[UP]");
-        aeq(readRoundingMode("UNNECESSARY"), "Optional[UNNECESSARY]");
-        aeq(readRoundingMode("HALF_EVEN"), "Optional[HALF_EVEN]");
+        aeq(readRoundingMode("UP").get(), "UP");
+        aeq(readRoundingMode("UNNECESSARY").get(), "UNNECESSARY");
+        aeq(readRoundingMode("HALF_EVEN").get(), "HALF_EVEN");
         assertFalse(readRoundingMode(" DOWN").isPresent());
         assertFalse(readRoundingMode("HALF-EVEN").isPresent());
         assertFalse(readRoundingMode("FLOOR ").isPresent());
@@ -61,12 +61,41 @@ public class ReadersTest {
 
     @Test
     public void testFindRoundingModeIn() {
-        aeq(findRoundingModeIn("HALF_UP"), "Optional[(HALF_UP, 0)]");
-        aeq(findRoundingModeIn("CEILING"), "Optional[(CEILING, 0)]");
-        aeq(findRoundingModeIn("UPSIDE-DOWN"), "Optional[(UP, 0)]");
-        aeq(findRoundingModeIn("JLNUIDOWNJLNILN"), "Optional[(DOWN, 5)]");
-        aeq(findRoundingModeIn("hello"), "Optional.empty");
-        aeq(findRoundingModeIn(""), "Optional.empty");
+        aeq(findRoundingModeIn("HALF_UP").get(), "(HALF_UP, 0)");
+        aeq(findRoundingModeIn("CEILING").get(), "(CEILING, 0)");
+        aeq(findRoundingModeIn("UPSIDE-DOWN").get(), "(UP, 0)");
+        aeq(findRoundingModeIn("JLNUIDOWNJLNILN").get(), "(DOWN, 5)");
+        assertFalse(findRoundingModeIn("hello").isPresent());
+        assertFalse(findRoundingModeIn("").isPresent());
+    }
+
+    @Test
+    public void testReadBigInteger() {
+        aeq(readBigInteger("0").get(), "0");
+        aeq(readBigInteger("5").get(), "5");
+        aeq(readBigInteger("314159265358").get(), "314159265358");
+        aeq(readBigInteger("-314159265358").get(), "-314159265358");
+        assertFalse(readBigInteger(" 1").isPresent());
+        assertFalse(readBigInteger("00").isPresent());
+        assertFalse(readBigInteger("-0").isPresent());
+        assertFalse(readBigInteger("0xff").isPresent());
+        assertFalse(readBigInteger("0xff").isPresent());
+        assertFalse(readBigInteger("2 ").isPresent());
+        assertFalse(readBigInteger("--1").isPresent());
+        assertFalse(readBigInteger("1-2").isPresent());
+        assertFalse(readBigInteger("+4").isPresent());
+    }
+
+    @Test
+    public void testFindBigIntegerIn() {
+        aeq(findBigIntegerIn("abcd1234xyz").get(), "(1234, 4)");
+        aeq(findBigIntegerIn("0123").get(), "(0, 0)");
+        aeq(findBigIntegerIn("a-23").get(), "(-23, 1)");
+        aeq(findBigIntegerIn("---34--4").get(), "(-34, 2)");
+        aeq(findBigIntegerIn(" 20.1 ").get(), "(20, 1)");
+        assertFalse(findBigIntegerIn("").isPresent());
+        assertFalse(findBigIntegerIn("hello").isPresent());
+        assertFalse(findBigIntegerIn("vdfsvfbf").isPresent());
     }
 
     private static void aeq(Object a, Object b) {
