@@ -1345,12 +1345,6 @@ public final class Combinatorics {
         );
     }
 
-    public static void main(String[] args) {
-        for (Pair<List<Byte>, List<Byte>> p : take(10000, filter(q -> !q.a.equals(q.b), P.dependentPairsLogarithmic(P.lists(P.bytes()), bs -> permutationsIncreasing(bs))))) {
-            System.out.println(p);
-        }
-    }
-
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
         if (size == 0) {
             return Arrays.asList(new ArrayList<T>());
@@ -1555,7 +1549,7 @@ public final class Combinatorics {
     public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
         List<T> nub = toList(nub(xs));
         Map<T, Integer> indexMap = toMap(zip(nub, range(0)));
-        List<Integer> startingIndices = toList(map(indexMap::get, xs));
+        List<Integer> startingIndices = sort(map(indexMap::get, xs));
         return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
 

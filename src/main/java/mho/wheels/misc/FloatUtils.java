@@ -96,7 +96,7 @@ public final class FloatUtils {
 
     /**
      * Constructs a {@code float} from its mantissa and exponent. The {@code float} is equal to
-     * {@code mantissa}×2<pow>{@code exponent}</pow>. If the given mantissa and exponent do not form a valid
+     * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
      * {@code float}, an empty {@code Optional} is returned.
      *
      * <ul>
@@ -142,7 +142,7 @@ public final class FloatUtils {
 
     /**
      * Constructs a {@code double} from its mantissa and exponent. The {@code double} is equal to
-     * {@code mantissa}×2<pow>{@code exponent}</pow>. If the given mantissa and exponent do not form a valid
+     * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
      * {@code double}, an empty {@code Optional} is returned.
      *
      * <ul>

@@ -29,10 +29,20 @@ public class MathUtilsDemos {
         }
     }
 
-    private static void demoGcd() {
+    private static void demoGcd_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
+        }
+    }
+
+    private static void demoGcd_long_long() {
+        initialize();
+        Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
+        for (Pair<Long, Long> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));

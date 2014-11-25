@@ -77,6 +77,46 @@ public final class MathUtils {
     }
 
     /**
+     * The greatest common divisor of two {@link long}s. If both {@code x} and {@code y} are zero, the result is
+     * undefined. Otherwise, the result is positive.
+     *
+     * <ul>
+     *  <li>{@code x} may be any {@code long}.</li>
+     *  <li>{@code y} may be any {@code long}.</li>
+     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return gcd(x, y)
+     */
+    public static long gcd(long x, long y) {
+        if (x == 0 && y == 0)
+            throw new ArithmeticException("cannot take gcd of 0 and 0");
+        return positiveGcd(Math.abs(x), Math.abs(y));
+    }
+
+    /**
+     * The greatest common divisor of two non-negative {@code long}s.
+     *
+     * <ul>
+     *  <li>{@code x} must be non-negative.</li>
+     *  <li>{@code y} must be non-negative.</li>
+     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return gcd(x, y)
+     */
+    private static long positiveGcd(long x, long y) {
+        //noinspection SuspiciousNameCombination
+        return y == 0 ? x : positiveGcd(y, x % y);
+    }
+
+    /**
      * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the least-
      * significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does not
      * support removal.
