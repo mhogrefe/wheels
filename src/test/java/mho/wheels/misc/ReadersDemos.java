@@ -10,8 +10,9 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
 
 public class ReadersDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static final String BOOLEAN_CHARS = "aeflrstu";
+    private static final String ORDERING_CHARS = "EGLQT";
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -23,10 +24,6 @@ public class ReadersDemos {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
         }
-    }
-
-    public static void main(String[] args) {
-        demoFindBooleanIn_targeted();
     }
 
     private static void demoReadBoolean() {
@@ -66,6 +63,46 @@ public class ReadersDemos {
         }
         for (String s : take(LIMIT, P.strings(cs))) {
             System.out.println("findBooleanIn(" + s + ") = " + findBooleanIn(s));
+        }
+    }
+
+    private static void demoReadOrdering() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
+        }
+    }
+
+    public static void demoReadOrdering_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(ORDERING_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(ORDERING_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
+        }
+    }
+
+    private static void demoFindOrderingIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
+        }
+    }
+
+    public static void demoFindOrderingIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(ORDERING_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(ORDERING_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
         }
     }
 }

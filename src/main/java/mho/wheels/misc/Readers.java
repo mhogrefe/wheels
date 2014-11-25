@@ -129,7 +129,19 @@ public class Readers {
         return genericFindIn(Arrays.asList(false, true), s);
     }
 
-    public @NotNull Optional<Ordering> readOrdering(@NotNull String s) {
+    /**
+     * Reads an {@link Ordering} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Ordering} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
+     * an {@code Ordering}
+     */
+    public static @NotNull Optional<Ordering> readOrdering(@NotNull String s) {
         switch (s) {
             case "LT":
                 return Optional.of(Ordering.LT);
@@ -140,6 +152,23 @@ public class Readers {
             default:
                 return Optional.empty();
         }
+    }
+
+    /**
+     * Finds the first occurrence of an {@code Ordering} in a {@code String} and returns the {@code Ordering} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code Ordering} is found.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Ordering} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Ordering, Integer>> findOrderingIn(@NotNull String s) {
+        return genericFindIn(Arrays.asList(Ordering.values()), s);
     }
 
     public @NotNull Optional<RoundingMode> readRoundingMode(@NotNull String s) {
