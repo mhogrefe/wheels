@@ -1,20 +1,119 @@
 package mho.wheels.misc;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
+import mho.wheels.structures.Pair;
+import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 
+/**
+ * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
+ * exception. Instead, they return empty {@code Optional}s.
+ */
 public class Readers {
+    /**
+     * Wraps a function from {@code String} to {@code T} in such a way that if the function throws an exception, this
+     * method returns an empty {@code Optional}. An empty {@code Optional} is also returned if calling {@code toString}
+     * on the extracted value does not return the original {@code String}. For example, calling
+     * {@code genericRead(Integer::parseInt, "0xff")} returns {@code Optional.empty} because {@code "0xff".toString()}
+     * is "255", not {@code "0xff"}.
+     *
+     * <ul>
+     *  <li>{@code read} must terminate on every input and never return a null.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read the original read function
+     * @param s the {@code String} to be read
+     * @param <T> the type of value read by {@code read}
+     * @return the value corresponding to {@code s}, according to the conditions described above
+     */
+    private static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
+        try {
+            T x = read.apply(s);
+            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull Iterable<T> xs,
+            @NotNull String s
+    ) {
+        Iterable<Triple<T, String, Integer>> candidates = filter(
+                u -> {
+                    assert u.c != null;
+                    return u.c != -1;
+                },
+                map(
+                        x -> {
+                            String t = x.toString();
+                            return new Triple<>(x, t, s.indexOf(t));
+                        },
+                        xs
+                )
+        );
+        if (isEmpty(candidates)) return Optional.empty();
+        Comparator<Triple<T, String, Integer>> comparator = (x, y) -> {
+            assert x.b != null;
+            assert x.c != null;
+            assert y.b != null;
+            assert y.c != null;
+            if (x.c < y.c) return -1;
+            if (x.c > y.c) return 1;
+            if (x.b.length() > y.b.length()) return -1;
+            if (x.b.length() < y.b.length()) return 1;
+            return 0;
+        };
+        Triple<T, String, Integer> bestResult = minimum(comparator, candidates);
+        return Optional.of(new Pair<>(bestResult.a, bestResult.c));
+    }
+
+    /**
+     * Reads a {@code boolean} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code boolean} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
+     * a {@code boolean}
+     */
+    public static @NotNull Optional<Boolean> readBoolean(@NotNull String s) {
+        return genericRead(Boolean::parseBoolean, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code boolean} in a {@code String} and returns the {@code boolean} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code boolean} is found.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code boolean} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Boolean, Integer>> findBooleanIn(@NotNull String s) {
+        return genericFindIn(Readers::readBoolean, Arrays.asList(false, true), s);
+    }
+
     public @NotNull Optional<Ordering> readOrdering(@NotNull String s) {
         switch (s) {
             case "LT":
@@ -49,19 +148,6 @@ public class Readers {
             default:
                 return Optional.empty();
         }
-    }
-
-    private static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
-        try {
-            T x = read.apply(s);
-            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
-
-    public static @NotNull Optional<Boolean> readBoolean(@NotNull String s) {
-        return genericRead(Boolean::parseBoolean, s);
     }
 
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {
