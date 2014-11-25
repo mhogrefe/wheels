@@ -47,10 +47,26 @@ public class Readers {
         }
     }
 
-    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
-            @NotNull Iterable<T> xs,
-            @NotNull String s
-    ) {
+    /**
+     * Given a small {@code Iterable} of values and a {@code String}, finds the first occurrence of a value in the
+     * {@code String} as determined by the values' {@code toString} method. If two different values occur at the same
+     * index (meaning that one is a prefix of the other), the longer value is preferred. The value is returned along
+     * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot contain any nulls, cannot contain any repetitions, and each element must support
+     *  {@code T}'s {@code toString} method.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param s a {@code String} to be searched in
+     * @param <T> the type of the values in {@code xs}
+     * @return the first value found in {@code s} and its index.
+     */
+    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
         Iterable<Triple<T, String, Integer>> candidates = filter(
                 u -> {
                     assert u.c != null;
