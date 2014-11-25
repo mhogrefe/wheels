@@ -20,6 +20,11 @@ import static mho.wheels.iterables.IterableUtils.*;
  * exception. Instead, they return empty {@code Optional}s.
  */
 public class Readers {
+    public static final int MAX_POSITIVE_BYTE_LENGTH = Byte.toString(Byte.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_SHORT_LENGTH = Short.toString(Short.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_INTEGER_LENGTH = Integer.toString(Integer.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
+
     /**
      * Wraps a function from {@code String} to {@code T} in such a way that if the function throws an exception, this
      * method returns an empty {@code Optional}. An empty {@code Optional} is also returned if calling {@code toString}
@@ -242,7 +247,7 @@ public class Readers {
 
     /**
      * Finds the first occurrence of a {@code BigInteger} in a {@code String} and returns the {@code BigInteger}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found.
      * Leading zeros, octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
      *
      * <ul>
@@ -281,12 +286,56 @@ public class Readers {
                 nonzeroDigitIndex--;
             }
             BigInteger i = new BigInteger(s.substring(nonzeroDigitIndex, endIndex + 1));
-            return Optional.of(new Pair<BigInteger, Integer>(i, nonzeroDigitIndex));
+            return Optional.of(new Pair<>(i, nonzeroDigitIndex));
         }
     }
 
+    /**
+     * Reads a {@link java.lang.Byte} from a {@code String}. Leading zeros, octal, and hexadecimal are not allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Byte} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Byte}
+     */
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {
         return genericRead(Byte::parseByte, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code Byte} in a {@code String} and returns the {@code Byte} and the index at
+     * which it was found. Returns an empty {@code Optional} if no {@code Byte} is found. Leading zeros, octal, and
+     * hexadecimal are not allowed. The longest possible {@code Byte} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Byte} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Byte, Integer>> findByteIn(@NotNull String s) {
+        Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
+        if (!op.isPresent()) return Optional.empty();
+        Pair<BigInteger, Integer> p = op.get();
+        assert p.a != null;
+        String bis = p.a.toString();
+        boolean isNegative = head(bis) == '-';
+        int trimSize = MAX_POSITIVE_BYTE_LENGTH;
+        if (isNegative) trimSize++;
+        String bs = bis.substring(0, trimSize);
+        Optional<Byte> ob = readByte(bs);
+        if (!ob.isPresent()) {
+            bs = bis.substring(0, trimSize - 1);
+            ob = readByte(bs);
+        }
+        return Optional.of(new Pair<>(ob.get(), p.b));
     }
 
     public static @NotNull Optional<Short> readShort(@NotNull String s) {
