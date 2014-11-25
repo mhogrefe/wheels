@@ -18,7 +18,7 @@ import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
     @Test
-    public void testGcd() {
+    public void testGcd_int_int() {
         aeq(gcd(12, 15), 3);
         aeq(gcd(35, 210), 35);
         aeq(gcd(17, 20), 1);
@@ -32,6 +32,25 @@ public class MathUtilsTest {
         aeq(gcd(0, -6), 6);
         try {
             gcd(0, 0);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testGcd_long_long() {
+        aeq(gcd(12L, 15L), 3);
+        aeq(gcd(35L, 210L), 35);
+        aeq(gcd(17L, 20L), 1);
+        aeq(gcd(1L, 5L), 1);
+        aeq(gcd(-12L, 15L), 3);
+        aeq(gcd(12L, -15L), 3);
+        aeq(gcd(-12L, -15L), 3);
+        aeq(gcd(6L, 0L), 6);
+        aeq(gcd(-6L, 0L), 6);
+        aeq(gcd(0L, 6L), 6);
+        aeq(gcd(0L, -6L), 6);
+        try {
+            gcd(0L, 0L);
             fail();
         } catch (ArithmeticException ignored) {}
     }
