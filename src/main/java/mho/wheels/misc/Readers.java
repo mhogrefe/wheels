@@ -25,7 +25,7 @@ public class Readers {
      * method returns an empty {@code Optional}. An empty {@code Optional} is also returned if calling {@code toString}
      * on the extracted value does not return the original {@code String}. For example, calling
      * {@code genericRead(Integer::parseInt, "0xff")} returns {@code Optional.empty} because {@code "0xff".toString()}
-     * is "255", not {@code "0xff"}.
+     * is {@code "255"}, not {@code "0xff"}.
      *
      * <ul>
      *  <li>{@code read} must terminate on every input and never return a null.</li>

@@ -711,7 +711,7 @@ public class ExhaustiveProvider implements IterableProvider {
 
     /**
      * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
-     * the base-2 logarithm of the {@code double" divided by its mantissa. Does not support removal.
+     * the base-2 logarithm of the {@code double} divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>11</sup>+52–2 = 2,098
      */
