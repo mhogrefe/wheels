@@ -98,6 +98,37 @@ public class ReadersTest {
         assertFalse(findBigIntegerIn("vdfsvfbf").isPresent());
     }
 
+    @Test
+    public void testReadByte() {
+        aeq(readByte("0").get(), "0");
+        aeq(readByte("5").get(), "5");
+        aeq(readByte("-100").get(), "-100");
+        assertFalse(readByte("314159265358").isPresent());
+        assertFalse(readByte("-314159265358").isPresent());
+        assertFalse(readByte(" 1").isPresent());
+        assertFalse(readByte("00").isPresent());
+        assertFalse(readByte("-0").isPresent());
+        assertFalse(readByte("0xff").isPresent());
+        assertFalse(readByte("0xff").isPresent());
+        assertFalse(readByte("2 ").isPresent());
+        assertFalse(readByte("--1").isPresent());
+        assertFalse(readByte("1-2").isPresent());
+        assertFalse(readByte("+4").isPresent());
+    }
+
+    @Test
+    public void testFindByteIn() {
+        aeq(findByteIn("abcd1234xyz").get(), "(123, 4)");
+        aeq(findByteIn("abcd8234xyz").get(), "(82, 4)");
+        aeq(findByteIn("0123").get(), "(0, 0)");
+        aeq(findByteIn("a-23").get(), "(-23, 1)");
+        aeq(findByteIn("---34--4").get(), "(-34, 2)");
+        aeq(findByteIn(" 20.1 ").get(), "(20, 1)");
+        assertFalse(findByteIn("").isPresent());
+        assertFalse(findByteIn("hello").isPresent());
+        assertFalse(findByteIn("vdfsvfbf").isPresent());
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

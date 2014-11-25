@@ -187,4 +187,44 @@ public class ReadersDemos {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
+
+    private static void demoReadByte() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readByte(" + s + ") = " + readByte(s));
+        }
+    }
+
+    public static void demoReadByte_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readByte(" + s + ") = " + readByte(s));
+        }
+    }
+
+    private static void demoFindByteIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
+        }
+    }
+
+    public static void demoFindByteIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
+        }
+    }
 }

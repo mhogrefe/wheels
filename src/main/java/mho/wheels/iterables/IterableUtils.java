@@ -2813,11 +2813,11 @@ public final class IterableUtils {
     }
 
     public static @NotNull String take(int n, @NotNull String s) {
-        return s.substring(0, n);
+        return s.substring(0, Math.min(s.length(), n));
     }
 
     public static @NotNull String take(@NotNull BigInteger n, @NotNull String s) {
-        return s.substring(0, n.intValueExact());
+        return s.substring(0, Math.min(s.length(), n.intValueExact()));
     }
 
     public static @NotNull <T> Iterable<T> drop(int n, @NotNull Iterable<T> xs) {

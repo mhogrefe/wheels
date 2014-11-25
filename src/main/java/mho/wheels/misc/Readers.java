@@ -329,10 +329,10 @@ public class Readers {
         boolean isNegative = head(bis) == '-';
         int trimSize = MAX_POSITIVE_BYTE_LENGTH;
         if (isNegative) trimSize++;
-        String bs = bis.substring(0, trimSize);
+        String bs = take(trimSize, bis);
         Optional<Byte> ob = readByte(bs);
         if (!ob.isPresent()) {
-            bs = bis.substring(0, trimSize - 1);
+            bs = take(trimSize - 1, bis);
             ob = readByte(bs);
         }
         return Optional.of(new Pair<>(ob.get(), p.b));
