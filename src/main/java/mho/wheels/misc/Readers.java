@@ -48,7 +48,6 @@ public class Readers {
     }
 
     private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
-            @NotNull Function<String, Optional<T>> read,
             @NotNull Iterable<T> xs,
             @NotNull String s
     ) {
@@ -111,7 +110,7 @@ public class Readers {
      * @return the first {@code boolean} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<Boolean, Integer>> findBooleanIn(@NotNull String s) {
-        return genericFindIn(Readers::readBoolean, Arrays.asList(false, true), s);
+        return genericFindIn(Arrays.asList(false, true), s);
     }
 
     public @NotNull Optional<Ordering> readOrdering(@NotNull String s) {
