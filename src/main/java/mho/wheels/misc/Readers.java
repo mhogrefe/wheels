@@ -101,6 +101,37 @@ public class Readers {
         return Optional.of(new Pair<>(bestResult.a, bestResult.c));
     }
 
+    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String usedChars,
+            @NotNull String s
+    ) {
+        if (isEmpty(s)) return Optional.empty();
+        Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
+        Iterable<Integer> indices = scanl(p -> p.a + p.b, 0, map(String::length, grouped));
+        Iterable<Boolean> mask;
+        if (elem(head(head(grouped)), usedChars)) {
+            mask = cycle(Arrays.asList(true, false));
+        } else {
+            mask = cycle(Arrays.asList(false, true));
+        }
+        for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
+            assert p.a != null;
+            assert p.b != null;
+            int offset = p.b;
+            String substring = p.a;
+            for (int i = 0; i < substring.length(); i++) {
+                for (int j = substring.length(); j > i; j--) {
+                    Optional<T> ox = read.apply(substring.substring(i, j));
+                    if (ox.isPresent()) {
+                        return Optional.of(new Pair<>(ox.get(), offset + i));
+                    }
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     /**
      * Reads a {@code boolean} from a {@code String}.
      *
