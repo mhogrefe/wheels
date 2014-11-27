@@ -103,8 +103,10 @@ public class ReadersTest {
         aeq(readByte("0").get(), "0");
         aeq(readByte("5").get(), "5");
         aeq(readByte("-100").get(), "-100");
-        assertFalse(readByte("314159265358").isPresent());
-        assertFalse(readByte("-314159265358").isPresent());
+        aeq(readByte(Integer.toString(Byte.MAX_VALUE)).get(), "127");
+        aeq(readByte(Integer.toString(Byte.MIN_VALUE)).get(), "-128");
+        assertFalse(readByte(Integer.toString(Byte.MAX_VALUE + 1)).isPresent());
+        assertFalse(readByte(Integer.toString(Byte.MIN_VALUE - 1)).isPresent());
         assertFalse(readByte(" 1").isPresent());
         assertFalse(readByte("00").isPresent());
         assertFalse(readByte("-0").isPresent());
@@ -124,6 +126,10 @@ public class ReadersTest {
         aeq(findByteIn("a-23").get(), "(-23, 1)");
         aeq(findByteIn("---34--4").get(), "(-34, 2)");
         aeq(findByteIn(" 20.1 ").get(), "(20, 1)");
+        aeq(findByteIn("abcd" + Byte.MAX_VALUE + "xyz").get(), "(127, 4)");
+        aeq(findByteIn("abcd" + Byte.MIN_VALUE + "xyz").get(), "(-128, 4)");
+        aeq(findByteIn("abcd" + (Byte.MAX_VALUE + 1) + "xyz").get(), "(12, 4)");
+        aeq(findByteIn("abcd" + (Byte.MIN_VALUE - 1) + "xyz").get(), "(-12, 4)");
         assertFalse(findByteIn("").isPresent());
         assertFalse(findByteIn("hello").isPresent());
         assertFalse(findByteIn("vdfsvfbf").isPresent());
