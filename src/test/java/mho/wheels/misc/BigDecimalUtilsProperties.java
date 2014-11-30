@@ -93,5 +93,20 @@ public class BigDecimalUtilsProperties {
                     bd.toString().equals("0." + replicate(p.b - 1, '0')) || bd.toString().equals("0E-" + (p.b - 1))
             );
         }
+
+        Iterable<Pair<BigDecimal, Integer>> failPs;
+        if (P instanceof ExhaustiveProvider) {
+            failPs = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), map(i -> -i, P.naturalIntegers()));
+        } else {
+            failPs = P.pairs(P.bigDecimals(), map(i -> -i, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, failPs)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                setPrecision(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
     }
 }
