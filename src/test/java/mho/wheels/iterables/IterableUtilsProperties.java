@@ -33,7 +33,7 @@ public class IterableUtilsProperties {
     @Test
     public void testAllProperties() {
         for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("Testing " + (useRandom ? "randomly" : "exhaustively"));
+            System.out.println("Testing IterableUtils properties " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
 
             propertiesSumByte();
@@ -64,6 +64,7 @@ public class IterableUtilsProperties {
             System.out.println();
         }
         System.out.println("Done");
+        System.out.println();
     }
 
     private static void propertiesSumByte() {
