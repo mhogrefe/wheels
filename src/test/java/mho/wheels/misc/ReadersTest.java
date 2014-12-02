@@ -242,12 +242,12 @@ public class ReadersTest {
         aeq(findLongIn("abcd" + Long.MAX_VALUE + "xyz").get(), "(9223372036854775807, 4)");
         aeq(findLongIn("abcd" + Long.MIN_VALUE + "xyz").get(), "(-9223372036854775808, 4)");
         aeq(
-                findLongIn("abcd" + BigInteger.valueOf(Integer.MAX_VALUE).add(BigInteger.ONE) + "xyz").get(),
-                "(2147483648, 4)"
+                findLongIn("abcd" + BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.ONE) + "xyz").get(),
+                "(922337203685477580, 4)"
         );
         aeq(
-                findLongIn("abcd" + BigInteger.valueOf(Integer.MIN_VALUE).subtract(BigInteger.ONE) + "xyz").get(),
-                "(-2147483649, 4)"
+                findLongIn("abcd" + BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.ONE) + "xyz").get(),
+                "(-922337203685477580, 4)"
         );
         assertFalse(findLongIn("").isPresent());
         assertFalse(findLongIn("hello").isPresent());
