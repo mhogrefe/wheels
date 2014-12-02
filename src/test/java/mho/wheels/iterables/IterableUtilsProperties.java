@@ -1184,12 +1184,12 @@ public class IterableUtilsProperties {
         assertTrue(message, equal(xs, ys));
     }
 
-    private static void aeq(String message, int f1, int f2) {
-        assertEquals(message, f1, f2);
+    private static void aeq(String message, int i, int j) {
+        assertEquals(message, i, j);
     }
 
-    private static void aeq(String message, long f1, long f2) {
-        assertEquals(message, f1, f2);
+    private static void aeq(String message, long i, long j) {
+        assertEquals(message, i, j);
     }
 
     private static void aeq(String message, float f1, float f2) {
