@@ -20,6 +20,11 @@ import static mho.wheels.iterables.IterableUtils.*;
  * exception. Instead, they return empty {@code Optional}s.
  */
 public class Readers {
+    public static final int MAX_POSITIVE_BYTE_LENGTH = Byte.toString(Byte.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_SHORT_LENGTH = Short.toString(Short.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_INTEGER_LENGTH = Integer.toString(Integer.MAX_VALUE).length();
+    public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
+
     /**
      * Wraps a function from {@code String} to {@code T} in such a way that if the function throws an exception, this
      * method returns an empty {@code Optional}. An empty {@code Optional} is also returned if calling {@code toString}
@@ -94,6 +99,37 @@ public class Readers {
         };
         Triple<T, String, Integer> bestResult = minimum(comparator, candidates);
         return Optional.of(new Pair<>(bestResult.a, bestResult.c));
+    }
+
+    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String usedChars,
+            @NotNull String s
+    ) {
+        if (isEmpty(s)) return Optional.empty();
+        Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
+        Iterable<Integer> indices = scanl(p -> p.a + p.b, 0, map(String::length, grouped));
+        Iterable<Boolean> mask;
+        if (elem(head(head(grouped)), usedChars)) {
+            mask = cycle(Arrays.asList(true, false));
+        } else {
+            mask = cycle(Arrays.asList(false, true));
+        }
+        for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
+            assert p.a != null;
+            assert p.b != null;
+            int offset = p.b;
+            String substring = p.a;
+            for (int i = 0; i < substring.length(); i++) {
+                for (int j = substring.length(); j > i; j--) {
+                    Optional<T> ox = read.apply(substring.substring(i, j));
+                    if (ox.isPresent()) {
+                        return Optional.of(new Pair<>(ox.get(), offset + i));
+                    }
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -242,7 +278,7 @@ public class Readers {
 
     /**
      * Finds the first occurrence of a {@code BigInteger} in a {@code String} and returns the {@code BigInteger}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found.
      * Leading zeros, octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
      *
      * <ul>
@@ -281,24 +317,200 @@ public class Readers {
                 nonzeroDigitIndex--;
             }
             BigInteger i = new BigInteger(s.substring(nonzeroDigitIndex, endIndex + 1));
-            return Optional.of(new Pair<BigInteger, Integer>(i, nonzeroDigitIndex));
+            return Optional.of(new Pair<>(i, nonzeroDigitIndex));
         }
     }
 
+    /**
+     * Reads a {@link java.lang.Byte} from a {@code String}. Leading zeros, octal, and hexadecimal are not allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Byte} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Byte}
+     */
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {
         return genericRead(Byte::parseByte, s);
     }
 
+    /**
+     * Finds the first occurrence of a {@code Byte} in a {@code String} and returns the {@code Byte} and the index at
+     * which it was found. Returns an empty {@code Optional} if no {@code Byte} is found. Leading zeros, octal, and
+     * hexadecimal are not allowed. The longest possible {@code Byte} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Byte} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Byte, Integer>> findByteIn(@NotNull String s) {
+        Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
+        if (!op.isPresent()) return Optional.empty();
+        Pair<BigInteger, Integer> p = op.get();
+        assert p.a != null;
+        String bis = p.a.toString();
+        boolean isNegative = head(bis) == '-';
+        int trimSize = MAX_POSITIVE_BYTE_LENGTH;
+        if (isNegative) trimSize++;
+        String bs = take(trimSize, bis);
+        Optional<Byte> ob = readByte(bs);
+        if (!ob.isPresent()) {
+            bs = take(trimSize - 1, bis);
+            ob = readByte(bs);
+        }
+        return Optional.of(new Pair<>(ob.get(), p.b));
+    }
+
+    /**
+     * Reads a {@link java.lang.Short} from a {@code String}. Leading zeros, octal, and hexadecimal are not allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Short} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Short}
+     */
     public static @NotNull Optional<Short> readShort(@NotNull String s) {
         return genericRead(Short::parseShort, s);
     }
 
+    /**
+     * Finds the first occurrence of a {@code Short} in a {@code String} and returns the {@code Short} and the index at
+     * which it was found. Returns an empty {@code Optional} if no {@code Short} is found. Leading zeros, octal, and
+     * hexadecimal are not allowed. The longest possible {@code Short} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Short} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Short, Integer>> findShortIn(@NotNull String s) {
+        Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
+        if (!op.isPresent()) return Optional.empty();
+        Pair<BigInteger, Integer> p = op.get();
+        assert p.a != null;
+        String bis = p.a.toString();
+        boolean isNegative = head(bis) == '-';
+        int trimSize = MAX_POSITIVE_SHORT_LENGTH;
+        if (isNegative) trimSize++;
+        String ss = take(trimSize, bis);
+        Optional<Short> os = readShort(ss);
+        if (!os.isPresent()) {
+            ss = take(trimSize - 1, bis);
+            os = readShort(ss);
+        }
+        return Optional.of(new Pair<>(os.get(), p.b));
+    }
+
+    /**
+     * Reads an {@link java.lang.Integer} from a {@code String}. Leading zeros, octal, and hexadecimal are not allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Integer} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent
+     * an {@code Integer}
+     */
     public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
         return genericRead(Integer::parseInt, s);
     }
 
+    /**
+     * Finds the first occurrence of an {@code Integer} in a {@code String} and returns the {@code Integer} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code Integer} is found. Leading zeros,
+     * octal, and hexadecimal are not allowed. The longest possible {@code Integer} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Integer} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Integer, Integer>> findIntegerIn(@NotNull String s) {
+        Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
+        if (!op.isPresent()) return Optional.empty();
+        Pair<BigInteger, Integer> p = op.get();
+        assert p.a != null;
+        String bis = p.a.toString();
+        boolean isNegative = head(bis) == '-';
+        int trimSize = MAX_POSITIVE_INTEGER_LENGTH;
+        if (isNegative) trimSize++;
+        String is = take(trimSize, bis);
+        Optional<Integer> oi = readInteger(is);
+        if (!oi.isPresent()) {
+            is = take(trimSize - 1, bis);
+            oi = readInteger(is);
+        }
+        return Optional.of(new Pair<>(oi.get(), p.b));
+    }
+
+    /**
+     * Reads a {@link java.lang.Long} from a {@code String}. Leading zeros, octal, and hexadecimal are not allowed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Long} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Long}
+     */
     public static @NotNull Optional<Long> readLong(@NotNull String s) {
         return genericRead(Long::parseLong, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code Long} in a {@code String} and returns the {@code Long} and the index at
+     * which it was found. Returns an empty {@code Optional} if no {@code Long} is found. Leading zeros, octal, and
+     * hexadecimal are not allowed. The longest possible {@code Long} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Long} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Long, Integer>> findLongIn(@NotNull String s) {
+        Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
+        if (!op.isPresent()) return Optional.empty();
+        Pair<BigInteger, Integer> p = op.get();
+        assert p.a != null;
+        String bis = p.a.toString();
+        boolean isNegative = head(bis) == '-';
+        int trimSize = MAX_POSITIVE_LONG_LENGTH;
+        if (isNegative) trimSize++;
+        String ls = take(trimSize, bis);
+        Optional<Long> ol = readLong(ls);
+        if (!ol.isPresent()) {
+            ls = take(trimSize - 1, bis);
+            ol = readLong(ls);
+        }
+        return Optional.of(new Pair<>(ol.get(), p.b));
     }
 
     public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {

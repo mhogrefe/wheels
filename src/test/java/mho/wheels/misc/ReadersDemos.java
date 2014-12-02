@@ -187,4 +187,164 @@ public class ReadersDemos {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
+
+    private static void demoReadByte() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readByte(" + s + ") = " + readByte(s));
+        }
+    }
+
+    public static void demoReadByte_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readByte(" + s + ") = " + readByte(s));
+        }
+    }
+
+    private static void demoFindByteIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
+        }
+    }
+
+    public static void demoFindByteIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
+        }
+    }
+
+    private static void demoReadShort() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readShort(" + s + ") = " + readShort(s));
+        }
+    }
+
+    public static void demoReadShort_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readShort(" + s + ") = " + readShort(s));
+        }
+    }
+
+    private static void demoFindShortIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
+        }
+    }
+
+    public static void demoFindShortIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
+        }
+    }
+
+    private static void demoReadInteger() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readInteger(" + s + ") = " + readByte(s));
+        }
+    }
+
+    public static void demoReadInteger_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readInteger(" + s + ") = " + readInteger(s));
+        }
+    }
+
+    private static void demoFindIntegerIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
+        }
+    }
+
+    public static void demoFindIntegerIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
+        }
+    }
+
+    private static void demoReadLong() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readLong(" + s + ") = " + readLong(s));
+        }
+    }
+
+    public static void demoReadLong_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readLong(" + s + ") = " + readLong(s));
+        }
+    }
+
+    private static void demoFindLongIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
+        }
+    }
+
+    public static void demoFindLongIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(INTEGRAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
+        }
+    }
 }

@@ -33,7 +33,7 @@ public class IterableUtilsProperties {
     @Test
     public void testAllProperties() {
         for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("Testing " + (useRandom ? "randomly" : "exhaustively"));
+            System.out.println("Testing IterableUtils properties " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
 
             propertiesSumByte();
@@ -60,10 +60,12 @@ public class IterableUtilsProperties {
             propertiesDeltaBigDecimal();
             propertiesDeltaFloat();
             propertiesDeltaDouble();
+            propertiesDeltaCharacter();
 
             System.out.println();
         }
         System.out.println("Done");
+        System.out.println();
     }
 
     private static void propertiesSumByte() {
@@ -97,6 +99,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             assertEquals(p.toString(), sumByte(Arrays.asList(p.a, p.b)), (byte) (p.a + p.b));
+        }
+
+        Iterable<List<Byte>> failBss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bytes()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Byte> bs : take(LIMIT, failBss)) {
+            try {
+                sumByte(bs);
+                fail(bs.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -132,6 +149,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), sumShort(Arrays.asList(p.a, p.b)), (short) (p.a + p.b));
         }
+
+        Iterable<List<Short>> failSss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.shorts()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Short> ss : take(LIMIT, failSss)) {
+            try {
+                sumShort(ss);
+                fail(ss.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesSumInteger() {
@@ -165,6 +197,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             assertEquals(p.toString(), sumInteger(Arrays.asList(p.a, p.b)), p.a + p.b);
+        }
+
+        Iterable<List<Integer>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.integers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Integer> is : take(LIMIT, failIss)) {
+            try {
+                sumInteger(is);
+                fail(is.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -200,6 +247,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), sumLong(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
+
+        Iterable<List<Long>> failLss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.longs()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Long> ls : take(LIMIT, failLss)) {
+            try {
+                sumLong(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesSumFloat() {
@@ -232,6 +294,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
+
+        Iterable<List<Float>> failFss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.floats()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Float> fs : take(LIMIT, failFss)) {
+            try {
+                sumFloat(fs);
+                fail(fs.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesSumDouble() {
@@ -263,6 +340,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             aeq(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
+        }
+
+        Iterable<List<Double>> failDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.doubles()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Double> ls : take(LIMIT, failDss)) {
+            try {
+                sumDouble(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -298,6 +390,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), sumBigInteger(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
+
+        Iterable<List<BigInteger>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigIntegers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigInteger> ls : take(LIMIT, failIss)) {
+            try {
+                sumBigInteger(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesSumBigDecimal() {
@@ -332,6 +439,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), sumBigDecimal(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
+
+        Iterable<List<BigDecimal>> failBDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigDecimals()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
+            try {
+                sumBigDecimal(bds);
+                fail(bds.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesProductByte() {
@@ -361,6 +483,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             assertEquals(p.toString(), productByte(Arrays.asList(p.a, p.b)), (byte) (p.a * p.b));
+        }
+
+        Iterable<List<Byte>> failBss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bytes()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Byte> bs : take(LIMIT, failBss)) {
+            try {
+                productByte(bs);
+                fail(bs.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -392,6 +529,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), productShort(Arrays.asList(p.a, p.b)), (short) (p.a * p.b));
         }
+
+        Iterable<List<Short>> failSss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.shorts()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Short> ss : take(LIMIT, failSss)) {
+            try {
+                productShort(ss);
+                fail(ss.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesProductInteger() {
@@ -421,6 +573,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             assertEquals(p.toString(), productInteger(Arrays.asList(p.a, p.b)), p.a * p.b);
+        }
+
+        Iterable<List<Integer>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.integers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Integer> is : take(LIMIT, failIss)) {
+            try {
+                productInteger(is);
+                fail(is.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -452,6 +619,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), productLong(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
+
+        Iterable<List<Long>> failLss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.longs()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Long> ls : take(LIMIT, failLss)) {
+            try {
+                productLong(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesProductFloat() {
@@ -480,6 +662,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
+
+        Iterable<List<Float>> failFss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.floats()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Float> fs : take(LIMIT, failFss)) {
+            try {
+                productFloat(fs);
+                fail(fs.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesProductDouble() {
@@ -507,6 +704,21 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             aeq(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
+        }
+
+        Iterable<List<Double>> failDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.doubles()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Double> ls : take(LIMIT, failDss)) {
+            try {
+                productDouble(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -538,6 +750,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), productBigInteger(Arrays.asList(p.a, p.b)), p.a.multiply(p.b));
         }
+
+        Iterable<List<BigInteger>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigIntegers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigInteger> ls : take(LIMIT, failIss)) {
+            try {
+                productBigInteger(ls);
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesProductBigDecimal() {
@@ -568,6 +795,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             assertEquals(p.toString(), productBigDecimal(Arrays.asList(p.a, p.b)), p.a.multiply(p.b));
         }
+
+        Iterable<List<BigDecimal>> failBDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigDecimals()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
+            try {
+                productBigDecimal(bds);
+                fail(bds.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
     
     private static void propertiesDeltaByte() {
@@ -575,8 +817,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaByte(Iterable<Byte>) properties...");
 
         for (List<Byte> bs : take(LIMIT, filter(cs -> !cs.isEmpty(), P.lists(P.bytes())))) {
+            Iterable<Byte> deltas = deltaByte(bs);
+            aeq(bs.toString(), length(deltas), length(bs) - 1);
             Iterable<Byte> reversed = reverse(map(b -> (byte) -b, deltaByte(reverse(bs))));
-            aeq(bs.toString(), deltaByte(bs), reversed);
+            aeq(bs.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
@@ -588,6 +835,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Arrays.asList((byte) (p.b - p.a)));
         }
+
+        Iterable<List<Byte>> failBss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bytes()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Byte> bs : take(LIMIT, failBss)) {
+            try {
+                toList(deltaByte(bs));
+                fail(bs.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaShort() {
@@ -595,8 +857,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaShort(Iterable<Short>) properties...");
 
         for (List<Short> ss : take(LIMIT, filter(ts -> !ts.isEmpty(), P.lists(P.shorts())))) {
+            Iterable<Short> deltas = deltaShort(ss);
+            aeq(ss.toString(), length(deltas), length(ss) - 1);
             Iterable<Short> reversed = reverse(map(s -> (short) -s, deltaShort(reverse(ss))));
-            aeq(ss.toString(), deltaShort(ss), reversed);
+            aeq(ss.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (short s : take(LIMIT, P.shorts())) {
@@ -608,6 +875,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Arrays.asList((short) (p.b - p.a)));
         }
+
+        Iterable<List<Short>> failSss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.shorts()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Short> ss : take(LIMIT, failSss)) {
+            try {
+                toList(deltaShort(ss));
+                fail(ss.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaInteger() {
@@ -615,8 +897,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaInteger(Iterable<Integer>) properties...");
 
         for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.integers())))) {
+            Iterable<Integer> deltas = deltaInteger(is);
+            aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaInteger(reverse(is))));
-            aeq(is.toString(), deltaInteger(is), reversed);
+            aeq(is.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (int i : take(LIMIT, P.integers())) {
@@ -628,6 +915,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
+
+        Iterable<List<Integer>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.integers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Integer> is : take(LIMIT, failIss)) {
+            try {
+                toList(deltaInteger(is));
+                fail(is.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaLong() {
@@ -635,8 +937,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaLong(Iterable<Long>) properties...");
 
         for (List<Long> ls : take(LIMIT, filter(ms -> !ms.isEmpty(), P.lists(P.longs())))) {
+            Iterable<Long> deltas = deltaLong(ls);
+            aeq(ls.toString(), length(deltas), length(ls) - 1);
             Iterable<Long> reversed = reverse(map(l -> -l, deltaLong(reverse(ls))));
-            aeq(ls.toString(), deltaLong(ls), reversed);
+            aeq(ls.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (long l : take(LIMIT, P.longs())) {
@@ -648,6 +955,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
+
+        Iterable<List<Long>> failLss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.longs()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Long> ls : take(LIMIT, failLss)) {
+            try {
+                toList(deltaLong(ls));
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaBigInteger() {
@@ -655,8 +977,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaBigInteger(Iterable<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.bigIntegers())))) {
+            Iterable<BigInteger> deltas = deltaBigInteger(is);
+            aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<BigInteger> reversed = reverse(map(BigInteger::negate, deltaBigInteger(reverse(is))));
-            aeq(is.toString(), deltaBigInteger(is), reversed);
+            aeq(is.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
@@ -668,6 +995,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
         }
+
+        Iterable<List<BigInteger>> failIss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigIntegers()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigInteger> ls : take(LIMIT, failIss)) {
+            try {
+                toList(deltaBigInteger(ls));
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaBigDecimal() {
@@ -675,8 +1017,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaBigDecimal(Iterable<BigDecimal>) properties...");
 
         for (List<BigDecimal> bds : take(LIMIT, filter(bes -> !bes.isEmpty(), P.lists(P.bigDecimals())))) {
+            Iterable<BigDecimal> deltas = deltaBigDecimal(bds);
+            aeq(bds.toString(), length(deltas), length(bds) - 1);
             Iterable<BigDecimal> reversed = reverse(map(BigDecimal::negate, deltaBigDecimal(reverse(bds))));
-            aeq(bds.toString(), deltaBigDecimal(bds), reversed);
+            aeq(bds.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
@@ -688,6 +1035,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
         }
+
+        Iterable<List<BigDecimal>> failBDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.bigDecimals()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
+            try {
+                toList(deltaBigDecimal(bds));
+                fail(bds.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaFloat() {
@@ -695,8 +1057,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaFloat(Iterable<Float>) properties...");
 
         for (List<Float> fs : take(LIMIT, filter(gs -> !gs.isEmpty(), P.lists(P.floats())))) {
+            Iterable<Float> deltas = deltaFloat(fs);
+            aeq(fs.toString(), length(deltas), length(fs) - 1);
             Iterable<Float> reversed = reverse(map(f -> -f, deltaFloat(reverse(fs))));
-            aeq(fs.toString(), absFloatNegativeZeros(deltaFloat(fs)), absFloatNegativeZeros(reversed));
+            aeq(fs.toString(), absFloatNegativeZeros(deltas), absFloatNegativeZeros(reversed));
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (float f : take(LIMIT, P.floats())) {
@@ -708,6 +1075,21 @@ public class IterableUtilsProperties {
             assert p.b != null;
             aeq(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
+
+        Iterable<List<Float>> failFss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.floats()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Float> fs : take(LIMIT, failFss)) {
+            try {
+                toList(deltaFloat(fs));
+                fail(fs.toString());
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesDeltaDouble() {
@@ -715,8 +1097,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaDouble(Iterable<Double>) properties...");
 
         for (List<Double> ds : take(LIMIT, filter(es -> !es.isEmpty(), P.lists(P.doubles())))) {
+            Iterable<Double> deltas = deltaDouble(ds);
+            aeq(ds.toString(), length(deltas), length(ds) - 1);
             Iterable<Double> reversed = reverse(map(d -> -d, deltaDouble(reverse(ds))));
-            aeq(ds.toString(), absDoubleNegativeZeros(deltaDouble(ds)), absDoubleNegativeZeros(reversed));
+            aeq(ds.toString(), absDoubleNegativeZeros(deltas), absDoubleNegativeZeros(reversed));
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (double d : take(LIMIT, P.doubles())) {
@@ -727,6 +1114,61 @@ public class IterableUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             aeq(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+        }
+
+        Iterable<List<Double>> failDss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.doubles()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Double> ls : take(LIMIT, failDss)) {
+            try {
+                toList(deltaDouble(ls));
+                fail(ls.toString());
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesDeltaCharacter() {
+        initialize();
+        System.out.println("testing deltaCharacter(Iterable<Character>) properties...");
+
+        for (List<Character> cs : take(LIMIT, filter(ds -> !ds.isEmpty(), P.lists(P.characters())))) {
+            Iterable<Integer> deltas = deltaCharacter(cs);
+            aeq(cs.toString(), length(deltas), length(cs) - 1);
+            Iterable<Integer> reversed = reverse(map(i -> -i, deltaCharacter(reverse(cs))));
+            aeq(cs.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Arrays.asList(c))));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assert p.a != null;
+            assert p.b != null;
+            aeq(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+        }
+
+        Iterable<List<Character>> failCss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Character>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.characters()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Character> cs : take(LIMIT, failCss)) {
+            try {
+                toList(deltaCharacter(cs));
+                fail(cs.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -740,6 +1182,14 @@ public class IterableUtilsProperties {
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
         assertTrue(message, equal(xs, ys));
+    }
+
+    private static void aeq(String message, int f1, int f2) {
+        assertEquals(message, f1, f2);
+    }
+
+    private static void aeq(String message, long f1, long f2) {
+        assertEquals(message, f1, f2);
     }
 
     private static void aeq(String message, float f1, float f2) {

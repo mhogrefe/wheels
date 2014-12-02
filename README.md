@@ -18,6 +18,7 @@ Progress
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
+| BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Readers                  | ✘       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✘       | ✘     | ✘     | ✘          |

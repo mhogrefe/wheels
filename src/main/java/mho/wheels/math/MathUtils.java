@@ -818,7 +818,7 @@ public final class MathUtils {
         if (n < PRIME_SIEVE_SIZE && PRIME_SIEVE.get(n)) return n;
         for (int i = 3; ; i += 2) {
             int square = i * i;
-            if (square > i || square < 0) break;
+            if (square > n || square < 0) break;
             if (PRIME_SIEVE.get(i) && n % i == 0) return i;
         }
         return n;

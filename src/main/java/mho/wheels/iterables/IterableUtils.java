@@ -2379,7 +2379,15 @@ public final class IterableUtils {
      */
     public static @NotNull BigDecimal sumBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs)) return BigDecimal.ZERO;
+        if (head(xs) == null)
+            throw new NullPointerException();
         return foldl1(p -> p.a.add(p.b), xs);
+    }
+
+    public static void main(String[] args) {
+        List<BigDecimal> fs = new ArrayList<>();
+        fs.add(null);
+        System.out.println(sumBigDecimal(fs));
     }
 
     /**
@@ -2505,6 +2513,9 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigDecimal productBigDecimal(@NotNull Iterable<BigDecimal> xs) {
+        if (isEmpty(xs)) return BigDecimal.ONE;
+        if (head(xs) == null)
+            throw new NullPointerException();
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
@@ -2813,11 +2824,11 @@ public final class IterableUtils {
     }
 
     public static @NotNull String take(int n, @NotNull String s) {
-        return s.substring(0, n);
+        return s.substring(0, Math.min(s.length(), n));
     }
 
     public static @NotNull String take(@NotNull BigInteger n, @NotNull String s) {
-        return s.substring(0, n.intValueExact());
+        return s.substring(0, Math.min(s.length(), n.intValueExact()));
     }
 
     public static @NotNull <T> Iterable<T> drop(int n, @NotNull Iterable<T> xs) {
@@ -3408,12 +3419,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Byte}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Byte> deltaByte(@NotNull Iterable<Byte> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
     }
 
@@ -3427,12 +3442,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Short}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Short> deltaShort(@NotNull Iterable<Short> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
     }
 
@@ -3446,12 +3465,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Integer}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Integer> deltaInteger(@NotNull Iterable<Integer> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3465,12 +3488,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Long}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Long> deltaLong(@NotNull Iterable<Long> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3483,12 +3510,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code BigInteger}s.
      * @return Δxs
      */
     public static @NotNull Iterable<BigInteger> deltaBigInteger(@NotNull Iterable<BigInteger> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3501,12 +3532,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code BigDecimal}s.
      * @return Δxs
      */
     public static @NotNull Iterable<BigDecimal> deltaBigDecimal(@NotNull Iterable<BigDecimal> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
@@ -3520,12 +3555,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Float}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Float> deltaFloat(@NotNull Iterable<Float> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3539,12 +3578,16 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Double}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Double> deltaDouble(@NotNull Iterable<Double> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
@@ -3557,12 +3600,16 @@ public final class IterableUtils {
      *  <li>The result is finite and only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Integer}s.
+     * Length is |{@code xs}|–1
+     *
+     * @param xs an {@code Iterable} of {@code Character}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Integer> deltaCharacter(@NotNull Iterable<Character> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
