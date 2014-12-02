@@ -107,7 +107,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bytes()),
-                fs -> range(0, fs.size())
+                bs -> range(0, bs.size())
         ));
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
@@ -156,7 +156,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.shorts()),
-                fs -> range(0, fs.size())
+                ss -> range(0, ss.size())
         ));
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
@@ -205,7 +205,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.integers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
@@ -254,7 +254,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.longs()),
-                fs -> range(0, fs.size())
+                ls -> range(0, ls.size())
         ));
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
@@ -348,7 +348,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.doubles()),
-                fs -> range(0, fs.size())
+                ds -> range(0, ds.size())
         ));
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
@@ -397,7 +397,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigIntegers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
@@ -446,7 +446,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigDecimals()),
-                fs -> range(0, fs.size())
+                bds -> range(0, bds.size())
         ));
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
@@ -491,7 +491,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bytes()),
-                fs -> range(0, fs.size())
+                bs -> range(0, bs.size())
         ));
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
@@ -536,7 +536,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.shorts()),
-                fs -> range(0, fs.size())
+                ss -> range(0, ss.size())
         ));
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
@@ -581,7 +581,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.integers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
@@ -626,7 +626,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.longs()),
-                fs -> range(0, fs.size())
+                ls -> range(0, ls.size())
         ));
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
@@ -712,7 +712,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.doubles()),
-                fs -> range(0, fs.size())
+                ds -> range(0, ds.size())
         ));
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
@@ -757,7 +757,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigIntegers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
@@ -802,7 +802,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigDecimals()),
-                fs -> range(0, fs.size())
+                bds -> range(0, bds.size())
         ));
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
@@ -842,7 +842,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bytes()),
-                fs -> range(0, fs.size())
+                bs -> range(0, bs.size())
         ));
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
@@ -882,7 +882,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.shorts()),
-                fs -> range(0, fs.size())
+                ss -> range(0, ss.size())
         ));
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
@@ -922,7 +922,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.integers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
@@ -962,7 +962,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.longs()),
-                fs -> range(0, fs.size())
+                ls -> range(0, ls.size())
         ));
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
@@ -1002,7 +1002,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigIntegers()),
-                fs -> range(0, fs.size())
+                is -> range(0, is.size())
         ));
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
@@ -1042,7 +1042,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigDecimals()),
-                fs -> range(0, fs.size())
+                bds -> range(0, bds.size())
         ));
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
@@ -1122,7 +1122,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.doubles()),
-                fs -> range(0, fs.size())
+                ds -> range(0, ds.size())
         ));
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
@@ -1162,7 +1162,7 @@ public class IterableUtilsProperties {
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Character>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.characters()),
-                fs -> range(0, fs.size())
+                cs -> range(0, cs.size())
         ));
         for (List<Character> cs : take(LIMIT, failCss)) {
             try {
