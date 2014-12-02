@@ -3419,6 +3419,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Byte}s.
      * @return Δxs
      */
@@ -3439,6 +3441,8 @@ public final class IterableUtils {
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
+     *
+     * Length is |{@code xs}|–1
      *
      * @param xs an {@code Iterable} of {@code Short}s.
      * @return Δxs
@@ -3461,6 +3465,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Integer}s.
      * @return Δxs
      */
@@ -3482,6 +3488,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Long}s.
      * @return Δxs
      */
@@ -3502,6 +3510,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code BigInteger}s.
      * @return Δxs
      */
@@ -3521,6 +3531,8 @@ public final class IterableUtils {
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
+     *
+     * Length is |{@code xs}|–1
      *
      * @param xs an {@code Iterable} of {@code BigDecimal}s.
      * @return Δxs
@@ -3543,6 +3555,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Float}s.
      * @return Δxs
      */
@@ -3564,6 +3578,8 @@ public final class IterableUtils {
      *  <li>The result is finite and does not contain any nulls.</li>
      * </ul>
      *
+     * Length is |{@code xs}|–1
+     *
      * @param xs an {@code Iterable} of {@code Double}s.
      * @return Δxs
      */
@@ -3584,12 +3600,16 @@ public final class IterableUtils {
      *  <li>The result is finite and only contains {@code Integer}s with absolute value less than 2<sup>16</sup>.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of {@code Integer}s.
+     * Length is |{@code xs}|–1
+     *
+     * @param xs an {@code Iterable} of {@code Character}s.
      * @return Δxs
      */
     public static @NotNull Iterable<Integer> deltaCharacter(@NotNull Iterable<Character> xs) {
         if (isEmpty(xs))
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
+        if (head(xs) == null)
+            throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 

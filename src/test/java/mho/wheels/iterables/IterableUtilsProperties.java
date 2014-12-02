@@ -60,6 +60,7 @@ public class IterableUtilsProperties {
             propertiesDeltaBigDecimal();
             propertiesDeltaFloat();
             propertiesDeltaDouble();
+            propertiesDeltaCharacter();
 
             System.out.println();
         }
@@ -816,8 +817,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaByte(Iterable<Byte>) properties...");
 
         for (List<Byte> bs : take(LIMIT, filter(cs -> !cs.isEmpty(), P.lists(P.bytes())))) {
+            Iterable<Byte> deltas = deltaByte(bs);
+            aeq(bs.toString(), length(deltas), length(bs) - 1);
             Iterable<Byte> reversed = reverse(map(b -> (byte) -b, deltaByte(reverse(bs))));
-            aeq(bs.toString(), deltaByte(bs), reversed);
+            aeq(bs.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
@@ -851,8 +857,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaShort(Iterable<Short>) properties...");
 
         for (List<Short> ss : take(LIMIT, filter(ts -> !ts.isEmpty(), P.lists(P.shorts())))) {
+            Iterable<Short> deltas = deltaShort(ss);
+            aeq(ss.toString(), length(deltas), length(ss) - 1);
             Iterable<Short> reversed = reverse(map(s -> (short) -s, deltaShort(reverse(ss))));
-            aeq(ss.toString(), deltaShort(ss), reversed);
+            aeq(ss.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (short s : take(LIMIT, P.shorts())) {
@@ -886,8 +897,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaInteger(Iterable<Integer>) properties...");
 
         for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.integers())))) {
+            Iterable<Integer> deltas = deltaInteger(is);
+            aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaInteger(reverse(is))));
-            aeq(is.toString(), deltaInteger(is), reversed);
+            aeq(is.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (int i : take(LIMIT, P.integers())) {
@@ -921,8 +937,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaLong(Iterable<Long>) properties...");
 
         for (List<Long> ls : take(LIMIT, filter(ms -> !ms.isEmpty(), P.lists(P.longs())))) {
+            Iterable<Long> deltas = deltaLong(ls);
+            aeq(ls.toString(), length(deltas), length(ls) - 1);
             Iterable<Long> reversed = reverse(map(l -> -l, deltaLong(reverse(ls))));
-            aeq(ls.toString(), deltaLong(ls), reversed);
+            aeq(ls.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (long l : take(LIMIT, P.longs())) {
@@ -956,8 +977,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaBigInteger(Iterable<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.bigIntegers())))) {
+            Iterable<BigInteger> deltas = deltaBigInteger(is);
+            aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<BigInteger> reversed = reverse(map(BigInteger::negate, deltaBigInteger(reverse(is))));
-            aeq(is.toString(), deltaBigInteger(is), reversed);
+            aeq(is.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
@@ -991,8 +1017,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaBigDecimal(Iterable<BigDecimal>) properties...");
 
         for (List<BigDecimal> bds : take(LIMIT, filter(bes -> !bes.isEmpty(), P.lists(P.bigDecimals())))) {
+            Iterable<BigDecimal> deltas = deltaBigDecimal(bds);
+            aeq(bds.toString(), length(deltas), length(bds) - 1);
             Iterable<BigDecimal> reversed = reverse(map(BigDecimal::negate, deltaBigDecimal(reverse(bds))));
-            aeq(bds.toString(), deltaBigDecimal(bds), reversed);
+            aeq(bds.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
@@ -1026,8 +1057,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaFloat(Iterable<Float>) properties...");
 
         for (List<Float> fs : take(LIMIT, filter(gs -> !gs.isEmpty(), P.lists(P.floats())))) {
+            Iterable<Float> deltas = deltaFloat(fs);
+            aeq(fs.toString(), length(deltas), length(fs) - 1);
             Iterable<Float> reversed = reverse(map(f -> -f, deltaFloat(reverse(fs))));
-            aeq(fs.toString(), absFloatNegativeZeros(deltaFloat(fs)), absFloatNegativeZeros(reversed));
+            aeq(fs.toString(), absFloatNegativeZeros(deltas), absFloatNegativeZeros(reversed));
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (float f : take(LIMIT, P.floats())) {
@@ -1061,8 +1097,13 @@ public class IterableUtilsProperties {
         System.out.println("testing deltaDouble(Iterable<Double>) properties...");
 
         for (List<Double> ds : take(LIMIT, filter(es -> !es.isEmpty(), P.lists(P.doubles())))) {
+            Iterable<Double> deltas = deltaDouble(ds);
+            aeq(ds.toString(), length(deltas), length(ds) - 1);
             Iterable<Double> reversed = reverse(map(d -> -d, deltaDouble(reverse(ds))));
-            aeq(ds.toString(), absDoubleNegativeZeros(deltaDouble(ds)), absDoubleNegativeZeros(reversed));
+            aeq(ds.toString(), absDoubleNegativeZeros(deltas), absDoubleNegativeZeros(reversed));
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
         }
 
         for (double d : take(LIMIT, P.doubles())) {
@@ -1091,6 +1132,46 @@ public class IterableUtilsProperties {
         }
     }
 
+    private static void propertiesDeltaCharacter() {
+        initialize();
+        System.out.println("testing deltaCharacter(Iterable<Character>) properties...");
+
+        for (List<Character> cs : take(LIMIT, filter(ds -> !ds.isEmpty(), P.lists(P.characters())))) {
+            Iterable<Integer> deltas = deltaCharacter(cs);
+            aeq(cs.toString(), length(deltas), length(cs) - 1);
+            Iterable<Integer> reversed = reverse(map(i -> -i, deltaCharacter(reverse(cs))));
+            aeq(cs.toString(), deltas, reversed);
+            try {
+                deltas.iterator().remove();
+            } catch (UnsupportedOperationException ignored) {}
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Arrays.asList(c))));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            assert p.a != null;
+            assert p.b != null;
+            aeq(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+        }
+
+        Iterable<List<Character>> failCss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Character>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.characters()),
+                fs -> range(0, fs.size())
+        ));
+        for (List<Character> cs : take(LIMIT, failCss)) {
+            try {
+                toList(deltaCharacter(cs));
+                fail(cs.toString());
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
     private static @NotNull Iterable<Float> absFloatNegativeZeros(@NotNull Iterable<Float> fs) {
         return map(f -> f == 0.0f ? 0.0f : f, fs);
     }
@@ -1101,6 +1182,14 @@ public class IterableUtilsProperties {
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
         assertTrue(message, equal(xs, ys));
+    }
+
+    private static void aeq(String message, int f1, int f2) {
+        assertEquals(message, f1, f2);
+    }
+
+    private static void aeq(String message, long f1, long f2) {
+        assertEquals(message, f1, f2);
     }
 
     private static void aeq(String message, float f1, float f2) {
