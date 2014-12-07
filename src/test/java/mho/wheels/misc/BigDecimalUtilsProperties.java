@@ -35,16 +35,13 @@ public class BigDecimalUtilsProperties {
 
     @Test
     public void testAllProperties() {
+        System.out.println("BigDecimalUtils properties");
         for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("Testing BigDecimalUtils properties " + (useRandom ? "randomly" : "exhaustively"));
+            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
-
             propertiesSetPrecision();
-
-            System.out.println();
         }
         System.out.println("Done");
-        System.out.println();
     }
 
     private static void propertiesSetPrecision() {

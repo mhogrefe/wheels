@@ -32,10 +32,10 @@ public class IterableUtilsProperties {
 
     @Test
     public void testAllProperties() {
+        System.out.println("IterableUtils properties");
         for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("Testing IterableUtils properties " + (useRandom ? "randomly" : "exhaustively"));
+            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
-
             propertiesSumByte();
             propertiesSumShort();
             propertiesSumInteger();
@@ -61,16 +61,13 @@ public class IterableUtilsProperties {
             propertiesDeltaFloat();
             propertiesDeltaDouble();
             propertiesDeltaCharacter();
-
-            System.out.println();
         }
         System.out.println("Done");
-        System.out.println();
     }
 
     private static void propertiesSumByte() {
         initialize();
-        System.out.println("testing sumByte(Iterable<Byte>) properties...");
+        System.out.println("\t\ttesting sumByte(Iterable<Byte>) properties...");
 
         for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
             sumByte(bs);
@@ -119,7 +116,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumShort() {
         initialize();
-        System.out.println("testing sumShort(Iterable<Short>) properties...");
+        System.out.println("\t\ttesting sumShort(Iterable<Short>) properties...");
 
         for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
             sumShort(ss);
@@ -168,7 +165,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumInteger() {
         initialize();
-        System.out.println("testing sumInteger(Iterable<Integer>) properties...");
+        System.out.println("\t\ttesting sumInteger(Iterable<Integer>) properties...");
 
         for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
             sumInteger(is);
@@ -217,7 +214,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumLong() {
         initialize();
-        System.out.println("testing sumLong(Iterable<Long>) properties...");
+        System.out.println("\t\ttesting sumLong(Iterable<Long>) properties...");
 
         for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
             sumLong(ls);
@@ -266,7 +263,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumFloat() {
         initialize();
-        System.out.println("testing sumFloat(Iterable<Float>) properties...");
+        System.out.println("\t\ttesting sumFloat(Iterable<Float>) properties...");
 
         for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
             sumFloat(fs);
@@ -313,7 +310,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumDouble() {
         initialize();
-        System.out.println("testing sumDouble(Iterable<Double>) properties...");
+        System.out.println("\t\ttesting sumDouble(Iterable<Double>) properties...");
 
         for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
             sumDouble(ds);
@@ -360,7 +357,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesSumBigInteger() {
         initialize();
-        System.out.println("testing sumBigInteger(Iterable<BigInteger>) properties...");
+        System.out.println("\t\ttesting sumBigInteger(Iterable<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
             sumBigInteger(is);
@@ -403,13 +400,13 @@ public class IterableUtilsProperties {
             try {
                 sumBigInteger(ls);
                 fail(ls.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError ignored) {}
         }
     }
 
     private static void propertiesSumBigDecimal() {
         initialize();
-        System.out.println("testing sumBigDecimal(Iterable<BigDecimal>) properties...");
+        System.out.println("\t\ttesting sumBigDecimal(Iterable<BigDecimal>) properties...");
 
         for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
             sumBigDecimal(bds);
@@ -452,13 +449,13 @@ public class IterableUtilsProperties {
             try {
                 sumBigDecimal(bds);
                 fail(bds.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError | NullPointerException ignored) {}
         }
     }
 
     private static void propertiesProductByte() {
         initialize();
-        System.out.println("testing productByte(Iterable<Byte>) properties...");
+        System.out.println("\t\ttesting productByte(Iterable<Byte>) properties...");
 
         Iterable<Pair<List<Byte>, List<Byte>>> ps = filter(
                 q -> {
@@ -503,7 +500,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductShort() {
         initialize();
-        System.out.println("testing productShort(Iterable<Short>) properties...");
+        System.out.println("\t\ttesting productShort(Iterable<Short>) properties...");
 
         Iterable<Pair<List<Short>, List<Short>>> ps = filter(
                 q -> {
@@ -548,7 +545,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductInteger() {
         initialize();
-        System.out.println("testing productInteger(Iterable<Integer>) properties...");
+        System.out.println("\t\ttesting productInteger(Iterable<Integer>) properties...");
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
                 q -> {
@@ -593,7 +590,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductLong() {
         initialize();
-        System.out.println("testing productLong(Iterable<Long>) properties...");
+        System.out.println("\t\ttesting productLong(Iterable<Long>) properties...");
 
         Iterable<Pair<List<Long>, List<Long>>> ps = filter(
                 q -> {
@@ -638,7 +635,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductFloat() {
         initialize();
-        System.out.println("testing productFloat(Iterable<Float>) properties...");
+        System.out.println("\t\ttesting productFloat(Iterable<Float>) properties...");
 
         Iterable<List<Float>> fss = map(p -> {
             assert p.a != null;
@@ -681,7 +678,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductDouble() {
         initialize();
-        System.out.println("testing productDouble(Iterable<Double>) properties...");
+        System.out.println("\t\ttesting productDouble(Iterable<Double>) properties...");
 
         Iterable<List<Double>> dss = map(p -> {
             assert p.a != null;
@@ -724,7 +721,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesProductBigInteger() {
         initialize();
-        System.out.println("testing productBigInteger(Iterable<BigInteger>) properties...");
+        System.out.println("\t\ttesting productBigInteger(Iterable<BigInteger>) properties...");
 
         Iterable<Pair<List<BigInteger>, List<BigInteger>>> ps = filter(
                 q -> {
@@ -763,13 +760,13 @@ public class IterableUtilsProperties {
             try {
                 productBigInteger(ls);
                 fail(ls.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError ignored) {}
         }
     }
 
     private static void propertiesProductBigDecimal() {
         initialize();
-        System.out.println("testing productBigDecimal(Iterable<BigDecimal>) properties...");
+        System.out.println("\t\ttesting productBigDecimal(Iterable<BigDecimal>) properties...");
 
         Iterable<Pair<List<BigDecimal>, List<BigDecimal>>> ps = filter(
                 q -> {
@@ -808,13 +805,13 @@ public class IterableUtilsProperties {
             try {
                 productBigDecimal(bds);
                 fail(bds.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError | NullPointerException ignored) {}
         }
     }
     
     private static void propertiesDeltaByte() {
         initialize();
-        System.out.println("testing deltaByte(Iterable<Byte>) properties...");
+        System.out.println("\t\ttesting deltaByte(Iterable<Byte>) properties...");
 
         for (List<Byte> bs : take(LIMIT, filter(cs -> !cs.isEmpty(), P.lists(P.bytes())))) {
             Iterable<Byte> deltas = deltaByte(bs);
@@ -854,7 +851,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaShort() {
         initialize();
-        System.out.println("testing deltaShort(Iterable<Short>) properties...");
+        System.out.println("\t\ttesting deltaShort(Iterable<Short>) properties...");
 
         for (List<Short> ss : take(LIMIT, filter(ts -> !ts.isEmpty(), P.lists(P.shorts())))) {
             Iterable<Short> deltas = deltaShort(ss);
@@ -894,7 +891,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaInteger() {
         initialize();
-        System.out.println("testing deltaInteger(Iterable<Integer>) properties...");
+        System.out.println("\t\ttesting deltaInteger(Iterable<Integer>) properties...");
 
         for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.integers())))) {
             Iterable<Integer> deltas = deltaInteger(is);
@@ -934,7 +931,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaLong() {
         initialize();
-        System.out.println("testing deltaLong(Iterable<Long>) properties...");
+        System.out.println("\t\ttesting deltaLong(Iterable<Long>) properties...");
 
         for (List<Long> ls : take(LIMIT, filter(ms -> !ms.isEmpty(), P.lists(P.longs())))) {
             Iterable<Long> deltas = deltaLong(ls);
@@ -974,7 +971,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaBigInteger() {
         initialize();
-        System.out.println("testing deltaBigInteger(Iterable<BigInteger>) properties...");
+        System.out.println("\t\ttesting deltaBigInteger(Iterable<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.bigIntegers())))) {
             Iterable<BigInteger> deltas = deltaBigInteger(is);
@@ -1008,13 +1005,13 @@ public class IterableUtilsProperties {
             try {
                 toList(deltaBigInteger(ls));
                 fail(ls.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError | NullPointerException ignored) {}
         }
     }
 
     private static void propertiesDeltaBigDecimal() {
         initialize();
-        System.out.println("testing deltaBigDecimal(Iterable<BigDecimal>) properties...");
+        System.out.println("\t\ttesting deltaBigDecimal(Iterable<BigDecimal>) properties...");
 
         for (List<BigDecimal> bds : take(LIMIT, filter(bes -> !bes.isEmpty(), P.lists(P.bigDecimals())))) {
             Iterable<BigDecimal> deltas = deltaBigDecimal(bds);
@@ -1048,13 +1045,13 @@ public class IterableUtilsProperties {
             try {
                 toList(deltaBigDecimal(bds));
                 fail(bds.toString());
-            } catch (NullPointerException ignored) {}
+            } catch (AssertionError | NullPointerException ignored) {}
         }
     }
 
     private static void propertiesDeltaFloat() {
         initialize();
-        System.out.println("testing deltaFloat(Iterable<Float>) properties...");
+        System.out.println("\t\ttesting deltaFloat(Iterable<Float>) properties...");
 
         for (List<Float> fs : take(LIMIT, filter(gs -> !gs.isEmpty(), P.lists(P.floats())))) {
             Iterable<Float> deltas = deltaFloat(fs);
@@ -1094,7 +1091,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaDouble() {
         initialize();
-        System.out.println("testing deltaDouble(Iterable<Double>) properties...");
+        System.out.println("\t\ttesting deltaDouble(Iterable<Double>) properties...");
 
         for (List<Double> ds : take(LIMIT, filter(es -> !es.isEmpty(), P.lists(P.doubles())))) {
             Iterable<Double> deltas = deltaDouble(ds);
@@ -1134,7 +1131,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesDeltaCharacter() {
         initialize();
-        System.out.println("testing deltaCharacter(Iterable<Character>) properties...");
+        System.out.println("\t\ttesting deltaCharacter(Iterable<Character>) properties...");
 
         for (List<Character> cs : take(LIMIT, filter(ds -> !ds.isEmpty(), P.lists(P.characters())))) {
             Iterable<Integer> deltas = deltaCharacter(cs);
