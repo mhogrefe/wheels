@@ -101,6 +101,27 @@ public class Readers {
         return Optional.of(new Pair<>(bestResult.a, bestResult.c));
     }
 
+    /**
+     * Given a function {@code read} to convert a {@code String} to a value, a {@code String} {@code usedChars}
+     * containing all characters needed to represent any value of that type as a {@code String}, and a {@code String}
+     * {@code s} to find values in, finds the first occurrence of a value. If two different values occur at the same
+     * index (meaning that one is a prefix of the other), the longer value is preferred. The value is returned along
+     * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
+     *
+     * <ul>
+     *  <li>{@code read} must never return a null.</li>
+     *  <li>{@code usedChars} cannot be null.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param read a function which converts a {@code String} to a value.
+     * @param usedChars all the characters needed to represent a value of type {@code T} as a {@code String}.
+     * @param s a {@code String} to be searched in
+     * @param <T> the type of the values in {@code xs}
+     * @return the first value found in {@code s} and its index.
+     */
     private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String usedChars,
@@ -513,16 +534,114 @@ public class Readers {
         return Optional.of(new Pair<>(ol.get(), p.b));
     }
 
-    public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {
-        return genericRead(BigDecimal::new, s);
-    }
-
+    /**
+     * Reads a {@link java.lang.Float} from a {@code String}. Only {@code String}s which could have been emitted by
+     * {@link java.lang.Float#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Float} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Float}
+     */
     public static @NotNull Optional<Float> readFloat(@NotNull String s) {
         return genericRead(Float::parseFloat, s);
     }
 
+    /**
+     * Finds the first occurrence of a {@code Float} in a {@code String} and returns the {@code Float} and the index at
+     * which it was found. Returns an empty {@code Optional} if no {@code Float} is found. Only {@code String}s which
+     * could have been emitted by {@link java.lang.Float#toString} are recognized. The longest possible {@code Float}
+     * is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Float} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Float, Integer>> findFloatIn(@NotNull String s) {
+        return genericFindIn(Readers::readFloat, "-.0123456789EINafinty", s);
+    }
+
+    /**
+     * Reads a {@link java.lang.Double} from a {@code String}. Only {@code String}s which could have been emitted by
+     * {@link java.lang.Double#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Double} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code Double}
+     */
     public static @NotNull Optional<Double> readDouble(@NotNull String s) {
         return genericRead(Double::parseDouble, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code Double} in a {@code String} and returns the {@code Double} and the index
+     * at which it was found. Returns an empty {@code Optional} if no {@code Double} is found. Only {@code String}s
+     * which could have been emitted by {@link java.lang.Double#toString} are recognized. The longest possible
+     * {@code Double} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Double} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Double, Integer>> findDoubleIn(@NotNull String s) {
+        return genericFindIn(Readers::readDouble, "-.0123456789EINafinty", s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@link java.math.BigDecimal} in a {@code String} and returns the
+     * {@code BigDecimal} and the index at which it was found. Returns an empty {@code Optional} if no
+     * {@code BigDecimal} is found. Only {@code String}s which could have been emitted by
+     * {@link java.lang.Double#toString} are recognized. The longest possible {@code BigDecimal} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {
+        return genericRead(BigDecimal::new, s);
+    }
+
+    /**
+     * Finds the first occurrence of a {@code BigDecimal} in a {@code String} and returns the {@code BigDecimal} and
+     * the index at which it was found. Returns an empty {@code Optional} if no {@code BigDecimal} is found. Only
+     * {@code String}s which could have been emitted by {@link java.math.BigDecimal#toString} are recognized. The
+     * longest possible {@code BigDecimal} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<BigDecimal, Integer>> findBigDecimalIn(@NotNull String s) {
+        return genericFindIn(Readers::readBigDecimal, "-.0123456789EINafinty", s);
     }
 
     public static @NotNull Optional<Character> readCharacter(@NotNull String s) {

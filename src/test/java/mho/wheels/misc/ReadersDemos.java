@@ -15,6 +15,7 @@ public class ReadersDemos {
     private static final String ORDERING_CHARS = "EGLQT";
     private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final String INTEGRAL_CHARS = "-0123456789";
+    private static final String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static int LIMIT;
     private static IterableProvider P;
 
