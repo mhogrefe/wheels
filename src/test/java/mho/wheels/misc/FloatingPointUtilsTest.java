@@ -2,11 +2,11 @@ package mho.wheels.misc;
 
 import org.junit.Test;
 
-import static mho.wheels.misc.FloatUtils.predecessor;
-import static mho.wheels.misc.FloatUtils.successor;
+import static mho.wheels.misc.FloatingPointUtils.predecessor;
+import static mho.wheels.misc.FloatingPointUtils.successor;
 import static org.junit.Assert.*;
 
-public class FloatUtilsTest {
+public class FloatingPointUtilsTest {
     @Test
     public void testSuccessor_float() {
         aeq(successor(1.0f), "1.0000001");

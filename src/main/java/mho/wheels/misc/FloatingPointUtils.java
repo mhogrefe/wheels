@@ -8,11 +8,11 @@ import java.util.Optional;
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
-public final class FloatUtils {
+public final class FloatingPointUtils {
     /**
      * Disallow instantiation
      */
-    private FloatUtils() {}
+    private FloatingPointUtils() {}
 
     /**
      * Returns the next-largest {@code float} after {@code f}. The successor of {@code -Float.MIN_VALUE} is negative
