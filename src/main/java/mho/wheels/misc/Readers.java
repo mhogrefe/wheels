@@ -641,7 +641,7 @@ public class Readers {
      * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<BigDecimal, Integer>> findBigDecimalIn(@NotNull String s) {
-        return genericFindIn(Readers::readBigDecimal, "-.0123456789EINafinty", s);
+        return genericFindIn(Readers::readBigDecimal, "+-.0123456789EINafinty", s);
     }
 
     public static @NotNull Optional<Character> readCharacter(@NotNull String s) {
