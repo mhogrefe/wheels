@@ -10,12 +10,13 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
 
 public class ReadersDemos {
-    private static final boolean USE_RANDOM = false;
+    private static final boolean USE_RANDOM = true;
     private static final String BOOLEAN_CHARS = "aeflrstu";
     private static final String ORDERING_CHARS = "EGLQT";
     private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final String INTEGRAL_CHARS = "-0123456789";
     private static final String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
+    private static final String BIG_DECIMAL_CHARS = "+-.0123456789E";
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -346,6 +347,126 @@ public class ReadersDemos {
         }
         for (String s : take(LIMIT, P.strings(cs))) {
             System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
+        }
+    }
+
+    private static void demoReadFloat() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readFloat(" + s + ") = " + readFloat(s));
+        }
+    }
+
+    public static void demoReadFloat_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(FLOATING_POINT_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readFloat(" + s + ") = " + readFloat(s));
+        }
+    }
+
+    private static void demoFindFloatIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
+        }
+    }
+
+    public static void demoFindFloatIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(FLOATING_POINT_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
+        }
+    }
+
+    private static void demoReadDouble() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readDouble(" + s + ") = " + readDouble(s));
+        }
+    }
+
+    public static void demoReadDouble_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(FLOATING_POINT_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readDouble(" + s + ") = " + readDouble(s));
+        }
+    }
+
+    private static void demoFindDoubleIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
+        }
+    }
+
+    public static void demoFindDoubleIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(FLOATING_POINT_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
+        }
+    }
+
+    private static void demoReadBigDecimal() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
+        }
+    }
+
+    public static void demoReadBigDecimal_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(BIG_DECIMAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(BIG_DECIMAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
+        }
+    }
+
+    private static void demoFindBigDecimalIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
+        }
+    }
+
+    public static void demoFindBigDecimalIn_targeted() {
+        initialize();
+        Iterable<Character> cs;
+        if (P instanceof ExhaustiveProvider) {
+            cs = fromString(BIG_DECIMAL_CHARS);
+        } else {
+            cs = ((RandomProvider) P).uniformSample(BIG_DECIMAL_CHARS);
+        }
+        for (String s : take(LIMIT, P.strings(cs))) {
+            System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
         }
     }
 }
