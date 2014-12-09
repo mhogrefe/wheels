@@ -2,6 +2,7 @@ package mho.wheels.misc;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import static mho.wheels.misc.Readers.*;
@@ -252,6 +253,124 @@ public class ReadersTest {
         assertFalse(findLongIn("").isPresent());
         assertFalse(findLongIn("hello").isPresent());
         assertFalse(findLongIn("vdfsvfbf").isPresent());
+    }
+
+    @Test
+    public void testReadFloat() {
+        aeq(readFloat("0.0").get(), "0.0");
+        aeq(readFloat("-0.0").get(), "-0.0");
+        aeq(readFloat("5.0").get(), "5.0");
+        aeq(readFloat("-100.0").get(), "-100.0");
+        aeq(readFloat("1.0E10").get(), "1.0E10");
+        aeq(readFloat("1.0E-10").get(), "1.0E-10");
+        aeq(readFloat("1.234").get(), "1.234");
+        aeq(readFloat("1.111111").get(), "1.111111");
+        aeq(readFloat("NaN").get(), "NaN");
+        aeq(readFloat("Infinity").get(), "Infinity");
+        aeq(readFloat("-Infinity").get(), "-Infinity");
+        assertFalse(readFloat("1.1111111").isPresent());
+        assertFalse(readFloat("1.0e10").isPresent());
+        assertFalse(readFloat("1.0e-10").isPresent());
+        assertFalse(readFloat(".").isPresent());
+        assertFalse(readFloat("0.").isPresent());
+        assertFalse(readFloat(".0").isPresent());
+        assertFalse(readFloat(" 1.0").isPresent());
+        assertFalse(readFloat("--1.0").isPresent());
+    }
+
+    @Test
+    public void testFindFloatIn() {
+        aeq(findFloatIn("abcd1234.0xyz").get(), "(1234.0, 4)");
+        aeq(findFloatIn("abcd823.4xyz").get(), "(823.4, 4)");
+        aeq(findFloatIn("0.0.123").get(), "(0.0, 0)");
+        aeq(findFloatIn("a-2.3E8z").get(), "(-2.3E8, 1)");
+        aeq(findFloatIn("a-2.3E10z").get(), "(-2.3, 1)");
+        aeq(findFloatIn("---34.4-").get(), "(-34.4, 2)");
+        aeq(findFloatIn(" 20.1 ").get(), "(20.1, 1)");
+        aeq(findFloatIn("AnAnANaNAN").get(), "(NaN, 5)");
+        aeq(findFloatIn("1.1111111111111111111").get(), "(1.111111, 0)");
+        assertFalse(findFloatIn("").isPresent());
+        assertFalse(findFloatIn("3").isPresent());
+        assertFalse(findFloatIn("hello").isPresent());
+        assertFalse(findFloatIn("vdfsvfbf").isPresent());
+    }
+
+    @Test
+    public void testReadDouble() {
+        aeq(readDouble("0.0").get(), "0.0");
+        aeq(readDouble("-0.0").get(), "-0.0");
+        aeq(readDouble("5.0").get(), "5.0");
+        aeq(readDouble("-100.0").get(), "-100.0");
+        aeq(readDouble("1.0E10").get(), "1.0E10");
+        aeq(readDouble("1.0E-10").get(), "1.0E-10");
+        aeq(readDouble("1.234").get(), "1.234");
+        aeq(readDouble("1.111111111111111").get(), "1.111111111111111");
+        aeq(readDouble("NaN").get(), "NaN");
+        aeq(readDouble("Infinity").get(), "Infinity");
+        aeq(readDouble("-Infinity").get(), "-Infinity");
+        assertFalse(readDouble("1.1111111111111111").isPresent());
+        assertFalse(readDouble("1.0e10").isPresent());
+        assertFalse(readDouble("1.0e-10").isPresent());
+        assertFalse(readDouble(".").isPresent());
+        assertFalse(readDouble("0.").isPresent());
+        assertFalse(readDouble(".0").isPresent());
+        assertFalse(readDouble(" 1.0").isPresent());
+        assertFalse(readDouble("--1.0").isPresent());
+    }
+
+    @Test
+    public void testFindDoubleIn() {
+        aeq(findDoubleIn("abcd1234.0xyz").get(), "(1234.0, 4)");
+        aeq(findDoubleIn("abcd823.4xyz").get(), "(823.4, 4)");
+        aeq(findDoubleIn("0.0.123").get(), "(0.0, 0)");
+        aeq(findDoubleIn("a-2.3E8z").get(), "(-2.3E8, 1)");
+        aeq(findDoubleIn("a-2.3E1000z").get(), "(-2.3E100, 1)");
+        aeq(findDoubleIn("---34.4-").get(), "(-34.4, 2)");
+        aeq(findDoubleIn(" 20.1 ").get(), "(20.1, 1)");
+        aeq(findDoubleIn("AnAnANaNAN").get(), "(NaN, 5)");
+        aeq(findDoubleIn("1.1111111111111111111").get(), "(1.111111111111111, 0)");
+        assertFalse(findDoubleIn("").isPresent());
+        assertFalse(findDoubleIn("3").isPresent());
+        assertFalse(findDoubleIn("hello").isPresent());
+        assertFalse(findDoubleIn("vdfsvfbf").isPresent());
+    }
+
+    @Test
+    public void testReadBigDecimal() {
+        aeq(readBigDecimal("0.0").get(), "0.0");
+        aeq(readBigDecimal("5.0").get(), "5.0");
+        aeq(readBigDecimal("-100.0").get(), "-100.0");
+        aeq(readBigDecimal("1.0E+10").get(), "1.0E+10");
+        aeq(readBigDecimal("1.0E-10").get(), "1.0E-10");
+        aeq(readBigDecimal("1.234").get(), "1.234");
+        aeq(readBigDecimal("1.111111111111111").get(), "1.111111111111111");
+        assertFalse(readBigDecimal("1.0e10").isPresent());
+        assertFalse(readBigDecimal("1.0e-10").isPresent());
+        assertFalse(readBigDecimal(".").isPresent());
+        assertFalse(readBigDecimal("0.").isPresent());
+        assertFalse(readBigDecimal(".0").isPresent());
+        assertFalse(readBigDecimal(" 1.0").isPresent());
+        assertFalse(readBigDecimal("--1.0").isPresent());
+        assertFalse(readBigDecimal("-0.0").isPresent());
+        assertFalse(readBigDecimal("NaN").isPresent());
+        assertFalse(readBigDecimal("Infinity").isPresent());
+    }
+
+    @Test
+    public void testFindBigDecimalIn() {
+        aeq(findBigDecimalIn("abcd1234.0xyz").get(), "(1234.0, 4)");
+        aeq(findBigDecimalIn("abcd823.4xyz").get(), "(823.4, 4)");
+        aeq(findBigDecimalIn("3").get(), "(3, 0)");
+        aeq(findBigDecimalIn("00").get(), "(0, 0)");
+        aeq(findBigDecimalIn("0.0.123").get(), "(0.0, 0)");
+        aeq(findBigDecimalIn("a-2.3E+8z").get(), "(-2.3E+8, 1)");
+        aeq(findBigDecimalIn("a-2.3E+1000z").get(), "(-2.3E+1000, 1)");
+        aeq(findBigDecimalIn("---34.4-").get(), "(-34.4, 2)");
+        aeq(findBigDecimalIn(" 20.1 ").get(), "(20.1, 1)");
+        aeq(findBigDecimalIn("1.1111111111111111111").get(), "(1.1111111111111111111, 0)");
+        assertFalse(findBigDecimalIn("").isPresent());
+        assertFalse(findBigDecimalIn("hello").isPresent());
+        assertFalse(findBigDecimalIn("vdfsvfbf").isPresent());
     }
 
     private static void aeq(Object a, Object b) {

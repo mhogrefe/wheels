@@ -7,9 +7,9 @@ import mho.wheels.iterables.RandomProvider;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.FloatUtils.*;
+import static mho.wheels.misc.FloatingPointUtils.*;
 
-public class FloatUtilsDemos {
+public class FloatingPointUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
     private static IterableProvider P;

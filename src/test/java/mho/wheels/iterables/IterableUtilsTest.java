@@ -1224,7 +1224,7 @@ public class IterableUtilsTest {
         try {
             sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
@@ -1235,7 +1235,7 @@ public class IterableUtilsTest {
         try {
             sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
@@ -1325,7 +1325,7 @@ public class IterableUtilsTest {
         try {
             productBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
@@ -1336,7 +1336,7 @@ public class IterableUtilsTest {
         try {
             productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
@@ -1412,7 +1412,7 @@ public class IterableUtilsTest {
         try {
             toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get()));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
@@ -1426,7 +1426,7 @@ public class IterableUtilsTest {
         try {
             toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]").get()));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (AssertionError ignored) {}
     }
 
     @Test
