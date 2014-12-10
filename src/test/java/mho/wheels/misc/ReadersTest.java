@@ -381,6 +381,28 @@ public class ReadersTest {
         assertFalse(findBigDecimalIn("vdfsvfbf").isPresent());
     }
 
+    @Test
+    public void testReadCharacter() {
+        aeq(readCharacter("a").get(), "a");
+        aeq(readCharacter("ø").get(), "ø");
+        assertFalse(readCharacter("hi").isPresent());
+        assertFalse(readCharacter("").isPresent());
+    }
+
+    @Test
+    public void testFindCharacterIn() {
+        aeq(findCharacterIn("Hello").get(), "(H, 0)");
+        aeq(findCharacterIn("ø").get(), "(ø, 0)");
+        assertFalse(findCharacterIn("").isPresent());
+    }
+
+    @Test
+    public void testReadString() {
+        aeq(readString("Hello").get(), "Hello");
+        aeq(readString("ø").get(), "ø");
+        aeq(readString("").get(), "");
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }
