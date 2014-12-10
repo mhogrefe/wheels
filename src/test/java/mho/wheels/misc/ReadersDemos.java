@@ -10,7 +10,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
 
 public class ReadersDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static final String BOOLEAN_CHARS = "aeflrstu";
     private static final String ORDERING_CHARS = "EGLQT";
     private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
@@ -467,6 +467,27 @@ public class ReadersDemos {
         }
         for (String s : take(LIMIT, P.strings(cs))) {
             System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
+        }
+    }
+
+    public static void demoReadCharacter() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readCharacter(" + s + ") = " + readCharacter(s));
+        }
+    }
+
+    private static void demoFindCharacterIn() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("findCharacterIn(" + s + ") = " + findCharacterIn(s));
+        }
+    }
+
+    public static void demoReadString() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("readString(" + s + ") = " + readString(s));
         }
     }
 }
