@@ -621,19 +621,17 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@link java.math.BigDecimal} in a {@code String} and returns the
-     * {@code BigDecimal} and the index at which it was found. Returns an empty {@code Optional} if no
-     * {@code BigDecimal} is found. Only {@code String}s which could have been emitted by
-     * {@link java.lang.Double#toString} are recognized. The longest possible {@code BigDecimal} is parsed.
+     * Reads a {@link java.math.BigDecimal} from a {@code String}. Only {@code String}s which could have been emitted
+     * by {@link java.math.BigDecimal#toString} are recognized.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
+     *  <li>The result is non-null.</li>
      * </ul>
      *
      * @param s the input {@code String}
-     * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
+     * @return the {@code BigDecimal} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code BigDecimal}
      */
     public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {
         return genericRead(BigDecimal::new, s);
@@ -658,10 +656,51 @@ public class Readers {
         return genericFindIn(Readers::readBigDecimal, "+-.0123456789E", s);
     }
 
+    /**
+     * Reads a {@link java.lang.Character} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Character} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code Character}
+     */
     public static @NotNull Optional<Character> readCharacter(@NotNull String s) {
         return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.<Character>empty();
     }
 
+    /**
+     * Finds the first occurrence of a {@link java.lang.Character} in a {@code String} and returns the
+     * {@code Character} and the index at which it was found. Returns an empty {@code Optional} if no
+     * {@code Character} is found.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is 0.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Character} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Character, Integer>> findCharacterIn(@NotNull String s) {
+        return s.isEmpty() ? Optional.<Pair<Character,Integer>>empty() : Optional.of(new Pair<>(s.charAt(0), 0));
+    }
+
+    /**
+     * Reads a {@link java.lang.String} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-empty.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code String} represented by {@code s}
+     */
     public static @NotNull Optional<String> readString(@NotNull String s) {
         return Optional.of(s);
     }
