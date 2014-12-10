@@ -1,6 +1,5 @@
 package mho.wheels.misc;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -20,9 +19,24 @@ import static mho.wheels.iterables.IterableUtils.*;
  * exception. Instead, they return empty {@code Optional}s.
  */
 public class Readers {
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Byte}.
+     */
     public static final int MAX_POSITIVE_BYTE_LENGTH = Byte.toString(Byte.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Short}.
+     */
     public static final int MAX_POSITIVE_SHORT_LENGTH = Short.toString(Short.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Integer}.
+     */
     public static final int MAX_POSITIVE_INTEGER_LENGTH = Integer.toString(Integer.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Long}.
+     */
     public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
 
     /**

@@ -10,6 +10,14 @@ import static org.junit.Assert.*;
 
 public class ReadersTest {
     @Test
+    public void testConstants() {
+        aeq(MAX_POSITIVE_BYTE_LENGTH, 3);
+        aeq(MAX_POSITIVE_SHORT_LENGTH, 5);
+        aeq(MAX_POSITIVE_INTEGER_LENGTH, 10);
+        aeq(MAX_POSITIVE_LONG_LENGTH, 19);
+    }
+
+    @Test
     public void testReadBoolean() {
         aeq(readBoolean("false").get(), "false");
         aeq(readBoolean("true").get(), "true");
