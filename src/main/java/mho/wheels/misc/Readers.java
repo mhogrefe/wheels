@@ -47,7 +47,7 @@ public class Readers {
      * is {@code "255"}, not {@code "0xff"}.
      *
      * <ul>
-     *  <li>{@code read} must terminate on every input and never return a null.</li>
+     *  <li>{@code read} must terminate on {@code s} and not a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -123,7 +123,7 @@ public class Readers {
      * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code read} must never return a null.</li>
+     *  <li>{@code read} must always terminate and never return a null.</li>
      *  <li>{@code usedChars} cannot be null.</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
@@ -705,6 +705,21 @@ public class Readers {
         return Optional.of(s);
     }
 
+    /**
+     * Given a read function and a {@code String}, reads either null or the value given by the function.
+     *
+     * <ul>
+     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which takes a {@code String} and returns an {@code Optional{@literal<T>}}.
+     * @param s the input {@code String}
+     * @param <T> the type of the value to be read
+     * @return the value of {@code T} represented by {@code s}, or a wrapped null, or an empty {@code NullableOptional}
+     * if {@code s} does not represent any value of {@code T} or null
+     */
     public static @NotNull <T> NullableOptional<T> readWithNull(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String s
@@ -713,6 +728,24 @@ public class Readers {
             return NullableOptional.of(null);
         } else {
             return NullableOptional.fromOptional(read.apply(s));
+        }
+    }
+
+    public static @NotNull <T> Optional<Pair<T, Integer>> findWithNull(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull String s
+    ) {
+        Optional<Pair<T, Integer>> nonNullResult = findIn.apply(s);
+        int nullIndex = s.indexOf("null");
+        if (nullIndex == -1) return nonNullResult;
+        if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
+        Pair<T, Integer> unwrapped = nonNullResult.get();
+        assert unwrapped.a != null;
+        assert unwrapped.b != null;
+        if (nullIndex < unwrapped.b || unwrapped.a.toString().length() < 4) {
+            return Optional.of(new Pair<>(null, nullIndex));
+        } else {
+            return nonNullResult;
         }
     }
 
@@ -743,32 +776,44 @@ public class Readers {
     }
 
     public static @NotNull <T> Optional<List<T>> readList(
-            @NotNull Function<String, Optional<T>> read,
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
     ) {
         if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
         s = tail(init(s));
         List<T> list = new ArrayList<>();
-        for (String token : s.split(", ")) {
-            Optional<T> ox = read.apply(token);
-            if (!ox.isPresent()) return Optional.empty();
-            list.add(ox.get());
+        while (!s.isEmpty()) {
+            Optional<Pair<T, Integer>> next = findIn.apply(s);
+            if (!next.isPresent()) return Optional.empty();
+            Pair<T, Integer> unwrapped = next.get();
+            assert unwrapped.a != null;
+            assert unwrapped.b != null;
+            if (unwrapped.b != 0) return Optional.empty();
+            T element = unwrapped.a;
+            list.add(element);
+            s = s.substring(element.toString().length());
+            if (!s.isEmpty()) {
+                if (!s.startsWith(", ")) return Optional.empty();
+                s = s.substring(2);
+            }
         }
         return Optional.of(list);
     }
 
-    public static @NotNull <T> Optional<List<T>> readListWithNulls(
-            @NotNull Function<String, Optional<T>> read,
+    public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListIn(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
     ) {
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        List<T> list = new ArrayList<>();
-        for (String token : s.split(", ")) {
-            NullableOptional<T> ox = readWithNull(read, token);
-            if (!ox.isPresent()) return Optional.empty();
-            list.add(ox.get());
+        List<Integer> leftIndices = toList(elemIndices('[', s));
+        List<Integer> rightIndices = reverse(elemIndices(']', s));
+        for (int leftIndex : leftIndices) {
+            for (int rightIndex : rightIndices) {
+                if (rightIndex < leftIndex) break;
+                String stripped = s.substring(leftIndex, rightIndex + 1);
+                Optional<List<T>> candidate = readList(findIn, stripped);
+                if (candidate.isPresent()) return Optional.of(new Pair<>(candidate.get(), leftIndex));
+            }
         }
-        return Optional.of(list);
+        return Optional.empty();
     }
 }

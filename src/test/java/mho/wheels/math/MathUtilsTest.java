@@ -841,6 +841,6 @@ public class MathUtilsTest {
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger, s);
+        return Readers.readList(Readers::findBigIntegerIn, s);
     }
 }

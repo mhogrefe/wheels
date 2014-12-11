@@ -1485,18 +1485,18 @@ public class IterableUtilsTest {
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger, s);
+        return Readers.readList(Readers::findBigIntegerIn, s);
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger, s);
+        return Readers.readList(t -> Readers.findWithNull(Readers::findBigIntegerIn, s), s);
     }
 
     private static @NotNull Optional<List<BigDecimal>> readBigDecimalList(@NotNull String s) {
-        return Readers.readList(Readers::readBigDecimal, s);
+        return Readers.readList(Readers::findBigDecimalIn, s);
     }
 
     private static @NotNull Optional<List<BigDecimal>> readBigDecimalListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigDecimal, s);
+        return Readers.readList(t -> Readers.findWithNull(Readers::findBigDecimalIn, s), s);
     }
 }
