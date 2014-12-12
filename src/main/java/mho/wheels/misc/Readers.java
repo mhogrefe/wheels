@@ -57,7 +57,7 @@ public class Readers {
      * @param <T> the type of value read by {@code read}
      * @return the value corresponding to {@code s}, according to the conditions described above
      */
-    private static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
+    public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
         try {
             T x = read.apply(s);
             return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
@@ -85,7 +85,7 @@ public class Readers {
      * @param <T> the type of the values in {@code xs}
      * @return the first value found in {@code s} and its index.
      */
-    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
+    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
         Iterable<Triple<T, String, Integer>> candidates = filter(
                 u -> {
                     assert u.c != null;
@@ -136,7 +136,7 @@ public class Readers {
      * @param <T> the type of the values in {@code xs}
      * @return the first value found in {@code s} and its index.
      */
-    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String usedChars,
             @NotNull String s
