@@ -403,6 +403,33 @@ public class ReadersTest {
         aeq(readString("").get(), "");
     }
 
+    @Test
+    public void testReadWithNulls() {
+        aeq(readWithNulls(Readers::readInteger, "23").get(), "23");
+        aeq(readWithNulls(Readers::readInteger, "-500").get(), "-500");
+        assertNull(readWithNulls(Readers::readInteger, "null").get());
+        aeq(readWithNulls(Readers::readString, "hello").get(), "hello");
+        aeq(readWithNulls(Readers::readString, "bye").get(), "bye");
+        aeq(readWithNulls(Readers::readString, "nullification").get(), "nullification");
+        aeq(readWithNulls(Readers::readString, "").get(), "");
+        assertNull(readWithNulls(Readers::readString, "null").get());
+        assertFalse(readWithNulls(Readers::readInteger, "annull").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger, "--").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger, "").isPresent());
+    }
+
+    @Test
+    public void testFindInWithNulls() {
+        aeq(findInWithNulls(Readers::findIntegerIn, "xyz123xyz").get(), "(123, 3)");
+        aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
+        assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
+        aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
+        assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

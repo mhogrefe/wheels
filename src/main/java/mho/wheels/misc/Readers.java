@@ -720,7 +720,7 @@ public class Readers {
      * @return the value of {@code T} represented by {@code s}, or a wrapped null, or an empty {@code NullableOptional}
      * if {@code s} does not represent any value of {@code T} or null
      */
-    public static @NotNull <T> NullableOptional<T> readWithNull(
+    public static @NotNull <T> NullableOptional<T> readWithNulls(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String s
     ) {
@@ -731,7 +731,25 @@ public class Readers {
         }
     }
 
-    public static @NotNull <T> Optional<Pair<T, Integer>> findWithNull(
+    /**
+     * Given a find-in function and a {@code String} {@code s}, return the value and index of the first "null" or
+     * value-string found in {@code s}.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of value to be read
+     * @return the index and value of the first "null" or value-string, or an empty {@code Optional} if nothing is
+     * found
+     */
+    public static @NotNull <T> Optional<Pair<T, Integer>> findInWithNulls(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
     ) {
