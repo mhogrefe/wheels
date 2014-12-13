@@ -421,6 +421,8 @@ public class ReadersTest {
     @Test
     public void testFindInWithNulls() {
         aeq(findInWithNulls(Readers::findIntegerIn, "xyz123xyz").get(), "(123, 3)");
+        aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
+        assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
         aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
         assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
         aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");

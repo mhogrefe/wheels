@@ -760,10 +760,10 @@ public class Readers {
         Pair<T, Integer> unwrapped = nonNullResult.get();
         assert unwrapped.a != null;
         assert unwrapped.b != null;
-        if (nullIndex < unwrapped.b || unwrapped.a.toString().length() < 4) {
-            return Optional.of(new Pair<>(null, nullIndex));
-        } else {
+        if (nullIndex > unwrapped.b || (nullIndex == unwrapped.b && unwrapped.a.toString().length() >= 4)) {
             return nonNullResult;
+        } else {
+            return Optional.of(new Pair<>(null, nullIndex));
         }
     }
 
