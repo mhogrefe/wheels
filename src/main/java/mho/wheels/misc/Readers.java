@@ -834,12 +834,11 @@ public class Readers {
             Optional<Pair<T, Integer>> next = findIn.apply(s);
             if (!next.isPresent()) return Optional.empty();
             Pair<T, Integer> unwrapped = next.get();
-            assert unwrapped.a != null;
             assert unwrapped.b != null;
             if (unwrapped.b != 0) return Optional.empty();
             T element = unwrapped.a;
             list.add(element);
-            s = s.substring(element.toString().length());
+            s = s.substring(Objects.toString(element).length());
             if (!s.isEmpty()) {
                 if (!s.startsWith(", ")) return Optional.empty();
                 s = s.substring(2);
