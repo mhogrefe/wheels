@@ -767,6 +767,21 @@ public class Readers {
         }
     }
 
+    /**
+     * Reads an {@link java.util.Optional} from a {@code String}. Only {@code String}s which could have been emitted
+     * by {@link java.util.Optional#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which reads {@code s} into a value of type {@code T}
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code Optional}'s value
+     * @return the {@code Optional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent an {@code Optional}
+     */
     public static @NotNull <T> Optional<Optional<T>> readOptional(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String s
@@ -780,6 +795,21 @@ public class Readers {
         return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
     }
 
+    /**
+     * Reads a {@link mho.wheels.structures.NullableOptional} from a {@code String}. Only {@code String}s which could
+     * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which reads {@code s} into a value of type {@code T}
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code NullableOptional}'s value
+     * @return the {@code NullableOptional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code NullableOptional}
+     */
     public static @NotNull <T> Optional<NullableOptional<T>> readNullableOptional(
             @NotNull Function<String, NullableOptional<T>> read,
             @NotNull String s

@@ -20,7 +20,7 @@ Progress
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Readers                  | ✘       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator       | ✔       | ✘       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✘       | ✘     | ✘     | ✘          |
