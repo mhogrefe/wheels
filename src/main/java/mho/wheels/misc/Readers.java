@@ -184,8 +184,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code boolean} in a {@code String} and returns the {@code boolean} and the
-     * index at which it was found. Returns an empty {@code Optional} if no {@code boolean} is found.
+     * Finds the first occurrence of a {@code boolean} in a {@code String}. Returns the {@code boolean} and the index
+     * at which it was found. Returns an empty {@code Optional} if no {@code boolean} is found.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -226,7 +226,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of an {@code Ordering} in a {@code String} and returns the {@code Ordering} and the
+     * Finds the first occurrence of an {@code Ordering} in a {@code String}. Returns the {@code Ordering} and the
      * index at which it was found. Returns an empty {@code Optional} if no {@code Ordering} is found.
      *
      * <ul>
@@ -278,8 +278,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code RoundingMode} in a {@code String} and returns the {@code RoundingMode}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     * Finds the first occurrence of a {@code RoundingMode} in a {@code String}. Returns the {@code RoundingMode} and
+     * the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -312,9 +312,9 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code BigInteger} in a {@code String} and returns the {@code BigInteger}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found.
-     * Leading zeros, octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
+     * Finds the first occurrence of a {@code BigInteger} in a {@code String}. Returns the {@code BigInteger} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found. Leading zeros,
+     * octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -373,7 +373,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Byte} in a {@code String} and returns the {@code Byte} and the index at
+     * Finds the first occurrence of a {@code Byte} in a {@code String}. Returns the {@code Byte} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Byte} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Byte} is parsed.
      *
@@ -421,7 +421,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Short} in a {@code String} and returns the {@code Short} and the index at
+     * Finds the first occurrence of a {@code Short} in a {@code String}. Returns the {@code Short} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Short} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Short} is parsed.
      *
@@ -469,9 +469,9 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of an {@code Integer} in a {@code String} and returns the {@code Integer} and the
-     * index at which it was found. Returns an empty {@code Optional} if no {@code Integer} is found. Leading zeros,
-     * octal, and hexadecimal are not allowed. The longest possible {@code Integer} is parsed.
+     * Finds the first occurrence of an {@code Integer} in a {@code String}. Returns the {@code Integer} and the index
+     * at which it was found. Returns an empty {@code Optional} if no {@code Integer} is found. Leading zeros, octal,
+     * and hexadecimal are not allowed. The longest possible {@code Integer} is parsed.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -517,7 +517,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Long} in a {@code String} and returns the {@code Long} and the index at
+     * Finds the first occurrence of a {@code Long} in a {@code String}. Returns the {@code Long} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Long} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Long} is parsed.
      *
@@ -566,7 +566,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Float} in a {@code String} and returns the {@code Float} and the index at
+     * Finds the first occurrence of a {@code Float} in a {@code String}. Returns the {@code Float} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Float} is found. Only {@code String}s which
      * could have been emitted by {@link java.lang.Float#toString} are recognized. The longest possible {@code Float}
      * is parsed.
@@ -602,7 +602,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Double} in a {@code String} and returns the {@code Double} and the index
+     * Finds the first occurrence of a {@code Double} in a {@code String}. Returns the {@code Double} and the index
      * at which it was found. Returns an empty {@code Optional} if no {@code Double} is found. Only {@code String}s
      * which could have been emitted by {@link java.lang.Double#toString} are recognized. The longest possible
      * {@code Double} is parsed.
@@ -638,8 +638,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code BigDecimal} in a {@code String} and returns the {@code BigDecimal} and
-     * the index at which it was found. Returns an empty {@code Optional} if no {@code BigDecimal} is found. Only
+     * Finds the first occurrence of a {@code BigDecimal} in a {@code String}. Returns the {@code BigDecimal} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code BigDecimal} is found. Only
      * {@code String}s which could have been emitted by {@link java.math.BigDecimal#toString} are recognized. The
      * longest possible {@code BigDecimal} is parsed.
      *
@@ -673,9 +673,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@link java.lang.Character} in a {@code String} and returns the
-     * {@code Character} and the index at which it was found. Returns an empty {@code Optional} if no
-     * {@code Character} is found.
+     * Finds the first occurrence of a {@link java.lang.Character} in a {@code String}. Returns the {@code Character}
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code Character} is found.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
