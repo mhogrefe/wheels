@@ -4,6 +4,7 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.junit.Test;
 
@@ -40,6 +41,8 @@ public class ReadersProperties {
             USE_RANDOM = useRandom;
             propertiesReadBoolean();
             propertiesFindBooleanIn();
+            propertiesReadOrdering();
+            propertiesFindOrderingIn();
         }
         System.out.println("Done");
     }
@@ -92,6 +95,61 @@ public class ReadersProperties {
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Boolean, Integer>> op = findBooleanIn(s);
             Pair<Boolean, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+        }
+    }
+
+    private static void propertiesReadOrdering() {
+        initialize();
+        System.out.println("testing readOrdering(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readOrdering(s);
+        }
+
+        for (Ordering o : take(LIMIT, P.orderings())) {
+            Optional<Ordering> oo = readOrdering(o.toString());
+            assertEquals(o.toString(), oo.get(), o);
+        }
+    }
+
+    private static void propertiesFindOrderingIn() {
+        initialize();
+        System.out.println("testing findOrderingIn(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            findOrderingIn(s);
+        }
+
+        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
+        Iterable<String> ss;
+        if (P instanceof ExhaustiveProvider) {
+            ss = map(
+                    p -> {
+                        assert p.a != null;
+                        assert p.a.a != null;
+                        assert p.a.b != null;
+                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                    },
+                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.orderings())
+            );
+        } else {
+            ss = map(
+                    p -> {
+                        assert p.a != null;
+                        assert p.a.a != null;
+                        assert p.a.b != null;
+                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                    },
+                    P.pairs(ps, P.orderings())
+            );
+        }
+        for (String s : take(LIMIT, ss)) {
+            Optional<Pair<Ordering, Integer>> op = findOrderingIn(s);
+            Pair<Ordering, Integer> p = op.get();
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
