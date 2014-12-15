@@ -2,14 +2,13 @@ package mho.wheels.misc;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.junit.Test;
 
+import java.math.RoundingMode;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -43,6 +42,8 @@ public class ReadersProperties {
             propertiesFindBooleanIn();
             propertiesReadOrdering();
             propertiesFindOrderingIn();
+            propertiesReadRoundingMode();
+            propertiesFindRoundingModeIn();
         }
         System.out.println("Done");
     }
@@ -150,6 +151,62 @@ public class ReadersProperties {
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Ordering, Integer>> op = findOrderingIn(s);
             Pair<Ordering, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+        }
+    }
+
+    private static void propertiesReadRoundingMode() {
+        initialize();
+        System.out.println("testing readRoundingMode(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readRoundingMode(s);
+        }
+
+        for (RoundingMode rm : take(LIMIT, P.roundingModes())) {
+            Optional<RoundingMode> orm = readRoundingMode(rm.toString());
+            assertEquals(rm.toString(), orm.get(), rm);
+        }
+    }
+
+    private static void propertiesFindRoundingModeIn() {
+        initialize();
+        System.out.println("testing findRoundingModeIn(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            findRoundingModeIn(s);
+        }
+
+        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
+        Iterable<String> ss;
+        if (P instanceof ExhaustiveProvider) {
+            ss = map(
+                    p -> {
+                        assert p.a != null;
+                        assert p.a.a != null;
+                        assert p.a.b != null;
+                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                    },
+                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.roundingModes())
+            );
+        } else {
+            ss = map(
+                    p -> {
+                        assert p.a != null;
+                        assert p.a.a != null;
+                        assert p.a.b != null;
+                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                    },
+                    P.pairs(ps, P.roundingModes())
+            );
+        }
+        for (String s : take(LIMIT, ss)) {
+            System.out.println(s);
+            Optional<Pair<RoundingMode, Integer>> op = findRoundingModeIn(s);
+            Pair<RoundingMode, Integer> p = op.get();
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
