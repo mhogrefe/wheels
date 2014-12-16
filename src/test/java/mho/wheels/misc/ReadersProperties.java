@@ -7,6 +7,7 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -55,6 +56,15 @@ public class ReadersProperties {
             propertiesFindIntegerIn();
             propertiesReadLong();
             propertiesFindLongIn();
+            propertiesReadFloat();
+            propertiesFindFloatIn();
+            propertiesReadDouble();
+            propertiesFindDoubleIn();
+            propertiesReadBigDecimal();
+            propertiesFindBigDecimalIn();
+            propertiesReadCharacter();
+            propertiesFindCharacterIn();
+            propertiesReadString();
         }
         System.out.println("Done");
     }
@@ -248,8 +258,8 @@ public class ReadersProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            Optional<BigInteger> orm = readBigInteger(i.toString());
-            assertEquals(i.toString(), orm.get(), i);
+            Optional<BigInteger> oi = readBigInteger(i.toString());
+            assertEquals(i.toString(), oi.get(), i);
         }
     }
 
@@ -471,6 +481,194 @@ public class ReadersProperties {
             assertTrue(s, s.substring(p.b).startsWith(during));
             String after = drop(p.b + during.length(), s);
             assertTrue(s, after.isEmpty() || !readLong(during + head(after)).isPresent());
+        }
+    }
+
+    private static void propertiesReadFloat() {
+        initialize();
+        System.out.println("\t\ttesting readFloat(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readFloat(s);
+        }
+
+        for (float f : take(LIMIT, P.floats())) {
+            Optional<Float> of = readFloat(Float.toString(f));
+            assertEquals(Float.toString(f), of.get(), Float.valueOf(f));
+        }
+    }
+
+    private static void propertiesFindFloatIn() {
+        initialize();
+        System.out.println("\t\ttesting findFloatIn(String) properties...");
+
+        for (float f : take(LIMIT, P.floats())) {
+            findFloatIn(Float.toString(f));
+        }
+
+        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
+        Iterable<String> ss = map(
+                p -> {
+                    assert p.a != null;
+                    assert p.a.a != null;
+                    assert p.a.b != null;
+                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                },
+                P.pairs(ps, P.floats())
+        );
+        for (String s : take(LIMIT, ss)) {
+            Optional<Pair<Float, Integer>> op = findFloatIn(s);
+            Pair<Float, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            String before = take(p.b, s);
+            assertFalse(s, findFloatIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readFloat(during + head(after)).isPresent());
+        }
+    }
+
+    private static void propertiesReadDouble() {
+        initialize();
+        System.out.println("\t\ttesting readDouble(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readDouble(s);
+        }
+
+        for (double d : take(LIMIT, P.doubles())) {
+            Optional<Double> od = readDouble(Double.toString(d));
+            assertEquals(Double.toString(d), od.get(), Double.valueOf(d));
+        }
+    }
+
+    private static void propertiesFindDoubleIn() {
+        initialize();
+        System.out.println("\t\ttesting findDoubleIn(String) properties...");
+
+        for (double d : take(LIMIT, P.doubles())) {
+            findDoubleIn(Double.toString(d));
+        }
+
+        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
+        Iterable<String> ss = map(
+                p -> {
+                    assert p.a != null;
+                    assert p.a.a != null;
+                    assert p.a.b != null;
+                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                },
+                P.pairs(ps, P.doubles())
+        );
+        for (String s : take(LIMIT, ss)) {
+            Optional<Pair<Double, Integer>> op = findDoubleIn(s);
+            Pair<Double, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            String before = take(p.b, s);
+            assertFalse(s, findDoubleIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readDouble(during + head(after)).isPresent());
+        }
+    }
+
+    private static void propertiesReadBigDecimal() {
+        initialize();
+        System.out.println("\t\ttesting readBigDecimal(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readBigDecimal(s);
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            Optional<BigDecimal> obd = readBigDecimal(bd.toString());
+            assertEquals(bd.toString(), obd.get(), bd);
+        }
+    }
+
+    private static void propertiesFindBigDecimalIn() {
+        initialize();
+        System.out.println("\t\ttesting findBigDecimalIn(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            findBigDecimalIn(s);
+        }
+
+        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
+        Iterable<String> ss = map(
+                p -> {
+                    assert p.a != null;
+                    assert p.a.a != null;
+                    assert p.a.b != null;
+                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
+                },
+                P.pairs(ps, P.bigDecimals())
+        );
+        for (String s : take(LIMIT, ss)) {
+            Optional<Pair<BigDecimal, Integer>> op = findBigDecimalIn(s);
+            Pair<BigDecimal, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            String before = take(p.b, s);
+            assertFalse(s, findBigDecimalIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readBigDecimal(during + head(after)).isPresent());
+        }
+    }
+
+    private static void propertiesReadCharacter() {
+        initialize();
+        System.out.println("\t\ttesting readCharacter(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            readCharacter(s);
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            Optional<Character> oc = readCharacter(Character.toString(c));
+            assertEquals(Character.toString(c), oc.get(), Character.valueOf(c));
+        }
+    }
+
+    private static void propertiesFindCharacterIn() {
+        initialize();
+        System.out.println("\t\ttesting findCharacterIn(String) properties...");
+
+        for (char c : take(LIMIT, P.characters())) {
+            findCharacterIn(Character.toString(c));
+        }
+
+        for (String s : take(LIMIT, filter(t -> !t.isEmpty(), P.strings()))) {
+            Optional<Pair<Character, Integer>> op = findCharacterIn(s);
+            Pair<Character, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            String before = take(p.b, s);
+            assertFalse(s, findCharacterIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readCharacter(during + head(after)).isPresent());
+        }
+    }
+
+    private static void propertiesReadString() {
+        initialize();
+        System.out.println("\t\ttesting readString(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            Optional<String> os = readString(s);
+            assertEquals(s, os.get(), s);
         }
     }
 }
