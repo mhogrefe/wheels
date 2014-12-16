@@ -61,7 +61,7 @@ public class ReadersProperties {
 
     private static void propertiesReadBoolean() {
         initialize();
-        System.out.println("testing readBoolean(String) properties...");
+        System.out.println("\t\ttesting readBoolean(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readBoolean(s);
@@ -75,7 +75,7 @@ public class ReadersProperties {
 
     private static void propertiesFindBooleanIn() {
         initialize();
-        System.out.println("testing findBooleanIn(String) properties...");
+        System.out.println("\t\ttesting findBooleanIn(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             findBooleanIn(s);
@@ -110,13 +110,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findBooleanIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readBoolean(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadOrdering() {
         initialize();
-        System.out.println("testing readOrdering(String) properties...");
+        System.out.println("\t\ttesting readOrdering(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readOrdering(s);
@@ -130,7 +135,7 @@ public class ReadersProperties {
 
     private static void propertiesFindOrderingIn() {
         initialize();
-        System.out.println("testing findOrderingIn(String) properties...");
+        System.out.println("\t\ttesting findOrderingIn(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             findOrderingIn(s);
@@ -165,13 +170,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findOrderingIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readOrdering(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadRoundingMode() {
         initialize();
-        System.out.println("testing readRoundingMode(String) properties...");
+        System.out.println("\t\ttesting readRoundingMode(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readRoundingMode(s);
@@ -185,7 +195,7 @@ public class ReadersProperties {
 
     private static void propertiesFindRoundingModeIn() {
         initialize();
-        System.out.println("testing findRoundingModeIn(String) properties...");
+        System.out.println("\t\ttesting findRoundingModeIn(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             findRoundingModeIn(s);
@@ -220,13 +230,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findRoundingModeIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readRoundingMode(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadBigInteger() {
         initialize();
-        System.out.println("testing readBigInteger(String) properties...");
+        System.out.println("\t\ttesting readBigInteger(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readBigInteger(s);
@@ -240,7 +255,7 @@ public class ReadersProperties {
 
     private static void propertiesFindBigIntegerIn() {
         initialize();
-        System.out.println("testing findBigIntegerIn(String) properties...");
+        System.out.println("\t\ttesting findBigIntegerIn(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             findBigIntegerIn(s);
@@ -262,13 +277,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findBigIntegerIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readBigInteger(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadByte() {
         initialize();
-        System.out.println("testing readByte(String) properties...");
+        System.out.println("\t\ttesting readByte(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readByte(s);
@@ -282,7 +302,7 @@ public class ReadersProperties {
 
     private static void propertiesFindByteIn() {
         initialize();
-        System.out.println("testing findByteIn(String) properties...");
+        System.out.println("\t\ttesting findByteIn(String) properties...");
 
         for (byte b : take(LIMIT, P.bytes())) {
             findByteIn(Byte.toString(b));
@@ -304,13 +324,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findByteIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readByte(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadShort() {
         initialize();
-        System.out.println("testing readShort(String) properties...");
+        System.out.println("\t\ttesting readShort(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readShort(s);
@@ -324,7 +349,7 @@ public class ReadersProperties {
 
     private static void propertiesFindShortIn() {
         initialize();
-        System.out.println("testing findShortIn(String) properties...");
+        System.out.println("\t\ttesting findShortIn(String) properties...");
 
         for (short s : take(LIMIT, P.shorts())) {
             findByteIn(Short.toString(s));
@@ -346,13 +371,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findShortIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readShort(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadInteger() {
         initialize();
-        System.out.println("testing readInteger(String) properties...");
+        System.out.println("\t\ttesting readInteger(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readInteger(s);
@@ -366,7 +396,7 @@ public class ReadersProperties {
 
     private static void propertiesFindIntegerIn() {
         initialize();
-        System.out.println("testing findIntegerIn(String) properties...");
+        System.out.println("\t\ttesting findIntegerIn(String) properties...");
 
         for (int i : take(LIMIT, P.integers())) {
             findByteIn(Integer.toString(i));
@@ -388,13 +418,18 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findIntegerIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readInteger(during + head(after)).isPresent());
         }
     }
 
     private static void propertiesReadLong() {
         initialize();
-        System.out.println("testing readLong(String) properties...");
+        System.out.println("\t\ttesting readLong(String) properties...");
 
         for (String s : take(LIMIT, P.strings())) {
             readLong(s);
@@ -408,7 +443,7 @@ public class ReadersProperties {
 
     private static void propertiesFindLongIn() {
         initialize();
-        System.out.println("testing findLongIn(String) properties...");
+        System.out.println("\t\ttesting findLongIn(String) properties...");
 
         for (long l : take(LIMIT, P.bytes())) {
             findByteIn(Long.toString(l));
@@ -430,7 +465,12 @@ public class ReadersProperties {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             assertTrue(s, p.b >= 0 && p.b < s.length());
-            assertTrue(s, s.substring(p.b).startsWith(p.a.toString()));
+            String before = take(p.b, s);
+            assertFalse(s, findLongIn(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !readLong(during + head(after)).isPresent());
         }
     }
 }
