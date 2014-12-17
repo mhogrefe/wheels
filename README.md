@@ -21,9 +21,9 @@ Progress
 | BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Readers                  | ✘       | ✘       | ✘     | ✘     | ✘          |
-| LexComparator            | ✔       | ✘       | ✘     | ✘     | ✘          |
-| ShortlexComparator       | ✔       | ✘       | ✘     | ✘     | ✘          |
-| StringShortlexComparator | ✔       | ✘       | ✘     | ✘     | ✘          |
+| LexComparator            | ✔       | ✔       | ✘     | ✘     | ✘          |
+| ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
+| StringShortlexComparator | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Pair                     | ✔       | ✔       | ✘     | ✘     | ✘          |

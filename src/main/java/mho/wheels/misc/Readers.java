@@ -1,6 +1,5 @@
 package mho.wheels.misc;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -20,9 +19,24 @@ import static mho.wheels.iterables.IterableUtils.*;
  * exception. Instead, they return empty {@code Optional}s.
  */
 public class Readers {
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Byte}.
+     */
     public static final int MAX_POSITIVE_BYTE_LENGTH = Byte.toString(Byte.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Short}.
+     */
     public static final int MAX_POSITIVE_SHORT_LENGTH = Short.toString(Short.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Integer}.
+     */
     public static final int MAX_POSITIVE_INTEGER_LENGTH = Integer.toString(Integer.MAX_VALUE).length();
+
+    /**
+     * The length of the longest {@code String} representation of any positive {@code Long}.
+     */
     public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
 
     /**
@@ -33,7 +47,7 @@ public class Readers {
      * is {@code "255"}, not {@code "0xff"}.
      *
      * <ul>
-     *  <li>{@code read} must terminate on every input and never return a null.</li>
+     *  <li>{@code read} must terminate on {@code s} and not a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -43,7 +57,7 @@ public class Readers {
      * @param <T> the type of value read by {@code read}
      * @return the value corresponding to {@code s}, according to the conditions described above
      */
-    private static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
+    public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
         try {
             T x = read.apply(s);
             return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
@@ -71,7 +85,7 @@ public class Readers {
      * @param <T> the type of the values in {@code xs}
      * @return the first value found in {@code s} and its index.
      */
-    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
+    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
         Iterable<Triple<T, String, Integer>> candidates = filter(
                 u -> {
                     assert u.c != null;
@@ -109,7 +123,7 @@ public class Readers {
      * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code read} must never return a null.</li>
+     *  <li>{@code read} must always terminate and never return a null.</li>
      *  <li>{@code usedChars} cannot be null.</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
@@ -122,7 +136,7 @@ public class Readers {
      * @param <T> the type of the values in {@code xs}
      * @return the first value found in {@code s} and its index.
      */
-    private static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String usedChars,
             @NotNull String s
@@ -170,8 +184,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code boolean} in a {@code String} and returns the {@code boolean} and the
-     * index at which it was found. Returns an empty {@code Optional} if no {@code boolean} is found.
+     * Finds the first occurrence of a {@code boolean} in a {@code String}. Returns the {@code boolean} and the index
+     * at which it was found. Returns an empty {@code Optional} if no {@code boolean} is found.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -212,7 +226,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of an {@code Ordering} in a {@code String} and returns the {@code Ordering} and the
+     * Finds the first occurrence of an {@code Ordering} in a {@code String}. Returns the {@code Ordering} and the
      * index at which it was found. Returns an empty {@code Optional} if no {@code Ordering} is found.
      *
      * <ul>
@@ -264,8 +278,8 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code RoundingMode} in a {@code String} and returns the {@code RoundingMode}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
+     * Finds the first occurrence of a {@code RoundingMode} in a {@code String}. Returns the {@code RoundingMode} and
+     * the index at which it was found. Returns an empty {@code Optional} if no {@code RoundingMode} is found.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -298,9 +312,9 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code BigInteger} in a {@code String} and returns the {@code BigInteger}
-     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found.
-     * Leading zeros, octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
+     * Finds the first occurrence of a {@code BigInteger} in a {@code String}. Returns the {@code BigInteger} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code BigInteger} is found. Leading zeros,
+     * octal, and hexadecimal are not allowed. The longest possible {@code BigInteger} is parsed.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -359,7 +373,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Byte} in a {@code String} and returns the {@code Byte} and the index at
+     * Finds the first occurrence of a {@code Byte} in a {@code String}. Returns the {@code Byte} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Byte} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Byte} is parsed.
      *
@@ -407,7 +421,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Short} in a {@code String} and returns the {@code Short} and the index at
+     * Finds the first occurrence of a {@code Short} in a {@code String}. Returns the {@code Short} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Short} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Short} is parsed.
      *
@@ -455,9 +469,9 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of an {@code Integer} in a {@code String} and returns the {@code Integer} and the
-     * index at which it was found. Returns an empty {@code Optional} if no {@code Integer} is found. Leading zeros,
-     * octal, and hexadecimal are not allowed. The longest possible {@code Integer} is parsed.
+     * Finds the first occurrence of an {@code Integer} in a {@code String}. Returns the {@code Integer} and the index
+     * at which it was found. Returns an empty {@code Optional} if no {@code Integer} is found. Leading zeros, octal,
+     * and hexadecimal are not allowed. The longest possible {@code Integer} is parsed.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -503,7 +517,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Long} in a {@code String} and returns the {@code Long} and the index at
+     * Finds the first occurrence of a {@code Long} in a {@code String}. Returns the {@code Long} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Long} is found. Leading zeros, octal, and
      * hexadecimal are not allowed. The longest possible {@code Long} is parsed.
      *
@@ -552,7 +566,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Float} in a {@code String} and returns the {@code Float} and the index at
+     * Finds the first occurrence of a {@code Float} in a {@code String}. Returns the {@code Float} and the index at
      * which it was found. Returns an empty {@code Optional} if no {@code Float} is found. Only {@code String}s which
      * could have been emitted by {@link java.lang.Float#toString} are recognized. The longest possible {@code Float}
      * is parsed.
@@ -588,7 +602,7 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code Double} in a {@code String} and returns the {@code Double} and the index
+     * Finds the first occurrence of a {@code Double} in a {@code String}. Returns the {@code Double} and the index
      * at which it was found. Returns an empty {@code Optional} if no {@code Double} is found. Only {@code String}s
      * which could have been emitted by {@link java.lang.Double#toString} are recognized. The longest possible
      * {@code Double} is parsed.
@@ -607,27 +621,25 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@link java.math.BigDecimal} in a {@code String} and returns the
-     * {@code BigDecimal} and the index at which it was found. Returns an empty {@code Optional} if no
-     * {@code BigDecimal} is found. Only {@code String}s which could have been emitted by
-     * {@link java.lang.Double#toString} are recognized. The longest possible {@code BigDecimal} is parsed.
+     * Reads a {@link java.math.BigDecimal} from a {@code String}. Only {@code String}s which could have been emitted
+     * by {@link java.math.BigDecimal#toString} are recognized.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
+     *  <li>The result is non-null.</li>
      * </ul>
      *
      * @param s the input {@code String}
-     * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
+     * @return the {@code BigDecimal} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code BigDecimal}
      */
     public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {
         return genericRead(BigDecimal::new, s);
     }
 
     /**
-     * Finds the first occurrence of a {@code BigDecimal} in a {@code String} and returns the {@code BigDecimal} and
-     * the index at which it was found. Returns an empty {@code Optional} if no {@code BigDecimal} is found. Only
+     * Finds the first occurrence of a {@code BigDecimal} in a {@code String}. Returns the {@code BigDecimal} and the
+     * index at which it was found. Returns an empty {@code Optional} if no {@code BigDecimal} is found. Only
      * {@code String}s which could have been emitted by {@link java.math.BigDecimal#toString} are recognized. The
      * longest possible {@code BigDecimal} is parsed.
      *
@@ -644,15 +656,70 @@ public class Readers {
         return genericFindIn(Readers::readBigDecimal, "+-.0123456789E", s);
     }
 
+    /**
+     * Reads a {@link java.lang.Character} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code Character} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code Character}
+     */
     public static @NotNull Optional<Character> readCharacter(@NotNull String s) {
         return s.length() == 1 ? Optional.of(s.charAt(0)) : Optional.<Character>empty();
     }
 
+    /**
+     * Finds the first occurrence of a {@link java.lang.Character} in a {@code String}. Returns the {@code Character}
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code Character} is found.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is 0.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code Character} found in {@code s}, and the index at which it was found
+     */
+    public static @NotNull Optional<Pair<Character, Integer>> findCharacterIn(@NotNull String s) {
+        return s.isEmpty() ? Optional.<Pair<Character,Integer>>empty() : Optional.of(new Pair<>(s.charAt(0), 0));
+    }
+
+    /**
+     * Reads a {@link java.lang.String} from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-empty.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the {@code String} represented by {@code s}
+     */
     public static @NotNull Optional<String> readString(@NotNull String s) {
         return Optional.of(s);
     }
 
-    public static @NotNull <T> NullableOptional<T> readWithNull(
+    /**
+     * Given a read function and a {@code String}, reads either null or the value given by the function.
+     *
+     * <ul>
+     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which takes a {@code String} and returns an {@code Optional{@literal<T>}}.
+     * @param s the input {@code String}
+     * @param <T> the type of the value to be read
+     * @return the value of {@code T} represented by {@code s}, or a wrapped null, or an empty {@code NullableOptional}
+     * if {@code s} does not represent any value of {@code T} or null
+     */
+    public static @NotNull <T> NullableOptional<T> readWithNulls(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String s
     ) {
@@ -663,6 +730,57 @@ public class Readers {
         }
     }
 
+    /**
+     * Given a find-in function and a {@code String} {@code s}, return the value and index of the first "null" or
+     * value-string found in {@code s}.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of value to be read
+     * @return the index and value of the first "null" or value-string, or an empty {@code Optional} if nothing is
+     * found
+     */
+    public static @NotNull <T> Optional<Pair<T, Integer>> findInWithNulls(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull String s
+    ) {
+        Optional<Pair<T, Integer>> nonNullResult = findIn.apply(s);
+        int nullIndex = s.indexOf("null");
+        if (nullIndex == -1) return nonNullResult;
+        if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
+        Pair<T, Integer> unwrapped = nonNullResult.get();
+        assert unwrapped.a != null;
+        assert unwrapped.b != null;
+        if (nullIndex > unwrapped.b || (nullIndex == unwrapped.b && unwrapped.a.toString().length() >= 4)) {
+            return nonNullResult;
+        } else {
+            return Optional.of(new Pair<>(null, nullIndex));
+        }
+    }
+
+    /**
+     * Reads an {@link java.util.Optional} from a {@code String}. Only {@code String}s which could have been emitted
+     * by {@link java.util.Optional#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which reads {@code s} into a value of type {@code T}
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code Optional}'s value
+     * @return the {@code Optional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent an {@code Optional}
+     */
     public static @NotNull <T> Optional<Optional<T>> readOptional(
             @NotNull Function<String, Optional<T>> read,
             @NotNull String s
@@ -676,6 +794,21 @@ public class Readers {
         return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
     }
 
+    /**
+     * Reads a {@link mho.wheels.structures.NullableOptional} from a {@code String}. Only {@code String}s which could
+     * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param read a function which reads {@code s} into a value of type {@code T}
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code NullableOptional}'s value
+     * @return the {@code NullableOptional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
+     * represent a {@code NullableOptional}
+     */
     public static @NotNull <T> Optional<NullableOptional<T>> readNullableOptional(
             @NotNull Function<String, NullableOptional<T>> read,
             @NotNull String s
@@ -690,32 +823,43 @@ public class Readers {
     }
 
     public static @NotNull <T> Optional<List<T>> readList(
-            @NotNull Function<String, Optional<T>> read,
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
     ) {
         if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
         s = tail(init(s));
         List<T> list = new ArrayList<>();
-        for (String token : s.split(", ")) {
-            Optional<T> ox = read.apply(token);
-            if (!ox.isPresent()) return Optional.empty();
-            list.add(ox.get());
+        while (!s.isEmpty()) {
+            Optional<Pair<T, Integer>> next = findIn.apply(s);
+            if (!next.isPresent()) return Optional.empty();
+            Pair<T, Integer> unwrapped = next.get();
+            assert unwrapped.b != null;
+            if (unwrapped.b != 0) return Optional.empty();
+            T element = unwrapped.a;
+            list.add(element);
+            s = s.substring(Objects.toString(element).length());
+            if (!s.isEmpty()) {
+                if (!s.startsWith(", ")) return Optional.empty();
+                s = s.substring(2);
+            }
         }
         return Optional.of(list);
     }
 
-    public static @NotNull <T> Optional<List<T>> readListWithNulls(
-            @NotNull Function<String, Optional<T>> read,
+    public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListIn(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
     ) {
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        List<T> list = new ArrayList<>();
-        for (String token : s.split(", ")) {
-            NullableOptional<T> ox = readWithNull(read, token);
-            if (!ox.isPresent()) return Optional.empty();
-            list.add(ox.get());
+        List<Integer> leftIndices = toList(elemIndices('[', s));
+        List<Integer> rightIndices = reverse(elemIndices(']', s));
+        for (int leftIndex : leftIndices) {
+            for (int rightIndex : rightIndices) {
+                if (rightIndex < leftIndex) break;
+                String stripped = s.substring(leftIndex, rightIndex + 1);
+                Optional<List<T>> candidate = readList(findIn, stripped);
+                if (candidate.isPresent()) return Optional.of(new Pair<>(candidate.get(), leftIndex));
+            }
         }
-        return Optional.of(list);
+        return Optional.empty();
     }
 }

@@ -46,7 +46,7 @@ public class BigDecimalUtilsProperties {
 
     private static void propertiesSetPrecision() {
         initialize();
-        System.out.println("testing setPrecision(BigDecimal, int) properties...");
+        System.out.println("\t\ttesting setPrecision(BigDecimal, int) properties...");
 
         Iterable<Pair<BigDecimal, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {

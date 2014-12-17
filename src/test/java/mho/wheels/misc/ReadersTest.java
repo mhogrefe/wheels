@@ -10,6 +10,14 @@ import static org.junit.Assert.*;
 
 public class ReadersTest {
     @Test
+    public void testConstants() {
+        aeq(MAX_POSITIVE_BYTE_LENGTH, 3);
+        aeq(MAX_POSITIVE_SHORT_LENGTH, 5);
+        aeq(MAX_POSITIVE_INTEGER_LENGTH, 10);
+        aeq(MAX_POSITIVE_LONG_LENGTH, 19);
+    }
+
+    @Test
     public void testReadBoolean() {
         aeq(readBoolean("false").get(), "false");
         aeq(readBoolean("true").get(), "true");
@@ -371,6 +379,57 @@ public class ReadersTest {
         assertFalse(findBigDecimalIn("").isPresent());
         assertFalse(findBigDecimalIn("hello").isPresent());
         assertFalse(findBigDecimalIn("vdfsvfbf").isPresent());
+    }
+
+    @Test
+    public void testReadCharacter() {
+        aeq(readCharacter("a").get(), "a");
+        aeq(readCharacter("ø").get(), "ø");
+        assertFalse(readCharacter("hi").isPresent());
+        assertFalse(readCharacter("").isPresent());
+    }
+
+    @Test
+    public void testFindCharacterIn() {
+        aeq(findCharacterIn("Hello").get(), "(H, 0)");
+        aeq(findCharacterIn("ø").get(), "(ø, 0)");
+        assertFalse(findCharacterIn("").isPresent());
+    }
+
+    @Test
+    public void testReadString() {
+        aeq(readString("Hello").get(), "Hello");
+        aeq(readString("ø").get(), "ø");
+        aeq(readString("").get(), "");
+    }
+
+    @Test
+    public void testReadWithNulls() {
+        aeq(readWithNulls(Readers::readInteger, "23").get(), "23");
+        aeq(readWithNulls(Readers::readInteger, "-500").get(), "-500");
+        assertNull(readWithNulls(Readers::readInteger, "null").get());
+        aeq(readWithNulls(Readers::readString, "hello").get(), "hello");
+        aeq(readWithNulls(Readers::readString, "bye").get(), "bye");
+        aeq(readWithNulls(Readers::readString, "nullification").get(), "nullification");
+        aeq(readWithNulls(Readers::readString, "").get(), "");
+        assertNull(readWithNulls(Readers::readString, "null").get());
+        assertFalse(readWithNulls(Readers::readInteger, "annull").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger, "--").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger, "").isPresent());
+    }
+
+    @Test
+    public void testFindInWithNulls() {
+        aeq(findInWithNulls(Readers::findIntegerIn, "xyz123xyz").get(), "(123, 3)");
+        aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
+        assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
+        aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
+        assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
+        aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
+        assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
     }
 
     private static void aeq(Object a, Object b) {
