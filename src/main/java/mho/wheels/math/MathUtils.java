@@ -15,9 +15,15 @@ import static mho.wheels.ordering.Ordering.*;
  * Some mathematical utilities
  */
 public final class MathUtils {
-    //must be >= ceiling(sqrt(Integer.MAX_VALUE)) = 46,341
+    /**
+     * The size of {@link mho.wheels.math.MathUtils#PRIME_SIEVE}. Must be greater than or equal to
+     * ⌈sqrt({@code Integer.MAX_VALUE})⌉ = 46,341
+     */
     private static final int PRIME_SIEVE_SIZE = 1 << 16;
 
+    /**
+     * A cache of small primes, generated using the Sieve of Eratosthenes algorithm.
+     */
     private static final BitSet PRIME_SIEVE;
     static {
         PRIME_SIEVE = new BitSet(PRIME_SIEVE_SIZE);
@@ -688,11 +694,45 @@ public final class MathUtils {
      * @return The {@code BigInteger} represented by {@code digits}
      */
     public static @NotNull BigInteger fromDigits(@NotNull BigInteger base, @NotNull Iterable<BigInteger> digits) {
-        return fromBigEndianDigits(base, (Iterable<BigInteger>) reverse(digits));
+        return fromBigEndianDigits(base, reverse(digits));
     }
 
-    private static char toDigit(int i) {
+    /**
+     * Converts a digit to its {@code char} representation. The digits 0 through 9 and converted to '0' through '9',
+     * and the digits 11 through 36 are converted to 'A' through 'Z'.
+     *
+     * <ul>
+     *  <li>{@code i} must be non-negative and less than or equal to 36.</li>
+     *  <li>The result is between '0' and '9', inclusive, or between 'A' and 'Z', inclusive.</li>
+     * </ul>
+     *
+     * @param i the digit to be converted
+     * @return the {@code char} representation of {@code i}
+     */
+    public static char toDigit(int i) {
         return (char) (i < 10 ? '0' + i : 'A' + i - 10);
+    }
+
+    /**
+     * Returns the digit corresponding to a {@code char}. The {@code char}s '0' through '9' are mapped to 0 through 9,
+     * and the {@code char}s 'A' through 'Z' are mapped to 10 through 36.
+     *
+     * <ul>
+     *  <li>{@code c} must be between '0' and '9', inclusive, or between 'A' and 'Z', inclusive.</li>
+     *  <li>The result is non-negative and less than or equal to 36.</li>
+     * </ul>
+     *
+     * @param c a {@code char} corresponding to a digit
+     * @return the digit that {@code c} corresponds to
+     */
+    public static int fromDigit(char c) {
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        } else if (c >= 'A' && c <= 'Z') {
+            return c - 'A' + 10;
+        } else {
+            throw new IllegalArgumentException("char must be between '0' and '9' or between 'A' and 'Z'");
+        }
     }
 
     public static @NotNull String toStringBase(int base, int n) {
@@ -803,6 +843,7 @@ public final class MathUtils {
     }
 
     public static @NotNull BigInteger ceilingRoot(@NotNull BigInteger r, @NotNull BigInteger x) {
+        //noinspection SuspiciousNameCombination
         return ceilingInverse(
                 i -> i.pow(r.intValueExact()),
                 x,
@@ -889,7 +930,7 @@ public final class MathUtils {
     public static @NotNull List<Integer> factors(int n) {
         List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
-                toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
+                toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
                 zipWith(p -> BigInteger.valueOf(p.a).pow(p.b).intValueExact(), map(q -> q.a, cpf), exponents)
@@ -900,10 +941,14 @@ public final class MathUtils {
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
         List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
         Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
-                toList((Iterable<Iterable<Integer>>) map(p -> range(0, p.b), cpf))
+                toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(p -> p.a.pow(p.b), map(q -> q.a, cpf), exponents)
+                zipWith(p -> {
+                    assert p.a != null;
+                    assert p.b != null;
+                    return p.a.pow(p.b);
+                }, map(q -> q.a, cpf), exponents)
         );
         return sort(map(f, possibleExponents));
     }
