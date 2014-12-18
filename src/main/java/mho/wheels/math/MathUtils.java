@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.misc.Readers;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -779,6 +780,40 @@ public final class MathUtils {
         return negative ? cons('-', absString) : absString;
     }
 
+    public static @NotNull BigInteger fromStringBase(int base, @NotNull String s) {
+        if (base < 2)
+            throw new IllegalArgumentException("base must be at least 2");
+        if (s.isEmpty())
+            throw new IllegalArgumentException("improperly-formatted String");
+        List<Integer> digits;
+        if (base <= 36) {
+            digits = toList(map(MathUtils::fromDigit, fromString(s)));
+        } else {
+            if (head(s) != '(' || last(s) != ')')
+                throw new IllegalArgumentException("improperly-formatted String");
+            s = tail(init(s));
+            digits = toList(map(Integer::parseInt, Arrays.asList(s.split("\\)\\("))));
+        }
+        return fromBigEndianDigits(base, digits);
+    }
+
+    public static @NotNull BigInteger fromStringBase(BigInteger base, @NotNull String s) {
+        if (lt(base, BigInteger.valueOf(2)))
+            throw new IllegalArgumentException("base must be at least 2");
+        if (s.isEmpty())
+            throw new IllegalArgumentException("improperly-formatted String");
+        List<BigInteger> digits;
+        if (le(base, BigInteger.valueOf(36))) {
+            digits = toList(map(c -> BigInteger.valueOf(fromDigit(c)), fromString(s)));
+        } else {
+            if (head(s) != '(' || last(s) != ')')
+                throw new IllegalArgumentException("improperly-formatted String");
+            s = tail(init(s));
+            digits = toList(map(BigInteger::new, Arrays.asList(s.split("\\)\\("))));
+        }
+        return fromBigEndianDigits(base, digits);
+    }
+
     public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
@@ -819,6 +854,7 @@ public final class MathUtils {
     }
 
     public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
+        //noinspection SuspiciousNameCombination
         return fastGrowingCeilingInverse(
                 i -> base.pow(i.intValueExact()),
                 x,
