@@ -429,4 +429,19 @@ public class MathUtilsDemos {
             System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
         }
     }
+
+    private static void demoToDigit() {
+        initialize();
+        for (int i : take(LIMIT, P.range(0, 35))) {
+            System.out.println("toDigit(" + i + ") = " + toDigit(i));
+        }
+    }
+
+    private static void demoFromDigit() {
+        initialize();
+        for (int i : take(LIMIT, P.range(0, 35))) {
+            char c = toDigit(i);
+            System.out.println("fromDigit(" + c + ") = " + fromDigit(c));
+        }
+    }
 }
