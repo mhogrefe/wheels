@@ -751,8 +751,9 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} may be any {@code int}.</li>
-     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z',
-     *  or is the concatenation of some numbers from 0 to 2<sup>31</sup>–1 surrounded by parentheses.</li>
+     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
+     *  (not starting with '0', unless that is the only character), or is the concatenation of some numbers from 0 to
+     *  2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only number).</li>
      * </ul>
      *
      * @param base the base of the output digits
@@ -787,8 +788,9 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-null.</li>
-     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z',
-     *  or is the concatenation of some numbers surrounded by parentheses.</li>
+     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
+     *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
+     *  numbers surrounded by parentheses (not starting with "(0)", unless that is the only number).</li>
      * </ul>
      *
      * @param base the base of the output digits
