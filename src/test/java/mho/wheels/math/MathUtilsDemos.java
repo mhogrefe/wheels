@@ -444,4 +444,37 @@ public class MathUtilsDemos {
             System.out.println("fromDigit(" + c + ") = " + fromDigit(c));
         }
     }
+
+    private static void demoToStringBase_int_int() {
+        initialize();
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.range(2));
+        } else {
+            ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("toStringBase(" + p.b + ", " + p.a + ") = " + toStringBase(p.b, p.a));
+        }
+    }
+
+    private static void demoToStringBase_BigInteger_BigInteger() {
+        initialize();
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.range(BigInteger.valueOf(2)));
+        } else {
+            ps = P.pairs(
+                    P.bigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("toStringBase(" + p.b + ", " + p.a + ") = " + toStringBase(p.b, p.a));
+        }
+    }
 }
