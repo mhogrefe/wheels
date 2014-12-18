@@ -832,6 +832,40 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    @Test
+    public void testToDigit() {
+        aeq(toDigit(0), '0');
+        aeq(toDigit(6), '6');
+        aeq(toDigit(10), 'A');
+        aeq(toDigit(20), 'K');
+        aeq(toDigit(35), 'Z');
+        try {
+            toDigit(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toDigit(36);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromDigit() {
+        aeq(fromDigit('0'), 0);
+        aeq(fromDigit('6'), 6);
+        aeq(fromDigit('A'), 10);
+        aeq(fromDigit('K'), 20);
+        aeq(fromDigit('Z'), 35);
+        try {
+            fromDigit(' ');
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromDigit('a');
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }

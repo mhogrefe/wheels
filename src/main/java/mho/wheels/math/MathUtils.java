@@ -699,10 +699,10 @@ public final class MathUtils {
 
     /**
      * Converts a digit to its {@code char} representation. The digits 0 through 9 and converted to '0' through '9',
-     * and the digits 11 through 36 are converted to 'A' through 'Z'.
+     * and the digits 11 through 35 are converted to 'A' through 'Z'.
      *
      * <ul>
-     *  <li>{@code i} must be non-negative and less than or equal to 36.</li>
+     *  <li>{@code i} must be non-negative and less than 36.</li>
      *  <li>The result is between '0' and '9', inclusive, or between 'A' and 'Z', inclusive.</li>
      * </ul>
      *
@@ -710,16 +710,22 @@ public final class MathUtils {
      * @return the {@code char} representation of {@code i}
      */
     public static char toDigit(int i) {
-        return (char) (i < 10 ? '0' + i : 'A' + i - 10);
+        if (i >= 0 && i <= 9) {
+            return (char) ('0' + i);
+        } else if (i >= 10 && i < 36) {
+            return (char) ('A' + i - 10);
+        } else {
+            throw new IllegalArgumentException("digit value must be between 0 and 35, inclusive");
+        }
     }
 
     /**
      * Returns the digit corresponding to a {@code char}. The {@code char}s '0' through '9' are mapped to 0 through 9,
-     * and the {@code char}s 'A' through 'Z' are mapped to 10 through 36.
+     * and the {@code char}s 'A' through 'Z' are mapped to 10 through 35.
      *
      * <ul>
      *  <li>{@code c} must be between '0' and '9', inclusive, or between 'A' and 'Z', inclusive.</li>
-     *  <li>The result is non-negative and less than or equal to 36.</li>
+     *  <li>The result is non-negative and less than 36.</li>
      * </ul>
      *
      * @param c a {@code char} corresponding to a digit
