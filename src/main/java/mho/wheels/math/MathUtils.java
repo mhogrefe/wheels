@@ -742,6 +742,23 @@ public final class MathUtils {
         }
     }
 
+    /**
+     * Converts an {@code int} to a {@code String} in any base greater than 1. If the base is 36 or less, the digits
+     * '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal
+     * and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or "(0)"
+     * otherwise. In every other case there are no leading zeroes.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code n} may be any {@code int}.</li>
+     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z',
+     *  or is the concatenation of some numbers from 0 to 2<sup>31</sup>–1 surrounded by parentheses.</li>
+     * </ul>
+     *
+     * @param base the base of the output digits
+     * @param n a number
+     * @return a {@code String} representation of {@code n} in base {@code base}
+     */
     public static @NotNull String toStringBase(int base, int n) {
         if (base < 2)
             throw new IllegalArgumentException("base must be at least 2");
@@ -761,6 +778,23 @@ public final class MathUtils {
         return negative ? cons('-', absString) : absString;
     }
 
+    /**
+     * Converts a {@code BigInteger} to a {@code String} in any base greater than 1. If the base is 36 or less, the
+     * digits '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in
+     * decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
+     * "(0)" otherwise. In every other case there are no leading zeroes.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code n} must be non-null.</li>
+     *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z',
+     *  or is the concatenation of some numbers surrounded by parentheses.</li>
+     * </ul>
+     *
+     * @param base the base of the output digits
+     * @param n a number
+     * @return a {@code String} representation of {@code n} in base {@code base}
+     */
     public static @NotNull String toStringBase(@NotNull BigInteger base, @NotNull BigInteger n) {
         if (lt(base, BigInteger.valueOf(2)))
             throw new IllegalArgumentException("base must be at least 2");
@@ -785,6 +819,11 @@ public final class MathUtils {
             throw new IllegalArgumentException("base must be at least 2");
         if (s.isEmpty())
             throw new IllegalArgumentException("improperly-formatted String");
+        boolean negative = false;
+        if (head(s) == '-') {
+            s = tail(s);
+            negative = true;
+        }
         List<Integer> digits;
         if (base <= 36) {
             digits = toList(map(MathUtils::fromDigit, fromString(s)));
@@ -794,7 +833,8 @@ public final class MathUtils {
             s = tail(init(s));
             digits = toList(map(Integer::parseInt, Arrays.asList(s.split("\\)\\("))));
         }
-        return fromBigEndianDigits(base, digits);
+        BigInteger result = fromBigEndianDigits(base, digits);
+        return negative ? result.negate() : result;
     }
 
     public static @NotNull BigInteger fromStringBase(BigInteger base, @NotNull String s) {
@@ -802,6 +842,11 @@ public final class MathUtils {
             throw new IllegalArgumentException("base must be at least 2");
         if (s.isEmpty())
             throw new IllegalArgumentException("improperly-formatted String");
+        boolean negative = false;
+        if (head(s) == '-') {
+            s = tail(s);
+            negative = true;
+        }
         List<BigInteger> digits;
         if (le(base, BigInteger.valueOf(36))) {
             digits = toList(map(c -> BigInteger.valueOf(fromDigit(c)), fromString(s)));
@@ -811,7 +856,8 @@ public final class MathUtils {
             s = tail(init(s));
             digits = toList(map(BigInteger::new, Arrays.asList(s.split("\\)\\("))));
         }
-        return fromBigEndianDigits(base, digits);
+        BigInteger result = fromBigEndianDigits(base, digits);
+        return negative ? result.negate() : result;
     }
 
     public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
