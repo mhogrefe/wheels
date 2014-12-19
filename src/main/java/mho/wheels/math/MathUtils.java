@@ -744,16 +744,17 @@ public final class MathUtils {
 
     /**
      * Converts an {@code int} to a {@code String} in any base greater than 1. If the base is 36 or less, the digits
-     * '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal
-     * and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or "(0)"
-     * otherwise. In every other case there are no leading zeroes.
+     * are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in
+     * decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
+     * "(0)" otherwise. In every other case there are no leading zeroes.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
-     *  <li>{@code n} may be any {@code int}.</li>
+     *  <li>{@code n} must be non-null.</li>
      *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
-     *  (not starting with '0', unless that is the only character), or is the concatenation of some numbers from 0 to
-     *  2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only number).</li>
+     *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
+     *  numbers from 0 to 2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only
+     *  number). In either case there may be an optional leading '-'.</li>
      * </ul>
      *
      * @param base the base of the output digits
@@ -781,8 +782,8 @@ public final class MathUtils {
 
     /**
      * Converts a {@code BigInteger} to a {@code String} in any base greater than 1. If the base is 36 or less, the
-     * digits '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in
-     * decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
+     * digits are '0' through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written
+     * in decimal and each digit is surrounded by parentheses. Zero is represented by "0" if the base is 36 or less, or
      * "(0)" otherwise. In every other case there are no leading zeroes.
      *
      * <ul>
@@ -790,7 +791,8 @@ public final class MathUtils {
      *  <li>{@code n} must be non-null.</li>
      *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
      *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
-     *  numbers surrounded by parentheses (not starting with "(0)", unless that is the only number).</li>
+     *  numbers surrounded by parentheses (not starting with "(0)", unless that is the only number). In either case
+     *  there may be an optional leading '-'.</li>
      * </ul>
      *
      * @param base the base of the output digits
@@ -816,6 +818,23 @@ public final class MathUtils {
         return negative ? cons('-', absString) : absString;
     }
 
+    /**
+     * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
+     * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
+     * each digit is surrounded by parentheses. The empty {@code String} represents 0. Leading zeroes are permitted. If
+     * the {@code String} is invalid, an exception is thrown.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code s} must either be composed of the digits '0' through '9' and 'A' through 'Z', or a sequence of
+     *  decimal numbers, each surrounded by parentheses. In either case there may be an optional leading '-'.</li>
+     *  <li>The result may be any {@code int}</li>
+     * </ul>
+     *
+     * @param base the base that the {@code s} is written in
+     * @param s the input {@code String}
+     * @return the number represented by {@code s}
+     */
     public static @NotNull BigInteger fromStringBase(int base, @NotNull String s) {
         if (base < 2)
             throw new IllegalArgumentException("base must be at least 2");
@@ -839,7 +858,24 @@ public final class MathUtils {
         return negative ? result.negate() : result;
     }
 
-    public static @NotNull BigInteger fromStringBase(BigInteger base, @NotNull String s) {
+    /**
+     * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
+     * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
+     * each digit is surrounded by parentheses. The empty {@code String} represents 0. Leading zeroes are permitted. If
+     * the {@code String} is invalid, an exception is thrown.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code s} must either be composed of the digits '0' through '9' and 'A' through 'Z', or a sequence of
+     *  decimal numbers, each surrounded by parentheses. In either case there may be an optional leading '-'.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param base the base that the {@code s} is written in
+     * @param s the input {@code String}
+     * @return the number represented by {@code s}
+     */
+    public static @NotNull BigInteger fromStringBase(@NotNull BigInteger base, @NotNull String s) {
         if (lt(base, BigInteger.valueOf(2)))
             throw new IllegalArgumentException("base must be at least 2");
         if (s.isEmpty())
