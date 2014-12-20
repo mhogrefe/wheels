@@ -876,7 +876,7 @@ public class MathUtilsTest {
         aeq(toStringBase(16, 0), "0");
         aeq(toStringBase(36, 0), "0");
         aeq(toStringBase(88, 0), "(0)");
-        aeq(toStringBase(100, 524393454), "(5)(24)(39)(34)(54)");
+        aeq(toStringBase(100, 0), "(0)");
         aeq(toStringBase(2, 524393454), "11111010000011001101111101110");
         aeq(toStringBase(3, 524393454), "1100112201221120210");
         aeq(toStringBase(4, 524393454), "133100121233232");
@@ -915,7 +915,7 @@ public class MathUtilsTest {
         aeq(toStringBase(BigInteger.valueOf(16), BigInteger.ZERO), "0");
         aeq(toStringBase(BigInteger.valueOf(36), BigInteger.ZERO), "0");
         aeq(toStringBase(BigInteger.valueOf(88), BigInteger.ZERO), "(0)");
-        aeq(toStringBase(BigInteger.valueOf(100), BigInteger.valueOf(524393454)), "(5)(24)(39)(34)(54)");
+        aeq(toStringBase(BigInteger.valueOf(100), BigInteger.ZERO), "(0)");
         aeq(toStringBase(BigInteger.valueOf(2), BigInteger.valueOf(524393454)), "11111010000011001101111101110");
         aeq(toStringBase(BigInteger.valueOf(3), BigInteger.valueOf(524393454)), "1100112201221120210");
         aeq(toStringBase(BigInteger.valueOf(4), BigInteger.valueOf(524393454)), "133100121233232");
@@ -940,6 +940,256 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
         try {
             toStringBase(BigInteger.ZERO, BigInteger.valueOf(524393454));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromStringBase_int_String() {
+        aeq(fromStringBase(2, ""), 0);
+        aeq(fromStringBase(3, ""), 0);
+        aeq(fromStringBase(4, ""), 0);
+        aeq(fromStringBase(10, ""), 0);
+        aeq(fromStringBase(12, ""), 0);
+        aeq(fromStringBase(16, ""), 0);
+        aeq(fromStringBase(36, ""), 0);
+        aeq(fromStringBase(88, ""), 0);
+        aeq(fromStringBase(100, ""), 0);
+        aeq(fromStringBase(2, "0"), 0);
+        aeq(fromStringBase(3, "0"), 0);
+        aeq(fromStringBase(4, "0"), 0);
+        aeq(fromStringBase(10, "0"), 0);
+        aeq(fromStringBase(12, "0"), 0);
+        aeq(fromStringBase(16, "0"), 0);
+        aeq(fromStringBase(36, "0"), 0);
+        aeq(fromStringBase(88, "(0)"), 0);
+        aeq(fromStringBase(100, "(0)"), 0);
+        aeq(fromStringBase(2, "00"), 0);
+        aeq(fromStringBase(3, "00"), 0);
+        aeq(fromStringBase(4, "00"), 0);
+        aeq(fromStringBase(10, "00"), 0);
+        aeq(fromStringBase(12, "00"), 0);
+        aeq(fromStringBase(16, "00"), 0);
+        aeq(fromStringBase(36, "00"), 0);
+        aeq(fromStringBase(88, "(0)(0)"), 0);
+        aeq(fromStringBase(100, "(0)(0)"), 0);
+        aeq(fromStringBase(2, "-0"), 0);
+        aeq(fromStringBase(3, "-0"), 0);
+        aeq(fromStringBase(4, "-0"), 0);
+        aeq(fromStringBase(10, "-0"), 0);
+        aeq(fromStringBase(12, "-0"), 0);
+        aeq(fromStringBase(16, "-0"), 0);
+        aeq(fromStringBase(36, "-0"), 0);
+        aeq(fromStringBase(88, "-(0)"), 0);
+        aeq(fromStringBase(100, "-(0)"), 0);
+        aeq(fromStringBase(2, "-00"), 0);
+        aeq(fromStringBase(3, "-00"), 0);
+        aeq(fromStringBase(4, "-00"), 0);
+        aeq(fromStringBase(10, "-00"), 0);
+        aeq(fromStringBase(12, "-00"), 0);
+        aeq(fromStringBase(16, "-00"), 0);
+        aeq(fromStringBase(36, "-00"), 0);
+        aeq(fromStringBase(88, "-(0)(0)"), 0);
+        aeq(fromStringBase(100, "-(0)(0)"), 0);
+        aeq(fromStringBase(2, "11111010000011001101111101110"), 524393454);
+        aeq(fromStringBase(3, "1100112201221120210"), 524393454);
+        aeq(fromStringBase(4, "133100121233232"), 524393454);
+        aeq(fromStringBase(10, "524393454"), 524393454);
+        aeq(fromStringBase(12, "127750526"), 524393454);
+        aeq(fromStringBase(16, "1F419BEE"), 524393454);
+        aeq(fromStringBase(36, "8O7KKU"), 524393454);
+        aeq(fromStringBase(88, "(8)(65)(44)(8)(46)"), 524393454);
+        aeq(fromStringBase(100, "(5)(24)(39)(34)(54)"), 524393454);
+        aeq(fromStringBase(2, "00011111010000011001101111101110"), 524393454);
+        aeq(fromStringBase(3, "0001100112201221120210"), 524393454);
+        aeq(fromStringBase(4, "000133100121233232"), 524393454);
+        aeq(fromStringBase(10, "000524393454"), 524393454);
+        aeq(fromStringBase(12, "000127750526"), 524393454);
+        aeq(fromStringBase(16, "0001F419BEE"), 524393454);
+        aeq(fromStringBase(36, "0008O7KKU"), 524393454);
+        aeq(fromStringBase(88, "(0)(0)(0)(8)(65)(44)(8)(46)"), 524393454);
+        aeq(fromStringBase(100, "(0)(0)(0)(5)(24)(39)(34)(54)"), 524393454);
+        aeq(fromStringBase(2, "-11111010000011001101111101110"), -524393454);
+        aeq(fromStringBase(3, "-1100112201221120210"), -524393454);
+        aeq(fromStringBase(4, "-133100121233232"), -524393454);
+        aeq(fromStringBase(10, "-524393454"), -524393454);
+        aeq(fromStringBase(12, "-127750526"), -524393454);
+        aeq(fromStringBase(16, "-1F419BEE"), -524393454);
+        aeq(fromStringBase(36, "-8O7KKU"), -524393454);
+        aeq(fromStringBase(88, "-(8)(65)(44)(8)(46)"), -524393454);
+        aeq(fromStringBase(100, "-(5)(24)(39)(34)(54)"), -524393454);
+        aeq(fromStringBase(2, "-00011111010000011001101111101110"), -524393454);
+        aeq(fromStringBase(3, "-0001100112201221120210"), -524393454);
+        aeq(fromStringBase(4, "-000133100121233232"), -524393454);
+        aeq(fromStringBase(10, "-000524393454"), -524393454);
+        aeq(fromStringBase(12, "-000127750526"), -524393454);
+        aeq(fromStringBase(16, "-0001F419BEE"), -524393454);
+        aeq(fromStringBase(36, "-0008O7KKU"), -524393454);
+        aeq(fromStringBase(88, "-(0)(0)(0)(8)(65)(44)(8)(46)"), -524393454);
+        aeq(fromStringBase(100, "-(0)(0)(0)(5)(24)(39)(34)(54)"), -524393454);
+        try {
+            fromStringBase(1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(0, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(2, "-");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(2, "3");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(2, "*");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "12");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "(-12)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "(3F)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "-");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testFromStringBase_BigInteger_String() {
+        aeq(fromStringBase(BigInteger.valueOf(2), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(3), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(4), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(10), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(12), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(16), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(36), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(88), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(100), ""), 0);
+        aeq(fromStringBase(BigInteger.valueOf(2), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(3), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(4), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(10), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(12), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(16), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(36), "0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(88), "(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(100), "(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(2), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(3), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(4), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(10), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(12), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(16), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(36), "00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(88), "(0)(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(100), "(0)(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(2), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(3), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(4), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(10), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(12), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(16), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(36), "-0"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(2), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(3), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(4), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(10), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(12), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(16), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(36), "-00"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)(0)"), 0);
+        aeq(fromStringBase(BigInteger.valueOf(2), "11111010000011001101111101110"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(3), "1100112201221120210"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(4), "133100121233232"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(10), "524393454"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(12), "127750526"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(16), "1F419BEE"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(36), "8O7KKU"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(88), "(8)(65)(44)(8)(46)"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(100), "(5)(24)(39)(34)(54)"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(2), "00011111010000011001101111101110"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(3), "0001100112201221120210"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(4), "000133100121233232"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(10), "000524393454"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(12), "000127750526"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(16), "0001F419BEE"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(36), "0008O7KKU"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(88), "(0)(0)(0)(8)(65)(44)(8)(46)"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(100), "(0)(0)(0)(5)(24)(39)(34)(54)"), 524393454);
+        aeq(fromStringBase(BigInteger.valueOf(2), "-11111010000011001101111101110"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(3), "-1100112201221120210"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(4), "-133100121233232"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(10), "-524393454"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(12), "-127750526"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(16), "-1F419BEE"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(36), "-8O7KKU"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(88), "-(8)(65)(44)(8)(46)"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(100), "-(5)(24)(39)(34)(54)"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(2), "-00011111010000011001101111101110"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(3), "-0001100112201221120210"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(4), "-000133100121233232"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(10), "-000524393454"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(12), "-000127750526"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(16), "-0001F419BEE"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(36), "-0008O7KKU"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(88), "-(0)(0)(0)(8)(65)(44)(8)(46)"), -524393454);
+        aeq(fromStringBase(BigInteger.valueOf(100), "-(0)(0)(0)(5)(24)(39)(34)(54)"), -524393454);
+        try {
+            fromStringBase(BigInteger.ONE, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.ZERO, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(2), "-");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(2), "3");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(2), "*");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "12");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "(-12)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "(3F)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "-");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

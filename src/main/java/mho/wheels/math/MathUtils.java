@@ -827,8 +827,13 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code s} must either be composed of the digits '0' through '9' and 'A' through 'Z', or a sequence of
-     *  decimal numbers, each surrounded by parentheses. In either case there may be an optional leading '-'.</li>
-     *  <li>The result may be any {@code int}</li>
+     *  non-negative decimal integers, each surrounded by parentheses. In either case there may be an optional leading
+     *  '-'. {@code s} may also be empty, but "-" is not permitted.</li>
+     *  <li>If {@code base} is between 2 and 36, {@code s} may only include the corresponding characters, and the
+     *  optional leading '-'. If {@code base} is greater than 36, {@code s} must be composed of decimal integers
+     *  surrounded by parentheses (with the optional leading '-'), each integer being non-negative and less than
+     *  {@code base}.</li>
+     *  <li>The result is non-null.</li>
      * </ul>
      *
      * @param base the base that the {@code s} is written in
@@ -839,10 +844,12 @@ public final class MathUtils {
         if (base < 2)
             throw new IllegalArgumentException("base must be at least 2");
         if (s.isEmpty())
-            throw new IllegalArgumentException("improperly-formatted String");
+            return BigInteger.ZERO;
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
+            if (s.isEmpty())
+                throw new IllegalArgumentException("improperly-formatted String");
             negative = true;
         }
         List<Integer> digits;
@@ -867,7 +874,12 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code s} must either be composed of the digits '0' through '9' and 'A' through 'Z', or a sequence of
-     *  decimal numbers, each surrounded by parentheses. In either case there may be an optional leading '-'.</li>
+     *  non-negative decimal integers, each surrounded by parentheses. In either case there may be an optional leading
+     *  '-'. {@code s} may also be empty, but "-" is not permitted.</li>
+     *  <li>If {@code base} is between 2 and 36, {@code s} may only include the corresponding characters, and the
+     *  optional leading '-'. If {@code base} is greater than 36, {@code s} must be composed of decimal integers
+     *  surrounded by parentheses (with the optional leading '-'), each integer being non-negative and less than
+     *  {@code base}.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -879,10 +891,12 @@ public final class MathUtils {
         if (lt(base, BigInteger.valueOf(2)))
             throw new IllegalArgumentException("base must be at least 2");
         if (s.isEmpty())
-            throw new IllegalArgumentException("improperly-formatted String");
+            return BigInteger.ZERO;
         boolean negative = false;
         if (head(s) == '-') {
             s = tail(s);
+            if (s.isEmpty())
+                throw new IllegalArgumentException("improperly-formatted String");
             negative = true;
         }
         List<BigInteger> digits;
