@@ -213,7 +213,7 @@ public class RandomProvider implements IterableProvider {
     //b - a + 1
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        return IterableUtils.range(a, b);
+        return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
     }
 
     @Override
@@ -1296,7 +1296,7 @@ public class RandomProvider implements IterableProvider {
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
+            private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override
@@ -1336,7 +1336,7 @@ public class RandomProvider implements IterableProvider {
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
-            private final Iterator<Character> csi = cs.iterator();
+            private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override

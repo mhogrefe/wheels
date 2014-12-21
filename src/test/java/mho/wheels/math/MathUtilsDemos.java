@@ -2,16 +2,21 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.lt;
 
 public class MathUtilsDemos {
@@ -475,6 +480,69 @@ public class MathUtilsDemos {
             assert p.a != null;
             assert p.b != null;
             System.out.println("toStringBase(" + p.b + ", " + p.a + ") = " + toStringBase(p.b, p.a));
+        }
+    }
+
+    private static void demoFromStringBase_int_String() {
+        initialize();
+        Iterable<Pair<Integer, String>> ps = P.dependentPairs(
+                P.range(2),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (b <= 36) {
+                        positiveStrings = P.strings(map(MathUtils::toDigit, P.range(0, b - 1)));
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                P.lists(P.range(0, b - 1))
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
+        }
+    }
+
+    private static void demoFromStringBase_BigInteger_String() {
+        initialize();
+        Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
+                P.range(BigInteger.valueOf(2)),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (le(b, BigInteger.valueOf(36))) {
+                        positiveStrings = P.strings(
+                                map(
+                                        i -> MathUtils.toDigit(i.intValueExact()),
+                                        (Iterable<BigInteger>) P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
+                                )
+                        );
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                P.lists(P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE)))
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
 }
