@@ -929,6 +929,8 @@ public final class MathUtils {
      * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
      */
     public static @NotNull BigInteger logarithmicMux(@NotNull BigInteger x, @NotNull BigInteger y) {
+        if (x.signum() == -1 || y.signum() == -1)
+            throw new ArithmeticException("neither integer can be negative");
         return x.shiftLeft(1).add(BigInteger.ONE).shiftLeft(y.intValueExact()).subtract(BigInteger.ONE);
     }
 
@@ -946,6 +948,8 @@ public final class MathUtils {
      * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("input cannot be negative");
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
         return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
@@ -968,9 +972,12 @@ public final class MathUtils {
      * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
      */
     public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
-        Iterable<Iterable<Boolean>> xBits = map(Arrays::asList, bits(x));
-        Iterable<Iterable<Boolean>> yBits = map(w -> w, windows(2, bits(y)));
-        return fromBits(concat(IterableUtils.mux(Arrays.asList(xBits, yBits))));
+        List<Boolean> xBits = toList(bits(x));
+        List<Boolean> yBits = toList(bits(y));
+        int outputSize = (xBits.size() + yBits.size()) * 2;
+        Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
+        Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
+        return fromBits(take(outputSize, concat(IterableUtils.mux(Arrays.asList(yChunks, xChunks)))));
     }
 
     /**
@@ -988,9 +995,9 @@ public final class MathUtils {
      */
     public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
         List<Boolean> bits = toList(bits(n));
-        Iterable<Boolean> aMask = cycle(Arrays.asList(true, false, false));
-        Iterable<Boolean> bMask = cycle(Arrays.asList(false, true, true));
-        return new Pair<>(fromBits(select(bMask, bits)), fromBits(select(aMask, bits)));
+        Iterable<Boolean> xMask = cycle(Arrays.asList(false, true, true));
+        Iterable<Boolean> yMask = cycle(Arrays.asList(true, false, false));
+        return new Pair<>(fromBits(select(xMask, bits)), fromBits(select(yMask, bits)));
     }
 
     /**

@@ -1194,6 +1194,76 @@ public class MathUtilsTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    @Test
+    public void testLogarithmicMux() {
+        aeq(logarithmicMux(BigInteger.valueOf(0), BigInteger.valueOf(0)), 0);
+        aeq(logarithmicMux(BigInteger.valueOf(0), BigInteger.valueOf(1)), 1);
+        aeq(logarithmicMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
+        aeq(logarithmicMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 11263);
+        aeq(logarithmicMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 671);
+        try {
+            logarithmicMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            logarithmicMux(BigInteger.valueOf(5), BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            logarithmicMux(BigInteger.valueOf(-5), BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testLogarithmicDemux() {
+        aeq(logarithmicDemux(BigInteger.ZERO), "(0, 0)");
+        aeq(logarithmicDemux(BigInteger.ONE), "(0, 1)");
+        aeq(logarithmicDemux(BigInteger.valueOf(2)), "(1, 0)");
+        aeq(logarithmicDemux(BigInteger.valueOf(11263)), "(5, 10)");
+        aeq(logarithmicDemux(BigInteger.valueOf(671)), "(10, 5)");
+        aeq(logarithmicDemux(BigInteger.valueOf(1000000)), "(500000, 0)");
+        try {
+            logarithmicDemux(BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testSquareRootMux() {
+        aeq(squareRootMux(BigInteger.valueOf(0), BigInteger.valueOf(0)), 0);
+        aeq(squareRootMux(BigInteger.valueOf(0), BigInteger.valueOf(1)), 1);
+        aeq(squareRootMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
+        aeq(squareRootMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 538);
+        aeq(squareRootMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 101);
+        try {
+            squareRootMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            squareRootMux(BigInteger.valueOf(5), BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            squareRootMux(BigInteger.valueOf(-5), BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testSquareRootDemux() {
+        aeq(squareRootDemux(BigInteger.ZERO), "(0, 0)");
+        aeq(squareRootDemux(BigInteger.ONE), "(0, 1)");
+        aeq(squareRootDemux(BigInteger.valueOf(2)), "(1, 0)");
+        aeq(squareRootDemux(BigInteger.valueOf(538)), "(5, 10)");
+        aeq(squareRootDemux(BigInteger.valueOf(101)), "(10, 5)");
+        aeq(squareRootDemux(BigInteger.valueOf(1000000)), "(7680, 76)");
+        try {
+            squareRootDemux(BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     private static void aeq(Iterable<?> a, Object b) {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
