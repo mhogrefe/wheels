@@ -1,7 +1,7 @@
 package mho.wheels.math;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import mho.wheels.iterables.IterableUtils;
-import mho.wheels.misc.Readers;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -912,12 +912,80 @@ public final class MathUtils {
         return negative ? result.negate() : result;
     }
 
+    /**
+     * Bijectively maps two natural {@code BigInteger}s to one natural {@code BigInteger} in such a way that the result
+     * is O({@code x}2<sup>{@code y}</sup>). In other words, the contribution of {@code x} is approximately the base-2
+     * log of the contribution of {@code y}. The inverse of this method is
+     * {@link mho.wheels.math.MathUtils#logarithmicDemux}.
+     *
+     * <ul>
+     *  <li>{@code x} must be non-negative.</li>
+     *  <li>{@code y} must be non-negative.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first {@code BigInteger}
+     * @param y the second {@code BigInteger}
+     * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
+     */
+    public static @NotNull BigInteger logarithmicMux(@NotNull BigInteger x, @NotNull BigInteger y) {
+        return x.shiftLeft(1).add(BigInteger.ONE).shiftLeft(y.intValueExact()).subtract(BigInteger.ONE);
+    }
+
+    /**
+     * Bijectively maps one natural {@code BigInteger} to two natural {@code BigInteger}s in such a way that the second
+     * is "typically" about the base-2 log of the first. More precisely, this method is the inverse of
+     * {@link mho.wheels.math.MathUtils#logarithmicMux}.
+     *
+     * <ul>
+     *  <li>{@code n} must be non-negative.</li>
+     *  <li>The result is non-null and both of its elements are non-negative.</li>
+     * </ul>
+     *
+     * @param n a {@code BigInteger}
+     * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
+     */
     public static @NotNull Pair<BigInteger, BigInteger> logarithmicDemux(@NotNull BigInteger n) {
         n = n.add(BigInteger.ONE);
         int exp = n.getLowestSetBit();
         return new Pair<>(n.shiftRight(exp + 1), BigInteger.valueOf(exp));
     }
 
+    /**
+     * Bijectively maps two natural {@code BigInteger}s to one natural {@code BigInteger} in such a way that the result
+     * is O({@code x}{@code y}<sup>2</sup>). In other words, the contribution of {@code x} is approximately the square
+     * root of the contribution of {@code y}. The inverse of this method is
+     * {@link mho.wheels.math.MathUtils#squareRootDemux}.
+     *
+     * <ul>
+     *  <li>{@code x} must be non-negative.</li>
+     *  <li>{@code y} must be non-negative.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param x the first {@code BigInteger}
+     * @param y the second {@code BigInteger}
+     * @return a {@code BigInteger} generated bijectively from {@code x} and {@code y}
+     */
+    public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
+        Iterable<Iterable<Boolean>> xBits = map(Arrays::asList, bits(x));
+        Iterable<Iterable<Boolean>> yBits = map(w -> w, windows(2, bits(y)));
+        return fromBits(concat(IterableUtils.mux(Arrays.asList(xBits, yBits))));
+    }
+
+    /**
+     * Bijectively maps one natural {@code BigInteger} to two natural {@code BigInteger}s in such a way that the second
+     * is "typically" about the square root of the first. More precisely, this method is the inverse of
+     * {@link mho.wheels.math.MathUtils#squareRootMux}.
+     *
+     * <ul>
+     *  <li>{@code n} must be non-negative.</li>
+     *  <li>The result is non-null and both of its elements are non-negative.</li>
+     * </ul>
+     *
+     * @param n a {@code BigInteger}
+     * @return a pair of {@code BigInteger}s generated bijectively from {@code n}
+     */
     public static @NotNull Pair<BigInteger, BigInteger> squareRootDemux(@NotNull BigInteger n) {
         List<Boolean> bits = toList(bits(n));
         Iterable<Boolean> aMask = cycle(Arrays.asList(true, false, false));
@@ -925,6 +993,42 @@ public final class MathUtils {
         return new Pair<>(fromBits(select(bMask, bits)), fromBits(select(aMask, bits)));
     }
 
+    /**
+     * Bijectively maps a list of natural {@code BigInteger}s to one natural {@code BigInteger} in such a way that the
+     * result is O(max({@code xs})<sup>|{@code xs}|</sup>), so the contribution of each element of {@code xs} is
+     * approximately equal. The bijection is between the naturals and list of a fixed size, not all lists. The empty
+     * list maps to 0. The inverse of this method is {@link mho.wheels.math.MathUtils#demux}.
+     *
+     * <ul>
+     *  <li>Every element of {@code xs} must be non-negative.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param xs the list of {@code BigInteger}s
+     * @return a {@code BigInteger} generated bijectively from {@code xs}
+     */
+    public static @NotNull BigInteger mux(@NotNull List<BigInteger> xs) {
+        return fromBits(IterableUtils.mux(toList(map(MathUtils::bits, xs))));
+    }
+
+    /**
+     * Bijectively maps one natural {@code BigInteger} to a list of natural {@code BigInteger}s in such a way that
+     * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
+     * {@link mho.wheels.math.MathUtils#mux}. The bijection is between the naturals and list of a fixed size, not all
+     * lists. If {@code lines} is 0, the only acceptable {@code n} is 0, which maps to the empty list. The inverse of
+     * this method is {@link mho.wheels.math.MathUtils#mux}.
+     *
+     * <ul>
+     *  <li>{@code lines} must be non-negative.</li>
+     *  <li>{@code n} must be non-negative.</li>
+     *  <li>If {@code lines} is 0, {@code n} must also be 0.</li>
+     *  <li>The result is non-null and all of its elements are non-negative.</li>
+     * </ul>
+     *
+     * @param lines the number of {@code BigIntegers} to map {@code n} to
+     * @param n a {@code BigInteger}
+     * @return a list of {@code BigInteger}s generated bijectively from {@code n}
+     */
     public static @NotNull List<BigInteger> demux(int lines, @NotNull BigInteger n) {
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(lines, BigInteger.ZERO));
