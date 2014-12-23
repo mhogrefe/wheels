@@ -1015,7 +1015,10 @@ public final class MathUtils {
      * @return a {@code BigInteger} generated bijectively from {@code xs}
      */
     public static @NotNull BigInteger mux(@NotNull List<BigInteger> xs) {
-        return fromBits(IterableUtils.mux(toList(map(MathUtils::bits, xs))));
+        if (xs.isEmpty()) return BigInteger.ZERO;
+        Iterable<Boolean> muxedBits = IterableUtils.mux(toList(map(x -> concat(bits(x), repeat(false)), reverse(xs))));
+        int outputSize = maximum(map(BigInteger::bitLength, xs)) * xs.size();
+        return fromBits(take(outputSize, muxedBits));
     }
 
     /**

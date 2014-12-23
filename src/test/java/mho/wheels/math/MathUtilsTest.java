@@ -1201,6 +1201,7 @@ public class MathUtilsTest {
         aeq(logarithmicMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
         aeq(logarithmicMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 11263);
         aeq(logarithmicMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 671);
+        aeq(logarithmicMux(BigInteger.valueOf(500000), BigInteger.ZERO), 1000000);
         try {
             logarithmicMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
             fail();
@@ -1236,6 +1237,7 @@ public class MathUtilsTest {
         aeq(squareRootMux(BigInteger.valueOf(1), BigInteger.valueOf(0)), 2);
         aeq(squareRootMux(BigInteger.valueOf(5), BigInteger.valueOf(10)), 538);
         aeq(squareRootMux(BigInteger.valueOf(10), BigInteger.valueOf(5)), 101);
+        aeq(squareRootMux(BigInteger.valueOf(7680), BigInteger.valueOf(76)), 1000000);
         try {
             squareRootMux(BigInteger.valueOf(-5), BigInteger.valueOf(5));
             fail();
@@ -1262,6 +1264,42 @@ public class MathUtilsTest {
             squareRootDemux(BigInteger.valueOf(-5));
             fail();
         } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testMux() {
+        aeq(mux(readBigIntegerList("[]").get()), 0);
+        aeq(mux(readBigIntegerList("[0]").get()), 0);
+        aeq(mux(readBigIntegerList("[1]").get()), 1);
+        aeq(mux(readBigIntegerList("[2]").get()), 2);
+        aeq(mux(readBigIntegerList("[0, 0]").get()), 0);
+        aeq(mux(readBigIntegerList("[0, 1]").get()), 1);
+        aeq(mux(readBigIntegerList("[1, 0]").get()), 2);
+        aeq(mux(readBigIntegerList("[5, 10]").get()), 102);
+        aeq(mux(readBigIntegerList("[10, 5]").get()), 153);
+        aeq(mux(readBigIntegerList("[784, 904]").get()), 1000000);
+        aeq(mux(readBigIntegerList("[0, 0, 0]").get()), 0);
+        aeq(mux(readBigIntegerList("[10, 10, 10]").get()), 3640);
+        aeq(mux(readBigIntegerList("[48, 96, 76]").get()), 1000000);
+        aeq(mux(readBigIntegerList("[1, 2, 3, 4]").get()), 362);
+        aeq(mux(readBigIntegerList("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]").get()), 1000000);
+    }
+
+    @Test
+    public void testDemux() {
+        aeq(demux(0, BigInteger.ZERO), "[]");
+        aeq(demux(1, BigInteger.ZERO), "[0]");
+        aeq(demux(1, BigInteger.ONE), "[1]");
+        aeq(demux(1, BigInteger.valueOf(2)), "[2]");
+        aeq(demux(2, BigInteger.ZERO), "[0, 0]");
+        aeq(demux(2, BigInteger.ONE), "[0, 1]");
+        aeq(demux(2, BigInteger.valueOf(2)), "[1, 0]");
+        aeq(demux(2, BigInteger.valueOf(1000000)), "[784, 904]");
+        aeq(demux(3, BigInteger.ZERO), "[0, 0, 0]");
+        aeq(demux(3, BigInteger.valueOf(3640)), "[10, 10, 10]");
+        aeq(demux(3, BigInteger.valueOf(1000000)), "[48, 96, 76]");
+        aeq(demux(4, BigInteger.valueOf(362)), "[1, 2, 3, 4]");
+        aeq(demux(10, BigInteger.valueOf(1000000)), "[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]");
     }
 
     private static void aeq(Iterable<?> a, Object b) {
