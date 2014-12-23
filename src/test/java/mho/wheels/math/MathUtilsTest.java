@@ -1283,6 +1283,14 @@ public class MathUtilsTest {
         aeq(mux(readBigIntegerList("[48, 96, 76]").get()), 1000000);
         aeq(mux(readBigIntegerList("[1, 2, 3, 4]").get()), 362);
         aeq(mux(readBigIntegerList("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]").get()), 1000000);
+        try {
+            mux(readBigIntegerList("[1, 2, -3]").get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            mux(readBigIntegerListWithNulls("[1, null, 2]").get());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -1300,6 +1308,22 @@ public class MathUtilsTest {
         aeq(demux(3, BigInteger.valueOf(1000000)), "[48, 96, 76]");
         aeq(demux(4, BigInteger.valueOf(362)), "[1, 2, 3, 4]");
         aeq(demux(10, BigInteger.valueOf(1000000)), "[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]");
+        try {
+            demux(0, BigInteger.ONE);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            demux(-2, BigInteger.ZERO);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            demux(-2, BigInteger.ONE);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            demux(2, BigInteger.valueOf(-5));
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     private static void aeq(Iterable<?> a, Object b) {
@@ -1312,5 +1336,9 @@ public class MathUtilsTest {
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
         return Readers.readList(Readers::findBigIntegerIn, s);
+    }
+
+    private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readList(t -> Readers.findInWithNulls(Readers::findBigIntegerIn, t), s);
     }
 }

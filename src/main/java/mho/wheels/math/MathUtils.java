@@ -1040,6 +1040,10 @@ public final class MathUtils {
      * @return a list of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull List<BigInteger> demux(int lines, @NotNull BigInteger n) {
+        if (lines == 0 && !n.equals(BigInteger.ZERO))
+            throw new ArithmeticException("if muxing into 0 lines, n must also be 0");
+        if (lines < 0)
+            throw new ArithmeticException("cannot demux into a negative number of lines");
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(lines, BigInteger.ZERO));
         }
