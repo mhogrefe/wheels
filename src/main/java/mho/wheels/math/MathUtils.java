@@ -1,6 +1,5 @@
 package mho.wheels.math;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -974,7 +973,7 @@ public final class MathUtils {
     public static @NotNull BigInteger squareRootMux(@NotNull BigInteger x, @NotNull BigInteger y) {
         List<Boolean> xBits = toList(bits(x));
         List<Boolean> yBits = toList(bits(y));
-        int outputSize = (xBits.size() + yBits.size()) * 2;
+        int outputSize = max(xBits.size(), yBits.size()) * 3;
         Iterable<Iterable<Boolean>> xChunks = map(w -> w, chunk(2, concat(xBits, repeat(false))));
         Iterable<Iterable<Boolean>> yChunks = map(Arrays::asList, concat(yBits, repeat(false)));
         return fromBits(take(outputSize, concat(IterableUtils.mux(Arrays.asList(yChunks, xChunks)))));

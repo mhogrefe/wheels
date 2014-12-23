@@ -545,4 +545,76 @@ public class MathUtilsDemos {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
+
+    private static void demoLogarithmicMux() {
+        initialize();
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = P.pairs(P.naturalBigIntegers());
+        } else {
+            //noinspection Convert2MethodRef
+            ps = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("logarithmicMux(" + p.a + ", " + p.b + ") = " + logarithmicMux(p.a, p.b));
+        }
+    }
+
+    private static void demoLogarithmicDemux() {
+        initialize();
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            System.out.println("logarithmicDemux(" + i + ") = " + logarithmicDemux(i));
+        }
+    }
+
+    private static void demoSquareRootMux() {
+        initialize();
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("squareRootMux(" + p.a + ", " + p.b + ") = " + squareRootMux(p.a, p.b));
+        }
+    }
+
+    private static void demoSquareRootDemux() {
+        initialize();
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            System.out.println("squareRootDemux(" + i + ") = " + squareRootDemux(i));
+        }
+    }
+
+    private static void demoMux() {
+        initialize();
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.naturalBigIntegers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("mux(" + listString + ") = " + mux(is));
+        }
+    }
+
+    private static void demoDemux() {
+        initialize();
+        Iterable<Pair<BigInteger, Integer>> ps;
+        Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);
+        if (P instanceof ExhaustiveProvider) {
+            ps = cons(
+                    zeroPair,
+                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
+            );
+        } else {
+            ps = ((RandomProvider) P).addSpecialElement(
+                    zeroPair,
+                    P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).positiveIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("demux(" + p.b + ", " + p.a + ") = " + demux(p.b, p.a));
+        }
+    }
 }

@@ -24,7 +24,7 @@ public class RandomProvider implements IterableProvider {
     protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
     protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
     protected static final int MEAN_LIST_SIZE = 10;
-    protected static final int EMPTY_ELEMENT_RATIO = 50;
+    protected static final int SPECIAL_ELEMENT_RATIO = 50;
 
     protected final @NotNull Random generator;
 
@@ -1117,21 +1117,21 @@ public class RandomProvider implements IterableProvider {
         return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
     }
 
-    private @NotNull <T> Iterable<T> addEmptyElement(@Nullable T x, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> emptySelector = randomInts(EMPTY_ELEMENT_RATIO).iterator();
-            boolean emptySelection = emptySelector.next() == 0;
+            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
+            boolean specialSelection = specialSelector.next() == 0;
 
             @Override
             public boolean hasNext() {
-                return emptySelection || xsi.hasNext();
+                return specialSelection || xsi.hasNext();
             }
 
             @Override
             public T next() {
-                boolean previousSelection = emptySelection;
-                emptySelection = emptySelector.next() == 0;
+                boolean previousSelection = specialSelection;
+                specialSelection = specialSelector.next() == 0;
                 return previousSelection ? x : xsi.next();
             }
 
@@ -1144,17 +1144,17 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
-        return addEmptyElement(null, xs);
+        return addSpecialElement(null, xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return addEmptyElement(Optional.<T>empty(), map(Optional::of, xs));
+        return addSpecialElement(Optional.<T>empty(), map(Optional::of, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return addEmptyElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+        return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     public static void main(String[] args) {
