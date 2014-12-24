@@ -129,7 +129,8 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls, ending with {@code true}.</li>
+     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
+     *  {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -169,7 +170,8 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls, ending with {@code true}.</li>
+     *  <li>The result is a finite {@code Iterable}, containing no nulls. If it is non-empty, the last element is
+     *  {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -255,7 +257,8 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls, beginning with {@code true}.</li>
+     *  <li>The result is a finite {@code Iterable}, containing no nullsIf it is non-empty, the first element is
+     *  {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -274,7 +277,8 @@ public final class MathUtils {
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nulls, beginning with {@code true}.</li>
+     *  <li>The result is a finite {@code Iterable}, containing no nullsIf it is non-empty, the first element is
+     *  {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -373,8 +377,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose last element is greater
-     *  than zero.</li>
+     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose last element (if it
+     *  exists) is non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋+1 otherwise
@@ -418,8 +422,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose last element is non-
-     *  zero.</li>
+     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose last element (if it
+     *  exists) is non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋+1 otherwise
@@ -514,8 +518,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element is greater
-     *  than zero.</li>
+     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element (if it
+     *  exists) is non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋ otherwise
@@ -536,8 +540,8 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element is greater
-     *  than zero.</li>
+     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element (if it
+     *  exists) is non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋ otherwise
