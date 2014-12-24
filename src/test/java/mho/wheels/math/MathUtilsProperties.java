@@ -48,6 +48,9 @@ public class MathUtilsProperties {
             propertiesBitsPadded_int_int();
             compareImplementationsBitsPadded_int_int();
             propertiesBitsPadded_int_BigInteger();
+            propertiesBigEndianBits_int();
+            compareImplementationsBigEndianBits_int();
+            propertiesBigEndianBits_BigInteger();
         }
         System.out.println("Done");
     }
@@ -195,6 +198,7 @@ public class MathUtilsProperties {
         for (int i : take(LIMIT, P.naturalIntegers())) {
             List<Boolean> bits = toList(bits(i));
             aeq(Integer.toString(i), bits, bits_int_simplest(i));
+            aeq(Integer.toString(i), bits, reverse(bigEndianBits(i)));
             assertTrue(Integer.toString(i), all(b -> b != null, bits));
             assertEquals(Integer.toString(i), fromBits(bits).intValueExact(), i);
             assertEquals(Integer.toString(i), bits.size(), BigInteger.valueOf(i).bitLength());
@@ -241,6 +245,7 @@ public class MathUtilsProperties {
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             List<Boolean> bits = toList(bits(i));
+            aeq(i.toString(), bits, reverse(bigEndianBits(i)));
             assertTrue(i.toString(), all(b -> b != null, bits));
             assertEquals(i.toString(), fromBits(bits), i);
             assertEquals(i.toString(), bits.size(), i.bitLength());
@@ -279,6 +284,7 @@ public class MathUtilsProperties {
             assert p.b != null;
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             aeq(p.toString(), bits, bitsPadded_int_int_simplest(p.b, p.a));
+            aeq(p.toString(), bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
             assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
         }
@@ -366,6 +372,7 @@ public class MathUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
+            aeq(p.toString(), bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
             assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
         }
@@ -404,6 +411,84 @@ public class MathUtilsProperties {
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static @NotNull Iterable<Boolean> bigEndianBits_int_simplest(int n) {
+        return bigEndianBits(BigInteger.valueOf(n));
+    }
+
+    private static void propertiesBigEndianBits_int() {
+        initialize();
+        System.out.println("\t\ttesting bigEndianBits(int) properties...");
+
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            List<Boolean> bits = toList(bigEndianBits(i));
+            aeq(Integer.toString(i), bits, bigEndianBits_int_simplest(i));
+            aeq(Integer.toString(i), bits, reverse(bits(i)));
+            assertTrue(Integer.toString(i), all(b -> b != null, bits));
+            assertEquals(Integer.toString(i), fromBigEndianBits(bits).intValueExact(), i);
+            assertEquals(Integer.toString(i), bits.size(), BigInteger.valueOf(i).bitLength());
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            List<Boolean> bits = toList(bigEndianBits(i));
+            assertFalse(Integer.toString(i), bits.isEmpty());
+            assertEquals(Integer.toString(i), head(bits), true);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                bigEndianBits(i);
+                fail(Integer.toString(i));
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsBigEndianBits_int() {
+        initialize();
+        System.out.println("\t\tcomparing bigEndianBits(int) implementations...");
+
+        long totalTime = 0;
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            long time = System.nanoTime();
+            toList(bigEndianBits_int_simplest(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            long time = System.nanoTime();
+            toList(bigEndianBits(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesBigEndianBits_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting bigEndianBits(BigInteger) properties...");
+
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            List<Boolean> bits = toList(bigEndianBits(i));
+            aeq(i.toString(), bits, reverse(bits(i)));
+            assertTrue(i.toString(), all(b -> b != null, bits));
+            assertEquals(i.toString(), fromBigEndianBits(bits), i);
+            assertEquals(i.toString(), bits.size(), i.bitLength());
+        }
+
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            List<Boolean> bits = toList(bigEndianBits(i));
+            assertFalse(i.toString(), bits.isEmpty());
+            assertEquals(i.toString(), head(bits), true);
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                bigEndianBits(i);
+                fail(i.toString());
             } catch (ArithmeticException ignored) {}
         }
     }
