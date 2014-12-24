@@ -4,10 +4,12 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -40,6 +42,8 @@ public class MathUtilsProperties {
             compareImplementationsGcd_int_int();
             propertiesGcd_long_long();
             compareImplementationsGcd_long_long();
+            propertiesBits_int();
+            compareImplementationsBits_int();
         }
         System.out.println("Done");
     }
@@ -174,5 +178,59 @@ public class MathUtilsProperties {
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static @NotNull Iterable<Boolean> bits_int_simplest(int n) {
+        return bits(BigInteger.valueOf(n));
+    }
+
+    private static void propertiesBits_int() {
+        initialize();
+        System.out.println("\t\ttesting bits(int) properties...");
+
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            List<Boolean> bits = toList(bits(i));
+            aeq(Integer.toString(i), bits, bits_int_simplest(i));
+            assertTrue(Integer.toString(i), all(b -> b != null, bits));
+            assertEquals(Integer.toString(i), fromBits(bits).intValueExact(), i);
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegers())) {
+            List<Boolean> bits = toList(bits(i));
+            assertFalse(Integer.toString(i), bits.isEmpty());
+            assertEquals(Integer.toString(i), last(bits), true);
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                bits(i);
+                fail(Integer.toString(i));
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsBits_int() {
+        initialize();
+        System.out.println("\t\tcomparing bits(int) implementations...");
+
+        long totalTime = 0;
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            long time = System.nanoTime();
+            toList(bits_int_simplest(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            long time = System.nanoTime();
+            toList(bits(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
+        assertTrue(message, equal(xs, ys));
     }
 }
