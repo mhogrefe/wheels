@@ -45,6 +45,9 @@ public class MathUtilsProperties {
             propertiesBits_int();
             compareImplementationsBits_int();
             propertiesBits_BigInteger();
+            propertiesBitsPadded_int_int();
+            compareImplementationsBitsPadded_int_int();
+            propertiesBitsPadded_int_BigInteger();
         }
         System.out.println("Done");
     }
@@ -194,6 +197,7 @@ public class MathUtilsProperties {
             aeq(Integer.toString(i), bits, bits_int_simplest(i));
             assertTrue(Integer.toString(i), all(b -> b != null, bits));
             assertEquals(Integer.toString(i), fromBits(bits).intValueExact(), i);
+            assertEquals(Integer.toString(i), bits.size(), BigInteger.valueOf(i).bitLength());
         }
 
         for (int i : take(LIMIT, P.positiveIntegers())) {
@@ -239,6 +243,7 @@ public class MathUtilsProperties {
             List<Boolean> bits = toList(bits(i));
             assertTrue(i.toString(), all(b -> b != null, bits));
             assertEquals(i.toString(), fromBits(bits), i);
+            assertEquals(i.toString(), bits.size(), i.bitLength());
         }
 
         for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
@@ -251,6 +256,154 @@ public class MathUtilsProperties {
             try {
                 bits(i);
                 fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static @NotNull Iterable<Boolean> bitsPadded_int_int_simplest(int length, int n) {
+        return bitsPadded(length, BigInteger.valueOf(n));
+    }
+
+    private static void propertiesBitsPadded_int_int() {
+        initialize();
+        System.out.println("\t\ttesting bitsPadded(int, int) properties...");
+
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
+            aeq(p.toString(), bits, bitsPadded_int_int_simplest(p.b, p.a));
+            assertTrue(p.toString(), all(b -> b != null, bits));
+            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+        }
+
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
+            assertEquals(p.toString(), Integer.valueOf(fromBits(bits).intValueExact()), p.a);
+        }
+
+        Iterable<Pair<Integer, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.negativeIntegers());
+        } else {
+            psFail = P.pairs(P.naturalIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.naturalIntegers());
+        } else {
+            psFail = P.pairs(P.negativeIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsBitsPadded_int_int() {
+        initialize();
+        System.out.println("\t\tcomparing bitsPadded(int, int) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toList(bitsPadded_int_int_simplest(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toList(bitsPadded(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesBitsPadded_int_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting bitsPadded(int, BigInteger) properties...");
+
+        Iterable<Pair<BigInteger, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
+            assertTrue(p.toString(), all(b -> b != null, bits));
+            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+        }
+
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bitsPadded(p.b, p.a));
+            assertEquals(p.toString(), fromBits(bits), p.a);
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.negativeIntegers());
+        } else {
+            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeBigIntegers(), P.naturalIntegers());
+        } else {
+            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bitsPadded(p.b, p.a);
+                fail(p.toString());
             } catch (ArithmeticException ignored) {}
         }
     }
