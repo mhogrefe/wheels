@@ -4843,8 +4843,16 @@ public final class IterableUtils {
         return false;
     }
 
-    public static <T> boolean isSubsetOf(@NotNull String s, @NotNull String t) {
+    public static boolean isSubsetOf(@NotNull String s, @NotNull String t) {
         return isSubsetOf(fromString(s), fromString(t));
+    }
+
+    public static @NotNull <T> Iterable<T> intersect(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return filter(x -> elem(x, ys), xs);
+    }
+
+    public static @NotNull String intersect(@NotNull String s, @NotNull String t) {
+        return filter(c -> elem(c, t), s);
     }
 
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
