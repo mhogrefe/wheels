@@ -44,6 +44,7 @@ public class MathUtilsProperties {
             compareImplementationsGcd_long_long();
             propertiesBits_int();
             compareImplementationsBits_int();
+            propertiesBits_BigInteger();
         }
         System.out.println("Done");
     }
@@ -228,6 +229,30 @@ public class MathUtilsProperties {
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesBits_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting bits(BigInteger) properties...");
+
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            List<Boolean> bits = toList(bits(i));
+            assertTrue(i.toString(), all(b -> b != null, bits));
+            assertEquals(i.toString(), fromBits(bits), i);
+        }
+
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            List<Boolean> bits = toList(bits(i));
+            assertFalse(i.toString(), bits.isEmpty());
+            assertEquals(i.toString(), last(bits), true);
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                bits(i);
+                fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
