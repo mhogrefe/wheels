@@ -51,6 +51,9 @@ public class MathUtilsProperties {
             propertiesBigEndianBits_int();
             compareImplementationsBigEndianBits_int();
             propertiesBigEndianBits_BigInteger();
+            propertiesBigEndianBitsPadded_int_int();
+            compareImplementationsBigEndianBitsPadded_int_int();
+            propertiesBigEndianBitsPadded_int_BigInteger();
         }
         System.out.println("Done");
     }
@@ -489,6 +492,158 @@ public class MathUtilsProperties {
             try {
                 bigEndianBits(i);
                 fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static
+    @NotNull
+    Iterable<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
+        return bigEndianBitsPadded(length, BigInteger.valueOf(n));
+    }
+
+    private static void propertiesBigEndianBitsPadded_int_int() {
+        initialize();
+        System.out.println("\t\ttesting bigEndianBitsPadded(int, int) properties...");
+
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bigEndianBitsPadded(p.b, p.a));
+            aeq(p.toString(), bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
+            aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
+            assertTrue(p.toString(), all(b -> b != null, bits));
+            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+        }
+
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bigEndianBitsPadded(p.b, p.a));
+            assertEquals(p.toString(), Integer.valueOf(fromBigEndianBits(bits).intValueExact()), p.a);
+        }
+
+        Iterable<Pair<Integer, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.negativeIntegers());
+        } else {
+            psFail = P.pairs(P.naturalIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bigEndianBitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.naturalIntegers());
+        } else {
+            psFail = P.pairs(P.negativeIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bigEndianBitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsBigEndianBitsPadded_int_int() {
+        initialize();
+        System.out.println("\t\tcomparing bigEndianBitsPadded(int, int) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toList(bigEndianBitsPadded_int_int_simplest(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toList(bigEndianBitsPadded(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesBigEndianBitsPadded_int_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting bigEndianBitsPadded(int, BigInteger) properties...");
+
+        Iterable<Pair<BigInteger, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
+        } else {
+            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bigEndianBitsPadded(p.b, p.a));
+            aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
+            assertTrue(p.toString(), all(b -> b != null, bits));
+            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+        }
+
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Boolean> bits = toList(bigEndianBitsPadded(p.b, p.a));
+            assertEquals(p.toString(), fromBigEndianBits(bits), p.a);
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.negativeIntegers());
+        } else {
+            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bigEndianBitsPadded(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeBigIntegers(), P.naturalIntegers());
+        } else {
+            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                bigEndianBitsPadded(p.b, p.a);
+                fail(p.toString());
             } catch (ArithmeticException ignored) {}
         }
     }
