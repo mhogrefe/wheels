@@ -228,7 +228,9 @@ public final class MathUtils {
     public static @NotNull Iterable<Boolean> bitsPadded(int length, @NotNull BigInteger n) {
         if (length < 0)
             throw new ArithmeticException("cannot pad with a negative length");
-        return pad(false, length, bits(n));
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot get bits of a negative number");
+        return take(length, map(n::testBit, range(0)));
     }
 
     /**
@@ -314,27 +316,6 @@ public final class MathUtils {
     }
 
     /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of bits in big-endian order (most significant bits first).
-     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
-     *
-     * <ul>
-     *  <li>{@code bits} must be finite and every element must be non-null.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @param bits an {@code Iterable} of bits in big-endian order
-     * @return The {@code BigInteger} represented by {@code bits}
-     */
-    public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
-        BigInteger n = BigInteger.ZERO;
-        for (boolean bit : bits) {
-            n = n.shiftLeft(1);
-            if (bit) n = n.add(BigInteger.ONE);
-        }
-        return n;
-    }
-
-    /**
      * Builds a {@code BigInteger} from an {@code Iterable} of bits in little-endian order (least significant bits
      * first). Trailing zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
      *
@@ -347,7 +328,27 @@ public final class MathUtils {
      * @return The {@code BigInteger} represented by {@code bits}
      */
     public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
-        return fromBigEndianBits(reverse(bits));
+        BigInteger n = BigInteger.ZERO;
+        for (int i : select(bits, range(0))) {
+            n = n.setBit(i);
+        }
+        return n;
+    }
+
+    /**
+     * Builds a {@code BigInteger} from an {@code Iterable} of bits in big-endian order (most significant bits first).
+     * Leading zero (false) bits are permitted. Zero may be represented by an empty {@code Iterable}.
+     *
+     * <ul>
+     *  <li>{@code bits} must be finite and every element must be non-null.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param bits an {@code Iterable} of bits in big-endian order
+     * @return The {@code BigInteger} represented by {@code bits}
+     */
+    public static @NotNull BigInteger fromBigEndianBits(@NotNull Iterable<Boolean> bits) {
+        return fromBits(reverse(bits));
     }
 
     /**

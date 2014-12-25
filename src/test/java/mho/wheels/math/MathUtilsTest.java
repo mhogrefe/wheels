@@ -197,19 +197,6 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void testFromBigEndianBits() {
-        aeq(fromBigEndianBits(new ArrayList<>()), 0);
-        aeq(fromBigEndianBits(Arrays.asList(false, false)), 0);
-        aeq(fromBigEndianBits(Arrays.asList(false, true)), 1);
-        aeq(fromBigEndianBits(Arrays.asList(false, false, false, false, false, true, true, false)), 6);
-        aeq(fromBigEndianBits(Arrays.asList(true, true, false, true, false, false, true)), 105);
-        try {
-            fromBigEndianBits(Arrays.asList(true, null, true));
-            fail();
-        } catch (NullPointerException ignored) {}
-    }
-
-    @Test
     public void testFromBits() {
         aeq(fromBits(new ArrayList<>()), 0);
         aeq(fromBits(Arrays.asList(false, false)), 0);
@@ -218,6 +205,19 @@ public class MathUtilsTest {
         aeq(fromBits(Arrays.asList(true, false, false, true, false, true, true)), 105);
         try {
             fromBits(Arrays.asList(true, null, true));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testFromBigEndianBits() {
+        aeq(fromBigEndianBits(new ArrayList<>()), 0);
+        aeq(fromBigEndianBits(Arrays.asList(false, false)), 0);
+        aeq(fromBigEndianBits(Arrays.asList(false, true)), 1);
+        aeq(fromBigEndianBits(Arrays.asList(false, false, false, false, false, true, true, false)), 6);
+        aeq(fromBigEndianBits(Arrays.asList(true, true, false, true, false, false, true)), 105);
+        try {
+            fromBigEndianBits(Arrays.asList(true, null, true));
             fail();
         } catch (NullPointerException ignored) {}
     }
