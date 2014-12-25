@@ -54,6 +54,8 @@ public class MathUtilsProperties {
             propertiesBigEndianBitsPadded_int_int();
             compareImplementationsBigEndianBitsPadded_int_int();
             propertiesBigEndianBitsPadded_int_BigInteger();
+            propertiesFromBigEndianBits();
+            propertiesFromBits();
         }
         System.out.println("Done");
     }
@@ -645,6 +647,69 @@ public class MathUtilsProperties {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p.toString());
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesFromBigEndianBits() {
+        initialize();
+        System.out.println("\t\ttesting fromBigEndianBits(Iterable<Boolean>) properties...");
+
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            BigInteger i = fromBigEndianBits(bs);
+            assertTrue(bs.toString(), i.signum() != -1);
+            assertEquals(bs.toString(), i, fromBits(reverse(bs)));
+        }
+
+        for (List<Boolean> bs : take(LIMIT, map(xs -> toList(cons(true, xs)), P.lists(P.booleans())))) {
+            BigInteger i = fromBigEndianBits(bs);
+            aeq(bs.toString(), bs, bigEndianBits(i));
+        }
+
+        Iterable<List<Boolean>> failBss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.booleans()),
+                bs -> range(0, bs.size())
+        ));
+        for (List<Boolean> bs : take(LIMIT, failBss)) {
+            try {
+                fromBigEndianBits(bs);
+                fail(bs.toString());
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesFromBits() {
+        initialize();
+        System.out.println("\t\ttesting fromBits(Iterable<Boolean>) properties...");
+
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            BigInteger i = fromBits(bs);
+            assertTrue(bs.toString(), i.signum() != -1);
+            assertEquals(bs.toString(), i, fromBigEndianBits(reverse(bs)));
+        }
+
+        Iterable<List<Boolean>> bss = map(xs -> toList(concat(xs, Arrays.asList(true))), P.lists(P.booleans()));
+        for (List<Boolean> bs : take(LIMIT, bss)) {
+            BigInteger i = fromBits(bs);
+            aeq(bs.toString(), bs, bits(i));
+        }
+
+        Iterable<List<Boolean>> failBss = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.booleans()),
+                bs -> range(0, bs.size())
+        ));
+        for (List<Boolean> bs : take(LIMIT, failBss)) {
+            try {
+                fromBits(bs);
+                fail(bs.toString());
+            } catch (NullPointerException ignored) {}
         }
     }
 
