@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -45,6 +46,7 @@ public class MathUtilsProperties {
             propertiesBits_int();
             compareImplementationsBits_int();
             propertiesBits_BigInteger();
+            compareImplementationsBits_BigInteger();
             propertiesBitsPadded_int_int();
             compareImplementationsBitsPadded_int_int();
             propertiesBitsPadded_int_BigInteger();
@@ -244,12 +246,36 @@ public class MathUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
+    private static @NotNull Iterable<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
+        return () -> new Iterator<Boolean>() {
+            private BigInteger remaining = n;
+
+            @Override
+            public boolean hasNext() {
+                return !remaining.equals(BigInteger.ZERO);
+            }
+
+            @Override
+            public Boolean next() {
+                boolean bit = remaining.testBit(0);
+                remaining = remaining.shiftRight(1);
+                return bit;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     private static void propertiesBits_BigInteger() {
         initialize();
         System.out.println("\t\ttesting bits(BigInteger) properties...");
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             List<Boolean> bits = toList(bits(i));
+            aeq(i.toString(), bits, bits_BigInteger_alt(i));
             aeq(i.toString(), bits, reverse(bigEndianBits(i)));
             assertTrue(i.toString(), all(b -> b != null, bits));
             assertEquals(i.toString(), fromBits(bits), i);
@@ -268,6 +294,27 @@ public class MathUtilsProperties {
                 fail(i.toString());
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private static void compareImplementationsBits_BigInteger() {
+        initialize();
+        System.out.println("\t\tcomparing bits(BigInteger) implementations...");
+
+        long totalTime = 0;
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            long time = System.nanoTime();
+            toList(bits_BigInteger_alt(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            long time = System.nanoTime();
+            toList(bits(i));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
     private static @NotNull Iterable<Boolean> bitsPadded_int_int_simplest(int length, int n) {
@@ -498,9 +545,7 @@ public class MathUtilsProperties {
         }
     }
 
-    private static
-    @NotNull
-    Iterable<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
+    private static @NotNull Iterable<Boolean> bigEndianBitsPadded_int_int_simplest(int length, int n) {
         return bigEndianBitsPadded(length, BigInteger.valueOf(n));
     }
 

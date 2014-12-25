@@ -182,26 +182,7 @@ public final class MathUtils {
     public static @NotNull Iterable<Boolean> bits(@NotNull BigInteger n) {
         if (n.signum() == -1)
             throw new ArithmeticException("cannot get bits of a negative number");
-        return () -> new Iterator<Boolean>() {
-            private BigInteger remaining = n;
-
-            @Override
-            public boolean hasNext() {
-                return !remaining.equals(BigInteger.ZERO);
-            }
-
-            @Override
-            public Boolean next() {
-                boolean bit = remaining.testBit(0);
-                remaining = remaining.shiftRight(1);
-                return bit;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return take(n.bitLength(), map(n::testBit, range(0)));
     }
 
     /**
