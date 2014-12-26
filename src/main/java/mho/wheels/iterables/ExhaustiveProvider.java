@@ -138,6 +138,58 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (byte) -1);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range((byte) 0, a), IterableUtils.rangeBy((byte) -1, (byte) -1)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (short) -1);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((short) 0, a), IterableUtils.rangeBy((short) -1, (short) -1))
+            );
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0, a), IterableUtils.rangeBy(-1, -1)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1L);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0L, a), IterableUtils.rangeBy(-1L, -1L)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        if (a.signum() != 1) {
+            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(BigInteger.ZERO, a), IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return IterableUtils.range('\0', a);
+    }
+
+    @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);

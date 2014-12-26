@@ -184,6 +184,39 @@ public class RandomProvider implements IterableProvider {
         return map(i -> (char) (i + a), randomInts(65536 - a));
     }
 
+    @Override
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        return map(i -> (byte) (i - 128), randomInts(a + 129));
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        return map(i -> (short) (i - 32768), randomInts(a + 32769));
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        return map(l -> (int) (l - (1L << 32)), randomLongs(a + (1L << 31) + 1));
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        return map(
+                i -> i.subtract(BigInteger.ONE.shiftLeft(63)).longValueExact(),
+                randomBigIntegers(BigInteger.valueOf(a).add(BigInteger.ONE).add(BigInteger.ONE.shiftLeft(63)))
+        );
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return range('\0', a);
+    }
+
     //b - a + 1
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
@@ -1095,13 +1128,6 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
         return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
-    }
-
-    public static void main(String[] args) {
-        RandomProvider p = new RandomProvider();
-        for (NullableOptional<Integer> oi : take(1000, p.nullableOptionals(p.integers()))) {
-            System.out.println(oi);
-        }
     }
 
     @Override

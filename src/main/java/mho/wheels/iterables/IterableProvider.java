@@ -30,6 +30,18 @@ public interface IterableProvider {
 
     public @NotNull Iterable<Character> rangeUp(char a);
 
+    public @NotNull Iterable<Byte> rangeDown(byte a);
+
+    public @NotNull Iterable<Short> rangeDown(short a);
+
+    public @NotNull Iterable<Integer> rangeDown(int a);
+
+    public @NotNull Iterable<Long> rangeDown(long a);
+
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a);
+
+    public @NotNull Iterable<Character> rangeDown(char a);
+
     public @NotNull Iterable<Byte> range(byte a, byte b);
 
     public @NotNull Iterable<Short> range(short a, short b);
