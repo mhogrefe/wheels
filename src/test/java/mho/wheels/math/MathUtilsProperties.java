@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
@@ -756,6 +757,98 @@ public class MathUtilsProperties {
                 fail(bs.toString());
             } catch (NullPointerException ignored) {}
         }
+    }
+
+    private static @NotNull Iterable<Integer> digits_int_int_simplest(int base, int n) {
+        return map(BigInteger::intValue, digits(BigInteger.valueOf(base), BigInteger.valueOf(n)));
+    }
+
+    private static void propertiesDigits_int_int() {
+        initialize();
+        System.out.println("\t\ttesting digits(int, int) properties...");
+
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+        } else {
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Integer> digits = toList(digits(p.b, p.a));
+            aeq(p.toString(), digits, digits_int_int_simplest(p.b, p.a));
+            aeq(p.toString(), digits, reverse(bigEndianDigits(p.b, p.a)));
+            assertTrue(p.toString(), all(i -> i != null && i >= 0 && i < p.b, digits));
+            assertEquals(p.toString(), Integer.valueOf(fromDigits(p.b, digits).intValueExact()), p.a);
+            assertEquals(
+                    p.toString(),
+                    digits.size(),
+                    ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact()
+            );
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<Integer> digits = toList(digits(p.b, p.a));
+            assertFalse(p.toString(), digits.isEmpty());
+            assertNotEquals(p.toString(), last(digits), Integer.valueOf(0));
+        }
+
+        Function<Integer, Boolean> digitsToBits = i -> {
+            switch (i) {
+                case 0: return false;
+                case 1: return true;
+                default: throw new IllegalArgumentException();
+            }
+        };
+        for (int i : take(LIMIT, P.naturalIntegers())) {
+            List<Integer> digits = toList(digits(2, i));
+            aeq(Integer.toString(i), map(digitsToBits, digits), bits(i));
+        }
+
+        for (int i : take(LIMIT, P.range(2))) {
+            assertTrue(Integer.toString(i), isEmpty(digits(i, 0)));
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                bits(i);
+                fail(Integer.toString(i));
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsDigits_int_int() {
+        initialize();
+        System.out.println("\t\tcomparing digits(int, int) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+        } else {
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            long time = System.nanoTime();
+            toList(digits_int_int_simplest(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            long time = System.nanoTime();
+            toList(digits(p.b, p.a));
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
