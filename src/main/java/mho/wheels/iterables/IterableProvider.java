@@ -18,17 +18,17 @@ public interface IterableProvider {
 
     public @NotNull Iterable<RoundingMode> roundingModes();
 
-    public @NotNull Iterable<Byte> range(byte a);
+    public @NotNull Iterable<Byte> rangeUp(byte a);
 
-    public @NotNull Iterable<Short> range(short a);
+    public @NotNull Iterable<Short> rangeUp(short a);
 
-    public @NotNull Iterable<Integer> range(int a);
+    public @NotNull Iterable<Integer> rangeUp(int a);
 
-    public @NotNull Iterable<Long> range(long a);
+    public @NotNull Iterable<Long> rangeUp(long a);
 
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a);
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a);
 
-    public @NotNull Iterable<Character> range(char a);
+    public @NotNull Iterable<Character> rangeUp(char a);
 
     public @NotNull Iterable<Byte> range(byte a, byte b);
 
@@ -41,34 +41,6 @@ public interface IterableProvider {
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
 
     public @NotNull Iterable<Character> range(char a, char b);
-
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i);
-
-    public @NotNull Iterable<Short> rangeBy(short a, short i);
-
-    public @NotNull Iterable<Integer> rangeBy(int a, int i);
-
-    public @NotNull Iterable<Long> rangeBy(long a, long i);
-
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i);
-
-    public @NotNull Iterable<Character> rangeBy(char a, int i);
-
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b);
-
-    public @NotNull Iterable<Short> rangeBy(short a, short i, short b);
-
-    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b);
-
-    public @NotNull Iterable<Long> rangeBy(long a, long i, long b);
-
-    public @NotNull Iterable<BigInteger> rangeBy(
-            @NotNull BigInteger a,
-            @NotNull BigInteger i,
-            @NotNull BigInteger b
-    );
-
-    public @NotNull Iterable<Character> rangeBy(char a, int i, char b);
 
     public @NotNull Iterable<Byte> positiveBytes();
 

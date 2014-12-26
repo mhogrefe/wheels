@@ -2,9 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
@@ -12,7 +10,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
@@ -162,7 +159,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
@@ -177,7 +174,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.range(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -255,7 +252,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
@@ -270,7 +267,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.range(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -395,7 +392,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
         if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.range(2));
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
         } else {
             unfilteredPs = P.pairs(
                     P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
@@ -416,7 +413,7 @@ public class MathUtilsDemos {
         if (P instanceof ExhaustiveProvider) {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                     P.lists(P.naturalBigIntegers()),
-                    P.range(BigInteger.valueOf(2))
+                    P.rangeUp(BigInteger.valueOf(2))
             );
         } else {
             unfilteredPs = P.pairs(
@@ -454,7 +451,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.range(2));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
         } else {
             ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
@@ -469,7 +466,7 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.range(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
         } else {
             ps = P.pairs(
                     P.bigIntegers(),
@@ -486,7 +483,7 @@ public class MathUtilsDemos {
     private static void demoFromStringBase_int_String() {
         initialize();
         Iterable<Pair<Integer, String>> ps = P.dependentPairs(
-                P.range(2),
+                P.rangeUp(2),
                 b -> {
                     Iterable<String> positiveStrings;
                     if (b <= 36) {
@@ -515,7 +512,7 @@ public class MathUtilsDemos {
     private static void demoFromStringBase_BigInteger_String() {
         initialize();
         Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
-                P.range(BigInteger.valueOf(2)),
+                P.rangeUp(BigInteger.valueOf(2)),
                 b -> {
                     Iterable<String> positiveStrings;
                     if (le(b, BigInteger.valueOf(36))) {

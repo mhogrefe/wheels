@@ -148,25 +148,25 @@ public class RandomProvider implements IterableProvider {
 
     //2^7 - a
     @Override
-    public @NotNull Iterable<Byte> range(byte a) {
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
         return map(i -> (byte) (i + a), randomInts(128 - a));
     }
 
     //2^15 - a
     @Override
-    public @NotNull Iterable<Short> range(short a) {
+    public @NotNull Iterable<Short> rangeUp(short a) {
         return map(i -> (short) (i + a), randomInts(32768 - a));
     }
 
     //2^31 - a
     @Override
-    public @NotNull Iterable<Integer> range(int a) {
+    public @NotNull Iterable<Integer> rangeUp(int a) {
         return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
     }
 
     //2^63 - a
     @Override
-    public @NotNull Iterable<Long> range(long a) {
+    public @NotNull Iterable<Long> rangeUp(long a) {
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
                 randomBigIntegers(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
@@ -174,13 +174,13 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         return map(i -> i.add(a), naturalBigIntegers());
     }
 
     //2^16 - a
     @Override
-    public @NotNull Iterable<Character> range(char a) {
+    public @NotNull Iterable<Character> rangeUp(char a) {
         return map(i -> (char) (i + a), randomInts(65536 - a));
     }
 
@@ -219,66 +219,6 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return map(i -> (char) (i + a), randomInts(b - a + 1));
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
-        return null;
     }
 
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {

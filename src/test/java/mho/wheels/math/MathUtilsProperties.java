@@ -769,7 +769,7 @@ public class MathUtilsProperties {
 
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
@@ -808,7 +808,7 @@ public class MathUtilsProperties {
             aeq(Integer.toString(i), map(digitsToBits, digits), bits(i));
         }
 
-        for (int i : take(LIMIT, P.range(2))) {
+        for (int i : take(LIMIT, P.rangeUp(2))) {
             assertTrue(Integer.toString(i), isEmpty(digits(i, 0)));
         }
 
@@ -827,7 +827,7 @@ public class MathUtilsProperties {
         long totalTime = 0;
         Iterable<Pair<Integer, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.range(2));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }

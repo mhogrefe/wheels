@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +81,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Byte> range(byte a) {
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
         if (a >= 0) {
             return IterableUtils.range(a);
         } else {
@@ -91,7 +90,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Short> range(short a) {
+    public @NotNull Iterable<Short> rangeUp(short a) {
         if (a >= 0) {
             return IterableUtils.range(a);
         } else {
@@ -102,7 +101,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Integer> range(int a) {
+    public @NotNull Iterable<Integer> rangeUp(int a) {
         if (a >= 0) {
             return IterableUtils.range(a);
         } else {
@@ -111,7 +110,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Long> range(long a) {
+    public @NotNull Iterable<Long> rangeUp(long a) {
         if (a >= 0) {
             return IterableUtils.range(a);
         } else {
@@ -120,7 +119,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         if (a.signum() != -1) {
             return IterableUtils.range(a);
         } else {
@@ -134,7 +133,7 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Character> range(char a) {
+    public @NotNull Iterable<Character> rangeUp(char a) {
         return IterableUtils.range(a);
     }
 
@@ -204,66 +203,6 @@ public class ExhaustiveProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return IterableUtils.range(a, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
-        return IterableUtils.rangeBy(a, i, b);
     }
 
     /**
@@ -457,7 +396,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return range(BigInteger.ZERO);
+        return rangeUp(BigInteger.ZERO);
     }
 
     /**
@@ -584,7 +523,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 range('[', '`'),            // ...
                 range('{', '~'),            // ...
                 range((char) 0, (char) 32), // non-printable and whitespace ASCII
-                range((char) 127)           // DEL and non-ASCII
+                rangeUp((char) 127)           // DEL and non-ASCII
         ));
     }
 
@@ -651,7 +590,7 @@ public class ExhaustiveProvider implements IterableProvider {
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
-    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = INSTANCE.rangeBy(1, 2, 1 << 24);
+    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(1, 2, 1 << 24);
 
     /**
      * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
@@ -661,7 +600,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 127), INSTANCE.rangeBy(-1, -1, -149)))
+            mux(Arrays.asList(INSTANCE.range(1, 127), IterableUtils.rangeBy(-1, -1, -149)))
     );
 
     /**
@@ -774,7 +713,7 @@ public class ExhaustiveProvider implements IterableProvider {
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
-    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = INSTANCE.rangeBy(1L, 2, 1L << 53);
+    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(1L, 2, 1L << 53);
 
     /**
      * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
@@ -784,7 +723,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 1023), INSTANCE.rangeBy(-1, -1, -1074)))
+            mux(Arrays.asList(INSTANCE.range(1, 1023), IterableUtils.rangeBy(-1, -1, -1074)))
     );
 
     /**
