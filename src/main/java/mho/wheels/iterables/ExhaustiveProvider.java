@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -139,26 +140,65 @@ public class ExhaustiveProvider implements IterableProvider {
 
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((byte) 0, b), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (short) -1, a);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((short) 0, b), IterableUtils.rangeBy((short) -1, (short) -1, a))
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, -1, a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0, b), IterableUtils.rangeBy(-1, -1, a)));
+        }
     }
 
     public @NotNull Iterable<Long> range(long a, long b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0L, b), IterableUtils.rangeBy(-1L, -1L, a)));
+        }
     }
 
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        return IterableUtils.range(a, b);
+        if (a.signum() != -1 && b.signum() != -1) {
+            return IterableUtils.range(a, b);
+        } else if (a.signum() == -1 && b.signum() == -1) {
+            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
+        } else {
+            return mux(
+                    Arrays.asList(
+                            IterableUtils.range(BigInteger.ZERO, b),
+                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                    )
+            );
+        }
     }
 
     @Override
