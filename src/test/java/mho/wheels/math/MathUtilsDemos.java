@@ -217,29 +217,26 @@ public class MathUtilsDemos {
 
     private static void demoDigitsPadded_BigInteger_BigInteger_BigInteger() {
         initialize();
-        Iterable<Triple<BigInteger, BigInteger, BigInteger>> ts;
+        Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
                     p -> {
                         assert p.a != null;
                         return new Triple<>(p.a.a, p.a.b, p.b);
                     },
-                    (Iterable<Pair<Pair<BigInteger, BigInteger>, BigInteger>>) P.pairs(
+                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
-                                    P.naturalBigIntegers(),
+                                    P.naturalIntegers(),
                                     map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
                             ),
                             P.naturalBigIntegers()
                     )
             );
         } else {
-            Iterable<BigInteger> is = map(
-                    i -> BigInteger.valueOf(i),
-                    ((RandomProvider) P).naturalIntegersGeometric(20)
-            );
-            ts = P.triples(is, map(i -> i.add(BigInteger.valueOf(2)), is), P.naturalBigIntegers());
+            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
-        for (Triple<BigInteger, BigInteger, BigInteger> t : take(LIMIT, ts)) {
+        for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;
@@ -310,29 +307,26 @@ public class MathUtilsDemos {
 
     private static void demoBigEndianDigitsPadded_BigInteger_BigInteger_BigInteger() {
         initialize();
-        Iterable<Triple<BigInteger, BigInteger, BigInteger>> ts;
+        Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
                     p -> {
                         assert p.a != null;
                         return new Triple<>(p.a.a, p.a.b, p.b);
                     },
-                    (Iterable<Pair<Pair<BigInteger, BigInteger>, BigInteger>>) P.pairs(
+                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
-                                    P.naturalBigIntegers(),
+                                    P.naturalIntegers(),
                                     map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
                             ),
                             P.naturalBigIntegers()
                     )
             );
         } else {
-            Iterable<BigInteger> is = map(
-                    i -> BigInteger.valueOf(i),
-                    ((RandomProvider) P).naturalIntegersGeometric(20)
-            );
-            ts = P.triples(is, map(i -> i.add(BigInteger.valueOf(2)), is), P.naturalBigIntegers());
+            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
-        for (Triple<BigInteger, BigInteger, BigInteger> t : take(LIMIT, ts)) {
+        for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;

@@ -386,81 +386,75 @@ public class MathUtilsTest {
 
     @Test
     public void testDigitsPadded_BigInteger_BigInteger_BigInteger() {
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.ONE), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.ONE), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.ONE), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
-        aeq(digitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2]");
-        aeq(digitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.valueOf(10)),
-                "[0, 1, 0, 1, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.valueOf(10)),
-                "[1, 0, 1, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.valueOf(10)),
-                "[10, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.valueOf(187)),
-                "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.valueOf(187)),
-                "[1, 2, 2, 0, 2, 0, 0, 0]");
-        aeq(digitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.valueOf(187)),
-                "[16, 3, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ONE), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ONE), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ONE), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
+        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
+        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
+        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
+        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
+        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
+        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
+        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
+        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
+        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1]");
+        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0]");
+        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
+        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2]");
+        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
+        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2, 0, 0, 0]");
+        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3, 0, 0, 0, 0, 0, 0]");
         try {
-            digitsPadded(BigInteger.valueOf(3), BigInteger.ONE, BigInteger.valueOf(10));
+            digitsPadded(3, BigInteger.ONE, BigInteger.valueOf(10));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            digitsPadded(BigInteger.valueOf(3), BigInteger.ZERO, BigInteger.valueOf(10));
+            digitsPadded(3, BigInteger.ZERO, BigInteger.valueOf(10));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            digitsPadded(BigInteger.valueOf(3), BigInteger.valueOf(2), BigInteger.valueOf(-1));
+            digitsPadded(3, BigInteger.valueOf(2), BigInteger.valueOf(-1));
             fail();
         } catch (ArithmeticException ignored) {}
         try {
-            digitsPadded(BigInteger.valueOf(3), BigInteger.ZERO, BigInteger.valueOf(-1));
+            digitsPadded(3, BigInteger.ZERO, BigInteger.valueOf(-1));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            digitsPadded(BigInteger.valueOf(-1), BigInteger.valueOf(2), BigInteger.valueOf(3));
+            digitsPadded(-1, BigInteger.valueOf(2), BigInteger.valueOf(3));
         } catch (IllegalArgumentException ignored) {}
         try {
-            digitsPadded(BigInteger.valueOf(-1), BigInteger.ZERO, BigInteger.valueOf(-1));
+            digitsPadded(-1, BigInteger.ZERO, BigInteger.valueOf(-1));
         } catch (IllegalArgumentException ignored) {}
     }
 
@@ -628,87 +622,75 @@ public class MathUtilsTest {
 
     @Test
     public void testBigEndianDigitsPadded_BigInteger_BigInteger_BigInteger() {
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.ONE), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.ONE), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.ONE), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ZERO, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
-        aeq(bigEndianDigitsPadded(BigInteger.ONE, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.ONE), "[0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.ONE), "[0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.ONE), "[0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.valueOf(10)), "[1, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(10)), "[0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.valueOf(10)), "[0, 10]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(3), BigInteger.valueOf(187)), "[2, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(2), BigInteger.valueOf(57), BigInteger.valueOf(187)), "[3, 16]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.ZERO),
-                "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.ZERO),
-                "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.ZERO),
-                "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.ONE),
-                "[0, 0, 0, 0, 0, 0, 0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.ONE),
-                "[0, 0, 0, 0, 0, 0, 0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.ONE),
-                "[0, 0, 0, 0, 0, 0, 0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.valueOf(10)),
-                         "[0, 0, 0, 0, 1, 0, 1, 0]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.valueOf(10)),
-                         "[0, 0, 0, 0, 0, 1, 0, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.valueOf(10)),
-                         "[0, 0, 0, 0, 0, 0, 0, 10]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(2), BigInteger.valueOf(187)),
-                         "[1, 0, 1, 1, 1, 0, 1, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(3), BigInteger.valueOf(187)),
-                         "[0, 0, 0, 2, 0, 2, 2, 1]");
-        aeq(bigEndianDigitsPadded(BigInteger.valueOf(8), BigInteger.valueOf(57), BigInteger.valueOf(187)),
-                         "[0, 0, 0, 0, 0, 0, 3, 16]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(2), BigInteger.ONE), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(3), BigInteger.ONE), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(57), BigInteger.ONE), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
+        aeq(bigEndianDigitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
+        aeq(bigEndianDigitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(2), BigInteger.ONE), "[0, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(3), BigInteger.ONE), "[0, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(57), BigInteger.ONE), "[0, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[1, 0]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[0, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[0, 10]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[2, 1]");
+        aeq(bigEndianDigitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[3, 16]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(2), BigInteger.ONE), "[0, 0, 0, 0, 0, 0, 0, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(3), BigInteger.ONE), "[0, 0, 0, 0, 0, 0, 0, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(57), BigInteger.ONE), "[0, 0, 0, 0, 0, 0, 0, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 0, 0, 0, 1, 0, 1, 0]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[0, 0, 0, 0, 0, 1, 0, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[0, 0, 0, 0, 0, 0, 0, 10]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 0, 1, 1, 1, 0, 1, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[0, 0, 0, 2, 0, 2, 2, 1]");
+        aeq(bigEndianDigitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[0, 0, 0, 0, 0, 0, 3, 16]");
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(3), BigInteger.ONE, BigInteger.valueOf(10));
+            bigEndianDigitsPadded(3, BigInteger.ONE, BigInteger.valueOf(10));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(3), BigInteger.ZERO, BigInteger.valueOf(10));
+            bigEndianDigitsPadded(3, BigInteger.ZERO, BigInteger.valueOf(10));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(3), BigInteger.valueOf(2), BigInteger.valueOf(-1));
+            bigEndianDigitsPadded(3, BigInteger.valueOf(2), BigInteger.valueOf(-1));
             fail();
         } catch (ArithmeticException ignored) {}
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(3), BigInteger.ZERO, BigInteger.valueOf(-1));
+            bigEndianDigitsPadded(3, BigInteger.ZERO, BigInteger.valueOf(-1));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(-1), BigInteger.valueOf(2), BigInteger.valueOf(3));
+            bigEndianDigitsPadded(-1, BigInteger.valueOf(2), BigInteger.valueOf(3));
         } catch (IllegalArgumentException ignored) {}
         try {
-            bigEndianDigitsPadded(BigInteger.valueOf(-1), BigInteger.ZERO, BigInteger.valueOf(-1));
+            bigEndianDigitsPadded(-1, BigInteger.ZERO, BigInteger.valueOf(-1));
         } catch (IllegalArgumentException ignored) {}
     }
 

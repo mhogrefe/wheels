@@ -397,7 +397,10 @@ public final class Combinatorics {
         intermediates.add(map(makeSingleton, xs));
         for (int i = 1; i < length; i++) {
             Iterable<List<T>> lists = last(intermediates);
-            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
+            intermediates.add(concatMap(x -> {
+                assert lists != null;
+                return map(list -> toList(cons(x, list)), lists);
+            }, xs));
         }
         return last(intermediates);
     }
@@ -473,7 +476,7 @@ public final class Combinatorics {
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
                         i -> s.charAt(i.intValueExact()),
-                        MathUtils.bigEndianDigitsPadded(BigInteger.valueOf(length), BigInteger.valueOf(s.length()), bi)
+                        MathUtils.bigEndianDigitsPadded(length, BigInteger.valueOf(s.length()), bi)
                 )
         );
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
@@ -510,11 +513,7 @@ public final class Combinatorics {
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
                         i -> s.charAt(i.intValueExact()),
-                        MathUtils.bigEndianDigitsPadded(
-                                BigInteger.valueOf(length.intValueExact()),
-                                BigInteger.valueOf(s.length()),
-                                bi
-                        )
+                        MathUtils.bigEndianDigitsPadded(length.intValueExact(), BigInteger.valueOf(s.length()), bi)
                 )
         );
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));

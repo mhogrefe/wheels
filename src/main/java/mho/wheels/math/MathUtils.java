@@ -450,8 +450,7 @@ public final class MathUtils {
      *  <li>{@code length} must be non-negative.</li>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and less than
-     *  2<sup>31</sup>–1.</li>
+     *  <li>The result is a finite {@code Iterable} whose elements are non-negative.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -485,7 +484,7 @@ public final class MathUtils {
      * @return {@code n}'s digits in little-endian order
      */
     public static @NotNull Iterable<BigInteger> digitsPadded(
-            @NotNull BigInteger length,
+            int length,
             @NotNull BigInteger base,
             @NotNull BigInteger n
     ) {
@@ -581,7 +580,7 @@ public final class MathUtils {
      * @return {@code n}'s digits in big-endian order
      */
     public static @NotNull Iterable<BigInteger> bigEndianDigitsPadded(
-            @NotNull BigInteger length,
+            int length,
             @NotNull BigInteger base,
             @NotNull BigInteger n
     ) {
