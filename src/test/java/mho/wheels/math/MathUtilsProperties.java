@@ -16,6 +16,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 public class MathUtilsProperties {
@@ -59,6 +60,9 @@ public class MathUtilsProperties {
             propertiesBigEndianBitsPadded_int_BigInteger();
             propertiesFromBigEndianBits();
             propertiesFromBits();
+            propertiesDigits_int_int();
+            compareImplementationsDigits_int_int();
+            propertiesDigits_BigInteger_BigInteger();
         }
         System.out.println("Done");
     }
@@ -781,19 +785,24 @@ public class MathUtilsProperties {
             aeq(p.toString(), digits, reverse(bigEndianDigits(p.b, p.a)));
             assertTrue(p.toString(), all(i -> i != null && i >= 0 && i < p.b, digits));
             assertEquals(p.toString(), Integer.valueOf(fromDigits(p.b, digits).intValueExact()), p.a);
-            assertEquals(
-                    p.toString(),
-                    digits.size(),
-                    ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact()
-            );
         }
 
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveIntegers(), P.rangeUp(2));
+        } else {
+            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
             List<Integer> digits = toList(digits(p.b, p.a));
             assertFalse(p.toString(), digits.isEmpty());
             assertNotEquals(p.toString(), last(digits), Integer.valueOf(0));
+            int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
+            if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
+                targetDigitCount++;
+            }
+            assertEquals(p.toString(), digits.size(), targetDigitCount);
         }
 
         Function<Integer, Boolean> digitsToBits = i -> {
@@ -812,10 +821,32 @@ public class MathUtilsProperties {
             assertTrue(Integer.toString(i), isEmpty(digits(i, 0)));
         }
 
-        for (int i : take(LIMIT, P.negativeIntegers())) {
+        Iterable<Pair<Integer, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeDown(1));
+        } else {
+            psFail = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
             try {
-                bits(i);
-                fail(Integer.toString(i));
+                digits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.rangeUp(2));
+        } else {
+            psFail = P.pairs(P.negativeIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                digits(p.b, p.a);
+                fail(p.toString());
             } catch (ArithmeticException ignored) {}
         }
     }
@@ -849,6 +880,111 @@ public class MathUtilsProperties {
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesDigits_BigInteger_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting digits(BigInteger, BigInteger) properties...");
+
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
+                    P.naturalBigIntegers(),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            ps = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<BigInteger> digits = toList(digits(p.b, p.a));
+            aeq(p.toString(), digits, reverse(bigEndianDigits(p.b, p.a)));
+            assertTrue(p.toString(), all(i -> i != null && i.signum() != -1 && lt(i, p.b), digits));
+            assertEquals(p.toString(), fromDigits(p.b, digits), p.a);
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
+                    P.positiveBigIntegers(),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            ps = P.pairs(
+                    P.positiveBigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<BigInteger> digits = toList(digits(p.b, p.a));
+            assertFalse(p.toString(), digits.isEmpty());
+            assertNotEquals(p.toString(), last(digits), BigInteger.ZERO);
+            int targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
+            if (p.b.pow(targetDigitCount).equals(p.a)) {
+                targetDigitCount++;
+            }
+            assertEquals(p.toString(), digits.size(), targetDigitCount);
+        }
+
+        Function<BigInteger, Boolean> digitsToBits = i -> {
+            if (i.equals(BigInteger.ZERO)) return false;
+            if (i.equals(BigInteger.ONE)) return true;
+            throw new IllegalArgumentException();
+        };
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            List<BigInteger> digits = toList(digits(BigInteger.valueOf(2), i));
+            aeq(i.toString(), map(digitsToBits, digits), bits(i));
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeUp(BigInteger.valueOf(2)))) {
+            assertTrue(i.toString(), isEmpty(digits(i, BigInteger.ZERO)));
+        }
+
+        Iterable<Pair<BigInteger, BigInteger>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(
+                    P.naturalBigIntegers(),
+                    P.rangeDown(BigInteger.ONE)
+            );
+        } else {
+            psFail = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                digits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(
+                    P.negativeBigIntegers(),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            psFail = P.pairs(
+                    P.negativeBigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                digits(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
