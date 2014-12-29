@@ -335,6 +335,50 @@ public class MathUtilsDemos {
         }
     }
 
+    private static void demoFromDigits_int_Iterable_Integer() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
+        }
+    }
+
+    private static void demoFromDigits_BigInteger_Iterable_BigInteger() {
+        initialize();
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.naturalBigIntegers()),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
+            assert p.a != null;
+            return all((BigInteger i) -> lt(i, p.b), p.a);
+        }, unfilteredPs);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
+        }
+    }
+
     private static void demoFromBigEndianDigits_int_Iterable_Integer() {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
@@ -379,50 +423,6 @@ public class MathUtilsDemos {
             assert p.a != null;
             assert p.b != null;
             System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
-        }
-    }
-
-    private static void demoFromDigits_int_Iterable_Integer() {
-        initialize();
-        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
-        } else {
-            unfilteredPs = P.pairs(
-                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
-        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
-            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
-        }
-    }
-
-    private static void demoFromDigits_BigInteger_Iterable_BigInteger() {
-        initialize();
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.naturalBigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
-        } else {
-            unfilteredPs = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
-            assert p.a != null;
-            return all((BigInteger i) -> lt(i, p.b), p.a);
-        }, unfilteredPs);
-        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
-            System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
         }
     }
 

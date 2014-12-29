@@ -588,6 +588,44 @@ public final class MathUtils {
     }
 
     /**
+     * Builds a {@code BigInteger} from an {@code Iterable} of digits in little-endian order (least-significant digits
+     * first). Trailing zero digits are permitted. Zero may be represented by an empty {@code Iterable}.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code digits} must be finite, and each element must be non-negative.</li>
+     *  <li>Every element of {@code digits} must be less than {@code base}.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param base the base of the input digits
+     * @param digits an {@code Iterable} of digits in little-endian order
+     * @return The {@code BigInteger} represented by {@code digits}
+     */
+    public static @NotNull BigInteger fromDigits(int base, @NotNull Iterable<Integer> digits) {
+        return fromBigEndianDigits(base, reverse(digits));
+    }
+
+    /**
+     * Builds a {@code BigInteger} from an {@code Iterable} of digits in little-endian order (least-significant digits
+     * first). Trailing zero digits are permitted. Zero may be represented by an empty {@code Iterable}.
+     *
+     * <ul>
+     *  <li>{@code base} must be at least 2.</li>
+     *  <li>{@code digits} must be finite, and each element must be non-negative.</li>
+     *  <li>Every element of {@code digits} must be less than {@code base}.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param base the base of the input digits
+     * @param digits an {@code Iterable} of digits in little-endian order
+     * @return The {@code BigInteger} represented by {@code digits}
+     */
+    public static @NotNull BigInteger fromDigits(@NotNull BigInteger base, @NotNull Iterable<BigInteger> digits) {
+        return fromBigEndianDigits(base, reverse(digits));
+    }
+
+    /**
      * Builds a {@code BigInteger} from an {@code Iterable} of digits in big-endian order (most-significant digits
      * first). Leading zero digits are permitted. Zero may be represented by an empty {@code Iterable}.
      *
@@ -642,44 +680,6 @@ public final class MathUtils {
             n = n.multiply(base).add(digit);
         }
         return n;
-    }
-
-    /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of digits in little-endian order (least-significant digits
-     * first). Trailing zero digits are permitted. Zero may be represented by an empty {@code Iterable}.
-     *
-     * <ul>
-     *  <li>{@code base} must be at least 2.</li>
-     *  <li>{@code digits} must be finite, and each element must be non-negative.</li>
-     *  <li>Every element of {@code digits} must be less than {@code base}.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @param base the base of the input digits
-     * @param digits an {@code Iterable} of digits in little-endian order
-     * @return The {@code BigInteger} represented by {@code digits}
-     */
-    public static @NotNull BigInteger fromDigits(int base, @NotNull Iterable<Integer> digits) {
-        return fromBigEndianDigits(base, reverse(digits));
-    }
-
-    /**
-     * Builds a {@code BigInteger} from an {@code Iterable} of digits in little-endian order (least-significant digits
-     * first). Trailing zero digits are permitted. Zero may be represented by an empty {@code Iterable}.
-     *
-     * <ul>
-     *  <li>{@code base} must be at least 2.</li>
-     *  <li>{@code digits} must be finite, and each element must be non-negative.</li>
-     *  <li>Every element of {@code digits} must be less than {@code base}.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @param base the base of the input digits
-     * @param digits an {@code Iterable} of digits in little-endian order
-     * @return The {@code BigInteger} represented by {@code digits}
-     */
-    public static @NotNull BigInteger fromDigits(@NotNull BigInteger base, @NotNull Iterable<BigInteger> digits) {
-        return fromBigEndianDigits(base, reverse(digits));
     }
 
     /**

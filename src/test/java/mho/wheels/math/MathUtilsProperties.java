@@ -73,6 +73,9 @@ public class MathUtilsProperties {
             propertiesBigEndianDigitsPadded_int_int_int();
             compareImplementationsBigEndianDigitsPadded_int_int_int();
             propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger();
+            propertiesFromDigits_int_Iterable_Integer();
+            compareImplementationsFromDigits_int_Iterable_Integer();
+            propertiesFromDigits_int_Iterable_BigInteger();
         }
         System.out.println("Done");
     }
@@ -1952,7 +1955,7 @@ public class MathUtilsProperties {
 
     private static void propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger() {
         initialize();
-        System.out.println("\t\ttesting bigEndiaDigitsPadded(int, BigInteger, BigInteger) properties...");
+        System.out.println("\t\ttesting bigEndianDigitsPadded(int, BigInteger, BigInteger) properties...");
 
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
@@ -2154,6 +2157,268 @@ public class MathUtilsProperties {
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static @NotNull BigInteger fromDigits_int_Iterable_Integer_simplest(
+            int base,
+            @NotNull Iterable<Integer> digits
+    ) {
+        //noinspection Convert2MethodRef
+        return fromDigits(BigInteger.valueOf(base), map(i -> BigInteger.valueOf(i), digits));
+    }
+
+    private static void propertiesFromDigits_int_Iterable_Integer() {
+        initialize();
+        System.out.println("\t\ttesting fromDigits(int, Iterable<Integer>) properties...");
+
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> {
+            assert p.a != null;
+            return all(i -> i < p.b, p.a);
+        }, unfilteredPs);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger n = fromDigits(p.b, p.a);
+            assertEquals(p.toString(), n, fromDigits_int_Iterable_Integer_simplest(p.b, p.a));
+            assertNotEquals(p.toString(), n.signum(), -1);
+        }
+
+        ps = filter(p -> {
+            assert p.a != null;
+            return p.a.isEmpty() || last(p.a) != 0;
+        }, ps);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger n = fromDigits(p.b, p.a);
+            aeq(p.toString(), p.a, map(BigInteger::intValueExact, digits(BigInteger.valueOf(p.b), n)));
+        }
+
+        Function<Integer, Boolean> digitsToBits = i -> {
+            switch (i) {
+                case 0: return false;
+                case 1: return true;
+                default: throw new IllegalArgumentException();
+            }
+        };
+
+        for (List<Integer> is : take(LIMIT, P.lists(P.range(0, 1)))) {
+            assertEquals(is.toString(), fromDigits(2, is), fromBits(map(digitsToBits, is)));
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPsFail;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.integers()),
+                    P.rangeDown(1)
+            );
+        } else {
+            unfilteredPsFail = P.pairs(
+                    P.lists(((RandomProvider) P).integersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> {
+            assert p.a != null;
+            return all(i -> i < p.b, p.a);
+        }, unfilteredPsFail);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.integers()),
+                    P.rangeUp(2)
+            );
+        } else {
+            unfilteredPsFail = P.pairs(
+                    P.lists(((RandomProvider) P).integersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        psFail = filter(p -> {
+            assert p.a != null;
+            return any(i -> i < 0, p.a);
+        }, unfilteredPsFail);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = filter(p -> any(i -> i >= p.b, p.a), unfilteredPsFail);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsFromDigits_int_Iterable_Integer() {
+        initialize();
+        System.out.println("\t\tcomparing fromDigits(int, Iterable<Integer>) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
+                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            fromDigits_int_Iterable_Integer_simplest(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            fromDigits(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesFromDigits_int_Iterable_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting fromDigits(int, Iterable<BigInteger>) properties...");
+
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.naturalBigIntegers()),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            unfilteredPs = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
+            assert p.a != null;
+            return all(i -> lt(i, p.b), p.a);
+        }, unfilteredPs);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger n = fromDigits(p.b, p.a);
+            assertNotEquals(p.toString(), n.signum(), -1);
+        }
+
+        ps = filter(p -> {
+            assert p.a != null;
+            return p.a.isEmpty() || !last(p.a).equals(BigInteger.ZERO);
+        }, ps);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger n = fromDigits(p.b, p.a);
+            aeq(p.toString(), p.a, digits(p.b, n));
+        }
+
+        Function<BigInteger, Boolean> digitsToBits = i -> {
+            if (i.equals(BigInteger.ZERO)) return false;
+            if (i.equals(BigInteger.ONE)) return true;
+            throw new IllegalArgumentException();
+        };
+
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
+            assertEquals(is.toString(), fromDigits(BigInteger.valueOf(2), is), fromBits(map(digitsToBits, is)));
+        }
+
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail;
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.bigIntegers()),
+                    P.rangeDown(BigInteger.ONE)
+            );
+        } else {
+            unfilteredPsFail = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
+            );
+        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> {
+            assert p.a != null;
+            return all(i -> lt(i, p.b), p.a);
+        }, unfilteredPsFail);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                    P.lists(P.bigIntegers()),
+                    P.rangeUp(BigInteger.valueOf(2))
+            );
+        } else {
+            unfilteredPsFail = P.pairs(
+                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        psFail = filter(p -> {
+            assert p.a != null;
+            return any(i -> i.signum() == -1, p.a);
+        }, unfilteredPsFail);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = filter(p -> {
+            assert p.a != null;
+            return any(i -> ge(i, p.b), p.a);
+        }, unfilteredPsFail);
+        for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromDigits(p.b, p.a);
+                fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
         }
     }
