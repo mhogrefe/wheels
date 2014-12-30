@@ -123,9 +123,9 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the least-
-     * significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does not
-     * support removal.
+     * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the
+     * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does
+     * not support removal.
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
@@ -186,7 +186,7 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code Iterable} returned is little-endian
+     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code Iterable} returned is little-endian;
      * the least-significant bits come first. It is exactly {@code n} bits long, and right-padded with zeroes (falses)
      * if necessary. Does not support removal.
      *
@@ -684,7 +684,7 @@ public final class MathUtils {
 
     /**
      * Converts a digit to its {@code char} representation. The digits 0 through 9 and converted to '0' through '9',
-     * and the digits 11 through 35 are converted to 'A' through 'Z'.
+     * and the digits 10 through 35 are converted to 'A' through 'Z'.
      *
      * <ul>
      *  <li>{@code i} must be non-negative and less than 36.</li>
@@ -736,9 +736,9 @@ public final class MathUtils {
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-null.</li>
      *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
-     *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
-     *  numbers from 0 to 2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only
-     *  number). In either case there may be an optional leading '-', except that "-0" and "-(0)" are not allowed.</li>
+     *  (not starting with '0', unless that is the only character), or is the concatenation of some numbers from 0 to
+     *  2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only number). In either
+     *  case there may be an optional leading '-', except that "-0" and "-(0)" are not allowed.</li>
      * </ul>
      *
      * @param base the base of the output digits
@@ -987,8 +987,8 @@ public final class MathUtils {
     /**
      * Bijectively maps a list of natural {@code BigInteger}s to one natural {@code BigInteger} in such a way that the
      * result is O(max({@code xs})<sup>|{@code xs}|</sup>), so the contribution of each element of {@code xs} is
-     * approximately equal. The bijection is between the naturals and list of a fixed size, not all lists. The empty
-     * list maps to 0. The inverse of this method is {@link mho.wheels.math.MathUtils#demux}.
+     * approximately equal. The bijection is between the naturals and lists of a fixed size, not between naturals and
+     * all lists. The empty list maps to 0. The inverse of this method is {@link mho.wheels.math.MathUtils#demux}.
      *
      * <ul>
      *  <li>Every element of {@code xs} must be non-negative.</li>
@@ -1008,9 +1008,9 @@ public final class MathUtils {
     /**
      * Bijectively maps one natural {@code BigInteger} to a list of natural {@code BigInteger}s in such a way that
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
-     * {@link mho.wheels.math.MathUtils#mux}. The bijection is between the naturals and list of a fixed size, not all
-     * lists. If {@code lines} is 0, the only acceptable {@code n} is 0, which maps to the empty list. The inverse of
-     * this method is {@link mho.wheels.math.MathUtils#mux}.
+     * {@link mho.wheels.math.MathUtils#mux}. The bijection is between the naturals and lists of a fixed size, not
+     * between naturals and all lists. If {@code lines} is 0, the only acceptable {@code n} is 0, which maps to the
+     * empty list. The inverse of this method is {@link mho.wheels.math.MathUtils#mux}.
      *
      * <ul>
      *  <li>{@code lines} must be non-negative.</li>
