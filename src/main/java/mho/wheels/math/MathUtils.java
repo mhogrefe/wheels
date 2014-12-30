@@ -49,7 +49,7 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code int}.</li>
      *  <li>{@code y} may be any {@code int}.</li>
-     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -69,7 +69,7 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} must be non-negative.</li>
      *  <li>{@code y} must be non-negative.</li>
-     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -89,7 +89,7 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} may be any {@code long}.</li>
      *  <li>{@code y} may be any {@code long}.</li>
-     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -109,7 +109,7 @@ public final class MathUtils {
      * <ul>
      *  <li>{@code x} must be non-negative.</li>
      *  <li>{@code y} must be non-negative.</li>
-     *  <li>{@code x} and {@code y} y may not both be zero.</li>
+     *  <li>{@code x} and {@code y} may not both be zero.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
