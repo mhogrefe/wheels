@@ -738,7 +738,7 @@ public final class MathUtils {
      *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
      *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
      *  numbers from 0 to 2<sup>31</sup>–1 surrounded by parentheses (not starting with "(0)", unless that is the only
-     *  number). In either case there may be an optional leading '-'.</li>
+     *  number). In either case there may be an optional leading '-', except that "-0" and "-(0)" are not allowed.</li>
      * </ul>
      *
      * @param base the base of the output digits
@@ -776,7 +776,7 @@ public final class MathUtils {
      *  <li>The result is a {@code String} which is nonempty and either composed of the characters '0'–'9' and 'A'–'Z'
      *  (not starting with '0', unless that is the only character), or is the concatenation of some non-negative
      *  numbers surrounded by parentheses (not starting with "(0)", unless that is the only number). In either case
-     *  there may be an optional leading '-'.</li>
+     *  there may be an optional leading '-', except that "-0" and "-(0)" are not allowed.</li>
      * </ul>
      *
      * @param base the base of the output digits

@@ -82,6 +82,9 @@ public class MathUtilsProperties {
             propertiesFromBigEndianDigits_int_Iterable_BigInteger();
             propertiesToDigit();
             propertiesFromDigit();
+            propertiesToStringBase_int_int();
+            compareImplementationsToStringBase_int_int();
+            propertiesToStringBase_BigInteger_BigInteger();
         }
         System.out.println("Done");
     }
@@ -2741,6 +2744,184 @@ public class MathUtilsProperties {
             try {
                 fromDigit(c);
                 fail(Character.toString(c));
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static @NotNull String toStringBase_int_int_simplest(int base, int n) {
+        return toStringBase(BigInteger.valueOf(base), BigInteger.valueOf(n));
+    }
+
+    private static void propertiesToStringBase_int_int() {
+        initialize();
+        System.out.println("\t\ttesting toStringBase(int, int) properties...");
+
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
+        } else {
+            ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            assertEquals(p.toString(), toStringBase_int_int_simplest(p.b, p.a), s);
+            assertEquals(p.toString(), fromStringBase(p.b, s), BigInteger.valueOf(p.a));
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.range(2, 36));
+        } else {
+            ps = P.pairs(P.range(2, 36));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            if (head(s) == '-') s = tail(s);
+            assertTrue(p.toString(), all(c -> elem(c, charsToString(concat(range('0', '9'), range('A', 'Z')))), s));
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(37));
+        } else {
+            ps = P.pairs(P.integers(), map(i -> i + 37, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            if (head(s) == '-') s = tail(s);
+            assertEquals(p.toString(), head(s), '(');
+            assertEquals(p.toString(), last(s), ')');
+            s = tail(init(s));
+            Iterable<Integer> digits = map(Integer::parseInt, Arrays.asList(s.split("\\)\\(")));
+            assertFalse(p.toString(), isEmpty(digits));
+            assertTrue(p.toString(), p.a == 0 || head(digits) != 0);
+            assertTrue(p.toString(), all(d -> d >= 0 && d < p.b, digits));
+        }
+
+        Iterable<Pair<Integer, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeDown(1));
+        } else {
+            psFail = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                toStringBase(p.b, p.a);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsToStringBase_int_int() {
+        initialize();
+        System.out.println("\t\tcomparing toStringBase(int, int) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<Integer, Integer>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
+        } else {
+            ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+        }
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toStringBase_int_int_simplest(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            toStringBase(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesToStringBase_BigInteger_BigInteger() {
+        initialize();
+        System.out.println("\t\ttesting toStringBase(BigInteger, BigInteger) properties...");
+
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+        } else {
+            ps = P.pairs(
+                    P.bigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            assertEquals(p.toString(), fromStringBase(p.b, s), p.a);
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
+                    P.bigIntegers(),
+                    P.range(BigInteger.valueOf(2), BigInteger.valueOf(36))
+            );
+        } else {
+            ps = P.pairs(P.range(BigInteger.valueOf(2), BigInteger.valueOf(36)));
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            if (head(s) == '-') s = tail(s);
+            assertTrue(p.toString(), all(c -> elem(c, charsToString(concat(range('0', '9'), range('A', 'Z')))), s));
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(37)));
+        } else {
+            ps = P.pairs(
+                    P.bigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 37), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            String s = toStringBase(p.b, p.a);
+            if (head(s) == '-') s = tail(s);
+            assertEquals(p.toString(), head(s), '(');
+            assertEquals(p.toString(), last(s), ')');
+            s = tail(init(s));
+            Iterable<BigInteger> digits = map(BigInteger::new, Arrays.asList(s.split("\\)\\(")));
+            assertFalse(p.toString(), isEmpty(digits));
+            assertTrue(p.toString(), p.a.equals(BigInteger.ZERO) || !head(digits).equals(BigInteger.ZERO));
+            assertTrue(p.toString(), all(d -> d.signum() != -1 && lt(d, p.b), digits));
+        }
+
+        Iterable<Pair<BigInteger, BigInteger>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeDown(BigInteger.ONE));
+        } else {
+            psFail = P.pairs(
+                    P.bigIntegers(),
+                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                toStringBase(p.b, p.a);
+                fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
         }
     }
