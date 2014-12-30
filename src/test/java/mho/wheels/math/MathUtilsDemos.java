@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -17,7 +18,7 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.lt;
 
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = false;
+    private static final boolean USE_RANDOM = true;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -435,8 +436,7 @@ public class MathUtilsDemos {
 
     private static void demoFromDigit() {
         initialize();
-        for (int i : take(LIMIT, P.range(0, 35))) {
-            char c = toDigit(i);
+        for (char c : take(LIMIT, IterableUtils.mux(Arrays.asList(P.range('0', '9'), P.range('A', 'Z'))))) {
             System.out.println("fromDigit(" + c + ") = " + fromDigit(c));
         }
     }

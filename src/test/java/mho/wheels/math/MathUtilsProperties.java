@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -80,6 +81,7 @@ public class MathUtilsProperties {
             compareImplementationsFromBigEndianDigits_int_Iterable_Integer();
             propertiesFromBigEndianDigits_int_Iterable_BigInteger();
             propertiesToDigit();
+            propertiesFromDigit();
         }
         System.out.println("Done");
     }
@@ -2717,6 +2719,28 @@ public class MathUtilsProperties {
             try {
                 toDigit(i);
                 fail(Integer.toString(i));
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesFromDigit() {
+        initialize();
+        System.out.println("\t\ttesting fromDigit(char) properties...");
+
+        for (char c : take(LIMIT, IterableUtils.mux(Arrays.asList(P.range('0', '9'), P.range('A', 'Z'))))) {
+            int i = fromDigit(c);
+            assertTrue(Character.toString(c), i >= 0 && i < 36);
+            assertEquals(Character.toString(c), c, toDigit(i));
+        }
+
+        Iterable<Character> csFail = filter(
+                d -> !elem(d, range('0', '9')) && !elem(d, range('A', 'Z')),
+                P.characters()
+        );
+        for (char c : take(LIMIT, csFail)) {
+            try {
+                fromDigit(c);
+                fail(Character.toString(c));
             } catch (IllegalArgumentException ignored) {}
         }
     }
