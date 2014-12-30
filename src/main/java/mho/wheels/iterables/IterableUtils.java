@@ -2246,9 +2246,23 @@ public final class IterableUtils {
         return false;
     }
 
+    public static boolean any(@NotNull Predicate<Character> predicate, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (predicate.test(s.charAt(i))) return true;
+        }
+        return false;
+    }
+
     public static <T> boolean all(@NotNull Predicate<T> predicate, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (!predicate.test(x)) return false;
+        }
+        return true;
+    }
+
+    public static boolean all(@NotNull Predicate<Character> predicate, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!predicate.test(s.charAt(i))) return false;
         }
         return true;
     }
