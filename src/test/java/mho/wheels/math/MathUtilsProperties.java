@@ -79,6 +79,7 @@ public class MathUtilsProperties {
             propertiesFromBigEndianDigits_int_Iterable_Integer();
             compareImplementationsFromBigEndianDigits_int_Iterable_Integer();
             propertiesFromBigEndianDigits_int_Iterable_BigInteger();
+            propertiesToDigit();
         }
         System.out.println("Done");
     }
@@ -2691,6 +2692,31 @@ public class MathUtilsProperties {
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesToDigit() {
+        initialize();
+        System.out.println("\t\ttesting toDigit(int) properties...");
+
+        for (int i : take(LIMIT, P.range(0, 35))) {
+            char digit = toDigit(i);
+            assertTrue(Integer.toString(i), elem(digit, range('0', '9')) || elem(digit, range('A', 'Z')));
+            assertEquals(Integer.toString(i), i, fromDigit(digit));
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                toDigit(i);
+                fail(Integer.toString(i));
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        for (int i : take(LIMIT, P.rangeUp(36))) {
+            try {
+                toDigit(i);
+                fail(Integer.toString(i));
             } catch (IllegalArgumentException ignored) {}
         }
     }
