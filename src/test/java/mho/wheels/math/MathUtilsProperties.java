@@ -17,6 +17,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.tail;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
@@ -85,6 +86,9 @@ public class MathUtilsProperties {
             propertiesToStringBase_int_int();
             compareImplementationsToStringBase_int_int();
             propertiesToStringBase_BigInteger_BigInteger();
+            propertiesFromStringBase_int_String();
+            compareImplementationsFromStringBase_int_String();
+            propertiesFromStringBase_BigInteger_String();
         }
         System.out.println("Done");
     }
@@ -2924,6 +2928,208 @@ public class MathUtilsProperties {
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private static @NotNull BigInteger fromStringBase_int_String_simplest(int base, @NotNull String s) {
+        return fromStringBase(BigInteger.valueOf(base), s);
+    }
+
+    private static void propertiesFromStringBase_int_String() {
+        initialize();
+        System.out.println("\t\ttesting fromString(int, String) properties...");
+
+        Iterable<Pair<Integer, String>> ps = P.dependentPairs(
+                P.rangeUp(2),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (b <= 36) {
+                        positiveStrings = P.strings(map(MathUtils::toDigit, P.range(0, b - 1)));
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                P.lists(P.range(0, b - 1))
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger i = fromStringBase(p.a, p.b);
+            assertEquals(p.toString(), fromStringBase_int_String_simplest(p.a, p.b), i);
+        }
+
+        ps = P.dependentPairs(
+                P.rangeUp(2),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (b <= 36) {
+                        positiveStrings = filter(
+                                s -> !s.isEmpty() && head(s) != '0',
+                                P.strings(map(MathUtils::toDigit, P.range(0, b - 1)))
+                        );
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                filter(
+                                        is -> !is.isEmpty() && head(is) != 0,
+                                        (Iterable<List<Integer>>) P.lists(P.range(0, b - 1))
+                                )
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger i = fromStringBase(p.a, p.b);
+            assertEquals(p.toString(), toStringBase(BigInteger.valueOf(p.a), i), p.b);
+        }
+
+        for (Pair<Integer, String> p : take(LIMIT, P.pairs(P.rangeDown(1), P.strings()))) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromStringBase(p.a, p.b);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        //improper String left untested
+    }
+
+    private static void compareImplementationsFromStringBase_int_String() {
+        initialize();
+        System.out.println("\t\tcomparing fromStringBase(int, String) implementations...");
+
+        long totalTime = 0;
+        Iterable<Pair<Integer, String>> ps = P.dependentPairs(
+                P.rangeUp(2),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (b <= 36) {
+                        positiveStrings = P.strings(map(MathUtils::toDigit, P.range(0, b - 1)));
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                P.lists(P.range(0, b - 1))
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            fromStringBase_int_String_simplest(p.a, p.b);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            assert p.a != null;
+            assert p.b != null;
+            fromStringBase(p.a, p.b);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static void propertiesFromStringBase_BigInteger_String() {
+        initialize();
+        System.out.println("\t\ttesting fromString(BigInteger, String) properties...");
+
+        Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
+                P.rangeUp(BigInteger.valueOf(2)),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (le(b, BigInteger.valueOf(36))) {
+                        positiveStrings = P.strings(map(MathUtils::toDigit, P.range(0, b.intValueExact() - 1)));
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                P.lists(P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE)))
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            fromStringBase(p.a, p.b);
+        }
+
+        ps = P.dependentPairs(
+                P.rangeUp(BigInteger.valueOf(2)),
+                b -> {
+                    Iterable<String> positiveStrings;
+                    if (le(b, BigInteger.valueOf(36))) {
+                        positiveStrings = filter(
+                                s -> !s.isEmpty() && head(s) != '0',
+                                P.strings(map(MathUtils::toDigit, P.range(0, b.intValueExact() - 1)))
+                        );
+                    } else {
+                        positiveStrings = map(
+                                is -> concatMapStrings(i -> "(" + i + ")", is),
+                                filter(
+                                        is -> !is.isEmpty() && !head(is).equals(BigInteger.ZERO),
+                                        (Iterable<List<BigInteger>>) P.lists(
+                                                P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
+                                        )
+                                )
+                        );
+                    }
+                    return mux(
+                            (List<Iterable<String>>) Arrays.asList(
+                                    positiveStrings,
+                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
+                            )
+                    );
+                }
+        );
+        for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger i = fromStringBase(p.a, p.b);
+            assertEquals(p.toString(), toStringBase(p.a, i), p.b);
+        }
+
+        for (Pair<BigInteger, String> p : take(LIMIT, P.pairs(P.rangeDown(BigInteger.ONE), P.strings()))) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                fromStringBase(p.a, p.b);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        //improper String left untested
     }
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
