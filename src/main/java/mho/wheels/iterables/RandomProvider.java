@@ -196,7 +196,7 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull Iterable<Integer> rangeDown(int a) {
-        return map(l -> (int) (l - (1L << 32)), randomLongs(a + (1L << 31) + 1));
+        return map(l -> (int) (l - (1L << 31)), randomLongs(a + (1L << 31) + 1));
     }
 
     @Override
