@@ -91,6 +91,8 @@ public class MathUtilsProperties {
             propertiesFromStringBase_BigInteger_String();
             propertiesLogarithmicMux();
             propertiesLogarithmicDemux();
+            propertiesSquareRootMux();
+            propertiesSquareRootDemux();
         }
         System.out.println("Done");
     }
@@ -3210,6 +3212,58 @@ public class MathUtilsProperties {
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
             try {
                 logarithmicDemux(i);
+                fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesSquareRootMux() {
+        initialize();
+        System.out.println("\t\ttesting squareRootMux(BigInteger, BigInteger) properties...");
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger i = squareRootMux(p.a, p.b);
+            assertNotEquals(p.toString(), i.signum(), -1);
+            assertEquals(p.toString(), squareRootDemux(i), p);
+        }
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                squareRootMux(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalBigIntegers()))) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                squareRootMux(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesSquareRootDemux() {
+        initialize();
+        System.out.println("\t\ttesting squareRootDemux(BigInteger) properties...");
+
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            Pair<BigInteger, BigInteger> p = squareRootDemux(i);
+            assert p.a != null;
+            assert p.b != null;
+            assertNotEquals(p.toString(), p.a.signum(), -1);
+            assertNotEquals(p.toString(), p.b.signum(), -1);
+            assertEquals(p.toString(), squareRootMux(p.a, p.b), i);
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                squareRootDemux(i);
                 fail(i.toString());
             } catch (ArithmeticException ignored) {}
         }
