@@ -89,6 +89,8 @@ public class MathUtilsProperties {
             propertiesFromStringBase_int_String();
             compareImplementationsFromStringBase_int_String();
             propertiesFromStringBase_BigInteger_String();
+            propertiesLogarithmicMux();
+            propertiesLogarithmicDemux();
         }
         System.out.println("Done");
     }
@@ -3057,7 +3059,7 @@ public class MathUtilsProperties {
 
     private static void propertiesFromStringBase_BigInteger_String() {
         initialize();
-        System.out.println("\t\ttesting fromString(BigInteger, String) properties...");
+        System.out.println("\t\ttesting fromStringBase(BigInteger, String) properties...");
 
         Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
                 P.rangeUp(BigInteger.valueOf(2)),
@@ -3130,6 +3132,87 @@ public class MathUtilsProperties {
         }
 
         //improper String left untested
+    }
+
+    private static void propertiesLogarithmicMux() {
+        initialize();
+        System.out.println("\t\ttesting logarithmicMux(BigInteger, BigInteger) properties...");
+
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = P.pairs(P.naturalBigIntegers());
+        } else {
+            //noinspection Convert2MethodRef
+            ps = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            BigInteger i = logarithmicMux(p.a, p.b);
+            assertNotEquals(p.toString(), i.signum(), -1);
+            assertEquals(p.toString(), logarithmicDemux(i), p);
+        }
+
+        Iterable<Pair<BigInteger, BigInteger>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers());
+        } else {
+            //noinspection Convert2MethodRef
+            psFail = P.pairs(
+                    P.naturalBigIntegers(),
+                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).negativeIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                logarithmicMux(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = P.pairs(P.negativeBigIntegers(), P.naturalBigIntegers());
+        } else {
+            //noinspection Convert2MethodRef
+            psFail = P.pairs(
+                    P.negativeBigIntegers(),
+                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                logarithmicMux(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesLogarithmicDemux() {
+        initialize();
+        System.out.println("\t\ttesting logarithmicDemux(BigInteger) properties...");
+
+        for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
+            Pair<BigInteger, BigInteger> p = logarithmicDemux(i);
+            assert p.a != null;
+            assert p.b != null;
+            assertNotEquals(p.toString(), p.a.signum(), -1);
+            assertNotEquals(p.toString(), p.b.signum(), -1);
+            assertEquals(p.toString(), logarithmicMux(p.a, p.b), i);
+        }
+
+        for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
+            try {
+                logarithmicDemux(i);
+                fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
