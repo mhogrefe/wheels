@@ -3705,24 +3705,24 @@ public final class IterableUtils {
         return concatStrings(transposeStrings(xss));
     }
 
-    public static @NotNull <T> List<Iterable<T>> demux(int lines, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> List<Iterable<T>> demux(int size, @NotNull Iterable<T> xs) {
         List<Iterable<T>> demuxed = new ArrayList<>();
-        for (int i = 0; i < lines; i++) {
+        for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(
                     replicate(i, false),
-                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+                    cycle(cons(true, (Iterable<Boolean>) replicate(size - 1, false)))
             );
             demuxed.add(select(mask, xs));
         }
         return demuxed;
     }
 
-    public static @NotNull List<String> demux(int lines, @NotNull String s) {
+    public static @NotNull List<String> demux(int size, @NotNull String s) {
         List<String> demuxed = new ArrayList<>();
-        for (int i = 0; i < lines; i++) {
+        for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(
                     replicate(i, false),
-                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+                    cycle(cons(true, (Iterable<Boolean>) replicate(size - 1, false)))
             );
             demuxed.add(select(mask, s));
         }

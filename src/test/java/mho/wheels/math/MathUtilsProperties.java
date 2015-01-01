@@ -19,6 +19,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.tail;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
@@ -93,6 +94,8 @@ public class MathUtilsProperties {
             propertiesLogarithmicDemux();
             propertiesSquareRootMux();
             propertiesSquareRootDemux();
+            propertiesMux();
+            propertiesDemux();
         }
         System.out.println("Done");
     }
@@ -2954,7 +2957,7 @@ public class MathUtilsProperties {
                                 P.lists(P.range(0, b - 1))
                         );
                     }
-                    return mux(
+                    return IterableUtils.mux(
                             (List<Iterable<String>>) Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
@@ -2987,7 +2990,7 @@ public class MathUtilsProperties {
                                 )
                         );
                     }
-                    return mux(
+                    return IterableUtils.mux(
                             (List<Iterable<String>>) Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
@@ -3031,7 +3034,7 @@ public class MathUtilsProperties {
                                 P.lists(P.range(0, b - 1))
                         );
                     }
-                    return mux(
+                    return IterableUtils.mux(
                             (List<Iterable<String>>) Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
@@ -3075,7 +3078,7 @@ public class MathUtilsProperties {
                                 P.lists(P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE)))
                         );
                     }
-                    return mux(
+                    return IterableUtils.mux(
                             (List<Iterable<String>>) Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
@@ -3109,7 +3112,7 @@ public class MathUtilsProperties {
                                 )
                         );
                     }
-                    return mux(
+                    return IterableUtils.mux(
                             (List<Iterable<String>>) Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
@@ -3264,6 +3267,104 @@ public class MathUtilsProperties {
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
             try {
                 squareRootDemux(i);
+                fail(i.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesMux() {
+        initialize();
+        System.out.println("\t\ttesting mux(List<BigInteger>) properties...");
+
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.naturalBigIntegers()))) {
+            BigInteger i = mux(is);
+            assertNotEquals(is.toString(), i.signum(), -1);
+            assertEquals(is.toString(), demux(is.size(), i), is);
+        }
+
+        Iterable<List<BigInteger>>  isFail = map(p -> {
+            assert p.a != null;
+            assert p.b != null;
+            return toList(insert(p.a, p.b, null));
+        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                P.lists(P.naturalBigIntegers()),
+                bs -> range(0, bs.size())
+        ));
+        for (List<BigInteger> is : take(LIMIT, isFail)) {
+            try {
+                mux(is);
+                fail(is.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        isFail = filter(is -> any(i -> i.signum() == -1, is), P.lists(P.bigIntegers()));
+        for (List<BigInteger> is : take(LIMIT, isFail)) {
+            try {
+                mux(is);
+                fail(is.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesDemux() {
+        initialize();
+        System.out.println("\t\ttesting demux(int size, BigInteger n) properties...");
+
+        Iterable<Pair<BigInteger, Integer>> ps;
+        Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);
+        if (P instanceof ExhaustiveProvider) {
+            ps = cons(
+                    zeroPair,
+                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
+            );
+        } else {
+            ps = ((RandomProvider) P).addSpecialElement(
+                    zeroPair,
+                    P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).positiveIntegersGeometric(20))
+            );
+        }
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            assert p.a != null;
+            assert p.b != null;
+            List<BigInteger> xs = demux(p.b, p.a);
+            assertTrue(p.toString(), all(x -> x != null && x.signum() != -1, xs));
+            assertEquals(p.toString(), mux(xs), p.a);
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail;
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.negativeIntegers());
+        } else {
+            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                demux(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            psFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.negativeBigIntegers(), P.positiveIntegers());
+        } else {
+            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).positiveIntegersGeometric(20));
+        }
+
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            assert p.a != null;
+            assert p.b != null;
+            try {
+                demux(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            try {
+                demux(0, i);
                 fail(i.toString());
             } catch (ArithmeticException ignored) {}
         }

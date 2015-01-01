@@ -1009,29 +1009,29 @@ public final class MathUtils {
      * Bijectively maps one natural {@code BigInteger} to a list of natural {@code BigInteger}s in such a way that
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
      * {@link mho.wheels.math.MathUtils#mux}. The bijection is between the naturals and lists of a fixed size, not
-     * between naturals and all lists. If {@code lines} is 0, the only acceptable {@code n} is 0, which maps to the
+     * between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps to the
      * empty list. The inverse of this method is {@link mho.wheels.math.MathUtils#mux}.
      *
      * <ul>
-     *  <li>{@code lines} must be non-negative.</li>
+     *  <li>{@code size} must be non-negative.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>If {@code lines} is 0, {@code n} must also be 0.</li>
+     *  <li>If {@code size} is 0, {@code n} must also be 0.</li>
      *  <li>The result is non-null and all of its elements are non-negative.</li>
      * </ul>
      *
-     * @param lines the number of {@code BigIntegers} to map {@code n} to
+     * @param size the number of {@code BigIntegers} to map {@code n} to
      * @param n a {@code BigInteger}
      * @return a list of {@code BigInteger}s generated bijectively from {@code n}
      */
-    public static @NotNull List<BigInteger> demux(int lines, @NotNull BigInteger n) {
-        if (lines == 0 && !n.equals(BigInteger.ZERO))
-            throw new ArithmeticException("if muxing into 0 lines, n must also be 0");
-        if (lines < 0)
-            throw new ArithmeticException("cannot demux into a negative number of lines");
+    public static @NotNull List<BigInteger> demux(int size, @NotNull BigInteger n) {
+        if (size == 0 && !n.equals(BigInteger.ZERO))
+            throw new ArithmeticException("if muxing into 0 numbers, n must also be 0");
+        if (size < 0)
+            throw new ArithmeticException("cannot demux into a negative size");
         if (n.equals(BigInteger.ZERO)) {
-            return toList(replicate(lines, BigInteger.ZERO));
+            return toList(replicate(size, BigInteger.ZERO));
         }
-        return reverse(IterableUtils.map(MathUtils::fromBits, IterableUtils.demux(lines, bits(n))));
+        return reverse(IterableUtils.map(MathUtils::fromBits, IterableUtils.demux(size, bits(n))));
     }
 
     public static boolean isAPowerOfTwo(@NotNull BigInteger n) {
