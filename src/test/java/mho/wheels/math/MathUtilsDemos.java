@@ -99,14 +99,14 @@ public class MathUtilsDemos {
     private static void demoBigEndianBits_int() {
         initialize();
         for (int i : take(LIMIT, P.naturalIntegers())) {
-            System.out.println("bigEndianBits(" + i + ") = " + toList(bigEndianBits(i)));
+            System.out.println("bigEndianBits(" + i + ") = " + bigEndianBits(i));
         }
     }
 
     private static void demoBigEndianBits_BigInteger() {
         initialize();
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            System.out.println("bigEndianBits(" + i + ") = " + toList(bigEndianBits(i)));
+            System.out.println("bigEndianBits(" + i + ") = " + bigEndianBits(i));
         }
     }
 
@@ -121,7 +121,7 @@ public class MathUtilsDemos {
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
-            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + toList(bigEndianBitsPadded(p.b, p.a)));
+            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }
 
@@ -136,7 +136,7 @@ public class MathUtilsDemos {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             assert p.a != null;
             assert p.b != null;
-            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + toList(bigEndianBitsPadded(p.b, p.a)));
+            System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }
 
@@ -302,7 +302,7 @@ public class MathUtilsDemos {
             assert t.b != null;
             assert t.c != null;
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
-                    toList(bigEndianDigitsPadded(t.a, t.b, t.c)));
+                    bigEndianDigitsPadded(t.a, t.b, t.c));
         }
     }
 
@@ -332,7 +332,7 @@ public class MathUtilsDemos {
             assert t.b != null;
             assert t.c != null;
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
-                    toList(bigEndianDigitsPadded(t.a, t.b, t.c)));
+                    bigEndianDigitsPadded(t.a, t.b, t.c));
         }
     }
 

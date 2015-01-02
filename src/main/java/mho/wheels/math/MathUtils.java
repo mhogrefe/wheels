@@ -234,14 +234,12 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the bits of a non-negative {@code int}. The {@code Iterable} returned is big-endian; the most-
-     * significant bits come first. Zero gives an empty {@code Iterable}. There are no leading unset bits. Does not
-     * support removal.
+     * Returns the bits of a non-negative {@code int}. The {@code List} returned is big-endian; the most-significant
+     * bits come first. Zero gives an empty {@code Iterable}. There are no leading unset bits.
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nullsIf it is non-empty, the first element is
-     *  {@code true}.</li>
+     *  <li>The result is contains no nulls. If it is non-empty, the first element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -249,19 +247,17 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s bits in big-endian order
      */
-    public static @NotNull Iterable<Boolean> bigEndianBits(int n) {
+    public static @NotNull List<Boolean> bigEndianBits(int n) {
         return reverse(bits(n));
     }
 
     /**
-     * Returns the bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is big-endian; the most-
-     * significant bits come first. Zero gives an empty {@code Iterable}. There are no leading unset bits. Does not
-     * support removal.
+     * Returns the bits of a non-negative {@code BigInteger}. The {@code List} returned is big-endian; the
+     * most-significant bits come first. Zero gives an empty {@code List}. There are no leading unset bits.
      *
      * <ul>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable}, containing no nullsIf it is non-empty, the first element is
-     *  {@code true}.</li>
+     *  <li>The result contains no nulls. If it is non-empty, the first element is {@code true}.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>2</sub>{@code n}⌋+1 otherwise
@@ -269,19 +265,19 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s bits in big-endian order
      */
-    public static @NotNull Iterable<Boolean> bigEndianBits(@NotNull BigInteger n) {
+    public static @NotNull List<Boolean> bigEndianBits(@NotNull BigInteger n) {
         return reverse(bits(n));
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code Iterable} returned is big-endian;
-     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
-     * necessary. Does not support removal.
+     * Returns the lowest {@code n} bits of a non-negative {@code int}. The {@code List} returned is big-endian; the
+     * most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * necessary.
      *
      * <ul>
      *  <li>{@code length} must be non-negative.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>The result contains no nulls.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -290,19 +286,19 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s bits in big-endian order
      */
-    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, int n) {
+    public static @NotNull List<Boolean> bigEndianBitsPadded(int length, int n) {
         return reverse(bitsPadded(length, n));
     }
 
     /**
-     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code Iterable} returned is big-
-     * endian; the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes
-     * (falses) if necessary. Does not support removal.
+     * Returns the lowest {@code n} bits of a non-negative {@code BigInteger}. The {@code List} returned is big-endian;
+     * the most-significant bits come first. It is exactly {@code n} bits long, and left-padded with zeroes (falses) if
+     * necessary.
      *
      * <ul>
      *  <li>{@code length} must be non-negative.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} containing no nulls.</li>
+     *  <li>The result contains no nulls.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -311,7 +307,7 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s bits in big-endian order
      */
-    public static @NotNull Iterable<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
+    public static @NotNull List<Boolean> bigEndianBitsPadded(int length, BigInteger n) {
         return reverse(bitsPadded(length, n));
     }
 
@@ -492,15 +488,14 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the digits of a non-negative {@code int}. The {@code Iterable} returned is big-endian; the most-
-     * significant digits come first. Zero gives an empty {@code Iterable}. There are no leading zero digits. Does not
-     * support removal.
+     * Returns the digits of a non-negative {@code int}. The {@code List} returned is big-endian; the most-significant
+     * digits come first. Zero gives an empty {@code Iterable}. There are no leading zero digits.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element (if it
-     *  exists) is non-zero.</li>
+     *  <li>The result is a {@code List} whose elements are non-negative and whose first element (if it exists)
+     *  is non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋ otherwise
@@ -514,15 +509,14 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the digits of a non-negative {@code BigInteger}. The {@code Iterable} returned is big-endian; the most-
-     * significant digits come first. Zero gives an empty {@code Iterable}. There are no leading zero digits. Does not
-     * support removal.
+     * Returns the digits of a non-negative {@code BigInteger}. The {@code List} returned is big-endian; the
+     * most-significant digits come first. Zero gives an empty {@code List}. There are no leading zero digits.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and whose first element (if it
-     *  exists) is non-zero.</li>
+     *  <li>The result is a {@code List} whose elements are non-negative and whose first element (if it exists) is
+     *  non-zero.</li>
      * </ul>
      *
      * Result length is 0 if {@code n} is 0, or ⌊log<sub>{@code base}</sub>{@code n}⌋ otherwise
@@ -536,16 +530,15 @@ public final class MathUtils {
     }
 
     /**
-     * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code Iterable} returned is big-endian;
-     * the least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeroes if
-     * necessary. Does not support removal.
+     * Returns the lowest {@code n} digits of a non-negative {@code int}. The {@code List} returned is big-endian; the
+     * least-significant digits come first. It is exactly {@code n} digits long, and right-padded with zeroes if
+     * necessary.
      *
      * <ul>
      *  <li>{@code length} must be non-negative.</li>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and less than
-     *  2<sup>31</sup>–1.</li>
+     *  <li>The result is a {@code List} whose elements are non-negative and less than 2<sup>31</sup>–1.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -555,21 +548,20 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull Iterable<Integer> bigEndianDigitsPadded(int length, int base, int n) {
+    public static @NotNull List<Integer> bigEndianDigitsPadded(int length, int base, int n) {
         return reverse(digitsPadded(length, base, n));
     }
 
     /**
-     * Returns the lowest {@code n} digits of a non-negative {@code BigInteger}. The {@code Iterable} returned is big-
-     * endian; the least-significant digits come first. It is exactly {@code n} digits long, and right-padded with
-     * zeroes if necessary. Does not support removal.
+     * Returns the lowest {@code n} digits of a non-negative {@code BigInteger}. The {@code List} returned is
+     * big-endian; the least-significant digits come first. It is exactly {@code n} digits long, and right-padded with
+     * zeroes if necessary.
      *
      * <ul>
      *  <li>{@code length} must be non-negative.</li>
      *  <li>{@code base} must be at least 2.</li>
      *  <li>{@code n} must be non-negative.</li>
-     *  <li>The result is a finite {@code Iterable} whose elements are non-negative and less than
-     *  2<sup>31</sup>–1.</li>
+     *  <li>The result is a {@code List} whose elements are non-negative and less than 2<sup>31</sup>–1.</li>
      * </ul>
      *
      * Result length is {@code length}
@@ -579,7 +571,7 @@ public final class MathUtils {
      * @param n a number
      * @return {@code n}'s digits in big-endian order
      */
-    public static @NotNull Iterable<BigInteger> bigEndianDigitsPadded(
+    public static @NotNull List<BigInteger> bigEndianDigitsPadded(
             int length,
             @NotNull BigInteger base,
             @NotNull BigInteger n
