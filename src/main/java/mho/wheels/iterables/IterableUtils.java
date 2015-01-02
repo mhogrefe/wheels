@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -3661,6 +3662,18 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
     }
 
+    public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                q -> q,
+                adjacentPairsWith(p -> {
+                    assert p.a != null;
+                    assert p.b != null;
+                    return compare(p.a, p.b);
+                }, xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
     public static <T extends Comparable<T>> boolean increasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
@@ -3687,6 +3700,21 @@ public final class IterableUtils {
             @NotNull Iterable<T> xs
     ) {
         return and(adjacentPairsWith(p -> ge(comparator, p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean zigzagging(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                q -> q,
+                adjacentPairsWith(p -> {
+                    assert p.a != null;
+                    assert p.b != null;
+                    return compare(comparator, p.a, p.b);
+                }, xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
