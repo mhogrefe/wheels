@@ -400,7 +400,7 @@ public class ReadersProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             Optional<Integer> oi = readInteger(Integer.toString(i));
-            assertEquals(Integer.toString(i), oi.get(), Integer.valueOf(i));
+            assertEquals(Integer.toString(i), oi.get().intValue(), i);
         }
     }
 

@@ -387,7 +387,7 @@ public class MathUtilsProperties {
             aeq(p.toString(), bits, bitsPadded_int_int_simplest(p.b, p.a));
             aeq(p.toString(), bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
-            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+            assertEquals(p.toString(), bits.size(), p.b.intValue());
             try {
                 bitsIterable.iterator().remove();
                 fail(p.toString());
@@ -399,7 +399,7 @@ public class MathUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
-            assertEquals(p.toString(), Integer.valueOf(fromBits(bits).intValueExact()), p.a);
+            assertEquals(p.toString(), fromBits(bits).intValueExact(), p.a.intValue());
         }
 
         Iterable<Pair<Integer, Integer>> psFail;
@@ -480,7 +480,7 @@ public class MathUtilsProperties {
             List<Boolean> bits = toList(bitsIterable);
             aeq(p.toString(), bits, reverse(bigEndianBitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
-            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+            assertEquals(p.toString(), bits.size(), p.b.intValue());
             try {
                 bitsIterable.iterator().remove();
                 fail(p.toString());
@@ -624,7 +624,7 @@ public class MathUtilsProperties {
             aeq(p.toString(), bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
-            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+            assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
         ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
@@ -632,7 +632,7 @@ public class MathUtilsProperties {
             assert p.a != null;
             assert p.b != null;
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
-            assertEquals(p.toString(), Integer.valueOf(fromBigEndianBits(bits).intValueExact()), p.a);
+            assertEquals(p.toString(), fromBigEndianBits(bits).intValueExact(), p.a.intValue());
         }
 
         Iterable<Pair<Integer, Integer>> psFail;
@@ -712,7 +712,7 @@ public class MathUtilsProperties {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
-            assertEquals(p.toString(), Integer.valueOf(bits.size()), p.b);
+            assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
         ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
@@ -838,7 +838,7 @@ public class MathUtilsProperties {
             aeq(p.toString(), digits, digits_int_int_simplest(p.b, p.a));
             aeq(p.toString(), digits, reverse(bigEndianDigits(p.b, p.a)));
             assertTrue(p.toString(), all(i -> i != null && i >= 0 && i < p.b, digits));
-            assertEquals(p.toString(), Integer.valueOf(fromDigits(p.b, digits).intValueExact()), p.a);
+            assertEquals(p.toString(), fromDigits(p.b, digits).intValueExact(), p.a.intValue());
             try {
                 digitsIterable.iterator().remove();
                 fail(p.toString());
@@ -855,7 +855,7 @@ public class MathUtilsProperties {
             assert p.b != null;
             List<Integer> digits = toList(digits(p.b, p.a));
             assertFalse(p.toString(), digits.isEmpty());
-            assertNotEquals(p.toString(), last(digits), Integer.valueOf(0));
+            assertNotEquals(p.toString(), last(digits).intValue(), 0);
             int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
@@ -1083,7 +1083,7 @@ public class MathUtilsProperties {
             aeq(t.toString(), digits, digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             aeq(t.toString(), digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
             assertTrue(t.toString(), all(i -> i != null && i >= 0 && i < t.b, digits));
-            assertEquals(t.toString(), Integer.valueOf(digits.size()), t.a);
+            assertEquals(t.toString(), digits.size(), t.a.intValue());
             try {
                 digitsIterable.iterator().remove();
                 fail(t.toString());
@@ -1162,7 +1162,7 @@ public class MathUtilsProperties {
             assert t.b != null;
             assert t.c != null;
             List<Integer> digits = toList(digitsPadded(t.a, t.b, t.c));
-            assertEquals(t.toString(), Integer.valueOf(fromDigits(t.b, digits).intValueExact()), t.c);
+            assertEquals(t.toString(), fromDigits(t.b, digits).intValueExact(), t.c.intValue());
         }
 
         Function<Integer, Boolean> digitsToBits = i -> {
@@ -1342,7 +1342,7 @@ public class MathUtilsProperties {
             List<BigInteger> digits = toList(digitsIterable);
             aeq(t.toString(), digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
             assertTrue(t.toString(), all(i -> i != null && i.signum() != -1 && lt(i, t.b), digits));
-            assertEquals(t.toString(), Integer.valueOf(digits.size()), t.a);
+            assertEquals(t.toString(), digits.size(), t.a.intValue());
             try {
                 digitsIterable.iterator().remove();
                 fail(t.toString());
@@ -1548,7 +1548,7 @@ public class MathUtilsProperties {
             aeq(p.toString(), digits, bigEndianDigits_int_int_simplest(p.b, p.a));
             aeq(p.toString(), digits, reverse(digits(p.b, p.a)));
             assertTrue(p.toString(), all(i -> i != null && i >= 0 && i < p.b, digits));
-            assertEquals(p.toString(), Integer.valueOf(fromBigEndianDigits(p.b, digits).intValueExact()), p.a);
+            assertEquals(p.toString(), fromBigEndianDigits(p.b, digits).intValueExact(), p.a.intValue());
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -1561,7 +1561,7 @@ public class MathUtilsProperties {
             assert p.b != null;
             List<Integer> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p.toString(), digits.isEmpty());
-            assertNotEquals(p.toString(), head(digits), Integer.valueOf(0));
+            assertNotEquals(p.toString(), head(digits).intValue(), 0);
             int targetDigitCount = ceilingLog(BigInteger.valueOf(p.b), BigInteger.valueOf(p.a)).intValueExact();
             if (BigInteger.valueOf(p.b).pow(targetDigitCount).equals(BigInteger.valueOf(p.a))) {
                 targetDigitCount++;
@@ -1786,7 +1786,7 @@ public class MathUtilsProperties {
             aeq(t.toString(), digits, bigEndianDigitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             aeq(t.toString(), digits, reverse(digitsPadded(t.a, t.b, t.c)));
             assertTrue(t.toString(), all(i -> i != null && i >= 0 && i < t.b, digits));
-            assertEquals(t.toString(), Integer.valueOf(digits.size()), t.a);
+            assertEquals(t.toString(), digits.size(), t.a.intValue());
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -1861,7 +1861,7 @@ public class MathUtilsProperties {
             assert t.b != null;
             assert t.c != null;
             List<Integer> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
-            assertEquals(t.toString(), Integer.valueOf(fromBigEndianDigits(t.b, digits).intValueExact()), t.c);
+            assertEquals(t.toString(), fromBigEndianDigits(t.b, digits).intValueExact(), t.c.intValue());
         }
 
         Function<Integer, Boolean> digitsToBits = i -> {
@@ -2040,7 +2040,7 @@ public class MathUtilsProperties {
             List<BigInteger> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
             aeq(t.toString(), digits, reverse(digitsPadded(t.a, t.b, t.c)));
             assertTrue(t.toString(), all(i -> i != null && i.signum() != -1 && lt(i, t.b), digits));
-            assertEquals(t.toString(), Integer.valueOf(digits.size()), t.a);
+            assertEquals(t.toString(), digits.size(), t.a.intValue());
         }
 
         if (P instanceof ExhaustiveProvider) {
