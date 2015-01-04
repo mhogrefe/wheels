@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -2759,6 +2760,21 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull <T> List<T> unrepeat(@NotNull Iterable<T> xs) {
+        return unrepeat(toList(xs));
+    }
+
+    public static @NotNull <T> List<T> unrepeat(@NotNull List<T> xs) {
+        if (xs.isEmpty()) return xs;
+        for (int i : MathUtils.factors(xs.size())) {
+            if (i == 1) continue;
+            if (all(IterableUtils::same, demux(i, xs))) {
+                return toList(take(i, xs));
+            }
+        }
+        return xs;
+    }
+
     public static @NotNull <A, B> Iterable<A> unfoldr(@NotNull Function<B, Optional<Pair<A, B>>> f, @NotNull B x) {
         return new Iterable<A>() {
             @Override
@@ -2920,6 +2936,22 @@ public final class IterableUtils {
 
     public static @NotNull String drop(@NotNull BigInteger n, @NotNull String s) {
         return s.substring(n.intValueExact());
+    }
+
+    public static @NotNull <T> Iterable<T> rotateLeft(int amount, @NotNull Iterable<T> xs) {
+        return concat(drop(amount, xs), take(amount, xs));
+    }
+
+    public static @NotNull <T> Iterable<T> rotateRight(int amount, @NotNull Iterable<T> xs) {
+        return rotateLeft(length(xs) - amount, xs);
+    }
+
+    public static @NotNull String rotateLeft(int amount, @NotNull String s) {
+        return concat(drop(amount, s), take(amount, s));
+    }
+
+    public static @NotNull String rotateRight(int amount, @NotNull String s) {
+        return rotateLeft(length(s) - amount, s);
     }
 
     public static @NotNull <T> Iterable<T> pad(@NotNull T pad, int length, @NotNull Iterable<T> xs) {
@@ -3644,6 +3676,18 @@ public final class IterableUtils {
         if (head(xs) == null)
             throw new NullPointerException();
         return adjacentPairsWith(p -> p.b - p.a, xs);
+    }
+
+    public static <T> boolean same(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return true;
+        T head = head(xs);
+        return all(x -> Objects.equals(x, head), tail(xs));
+    }
+
+    public static boolean same(@NotNull String s) {
+        if (isEmpty(s)) return true;
+        char head = head(s);
+        return all(c -> c == head, tail(s));
     }
 
     public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
