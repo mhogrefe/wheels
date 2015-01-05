@@ -2767,7 +2767,6 @@ public final class IterableUtils {
     public static @NotNull <T> List<T> unrepeat(@NotNull List<T> xs) {
         if (xs.isEmpty()) return xs;
         for (int i : MathUtils.factors(xs.size())) {
-            if (i == 1) continue;
             if (all(IterableUtils::same, demux(i, xs))) {
                 return toList(take(i, xs));
             }
