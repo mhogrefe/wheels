@@ -286,7 +286,7 @@ public class IterableUtilsDemos {
 
     public static void demoUnrepeat() {
         initialize();
-        for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             String listString = tail(init(is.toString()));
             System.out.println("unrepeat(" + listString + ") = " + unrepeat(is));
         }

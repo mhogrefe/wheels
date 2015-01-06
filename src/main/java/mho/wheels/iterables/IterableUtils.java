@@ -2783,10 +2783,16 @@ public final class IterableUtils {
      */
     public static @NotNull <T> List<T> unrepeat(@NotNull List<T> xs) {
         if (xs.isEmpty()) return xs;
+        outer:
         for (int i : MathUtils.factors(xs.size())) {
-            if (all(IterableUtils::same, demux(i, xs))) {
-                return toList(take(i, xs));
+            if (i == xs.size()) break;
+            for (int j = 0; j < i; j++) {
+                T first = xs.get(j);
+                for (int k : rangeBy(j + i, i, xs.size() - 1)) {
+                    if (!Objects.equals(first, xs.get(k))) continue outer;
+                }
             }
+            return toList(take(i, xs));
         }
         return xs;
     }

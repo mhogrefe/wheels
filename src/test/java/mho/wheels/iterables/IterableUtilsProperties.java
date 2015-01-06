@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
+import mho.wheels.math.MathUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -36,6 +38,8 @@ public class IterableUtilsProperties {
         for (boolean useRandom : Arrays.asList(false, true)) {
             System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
+            propertiesUnrepeat();
+            compareImplementationsUnrepeat();
             propertiesSumByte();
             propertiesSumShort();
             propertiesSumInteger();
@@ -63,6 +67,54 @@ public class IterableUtilsProperties {
             propertiesDeltaCharacter();
         }
         System.out.println("Done");
+    }
+
+    private static @NotNull <T> List<T> unrepeat_alt(@NotNull List<T> xs) {
+        if (xs.isEmpty()) return xs;
+        for (int i : MathUtils.factors(xs.size())) {
+            if (all(IterableUtils::same, demux(i, xs))) {
+                return toList(take(i, xs));
+            }
+        }
+        return xs;
+    }
+
+    private static void propertiesUnrepeat() {
+        initialize();
+        System.out.println("\t\ttesting unrepeat(List<T>) properties...");
+
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            List<Integer> unrepeated = unrepeat(is);
+            assertEquals(is.toString(), unrepeated, unrepeat_alt(is));
+            assertEquals(is.toString(), unrepeat(unrepeated), unrepeated);
+        }
+
+        for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.withNull(P.integers()))))) {
+            List<Integer> unrepeated = unrepeat(is);
+            assertTrue(is.toString(), MathUtils.factors(is.size()).contains(unrepeated.size()));
+            aeq(is.toString(), concat(replicate(is.size() / unrepeated.size(), unrepeated)), is);
+        }
+    }
+
+    private static void compareImplementationsUnrepeat() {
+        initialize();
+        System.out.println("\t\tcomparing unrepeat(List<T>) implementations...");
+
+        long totalTime = 0;
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            long time = System.nanoTime();
+            unrepeat_alt(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            long time = System.nanoTime();
+            unrepeat(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
     private static void propertiesSumByte() {
