@@ -1139,6 +1139,22 @@ public class IterableUtilsTest {
     }
 
     @Test
+    public void testUnrepeat() {
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]").get()), "[1, 2, 3]");
+        aeq(
+                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]").get()),
+                "[1, null, 3]"
+        );
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]").get()), "[1, 2, 3, 4, 5]");
+        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]").get()), "[1, 2, 3, null, 5]");
+        aeq(unrepeat(readIntegerList("[1, 1, 1]").get()), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]").get()), "[null]");
+        aeq(unrepeat(readIntegerList("[1]").get()), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null]").get()), "[null]");
+        aeq(unrepeat(new ArrayList<Integer>()), "[]");
+    }
+
+    @Test
     public void testSumByte() {
         aeq(sumByte(Arrays.asList((byte) 10, (byte) 11, (byte) 12)), 33);
         aeq(sumByte(Arrays.asList((byte) -4, (byte) 6, (byte) -8)), -6);
@@ -1482,6 +1498,14 @@ public class IterableUtilsTest {
 
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
+    }
+
+    private static @NotNull Optional<List<Integer>> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::findIntegerIn, s);
+    }
+
+    private static @NotNull Optional<List<Integer>> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readList(t -> Readers.findInWithNulls(Readers::findIntegerIn, t), s);
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {

@@ -2764,6 +2764,23 @@ public final class IterableUtils {
         return unrepeat(toList(xs));
     }
 
+    /**
+     * Given a {@code xs}, returns the shortest {@code List} {@code ys} such that {@code xs} is equal to {@code ys}
+     * repeated some number of times. If {@code xs} consists of a single element repeated multiple times, the result is
+     * a {@code List} containing that element once; if {@code xs} does not repeat, the result is {@code xs}. If
+     * {@code xs} is empty, the empty list is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result is non-null and not made up of repetitions of any smaller list.</li>
+     * </ul>
+     *
+     * Length is a positive factor of |{@code xs}|
+     *
+     * @param xs the input {@code List}
+     * @param <T> the type of {@code xs}'s elements
+     * @return the smallest {@code List} such that {@code xs} is made up of repetitions of that {@code List}
+     */
     public static @NotNull <T> List<T> unrepeat(@NotNull List<T> xs) {
         if (xs.isEmpty()) return xs;
         for (int i : MathUtils.factors(xs.size())) {
