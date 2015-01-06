@@ -284,6 +284,14 @@ public class IterableUtilsDemos {
         }
     }
 
+    public static void demoUnrepeat() {
+        initialize();
+        for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("unrepeat(" + listString + ") = " + unrepeat(is));
+        }
+    }
+
     public static void demoSumByte() {
         initialize();
         for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {

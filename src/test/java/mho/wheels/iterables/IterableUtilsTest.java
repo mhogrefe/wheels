@@ -1151,7 +1151,7 @@ public class IterableUtilsTest {
         aeq(unrepeat(readIntegerListWithNulls("[null, null, null]").get()), "[null]");
         aeq(unrepeat(readIntegerList("[1]").get()), "[1]");
         aeq(unrepeat(readIntegerListWithNulls("[null]").get()), "[null]");
-        aeq(unrepeat(new ArrayList<Integer>()), "[]");
+        aeq(unrepeat(new ArrayList<>()), "[]");
     }
 
     @Test
