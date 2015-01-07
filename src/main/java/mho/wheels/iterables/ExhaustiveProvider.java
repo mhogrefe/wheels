@@ -1137,7 +1137,7 @@ public class ExhaustiveProvider implements IterableProvider {
         if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
             return Combinatorics.listsShortlexAtLeast(minSize, xs);
         } else {
-            return Combinatorics.listsShortlexAtLeast(minSize, xs);
+            return Combinatorics.listsAtLeast(minSize, xs);
         }
     }
 
