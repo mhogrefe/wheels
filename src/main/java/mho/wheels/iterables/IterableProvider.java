@@ -192,11 +192,17 @@ public interface IterableProvider {
 
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
 
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
 
     public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
 
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
+
     public @NotNull Iterable<String> strings(int size);
+
+    public @NotNull Iterable<String> stringsAtLeast(int size);
 
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
 

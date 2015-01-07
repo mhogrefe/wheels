@@ -566,6 +566,16 @@ public final class Combinatorics {
     }
 
     //todo docs
+    public static @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return minSize == 0 ? Arrays.asList(new ArrayList<>()) : new ArrayList<>();
+        return concatMap(i -> listsIncreasing(i, xs), P.rangeUp(minSize));
+    }
+
+    public static @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
+        if (isEmpty(s)) return minSize == 0 ? Arrays.asList("") : new ArrayList<>();
+        return concatMap(i -> stringsIncreasing(i, s), P.naturalBigIntegers());
+    }
+
     private static @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
             @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
             @NotNull Iterable<A> as,
@@ -1438,16 +1448,12 @@ public final class Combinatorics {
             }
             bi = bi.subtract(BigInteger.ONE);
             Pair<BigInteger, BigInteger> sizeIndex = MathUtils.logarithmicDemux(bi);
+            assert sizeIndex.a != null;
+            assert sizeIndex.b != null;
             int size = sizeIndex.b.intValueExact() + 1;
             return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
         };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<List<T>>::isPresent,
-                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), P.naturalBigIntegers())
-                )
-        );
+        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
     }
 
     public static @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
@@ -1456,6 +1462,31 @@ public final class Combinatorics {
 
     public static @NotNull Iterable<String> strings(@NotNull String s) {
         return map(IterableUtils::charsToString, lists(fromString(s)));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, Iterable<T> xs) {
+        if (minSize == 0) return lists(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs);
+        Function<BigInteger, Optional<List<T>>> f = bi -> {
+            if (bi.equals(BigInteger.ZERO)) {
+                return Optional.<List<T>>empty();
+            }
+            bi = bi.subtract(BigInteger.ONE);
+            Pair<BigInteger, BigInteger> sizeIndex = MathUtils.logarithmicDemux(bi);
+            assert sizeIndex.a != null;
+            assert sizeIndex.b != null;
+            int size = sizeIndex.b.intValueExact() + minSize;
+            return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
+        };
+        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
+    }
+
+    public static @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, cs));
+    }
+
+    public static @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, fromString(s)));
     }
 
     public static @NotNull <T> Iterable<List<T>> orderedSubsequences(@NotNull Iterable<T> xs) {

@@ -1144,6 +1144,15 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
+            return Combinatorics.listsIncreasing(minSize, xs);
+        } else {
+            return Combinatorics.lists(minSize, xs);
+        }
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
             return Combinatorics.listsShortlex(xs);
@@ -1158,8 +1167,18 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
+        return Combinatorics.stringsAtLeast(minSize, cs);
+    }
+
+    @Override
     public @NotNull Iterable<String> strings(int size) {
         return Combinatorics.strings(size, characters());
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return Combinatorics.stringsAtLeast(minSize, characters());
     }
 
     @Override

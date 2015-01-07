@@ -1259,6 +1259,35 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        return () -> new Iterator<List<T>>() {
+            private final Iterator<T> xsi = cycle(xs).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next() + minSize;
+                List<T> list = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(xsi.next());
+                }
+                return list;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
@@ -1293,11 +1322,44 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
+        if (isEmpty(cs)) return Arrays.asList("");
+        return () -> new Iterator<String>() {
+            private final Iterator<Character> csi = cycle(cs).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next() + minSize;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
     public @NotNull Iterable<String> strings(int size) {
         return strings(size, characters());
     }
 
-    //todo
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return stringsAtLeast(minSize, characters());
+    }
+
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Arrays.asList("");
