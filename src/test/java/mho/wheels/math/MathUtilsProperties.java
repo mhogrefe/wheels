@@ -2280,10 +2280,7 @@ public class MathUtilsProperties {
 
         Iterable<Pair<List<Integer>, Integer>> unfilteredPsFail;
         if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.integers()),
-                    P.rangeDown(1)
-            );
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeDown(1));
         } else {
             unfilteredPsFail = P.pairs(
                     P.lists(((RandomProvider) P).integersGeometric(10)),
@@ -2304,10 +2301,7 @@ public class MathUtilsProperties {
         }
 
         if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.integers()),
-                    P.rangeUp(2)
-            );
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeUp(2));
         } else {
             unfilteredPsFail = P.pairs(
                     P.lists(((RandomProvider) P).integersGeometric(10)),
@@ -2544,10 +2538,7 @@ public class MathUtilsProperties {
 
         Iterable<Pair<List<Integer>, Integer>> unfilteredPsFail;
         if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.integers()),
-                    P.rangeDown(1)
-            );
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeDown(1));
         } else {
             unfilteredPsFail = P.pairs(
                     P.lists(((RandomProvider) P).integersGeometric(10)),
@@ -2568,10 +2559,7 @@ public class MathUtilsProperties {
         }
 
         if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.integers()),
-                    P.rangeUp(2)
-            );
+            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeUp(2));
         } else {
             unfilteredPsFail = P.pairs(
                     P.lists(((RandomProvider) P).integersGeometric(10)),
@@ -2998,7 +2986,7 @@ public class MathUtilsProperties {
                         );
                     }
                     return IterableUtils.mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )
@@ -3024,14 +3012,11 @@ public class MathUtilsProperties {
                     } else {
                         positiveStrings = map(
                                 is -> concatMapStrings(i -> "(" + i + ")", is),
-                                filter(
-                                        is -> !is.isEmpty() && head(is) != 0,
-                                        (Iterable<List<Integer>>) P.lists(P.range(0, b - 1))
-                                )
+                                filter(is -> !is.isEmpty() && head(is) != 0, P.lists(P.range(0, b - 1)))
                         );
                     }
                     return IterableUtils.mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )
@@ -3075,7 +3060,7 @@ public class MathUtilsProperties {
                         );
                     }
                     return IterableUtils.mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )
@@ -3119,7 +3104,7 @@ public class MathUtilsProperties {
                         );
                     }
                     return IterableUtils.mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )
@@ -3146,9 +3131,7 @@ public class MathUtilsProperties {
                                 is -> concatMapStrings(i -> "(" + i + ")", is),
                                 filter(
                                         is -> !is.isEmpty() && !head(is).equals(BigInteger.ZERO),
-                                        (Iterable<List<BigInteger>>) P.lists(
-                                                P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
-                                        )
+                                        P.lists(P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE)))
                                 )
                         );
                     }

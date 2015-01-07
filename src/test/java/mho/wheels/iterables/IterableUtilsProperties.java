@@ -89,7 +89,7 @@ public class IterableUtilsProperties {
             assertEquals(is.toString(), unrepeat(unrepeated), unrepeated);
         }
 
-        for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.withNull(P.integers()))))) {
+        for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.withNull(P.integers())))) {
             List<Integer> unrepeated = unrepeat(is);
             assertTrue(is.toString(), MathUtils.factors(is.size()).contains(unrepeated.size()));
             aeq(is.toString(), concat(replicate(is.size() / unrepeated.size(), unrepeated)), is);
@@ -865,7 +865,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaByte(Iterable<Byte>) properties...");
 
-        for (List<Byte> bs : take(LIMIT, filter(cs -> !cs.isEmpty(), P.lists(P.bytes())))) {
+        for (List<Byte> bs : take(LIMIT, P.listsAtLeast(1, P.bytes()))) {
             Iterable<Byte> deltas = deltaByte(bs);
             aeq(bs.toString(), length(deltas), length(bs) - 1);
             Iterable<Byte> reversed = reverse(map(b -> (byte) -b, deltaByte(reverse(bs))));
@@ -905,7 +905,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaShort(Iterable<Short>) properties...");
 
-        for (List<Short> ss : take(LIMIT, filter(ts -> !ts.isEmpty(), P.lists(P.shorts())))) {
+        for (List<Short> ss : take(LIMIT, P.listsAtLeast(1, P.shorts()))) {
             Iterable<Short> deltas = deltaShort(ss);
             aeq(ss.toString(), length(deltas), length(ss) - 1);
             Iterable<Short> reversed = reverse(map(s -> (short) -s, deltaShort(reverse(ss))));
@@ -945,7 +945,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaInteger(Iterable<Integer>) properties...");
 
-        for (List<Integer> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.integers())))) {
+        for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.integers()))) {
             Iterable<Integer> deltas = deltaInteger(is);
             aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaInteger(reverse(is))));
@@ -985,7 +985,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaLong(Iterable<Long>) properties...");
 
-        for (List<Long> ls : take(LIMIT, filter(ms -> !ms.isEmpty(), P.lists(P.longs())))) {
+        for (List<Long> ls : take(LIMIT, P.listsAtLeast(1, P.longs()))) {
             Iterable<Long> deltas = deltaLong(ls);
             aeq(ls.toString(), length(deltas), length(ls) - 1);
             Iterable<Long> reversed = reverse(map(l -> -l, deltaLong(reverse(ls))));
@@ -1025,7 +1025,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaBigInteger(Iterable<BigInteger>) properties...");
 
-        for (List<BigInteger> is : take(LIMIT, filter(js -> !js.isEmpty(), P.lists(P.bigIntegers())))) {
+        for (List<BigInteger> is : take(LIMIT, P.listsAtLeast(1, P.bigIntegers()))) {
             Iterable<BigInteger> deltas = deltaBigInteger(is);
             aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<BigInteger> reversed = reverse(map(BigInteger::negate, deltaBigInteger(reverse(is))));
@@ -1065,7 +1065,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaBigDecimal(Iterable<BigDecimal>) properties...");
 
-        for (List<BigDecimal> bds : take(LIMIT, filter(bes -> !bes.isEmpty(), P.lists(P.bigDecimals())))) {
+        for (List<BigDecimal> bds : take(LIMIT, P.listsAtLeast(1, P.bigDecimals()))) {
             Iterable<BigDecimal> deltas = deltaBigDecimal(bds);
             aeq(bds.toString(), length(deltas), length(bds) - 1);
             Iterable<BigDecimal> reversed = reverse(map(BigDecimal::negate, deltaBigDecimal(reverse(bds))));
@@ -1105,7 +1105,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaFloat(Iterable<Float>) properties...");
 
-        for (List<Float> fs : take(LIMIT, filter(gs -> !gs.isEmpty(), P.lists(P.floats())))) {
+        for (List<Float> fs : take(LIMIT, P.listsAtLeast(1, P.floats()))) {
             Iterable<Float> deltas = deltaFloat(fs);
             aeq(fs.toString(), length(deltas), length(fs) - 1);
             Iterable<Float> reversed = reverse(map(f -> -f, deltaFloat(reverse(fs))));
@@ -1145,7 +1145,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaDouble(Iterable<Double>) properties...");
 
-        for (List<Double> ds : take(LIMIT, filter(es -> !es.isEmpty(), P.lists(P.doubles())))) {
+        for (List<Double> ds : take(LIMIT, P.listsAtLeast(1, P.doubles()))) {
             Iterable<Double> deltas = deltaDouble(ds);
             aeq(ds.toString(), length(deltas), length(ds) - 1);
             Iterable<Double> reversed = reverse(map(d -> -d, deltaDouble(reverse(ds))));
@@ -1185,7 +1185,7 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaCharacter(Iterable<Character>) properties...");
 
-        for (List<Character> cs : take(LIMIT, filter(ds -> !ds.isEmpty(), P.lists(P.characters())))) {
+        for (List<Character> cs : take(LIMIT, P.listsAtLeast(1, P.characters()))) {
             Iterable<Integer> deltas = deltaCharacter(cs);
             aeq(cs.toString(), length(deltas), length(cs) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaCharacter(reverse(cs))));

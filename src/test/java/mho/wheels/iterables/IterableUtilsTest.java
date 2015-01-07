@@ -872,16 +872,16 @@ public class IterableUtilsTest {
 
     @Test
     public void testLength_Iterable() {
-        assertEquals(length((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
-        assertEquals(length((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
-        assertEquals(length((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+        assertEquals(length(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        assertEquals(length(cons(null, Arrays.asList(null, 2, 1))), 4);
+        assertEquals(length(tail(Arrays.asList(2))), 0);
     }
 
     @Test
     public void testBigIntegerLength() {
-        aeq(bigIntegerLength((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
-        aeq(bigIntegerLength((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
-        aeq(bigIntegerLength((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+        aeq(bigIntegerLength(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        aeq(bigIntegerLength(cons(null, Arrays.asList(null, 2, 1))), 4);
+        aeq(bigIntegerLength(tail(Arrays.asList(2))), 0);
     }
 
     @Test
@@ -892,7 +892,7 @@ public class IterableUtilsTest {
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertEquals(length(nullList), 1);
-        assertEquals(length(new ArrayList<Integer>()), 0);
+        assertEquals(length(new ArrayList<>()), 0);
     }
 
     @Test

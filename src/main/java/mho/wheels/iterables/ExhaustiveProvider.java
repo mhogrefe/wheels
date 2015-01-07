@@ -458,10 +458,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return cons(
-                (byte) 0,
-                mux(Arrays.asList(positiveBytes(), negativeBytes()))
-        );
+        return cons((byte) 0, mux(Arrays.asList(positiveBytes(), negativeBytes())));
     }
 
     /**
@@ -471,10 +468,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return cons(
-                (short) 0,
-                mux(Arrays.asList(positiveShorts(), negativeShorts()))
-        );
+        return cons((short) 0, mux(Arrays.asList(positiveShorts(), negativeShorts())));
     }
 
     /**
@@ -484,10 +478,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
-        return cons(
-                0,
-                mux(Arrays.asList(positiveIntegers(), negativeIntegers()))
-        );
+        return cons(0, mux(Arrays.asList(positiveIntegers(), negativeIntegers())));
     }
 
     /**
@@ -507,9 +498,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        return cons(
-                BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()))
-        );
+        return cons(BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers())));
     }
 
     /**
@@ -706,7 +695,7 @@ public class ExhaustiveProvider implements IterableProvider {
     public @NotNull Iterable<Float> floats() {
         return concat(
                 Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
-                (Iterable<Float>) tail(ordinaryFloats())
+                tail(ordinaryFloats())
         );
     }
 
@@ -829,7 +818,7 @@ public class ExhaustiveProvider implements IterableProvider {
     public @NotNull Iterable<Double> doubles() {
         return concat(
                 Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
-                (Iterable<Double>) tail(ordinaryDoubles())
+                tail(ordinaryDoubles())
         );
     }
 
@@ -1146,9 +1135,9 @@ public class ExhaustiveProvider implements IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
-            return Combinatorics.listsIncreasing(minSize, xs);
+            return Combinatorics.listsShortlexAtLeast(minSize, xs);
         } else {
-            return Combinatorics.lists(minSize, xs);
+            return Combinatorics.listsShortlexAtLeast(minSize, xs);
         }
     }
 

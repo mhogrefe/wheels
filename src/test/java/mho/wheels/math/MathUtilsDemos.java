@@ -513,7 +513,7 @@ public class MathUtilsDemos {
                         positiveStrings = P.strings(
                                 map(
                                         i -> MathUtils.toDigit(i.intValueExact()),
-                                        (Iterable<BigInteger>) P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
+                                        P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
                                 )
                         );
                     } else {
@@ -523,7 +523,7 @@ public class MathUtilsDemos {
                         );
                     }
                     return mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )

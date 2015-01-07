@@ -1361,12 +1361,18 @@ public final class Combinatorics {
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi ->
                 ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, bi)));
+        Predicate<Optional<List<T>>> lastList = o -> {
+            if (!o.isPresent()) return false;
+            List<T> list = o.get();
+            for (T x : list) {
+                Optional<Boolean> oLastX = ii.isLast(x);
+                if (!oLastX.isPresent() || !oLastX.get()) return false;
+            }
+            return true;
+        };
         return map(
                 Optional::get,
-                filter(
-                        Optional<List<T>>::isPresent,
-                        (Iterable<Optional<List<T>>>) map(bi -> f.apply(bi), P.naturalBigIntegers())
-                )
+                filter(Optional::isPresent, stopAt(lastList, map(bi -> f.apply(bi), P.naturalBigIntegers())))
         );
     }
 

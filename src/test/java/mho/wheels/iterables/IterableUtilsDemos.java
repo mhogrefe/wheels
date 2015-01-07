@@ -422,7 +422,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaByte() {
         initialize();
-        for (List<Byte> bs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bytes())))) {
+        for (List<Byte> bs : take(LIMIT, P.listsAtLeast(1, P.bytes()))) {
             String listString = tail(init(bs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaByte(bs)));
         }
@@ -430,7 +430,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaShort() {
         initialize();
-        for (List<Short> ss : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.shorts())))) {
+        for (List<Short> ss : take(LIMIT, P.listsAtLeast(1, P.shorts()))) {
             String listString = tail(init(ss.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaShort(ss)));
         }
@@ -438,7 +438,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaInteger() {
         initialize();
-        for (List<Integer> is : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.integers())))) {
+        for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.integers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaInteger(is)));
         }
@@ -446,7 +446,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaLong() {
         initialize();
-        for (List<Long> ls : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.longs())))) {
+        for (List<Long> ls : take(LIMIT, P.listsAtLeast(1, P.longs()))) {
             String listString = tail(init(ls.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaLong(ls)));
         }
@@ -454,7 +454,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaBigInteger() {
         initialize();
-        for (List<BigInteger> is : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bigIntegers())))) {
+        for (List<BigInteger> is : take(LIMIT, P.listsAtLeast(1, P.bigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaBigInteger(is)));
         }
@@ -462,7 +462,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaBigDecimal() {
         initialize();
-        for (List<BigDecimal> bds : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bigDecimals())))) {
+        for (List<BigDecimal> bds : take(LIMIT, P.listsAtLeast(1, P.bigDecimals()))) {
             String listString = tail(init(bds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaBigDecimal(bds)));
         }
@@ -470,7 +470,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaFloat() {
         initialize();
-        for (List<Float> fs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.floats())))) {
+        for (List<Float> fs : take(LIMIT, P.listsAtLeast(1, P.floats()))) {
             String listString = tail(init(fs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaFloat(fs)));
         }
@@ -478,7 +478,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaDouble() {
         initialize();
-        for (List<Double> ds : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.doubles())))) {
+        for (List<Double> ds : take(LIMIT, P.listsAtLeast(1, P.doubles()))) {
             String listString = tail(init(ds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaDouble(ds)));
         }
@@ -486,7 +486,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaCharacter() {
         initialize();
-        for (List<Character> cs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.characters())))) {
+        for (List<Character> cs : take(LIMIT, P.listsAtLeast(1, P.characters()))) {
             String listString = tail(init(cs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaCharacter(cs)));
         }

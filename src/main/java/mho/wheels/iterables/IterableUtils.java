@@ -3360,7 +3360,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
-        return cons(new ArrayList<T>(), ()-> new Iterator<List<T>>() {
+        return cons(new ArrayList<T>(), () -> new Iterator<List<T>>() {
             private Iterator<T> xsi = xs.iterator();
             private List<T> currentList = new ArrayList<>();
 
