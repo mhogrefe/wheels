@@ -3481,6 +3481,50 @@ public final class IterableUtils {
         });
     }
 
+    public static @NotNull <T> Iterable<T> skipLastIf(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs))
+            throw new NoSuchElementException();
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next = xsi.next();
+                    private boolean lastIsNext = false;
+                    {
+                        if (!xsi.hasNext() && !p.test(next)) {
+                            lastIsNext = true;
+                        }
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return xsi.hasNext() || lastIsNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        if (lastIsNext) {
+                            lastIsNext = false;
+                            return next;
+                        }
+                        T oldNext = next;
+                        next = xsi.next();
+                        if (!xsi.hasNext() && !p.test(next)) {
+                            lastIsNext = true;
+                        }
+                        return oldNext;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
+    }
+
     public static @NotNull <A, B> Iterable<B> adjacentPairsWith(
             @NotNull Function<Pair<A, A>, B> f,
             @NotNull Iterable<A> xs
