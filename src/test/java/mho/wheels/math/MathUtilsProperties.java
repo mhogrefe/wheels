@@ -135,18 +135,18 @@ public class MathUtilsProperties {
         long totalTime = 0;
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             gcd_int_int_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
 
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             gcd_int_int_explicit(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
@@ -154,9 +154,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             gcd(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
@@ -200,9 +200,9 @@ public class MathUtilsProperties {
         long totalTime = 0;
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             gcd_long_long_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
@@ -210,9 +210,9 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             for (Pair<Long, Long> p : take(LIMIT, ps)) {
-                long time = System.nanoTime();
                 assert p.a != null;
                 assert p.b != null;
+                long time = System.nanoTime();
                 gcd_long_long_explicit(p.a, p.b);
                 totalTime += (System.nanoTime() - time);
             }
@@ -223,9 +223,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             gcd(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
@@ -444,9 +444,9 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             toList(bitsPadded_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
         }
@@ -454,9 +454,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             toList(bitsPadded(p.b, p.a));
             totalTime += (System.nanoTime() - time);
         }
@@ -677,9 +677,9 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             toList(bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
         }
@@ -687,9 +687,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             bigEndianBitsPadded(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -1293,10 +1293,10 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;
+            long time = System.nanoTime();
             toList(digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
         }
@@ -1304,10 +1304,10 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;
+            long time = System.nanoTime();
             toList(digitsPadded(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
         }
@@ -1992,10 +1992,10 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;
+            long time = System.nanoTime();
             toList(bigEndianDigitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
         }
@@ -2003,10 +2003,10 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            long time = System.nanoTime();
             assert t.a != null;
             assert t.b != null;
             assert t.c != null;
+            long time = System.nanoTime();
             bigEndianDigitsPadded(t.a, t.b, t.c);
             totalTime += (System.nanoTime() - time);
         }
@@ -2348,9 +2348,9 @@ public class MathUtilsProperties {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromDigits_int_Iterable_Integer_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -2358,9 +2358,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromDigits(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -2606,9 +2606,9 @@ public class MathUtilsProperties {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -2616,9 +2616,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromBigEndianDigits(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -2869,9 +2869,9 @@ public class MathUtilsProperties {
             ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             toStringBase_int_int_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -2879,9 +2879,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             toStringBase(p.b, p.a);
             totalTime += (System.nanoTime() - time);
         }
@@ -3068,9 +3068,9 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromStringBase_int_String_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
@@ -3078,9 +3078,9 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            long time = System.nanoTime();
             assert p.a != null;
             assert p.b != null;
+            long time = System.nanoTime();
             fromStringBase(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
