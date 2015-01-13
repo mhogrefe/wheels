@@ -91,13 +91,7 @@ public class BigDecimalUtilsProperties {
             );
         }
 
-        Iterable<Pair<BigDecimal, Integer>> failPs;
-        if (P instanceof ExhaustiveProvider) {
-            failPs = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), map(i -> -i, P.naturalIntegers()));
-        } else {
-            failPs = P.pairs(P.bigDecimals(), map(i -> -i, ((RandomProvider) P).naturalIntegersGeometric(20)));
-        }
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, failPs)) {
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.rangeDown(0)))) {
             assert p.a != null;
             assert p.b != null;
             try {

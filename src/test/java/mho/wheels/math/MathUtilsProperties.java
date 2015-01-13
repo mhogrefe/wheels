@@ -402,27 +402,17 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), fromBits(bits).intValueExact(), p.a.intValue());
         }
 
-        Iterable<Pair<Integer, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.negativeIntegers());
-        } else {
-            psFail = P.pairs(P.naturalIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
-            } catch (ArithmeticException ignored) {}
+            } catch (ArithmeticException ignored) {
+            }
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.naturalIntegers());
-        } else {
-            psFail = P.pairs(P.negativeIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -495,13 +485,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), fromBits(bits), p.a);
         }
 
-        Iterable<Pair<BigInteger, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.negativeIntegers());
-        } else {
-            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
-        }
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -510,12 +494,7 @@ public class MathUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeBigIntegers(), P.naturalIntegers());
-        } else {
-            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
-        }
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -635,13 +614,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), fromBigEndianBits(bits).intValueExact(), p.a.intValue());
         }
 
-        Iterable<Pair<Integer, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.negativeIntegers());
-        } else {
-            psFail = P.pairs(P.naturalIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -650,12 +623,7 @@ public class MathUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.naturalIntegers());
-        } else {
-            psFail = P.pairs(P.negativeIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
