@@ -16,6 +16,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public class IterableUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
@@ -126,17 +127,11 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<Byte>, List<Byte>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bytes()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Byte>, List<Byte>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumByte(p.a), sumByte(p.b));
         }
 
@@ -145,14 +140,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumByte(Arrays.asList(p.a, p.b)), (byte) (p.a + p.b));
         }
 
         Iterable<List<Byte>> failBss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bytes()),
@@ -175,17 +166,11 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<Short>, List<Short>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.shorts()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Short>, List<Short>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumShort(p.a), sumShort(p.b));
         }
 
@@ -194,14 +179,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumShort(Arrays.asList(p.a, p.b)), (short) (p.a + p.b));
         }
 
         Iterable<List<Short>> failSss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.shorts()),
@@ -225,16 +206,12 @@ public class IterableUtilsProperties {
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
                 q -> {
-                    assert q.a != null;
-                    assert q.b != null;
                     return !q.a.equals(q.b);
                 },
                 P.dependentPairsLogarithmic(P.lists(P.integers()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumInteger(p.a), sumInteger(p.b));
         }
 
@@ -243,14 +220,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumInteger(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Integer>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.integers()),
@@ -273,17 +246,11 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<Long>, List<Long>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.longs()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Long>, List<Long>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumLong(p.a), sumLong(p.b));
         }
 
@@ -292,14 +259,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumLong(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Long>> failLss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.longs()),
@@ -322,8 +285,6 @@ public class IterableUtilsProperties {
         }
 
         Iterable<List<Float>> fss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, Float.NaN));
         }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.floats()),
@@ -339,14 +300,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Float>> failFss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.floats()),
@@ -369,8 +326,6 @@ public class IterableUtilsProperties {
         }
 
         Iterable<List<Double>> dss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, Double.NaN));
         }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.doubles()),
@@ -386,14 +341,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Double>> failDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.doubles()),
@@ -416,17 +367,11 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<BigInteger>, List<BigInteger>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigIntegers()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<BigInteger>, List<BigInteger>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumBigInteger(p.a), sumBigInteger(p.b));
         }
 
@@ -435,14 +380,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumBigInteger(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
 
         Iterable<List<BigInteger>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigIntegers()),
@@ -466,16 +407,12 @@ public class IterableUtilsProperties {
 
         Iterable<Pair<List<BigDecimal>, List<BigDecimal>>> ps = filter(
                 q -> {
-                    assert q.a != null;
-                    assert q.b != null;
                     return !q.a.equals(q.b);
                 },
                 P.dependentPairsLogarithmic(P.lists(P.bigDecimals()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<BigDecimal>, List<BigDecimal>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumBigDecimal(p.a), sumBigDecimal(p.b));
         }
 
@@ -484,14 +421,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), sumBigDecimal(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
 
         Iterable<List<BigDecimal>> failBDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bigDecimals()),
@@ -510,17 +443,11 @@ public class IterableUtilsProperties {
         System.out.println("\t\ttesting productByte(Iterable<Byte>) properties...");
 
         Iterable<Pair<List<Byte>, List<Byte>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bytes()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Byte>, List<Byte>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productByte(p.a), productByte(p.b));
         }
 
@@ -529,14 +456,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productByte(Arrays.asList(p.a, p.b)), (byte) (p.a * p.b));
         }
 
         Iterable<List<Byte>> failBss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.bytes()),
@@ -556,16 +479,12 @@ public class IterableUtilsProperties {
 
         Iterable<Pair<List<Short>, List<Short>>> ps = filter(
                 q -> {
-                    assert q.a != null;
-                    assert q.b != null;
                     return !q.a.equals(q.b);
                 },
                 P.dependentPairsLogarithmic(P.lists(P.shorts()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Short>, List<Short>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productShort(p.a), productShort(p.b));
         }
 
@@ -574,14 +493,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productShort(Arrays.asList(p.a, p.b)), (short) (p.a * p.b));
         }
 
         Iterable<List<Short>> failSss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.shorts()),
@@ -600,17 +515,11 @@ public class IterableUtilsProperties {
         System.out.println("\t\ttesting productInteger(Iterable<Integer>) properties...");
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.integers()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productInteger(p.a), productInteger(p.b));
         }
 
@@ -619,14 +528,10 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productInteger(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
         Iterable<List<Integer>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.integers()),
@@ -645,17 +550,11 @@ public class IterableUtilsProperties {
         System.out.println("\t\ttesting productLong(Iterable<Long>) properties...");
 
         Iterable<Pair<List<Long>, List<Long>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.longs()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<Long>, List<Long>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productLong(p.a), productLong(p.b));
         }
 
@@ -664,19 +563,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productLong(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
-        Iterable<List<Long>> failLss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.longs()),
-                ls -> range(0, ls.size())
-        ));
+        Iterable<List<Long>> failLss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.longs()),
+                        ls -> range(0, ls.size())
+                )
+        );
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
                 productLong(ls);
@@ -689,14 +585,13 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting productFloat(Iterable<Float>) properties...");
 
-        Iterable<List<Float>> fss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, Float.NaN));
-        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.floats()),
-                fs -> range(0, fs.size())
-        ));
+        Iterable<List<Float>> fss = map(
+                p -> toList(insert(p.a, p.b, Float.NaN)),
+                (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.floats()),
+                        fs -> range(0, fs.size())
+                )
+        );
 
         for (List<Float> fs : take(LIMIT, fss)) {
             aeq(fs.toString(), productFloat(fs), Float.NaN);
@@ -707,19 +602,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
-        Iterable<List<Float>> failFss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.floats()),
-                fs -> range(0, fs.size())
-        ));
+        Iterable<List<Float>> failFss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.floats()),
+                        fs -> range(0, fs.size())
+                )
+        );
         for (List<Float> fs : take(LIMIT, failFss)) {
             try {
                 productFloat(fs);
@@ -732,14 +624,13 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting productDouble(Iterable<Double>) properties...");
 
-        Iterable<List<Double>> dss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, Double.NaN));
-        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.doubles()),
-                ds -> range(0, ds.size())
-        ));
+        Iterable<List<Double>> dss = map(
+                p -> toList(insert(p.a, p.b, Double.NaN)),
+                (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.doubles()),
+                        ds -> range(0, ds.size())
+                )
+        );
 
         for (List<Double> ds : take(LIMIT, dss)) {
             aeq(ds.toString(), productDouble(ds), Double.NaN);
@@ -750,19 +641,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
-        Iterable<List<Double>> failDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.doubles()),
-                ds -> range(0, ds.size())
-        ));
+        Iterable<List<Double>> failDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.doubles()),
+                        ds -> range(0, ds.size())
+                )
+        );
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
                 productDouble(ls);
@@ -776,17 +664,11 @@ public class IterableUtilsProperties {
         System.out.println("\t\ttesting productBigInteger(Iterable<BigInteger>) properties...");
 
         Iterable<Pair<List<BigInteger>, List<BigInteger>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigIntegers()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<BigInteger>, List<BigInteger>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productBigInteger(p.a), productBigInteger(p.b));
         }
 
@@ -795,19 +677,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productBigInteger(Arrays.asList(p.a, p.b)), p.a.multiply(p.b));
         }
 
-        Iterable<List<BigInteger>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigIntegers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<BigInteger>> failIss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigIntegers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
                 productBigInteger(ls);
@@ -821,17 +700,11 @@ public class IterableUtilsProperties {
         System.out.println("\t\ttesting productBigDecimal(Iterable<BigDecimal>) properties...");
 
         Iterable<Pair<List<BigDecimal>, List<BigDecimal>>> ps = filter(
-                q -> {
-                    assert q.a != null;
-                    assert q.b != null;
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigDecimals()), Combinatorics::permutationsIncreasing)
         );
 
         for (Pair<List<BigDecimal>, List<BigDecimal>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productBigDecimal(p.a), productBigDecimal(p.b));
         }
 
@@ -840,19 +713,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            assert p.a != null;
-            assert p.b != null;
             assertEquals(p.toString(), productBigDecimal(Arrays.asList(p.a, p.b)), p.a.multiply(p.b));
         }
 
-        Iterable<List<BigDecimal>> failBDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigDecimals()),
-                bds -> range(0, bds.size())
-        ));
+        Iterable<List<BigDecimal>> failBDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigDecimals()),
+                        bds -> range(0, bds.size())
+                )
+        );
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
                 productBigDecimal(bds);
@@ -880,19 +750,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Arrays.asList((byte) (p.b - p.a)));
         }
 
-        Iterable<List<Byte>> failBss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bytes()),
-                bs -> range(0, bs.size())
-        ));
+        Iterable<List<Byte>> failBss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bytes()),
+                        bs -> range(0, bs.size())
+                )
+        );
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
                 toList(deltaByte(bs));
@@ -920,19 +787,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Arrays.asList((short) (p.b - p.a)));
         }
 
-        Iterable<List<Short>> failSss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.shorts()),
-                ss -> range(0, ss.size())
-        ));
+        Iterable<List<Short>> failSss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.shorts()),
+                        ss -> range(0, ss.size())
+                )
+        );
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
                 toList(deltaShort(ss));
@@ -960,19 +824,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
 
-        Iterable<List<Integer>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.integers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<Integer>> failIss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.integers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
                 toList(deltaInteger(is));
@@ -1000,19 +861,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
 
-        Iterable<List<Long>> failLss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.longs()),
-                ls -> range(0, ls.size())
-        ));
+        Iterable<List<Long>> failLss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.longs()),
+                        ls -> range(0, ls.size())
+                )
+        );
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
                 toList(deltaLong(ls));
@@ -1040,19 +898,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
         }
 
-        Iterable<List<BigInteger>> failIss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigIntegers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<BigInteger>> failIss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigIntegers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
                 toList(deltaBigInteger(ls));
@@ -1080,19 +935,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
         }
 
-        Iterable<List<BigDecimal>> failBDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigDecimals()),
-                bds -> range(0, bds.size())
-        ));
+        Iterable<List<BigDecimal>> failBDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigDecimals()),
+                        bds -> range(0, bds.size())
+                )
+        );
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
                 toList(deltaBigDecimal(bds));
@@ -1120,19 +972,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
 
-        Iterable<List<Float>> failFss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.floats()),
-                fs -> range(0, fs.size())
-        ));
+        Iterable<List<Float>> failFss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.floats()),
+                        fs -> range(0, fs.size())
+                )
+        );
         for (List<Float> fs : take(LIMIT, failFss)) {
             try {
                 toList(deltaFloat(fs));
@@ -1160,19 +1009,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
 
-        Iterable<List<Double>> failDss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.doubles()),
-                ds -> range(0, ds.size())
-        ));
+        Iterable<List<Double>> failDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.doubles()),
+                        ds -> range(0, ds.size())
+                )
+        );
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
                 toList(deltaDouble(ls));
@@ -1200,19 +1046,16 @@ public class IterableUtilsProperties {
         }
 
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
-            assert p.a != null;
-            assert p.b != null;
             aeq(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
         }
 
-        Iterable<List<Character>> failCss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Character>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.characters()),
-                cs -> range(0, cs.size())
-        ));
+        Iterable<List<Character>> failCss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Character>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.characters()),
+                        cs -> range(0, cs.size())
+                )
+        );
         for (List<Character> cs : take(LIMIT, failCss)) {
             try {
                 toList(deltaCharacter(cs));

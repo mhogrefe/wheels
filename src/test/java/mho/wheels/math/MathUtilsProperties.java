@@ -691,13 +691,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), fromBigEndianBits(bits), p.a);
         }
 
-        Iterable<Pair<BigInteger, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.negativeIntegers());
-        } else {
-            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
-        }
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -706,12 +700,7 @@ public class MathUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeBigIntegers(), P.naturalIntegers());
-        } else {
-            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
-        }
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -847,13 +836,7 @@ public class MathUtilsProperties {
             assertTrue(Integer.toString(i), isEmpty(digits(i, 0)));
         }
 
-        Iterable<Pair<Integer, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeDown(1));
-        } else {
-            psFail = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.rangeDown(1)))) {
             assert p.a != null;
             assert p.b != null;
             try {
@@ -862,12 +845,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.negativeIntegers(), P.rangeUp(2));
-        } else {
-            psFail = P.pairs(P.negativeIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.rangeUp(2)))) {
             assert p.a != null;
             assert p.b != null;
             try {

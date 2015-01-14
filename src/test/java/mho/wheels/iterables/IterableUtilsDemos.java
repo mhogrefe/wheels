@@ -10,6 +10,7 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 
+@SuppressWarnings("ConstantConditions")
 public class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
@@ -29,8 +30,6 @@ public class IterableUtilsDemos {
     public static void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> list = new ArrayList<>();
             list.addAll(p.b);
             addTo(p.a, list);
@@ -42,8 +41,6 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<String, List<Character>>> ps = P.pairs(P.strings(), P.lists(P.withNull(P.characters())));
         for (Pair<String, List<Character>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Character> list = new ArrayList<>();
             list.addAll(p.b);
             addTo(p.a, list);
@@ -89,8 +86,6 @@ public class IterableUtilsDemos {
             ps = P.pairs(((RandomProvider) P).naturalIntegersGeometric(20), P.lists(P.integers()));
         }
         for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toString(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(p.a, p.b));
         }
     }
@@ -100,10 +95,7 @@ public class IterableUtilsDemos {
         Iterable<Pair<Integer, Iterable<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Pair<>(p.b, cycle((List<Integer>) p.a));
-                    },
+                    p -> new Pair<>(p.b, cycle(p.a)),
                     ((ExhaustiveProvider) P).pairsSquareRootOrder(
                             P.lists(P.withNull(P.integers())),
                             P.naturalIntegers()
@@ -116,8 +108,6 @@ public class IterableUtilsDemos {
             );
         }
         for (Pair<Integer, Iterable<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toString(" + p.a + ", " + IterableUtils.toString(10, p.b) + ") = " +
                     IterableUtils.toString(p.a, p.b));
         }
@@ -204,8 +194,6 @@ public class IterableUtilsDemos {
     public static void demoRange_byte_byte() {
         initialize();
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -213,8 +201,6 @@ public class IterableUtilsDemos {
     public static void demoRange_short_short() {
         initialize();
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -222,8 +208,6 @@ public class IterableUtilsDemos {
     public static void demoRange_int_int() {
         initialize();
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -231,8 +215,6 @@ public class IterableUtilsDemos {
     public static void demoRange_long_long() {
         initialize();
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -240,8 +222,6 @@ public class IterableUtilsDemos {
     public static void demoRange_BigInteger_BigInteger() {
         initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -249,8 +229,6 @@ public class IterableUtilsDemos {
     public static void demoRange_BigDecimal_BigDecimal() {
         initialize();
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -258,8 +236,6 @@ public class IterableUtilsDemos {
     public static void demoRange_char_char() {
         initialize();
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -268,8 +244,6 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<Float, Float>> ps = P.pairs(filter(f -> !Float.isNaN(f), P.floats()));
         for (Pair<Float, Float> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -278,8 +252,6 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<Double, Double>> ps = P.pairs(filter(d -> !Double.isNaN(d), P.doubles()));
         for (Pair<Double, Double> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
