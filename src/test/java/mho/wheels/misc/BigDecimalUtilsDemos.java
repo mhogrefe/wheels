@@ -11,6 +11,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.BigDecimalUtils.setPrecision;
 
+@SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;

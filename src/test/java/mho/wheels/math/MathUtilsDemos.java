@@ -17,6 +17,7 @@ import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.lt;
 
+@SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
 public class MathUtilsDemos {
     private static final boolean USE_RANDOM = true;
     private static int LIMIT;
@@ -36,8 +37,6 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
@@ -46,8 +45,6 @@ public class MathUtilsDemos {
         initialize();
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
         }
     }
@@ -75,8 +72,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
         }
     }
@@ -90,8 +85,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bitsPadded(" + p.b + ", " + p.a + ") = " + toList(bitsPadded(p.b, p.a)));
         }
     }
@@ -119,8 +112,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }
@@ -134,8 +125,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bigEndianBitsPadded(" + p.b + ", " + p.a + ") = " + bigEndianBitsPadded(p.b, p.a));
         }
     }
@@ -165,8 +154,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("digits(" + p.b + ", " + p.a + ") = " + toList(digits(p.b, p.a)));
         }
     }
@@ -183,8 +170,6 @@ public class MathUtilsDemos {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("digits(" + p.b + ", " + p.a + ") = " + toList(digits(p.b, p.a)));
         }
     }
@@ -194,10 +179,7 @@ public class MathUtilsDemos {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -208,9 +190,6 @@ public class MathUtilsDemos {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             System.out.println("digitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     toList(digitsPadded(t.a, t.b, t.c)));
         }
@@ -349,8 +328,6 @@ public class MathUtilsDemos {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
         }
     }
@@ -364,18 +341,17 @@ public class MathUtilsDemos {
                     P.rangeUp(BigInteger.valueOf(2))
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPs = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
-            assert p.a != null;
-            return all((BigInteger i) -> lt(i, p.b), p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(
+                p -> all((BigInteger i) -> lt(i, p.b), p.a),
+                unfilteredPs
+        );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromDigits(" + p.b + ", " + p.a + ") = " + fromDigits(p.b, p.a));
         }
     }
@@ -396,8 +372,6 @@ public class MathUtilsDemos {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
         }
     }
@@ -411,18 +385,17 @@ public class MathUtilsDemos {
                     map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPs = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
-            assert p.a != null;
-            return all((BigInteger i) -> lt(i, p.b), p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(
+                p -> all((BigInteger i) -> lt(i, p.b), p.a),
+                unfilteredPs
+        );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromBigEndianDigits(" + p.b + ", " + p.a + ") = " + fromBigEndianDigits(p.b, p.a));
         }
     }
@@ -450,8 +423,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toStringBase(" + p.b + ", " + p.a + ") = " + toStringBase(p.b, p.a));
         }
     }
@@ -468,8 +439,6 @@ public class MathUtilsDemos {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toStringBase(" + p.b + ", " + p.a + ") = " + toStringBase(p.b, p.a));
         }
     }
@@ -489,7 +458,7 @@ public class MathUtilsDemos {
                         );
                     }
                     return mux(
-                            (List<Iterable<String>>) Arrays.asList(
+                            Arrays.asList(
                                     positiveStrings,
                                     map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
                             )
@@ -497,8 +466,6 @@ public class MathUtilsDemos {
                 }
         );
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
@@ -531,8 +498,6 @@ public class MathUtilsDemos {
                 }
         );
         for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
@@ -550,8 +515,6 @@ public class MathUtilsDemos {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("logarithmicMux(" + p.a + ", " + p.b + ") = " + logarithmicMux(p.a, p.b));
         }
     }
@@ -566,8 +529,6 @@ public class MathUtilsDemos {
     private static void demoSquareRootMux() {
         initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("squareRootMux(" + p.a + ", " + p.b + ") = " + squareRootMux(p.a, p.b));
         }
     }
@@ -603,8 +564,6 @@ public class MathUtilsDemos {
             );
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("demux(" + p.b + ", " + p.a + ") = " + demux(p.b, p.a));
         }
     }
