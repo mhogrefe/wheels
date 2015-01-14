@@ -17,6 +17,7 @@ import static mho.wheels.misc.BigDecimalUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public class BigDecimalUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
@@ -55,8 +56,6 @@ public class BigDecimalUtilsProperties {
             ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, IterableUtils.filter(q -> ne(q.a, BigDecimal.ZERO), ps))) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertEquals(p.toString(), bd.precision(), (int) p.b);
             assertTrue(p.toString(), ne(bd, BigDecimal.ZERO));

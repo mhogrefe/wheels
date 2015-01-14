@@ -200,10 +200,7 @@ public class MathUtilsDemos {
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.naturalIntegers(),
@@ -217,9 +214,6 @@ public class MathUtilsDemos {
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             System.out.println("digitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     toList(digitsPadded(t.a, t.b, t.c)));
         }
@@ -234,8 +228,6 @@ public class MathUtilsDemos {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bigEndianDigits(" + p.b + ", " + p.a + ") = " + bigEndianDigits(p.b, p.a));
         }
     }
@@ -252,8 +244,6 @@ public class MathUtilsDemos {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("bigEndianDigits(" + p.b + ", " + p.a + ") = " + bigEndianDigits(p.b, p.a));
         }
     }
@@ -263,10 +253,7 @@ public class MathUtilsDemos {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -277,9 +264,6 @@ public class MathUtilsDemos {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     bigEndianDigitsPadded(t.a, t.b, t.c));
         }
@@ -290,10 +274,7 @@ public class MathUtilsDemos {
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.naturalIntegers(),
@@ -307,9 +288,6 @@ public class MathUtilsDemos {
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             System.out.println("bigEndianDigitsPadded(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     bigEndianDigitsPadded(t.a, t.b, t.c));
         }

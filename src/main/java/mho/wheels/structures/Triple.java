@@ -19,6 +19,7 @@ import static mho.wheels.ordering.Ordering.EQ;
  * @param <B> the type of the second value
  * @param <C> the type of the third value
  */
+@SuppressWarnings("ConstantConditions")
 public final class Triple<A, B, C> {
     /**
      * The first component of the {@code Triple}
@@ -83,12 +84,6 @@ public final class Triple<A, B, C> {
             @NotNull Triple<A, B, C> p,
             @NotNull Triple<A, B, C> q
     ) {
-        assert p.a != null;
-        assert p.b != null;
-        assert p.c != null;
-        assert q.a != null;
-        assert q.b != null;
-        assert q.c != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);

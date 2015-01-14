@@ -14,6 +14,7 @@ import static mho.wheels.ordering.Ordering.*;
 /**
  * Some mathematical utilities
  */
+@SuppressWarnings("ConstantConditions")
 public final class MathUtils {
     /**
      * The size of {@link mho.wheels.math.MathUtils#PRIME_SIEVE}. Must be greater than or equal to
@@ -1182,11 +1183,7 @@ public final class MathUtils {
                 toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(p -> {
-                    assert p.a != null;
-                    assert p.b != null;
-                    return p.a.pow(p.b);
-                }, map(q -> q.a, cpf), exponents)
+                zipWith(p -> p.a.pow(p.b), map(q -> q.a, cpf), exponents)
         );
         return sort(map(f, possibleExponents));
     }
