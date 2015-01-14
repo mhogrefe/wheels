@@ -74,16 +74,12 @@ public class BigDecimalUtilsProperties {
             zeroPs = P.pairs(zeroes, ((RandomProvider) P).positiveIntegersGeometric(20));
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, zeroPs)) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(p.toString(), bd.scale() > -1);
             assertTrue(p.toString(), eq(bd, BigDecimal.ZERO));
         }
 
         for (Pair<BigDecimal, Integer> p : take(LIMIT, filter(q -> q.b > 1, zeroPs))) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
                     p.toString(),
@@ -92,8 +88,6 @@ public class BigDecimalUtilsProperties {
         }
 
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.rangeDown(0)))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 setPrecision(p.a, p.b);
                 fail(p.toString());

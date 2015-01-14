@@ -383,17 +383,18 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumBigInteger(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
 
-        Iterable<List<BigInteger>> failIss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigIntegers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<BigInteger>> failIss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigIntegers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<BigInteger> ls : take(LIMIT, failIss)) {
             try {
                 sumBigInteger(ls);
                 fail(ls.toString());
-            } catch (AssertionError ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -691,7 +692,7 @@ public class IterableUtilsProperties {
             try {
                 productBigInteger(ls);
                 fail(ls.toString());
-            } catch (AssertionError ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 

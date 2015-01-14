@@ -23,6 +23,7 @@ import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public class MathUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
@@ -118,8 +119,6 @@ public class MathUtilsProperties {
 
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             int gcd = gcd(p.a, p.b);
             assertEquals(p.toString(), gcd, gcd_int_int_simplest(p.a, p.b));
             assertEquals(p.toString(), gcd, gcd_int_int_explicit(p.a, p.b));
@@ -135,8 +134,6 @@ public class MathUtilsProperties {
         long totalTime = 0;
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             gcd_int_int_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -144,8 +141,6 @@ public class MathUtilsProperties {
         System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
 
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             gcd_int_int_explicit(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -154,8 +149,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             gcd(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -181,8 +174,6 @@ public class MathUtilsProperties {
 
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long gcd = gcd(p.a, p.b);
             assertEquals(p.toString(), gcd, gcd_long_long_simplest(p.a, p.b));
             if (Math.abs(p.a) <= Integer.MAX_VALUE && Math.abs(p.b) <= Integer.MAX_VALUE) {
@@ -200,8 +191,6 @@ public class MathUtilsProperties {
         long totalTime = 0;
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             gcd_long_long_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -210,8 +199,6 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             for (Pair<Long, Long> p : take(LIMIT, ps)) {
-                assert p.a != null;
-                assert p.b != null;
                 long time = System.nanoTime();
                 gcd_long_long_explicit(p.a, p.b);
                 totalTime += (System.nanoTime() - time);
@@ -223,8 +210,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             gcd(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -380,8 +365,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
             List<Boolean> bits = toList(bitsIterable);
             aeq(p.toString(), bits, bitsPadded_int_int_simplest(p.b, p.a));
@@ -396,15 +379,11 @@ public class MathUtilsProperties {
 
         ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits).intValueExact(), p.a.intValue());
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -413,8 +392,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -434,8 +411,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(bitsPadded_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -444,8 +419,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(bitsPadded(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -464,8 +437,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
             List<Boolean> bits = toList(bitsIterable);
             aeq(p.toString(), bits, reverse(bigEndianBitsPadded(p.b, p.a)));
@@ -479,15 +450,11 @@ public class MathUtilsProperties {
 
         ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits), p.a);
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -495,8 +462,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -597,8 +562,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             aeq(p.toString(), bits, bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
@@ -608,15 +571,11 @@ public class MathUtilsProperties {
 
         ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits).intValueExact(), p.a.intValue());
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.negativeIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -624,8 +583,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.naturalIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -645,8 +602,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(bigEndianBitsPadded_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -655,8 +610,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             bigEndianBitsPadded(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -675,8 +628,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             aeq(p.toString(), bits, reverse(bitsPadded(p.b, p.a)));
             assertTrue(p.toString(), all(b -> b != null, bits));
@@ -685,15 +636,11 @@ public class MathUtilsProperties {
 
         ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits), p.a);
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -701,8 +648,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianBitsPadded(p.b, p.a);
                 fail(p.toString());
@@ -727,8 +672,6 @@ public class MathUtilsProperties {
         }
 
         Iterable<List<Boolean>> failBss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.booleans()),
@@ -758,8 +701,6 @@ public class MathUtilsProperties {
         }
 
         Iterable<List<Boolean>> failBss = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
             return toList(insert(p.a, p.b, null));
         }, (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
                 P.lists(P.booleans()),
@@ -788,8 +729,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             Iterable<Integer> digitsIterable = digits(p.b, p.a);
             List<Integer> digits = toList(digitsIterable);
             aeq(p.toString(), digits, digits_int_int_simplest(p.b, p.a));
@@ -808,8 +747,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> digits = toList(digits(p.b, p.a));
             assertFalse(p.toString(), digits.isEmpty());
             assertNotEquals(p.toString(), last(digits).intValue(), 0);
@@ -837,8 +774,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.naturalIntegers(), P.rangeDown(1)))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 digits(p.b, p.a);
                 fail(p.toString());
@@ -846,8 +781,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.negativeIntegers(), P.rangeUp(2)))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 digits(p.b, p.a);
                 fail(p.toString());
@@ -867,8 +800,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(digits_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -877,8 +808,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(digits(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -903,8 +832,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             Iterable<BigInteger> digitsIterable = digits(p.b, p.a);
             List<BigInteger> digits = toList(digitsIterable);
             aeq(p.toString(), digits, reverse(bigEndianDigits(p.b, p.a)));
@@ -928,8 +855,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> digits = toList(digits(p.b, p.a));
             assertFalse(p.toString(), digits.isEmpty());
             assertNotEquals(p.toString(), last(digits), BigInteger.ZERO);
@@ -967,8 +892,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 digits(p.b, p.a);
                 fail(p.toString());
@@ -987,8 +910,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 digits(p.b, p.a);
                 fail(p.toString());
@@ -1007,10 +928,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1021,9 +939,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             Iterable<Integer> digitsIterable = digitsPadded(t.a, t.b, t.c);
             List<Integer> digits = toList(digitsIterable);
             aeq(t.toString(), digits, digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
@@ -1038,18 +953,13 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<Integer, Integer>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                                     P.naturalIntegers(),
                                     P.rangeUp(2)
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
                                     targetDigitCount = ceilingLog(
@@ -1069,18 +979,13 @@ public class MathUtilsProperties {
             );
         } else {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<Integer, Integer>>) P.pairs(
                                     P.naturalIntegers(),
                                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
                                     targetDigitCount = ceilingLog(
@@ -1104,9 +1009,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<Integer> digits = toList(digitsPadded(t.a, t.b, t.c));
             assertEquals(t.toString(), fromDigits(t.b, digits).intValueExact(), t.c.intValue());
         }
@@ -1126,8 +1028,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> digits = toList(digitsPadded(p.b, 2, p.a));
             aeq(p.toString(), map(digitsToBits, digits), bitsPadded(p.b, p.a));
         }
@@ -1135,10 +1035,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> tsFail;
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.negativeIntegers()
@@ -1150,9 +1047,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1161,10 +1055,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.negativeIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1178,9 +1069,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1189,10 +1077,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.negativeIntegers())),
                             P.negativeIntegers()
@@ -1207,9 +1092,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1225,10 +1107,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1239,9 +1118,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             long time = System.nanoTime();
             toList(digitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
@@ -1250,9 +1126,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             long time = System.nanoTime();
             toList(digitsPadded(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
@@ -1267,10 +1140,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.naturalIntegers())),
                             P.naturalBigIntegers()
@@ -1281,9 +1151,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             Iterable<BigInteger> digitsIterable = digitsPadded(t.a, t.b, t.c);
             List<BigInteger> digits = toList(digitsIterable);
             aeq(t.toString(), digits, reverse(bigEndianDigitsPadded(t.a, t.b, t.c)));
@@ -1297,18 +1164,13 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<BigInteger, BigInteger>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                                     P.naturalBigIntegers(),
                                     P.rangeUp(BigInteger.valueOf(2))
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
                                     targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
@@ -1323,10 +1185,7 @@ public class MathUtilsProperties {
             );
         } else {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<BigInteger, BigInteger>>) P.pairs(
                                     P.naturalBigIntegers(),
@@ -1336,8 +1195,6 @@ public class MathUtilsProperties {
                                     )
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
                                     targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
@@ -1356,9 +1213,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<BigInteger> digits = toList(digitsPadded(t.a, t.b, t.c));
             assertEquals(t.toString(), fromDigits(t.b, digits), t.c);
         }
@@ -1376,8 +1230,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> digits = toList(digitsPadded(p.b, BigInteger.valueOf(2), p.a));
             aeq(p.toString(), map(digitsToBits, digits), bitsPadded(p.b, p.a));
         }
@@ -1385,10 +1237,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail;
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.naturalIntegers(),
@@ -1403,9 +1252,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1414,10 +1260,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.negativeIntegers(),
@@ -1434,9 +1277,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1445,10 +1285,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.negativeIntegers())),
                             P.negativeBigIntegers()
@@ -1463,9 +1300,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 digitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1488,8 +1322,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> digits = bigEndianDigits(p.b, p.a);
             aeq(p.toString(), digits, bigEndianDigits_int_int_simplest(p.b, p.a));
             aeq(p.toString(), digits, reverse(digits(p.b, p.a)));
@@ -1503,8 +1335,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p.toString(), digits.isEmpty());
             assertNotEquals(p.toString(), head(digits).intValue(), 0);
@@ -1538,8 +1368,6 @@ public class MathUtilsProperties {
             psFail = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -1552,8 +1380,6 @@ public class MathUtilsProperties {
             psFail = P.pairs(P.negativeIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -1573,8 +1399,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toList(bigEndianDigits_int_int_simplest(p.b, p.a));
             totalTime += (System.nanoTime() - time);
@@ -1583,8 +1407,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             bigEndianDigits(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -1609,8 +1431,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> digits = bigEndianDigits(p.b, p.a);
             aeq(p.toString(), digits, reverse(digits(p.b, p.a)));
             assertTrue(p.toString(), all(i -> i != null && i.signum() != -1 && lt(i, p.b), digits));
@@ -1629,8 +1449,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> digits = bigEndianDigits(p.b, p.a);
             assertFalse(p.toString(), digits.isEmpty());
             assertNotEquals(p.toString(), head(digits), BigInteger.ZERO);
@@ -1668,8 +1486,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -1688,8 +1504,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 bigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -1711,10 +1525,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1725,9 +1536,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<Integer> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
             aeq(t.toString(), digits, bigEndianDigitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             aeq(t.toString(), digits, reverse(digitsPadded(t.a, t.b, t.c)));
@@ -1737,18 +1545,13 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<Integer, Integer>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                                     P.naturalIntegers(),
                                     P.rangeUp(2)
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
                                     targetDigitCount = ceilingLog(
@@ -1769,7 +1572,6 @@ public class MathUtilsProperties {
         } else {
             ts = map(
                     q -> {
-                        assert q.a != null;
                         return new Triple<>(q.b, q.a.b, q.a.a);
                     },
                     P.dependentPairsLogarithmic(
@@ -1778,8 +1580,6 @@ public class MathUtilsProperties {
                                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
                                     targetDigitCount = ceilingLog(
@@ -1803,9 +1603,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<Integer> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
             assertEquals(t.toString(), fromBigEndianDigits(t.b, digits).intValueExact(), t.c.intValue());
         }
@@ -1825,8 +1622,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> digits = bigEndianDigitsPadded(p.b, 2, p.a);
             aeq(p.toString(), map(digitsToBits, digits), bigEndianBitsPadded(p.b, p.a));
         }
@@ -1834,10 +1629,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> tsFail;
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.negativeIntegers()
@@ -1849,9 +1641,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1860,10 +1649,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.negativeIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1877,9 +1663,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1888,10 +1671,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.negativeIntegers())),
                             P.negativeIntegers()
@@ -1906,9 +1686,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -1924,10 +1701,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, Integer, Integer>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, Integer>, Integer>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> i + 2, P.naturalIntegers())),
                             P.naturalIntegers()
@@ -1938,9 +1712,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             long time = System.nanoTime();
             toList(bigEndianDigitsPadded_int_int_int_simplest(t.a, t.b, t.c));
             totalTime += (System.nanoTime() - time);
@@ -1949,9 +1720,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             long time = System.nanoTime();
             bigEndianDigitsPadded(t.a, t.b, t.c);
             totalTime += (System.nanoTime() - time);
@@ -1966,10 +1734,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.naturalIntegers())),
                             P.naturalBigIntegers()
@@ -1980,9 +1745,6 @@ public class MathUtilsProperties {
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<BigInteger> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
             aeq(t.toString(), digits, reverse(digitsPadded(t.a, t.b, t.c)));
             assertTrue(t.toString(), all(i -> i != null && i.signum() != -1 && lt(i, t.b), digits));
@@ -1991,18 +1753,13 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<BigInteger, BigInteger>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                                     P.naturalBigIntegers(),
                                     P.rangeUp(BigInteger.valueOf(2))
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
                                     targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
@@ -2017,10 +1774,7 @@ public class MathUtilsProperties {
             );
         } else {
             ts = map(
-                    q -> {
-                        assert q.a != null;
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
                             (Iterable<Pair<BigInteger, BigInteger>>) P.pairs(
                                     P.naturalBigIntegers(),
@@ -2030,8 +1784,6 @@ public class MathUtilsProperties {
                                     )
                             ),
                             p -> {
-                                assert p.a != null;
-                                assert p.b != null;
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
                                     targetDigitCount = ceilingLog(p.b, p.a).intValueExact();
@@ -2050,9 +1802,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             List<BigInteger> digits = bigEndianDigitsPadded(t.a, t.b, t.c);
             assertEquals(t.toString(), fromBigEndianDigits(t.b, digits), t.c);
         }
@@ -2070,8 +1819,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> digits = bigEndianDigitsPadded(p.b, BigInteger.valueOf(2), p.a);
             aeq(p.toString(), map(digitsToBits, digits), bigEndianBitsPadded(p.b, p.a));
         }
@@ -2079,10 +1826,7 @@ public class MathUtilsProperties {
         Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail;
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.naturalIntegers(),
@@ -2097,9 +1841,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -2108,10 +1849,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(
                                     P.negativeIntegers(),
@@ -2128,9 +1866,6 @@ public class MathUtilsProperties {
             );
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -2139,10 +1874,7 @@ public class MathUtilsProperties {
 
         if (P instanceof ExhaustiveProvider) {
             tsFail = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Triple<>(p.a.a, p.a.b, p.b);
-                    },
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
                             P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.negativeIntegers())),
                             P.negativeBigIntegers()
@@ -2157,9 +1889,6 @@ public class MathUtilsProperties {
         }
 
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
-            assert t.a != null;
-            assert t.b != null;
-            assert t.c != null;
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
                 fail(t.toString());
@@ -2188,26 +1917,16 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> {
-            assert p.a != null;
-            return all(i -> i < p.b, p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromDigits(p.b, p.a);
             assertEquals(p.toString(), n, fromDigits_int_Iterable_Integer_simplest(p.b, p.a));
             assertEquals(p.toString(), n, fromBigEndianDigits(p.b, reverse(p.a)));
             assertNotEquals(p.toString(), n.signum(), -1);
         }
 
-        ps = filter(p -> {
-            assert p.a != null;
-            return p.a.isEmpty() || last(p.a) != 0;
-        }, ps);
+        ps = filter(p -> p.a.isEmpty() || last(p.a) != 0, ps);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromDigits(p.b, p.a);
             aeq(p.toString(), p.a, map(BigInteger::intValueExact, digits(BigInteger.valueOf(p.b), n)));
         }
@@ -2233,13 +1952,8 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> {
-            assert p.a != null;
-            return all(i -> i < p.b, p.a);
-        }, unfilteredPsFail);
+        Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> all(i -> i < p.b, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
@@ -2254,13 +1968,8 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> i < 0, p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> i < 0, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
@@ -2269,8 +1978,6 @@ public class MathUtilsProperties {
 
         psFail = filter(p -> any(i -> i >= p.b, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
@@ -2294,8 +2001,6 @@ public class MathUtilsProperties {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromDigits_int_Iterable_Integer_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2304,8 +2009,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromDigits(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2329,25 +2032,15 @@ public class MathUtilsProperties {
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
-            assert p.a != null;
-            return all(i -> lt(i, p.b), p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromDigits(p.b, p.a);
             assertEquals(p.toString(), n, fromBigEndianDigits(p.b, reverse(p.a)));
             assertNotEquals(p.toString(), n.signum(), -1);
         }
 
-        ps = filter(p -> {
-            assert p.a != null;
-            return p.a.isEmpty() || !last(p.a).equals(BigInteger.ZERO);
-        }, ps);
+        ps = filter(p -> p.a.isEmpty() || !last(p.a).equals(BigInteger.ZERO), ps);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromDigits(p.b, p.a);
             aeq(p.toString(), p.a, digits(p.b, n));
         }
@@ -2369,18 +2062,14 @@ public class MathUtilsProperties {
                     P.rangeDown(BigInteger.ONE)
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPsFail = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> {
-            assert p.a != null;
-            return all(i -> lt(i, p.b), p.a);
-        }, unfilteredPsFail);
+        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
@@ -2393,31 +2082,22 @@ public class MathUtilsProperties {
                     P.rangeUp(BigInteger.valueOf(2))
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPsFail = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> i.signum() == -1, p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> ge(i, p.b), p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> ge(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromDigits(p.b, p.a);
                 fail(p.toString());
@@ -2446,26 +2126,16 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> {
-            assert p.a != null;
-            return all(i -> i < p.b, p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             assertEquals(p.toString(), n, fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a));
             assertEquals(p.toString(), n, fromDigits(p.b, reverse(p.a)));
             assertNotEquals(p.toString(), n.signum(), -1);
         }
 
-        ps = filter(p -> {
-            assert p.a != null;
-            return p.a.isEmpty() || head(p.a) != 0;
-        }, ps);
+        ps = filter(p -> p.a.isEmpty() || head(p.a) != 0, ps);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             aeq(p.toString(), p.a, map(BigInteger::intValueExact, bigEndianDigits(BigInteger.valueOf(p.b), n)));
         }
@@ -2491,13 +2161,8 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> {
-            assert p.a != null;
-            return all(i -> i < p.b, p.a);
-        }, unfilteredPsFail);
+        Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> all(i -> i < p.b, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -2512,13 +2177,8 @@ public class MathUtilsProperties {
                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> i < 0, p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> i < 0, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -2527,8 +2187,6 @@ public class MathUtilsProperties {
 
         psFail = filter(p -> any(i -> i >= p.b, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -2552,8 +2210,6 @@ public class MathUtilsProperties {
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromBigEndianDigits_int_Iterable_Integer_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2562,8 +2218,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromBigEndianDigits(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2582,30 +2236,21 @@ public class MathUtilsProperties {
                     P.rangeUp(BigInteger.valueOf(2))
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPs = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> {
-            assert p.a != null;
-            return all(i -> lt(i, p.b), p.a);
-        }, unfilteredPs);
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             assertEquals(p.toString(), n, fromDigits(p.b, reverse(p.a)));
             assertNotEquals(p.toString(), n.signum(), -1);
         }
 
-        ps = filter(p -> {
-            assert p.a != null;
-            return p.a.isEmpty() || !head(p.a).equals(BigInteger.ZERO);
-        }, ps);
+        ps = filter(p -> p.a.isEmpty() || !head(p.a).equals(BigInteger.ZERO), ps);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger n = fromBigEndianDigits(p.b, p.a);
             aeq(p.toString(), p.a, bigEndianDigits(p.b, n));
         }
@@ -2630,18 +2275,14 @@ public class MathUtilsProperties {
                     P.rangeDown(BigInteger.ONE)
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPsFail = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> {
-            assert p.a != null;
-            return all(i -> lt(i, p.b), p.a);
-        }, unfilteredPsFail);
+        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -2654,31 +2295,22 @@ public class MathUtilsProperties {
                     P.rangeUp(BigInteger.valueOf(2))
             );
         } else {
+            //noinspection Convert2MethodRef
             unfilteredPsFail = P.pairs(
                     P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
                     map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
             );
         }
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> i.signum() == -1, p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> {
-            assert p.a != null;
-            return any(i -> ge(i, p.b), p.a);
-        }, unfilteredPsFail);
+        psFail = filter(p -> any(i -> ge(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromBigEndianDigits(p.b, p.a);
                 fail(p.toString());
@@ -2748,8 +2380,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             assertEquals(p.toString(), toStringBase_int_int_simplest(p.b, p.a), s);
             assertEquals(p.toString(), fromStringBase(p.b, s), BigInteger.valueOf(p.a));
@@ -2761,8 +2391,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.range(2, 36));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);
             assertTrue(p.toString(), all(c -> elem(c, charsToString(concat(range('0', '9'), range('A', 'Z')))), s));
@@ -2774,8 +2402,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.integers(), map(i -> i + 37, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);
             assertEquals(p.toString(), head(s), '(');
@@ -2794,8 +2420,6 @@ public class MathUtilsProperties {
             psFail = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 toStringBase(p.b, p.a);
                 fail(p.toString());
@@ -2815,8 +2439,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toStringBase_int_int_simplest(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2825,8 +2447,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             toStringBase(p.b, p.a);
             totalTime += (System.nanoTime() - time);
@@ -2848,8 +2468,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             assertEquals(p.toString(), fromStringBase(p.b, s), p.a);
         }
@@ -2863,8 +2481,6 @@ public class MathUtilsProperties {
             ps = P.pairs(P.range(BigInteger.valueOf(2), BigInteger.valueOf(36)));
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);
             assertTrue(p.toString(), all(c -> elem(c, charsToString(concat(range('0', '9'), range('A', 'Z')))), s));
@@ -2879,8 +2495,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             String s = toStringBase(p.b, p.a);
             if (head(s) == '-') s = tail(s);
             assertEquals(p.toString(), head(s), '(');
@@ -2902,8 +2516,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 toStringBase(p.b, p.a);
                 fail(p.toString());
@@ -2940,8 +2552,6 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p.toString(), fromStringBase_int_String_simplest(p.a, p.b), i);
         }
@@ -2970,15 +2580,11 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p.toString(), toStringBase(BigInteger.valueOf(p.a), i), p.b);
         }
 
         for (Pair<Integer, String> p : take(LIMIT, P.pairs(P.rangeDown(1), P.strings()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromStringBase(p.a, p.b);
                 fail(p.toString());
@@ -3014,8 +2620,6 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromStringBase_int_String_simplest(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -3024,8 +2628,6 @@ public class MathUtilsProperties {
 
         totalTime = 0;
         for (Pair<Integer, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             long time = System.nanoTime();
             fromStringBase(p.a, p.b);
             totalTime += (System.nanoTime() - time);
@@ -3058,8 +2660,6 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             fromStringBase(p.a, p.b);
         }
 
@@ -3090,15 +2690,11 @@ public class MathUtilsProperties {
                 }
         );
         for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p.toString(), toStringBase(p.a, i), p.b);
         }
 
         for (Pair<BigInteger, String> p : take(LIMIT, P.pairs(P.rangeDown(BigInteger.ONE), P.strings()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 fromStringBase(p.a, p.b);
                 fail(p.toString());
@@ -3123,8 +2719,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger i = logarithmicMux(p.a, p.b);
             assertNotEquals(p.toString(), i.signum(), -1);
             assertEquals(p.toString(), logarithmicDemux(i), p);
@@ -3141,8 +2735,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 logarithmicMux(p.a, p.b);
                 fail(p.toString());
@@ -3159,8 +2751,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 logarithmicMux(p.a, p.b);
                 fail(p.toString());
@@ -3174,8 +2764,6 @@ public class MathUtilsProperties {
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             Pair<BigInteger, BigInteger> p = logarithmicDemux(i);
-            assert p.a != null;
-            assert p.b != null;
             assertNotEquals(p.toString(), p.a.signum(), -1);
             assertNotEquals(p.toString(), p.b.signum(), -1);
             assertEquals(p.toString(), logarithmicMux(p.a, p.b), i);
@@ -3194,16 +2782,12 @@ public class MathUtilsProperties {
         System.out.println("\t\ttesting squareRootMux(BigInteger, BigInteger) properties...");
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             BigInteger i = squareRootMux(p.a, p.b);
             assertNotEquals(p.toString(), i.signum(), -1);
             assertEquals(p.toString(), squareRootDemux(i), p);
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 squareRootMux(p.a, p.b);
                 fail(p.toString());
@@ -3211,8 +2795,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalBigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 squareRootMux(p.a, p.b);
                 fail(p.toString());
@@ -3226,8 +2808,6 @@ public class MathUtilsProperties {
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
             Pair<BigInteger, BigInteger> p = squareRootDemux(i);
-            assert p.a != null;
-            assert p.b != null;
             assertNotEquals(p.toString(), p.a.signum(), -1);
             assertNotEquals(p.toString(), p.b.signum(), -1);
             assertEquals(p.toString(), squareRootMux(p.a, p.b), i);
@@ -3251,14 +2831,13 @@ public class MathUtilsProperties {
             assertEquals(is.toString(), demux(is.size(), i), is);
         }
 
-        Iterable<List<BigInteger>>  isFail = map(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.naturalBigIntegers()),
-                bs -> range(0, bs.size())
-        ));
+        Iterable<List<BigInteger>>  isFail = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigInteger>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.naturalBigIntegers()),
+                        bs -> range(0, bs.size())
+                )
+        );
         for (List<BigInteger> is : take(LIMIT, isFail)) {
             try {
                 mux(is);
@@ -3293,8 +2872,6 @@ public class MathUtilsProperties {
             );
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<BigInteger> xs = demux(p.b, p.a);
             assertTrue(p.toString(), all(x -> x != null && x.signum() != -1, xs));
             assertEquals(p.toString(), mux(xs), p.a);
@@ -3308,8 +2885,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 demux(p.b, p.a);
                 fail(p.toString());
@@ -3323,8 +2898,6 @@ public class MathUtilsProperties {
         }
 
         for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
-            assert p.a != null;
-            assert p.b != null;
             try {
                 demux(p.b, p.a);
                 fail(p.toString());

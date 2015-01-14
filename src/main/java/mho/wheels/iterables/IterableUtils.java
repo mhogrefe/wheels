@@ -2379,11 +2379,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.add(p.b);
-        }, BigInteger.ZERO, xs);
+        return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
     }
 
     /**
@@ -2401,11 +2397,7 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ZERO;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl1(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.add(p.b);
-        }, xs);
+        return foldl1(p -> p.a.add(p.b), xs);
     }
 
     /**
@@ -2516,11 +2508,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.multiply(p.b);
-        }, BigInteger.ONE, xs);
+        return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
     }
 
     /**
@@ -2538,11 +2526,7 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ONE;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.multiply(p.b);
-        }, BigDecimal.ONE, xs);
+        return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
     public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
@@ -3643,11 +3627,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.b.subtract(p.a);
-        }, xs);
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
     /**
@@ -3669,11 +3649,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.b.subtract(p.a);
-        }, xs);
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
     /**
@@ -3775,11 +3751,7 @@ public final class IterableUtils {
     public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 q -> q,
-                adjacentPairsWith(p -> {
-                    assert p.a != null;
-                    assert p.b != null;
-                    return compare(p.a, p.b);
-                }, xs)
+                adjacentPairsWith(p -> compare(p.a, p.b), xs)
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
@@ -3818,11 +3790,7 @@ public final class IterableUtils {
     ) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 q -> q,
-                adjacentPairsWith(p -> {
-                    assert p.a != null;
-                    assert p.b != null;
-                    return compare(comparator, p.a, p.b);
-                }, xs)
+                adjacentPairsWith(p -> compare(comparator, p.a, p.b), xs)
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }

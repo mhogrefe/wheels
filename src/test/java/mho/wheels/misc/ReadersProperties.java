@@ -18,6 +18,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public class ReadersProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
@@ -95,24 +96,11 @@ public class ReadersProperties {
         Iterable<String> ss;
         if (P instanceof ExhaustiveProvider) {
             ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
+                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
                     ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.booleans())
             );
         } else {
-            ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
-                    P.pairs(ps, P.booleans())
-            );
+            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.booleans()));
         }
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Boolean, Integer>> op = findBooleanIn(s);
@@ -155,24 +143,11 @@ public class ReadersProperties {
         Iterable<String> ss;
         if (P instanceof ExhaustiveProvider) {
             ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
+                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
                     ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.orderings())
             );
         } else {
-            ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
-                    P.pairs(ps, P.orderings())
-            );
+            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.orderings()));
         }
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Ordering, Integer>> op = findOrderingIn(s);
@@ -215,24 +190,11 @@ public class ReadersProperties {
         Iterable<String> ss;
         if (P instanceof ExhaustiveProvider) {
             ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
+                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
                     ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.roundingModes())
             );
         } else {
-            ss = map(
-                    p -> {
-                        assert p.a != null;
-                        assert p.a.a != null;
-                        assert p.a.b != null;
-                        return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                    },
-                    P.pairs(ps, P.roundingModes())
-            );
+            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.roundingModes()));
         }
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<RoundingMode, Integer>> op = findRoundingModeIn(s);
@@ -272,15 +234,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.bigIntegers())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bigIntegers()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
             Pair<BigInteger, Integer> p = op.get();
@@ -319,15 +273,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.bytes())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bytes()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Byte, Integer>> op = findByteIn(s);
             Pair<Byte, Integer> p = op.get();
@@ -366,15 +312,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.shorts())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.shorts()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Short, Integer>> op = findShortIn(s);
             Pair<Short, Integer> p = op.get();
@@ -413,15 +351,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.integers())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.integers()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Integer, Integer>> op = findIntegerIn(s);
             Pair<Integer, Integer> p = op.get();
@@ -460,15 +390,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.longs())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.longs()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Long, Integer>> op = findLongIn(s);
             Pair<Long, Integer> p = op.get();
@@ -507,15 +429,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.floats())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.floats()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Float, Integer>> op = findFloatIn(s);
             Pair<Float, Integer> p = op.get();
@@ -554,15 +468,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.doubles())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.doubles()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<Double, Integer>> op = findDoubleIn(s);
             Pair<Double, Integer> p = op.get();
@@ -601,15 +507,7 @@ public class ReadersProperties {
         }
 
         Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(
-                p -> {
-                    assert p.a != null;
-                    assert p.a.a != null;
-                    assert p.a.b != null;
-                    return take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a);
-                },
-                P.pairs(ps, P.bigDecimals())
-        );
+        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bigDecimals()));
         for (String s : take(LIMIT, ss)) {
             Optional<Pair<BigDecimal, Integer>> op = findBigDecimalIn(s);
             Pair<BigDecimal, Integer> p = op.get();
