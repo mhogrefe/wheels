@@ -143,12 +143,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumByte(Arrays.asList(p.a, p.b)), (byte) (p.a + p.b));
         }
 
-        Iterable<List<Byte>> failBss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bytes()),
-                bs -> range(0, bs.size())
-        ));
+        Iterable<List<Byte>> failBss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bytes()),
+                        bs -> range(0, bs.size())
+                )
+        );
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
                 sumByte(bs);
@@ -182,12 +183,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumShort(Arrays.asList(p.a, p.b)), (short) (p.a + p.b));
         }
 
-        Iterable<List<Short>> failSss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.shorts()),
-                ss -> range(0, ss.size())
-        ));
+        Iterable<List<Short>> failSss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.shorts()),
+                        ss -> range(0, ss.size())
+                )
+        );
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
                 sumShort(ss);
@@ -223,12 +225,12 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumInteger(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
-        Iterable<List<Integer>> failIss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.integers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<Integer>> failIss = map(p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.integers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
                 sumInteger(is);
@@ -262,12 +264,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumLong(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
-        Iterable<List<Long>> failLss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.longs()),
-                ls -> range(0, ls.size())
-        ));
+        Iterable<List<Long>> failLss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Long>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.longs()),
+                        ls -> range(0, ls.size())
+                )
+        );
         for (List<Long> ls : take(LIMIT, failLss)) {
             try {
                 sumLong(ls);
@@ -303,12 +306,13 @@ public class IterableUtilsProperties {
             aeq(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
-        Iterable<List<Float>> failFss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.floats()),
-                fs -> range(0, fs.size())
-        ));
+        Iterable<List<Float>> failFss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Float>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.floats()),
+                        fs -> range(0, fs.size())
+                )
+        );
         for (List<Float> fs : take(LIMIT, failFss)) {
             try {
                 sumFloat(fs);
@@ -344,12 +348,13 @@ public class IterableUtilsProperties {
             aeq(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
-        Iterable<List<Double>> failDss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.doubles()),
-                ds -> range(0, ds.size())
-        ));
+        Iterable<List<Double>> failDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.doubles()),
+                        ds -> range(0, ds.size())
+                )
+        );
         for (List<Double> ls : take(LIMIT, failDss)) {
             try {
                 sumDouble(ls);
@@ -425,12 +430,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), sumBigDecimal(Arrays.asList(p.a, p.b)), p.a.add(p.b));
         }
 
-        Iterable<List<BigDecimal>> failBDss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bigDecimals()),
-                bds -> range(0, bds.size())
-        ));
+        Iterable<List<BigDecimal>> failBDss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<BigDecimal>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bigDecimals()),
+                        bds -> range(0, bds.size())
+                )
+        );
         for (List<BigDecimal> bds : take(LIMIT, failBDss)) {
             try {
                 sumBigDecimal(bds);
@@ -460,12 +466,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), productByte(Arrays.asList(p.a, p.b)), (byte) (p.a * p.b));
         }
 
-        Iterable<List<Byte>> failBss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.bytes()),
-                bs -> range(0, bs.size())
-        ));
+        Iterable<List<Byte>> failBss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Byte>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.bytes()),
+                        bs -> range(0, bs.size())
+                )
+        );
         for (List<Byte> bs : take(LIMIT, failBss)) {
             try {
                 productByte(bs);
@@ -497,12 +504,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), productShort(Arrays.asList(p.a, p.b)), (short) (p.a * p.b));
         }
 
-        Iterable<List<Short>> failSss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.shorts()),
-                ss -> range(0, ss.size())
-        ));
+        Iterable<List<Short>> failSss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Short>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.shorts()),
+                        ss -> range(0, ss.size())
+                )
+        );
         for (List<Short> ss : take(LIMIT, failSss)) {
             try {
                 productShort(ss);
@@ -532,12 +540,13 @@ public class IterableUtilsProperties {
             assertEquals(p.toString(), productInteger(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
-        Iterable<List<Integer>> failIss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.integers()),
-                is -> range(0, is.size())
-        ));
+        Iterable<List<Integer>> failIss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Integer>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.integers()),
+                        is -> range(0, is.size())
+                )
+        );
         for (List<Integer> is : take(LIMIT, failIss)) {
             try {
                 productInteger(is);
