@@ -24,6 +24,7 @@ import static mho.wheels.ordering.Ordering.*;
  * {@link mho.wheels.iterables.IterableUtils#cons}. The {@code Iterable}'s elements are typically in order of
  * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
  */
+@SuppressWarnings("ConstantConditions")
 public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
@@ -601,6 +602,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
                 Arrays.asList(0.0f),
@@ -617,6 +619,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> floatsIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, Float.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0f, Float.NaN, 0.0f),
@@ -656,10 +659,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        (Iterable<Optional<Float>>) map(
-                                p -> FloatingPointUtils.floatFromME(p.a, p.b),
-                                pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
-                        )
+                        map(p -> FloatingPointUtils.floatFromME(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
                 )
         );
     }
@@ -726,6 +726,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
      */
     public @NotNull Iterable<Double> ordinaryDoublesIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
                 Arrays.asList(0.0),
@@ -740,6 +741,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
     public @NotNull Iterable<Double> doublesIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, Double.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0, Double.NaN, 0.0),
@@ -779,10 +781,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        (Iterable<Optional<Double>>) map(
-                                p -> FloatingPointUtils.doubleFromME(p.a, p.b),
-                                pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
-                        )
+                        map(p -> FloatingPointUtils.doubleFromME(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
                 )
         );
     }

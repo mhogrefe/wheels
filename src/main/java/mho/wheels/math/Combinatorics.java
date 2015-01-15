@@ -19,6 +19,7 @@ import static mho.wheels.ordering.Ordering.lt;
 /**
  * Various combinatorial functions and <tt>Iterable</tt>s.
  */
+@SuppressWarnings("ConstantConditions")
 public final class Combinatorics {
     /**
      * A provider of <tt>Iterable</tt>s containing every value of some type.

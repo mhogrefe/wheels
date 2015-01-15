@@ -58,6 +58,7 @@ public class Readers {
      * @param <T> the type of value read by {@code read}
      * @return the value corresponding to {@code s}, according to the conditions described above
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
         try {
             T x = read.apply(s);

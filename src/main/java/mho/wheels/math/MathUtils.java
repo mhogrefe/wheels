@@ -1204,6 +1204,7 @@ public final class MathUtils {
                 },
                 range(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
+        //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filter(MathUtils::isPrime, candidates));
     }
 }

@@ -19,6 +19,7 @@ import static mho.wheels.ordering.Ordering.*;
  * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
  * {@link mho.wheels.math.Combinatorics}).
  */
+@SuppressWarnings("ConstantConditions")
 public final class IterableUtils {
     /**
      * Disallow instantiation
@@ -1175,6 +1176,7 @@ public final class IterableUtils {
      * @param <T> the element type of the {@code Iterable} to be created
      * @return the {@code Iterable} to be created
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private boolean readHead = false;
@@ -1219,6 +1221,7 @@ public final class IterableUtils {
      * @param cs the second-through-last characters of the {@code String} to be created
      * @return the {@code String} to be created
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull String cons(char c, @NotNull String cs) {
         return Character.toString(c) + cs;
     }
@@ -1281,6 +1284,7 @@ public final class IterableUtils {
      * @param t a {@code String}
      * @return {@code s} concatenated with {@code t}
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull String concat(@NotNull String s, @NotNull String t) {
         return s + t;
     }
@@ -2587,7 +2591,7 @@ public final class IterableUtils {
             @NotNull B z,
             @NotNull Iterable<A> xs
     ) {
-        return scanl(p -> f.apply(new Pair<A, B>(p.b, p.a)), z, reverse(xs));
+        return scanl(p -> f.apply(new Pair<>(p.b, p.a)), z, reverse(xs));
     }
 
     public static @NotNull <A> Iterable<A> scanr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
@@ -2599,9 +2603,9 @@ public final class IterableUtils {
             @Nullable ACC s,
             @NotNull Iterable<X> xs
     ) {
-        List<Y> ys = new ArrayList<Y>();
+        List<Y> ys = new ArrayList<>();
         for (X x : xs) {
-            Pair<ACC, Y> p = f.apply(new Pair<ACC, X>(s, x));
+            Pair<ACC, Y> p = f.apply(new Pair<>(s, x));
             s = p.a;
             ys.add(p.b);
         }
@@ -3377,7 +3381,7 @@ public final class IterableUtils {
         List<T> list = toList(xs);
         return map(
                 i -> {
-                    List<T> subList = new ArrayList<T>();
+                    List<T> subList = new ArrayList<>();
                     for (int j = i; j < list.size(); j++) {
                         subList.add(list.get(j));
                     }
@@ -4036,7 +4040,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> select(@NotNull Iterable<Boolean> bs, @NotNull Iterable<T> xs) {
-        return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
+        return map(p -> p.b, filter(p -> p.a, zip(bs, xs)));
     }
 
     public static @NotNull String select(@NotNull Iterable<Boolean> bs, @NotNull String s) {
