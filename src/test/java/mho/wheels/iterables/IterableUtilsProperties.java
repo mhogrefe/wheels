@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.math.MathUtils.bigEndianDigits;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
@@ -48,6 +49,7 @@ public class IterableUtilsProperties {
             propertiesSumFloat();
             propertiesSumDouble();
             propertiesSumBigInteger();
+            compareImplementationsSumBigInteger();
             propertiesSumBigDecimal();
             propertiesProductByte();
             propertiesProductShort();
@@ -56,6 +58,7 @@ public class IterableUtilsProperties {
             propertiesProductFloat();
             propertiesProductDouble();
             propertiesProductBigInteger();
+            compareImplementationsProductBigInteger();
             propertiesProductBigDecimal();
             propertiesDeltaByte();
             propertiesDeltaShort();
@@ -363,19 +366,39 @@ public class IterableUtilsProperties {
         }
     }
 
+    private static @NotNull BigInteger sumBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
+        return foldl(
+                p -> p.a.add(p.b),
+                BigInteger.ZERO,
+                sort(
+                        (x, y) -> {
+                            int c = x.abs().compareTo(y.abs());
+                            if (c == 0) {
+                                int sx = x.signum();
+                                int sy = x.signum();
+                                if (sx > sy) return 1;
+                                if (sx < sy) return -1;
+                            }
+                            return c;
+                        },
+                        xs
+                )
+        );
+    }
+
     private static void propertiesSumBigInteger() {
         initialize();
         System.out.println("\t\ttesting sumBigInteger(Iterable<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
-            sumBigInteger(is);
+            BigInteger sum = sumBigInteger(is);
+            assertEquals(is.toString(), sum, sumBigInteger_alt(is));
         }
 
         Iterable<Pair<List<BigInteger>, List<BigInteger>>> ps = filter(
                 q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigIntegers()), Combinatorics::permutationsIncreasing)
         );
-
         for (Pair<List<BigInteger>, List<BigInteger>> p : take(LIMIT, ps)) {
             assertEquals(p.toString(), sumBigInteger(p.a), sumBigInteger(p.b));
         }
@@ -403,6 +426,27 @@ public class IterableUtilsProperties {
         }
     }
 
+    private static void compareImplementationsSumBigInteger() {
+        initialize();
+        System.out.println("\t\tcomparing sumBigInteger(Iterable<BigInteger>) implementations...");
+
+        long totalTime = 0;
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            long time = System.nanoTime();
+            sumBigInteger_alt(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            long time = System.nanoTime();
+            sumBigInteger(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
     private static void propertiesSumBigDecimal() {
         initialize();
         System.out.println("\t\ttesting sumBigDecimal(Iterable<BigDecimal>) properties...");
@@ -412,9 +456,7 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<BigDecimal>, List<BigDecimal>>> ps = filter(
-                q -> {
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigDecimals()), Combinatorics::permutationsIncreasing)
         );
 
@@ -448,6 +490,10 @@ public class IterableUtilsProperties {
     private static void propertiesProductByte() {
         initialize();
         System.out.println("\t\ttesting productByte(Iterable<Byte>) properties...");
+
+        for (List<Byte> bs : take(LIMIT, P.lists(P.bytes()))) {
+            productByte(bs);
+        }
 
         Iterable<Pair<List<Byte>, List<Byte>>> ps = filter(
                 q -> !q.a.equals(q.b),
@@ -485,10 +531,12 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting productShort(Iterable<Short>) properties...");
 
+        for (List<Short> ss : take(LIMIT, P.lists(P.shorts()))) {
+            productShort(ss);
+        }
+
         Iterable<Pair<List<Short>, List<Short>>> ps = filter(
-                q -> {
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.shorts()), Combinatorics::permutationsIncreasing)
         );
 
@@ -522,6 +570,10 @@ public class IterableUtilsProperties {
     private static void propertiesProductInteger() {
         initialize();
         System.out.println("\t\ttesting productInteger(Iterable<Integer>) properties...");
+
+        for (List<Integer> is : take(LIMIT, P.lists(P.integers()))) {
+            productInteger(is);
+        }
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
                 q -> !q.a.equals(q.b),
@@ -559,6 +611,10 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting productLong(Iterable<Long>) properties...");
 
+        for (List<Long> ls : take(LIMIT, P.lists(P.longs()))) {
+            productLong(ls);
+        }
+
         Iterable<Pair<List<Long>, List<Long>>> ps = filter(
                 q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.longs()), Combinatorics::permutationsIncreasing)
@@ -594,6 +650,10 @@ public class IterableUtilsProperties {
     private static void propertiesProductFloat() {
         initialize();
         System.out.println("\t\ttesting productFloat(Iterable<Float>) properties...");
+
+        for (List<Float> fs : take(LIMIT, P.lists(P.floats()))) {
+            productFloat(fs);
+        }
 
         Iterable<List<Float>> fss = map(
                 p -> toList(insert(p.a, p.b, Float.NaN)),
@@ -634,6 +694,10 @@ public class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting productDouble(Iterable<Double>) properties...");
 
+        for (List<Double> ds : take(LIMIT, P.lists(P.doubles()))) {
+            productDouble(ds);
+        }
+
         Iterable<List<Double>> dss = map(
                 p -> toList(insert(p.a, p.b, Double.NaN)),
                 (Iterable<Pair<List<Double>, Integer>>) P.dependentPairsLogarithmic(
@@ -669,15 +733,39 @@ public class IterableUtilsProperties {
         }
     }
 
+    private static @NotNull BigInteger productBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
+        return foldl(
+                p -> p.a.multiply(p.b),
+                BigInteger.ONE,
+                sort(
+                        (x, y) -> {
+                            int c = x.abs().compareTo(y.abs());
+                            if (c == 0) {
+                                int sx = x.signum();
+                                int sy = x.signum();
+                                if (sx > sy) return 1;
+                                if (sx < sy) return -1;
+                            }
+                            return c;
+                        },
+                        xs
+                )
+        );
+    }
+
     private static void propertiesProductBigInteger() {
         initialize();
         System.out.println("\t\ttesting productBigInteger(Iterable<BigInteger>) properties...");
+
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            BigInteger product = productBigInteger(is);
+            assertEquals(is.toString(), product, productBigInteger_alt(is));
+        }
 
         Iterable<Pair<List<BigInteger>, List<BigInteger>>> ps = filter(
                 q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.bigIntegers()), Combinatorics::permutationsIncreasing)
         );
-
         for (Pair<List<BigInteger>, List<BigInteger>> p : take(LIMIT, ps)) {
             assertEquals(p.toString(), productBigInteger(p.a), productBigInteger(p.b));
         }
@@ -705,9 +793,34 @@ public class IterableUtilsProperties {
         }
     }
 
+    private static void compareImplementationsProductBigInteger() {
+        initialize();
+        System.out.println("\t\tcomparing productBigInteger(Iterable<BigInteger>) implementations...");
+
+        long totalTime = 0;
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            long time = System.nanoTime();
+            productBigInteger_alt(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
+            long time = System.nanoTime();
+            productBigInteger(is);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
     private static void propertiesProductBigDecimal() {
         initialize();
         System.out.println("\t\ttesting productBigDecimal(Iterable<BigDecimal>) properties...");
+
+        for (List<BigDecimal> bds : take(LIMIT, P.lists(P.bigDecimals()))) {
+            productBigDecimal(bds);
+        }
 
         Iterable<Pair<List<BigDecimal>, List<BigDecimal>>> ps = filter(
                 q -> !q.a.equals(q.b),
