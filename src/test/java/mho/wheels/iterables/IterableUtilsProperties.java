@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.bigEndianDigits;
+import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
@@ -372,14 +374,17 @@ public class IterableUtilsProperties {
                 BigInteger.ZERO,
                 sort(
                         (x, y) -> {
-                            int c = x.abs().compareTo(y.abs());
-                            if (c == 0) {
+                            Ordering o = compare(x.abs(), y.abs());
+                            if (o == EQ) {
                                 int sx = x.signum();
                                 int sy = x.signum();
-                                if (sx > sy) return 1;
-                                if (sx < sy) return -1;
+                                if (sx > sy) {
+                                    o = GT;
+                                } else if (sx < sy) {
+                                    o = LT;
+                                }
                             }
-                            return c;
+                            return o.toInt();
                         },
                         xs
                 )
@@ -739,14 +744,17 @@ public class IterableUtilsProperties {
                 BigInteger.ONE,
                 sort(
                         (x, y) -> {
-                            int c = x.abs().compareTo(y.abs());
-                            if (c == 0) {
+                            Ordering o = compare(x.abs(), y.abs());
+                            if (o == EQ) {
                                 int sx = x.signum();
                                 int sy = x.signum();
-                                if (sx > sy) return 1;
-                                if (sx < sy) return -1;
+                                if (sx > sy) {
+                                    o = GT;
+                                } else if (sx < sy) {
+                                    o = LT;
+                                }
                             }
-                            return c;
+                            return o.toInt();
                         },
                         xs
                 )
