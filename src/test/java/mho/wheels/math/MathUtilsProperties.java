@@ -701,12 +701,13 @@ public class MathUtilsProperties {
             aeq(bs.toString(), bs, bigEndianBits(i));
         }
 
-        Iterable<List<Boolean>> failBss = map(p -> {
-            return toList(insert(p.a, p.b, null));
-        }, (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
-                P.lists(P.booleans()),
-                bs -> range(0, bs.size())
-        ));
+        Iterable<List<Boolean>> failBss = map(
+                p -> toList(insert(p.a, p.b, null)),
+                (Iterable<Pair<List<Boolean>, Integer>>) P.dependentPairsLogarithmic(
+                        P.lists(P.booleans()),
+                        bs -> range(0, bs.size())
+                )
+        );
         for (List<Boolean> bs : take(LIMIT, failBss)) {
             try {
                 fromBigEndianBits(bs);
@@ -938,10 +939,7 @@ public class MathUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<Integer, Integer>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                                    P.naturalIntegers(),
-                                    P.rangeUp(2)
-                            ),
+                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalIntegers(), P.rangeUp(2)),
                             p -> {
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
@@ -964,7 +962,7 @@ public class MathUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<Integer, Integer>>) P.pairs(
+                            P.pairs(
                                     P.naturalIntegers(),
                                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
                             ),
@@ -1111,7 +1109,7 @@ public class MathUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<BigInteger, BigInteger>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
+                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                                     P.naturalBigIntegers(),
                                     P.rangeUp(BigInteger.valueOf(2))
                             ),
@@ -1132,7 +1130,7 @@ public class MathUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<BigInteger, BigInteger>>) P.pairs(
+                            P.pairs(
                                     P.naturalBigIntegers(),
                                     map(
                                             i -> BigInteger.valueOf(i + 2),
@@ -1416,10 +1414,7 @@ public class MathUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<Integer, Integer>>) ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                                    P.naturalIntegers(),
-                                    P.rangeUp(2)
-                            ),
+                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalIntegers(), P.rangeUp(2)),
                             p -> {
                                 int targetDigitCount = 0;
                                 if (p.a > 0) {
@@ -1440,11 +1435,9 @@ public class MathUtilsProperties {
             );
         } else {
             ts = map(
-                    q -> {
-                        return new Triple<>(q.b, q.a.b, q.a.a);
-                    },
+                    q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairsLogarithmic(
-                            (Iterable<Pair<Integer, Integer>>) P.pairs(
+                            P.pairs(
                                     P.naturalIntegers(),
                                     map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
                             ),
