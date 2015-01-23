@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.misc.Readers;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -798,8 +799,9 @@ public final class MathUtils {
     /**
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
-     * each digit is surrounded by parentheses. The empty {@code String} represents 0. Leading zeroes are permitted. If
-     * the {@code String} is invalid, an exception is thrown.
+     * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
+     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -833,10 +835,20 @@ public final class MathUtils {
         if (base <= 36) {
             digits = toList(map(MathUtils::fromDigit, fromString(s)));
         } else {
-            if (head(s) != '(' || last(s) != ')')
+            if (head(s) != '(' || last(s) != ')' || s.contains("()"))
                 throw new IllegalArgumentException("improperly-formatted String");
             s = tail(init(s));
-            digits = toList(map(Integer::parseInt, Arrays.asList(s.split("\\)\\("))));
+            digits = toList(
+                    map(
+                            t -> {
+                                Optional<Integer> oi = Readers.readInteger(t);
+                                if (!oi.isPresent())
+                                    throw new IllegalArgumentException("improperly-formatted digit");
+                                return oi.get();
+                            },
+                            Arrays.asList(s.split("\\)\\("))
+                    )
+            );
         }
         BigInteger result = fromBigEndianDigits(base, digits);
         return negative ? result.negate() : result;
@@ -845,8 +857,9 @@ public final class MathUtils {
     /**
      * Converts a {@code String} written in some base to a number. If the base is 36 or less, the digits are '0'
      * through '9' followed by 'A' through 'Z'. If the base is greater than 36, the digits are written in decimal and
-     * each digit is surrounded by parentheses. The empty {@code String} represents 0. Leading zeroes are permitted. If
-     * the {@code String} is invalid, an exception is thrown.
+     * each digit is surrounded by parentheses (in this case, the {@code String} representing the digit cannot be empty
+     * and no leading zeroes are allowed unless the digit is 0). The empty {@code String} represents 0. Leading zeroes
+     * are permitted. If the {@code String} is invalid, an exception is thrown.
      *
      * <ul>
      *  <li>{@code base} must be at least 2.</li>
@@ -880,10 +893,20 @@ public final class MathUtils {
         if (le(base, BigInteger.valueOf(36))) {
             digits = toList(map(c -> BigInteger.valueOf(fromDigit(c)), fromString(s)));
         } else {
-            if (head(s) != '(' || last(s) != ')')
+            if (head(s) != '(' || last(s) != ')' || s.contains("()"))
                 throw new IllegalArgumentException("improperly-formatted String");
             s = tail(init(s));
-            digits = toList(map(BigInteger::new, Arrays.asList(s.split("\\)\\("))));
+            digits = toList(
+                    map(
+                            t -> {
+                                Optional<BigInteger> oi = Readers.readBigInteger(t);
+                                if (!oi.isPresent())
+                                    throw new IllegalArgumentException("improperly-formatted digit");
+                                return oi.get();
+                            },
+                            Arrays.asList(s.split("\\)\\("))
+                    )
+            );
         }
         BigInteger result = fromBigEndianDigits(base, digits);
         return negative ? result.negate() : result;

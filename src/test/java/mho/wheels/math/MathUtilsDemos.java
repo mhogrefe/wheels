@@ -4,6 +4,7 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
@@ -19,7 +20,8 @@ import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
 public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
+    private static final int SMALL_LIMIT = 3000;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -423,59 +425,82 @@ public class MathUtilsDemos {
 
     private static void demoFromStringBase_int_String() {
         initialize();
+        Iterable<Integer> bases;
+        if (P instanceof ExhaustiveProvider) {
+            bases = P.rangeUp(2);
+        } else {
+            bases = map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
         Iterable<Pair<Integer, String>> ps = P.dependentPairs(
-                P.rangeUp(2),
+                bases,
                 b -> {
-                    Iterable<String> positiveStrings;
-                    if (b <= 36) {
-                        positiveStrings = P.strings(map(MathUtils::toDigit, P.range(0, b - 1)));
+                    String chars = "-";
+                    if (b < 36) {
+                        chars += charsToString(range('0', MathUtils.toDigit(b - 1)));
                     } else {
-                        positiveStrings = map(
-                                is -> concatMapStrings(i -> "(" + i + ")", is),
-                                P.lists(P.range(0, b - 1))
-                        );
+                        chars += "()0123456789";
                     }
-                    return mux(
-                            Arrays.asList(
-                                    positiveStrings,
-                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
-                            )
+                    Iterable<Character> unfiltered;
+                    if (P instanceof ExhaustiveProvider) {
+                        unfiltered = fromString(chars);
+                    } else {
+                        unfiltered = ((RandomProvider) P).uniformSample(chars);
+                    }
+                    return filter(
+                            s -> {
+                                try {
+                                    fromStringBase(b, s);
+                                    return true;
+                                } catch (IllegalArgumentException e) {
+                                    return false;
+                                }
+                            },
+                            P.strings(unfiltered)
                     );
                 }
         );
-        for (Pair<Integer, String> p : take(LIMIT, ps)) {
+        for (Pair<Integer, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
 
     private static void demoFromStringBase_BigInteger_String() {
         initialize();
+        Iterable<BigInteger> bases;
+        if (P instanceof ExhaustiveProvider) {
+            bases = P.rangeUp(BigInteger.valueOf(2));
+        } else {
+            bases = map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20));
+        }
         Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
-                P.rangeUp(BigInteger.valueOf(2)),
+                bases,
                 b -> {
-                    Iterable<String> positiveStrings;
-                    if (le(b, BigInteger.valueOf(36))) {
-                        positiveStrings = P.strings(
-                                map(
-                                        i -> MathUtils.toDigit(i.intValueExact()),
-                                        P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE))
-                                )
-                        );
+                    String chars = "-";
+                    if (Ordering.le(b, BigInteger.valueOf(36))) {
+                        chars += charsToString(range('0', MathUtils.toDigit(b.intValueExact() - 1)));
                     } else {
-                        positiveStrings = map(
-                                is -> concatMapStrings(i -> "(" + i + ")", is),
-                                P.lists(P.range(BigInteger.ZERO, b.subtract(BigInteger.ONE)))
-                        );
+                        chars += "()0123456789";
                     }
-                    return mux(
-                            Arrays.asList(
-                                    positiveStrings,
-                                    map((String s) -> cons('-', s), filter(t -> !t.isEmpty(), positiveStrings))
-                            )
+                    Iterable<Character> unfiltered;
+                    if (P instanceof ExhaustiveProvider) {
+                        unfiltered = fromString(chars);
+                    } else {
+                        unfiltered = ((RandomProvider) P).uniformSample(chars);
+                    }
+                    return filter(
+                            s -> {
+                                try {
+                                    fromStringBase(b, s);
+                                    return true;
+                                } catch (IllegalArgumentException e) {
+                                    return false;
+                                }
+                            },
+                            P.strings(unfiltered)
                     );
                 }
         );
-        for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
+        for (Pair<BigInteger, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }

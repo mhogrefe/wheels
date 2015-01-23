@@ -1032,15 +1032,27 @@ public class MathUtilsTest {
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromStringBase(100, "()");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
             fromStringBase(100, "(3F)");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
             fromStringBase(100, "-");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "()()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "(00)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(100, "(02)");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1161,11 +1173,27 @@ public class MathUtilsTest {
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
+            fromStringBase(BigInteger.valueOf(100), "()()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
             fromStringBase(BigInteger.valueOf(100), "(3F)");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
             fromStringBase(BigInteger.valueOf(100), "-");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "()");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "(00)");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            fromStringBase(BigInteger.valueOf(100), "(02)");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
