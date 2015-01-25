@@ -1725,15 +1725,7 @@ public class MathUtilsProperties {
             assertEquals(is.toString(), fromDigits(2, is), fromBits(map(digitsToBits, is)));
         }
 
-        Iterable<Pair<List<Integer>, Integer>> unfilteredPsFail;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeDown(1));
-        } else {
-            unfilteredPsFail = P.pairs(
-                    P.lists(((RandomProvider) P).integersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20))
-            );
-        }
+        Iterable<Pair<List<Integer>, Integer>> unfilteredPsFail = P.pairs(P.lists(P.integers()), P.rangeDown(1));
         Iterable<Pair<List<Integer>, Integer>> psFail = filter(p -> all(i -> i < p.b, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
             try {
@@ -1742,14 +1734,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.integers()), P.rangeUp(2));
-        } else {
-            unfilteredPsFail = P.pairs(
-                    P.lists(((RandomProvider) P).integersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
+        unfilteredPsFail = P.pairs(P.lists(P.integers()), P.rangeUp(2));
         psFail = filter(p -> any(i -> i < 0, p.a), unfilteredPsFail);
         for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
             try {
