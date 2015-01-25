@@ -2212,15 +2212,15 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), fromStringBase(p.b, s), BigInteger.valueOf(p.a));
         }
 
+        String chars = charsToString(cons('-', concat(range('0', '9'), range('A', 'Z'))));
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.range(2, 36));
         } else {
-            ps = P.pairs(P.range(2, 36));
+            ps = P.pairs(P.integers(), P.range(2, 36));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
-            if (head(s) == '-') s = tail(s);
-            assertTrue(p.toString(), all(c -> elem(c, charsToString(concat(range('0', '9'), range('A', 'Z')))), s));
+            assertTrue(p.toString(), all(c -> elem(c, chars), s));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -2306,11 +2306,10 @@ public class MathUtilsProperties {
                     P.range(BigInteger.valueOf(2), BigInteger.valueOf(36))
             );
         } else {
-            ps = P.pairs(P.range(BigInteger.valueOf(2), BigInteger.valueOf(36)));
+            ps = P.pairs(P.bigIntegers(), P.range(BigInteger.valueOf(2), BigInteger.valueOf(36)));
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
-            if (head(s) == '-') s = tail(s);
             assertTrue(p.toString(), all(c -> elem(c, chars), s));
         }
 
