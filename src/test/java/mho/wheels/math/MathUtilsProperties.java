@@ -1649,23 +1649,11 @@ public class MathUtilsProperties {
             aeq(p.toString(), map(digitsToBits, digits), bigEndianBitsPadded(p.b, p.a));
         }
 
-        Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail;
-        if (P instanceof ExhaustiveProvider) {
-            tsFail = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(
-                                    P.naturalIntegers(),
-                                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
-                            ),
-                            P.negativeBigIntegers()
-                    )
-            );
-        } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
-            tsFail = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.negativeBigIntegers());
-        }
-
+        Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail = P.triples(
+                P.naturalIntegers(),
+                P.rangeUp(BigInteger.valueOf(2)),
+                P.negativeBigIntegers()
+        );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
@@ -1673,24 +1661,7 @@ public class MathUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            tsFail = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(
-                                    P.negativeIntegers(),
-                                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
-                            ),
-                            P.naturalBigIntegers()
-                    )
-            );
-        } else {
-            tsFail = P.triples(
-                    ((RandomProvider) P).negativeIntegersGeometric(20),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20)),
-                    P.naturalBigIntegers()
-            );
-        }
+        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(BigInteger.valueOf(2)), P.naturalBigIntegers());
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
@@ -1698,22 +1669,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            tsFail = map(
-                    p -> new Triple<>(p.a.a, p.a.b, p.b),
-                    (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(P.naturalIntegers(), map(i -> BigInteger.valueOf(i + 2), P.negativeIntegers())),
-                            P.negativeBigIntegers()
-                    )
-            );
-        } else {
-            tsFail = P.triples(
-                    ((RandomProvider) P).naturalIntegersGeometric(20),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20)),
-                    P.negativeBigIntegers()
-            );
-        }
-
+        tsFail = P.triples(P.naturalIntegers(), P.rangeDown(BigInteger.ONE), P.naturalBigIntegers());
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
