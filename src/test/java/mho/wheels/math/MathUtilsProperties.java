@@ -1823,19 +1823,7 @@ public class MathUtilsProperties {
             assertEquals(is.toString(), fromDigits(BigInteger.valueOf(2), is), fromBits(map(digitsToBits, is)));
         }
 
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.bigIntegers()),
-                    P.rangeDown(BigInteger.ONE)
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPsFail = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
-            );
-        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeDown(BigInteger.ONE));
         Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -1844,18 +1832,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.bigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPsFail = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
+        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(BigInteger.valueOf(2)));
         psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
