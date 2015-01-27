@@ -2002,19 +2002,10 @@ public class MathUtilsProperties {
             );
         }
 
-        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail;
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.bigIntegers()),
-                    P.rangeDown(BigInteger.ONE)
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPsFail = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
-            );
-        }
+        Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail = P.pairs(
+                P.lists(P.bigIntegers()),
+                P.rangeDown(BigInteger.ONE)
+        );
         Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -2023,18 +2014,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            unfilteredPsFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                    P.lists(P.bigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
-        } else {
-            //noinspection Convert2MethodRef
-            unfilteredPsFail = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).integersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
+        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(BigInteger.valueOf(2)));
         psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -2147,13 +2127,7 @@ public class MathUtilsProperties {
             assertTrue(p.toString(), all(d -> d >= 0 && d < p.b, digits));
         }
 
-        Iterable<Pair<Integer, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeDown(1));
-        } else {
-            psFail = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).negativeIntegersGeometric(20)));
-        }
-        for (Pair<Integer, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers(), P.rangeDown(1)))) {
             try {
                 toStringBase(p.b, p.a);
                 fail(p.toString());
@@ -2240,16 +2214,7 @@ public class MathUtilsProperties {
             assertTrue(p.toString(), all(d -> d.signum() != -1 && lt(d, p.b), digits));
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeDown(BigInteger.ONE));
-        } else {
-            psFail = P.pairs(
-                    P.bigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).negativeIntegersGeometric(20))
-            );
-        }
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers(), P.rangeDown(BigInteger.ONE)))) {
             try {
                 toStringBase(p.b, p.a);
                 fail(p.toString());
@@ -2312,6 +2277,10 @@ public class MathUtilsProperties {
         for (Pair<Integer, String> p : take(SMALL_LIMIT, ps)) {
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p.toString(), toStringBase(BigInteger.valueOf(p.a), i), p.b);
+        }
+
+        for (int i : take(LIMIT, P.rangeUp(2))) {
+            assertEquals(Integer.toString(i), fromStringBase(i, ""), BigInteger.ZERO);
         }
 
         for (Pair<Integer, String> p : take(SMALL_LIMIT, P.pairs(P.rangeDown(1), P.strings()))) {
@@ -2408,13 +2377,17 @@ public class MathUtilsProperties {
         }
 
         ps = filter(
-                p -> !p.b.isEmpty() && !p.b.startsWith("0") && !p.b.startsWith("-0") && !p.b.startsWith("(0)") &&
+                p -> !p.b.isEmpty() && head(p.b) != '0' && !p.b.startsWith("-0") && !p.b.startsWith("(0)") &&
                         !p.b.startsWith("-(0)"),
                 ps
         );
         for (Pair<BigInteger, String> p : take(SMALL_LIMIT, ps)) {
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p.toString(), toStringBase(p.a, i), p.b);
+        }
+
+        for (BigInteger i : take(LIMIT, P.rangeUp(BigInteger.valueOf(2)))) {
+            assertEquals(i.toString(), fromStringBase(i, ""), BigInteger.ZERO);
         }
 
         for (Pair<BigInteger, String> p : take(SMALL_LIMIT, P.pairs(P.rangeDown(BigInteger.ONE), P.strings()))) {
@@ -2447,33 +2420,14 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), logarithmicDemux(i), p);
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers());
-        } else {
-            //noinspection Convert2MethodRef
-            psFail = P.pairs(
-                    P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).negativeIntegersGeometric(20))
-            );
-        }
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers()))) {
             try {
                 logarithmicMux(p.a, p.b);
                 fail(p.toString());
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = P.pairs(P.negativeBigIntegers(), P.naturalBigIntegers());
-        } else {
-            //noinspection Convert2MethodRef
-            psFail = P.pairs(
-                    P.negativeBigIntegers(),
-                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(20))
-            );
-        }
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.naturalBigIntegers()))) {
             try {
                 logarithmicMux(p.a, p.b);
                 fail(p.toString());
@@ -2600,27 +2554,14 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), mux(xs), p.a);
         }
 
-        Iterable<Pair<BigInteger, Integer>> psFail;
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.negativeIntegers());
-        } else {
-            psFail = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).negativeIntegersGeometric(20));
-        }
-
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeIntegers()))) {
             try {
                 demux(p.b, p.a);
                 fail(p.toString());
             } catch (ArithmeticException ignored) {}
         }
 
-        if (P instanceof ExhaustiveProvider) {
-            psFail = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.negativeBigIntegers(), P.positiveIntegers());
-        } else {
-            psFail = P.pairs(P.negativeBigIntegers(), ((RandomProvider) P).positiveIntegersGeometric(20));
-        }
-
-        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.negativeBigIntegers(), P.positiveIntegers()))) {
             try {
                 demux(p.b, p.a);
                 fail(p.toString());
