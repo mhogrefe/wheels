@@ -10,6 +10,7 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 
+@SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
 public class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
@@ -29,8 +30,6 @@ public class IterableUtilsDemos {
     public static void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {
-            assert p.a != null;
-            assert p.b != null;
             List<Integer> list = new ArrayList<>();
             list.addAll(p.b);
             addTo(p.a, list);
@@ -42,8 +41,6 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<String, List<Character>>> ps = P.pairs(P.strings(), P.lists(P.withNull(P.characters())));
         for (Pair<String, List<Character>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             List<Character> list = new ArrayList<>();
             list.addAll(p.b);
             addTo(p.a, list);
@@ -89,8 +86,6 @@ public class IterableUtilsDemos {
             ps = P.pairs(((RandomProvider) P).naturalIntegersGeometric(20), P.lists(P.integers()));
         }
         for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toString(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(p.a, p.b));
         }
     }
@@ -100,10 +95,7 @@ public class IterableUtilsDemos {
         Iterable<Pair<Integer, Iterable<Integer>>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = map(
-                    p -> {
-                        assert p.a != null;
-                        return new Pair<>(p.b, cycle((List<Integer>) p.a));
-                    },
+                    p -> new Pair<>(p.b, cycle(p.a)),
                     ((ExhaustiveProvider) P).pairsSquareRootOrder(
                             P.lists(P.withNull(P.integers())),
                             P.naturalIntegers()
@@ -116,8 +108,6 @@ public class IterableUtilsDemos {
             );
         }
         for (Pair<Integer, Iterable<Integer>> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("toString(" + p.a + ", " + IterableUtils.toString(10, p.b) + ") = " +
                     IterableUtils.toString(p.a, p.b));
         }
@@ -204,8 +194,6 @@ public class IterableUtilsDemos {
     public static void demoRange_byte_byte() {
         initialize();
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -213,8 +201,6 @@ public class IterableUtilsDemos {
     public static void demoRange_short_short() {
         initialize();
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -222,8 +208,6 @@ public class IterableUtilsDemos {
     public static void demoRange_int_int() {
         initialize();
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -231,8 +215,6 @@ public class IterableUtilsDemos {
     public static void demoRange_long_long() {
         initialize();
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -240,8 +222,6 @@ public class IterableUtilsDemos {
     public static void demoRange_BigInteger_BigInteger() {
         initialize();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -249,8 +229,6 @@ public class IterableUtilsDemos {
     public static void demoRange_BigDecimal_BigDecimal() {
         initialize();
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -258,8 +236,6 @@ public class IterableUtilsDemos {
     public static void demoRange_char_char() {
         initialize();
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -268,8 +244,6 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<Float, Float>> ps = P.pairs(filter(f -> !Float.isNaN(f), P.floats()));
         for (Pair<Float, Float> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
         }
     }
@@ -278,9 +252,15 @@ public class IterableUtilsDemos {
         initialize();
         Iterable<Pair<Double, Double>> ps = P.pairs(filter(d -> !Double.isNaN(d), P.doubles()));
         for (Pair<Double, Double> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("range(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(20, range(p.a, p.b)));
+        }
+    }
+
+    public static void demoUnrepeat() {
+        initialize();
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("unrepeat(" + listString + ") = " + unrepeat(is));
         }
     }
 
@@ -414,7 +394,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaByte() {
         initialize();
-        for (List<Byte> bs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bytes())))) {
+        for (List<Byte> bs : take(LIMIT, P.listsAtLeast(1, P.bytes()))) {
             String listString = tail(init(bs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaByte(bs)));
         }
@@ -422,7 +402,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaShort() {
         initialize();
-        for (List<Short> ss : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.shorts())))) {
+        for (List<Short> ss : take(LIMIT, P.listsAtLeast(1, P.shorts()))) {
             String listString = tail(init(ss.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaShort(ss)));
         }
@@ -430,7 +410,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaInteger() {
         initialize();
-        for (List<Integer> is : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.integers())))) {
+        for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.integers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaInteger(is)));
         }
@@ -438,7 +418,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaLong() {
         initialize();
-        for (List<Long> ls : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.longs())))) {
+        for (List<Long> ls : take(LIMIT, P.listsAtLeast(1, P.longs()))) {
             String listString = tail(init(ls.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaLong(ls)));
         }
@@ -446,7 +426,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaBigInteger() {
         initialize();
-        for (List<BigInteger> is : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bigIntegers())))) {
+        for (List<BigInteger> is : take(LIMIT, P.listsAtLeast(1, P.bigIntegers()))) {
             String listString = tail(init(is.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaBigInteger(is)));
         }
@@ -454,7 +434,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaBigDecimal() {
         initialize();
-        for (List<BigDecimal> bds : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.bigDecimals())))) {
+        for (List<BigDecimal> bds : take(LIMIT, P.listsAtLeast(1, P.bigDecimals()))) {
             String listString = tail(init(bds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaBigDecimal(bds)));
         }
@@ -462,7 +442,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaFloat() {
         initialize();
-        for (List<Float> fs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.floats())))) {
+        for (List<Float> fs : take(LIMIT, P.listsAtLeast(1, P.floats()))) {
             String listString = tail(init(fs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaFloat(fs)));
         }
@@ -470,7 +450,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaDouble() {
         initialize();
-        for (List<Double> ds : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.doubles())))) {
+        for (List<Double> ds : take(LIMIT, P.listsAtLeast(1, P.doubles()))) {
             String listString = tail(init(ds.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaDouble(ds)));
         }
@@ -478,7 +458,7 @@ public class IterableUtilsDemos {
 
     public static void demoDeltaCharacter() {
         initialize();
-        for (List<Character> cs : take(LIMIT, filter(xs -> !xs.isEmpty(), P.lists(P.characters())))) {
+        for (List<Character> cs : take(LIMIT, P.listsAtLeast(1, P.characters()))) {
             String listString = tail(init(cs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(20, deltaCharacter(cs)));
         }

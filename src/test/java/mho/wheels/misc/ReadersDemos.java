@@ -9,6 +9,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
 
+@SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {
     private static final boolean USE_RANDOM = false;
     private static final String BOOLEAN_CHARS = "aeflrstu";

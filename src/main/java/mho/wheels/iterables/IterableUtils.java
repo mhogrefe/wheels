@@ -1,5 +1,7 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.MathUtils;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,6 +19,7 @@ import static mho.wheels.ordering.Ordering.*;
  * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
  * {@link mho.wheels.math.Combinatorics}).
  */
+@SuppressWarnings("ConstantConditions")
 public final class IterableUtils {
     /**
      * Disallow instantiation
@@ -1173,6 +1176,7 @@ public final class IterableUtils {
      * @param <T> the element type of the {@code Iterable} to be created
      * @return the {@code Iterable} to be created
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private boolean readHead = false;
@@ -1217,6 +1221,7 @@ public final class IterableUtils {
      * @param cs the second-through-last characters of the {@code String} to be created
      * @return the {@code String} to be created
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull String cons(char c, @NotNull String cs) {
         return Character.toString(c) + cs;
     }
@@ -1279,6 +1284,7 @@ public final class IterableUtils {
      * @param t a {@code String}
      * @return {@code s} concatenated with {@code t}
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull String concat(@NotNull String s, @NotNull String t) {
         return s + t;
     }
@@ -2246,9 +2252,23 @@ public final class IterableUtils {
         return false;
     }
 
+    public static boolean any(@NotNull Predicate<Character> predicate, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (predicate.test(s.charAt(i))) return true;
+        }
+        return false;
+    }
+
     public static <T> boolean all(@NotNull Predicate<T> predicate, @NotNull Iterable<T> xs) {
         for (T x : xs) {
             if (!predicate.test(x)) return false;
+        }
+        return true;
+    }
+
+    public static boolean all(@NotNull Predicate<Character> predicate, @NotNull String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!predicate.test(s.charAt(i))) return false;
         }
         return true;
     }
@@ -2363,11 +2383,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.add(p.b);
-        }, BigInteger.ZERO, xs);
+        return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
     }
 
     /**
@@ -2385,11 +2401,7 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ZERO;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl1(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.add(p.b);
-        }, xs);
+        return foldl1(p -> p.a.add(p.b), xs);
     }
 
     /**
@@ -2500,11 +2512,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.multiply(p.b);
-        }, BigInteger.ONE, xs);
+        return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
     }
 
     /**
@@ -2522,11 +2530,7 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ONE;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.a.multiply(p.b);
-        }, BigDecimal.ONE, xs);
+        return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
     public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
@@ -2587,7 +2591,7 @@ public final class IterableUtils {
             @NotNull B z,
             @NotNull Iterable<A> xs
     ) {
-        return scanl(p -> f.apply(new Pair<A, B>(p.b, p.a)), z, reverse(xs));
+        return scanl(p -> f.apply(new Pair<>(p.b, p.a)), z, reverse(xs));
     }
 
     public static @NotNull <A> Iterable<A> scanr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
@@ -2599,9 +2603,9 @@ public final class IterableUtils {
             @Nullable ACC s,
             @NotNull Iterable<X> xs
     ) {
-        List<Y> ys = new ArrayList<Y>();
+        List<Y> ys = new ArrayList<>();
         for (X x : xs) {
-            Pair<ACC, Y> p = f.apply(new Pair<ACC, X>(s, x));
+            Pair<ACC, Y> p = f.apply(new Pair<>(s, x));
             s = p.a;
             ys.add(p.b);
         }
@@ -2742,6 +2746,43 @@ public final class IterableUtils {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
+    }
+
+    public static @NotNull <T> List<T> unrepeat(@NotNull Iterable<T> xs) {
+        return unrepeat(toList(xs));
+    }
+
+    /**
+     * Given a {@code xs}, returns the shortest {@code List} {@code ys} such that {@code xs} is equal to {@code ys}
+     * repeated some number of times. If {@code xs} consists of a single element repeated multiple times, the result is
+     * a {@code List} containing that element once; if {@code xs} does not repeat, the result is {@code xs}. If
+     * {@code xs} is empty, the empty list is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be non-null.</li>
+     *  <li>The result is non-null and not made up of repetitions of any smaller list.</li>
+     * </ul>
+     *
+     * Length is a positive factor of |{@code xs}|
+     *
+     * @param xs the input {@code List}
+     * @param <T> the type of {@code xs}'s elements
+     * @return the smallest {@code List} such that {@code xs} is made up of repetitions of that {@code List}
+     */
+    public static @NotNull <T> List<T> unrepeat(@NotNull List<T> xs) {
+        if (xs.isEmpty()) return xs;
+        outer:
+        for (int i : MathUtils.factors(xs.size())) {
+            if (i == xs.size()) break;
+            for (int j = 0; j < i; j++) {
+                T first = xs.get(j);
+                for (int k : rangeBy(j + i, i, xs.size() - 1)) {
+                    if (!Objects.equals(first, xs.get(k))) continue outer;
+                }
+            }
+            return toList(take(i, xs));
+        }
+        return xs;
     }
 
     public static @NotNull <A, B> Iterable<A> unfoldr(@NotNull Function<B, Optional<Pair<A, B>>> f, @NotNull B x) {
@@ -2905,6 +2946,22 @@ public final class IterableUtils {
 
     public static @NotNull String drop(@NotNull BigInteger n, @NotNull String s) {
         return s.substring(n.intValueExact());
+    }
+
+    public static @NotNull <T> Iterable<T> rotateLeft(int amount, @NotNull Iterable<T> xs) {
+        return concat(drop(amount, xs), take(amount, xs));
+    }
+
+    public static @NotNull <T> Iterable<T> rotateRight(int amount, @NotNull Iterable<T> xs) {
+        return rotateLeft(length(xs) - amount, xs);
+    }
+
+    public static @NotNull String rotateLeft(int amount, @NotNull String s) {
+        return concat(drop(amount, s), take(amount, s));
+    }
+
+    public static @NotNull String rotateRight(int amount, @NotNull String s) {
+        return rotateLeft(length(s) - amount, s);
     }
 
     public static @NotNull <T> Iterable<T> pad(@NotNull T pad, int length, @NotNull Iterable<T> xs) {
@@ -3291,7 +3348,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
-        return cons(new ArrayList<T>(), ()-> new Iterator<List<T>>() {
+        return cons(new ArrayList<T>(), () -> new Iterator<List<T>>() {
             private Iterator<T> xsi = xs.iterator();
             private List<T> currentList = new ArrayList<>();
 
@@ -3324,7 +3381,7 @@ public final class IterableUtils {
         List<T> list = toList(xs);
         return map(
                 i -> {
-                    List<T> subList = new ArrayList<T>();
+                    List<T> subList = new ArrayList<>();
                     for (int j = i; j < list.size(); j++) {
                         subList.add(list.get(j));
                     }
@@ -3410,6 +3467,50 @@ public final class IterableUtils {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         });
+    }
+
+    public static @NotNull <T> Iterable<T> skipLastIf(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs))
+            throw new NoSuchElementException();
+        return new Iterable<T>() {
+            @Override
+            public Iterator<T> iterator() {
+                return new Iterator<T>() {
+                    private final Iterator<T> xsi = xs.iterator();
+                    private T next = xsi.next();
+                    private boolean lastIsNext = false;
+                    {
+                        if (!xsi.hasNext() && !p.test(next)) {
+                            lastIsNext = true;
+                        }
+                    }
+
+                    @Override
+                    public boolean hasNext() {
+                        return xsi.hasNext() || lastIsNext;
+                    }
+
+                    @Override
+                    public T next() {
+                        if (lastIsNext) {
+                            lastIsNext = false;
+                            return next;
+                        }
+                        T oldNext = next;
+                        next = xsi.next();
+                        if (!xsi.hasNext() && !p.test(next)) {
+                            lastIsNext = true;
+                        }
+                        return oldNext;
+                    }
+
+                    @Override
+                    public void remove() {
+                        throw new UnsupportedOperationException("cannot remove from this iterator");
+                    }
+                };
+            }
+        };
     }
 
     public static @NotNull <A, B> Iterable<B> adjacentPairsWith(
@@ -3530,11 +3631,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.b.subtract(p.a);
-        }, xs);
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
     /**
@@ -3556,11 +3653,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> {
-            assert p.a != null;
-            assert p.b != null;
-            return p.b.subtract(p.a);
-        }, xs);
+        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
     }
 
     /**
@@ -3631,6 +3724,18 @@ public final class IterableUtils {
         return adjacentPairsWith(p -> p.b - p.a, xs);
     }
 
+    public static <T> boolean same(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return true;
+        T head = head(xs);
+        return all(x -> Objects.equals(x, head), tail(xs));
+    }
+
+    public static boolean same(@NotNull String s) {
+        if (isEmpty(s)) return true;
+        char head = head(s);
+        return all(c -> c == head, tail(s));
+    }
+
     public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> lt(p.a, p.b), xs));
     }
@@ -3645,6 +3750,14 @@ public final class IterableUtils {
 
     public static <T extends Comparable<T>> boolean nonincreasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
+    }
+
+    public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                q -> q,
+                adjacentPairsWith(p -> compare(p.a, p.b), xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
     public static <T extends Comparable<T>> boolean increasing(
@@ -3675,6 +3788,17 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> ge(comparator, p.a, p.b), xs));
     }
 
+    public static <T extends Comparable<T>> boolean zigzagging(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs
+    ) {
+        Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
+                q -> q,
+                adjacentPairsWith(p -> compare(comparator, p.a, p.b), xs)
+        );
+        return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
+    }
+
     public static <T> boolean isInfixOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         return any(zs -> equal(xs, zs), windows(length(xs), ys));
     }
@@ -3691,24 +3815,24 @@ public final class IterableUtils {
         return concatStrings(transposeStrings(xss));
     }
 
-    public static @NotNull <T> List<Iterable<T>> demux(int lines, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> List<Iterable<T>> demux(int size, @NotNull Iterable<T> xs) {
         List<Iterable<T>> demuxed = new ArrayList<>();
-        for (int i = 0; i < lines; i++) {
+        for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(
                     replicate(i, false),
-                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+                    cycle(cons(true, (Iterable<Boolean>) replicate(size - 1, false)))
             );
             demuxed.add(select(mask, xs));
         }
         return demuxed;
     }
 
-    public static @NotNull List<String> demux(int lines, @NotNull String s) {
+    public static @NotNull List<String> demux(int size, @NotNull String s) {
         List<String> demuxed = new ArrayList<>();
-        for (int i = 0; i < lines; i++) {
+        for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(
                     replicate(i, false),
-                    cycle(cons(true, (Iterable<Boolean>) replicate(lines - 1, false)))
+                    cycle(cons(true, (Iterable<Boolean>) replicate(size - 1, false)))
             );
             demuxed.add(select(mask, s));
         }
@@ -3916,7 +4040,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> select(@NotNull Iterable<Boolean> bs, @NotNull Iterable<T> xs) {
-        return map(p -> p.b, filter(p -> p.a, (Iterable<Pair<Boolean, T>>) zip(bs, xs)));
+        return map(p -> p.b, filter(p -> p.a, zip(bs, xs)));
     }
 
     public static @NotNull String select(@NotNull Iterable<Boolean> bs, @NotNull String s) {
@@ -4843,8 +4967,16 @@ public final class IterableUtils {
         return false;
     }
 
-    public static <T> boolean isSubsetOf(@NotNull String s, @NotNull String t) {
+    public static boolean isSubsetOf(@NotNull String s, @NotNull String t) {
         return isSubsetOf(fromString(s), fromString(t));
+    }
+
+    public static @NotNull <T> Iterable<T> intersect(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return filter(x -> elem(x, ys), xs);
+    }
+
+    public static @NotNull String intersect(@NotNull String s, @NotNull String t) {
+        return filter(c -> elem(c, t), s);
     }
 
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {

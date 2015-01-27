@@ -18,6 +18,7 @@ import static mho.wheels.iterables.IterableUtils.*;
  * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
  * exception. Instead, they return empty {@code Optional}s.
  */
+@SuppressWarnings("ConstantConditions")
 public class Readers {
     /**
      * The length of the longest {@code String} representation of any positive {@code Byte}.
@@ -57,6 +58,7 @@ public class Readers {
      * @param <T> the type of value read by {@code read}
      * @return the value corresponding to {@code s}, according to the conditions described above
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
         try {
             T x = read.apply(s);
@@ -87,10 +89,7 @@ public class Readers {
      */
     public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
         Iterable<Triple<T, String, Integer>> candidates = filter(
-                u -> {
-                    assert u.c != null;
-                    return u.c != -1;
-                },
+                u -> u.c != -1,
                 map(
                         x -> {
                             String t = x.toString();
@@ -101,10 +100,6 @@ public class Readers {
         );
         if (isEmpty(candidates)) return Optional.empty();
         Comparator<Triple<T, String, Integer>> comparator = (x, y) -> {
-            assert x.b != null;
-            assert x.c != null;
-            assert y.b != null;
-            assert y.c != null;
             if (x.c < y.c) return -1;
             if (x.c > y.c) return 1;
             if (x.b.length() > y.b.length()) return -1;
@@ -151,8 +146,6 @@ public class Readers {
             mask = cycle(Arrays.asList(false, true));
         }
         for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
-            assert p.a != null;
-            assert p.b != null;
             int offset = p.b;
             String substring = p.a;
             for (int i = 0; i < substring.length(); i++) {
@@ -390,7 +383,6 @@ public class Readers {
         Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
         if (!op.isPresent()) return Optional.empty();
         Pair<BigInteger, Integer> p = op.get();
-        assert p.a != null;
         String bis = p.a.toString();
         boolean isNegative = head(bis) == '-';
         int trimSize = MAX_POSITIVE_BYTE_LENGTH;
@@ -438,7 +430,6 @@ public class Readers {
         Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
         if (!op.isPresent()) return Optional.empty();
         Pair<BigInteger, Integer> p = op.get();
-        assert p.a != null;
         String bis = p.a.toString();
         boolean isNegative = head(bis) == '-';
         int trimSize = MAX_POSITIVE_SHORT_LENGTH;
@@ -486,7 +477,6 @@ public class Readers {
         Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
         if (!op.isPresent()) return Optional.empty();
         Pair<BigInteger, Integer> p = op.get();
-        assert p.a != null;
         String bis = p.a.toString();
         boolean isNegative = head(bis) == '-';
         int trimSize = MAX_POSITIVE_INTEGER_LENGTH;
@@ -534,7 +524,6 @@ public class Readers {
         Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
         if (!op.isPresent()) return Optional.empty();
         Pair<BigInteger, Integer> p = op.get();
-        assert p.a != null;
         String bis = p.a.toString();
         boolean isNegative = head(bis) == '-';
         int trimSize = MAX_POSITIVE_LONG_LENGTH;
@@ -757,8 +746,6 @@ public class Readers {
         if (nullIndex == -1) return nonNullResult;
         if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
         Pair<T, Integer> unwrapped = nonNullResult.get();
-        assert unwrapped.a != null;
-        assert unwrapped.b != null;
         if (nullIndex > unwrapped.b || (nullIndex == unwrapped.b && unwrapped.a.toString().length() >= 4)) {
             return nonNullResult;
         } else {
@@ -833,7 +820,6 @@ public class Readers {
             Optional<Pair<T, Integer>> next = findIn.apply(s);
             if (!next.isPresent()) return Optional.empty();
             Pair<T, Integer> unwrapped = next.get();
-            assert unwrapped.b != null;
             if (unwrapped.b != 0) return Optional.empty();
             T element = unwrapped.a;
             list.add(element);

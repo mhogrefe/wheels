@@ -24,6 +24,7 @@ import static mho.wheels.ordering.Ordering.*;
  * {@link mho.wheels.iterables.IterableUtils#cons}. The {@code Iterable}'s elements are typically in order of
  * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
  */
+@SuppressWarnings("ConstantConditions")
 public class ExhaustiveProvider implements IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
@@ -81,122 +82,180 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<Byte> range(byte a) {
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
+        if (a >= 0) {
+            return IterableUtils.range(a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range((byte) 0), IterableUtils.rangeBy((byte) -1, (byte) -1, a)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeUp(short a) {
+        if (a >= 0) {
+            return IterableUtils.range(a);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((short) 0), IterableUtils.rangeBy((short) -1, (short) -1, a))
+            );
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeUp(int a) {
+        if (a >= 0) {
+            return IterableUtils.range(a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0), IterableUtils.rangeBy(-1, -1, a)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeUp(long a) {
+        if (a >= 0) {
+            return IterableUtils.range(a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0L), IterableUtils.rangeBy(-1L, -1L, a)));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
+        if (a.signum() != -1) {
+            return IterableUtils.range(a);
+        } else {
+            return mux(
+                    Arrays.asList(
+                            IterableUtils.range(BigInteger.ZERO),
+                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                    )
+            );
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeUp(char a) {
         return IterableUtils.range(a);
     }
 
     @Override
-    public @NotNull Iterable<Short> range(short a) {
-        return IterableUtils.range(a);
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (byte) -1);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range((byte) 0, a), IterableUtils.rangeBy((byte) -1, (byte) -1)));
+        }
     }
 
     @Override
-    public @NotNull Iterable<Integer> range(int a) {
-        return IterableUtils.range(a);
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (short) -1);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((short) 0, a), IterableUtils.rangeBy((short) -1, (short) -1))
+            );
+        }
     }
 
     @Override
-    public @NotNull Iterable<Long> range(long a) {
-        return IterableUtils.range(a);
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0, a), IterableUtils.rangeBy(-1, -1)));
+        }
     }
 
     @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
-        return IterableUtils.range(a);
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1L);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0L, a), IterableUtils.rangeBy(-1L, -1L)));
+        }
     }
 
     @Override
-    public @NotNull Iterable<Character> range(char a) {
-        return IterableUtils.range(a);
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        if (a.signum() != 1) {
+            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(BigInteger.ZERO, a), IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))));
+        }
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return IterableUtils.range('\0', a);
     }
 
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((byte) 0, b), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (short) -1, a);
+        } else {
+            return mux(
+                    Arrays.asList(IterableUtils.range((short) 0, b), IterableUtils.rangeBy((short) -1, (short) -1, a))
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, -1, a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0, b), IterableUtils.rangeBy(-1, -1, a)));
+        }
     }
 
     public @NotNull Iterable<Long> range(long a, long b) {
-        return IterableUtils.range(a, b);
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return mux(Arrays.asList(IterableUtils.range(0L, b), IterableUtils.rangeBy(-1L, -1L, a)));
+        }
     }
 
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        return IterableUtils.range(a, b);
+        if (a.signum() != -1 && b.signum() != -1) {
+            return IterableUtils.range(a, b);
+        } else if (a.signum() == -1 && b.signum() == -1) {
+            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
+        } else {
+            return mux(
+                    Arrays.asList(
+                            IterableUtils.range(BigInteger.ZERO, b),
+                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                    )
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return IterableUtils.range(a, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return IterableUtils.rangeBy(a, i);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
-        return IterableUtils.rangeBy(a, i, b);
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
-        return IterableUtils.rangeBy(a, i, b);
     }
 
     /**
@@ -207,7 +266,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Byte> bytesIncreasing() {
-        return range(Byte.MIN_VALUE);
+        return IterableUtils.range(Byte.MIN_VALUE);
     }
 
     /**
@@ -218,7 +277,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Short> shortsIncreasing() {
-        return range(Short.MIN_VALUE);
+        return IterableUtils.range(Short.MIN_VALUE);
     }
 
     /**
@@ -229,7 +288,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Integer> integersIncreasing() {
-        return range(Integer.MIN_VALUE);
+        return IterableUtils.range(Integer.MIN_VALUE);
     }
 
     /**
@@ -240,7 +299,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Long> longsIncreasing() {
-        return range(Long.MIN_VALUE);
+        return IterableUtils.range(Long.MIN_VALUE);
     }
 
     /**
@@ -250,7 +309,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return range((byte) 1);
+        return IterableUtils.range((byte) 1);
     }
 
     /**
@@ -260,7 +319,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return range((short) 1);
+        return IterableUtils.range((short) 1);
     }
 
     /**
@@ -270,7 +329,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
-        return range(1);
+        return IterableUtils.range(1);
     }
 
     /**
@@ -280,7 +339,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
-        return range(1L);
+        return IterableUtils.range(1L);
     }
 
     /**
@@ -290,7 +349,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return range(BigInteger.ONE);
+        return IterableUtils.range(BigInteger.ONE);
     }
 
     /**
@@ -300,7 +359,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
-        return rangeBy((byte) -1, (byte) -1);
+        return IterableUtils.rangeBy((byte) -1, (byte) -1);
     }
 
     /**
@@ -310,7 +369,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
-        return rangeBy((short) -1, (short) -1);
+        return IterableUtils.rangeBy((short) -1, (short) -1);
     }
 
     /**
@@ -320,7 +379,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegers() {
-        return rangeBy(-1, -1);
+        return IterableUtils.rangeBy(-1, -1);
     }
 
     /**
@@ -330,7 +389,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
-        return rangeBy(-1L, -1L);
+        return IterableUtils.rangeBy(-1L, -1L);
     }
 
     /**
@@ -340,7 +399,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
-        return rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
+        return IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
     }
 
     /**
@@ -350,7 +409,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
-        return range((byte) 0);
+        return IterableUtils.range((byte) 0);
     }
 
     /**
@@ -360,7 +419,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
-        return range((short) 0);
+        return IterableUtils.range((short) 0);
     }
 
     /**
@@ -370,7 +429,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
-        return range(0);
+        return IterableUtils.range(0);
     }
 
     /**
@@ -380,7 +439,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
-        return range(0L);
+        return IterableUtils.range(0L);
     }
 
     /**
@@ -390,7 +449,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return range(BigInteger.ZERO);
+        return rangeUp(BigInteger.ZERO);
     }
 
     /**
@@ -400,10 +459,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return cons(
-                (byte) 0,
-                mux(Arrays.asList(positiveBytes(), negativeBytes()))
-        );
+        return cons((byte) 0, mux(Arrays.asList(positiveBytes(), negativeBytes())));
     }
 
     /**
@@ -413,10 +469,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return cons(
-                (short) 0,
-                mux(Arrays.asList(positiveShorts(), negativeShorts()))
-        );
+        return cons((short) 0, mux(Arrays.asList(positiveShorts(), negativeShorts())));
     }
 
     /**
@@ -426,10 +479,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
-        return cons(
-                0,
-                mux(Arrays.asList(positiveIntegers(), negativeIntegers()))
-        );
+        return cons(0, mux(Arrays.asList(positiveIntegers(), negativeIntegers())));
     }
 
     /**
@@ -449,9 +499,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        return cons(
-                BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()))
-        );
+        return cons(BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers())));
     }
 
     /**
@@ -517,7 +565,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 range('[', '`'),            // ...
                 range('{', '~'),            // ...
                 range((char) 0, (char) 32), // non-printable and whitespace ASCII
-                range((char) 127)           // DEL and non-ASCII
+                rangeUp((char) 127)           // DEL and non-ASCII
         ));
     }
 
@@ -554,6 +602,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
                 Arrays.asList(0.0f),
@@ -570,6 +619,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> floatsIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, Float.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0f, Float.NaN, 0.0f),
@@ -584,7 +634,7 @@ public class ExhaustiveProvider implements IterableProvider {
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
-    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = INSTANCE.rangeBy(1, 2, 1 << 24);
+    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(1, 2, 1 << 24);
 
     /**
      * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
@@ -594,7 +644,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 127), INSTANCE.rangeBy(-1, -1, -149)))
+            mux(Arrays.asList(INSTANCE.range(1, 127), IterableUtils.rangeBy(-1, -1, -149)))
     );
 
     /**
@@ -609,10 +659,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        (Iterable<Optional<Float>>) map(
-                                p -> FloatingPointUtils.floatFromME(p.a, p.b),
-                                pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
-                        )
+                        map(p -> FloatingPointUtils.floatFromME(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
                 )
         );
     }
@@ -648,7 +695,7 @@ public class ExhaustiveProvider implements IterableProvider {
     public @NotNull Iterable<Float> floats() {
         return concat(
                 Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
-                (Iterable<Float>) tail(ordinaryFloats())
+                tail(ordinaryFloats())
         );
     }
 
@@ -679,6 +726,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
      */
     public @NotNull Iterable<Double> ordinaryDoublesIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
                 Arrays.asList(0.0),
@@ -693,6 +741,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
     public @NotNull Iterable<Double> doublesIncreasing() {
+        //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, Double.NEGATIVE_INFINITY)),
                 Arrays.asList(-0.0, Double.NaN, 0.0),
@@ -707,7 +756,7 @@ public class ExhaustiveProvider implements IterableProvider {
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
-    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = INSTANCE.rangeBy(1L, 2, 1L << 53);
+    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(1L, 2, 1L << 53);
 
     /**
      * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
@@ -717,7 +766,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 1023), INSTANCE.rangeBy(-1, -1, -1074)))
+            mux(Arrays.asList(INSTANCE.range(1, 1023), IterableUtils.rangeBy(-1, -1, -1074)))
     );
 
     /**
@@ -732,10 +781,7 @@ public class ExhaustiveProvider implements IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        (Iterable<Optional<Double>>) map(
-                                p -> FloatingPointUtils.doubleFromME(p.a, p.b),
-                                pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
-                        )
+                        map(p -> FloatingPointUtils.doubleFromME(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
                 )
         );
     }
@@ -771,7 +817,7 @@ public class ExhaustiveProvider implements IterableProvider {
     public @NotNull Iterable<Double> doubles() {
         return concat(
                 Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
-                (Iterable<Double>) tail(ordinaryDoubles())
+                tail(ordinaryDoubles())
         );
     }
 
@@ -1086,6 +1132,15 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
+            return Combinatorics.listsShortlexAtLeast(minSize, xs);
+        } else {
+            return Combinatorics.listsAtLeast(minSize, xs);
+        }
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
             return Combinatorics.listsShortlex(xs);
@@ -1100,8 +1155,18 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
+        return Combinatorics.stringsAtLeast(minSize, cs);
+    }
+
+    @Override
     public @NotNull Iterable<String> strings(int size) {
         return Combinatorics.strings(size, characters());
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return Combinatorics.stringsAtLeast(minSize, characters());
     }
 
     @Override

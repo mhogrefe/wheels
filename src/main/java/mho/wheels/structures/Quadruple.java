@@ -95,14 +95,6 @@ public final class Quadruple<A, B, C, D> {
             @NotNull Quadruple<A, B, C, D> p,
             @NotNull Quadruple<A, B, C, D> q
     ) {
-        assert p.a != null;
-        assert p.b != null;
-        assert p.c != null;
-        assert p.d != null;
-        assert q.a != null;
-        assert q.b != null;
-        assert q.c != null;
-        assert q.d != null;
         Ordering aOrdering = Ordering.compare(p.a, q.a);
         if (aOrdering != EQ) return aOrdering;
         Ordering bOrdering = Ordering.compare(p.b, q.b);

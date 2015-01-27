@@ -11,6 +11,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.BigDecimalUtils.setPrecision;
 
+@SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
@@ -35,8 +36,6 @@ public class BigDecimalUtilsDemos {
             ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
-            assert p.a != null;
-            assert p.b != null;
             System.out.println("setPrecision(" + p.a + ", " + p.b + ") = " + setPrecision(p.a, p.b));
         }
     }

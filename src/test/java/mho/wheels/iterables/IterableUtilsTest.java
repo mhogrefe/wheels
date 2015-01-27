@@ -20,19 +20,19 @@ public class IterableUtilsTest {
         ArrayList<Integer> iArrayList = new ArrayList<>();
         addTo(set, iArrayList);
         assertEquals(iArrayList.size(), 5);
-        assertEquals(iArrayList.get(0), Integer.valueOf(4));
-        assertEquals(iArrayList.get(1), Integer.valueOf(1));
-        assertEquals(iArrayList.get(2), Integer.valueOf(5));
-        assertEquals(iArrayList.get(3), Integer.valueOf(9));
-        assertEquals(iArrayList.get(4), Integer.valueOf(2));
+        assertEquals(iArrayList.get(0).intValue(), 4);
+        assertEquals(iArrayList.get(1).intValue(), 1);
+        assertEquals(iArrayList.get(2).intValue(), 5);
+        assertEquals(iArrayList.get(3).intValue(), 9);
+        assertEquals(iArrayList.get(4).intValue(), 2);
         LinkedList<Integer> iLinkedList = new LinkedList<>();
         addTo(set, iLinkedList);
         assertEquals(iLinkedList.size(), 5);
-        assertEquals(iLinkedList.get(0), Integer.valueOf(4));
-        assertEquals(iLinkedList.get(1), Integer.valueOf(1));
-        assertEquals(iLinkedList.get(2), Integer.valueOf(5));
-        assertEquals(iLinkedList.get(3), Integer.valueOf(9));
-        assertEquals(iLinkedList.get(4), Integer.valueOf(2));
+        assertEquals(iLinkedList.get(0).intValue(), 4);
+        assertEquals(iLinkedList.get(1).intValue(), 1);
+        assertEquals(iLinkedList.get(2).intValue(), 5);
+        assertEquals(iLinkedList.get(3).intValue(), 9);
+        assertEquals(iLinkedList.get(4).intValue(), 2);
         HashSet<Integer> iHashSet = new HashSet<>();
         addTo(set, iHashSet);
         assertEquals(iHashSet.size(), 5);
@@ -53,11 +53,11 @@ public class IterableUtilsTest {
         addTo(set, iLinkedHashSet);
         assertEquals(iLinkedHashSet.size(), 5);
         Iterator<Integer> iLinkedHashSetIterator = iLinkedHashSet.iterator();
-        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(4));
-        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(1));
-        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(5));
-        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(9));
-        assertEquals(iLinkedHashSetIterator.next(), Integer.valueOf(2));
+        assertEquals(iLinkedHashSetIterator.next().intValue(), 4);
+        assertEquals(iLinkedHashSetIterator.next().intValue(), 1);
+        assertEquals(iLinkedHashSetIterator.next().intValue(), 5);
+        assertEquals(iLinkedHashSetIterator.next().intValue(), 9);
+        assertEquals(iLinkedHashSetIterator.next().intValue(), 2);
 
         set = new HashSet<>();
         iArrayList = new ArrayList<>();
@@ -179,11 +179,11 @@ public class IterableUtilsTest {
         set.addAll(Arrays.asList(4, 1, 5, 9, 2));
         List<Integer> iList = toList(set);
         assertEquals(iList.size(), 5);
-        assertEquals(iList.get(0), Integer.valueOf(4));
-        assertEquals(iList.get(1), Integer.valueOf(1));
-        assertEquals(iList.get(2), Integer.valueOf(5));
-        assertEquals(iList.get(3), Integer.valueOf(9));
-        assertEquals(iList.get(4), Integer.valueOf(2));
+        assertEquals(iList.get(0).intValue(), 4);
+        assertEquals(iList.get(1).intValue(), 1);
+        assertEquals(iList.get(2).intValue(), 5);
+        assertEquals(iList.get(3).intValue(), 9);
+        assertEquals(iList.get(4).intValue(), 2);
 
         set = new HashSet<>();
         iList = toList(set);
@@ -872,16 +872,16 @@ public class IterableUtilsTest {
 
     @Test
     public void testLength_Iterable() {
-        assertEquals(length((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
-        assertEquals(length((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
-        assertEquals(length((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+        assertEquals(length(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        assertEquals(length(cons(null, Arrays.asList(null, 2, 1))), 4);
+        assertEquals(length(tail(Arrays.asList(2))), 0);
     }
 
     @Test
     public void testBigIntegerLength() {
-        aeq(bigIntegerLength((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
-        aeq(bigIntegerLength((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))), 4);
-        aeq(bigIntegerLength((Iterable<Integer>) tail(Arrays.asList(2))), 0);
+        aeq(bigIntegerLength(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
+        aeq(bigIntegerLength(cons(null, Arrays.asList(null, 2, 1))), 4);
+        aeq(bigIntegerLength(tail(Arrays.asList(2))), 0);
     }
 
     @Test
@@ -892,7 +892,7 @@ public class IterableUtilsTest {
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertEquals(length(nullList), 1);
-        assertEquals(length(new ArrayList<Integer>()), 0);
+        assertEquals(length(new ArrayList<>()), 0);
     }
 
     @Test
@@ -1139,6 +1139,22 @@ public class IterableUtilsTest {
     }
 
     @Test
+    public void testUnrepeat() {
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]").get()), "[1, 2, 3]");
+        aeq(
+                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]").get()),
+                "[1, null, 3]"
+        );
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]").get()), "[1, 2, 3, 4, 5]");
+        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]").get()), "[1, 2, 3, null, 5]");
+        aeq(unrepeat(readIntegerList("[1, 1, 1]").get()), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]").get()), "[null]");
+        aeq(unrepeat(readIntegerList("[1]").get()), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null]").get()), "[null]");
+        aeq(unrepeat(new ArrayList<>()), "[]");
+    }
+
+    @Test
     public void testSumByte() {
         aeq(sumByte(Arrays.asList((byte) 10, (byte) 11, (byte) 12)), 33);
         aeq(sumByte(Arrays.asList((byte) -4, (byte) 6, (byte) -8)), -6);
@@ -1224,7 +1240,7 @@ public class IterableUtilsTest {
         try {
             sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1235,7 +1251,7 @@ public class IterableUtilsTest {
         try {
             sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1325,7 +1341,7 @@ public class IterableUtilsTest {
         try {
             productBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1336,7 +1352,7 @@ public class IterableUtilsTest {
         try {
             productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1412,7 +1428,7 @@ public class IterableUtilsTest {
         try {
             toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get()));
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1426,7 +1442,7 @@ public class IterableUtilsTest {
         try {
             toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]").get()));
             fail();
-        } catch (AssertionError ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -1482,6 +1498,14 @@ public class IterableUtilsTest {
 
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
+    }
+
+    private static @NotNull Optional<List<Integer>> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::findIntegerIn, s);
+    }
+
+    private static @NotNull Optional<List<Integer>> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readList(t -> Readers.findInWithNulls(Readers::findIntegerIn, t), s);
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {

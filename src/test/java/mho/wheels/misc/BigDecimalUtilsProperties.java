@@ -17,6 +17,7 @@ import static mho.wheels.misc.BigDecimalUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public class BigDecimalUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
@@ -55,8 +56,6 @@ public class BigDecimalUtilsProperties {
             ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, IterableUtils.filter(q -> ne(q.a, BigDecimal.ZERO), ps))) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertEquals(p.toString(), bd.precision(), (int) p.b);
             assertTrue(p.toString(), ne(bd, BigDecimal.ZERO));
@@ -74,16 +73,12 @@ public class BigDecimalUtilsProperties {
             zeroPs = P.pairs(zeroes, ((RandomProvider) P).positiveIntegersGeometric(20));
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, zeroPs)) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(p.toString(), bd.scale() > -1);
             assertTrue(p.toString(), eq(bd, BigDecimal.ZERO));
         }
 
         for (Pair<BigDecimal, Integer> p : take(LIMIT, filter(q -> q.b > 1, zeroPs))) {
-            assert p.a != null;
-            assert p.b != null;
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
                     p.toString(),
@@ -91,15 +86,7 @@ public class BigDecimalUtilsProperties {
             );
         }
 
-        Iterable<Pair<BigDecimal, Integer>> failPs;
-        if (P instanceof ExhaustiveProvider) {
-            failPs = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), map(i -> -i, P.naturalIntegers()));
-        } else {
-            failPs = P.pairs(P.bigDecimals(), map(i -> -i, ((RandomProvider) P).naturalIntegersGeometric(20)));
-        }
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, failPs)) {
-            assert p.a != null;
-            assert p.b != null;
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.rangeDown(0)))) {
             try {
                 setPrecision(p.a, p.b);
                 fail(p.toString());

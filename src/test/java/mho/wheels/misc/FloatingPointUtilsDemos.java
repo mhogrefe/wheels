@@ -9,6 +9,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.FloatingPointUtils.*;
 
+@SuppressWarnings("UnusedDeclaration")
 public class FloatingPointUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;

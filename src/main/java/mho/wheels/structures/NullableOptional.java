@@ -38,18 +38,16 @@ public class NullableOptional<T> {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NullableOptional that = (NullableOptional) o;
-        return present == that.present && x.equals(that.x);
+        return present == that.present && (x != null ? x.equals(that.x) : that.x == null);
     }
 
     @Override
     public int hashCode() {
-        int result = (present ? 1 : 0);
-        result = 31 * result + x.hashCode();
-        return result;
+        return  31 * (present ? 1 : 0) + (x != null ? x.hashCode() : 0);
     }
 
     @Override

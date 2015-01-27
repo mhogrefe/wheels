@@ -24,7 +24,7 @@ public class RandomProvider implements IterableProvider {
     protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
     protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
     protected static final int MEAN_LIST_SIZE = 10;
-    protected static final int EMPTY_ELEMENT_RATIO = 50;
+    protected static final int SPECIAL_ELEMENT_RATIO = 50;
 
     protected final @NotNull Random generator;
 
@@ -148,25 +148,25 @@ public class RandomProvider implements IterableProvider {
 
     //2^7 - a
     @Override
-    public @NotNull Iterable<Byte> range(byte a) {
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
         return map(i -> (byte) (i + a), randomInts(128 - a));
     }
 
     //2^15 - a
     @Override
-    public @NotNull Iterable<Short> range(short a) {
+    public @NotNull Iterable<Short> rangeUp(short a) {
         return map(i -> (short) (i + a), randomInts(32768 - a));
     }
 
     //2^31 - a
     @Override
-    public @NotNull Iterable<Integer> range(int a) {
+    public @NotNull Iterable<Integer> rangeUp(int a) {
         return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
     }
 
     //2^63 - a
     @Override
-    public @NotNull Iterable<Long> range(long a) {
+    public @NotNull Iterable<Long> rangeUp(long a) {
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
                 randomBigIntegers(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
@@ -174,14 +174,47 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         return map(i -> i.add(a), naturalBigIntegers());
     }
 
     //2^16 - a
     @Override
-    public @NotNull Iterable<Character> range(char a) {
+    public @NotNull Iterable<Character> rangeUp(char a) {
         return map(i -> (char) (i + a), randomInts(65536 - a));
+    }
+
+    @Override
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        return map(i -> (byte) (i - 128), randomInts(a + 129));
+    }
+
+    @Override
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        return map(i -> (short) (i - 32768), randomInts(a + 32769));
+    }
+
+    @Override
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        return map(l -> (int) (l - (1L << 31)), randomLongs(a + (1L << 31) + 1));
+    }
+
+    @Override
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        return map(
+                i -> i.subtract(BigInteger.ONE.shiftLeft(63)).longValueExact(),
+                randomBigIntegers(BigInteger.valueOf(a).add(BigInteger.ONE).add(BigInteger.ONE.shiftLeft(63)))
+        );
+    }
+
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
+    }
+
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return range('\0', a);
     }
 
     //b - a + 1
@@ -213,72 +246,12 @@ public class RandomProvider implements IterableProvider {
     //b - a + 1
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        return IterableUtils.range(a, b);
+        return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
     }
 
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return map(i -> (char) (i + a), randomInts(b - a + 1));
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeBy(byte a, byte i, byte b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeBy(short a, short i, short b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeBy(int a, int i, int b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeBy(long a, long i, long b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i, @NotNull BigInteger b) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeBy(char a, int i, char b) {
-        return null;
     }
 
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
@@ -1117,21 +1090,21 @@ public class RandomProvider implements IterableProvider {
         return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
     }
 
-    private @NotNull <T> Iterable<T> addEmptyElement(@Nullable T x, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> emptySelector = randomInts(EMPTY_ELEMENT_RATIO).iterator();
-            boolean emptySelection = emptySelector.next() == 0;
+            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
+            boolean specialSelection = specialSelector.next() == 0;
 
             @Override
             public boolean hasNext() {
-                return emptySelection || xsi.hasNext();
+                return specialSelection || xsi.hasNext();
             }
 
             @Override
             public T next() {
-                boolean previousSelection = emptySelection;
-                emptySelection = emptySelector.next() == 0;
+                boolean previousSelection = specialSelection;
+                specialSelection = specialSelector.next() == 0;
                 return previousSelection ? x : xsi.next();
             }
 
@@ -1144,24 +1117,17 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
-        return addEmptyElement(null, xs);
+        return addSpecialElement(null, xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return addEmptyElement(Optional.<T>empty(), map(Optional::of, xs));
+        return addSpecialElement(Optional.<T>empty(), map(Optional::of, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return addEmptyElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
-    }
-
-    public static void main(String[] args) {
-        RandomProvider p = new RandomProvider();
-        for (NullableOptional<Integer> oi : take(1000, p.nullableOptionals(p.integers()))) {
-            System.out.println(oi);
-        }
+        return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     @Override
@@ -1293,10 +1259,39 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        return () -> new Iterator<List<T>>() {
+            private final Iterator<T> xsi = cycle(xs).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next() + minSize;
+                List<T> list = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(xsi.next());
+                }
+                return list;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
+            private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override
@@ -1327,16 +1322,49 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
+        if (isEmpty(cs)) return Arrays.asList("");
+        return () -> new Iterator<String>() {
+            private final Iterator<Character> csi = cycle(cs).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next() + minSize;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
     public @NotNull Iterable<String> strings(int size) {
         return strings(size, characters());
     }
 
-    //todo
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return stringsAtLeast(minSize, characters());
+    }
+
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
-            private final Iterator<Character> csi = cs.iterator();
+            private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
 
             @Override
