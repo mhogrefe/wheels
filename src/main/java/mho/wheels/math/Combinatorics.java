@@ -1490,8 +1490,20 @@ public final class Combinatorics {
         };
     }
 
-    public static @NotNull <T> Iterable<String> orderedSubstrings(@NotNull String s) {
+    public static @NotNull Iterable<String> orderedSubstrings(@NotNull String s) {
         return map(IterableUtils::charsToString, orderedSubsequences(fromString(s)));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> subsequences(@NotNull Iterable<T> xs) {
+        CachedIterable<T> cxs = new CachedIterable<>(xs);
+        return map(
+                Optional::get,
+                takeWhile(Optional::isPresent, map(i -> cxs.select(MathUtils.bits(i)), range(BigInteger.ZERO)))
+        );
+    }
+
+    public static @NotNull Iterable<String> substrings(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsequences(fromString(s)));
     }
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
