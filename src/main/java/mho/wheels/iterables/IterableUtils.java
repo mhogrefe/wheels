@@ -2533,7 +2533,7 @@ public final class IterableUtils {
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
-    public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static @Nullable <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1(p -> max(p.a, p.b), xs);
     }
 
@@ -2541,7 +2541,7 @@ public final class IterableUtils {
         return foldl1(p -> max(p.a, p.b), fromString(s));
     }
 
-    public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static @Nullable <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1(p -> min(p.a, p.b), xs);
     }
 
@@ -5066,7 +5066,7 @@ public final class IterableUtils {
         return charsToString(list);
     }
 
-    public static @NotNull <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static @Nullable <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1(p -> max(comparator, p.a, p.b), xs);
     }
 
@@ -5074,7 +5074,7 @@ public final class IterableUtils {
         return foldl1(p -> max(comparator, p.a, p.b), fromString(s));
     }
 
-    public static @NotNull <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static @Nullable <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1(p -> min(comparator, p.a, p.b), xs);
     }
 
