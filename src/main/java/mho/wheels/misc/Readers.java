@@ -1,5 +1,6 @@
 package mho.wheels.misc;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -781,6 +782,27 @@ public class Readers {
         return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
     }
 
+    public static @NotNull <T> Optional<Pair<Optional<T>, Integer>> findOptionalIn(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull String s
+    ) {
+        while (true) {
+            int optionalIndex = s.indexOf("Optional");
+            if (optionalIndex == -1) return Optional.empty();
+            s = s.substring(optionalIndex + "Optional".length());
+            if (s.startsWith(".empty")) return Optional.of(new Pair<>(Optional.<T>empty(), optionalIndex));
+            if (s.startsWith("[")) {
+                Optional<Pair<T, Integer>> found = findIn.apply(s);
+                if (found.isPresent() && found.get().b == 1 && head(s) == '[') {
+                    s = s.substring(found.get().a.toString().length() + 1);
+                    if (s.startsWith("]")) {
+                        return Optional.of(new Pair<>(Optional.of(found.get().a), optionalIndex));
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Reads a {@link mho.wheels.structures.NullableOptional} from a {@code String}. Only {@code String}s which could
      * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
@@ -807,6 +829,27 @@ public class Readers {
         s = tail(init(s));
         NullableOptional<T> ot = read.apply(s);
         return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
+    }
+
+    public static @NotNull <T> Optional<Pair<NullableOptional<T>, Integer>> findNullableOptionalIn(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull String s
+    ) {
+        while (true) {
+            int optionalIndex = s.indexOf("NullableOptional");
+            if (optionalIndex == -1) return Optional.empty();
+            s = s.substring(optionalIndex + "NullableOptional".length());
+            if (s.startsWith(".empty")) return Optional.of(new Pair<>(NullableOptional.<T>empty(), optionalIndex));
+            if (s.startsWith("[")) {
+                Optional<Pair<T, Integer>> found = findIn.apply(s);
+                if (found.isPresent() && found.get().b == 1 && head(s) == '[') {
+                    s = s.substring(found.get().a.toString().length() + 1);
+                    if (s.startsWith("]")) {
+                        return Optional.of(new Pair<>(NullableOptional.of(found.get().a), optionalIndex));
+                    }
+                }
+            }
+        }
     }
 
     public static @NotNull <T> Optional<List<T>> readList(
