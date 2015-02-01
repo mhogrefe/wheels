@@ -4,7 +4,9 @@ import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -54,6 +56,10 @@ public final class Triple<A, B, C> {
         this.a = a;
         this.b = b;
         this.c = c;
+    }
+
+    public static <T> List<T> toList(Triple<T, T, T> t) {
+        return Arrays.asList(t.a, t.b, t.c);
     }
 
     /**
