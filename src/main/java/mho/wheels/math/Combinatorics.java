@@ -1367,6 +1367,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
     }
 
@@ -1375,6 +1376,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
     }
 
@@ -1383,6 +1385,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
     }
 
@@ -1391,6 +1394,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
                 lists(5, xs)
@@ -1402,6 +1406,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
                 lists(6, xs)
@@ -1413,6 +1418,7 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Septuple<>(
                         list.get(0),
