@@ -782,6 +782,26 @@ public class Readers {
         return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
     }
 
+    /**
+     * Finds the first occurrence of an {@code Optional} of a given type in a {@code String}. Takes the type's
+     * {@code findIn} function. Returns the {@code Optional} and the index at which it was found. Returns an empty
+     * outer {@code Optional} if no {@code Optional} is found. Only {@code Optional}s which could have been emitted by
+     * {@link java.util.Optional#toString} are recognized. The longest possible {@code Optional} is parsed.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code Optional}'s value
+     * @return the first {@code Optional<T>} found in {@code s}, and the index at which it was found
+     */
     public static @NotNull <T> Optional<Pair<Optional<T>, Integer>> findOptionalIn(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
@@ -831,6 +851,27 @@ public class Readers {
         return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
     }
 
+    /**
+     * Finds the first occurrence of a {@code NullableOptional} of a given type in a {@code String}. Takes the type's
+     * {@code findIn} function. Returns the {@code NullableOptional} and the index at which it was found. Returns an
+     * empty outer {@code Optional} if no {@code NullableOptional} is found. Only {@code NullableOptional}s which could
+     * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized. The longest
+     * possible {@code NullableOptional} is parsed.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  second element is non-negative. The first element may be null.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code Optional}'s value
+     * @return the first {@code Optional<T>} found in {@code s}, and the index at which it was found
+     */
     public static @NotNull <T> Optional<Pair<NullableOptional<T>, Integer>> findNullableOptionalIn(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
