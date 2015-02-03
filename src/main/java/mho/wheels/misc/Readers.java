@@ -758,6 +758,7 @@ public class Readers {
      * by {@link java.util.Optional#toString} are recognized.
      *
      * <ul>
+     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -827,6 +828,7 @@ public class Readers {
      * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
      *
      * <ul>
+     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -892,6 +894,27 @@ public class Readers {
         }
     }
 
+    /**
+     * Reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could have been emitted by
+     * {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for example, when reading
+     * {@code "[a, b, c]"} as a list of {@code String}s, both {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are
+     * valid interpretations. This method stops reading each list element as soon as possible, so the first option
+     * would be returned.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code List}'s values
+     * @return the {@code List} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
+     * {@code List}
+     */
     public static @NotNull <T> Optional<List<T>> readList(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
@@ -915,6 +938,32 @@ public class Readers {
         return Optional.of(list);
     }
 
+    /**
+     * Finds the first occurrence of a {@code List} of a given type in a {@code String}. Takes the type's
+     * {@code findIn} function. Returns the {@code List} and the index at which it was found. Returns an empty
+     * {@code Optional} if no {@code List} is found. Only {@code List}s which could have been emitted by
+     * {@code java.util.List#toString} are recognized. The longest possible {@code List} is parsed. In some cases there
+     * may be ambiguity; for example, when finding a list of {@code String}s in {@code "[a, b, c]"}, both
+     * {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are valid interpretations. This method stops reading each list
+     * element as soon as possible, so the first option would be returned. However, if some interpretation results in
+     * finding a longer overall list, that interpretation is preferred. For example, when finding a list of
+     * {@code String}s in {@code "[a], b]"}, the preferred representation is {@code ["a]", "b"]}, not {@code ["a"]},
+     * because in the first case more of the original {@code String} is read.
+     *
+     * <ul>
+     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
+     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
+     *               found.
+     * @param s the input {@code String}
+     * @param <T> the type of the {@code List}'s values
+     * @return the first {@code List<T>} found in {@code s}, and the index at which it was found
+     */
     public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListIn(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
             @NotNull String s
