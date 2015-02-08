@@ -125,6 +125,24 @@ public final class MathUtils {
     }
 
     /**
+     * The least common multiple of two positive {@code BigInteger}s. Versions of this method for {@code int}s and
+     * {@code long}s are not provided to avoid overflow concerns.
+     *
+     * <ul>
+     *  <li>{@code x} must be positive.</li>
+     *  <li>{@code y} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return lcm(x, y)
+     */
+    private static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
+        return x.divide(x.gcd(y)).multiply(y);
+    }
+
+    /**
      * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the
      * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does
      * not support removal.
