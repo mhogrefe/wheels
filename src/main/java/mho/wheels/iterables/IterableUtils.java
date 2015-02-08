@@ -4979,6 +4979,125 @@ public final class IterableUtils {
         return filter(c -> elem(c, t), s);
     }
 
+    public static @NotNull <T extends Comparable<T>> Iterable<T> merge(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<T> ysi = ys.iterator();
+            private NullableOptional<T> ox = NullableOptional.empty();
+            private NullableOptional<T> oy = NullableOptional.empty();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext() || ysi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (!xsi.hasNext()) {
+                    if (oy.isPresent()) {
+                        T y = oy.get();
+                        oy = NullableOptional.empty();
+                        return y;
+                    } else {
+                        return ysi.next();
+                    }
+                }
+                if (!xsi.hasNext()) {
+                    if (ox.isPresent()) {
+                        T x = ox.get();
+                        ox = NullableOptional.empty();
+                        return x;
+                    } else {
+                        return xsi.next();
+                    }
+                }
+                if (!ox.isPresent() && xsi.hasNext()) {
+                    ox = NullableOptional.of(xsi.next());
+                }
+                if (!oy.isPresent() && ysi.hasNext()) {
+                    oy = NullableOptional.of(ysi.next());
+                }
+                T next;
+                if (lt(ox.get(), oy.get())) {
+                    next = ox.get();
+                    ox = NullableOptional.empty();
+                } else {
+                    next = oy.get();
+                    oy = NullableOptional.empty();
+                }
+                return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<T> merge(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<T> ysi = ys.iterator();
+            private NullableOptional<T> ox = NullableOptional.empty();
+            private NullableOptional<T> oy = NullableOptional.empty();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext() || ysi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (!xsi.hasNext()) {
+                    if (oy.isPresent()) {
+                        T y = oy.get();
+                        oy = NullableOptional.empty();
+                        return y;
+                    } else {
+                        return ysi.next();
+                    }
+                }
+                if (!xsi.hasNext()) {
+                    if (ox.isPresent()) {
+                        T x = ox.get();
+                        ox = NullableOptional.empty();
+                        return x;
+                    } else {
+                        return xsi.next();
+                    }
+                }
+                if (!ox.isPresent() && xsi.hasNext()) {
+                    ox = NullableOptional.of(xsi.next());
+                }
+                if (!oy.isPresent() && ysi.hasNext()) {
+                    oy = NullableOptional.of(ysi.next());
+                }
+                T next;
+                if (lt(comparator, ox.get(), oy.get())) {
+                    next = ox.get();
+                    ox = NullableOptional.empty();
+                } else {
+                    next = oy.get();
+                    oy = NullableOptional.empty();
+                }
+                return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list);
