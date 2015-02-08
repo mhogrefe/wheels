@@ -55,6 +55,38 @@ public class MathUtilsTest {
     }
 
     @Test
+    public void testLcm() {
+        aeq(lcm(BigInteger.valueOf(12), BigInteger.valueOf(15)), 60);
+        aeq(lcm(BigInteger.valueOf(35), BigInteger.valueOf(210)), 210);
+        aeq(lcm(BigInteger.valueOf(17), BigInteger.valueOf(20)), 340);
+        aeq(lcm(BigInteger.ONE, BigInteger.valueOf(5)), 5);
+        try {
+            lcm(BigInteger.valueOf(-12), BigInteger.valueOf(15));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            lcm(BigInteger.valueOf(12), BigInteger.valueOf(-15));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            lcm(BigInteger.valueOf(-12), BigInteger.valueOf(-15));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            lcm(BigInteger.valueOf(6), BigInteger.ZERO);
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            lcm(BigInteger.ZERO, BigInteger.valueOf(6));
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            lcm(BigInteger.ZERO, BigInteger.ZERO);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
     public void testBits_int() {
         aeq(bits(0), "[]");
         aeq(bits(1), "[true]");

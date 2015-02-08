@@ -138,7 +138,9 @@ public final class MathUtils {
      * @param y the second number
      * @return lcm(x, y)
      */
-    private static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
+    public static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
+        if (x.signum() != 1 || y.signum() != 1)
+            throw new ArithmeticException("both lcm arguments must be positive");
         return x.divide(x.gcd(y)).multiply(y);
     }
 
