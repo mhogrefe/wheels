@@ -17,6 +17,21 @@ public class ReadersTest {
     }
 
     @Test
+    public void testGenericRead() {
+        //todo
+    }
+
+    @Test
+    public void testGenericFindIn_Iterable_T_String() {
+        //todo
+    }
+
+    @Test
+    public void testGenericFindIn_Function_T_Optional_T_String_String() {
+        //todo
+    }
+
+    @Test
     public void testReadBoolean() {
         aeq(readBoolean("false").get(), "false");
         aeq(readBoolean("true").get(), "true");
@@ -37,6 +52,7 @@ public class ReadersTest {
         assertFalse(findOrderingIn("").isPresent());
     }
 
+    @Test
     public void testReadOrdering() {
         aeq(readOrdering("LT").get(), "LT");
         aeq(readOrdering("EQ").get(), "EQ");
@@ -58,6 +74,7 @@ public class ReadersTest {
         assertFalse(findOrderingIn("").isPresent());
     }
 
+    @Test
     public void testReadRoundingMode() {
         aeq(readRoundingMode("UP").get(), "UP");
         aeq(readRoundingMode("UNNECESSARY").get(), "UNNECESSARY");
@@ -429,6 +446,36 @@ public class ReadersTest {
         assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
         assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
         assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
+    }
+
+    @Test
+    public void testReadOptional() {
+        //todo
+    }
+
+    @Test
+    public void testFindOptionalIn() {
+        //todo
+    }
+
+    @Test
+    public void testReadNullableOptional() {
+        //todo
+    }
+
+    @Test
+    public void testFindNullableOptionalIn() {
+        //todo
+    }
+
+    @Test
+    public void testReadList() {
+        //todo
+    }
+
+    @Test
+    public void testFindListIn() {
+        //todo
     }
 
     private static void aeq(Object a, Object b) {
