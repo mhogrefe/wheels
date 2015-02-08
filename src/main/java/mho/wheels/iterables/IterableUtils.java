@@ -5038,6 +5038,53 @@ public final class IterableUtils {
         };
     }
 
+    public static @NotNull <T extends Comparable<T>> Iterable<T> orderedIntersection(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        Iterable<Pair<T, Integer>> merged = merge(
+                (p, q) -> {
+                    Ordering o = compare(p.a, q.a);
+                    if (o != EQ) return o.toInt();
+                    return Integer.compare(p.b, q.b);
+                },
+                countAdjacent(xs),
+                countAdjacent(ys)
+        );
+        Iterable<Pair<T, Integer>> intersected = map(
+                ps -> {
+                    int frequency = ps.size() == 1 ? 0 : min(ps.get(0).b, ps.get(1).b);
+                    return new Pair<>(ps.get(0).a, frequency);
+                },
+                group(p -> p.a.a.equals(p.b.a), merged)
+        );
+        return concatMap(p -> replicate(p.b, p.a), intersected);
+    }
+
+    public static @NotNull <T extends Comparable<T>> Iterable<T> orderedIntersection(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        Iterable<Pair<T, Integer>> merged = merge(
+                (p, q) -> {
+                    Ordering o = compare(comparator, p.a, q.a);
+                    if (o != EQ) return o.toInt();
+                    return Integer.compare(p.b, q.b);
+                },
+                countAdjacent(xs),
+                countAdjacent(ys)
+        );
+        Iterable<Pair<T, Integer>> intersected = map(
+                ps -> {
+                    int frequency = ps.size() == 1 ? 0 : min(ps.get(0).b, ps.get(1).b);
+                    return new Pair<>(ps.get(0).a, frequency);
+                },
+                group(p -> p.a.a.equals(p.b.a), merged)
+        );
+        return concatMap(p -> replicate(p.b, p.a), intersected);
+    }
+
     public static @NotNull <T> Iterable<T> merge(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs,
