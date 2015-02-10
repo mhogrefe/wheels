@@ -19,7 +19,7 @@ public class ReadersTest {
     }
 
     private static class WordyInteger {
-        private int i;
+        private final int i;
 
         public WordyInteger(int i) {
             this.i = i;
@@ -46,6 +46,21 @@ public class ReadersTest {
         aeq(genericRead(f, "one").get(), "one");
         aeq(genericRead(f, "two").get(), "two");
         aeq(genericRead(f, "three").get(), "three");
+        assertFalse(genericRead(f, "four").isPresent());
+        assertFalse(genericRead(f, "").isPresent());
+        assertFalse(genericRead(f, " ").isPresent());
+        assertFalse(genericRead(f, "null").isPresent());
+
+        f = s -> {
+            if (s.equals("one")) return new WordyInteger(1);
+            if (s.equals("two")) return new WordyInteger(2);
+            if (s.equals("three")) return new WordyInteger(3);
+            return new WordyInteger(10);
+        };
+        aeq(genericRead(f, "one").get(), "one");
+        aeq(genericRead(f, "two").get(), "two");
+        aeq(genericRead(f, "three").get(), "three");
+        aeq(genericRead(f, "many").get(), "many");
         assertFalse(genericRead(f, "four").isPresent());
         assertFalse(genericRead(f, "").isPresent());
         assertFalse(genericRead(f, " ").isPresent());
