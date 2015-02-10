@@ -1,8 +1,10 @@
 package mho.wheels.misc;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.function.Function;
 
 import static mho.wheels.misc.Readers.*;
 import static org.junit.Assert.*;
@@ -16,9 +18,51 @@ public class ReadersTest {
         aeq(MAX_POSITIVE_LONG_LENGTH, 19);
     }
 
+    private static class WordyInteger {
+        private int i;
+
+        public WordyInteger(int i) {
+            this.i = i;
+        }
+
+        public @NotNull String toString() {
+            switch (i) {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                default: return "many";
+            }
+        }
+    }
+
     @Test
     public void testGenericRead() {
-        //todo
+        Function<String, WordyInteger> f = s -> {
+            if (s.equals("one")) return new WordyInteger(1);
+            if (s.equals("two")) return new WordyInteger(2);
+            if (s.equals("three")) return new WordyInteger(3);
+            throw new ArithmeticException();
+        };
+        aeq(genericRead(f, "one").get(), "one");
+        aeq(genericRead(f, "two").get(), "two");
+        aeq(genericRead(f, "three").get(), "three");
+        assertFalse(genericRead(f, "four").isPresent());
+        assertFalse(genericRead(f, "").isPresent());
+        assertFalse(genericRead(f, " ").isPresent());
+        assertFalse(genericRead(f, "null").isPresent());
+
+        //non-terminating read function cannot be tested
+
+        Function<String, WordyInteger> badF = s -> {
+            if (s.equals("one")) return new WordyInteger(1);
+            if (s.equals("two")) return new WordyInteger(2);
+            if (s.equals("three")) return new WordyInteger(3);
+            return null;
+        };
+        try {
+            genericRead(badF, "four");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

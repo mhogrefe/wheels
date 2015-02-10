@@ -48,7 +48,7 @@ public class Readers {
      * is {@code "255"}, not {@code "0xff"}.
      *
      * <ul>
-     *  <li>{@code read} must terminate on {@code s} and not a null.</li>
+     *  <li>{@code read} must terminate on {@code s} (possibly with an exception) and not return a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -60,10 +60,14 @@ public class Readers {
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
+        boolean nullResult = false;
         try {
             T x = read.apply(s);
+            if (x == null) nullResult = true;
             return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
         } catch (Exception e) {
+            if (nullResult)
+                throw new IllegalArgumentException("read function cannot return null on " + s);
             return Optional.empty();
         }
     }
