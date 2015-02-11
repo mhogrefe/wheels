@@ -1,9 +1,13 @@
 package mho.wheels.misc;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 import static mho.wheels.misc.Readers.*;
@@ -31,6 +35,40 @@ public class ReadersTest {
                 case 2: return "two";
                 case 3: return "three";
                 default: return "many";
+            }
+        }
+    }
+
+    private static class WordyIntegerWithNullToString {
+        private final int i;
+
+        public WordyIntegerWithNullToString(int i) {
+            this.i = i;
+        }
+
+        public @Nullable String toString() {
+            switch (i) {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                default: return null;
+            }
+        }
+    }
+
+    private static class WordyIntegerWithExceptionalToString {
+        private final int i;
+
+        public WordyIntegerWithExceptionalToString(int i) {
+            this.i = i;
+        }
+
+        public @NotNull String toString() {
+            switch (i) {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                default: throw new IllegalStateException();
             }
         }
     }
@@ -82,7 +120,36 @@ public class ReadersTest {
 
     @Test
     public void testGenericFindIn_Iterable_T_String() {
-        //todo
+        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 3, 3), "there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 12 numbers").get(), "(12, 10)");
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "there are no numbers").isPresent());
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "").isPresent());
+        try {
+            genericFindIn(Arrays.asList(1, null, 3), "there are 3 numbers");
+            fail();
+        } catch (NullPointerException ignored) {}
+        genericFindIn(Arrays.asList(1, 1, 3), "there are 3 numbers");
+
+        List<WordyIntegerWithNullToString> xs = new ArrayList<>();
+        xs.add(new WordyIntegerWithNullToString(1));
+        xs.add(new WordyIntegerWithNullToString(2));
+        xs.add(new WordyIntegerWithNullToString(3));
+        xs.add(new WordyIntegerWithNullToString(4));
+        try {
+            genericFindIn(xs, "there are 3 numbers");
+            fail();
+        } catch (NullPointerException ignored) {}
+
+        List<WordyIntegerWithExceptionalToString> ys = new ArrayList<>();
+        ys.add(new WordyIntegerWithExceptionalToString(1));
+        ys.add(new WordyIntegerWithExceptionalToString(2));
+        ys.add(new WordyIntegerWithExceptionalToString(3));
+        ys.add(new WordyIntegerWithExceptionalToString(4));
+        try {
+            genericFindIn(ys, "there are 3 numbers");
+            fail();
+        } catch (IllegalStateException ignored) {}
     }
 
     @Test

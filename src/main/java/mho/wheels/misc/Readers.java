@@ -79,9 +79,10 @@ public class Readers {
      * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code xs} cannot contain any nulls, cannot contain any repetitions, and each element must support
-     *  {@code T}'s {@code toString} method.</li>
+     *  <li>{@code xs} cannot contain any nulls.</li>
      *  <li>{@code s} cannot be null.</li>
+     *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without throwing an exception or
+     *  returning a null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>
      * </ul>
