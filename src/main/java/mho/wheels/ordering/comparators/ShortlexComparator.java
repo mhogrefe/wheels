@@ -66,14 +66,15 @@ public class ShortlexComparator<T extends Comparable<T>> implements Comparator<I
      */
     @Override
     public int compare(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        if (xs == ys) return 0;
         Iterator<T> xsi = xs.iterator();
         Iterator<T> ysi = ys.iterator();
         while (xsi.hasNext()) {
-            if (!ysi.hasNext()) return GT.toInt();
+            if (!ysi.hasNext()) return 1;
             xsi.next();
             ysi.next();
         }
-        if (ysi.hasNext()) return LT.toInt();
+        if (ysi.hasNext()) return -1;
         xsi = xs.iterator();
         ysi = ys.iterator();
         while (xsi.hasNext()) {
@@ -85,6 +86,6 @@ public class ShortlexComparator<T extends Comparable<T>> implements Comparator<I
             }
             if (elementOrdering != EQ) return elementOrdering.toInt();
         }
-        return EQ.toInt();
+        return 0;
     }
 }

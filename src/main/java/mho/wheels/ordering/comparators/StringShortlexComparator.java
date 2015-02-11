@@ -61,8 +61,8 @@ public class StringShortlexComparator implements Comparator<String> {
      */
     @Override
     public int compare(@NotNull String s, @NotNull String t) {
-        if (s.length() > t.length()) return GT.toInt();
-        if (s.length() < t.length()) return LT.toInt();
+        if (s.length() > t.length()) return 1;
+        if (s.length() < t.length()) return -1;
         for (int i = 0; i < s.length(); i++) {
             char sc = s.charAt(i);
             char tc = t.charAt(i);
@@ -74,6 +74,6 @@ public class StringShortlexComparator implements Comparator<String> {
             }
             if (characterOrdering != EQ) return characterOrdering.toInt();
         }
-        return EQ.toInt();
+        return 0;
     }
 }

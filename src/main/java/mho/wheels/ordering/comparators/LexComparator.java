@@ -66,10 +66,11 @@ public class LexComparator<T extends Comparable<T>> implements Comparator<Iterab
      */
     @Override
     public int compare(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        if (xs == ys) return 0;
         Iterator<T> xsi = xs.iterator();
         Iterator<T> ysi = ys.iterator();
         while (xsi.hasNext()) {
-            if (!ysi.hasNext()) return GT.toInt();
+            if (!ysi.hasNext()) return 1;
             Ordering elementOrdering;
             if (elementComparator == null) {
                 elementOrdering = Ordering.compare(xsi.next(), ysi.next());
@@ -78,6 +79,6 @@ public class LexComparator<T extends Comparable<T>> implements Comparator<Iterab
             }
             if (elementOrdering != EQ) return elementOrdering.toInt();
         }
-        return (ysi.hasNext() ? LT : EQ).toInt();
+        return ysi.hasNext() ? -1 : 0;
     }
 }
