@@ -124,7 +124,8 @@ public class Readers {
      *
      * <ul>
      *  <li>{@code read} must always terminate and never return a null.</li>
-     *  <li>{@code usedChars} cannot be null.</li>
+     *  <li>{@code usedChars} must contain all characters that the result of {@code T}'s {@code toString} method could
+     *  possibly contain.</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>

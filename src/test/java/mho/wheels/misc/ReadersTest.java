@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.misc.Readers.*;
@@ -123,6 +124,7 @@ public class ReadersTest {
         aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 3 numbers").get(), "(3, 10)");
         aeq(genericFindIn(Arrays.asList(1, 3, 3), "there are 3 numbers").get(), "(3, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 12 numbers").get(), "(12, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there is 1 number").get(), "(1, 9)");
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "there are no numbers").isPresent());
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "").isPresent());
         try {
@@ -154,7 +156,41 @@ public class ReadersTest {
 
     @Test
     public void testGenericFindIn_Function_T_Optional_T_String_String() {
-        //todo
+        Function<String, Optional<WordyInteger>> f = s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
+            return Optional.empty();
+        };
+        aeq(genericFindIn(f, " dehnortuw", "vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
+        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
+        //exclude "one hundred" chars
+        aeq(genericFindIn(f, "ehnortw", "vdfsmvldfone hundredvfdsz"), "Optional[(one, 9)]");
+        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
+        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfvfdsz"), "Optional.empty");
+
+        Function<String, Optional<WordyInteger>> badF = s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            throw new ArithmeticException();
+        };
+        try {
+            genericFindIn(badF, " dehnortuw", "vdfsmvlefqvehthreefdsz");
+            fail();
+        } catch (ArithmeticException ignored) {}
+
+        badF = s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            return null;
+        };
+        try {
+            genericFindIn(badF, " dehnortuw", "vdfsmvlefqvehthreefdsz");
+            fail();
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
