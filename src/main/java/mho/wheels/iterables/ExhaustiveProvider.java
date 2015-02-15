@@ -944,6 +944,48 @@ public class ExhaustiveProvider implements IterableProvider {
         );
     }
 
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                MathUtils::squareRootDemux
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+
     /**
      * See {@link mho.wheels.math.Combinatorics#pairs(Iterable, Iterable)}
      *

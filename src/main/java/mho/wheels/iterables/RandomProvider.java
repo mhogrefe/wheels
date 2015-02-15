@@ -1164,6 +1164,48 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                MathUtils::squareRootDemux
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
     }

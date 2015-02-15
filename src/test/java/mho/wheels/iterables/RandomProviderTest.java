@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class RandomProviderTest {
-    private @NotNull RandomProvider P;
+    private RandomProvider P;
 
     @Before
     public void initialize() {
