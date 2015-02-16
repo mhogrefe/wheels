@@ -612,7 +612,21 @@ public class ReadersTest {
 
     @Test
     public void testReadOptional() {
-        //todo
+        aeq(readOptional(Readers::readInteger, "Optional[23]").get(), "Optional[23]");
+        aeq(readOptional(Readers::readInteger, "Optional[0]").get(), "Optional[0]");
+        aeq(readOptional(Readers::readInteger, "Optional[-5]").get(), "Optional[-5]");
+        aeq(readOptional(Readers::readInteger, "Optional.empty").get(), "Optional.empty");
+        aeq(readOptional(Readers::readBoolean, "Optional[false]").get(), "Optional[false]");
+        aeq(readOptional(Readers::readBoolean, "Optional[true]").get(), "Optional[true]");
+        aeq(readOptional(Readers::readBoolean, "Optional.empty").get(), "Optional.empty");
+        assertFalse(readOptional(Readers::readInteger, "Optional[10000000000000000000]").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "Optional[xyz]").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "Optional[null]").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "Optional[10").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "Optional").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "xyz").isPresent());
+        assertFalse(readOptional(Readers::readInteger, "").isPresent());
+        assertFalse(readOptional(Readers::readBoolean, "Optional[12]").isPresent());
     }
 
     @Test
