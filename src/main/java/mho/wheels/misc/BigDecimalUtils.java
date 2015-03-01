@@ -4,6 +4,7 @@ import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 
 /**
@@ -36,5 +37,35 @@ public class BigDecimalUtils {
             bd = bd.setScale(bd.scale() + precision - bd.precision(), RoundingMode.HALF_EVEN);
         }
         return bd;
+    }
+
+    /**
+     * Decrements a {@code BigDecimal}'s unscaled value by 1.
+     *
+     * <ul>
+     *  <li>{@code bd} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param bd a {@code BigDecimal}
+     * @return The predecessor of {@code bd} at {@code bd}'s precision
+     */
+    public static @NotNull BigDecimal predecessor(@NotNull BigDecimal bd) {
+        return new BigDecimal(bd.unscaledValue().subtract(BigInteger.ONE), bd.scale());
+    }
+
+    /**
+     * Increments a {@code BigDecimal}'s unscaled value by 1.
+     *
+     * <ul>
+     *  <li>{@code bd} must be non-null.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param bd a {@code BigDecimal}
+     * @return The predecessor of {@code bd} at {@code bd}'s precision
+     */
+    public static @NotNull BigDecimal successor(@NotNull BigDecimal bd) {
+        return new BigDecimal(bd.unscaledValue().add(BigInteger.ONE), bd.scale());
     }
 }
