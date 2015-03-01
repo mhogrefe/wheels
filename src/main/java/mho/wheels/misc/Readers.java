@@ -733,7 +733,7 @@ public class Readers {
      *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
      *  elements are both non-null and the second element is non-negative.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>The result is non-null, and, if it is non-empty, the second element is non-negative.</li>
      * </ul>
      *
      * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
@@ -748,6 +748,13 @@ public class Readers {
             @NotNull String s
     ) {
         Optional<Pair<T, Integer>> nonNullResult = findIn.apply(s);
+        if (nonNullResult.isPresent()) {
+            Pair<T, Integer> result = nonNullResult.get();
+            if (result.a == null || result.b == null)
+                throw new NullPointerException();
+            if (result.b < 0)
+                throw new IllegalArgumentException("read should not return indices less than 0");
+        }
         int nullIndex = s.indexOf("null");
         if (nullIndex == -1) return nonNullResult;
         if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
@@ -764,7 +771,8 @@ public class Readers {
      * by {@link java.util.Optional#toString} are recognized.
      *
      * <ul>
-     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
+     *  <li>If {@code s} is of the form {@code "Optional[" + t + "]"}, {@code read} must terminate and not return a
+     *  null on {@code t}.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>

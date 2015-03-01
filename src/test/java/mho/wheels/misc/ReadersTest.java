@@ -1,5 +1,6 @@
 package mho.wheels.misc;
 
+import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
@@ -594,6 +595,9 @@ public class ReadersTest {
         assertFalse(readWithNulls(Readers::readInteger, "annull").isPresent());
         assertFalse(readWithNulls(Readers::readInteger, "--").isPresent());
         assertFalse(readWithNulls(Readers::readInteger, "").isPresent());
+        try {
+            readWithNulls(s -> null, "hello");
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -602,12 +606,32 @@ public class ReadersTest {
         aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
         assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
         aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
+        int i = 0;
         assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
         aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
         assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
         assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
         assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
         assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
+        try {
+            findInWithNulls(s -> null, "hello");
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>('a', null)), "hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>(null, 3)), "hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>(null, null)), "hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>('a', -1)), "hello");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -627,6 +651,9 @@ public class ReadersTest {
         assertFalse(readOptional(Readers::readInteger, "xyz").isPresent());
         assertFalse(readOptional(Readers::readInteger, "").isPresent());
         assertFalse(readOptional(Readers::readBoolean, "Optional[12]").isPresent());
+        try {
+            readOptional(s -> null, "Optional[hello]");
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
