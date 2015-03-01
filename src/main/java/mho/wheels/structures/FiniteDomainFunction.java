@@ -3,10 +3,7 @@ package mho.wheels.structures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 public class FiniteDomainFunction<A, B> implements Function<A, B> {
@@ -14,6 +11,17 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
 
     public FiniteDomainFunction(@NotNull Map<A, B> map) {
         this.map = map;
+    }
+
+    public FiniteDomainFunction(@NotNull Iterable<Pair<A, B>> pairs) {
+        map = new HashMap<>();
+        Set<A> keys = new HashSet<>();
+        for (Pair<A, B> pair : pairs) {
+            if (keys.contains(pair.a))
+                throw new IllegalArgumentException("key " + pair.a + " appears more than once");
+            keys.add(pair.a);
+            map.put(pair.a, pair.b);
+        }
     }
 
     @Override
@@ -39,7 +47,7 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         return this == o || o != null && getClass() == o.getClass() && map.equals(((FiniteDomainFunction) o).map);
     }
 
