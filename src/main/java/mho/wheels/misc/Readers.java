@@ -753,7 +753,7 @@ public class Readers {
             if (result.a == null || result.b == null)
                 throw new NullPointerException();
             if (result.b < 0)
-                throw new IllegalArgumentException("read should not return indices less than 0");
+                throw new IllegalArgumentException("findIn should not return indices less than 0");
         }
         int nullIndex = s.indexOf("null");
         if (nullIndex == -1) return nonNullResult;
@@ -803,8 +803,9 @@ public class Readers {
      * {@link java.util.Optional#toString} are recognized. The longest possible {@code Optional} is parsed.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
-     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code findIn}, when applied to any suffix of {@code s}, must not return null, and, if the result is
+     *  non-empty, its elements are both non-null and the second element is non-negative. (This precondition is not
+     *  checked for every suffix of {@code s}.)</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>
@@ -827,10 +828,17 @@ public class Readers {
             if (s.startsWith(".empty")) return Optional.of(new Pair<>(Optional.<T>empty(), optionalIndex));
             if (s.startsWith("[")) {
                 Optional<Pair<T, Integer>> found = findIn.apply(s);
-                if (found.isPresent() && found.get().b == 1 && head(s) == '[') {
-                    s = s.substring(found.get().a.toString().length() + 1);
-                    if (s.startsWith("]")) {
-                        return Optional.of(new Pair<>(Optional.of(found.get().a), optionalIndex));
+                if (found.isPresent()) {
+                    Pair<T, Integer> presentFound = found.get();
+                    if (presentFound.a == null || presentFound.b == null)
+                        throw new NullPointerException();
+                    if (presentFound.b < 0)
+                        throw new IllegalArgumentException("findIn should not return indices less than 0");
+                    if (found.get().b == 1 && head(s) == '[') {
+                        s = s.substring(found.get().a.toString().length() + 1);
+                        if (s.startsWith("]")) {
+                            return Optional.of(new Pair<>(Optional.of(found.get().a), optionalIndex));
+                        }
                     }
                 }
             }

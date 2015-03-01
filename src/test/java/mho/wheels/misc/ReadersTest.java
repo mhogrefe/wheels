@@ -606,7 +606,6 @@ public class ReadersTest {
         aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
         assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
         aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
-        int i = 0;
         assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
         aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
         assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
@@ -658,7 +657,41 @@ public class ReadersTest {
 
     @Test
     public void testFindOptionalIn() {
-        //todo
+        aeq(findOptionalIn(Readers::findIntegerIn, "xyzOptional[23]xyz"), "Optional[(Optional[23], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn, "xyzOptional[0]xyz"), "Optional[(Optional[0], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn, "xyzOptional[-5]xyz"), "Optional[(Optional[-5], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn, "Optional[]Optional[-5]xyz"), "Optional[(Optional[-5], 2)]");
+        aeq(
+                findOptionalIn(Readers::findIntegerIn, "vdsfvOptional[1000000000000000000]Optional[-5]xyz"),
+                "Optional[(Optional[-5], 10)]"
+        );
+        aeq(findOptionalIn(Readers::findIntegerIn, "Optional[3]Optional[-5]xyz"), "Optional[(Optional[3], 0)]");
+        aeq(findOptionalIn(Readers::findIntegerIn, "xyzOptional.emptyxyz"), "Optional[(Optional.empty, 3)]");
+        assertFalse(findOptionalIn(Readers::findIntegerIn, "xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn, "").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn, "vdsfvOptional[1000000000000000000]xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn, "vdsfvOptional[null]xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn, "vdsfvOptinal[3]xyz").isPresent());
+        try {
+            findOptionalIn(s -> null, "Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>('a', null)), "Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>(null, 3)), "Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>(null, null)), "Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>('a', -1)), "Optional[hello]");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
