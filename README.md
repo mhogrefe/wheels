@@ -25,6 +25,7 @@ Progress
 | ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| FiniteDomainFunction     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Pair                     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Quadruple                | ✘       | ✘       | ✘     | ✘     | ✘          |
