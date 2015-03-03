@@ -81,8 +81,7 @@ public class Readers {
      * <ul>
      *  <li>{@code xs} cannot contain any nulls.</li>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without throwing an exception or
-     *  returning a null.</li>
+     *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without returning a null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>
      * </ul>
@@ -123,9 +122,10 @@ public class Readers {
      * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code read} must always terminate and never return a null.</li>
+     *  <li>{@code read} must always terminate and never return a null on any substring of {@code s}. (This
+     *  precondition is not checked for every substring.)</li>
      *  <li>{@code usedChars} must contain all characters that the result of {@code T}'s {@code toString} method could
-     *  possibly contain.</li>
+     *  possibly contain. (This precondition is not checked.)</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>

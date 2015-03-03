@@ -58,23 +58,6 @@ public class ReadersTest {
         }
     }
 
-    private static class WordyIntegerWithExceptionalToString {
-        private final int i;
-
-        public WordyIntegerWithExceptionalToString(int i) {
-            this.i = i;
-        }
-
-        public @NotNull String toString() {
-            switch (i) {
-                case 1: return "one";
-                case 2: return "two";
-                case 3: return "three";
-                default: throw new IllegalStateException();
-            }
-        }
-    }
-
     @Test
     public void testGenericRead() {
         Function<String, WordyInteger> f = s -> {
@@ -106,16 +89,8 @@ public class ReadersTest {
         assertFalse(genericRead(f, " ").isPresent());
         assertFalse(genericRead(f, "null").isPresent());
 
-        //non-terminating read function cannot be tested
-
-        Function<String, WordyInteger> badF = s -> {
-            if (s.equals("one")) return new WordyInteger(1);
-            if (s.equals("two")) return new WordyInteger(2);
-            if (s.equals("three")) return new WordyInteger(3);
-            return null;
-        };
         try {
-            genericRead(badF, "four");
+            genericRead(s -> null, "four");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -143,16 +118,6 @@ public class ReadersTest {
             genericFindIn(xs, "there are 3 numbers");
             fail();
         } catch (NullPointerException ignored) {}
-
-        List<WordyIntegerWithExceptionalToString> ys = new ArrayList<>();
-        ys.add(new WordyIntegerWithExceptionalToString(1));
-        ys.add(new WordyIntegerWithExceptionalToString(2));
-        ys.add(new WordyIntegerWithExceptionalToString(3));
-        ys.add(new WordyIntegerWithExceptionalToString(4));
-        try {
-            genericFindIn(ys, "there are 3 numbers");
-            fail();
-        } catch (IllegalStateException ignored) {}
     }
 
     @Test
@@ -171,25 +136,8 @@ public class ReadersTest {
         aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
         aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfvfdsz"), "Optional.empty");
 
-        Function<String, Optional<WordyInteger>> badF = s -> {
-            if (s.equals("one")) return Optional.of(new WordyInteger(1));
-            if (s.equals("two")) return Optional.of(new WordyInteger(2));
-            if (s.equals("three")) return Optional.of(new WordyInteger(3));
-            throw new ArithmeticException();
-        };
         try {
-            genericFindIn(badF, " dehnortuw", "vdfsmvlefqvehthreefdsz");
-            fail();
-        } catch (ArithmeticException ignored) {}
-
-        badF = s -> {
-            if (s.equals("one")) return Optional.of(new WordyInteger(1));
-            if (s.equals("two")) return Optional.of(new WordyInteger(2));
-            if (s.equals("three")) return Optional.of(new WordyInteger(3));
-            return null;
-        };
-        try {
-            genericFindIn(badF, " dehnortuw", "vdfsmvlefqvehthreefdsz");
+            genericFindIn(s -> null, " dehnortuw", "vdfsmvlefqvehthreefdsz");
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -268,7 +216,6 @@ public class ReadersTest {
         assertFalse(readBigInteger(" 1").isPresent());
         assertFalse(readBigInteger("00").isPresent());
         assertFalse(readBigInteger("-0").isPresent());
-        assertFalse(readBigInteger("0xff").isPresent());
         assertFalse(readBigInteger("0xff").isPresent());
         assertFalse(readBigInteger("2 ").isPresent());
         assertFalse(readBigInteger("--1").isPresent());
