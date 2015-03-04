@@ -1,5 +1,6 @@
 package mho.wheels.misc;
 
+import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -643,12 +644,84 @@ public class ReadersTest {
 
     @Test
     public void testReadNullableOptional() {
-        //todo
+        Function<String, NullableOptional<Integer>> fi = s -> readWithNulls(Readers::readInteger, s);
+        Function<String, NullableOptional<Boolean>> fb = s -> readWithNulls(Readers::readBoolean, s);
+        aeq(readNullableOptional(fi, "NullableOptional[23]").get(), "NullableOptional[23]");
+        aeq(readNullableOptional(fi, "NullableOptional[0]").get(), "NullableOptional[0]");
+        aeq(readNullableOptional(fi, "NullableOptional[-5]").get(), "NullableOptional[-5]");
+        aeq(readNullableOptional(fi, "NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(readNullableOptional(fi, "NullableOptional.empty").get(), "NullableOptional.empty");
+        aeq(readNullableOptional(fb, "NullableOptional[false]").get(), "NullableOptional[false]");
+        aeq(readNullableOptional(fb, "NullableOptional[true]").get(), "NullableOptional[true]");
+        aeq(readNullableOptional(fb, "NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(readNullableOptional(fb, "NullableOptional.empty").get(), "NullableOptional.empty");
+        assertFalse(readNullableOptional(fi, "Optional[23]").isPresent());
+        assertFalse(readNullableOptional(fi, "NullableOptional[10000000000000000000]").isPresent());
+        assertFalse(readNullableOptional(fi, "NullableOptional[xyz]").isPresent());
+        assertFalse(readNullableOptional(fi, "NullableOptional[10").isPresent());
+        assertFalse(readNullableOptional(fi, "NullableOptional").isPresent());
+        assertFalse(readNullableOptional(fi, "xyz").isPresent());
+        assertFalse(readNullableOptional(fi, "").isPresent());
+        assertFalse(readNullableOptional(fb, "NullableOptional[12]").isPresent());
+        try {
+            readNullableOptional(s -> null, "NullableOptional[hello]");
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testFindNullableOptionalIn() {
-        //todo
+        Function<String, Optional<Pair<Integer, Integer>>> fi = s -> findInWithNulls(Readers::findIntegerIn, s);
+        aeq(
+                findNullableOptionalIn(fi, "xyzNullableOptional[23]xyz"),
+                "Optional[(NullableOptional[23], 3)]"
+        );
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[0]xyz"), "Optional[(NullableOptional[0], 3)]");
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 3)]");
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[null]xyz"), "Optional[(NullableOptional[null], 3)]");
+        aeq(
+                findNullableOptionalIn(fi, "NullableOptional[]NullableOptional[-5]xyz"),
+                "Optional[(NullableOptional[-5], 2)]"
+        );
+        aeq(
+                findNullableOptionalIn(
+                        Readers::findIntegerIn,
+                        "vdsfvNullableOptional[1000000000000000000]NullableOptional[-5]xyz"
+                ),
+                "Optional[(NullableOptional[-5], 10)]"
+        );
+        aeq(
+                findNullableOptionalIn(Readers::findIntegerIn, "NullableOptional[3]NullableOptional[-5]xyz"),
+                "Optional[(NullableOptional[3], 0)]"
+        );
+        aeq(
+                findNullableOptionalIn(Readers::findIntegerIn, "xyzNullableOptional.emptyxyz"),
+                "Optional[(NullableOptional.empty, 3)]"
+        );
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "xyz").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvOptional[23]xyz").isPresent());
+        assertFalse(
+                findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[1000000000000000000]xyz")
+                        .isPresent()
+        );
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[null]xyz").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptinal[3]xyz").isPresent());
+        try {
+            findNullableOptionalIn(s -> null, "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', null)), "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>(null, null)), "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', -1)), "NullableOptional[hello]");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

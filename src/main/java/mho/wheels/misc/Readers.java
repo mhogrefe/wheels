@@ -906,10 +906,17 @@ public class Readers {
             if (s.startsWith(".empty")) return Optional.of(new Pair<>(NullableOptional.<T>empty(), optionalIndex));
             if (s.startsWith("[")) {
                 Optional<Pair<T, Integer>> found = findIn.apply(s);
-                if (found.isPresent() && found.get().b == 1 && head(s) == '[') {
-                    s = s.substring(found.get().a.toString().length() + 1);
-                    if (s.startsWith("]")) {
-                        return Optional.of(new Pair<>(NullableOptional.of(found.get().a), optionalIndex));
+                if (found.isPresent()) {
+                    Pair<T, Integer> presentFound = found.get();
+                    if (presentFound.b == null)
+                        throw new NullPointerException();
+                    if (presentFound.b < 0)
+                        throw new IllegalArgumentException("findIn should not return indices less than 0");
+                    if (found.get().b == 1 && head(s) == '[') {
+                        s = s.substring(Objects.toString(found.get().a).length() + 1);
+                        if (s.startsWith("]")) {
+                            return Optional.of(new Pair<>(NullableOptional.of(found.get().a), optionalIndex));
+                        }
                     }
                 }
             }
