@@ -3744,11 +3744,11 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> gt(p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nondecreasing(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> le(p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nonincreasing(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
     }
 
@@ -3774,14 +3774,14 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> gt(comparator, p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nondecreasing(
+    public static <T extends Comparable<T>> boolean weaklyIncreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
         return and(adjacentPairsWith(p -> le(comparator, p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nonincreasing(
+    public static <T extends Comparable<T>> boolean weaklyDecreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {

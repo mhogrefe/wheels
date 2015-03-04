@@ -1547,7 +1547,7 @@ public final class Combinatorics {
             @Override
             public List<Integer> next() {
                 List<Integer> oldIndices = indices;
-                if (nonincreasing(indices)) {
+                if (weaklyDecreasing(indices)) {
                     indices = null;
                 } else {
                     int i;
