@@ -128,66 +128,66 @@ public class IterableUtilsDemos {
         }
     }
 
-    public static void demoRange_byte() {
+    public static void demoRangeUp_byte() {
         initialize();
         for (byte b : take(LIMIT, P.bytes())) {
-            System.out.println("range(" + b + ") = " + toList(range(b)));
+            System.out.println("range(" + b + ") = " + toList(rangeUp(b)));
         }
     }
 
-    public static void demoRange_short() {
+    public static void demoRangeUp_short() {
         initialize();
         for (short s : take(LIMIT, P.shorts())) {
-            System.out.println("range(" + s + ") = " + IterableUtils.toString(20, range(s)));
+            System.out.println("range(" + s + ") = " + IterableUtils.toString(20, rangeUp(s)));
         }
     }
 
-    public static void demoRange_int() {
+    public static void demoRangeUp_int() {
         initialize();
         for (int i : take(LIMIT, P.integers())) {
-            System.out.println("range(" + i + ") = " + IterableUtils.toString(20, range(i)));
+            System.out.println("range(" + i + ") = " + IterableUtils.toString(20, rangeUp(i)));
         }
     }
 
-    public static void demoRange_long() {
+    public static void demoRangeUp_long() {
         initialize();
         for (long l : take(LIMIT, P.longs())) {
-            System.out.println("range(" + l + ") = " + IterableUtils.toString(20, range(l)));
+            System.out.println("range(" + l + ") = " + IterableUtils.toString(20, rangeUp(l)));
         }
     }
 
-    public static void demoRange_BigInteger() {
+    public static void demoRangeUp_BigInteger() {
         initialize();
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            System.out.println("range(" + i + ") = " + IterableUtils.toString(20, range(i)));
+            System.out.println("range(" + i + ") = " + IterableUtils.toString(20, rangeUp(i)));
         }
     }
 
-    public static void demoRange_BigDecimal() {
+    public static void demoRangeUp_BigDecimal() {
         initialize();
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            System.out.println("range(" + bd + ") = " + IterableUtils.toString(20, range(bd)));
+            System.out.println("range(" + bd + ") = " + IterableUtils.toString(20, rangeUp(bd)));
         }
     }
 
-    public static void demoRange_char() {
+    public static void demoRangeUp_char() {
         initialize();
         for (char c : take(LIMIT, P.characters())) {
-            System.out.println("range(" + c + ") = " + IterableUtils.toString(20, range(c)));
+            System.out.println("range(" + c + ") = " + IterableUtils.toString(20, rangeUp(c)));
         }
     }
 
-    public static void demoRange_float() {
+    public static void demoRangeUp_float() {
         initialize();
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
-            System.out.println("range(" + f + ") = " + IterableUtils.toString(20, range(f)));
+            System.out.println("range(" + f + ") = " + IterableUtils.toString(20, rangeUp(f)));
         }
     }
 
-    public static void demoRange_double() {
+    public static void demoRangeUp_double() {
         initialize();
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
-            System.out.println("range(" + d + ") = " + IterableUtils.toString(20, range(d)));
+            System.out.println("range(" + d + ") = " + IterableUtils.toString(20, rangeUp(d)));
         }
     }
 

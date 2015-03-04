@@ -6,7 +6,6 @@ import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
@@ -1307,8 +1306,8 @@ public final class Combinatorics {
                                 lastPair,
                                 map(p2p, pairsByFunction(
                                         unpairingFunction,
-                                        range(BigInteger.ZERO),
-                                        range(BigInteger.ZERO))
+                                        rangeUp(BigInteger.ZERO),
+                                        rangeUp(BigInteger.ZERO))
                                 )
                         )
                 )
@@ -1528,7 +1527,7 @@ public final class Combinatorics {
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
                 Optional::get,
-                takeWhile(Optional::isPresent, map(i -> cxs.select(MathUtils.bits(i)), range(BigInteger.ZERO)))
+                takeWhile(Optional::isPresent, map(i -> cxs.select(MathUtils.bits(i)), rangeUp(BigInteger.ZERO)))
         );
     }
 
@@ -1583,7 +1582,7 @@ public final class Combinatorics {
 
     public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
         List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, range(0)));
+        Map<T, Integer> indexMap = toMap(zip(nub, rangeUp(0)));
         List<Integer> startingIndices = sort(map(indexMap::get, xs));
         return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }

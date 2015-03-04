@@ -515,7 +515,7 @@ public class MathUtilsProperties {
             } catch (UnsupportedOperationException ignored) {}
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> rangeUp(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits).intValueExact(), p.a.intValue());
@@ -586,7 +586,7 @@ public class MathUtilsProperties {
             } catch (UnsupportedOperationException ignored) {}
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> rangeUp(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits), p.a);
@@ -707,7 +707,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> rangeUp(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits).intValueExact(), p.a.intValue());
@@ -772,7 +772,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> rangeUp(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits), p.a);
