@@ -531,6 +531,13 @@ public class ReadersTest {
     }
 
     @Test
+    public void testFindStringIn() {
+        aeq(findStringIn("Hello"), "Optional[(Hello, 0)]");
+        aeq(findStringIn("ø"), "Optional[(ø, 0)]");
+        aeq(findStringIn(""), "Optional[(, 0)]");
+    }
+
+    @Test
     public void testReadWithNulls() {
         aeq(readWithNulls(Readers::readInteger, "23").get(), "23");
         aeq(readWithNulls(Readers::readInteger, "-500").get(), "-500");
@@ -726,7 +733,28 @@ public class ReadersTest {
 
     @Test
     public void testReadList() {
-        //todo
+        aeq(readList(Readers::findIntegerIn, "[]").get(), "[]");
+        aeq(readList(Readers::findIntegerIn, "[1]").get(), "[1]");
+        aeq(readList(Readers::findIntegerIn, "[1, 2, -3]").get(), "[1, 2, -3]");
+        assertFalse(readList(Readers::findIntegerIn, "[1000000000000000]").isPresent());
+        assertFalse(readList(Readers::findIntegerIn, "[null]").isPresent());
+        assertFalse(readList(Readers::findIntegerIn, "[1, 2").isPresent());
+        assertFalse(readList(Readers::findIntegerIn, "1, 2").isPresent());
+        assertFalse(readList(Readers::findIntegerIn, "[a]").isPresent());
+        assertFalse(readList(Readers::findIntegerIn, "[00]").isPresent());
+        Optional<List<String>> ss;
+
+        ss = readList(Readers::findStringIn, "[hello]");
+        aeq(ss.get(), "[hello]");
+        aeq(ss.get().size(), 1);
+
+//        ss = readList(Readers::findStringIn, "[hello, bye]");
+//        aeq(ss.get(), "[hello, bye]");
+//        aeq(ss.get().size(), 2);
+//
+//        ss = readList(Readers::findStringIn, "[a, b, c]");
+//        aeq(ss.get(), "[a, b, c]");
+//        aeq(ss.get().size(), 3);
     }
 
     @Test

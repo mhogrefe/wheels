@@ -700,6 +700,22 @@ public class Readers {
     }
 
     /**
+     * Finds the first occurrence of a {@link java.lang.String} in a {@code String} (which will be the {@code String}
+     * itself). Returns the {@code String} and the index at which it was found (which will be 0).
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is a {@code Pair} whose first element is non-null and whose second element is 0.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return ({@code s}, 0)
+     */
+    public static @NotNull Optional<Pair<String, Integer>> findStringIn(@NotNull String s) {
+        return Optional.of(new Pair<>(s, 0));
+    }
+
+    /**
      * Given a read function and a {@code String}, reads either null or the value given by the function.
      *
      * <ul>
@@ -966,6 +982,35 @@ public class Readers {
         }
         return Optional.of(list);
     }
+
+//    public static @NotNull <T> Optional<List<T>> readList(
+//            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+//            @NotNull String s
+//    ) {
+//        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+//        s = tail(init(s));
+//        List<T> list = new ArrayList<>();
+//        while (!s.isEmpty()) {
+//            Optional<Pair<T, Integer>> next = findIn.apply(s);
+//            if (!next.isPresent()) return Optional.empty();
+//            Pair<T, Integer> unwrapped = next.get();
+//            if (unwrapped.b != 0) return Optional.empty();
+//            T element = unwrapped.a;
+//            String elementString = Objects.toString(element);
+//            for (int i = 0; i < elementString.length(); i++) {
+//                Optional<Pair<T, Integer>> candidate = findIn.apply(elementString.substring(0, i));
+//                if (!candidate.isPresent() || candidate.get().b != 0) continue;
+//
+//            }
+//            list.add(element);
+//            s = s.substring(.length());
+//            if (!s.isEmpty()) {
+//                if (!s.startsWith(", ")) return Optional.empty();
+//                s = s.substring(2);
+//            }
+//        }
+//        return Optional.of(list);
+//    }
 
     /**
      * Finds the first occurrence of a {@code List} of a given type in a {@code String}. Takes the type's
