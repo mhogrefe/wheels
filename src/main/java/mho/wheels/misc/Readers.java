@@ -866,7 +866,8 @@ public class Readers {
      * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
      *
      * <ul>
-     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
+     *  <li>If {@code s} is of the form {@code "NullableOptional[" + t + "]"}, {@code read} must terminate and not
+     *  return a null on {@code t}.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -898,8 +899,8 @@ public class Readers {
      * possible {@code NullableOptional} is parsed.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
-     *  second element is non-negative. The first element may be null.</li>
+     *  <li>{@code findIn}, when applied to {@code s}, must terminate and not return null, and, if the result is
+     *  non-empty, its second element is non-negative. The first element may be null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
      *  second component is non-negative.</li>
@@ -947,8 +948,8 @@ public class Readers {
      * would be returned.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
-     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code findIn}, when applied to any substring of {@code s}, must terminate and not return null. (This
+     *  precondition is not checked for every substring.)</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
@@ -980,37 +981,7 @@ public class Readers {
                 s = s.substring(2);
             }
         }
-        return Optional.of(list);
     }
-
-//    public static @NotNull <T> Optional<List<T>> readList(
-//            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
-//            @NotNull String s
-//    ) {
-//        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-//        s = tail(init(s));
-//        List<T> list = new ArrayList<>();
-//        while (!s.isEmpty()) {
-//            Optional<Pair<T, Integer>> next = findIn.apply(s);
-//            if (!next.isPresent()) return Optional.empty();
-//            Pair<T, Integer> unwrapped = next.get();
-//            if (unwrapped.b != 0) return Optional.empty();
-//            T element = unwrapped.a;
-//            String elementString = Objects.toString(element);
-//            for (int i = 0; i < elementString.length(); i++) {
-//                Optional<Pair<T, Integer>> candidate = findIn.apply(elementString.substring(0, i));
-//                if (!candidate.isPresent() || candidate.get().b != 0) continue;
-//
-//            }
-//            list.add(element);
-//            s = s.substring(.length());
-//            if (!s.isEmpty()) {
-//                if (!s.startsWith(", ")) return Optional.empty();
-//                s = s.substring(2);
-//            }
-//        }
-//        return Optional.of(list);
-//    }
 
     /**
      * Finds the first occurrence of a {@code List} of a given type in a {@code String}. Takes the type's
