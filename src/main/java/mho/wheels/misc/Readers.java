@@ -962,25 +962,63 @@ public class Readers {
      * {@code List}
      */
     public static @NotNull <T> Optional<List<T>> readList(
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull Function<String, Optional<T>> read,
             @NotNull String s
     ) {
         if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
         s = tail(init(s));
-        List<T> list = new ArrayList<>();
-        while (!s.isEmpty()) {
-            Optional<Pair<T, Integer>> next = findIn.apply(s);
-            if (!next.isPresent()) return Optional.empty();
-            Pair<T, Integer> unwrapped = next.get();
-            if (unwrapped.b != 0) return Optional.empty();
-            T element = unwrapped.a;
-            list.add(element);
-            s = s.substring(Objects.toString(element).length());
-            if (!s.isEmpty()) {
-                if (!s.startsWith(", ")) return Optional.empty();
-                s = s.substring(2);
+        if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+        String[] tokens = s.split(", ");
+        List<T> result = new ArrayList<>();
+        int i;
+        for (i = 0; i < tokens.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            String prefix = "";
+            for (; i < tokens.length; i++) {
+                sb.append(prefix);
+                sb.append(tokens[i]);
+                prefix = ", ";
+                Optional<T> candidate = read.apply(sb.toString());
+                if (candidate.isPresent()) {
+                    result.add(candidate.get());
+                    break;
+                }
+                if (i == tokens.length - 1) {
+                    return Optional.empty();
+                }
             }
         }
+        return Optional.of(result);
+    }
+
+    public static @NotNull <T> Optional<List<T>> readListWithNulls(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String s
+    ) {
+        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+        s = tail(init(s));
+        if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+        String[] tokens = s.split(", ");
+        List<T> result = new ArrayList<>();
+        int i;
+        for (i = 0; i < tokens.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            String prefix = "";
+            for (; i < tokens.length; i++) {
+                sb.append(prefix);
+                sb.append(tokens[i]);
+                prefix = ", ";
+                NullableOptional<T> candidate = readWithNulls(read, sb.toString());
+                if (candidate.isPresent()) {
+                    result.add(candidate.get());
+                    break;
+                }
+                if (i == tokens.length - 1) {
+                    return Optional.empty();
+                }
+            }
+        }
+        return Optional.of(result);
     }
 
     /**
@@ -1010,19 +1048,18 @@ public class Readers {
      * @return the first {@code List<T>} found in {@code s}, and the index at which it was found
      */
     public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListIn(
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String usedChars,
             @NotNull String s
     ) {
-        List<Integer> leftIndices = toList(elemIndices('[', s));
-        List<Integer> rightIndices = reverse(elemIndices(']', s));
-        for (int leftIndex : leftIndices) {
-            for (int rightIndex : rightIndices) {
-                if (rightIndex < leftIndex) break;
-                String stripped = s.substring(leftIndex, rightIndex + 1);
-                Optional<List<T>> candidate = readList(findIn, stripped);
-                if (candidate.isPresent()) return Optional.of(new Pair<>(candidate.get(), leftIndex));
-            }
-        }
-        return Optional.empty();
+        return genericFindIn(t -> readList(read, t), nub(sort(usedChars + "[, ]")), s);
+    }
+
+    public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListWithNullsIn(
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull String usedChars,
+            @NotNull String s
+    ) {
+        return genericFindIn(t -> readListWithNulls(read, t), nub(sort(usedChars + "[null, ]")), s);
     }
 }

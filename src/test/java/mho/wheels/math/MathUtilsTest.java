@@ -1371,10 +1371,10 @@ public class MathUtilsTest {
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::findBigIntegerIn, s);
+        return Readers.readList(Readers::readBigInteger, s);
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readList(t -> Readers.findInWithNulls(Readers::findBigIntegerIn, t), s);
+        return Readers.readListWithNulls(Readers::readBigInteger, s);
     }
 }
