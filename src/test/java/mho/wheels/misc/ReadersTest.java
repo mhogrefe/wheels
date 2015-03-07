@@ -61,37 +61,37 @@ public class ReadersTest {
 
     @Test
     public void testGenericRead() {
-        Function<String, WordyInteger> f = s -> {
+        Function<String, Optional<WordyInteger>> f = genericRead(s -> {
             if (s.equals("one")) return new WordyInteger(1);
             if (s.equals("two")) return new WordyInteger(2);
             if (s.equals("three")) return new WordyInteger(3);
             throw new ArithmeticException();
-        };
-        aeq(genericRead(f, "one").get(), "one");
-        aeq(genericRead(f, "two").get(), "two");
-        aeq(genericRead(f, "three").get(), "three");
-        assertFalse(genericRead(f, "four").isPresent());
-        assertFalse(genericRead(f, "").isPresent());
-        assertFalse(genericRead(f, " ").isPresent());
-        assertFalse(genericRead(f, "null").isPresent());
+        });
+        aeq(f.apply("one").get(), "one");
+        aeq(f.apply("two").get(), "two");
+        aeq(f.apply("three").get(), "three");
+        assertFalse(f.apply("four").isPresent());
+        assertFalse(f.apply("").isPresent());
+        assertFalse(f.apply(" ").isPresent());
+        assertFalse(f.apply("null").isPresent());
 
-        f = s -> {
+        f = genericRead(s -> {
             if (s.equals("one")) return new WordyInteger(1);
             if (s.equals("two")) return new WordyInteger(2);
             if (s.equals("three")) return new WordyInteger(3);
             return new WordyInteger(10);
-        };
-        aeq(genericRead(f, "one").get(), "one");
-        aeq(genericRead(f, "two").get(), "two");
-        aeq(genericRead(f, "three").get(), "three");
-        aeq(genericRead(f, "many").get(), "many");
-        assertFalse(genericRead(f, "four").isPresent());
-        assertFalse(genericRead(f, "").isPresent());
-        assertFalse(genericRead(f, " ").isPresent());
-        assertFalse(genericRead(f, "null").isPresent());
+        });
+        aeq(f.apply("one").get(), "one");
+        aeq(f.apply("two").get(), "two");
+        aeq(f.apply("three").get(), "three");
+        aeq(f.apply("many").get(), "many");
+        assertFalse(f.apply("four").isPresent());
+        assertFalse(f.apply("").isPresent());
+        assertFalse(f.apply(" ").isPresent());
+        assertFalse(f.apply("null").isPresent());
 
         try {
-            genericRead(s -> null, "four");
+            genericRead(s -> null).apply("four");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -733,7 +733,6 @@ public class ReadersTest {
 
     @Test
     public void testReadList() {
-        int i = 0;
         aeq(readList(Readers::readInteger, "[]").get(), "[]");
         aeq(readList(Readers::readInteger, "[1]").get(), "[1]");
         aeq(readList(Readers::readInteger, "[1, 2, -3]").get(), "[1, 2, -3]");

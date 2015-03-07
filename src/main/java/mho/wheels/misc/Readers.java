@@ -41,35 +41,42 @@ public class Readers {
     public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
 
     /**
-     * Wraps a function from {@code String} to {@code T} in such a way that if the function throws an exception, this
-     * method returns an empty {@code Optional}. An empty {@code Optional} is also returned if calling {@code toString}
-     * on the extracted value does not return the original {@code String}. For example, calling
-     * {@code genericRead(Integer::parseInt, "0xff")} returns {@code Optional.empty} because {@code "0xff".toString()}
-     * is {@code "255"}, not {@code "0xff"}.
+     * Turns a function {@code read} from {@code String} to {@code T} into a function from {@code String} to
+     * {@code Optional<T>} such that the new function returns an empty {@code Optional} whenever {@code read} would
+     * throw an exception, or whenever the {@code T} value produced by {@code read} has a different {@code String}
+     * representation than the original {@code String}. Consider calling
+     * {@code genericRead(Integer::parseInt).apply("0xff")}. This returns an empty {@code Optional}, since although
+     * {@code "0xff"} can be read as 127, it isn't the string returned by {@code Integer.toString(127)}.
      *
      * <ul>
      *  <li>{@code read} must terminate on {@code s} (possibly with an exception) and not return a null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is non-null.</li>
      * </ul>
+     * <ul>
+     *  <li>{@code read} must be non-null.</li>
+     *  <li>The result must be called on {@code String}s such that {@code read.apply(s)} terminates (possibly by
+     *  throwing an exception) and does not return null.</li>
+     * </ul>
      *
      * @param read the original read function
-     * @param s the {@code String} to be read
      * @param <T> the type of value read by {@code read}
-     * @return the value corresponding to {@code s}, according to the conditions described above
+     * @return a function which behaves like {@code read} but doesn't throw exceptions
      */
     @SuppressWarnings("JavaDoc")
-    public static @NotNull <T> Optional<T> genericRead(@NotNull Function<String, T> read, @NotNull String s) {
-        boolean nullResult = false;
-        try {
-            T x = read.apply(s);
-            if (x == null) nullResult = true;
-            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
-        } catch (Exception e) {
-            if (nullResult)
-                throw new IllegalArgumentException("read function cannot return null on " + s);
-            return Optional.empty();
-        }
+    public static @NotNull <T> Function<String, Optional<T>> genericRead(@NotNull Function<String, T> read) {
+        return s -> {
+            boolean nullResult = false;
+            try {
+                T x = read.apply(s);
+                if (x == null) nullResult = true;
+                return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
+            } catch (Exception e) {
+                if (nullResult)
+                    throw new IllegalArgumentException("read function cannot return null on " + s);
+                return Optional.empty();
+            }
+        };
     }
 
     /**
@@ -179,7 +186,7 @@ public class Readers {
      * a {@code boolean}
      */
     public static @NotNull Optional<Boolean> readBoolean(@NotNull String s) {
-        return genericRead(Boolean::parseBoolean, s);
+        return genericRead(Boolean::parseBoolean).apply(s);
     }
 
     /**
@@ -307,7 +314,7 @@ public class Readers {
      * represent a {@code BigInteger}
      */
     public static @NotNull Optional<BigInteger> readBigInteger(@NotNull String s) {
-        return genericRead(BigInteger::new, s);
+        return genericRead(BigInteger::new).apply(s);
     }
 
     /**
@@ -368,7 +375,7 @@ public class Readers {
      * {@code Byte}
      */
     public static @NotNull Optional<Byte> readByte(@NotNull String s) {
-        return genericRead(Byte::parseByte, s);
+        return genericRead(Byte::parseByte).apply(s);
     }
 
     /**
@@ -415,7 +422,7 @@ public class Readers {
      * {@code Short}
      */
     public static @NotNull Optional<Short> readShort(@NotNull String s) {
-        return genericRead(Short::parseShort, s);
+        return genericRead(Short::parseShort).apply(s);
     }
 
     /**
@@ -462,7 +469,7 @@ public class Readers {
      * an {@code Integer}
      */
     public static @NotNull Optional<Integer> readInteger(@NotNull String s) {
-        return genericRead(Integer::parseInt, s);
+        return genericRead(Integer::parseInt).apply(s);
     }
 
     /**
@@ -509,7 +516,7 @@ public class Readers {
      * {@code Long}
      */
     public static @NotNull Optional<Long> readLong(@NotNull String s) {
-        return genericRead(Long::parseLong, s);
+        return genericRead(Long::parseLong).apply(s);
     }
 
     /**
@@ -557,7 +564,7 @@ public class Readers {
      * {@code Float}
      */
     public static @NotNull Optional<Float> readFloat(@NotNull String s) {
-        return genericRead(Float::parseFloat, s);
+        return genericRead(Float::parseFloat).apply(s);
     }
 
     /**
@@ -593,7 +600,7 @@ public class Readers {
      * {@code Double}
      */
     public static @NotNull Optional<Double> readDouble(@NotNull String s) {
-        return genericRead(Double::parseDouble, s);
+        return genericRead(Double::parseDouble).apply(s);
     }
 
     /**
@@ -629,7 +636,7 @@ public class Readers {
      * represent a {@code BigDecimal}
      */
     public static @NotNull Optional<BigDecimal> readBigDecimal(@NotNull String s) {
-        return genericRead(BigDecimal::new, s);
+        return genericRead(BigDecimal::new).apply(s);
     }
 
     /**
@@ -954,8 +961,6 @@ public class Readers {
      *  <li>The result is non-null.</li>
      * </ul>
      *
-     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
-     *               found.
      * @param s the input {@code String}
      * @param <T> the type of the {@code List}'s values
      * @return the {@code List} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
@@ -1041,8 +1046,6 @@ public class Readers {
      *  second component is non-negative.</li>
      * </ul>
      *
-     * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
-     *               found.
      * @param s the input {@code String}
      * @param <T> the type of the {@code List}'s values
      * @return the first {@code List<T>} found in {@code s}, and the index at which it was found
