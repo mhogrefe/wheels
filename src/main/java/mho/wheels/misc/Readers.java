@@ -49,11 +49,6 @@ public class Readers {
      * {@code "0xff"} can be read as 127, it isn't the string returned by {@code Integer.toString(127)}.
      *
      * <ul>
-     *  <li>{@code read} must terminate on {@code s} (possibly with an exception) and not return a null.</li>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
-     * </ul>
-     * <ul>
      *  <li>{@code read} must be non-null.</li>
      *  <li>The result must be called on {@code String}s such that {@code read.apply(s)} terminates (possibly by
      *  throwing an exception) and does not return null.</li>
@@ -80,45 +75,47 @@ public class Readers {
     }
 
     /**
-     * Given a small {@code Iterable} of values and a {@code String}, finds the first occurrence of a value in the
-     * {@code String} as determined by the values' {@code toString} method. If two different values occur at the same
-     * index (meaning that one is a prefix of the other), the longer value is preferred. The value is returned along
-     * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
+     * Given a small {@code Iterable} of values, returns a function which takes a {@code String} and returns the first
+     * occurrence of one of those values in the {@code String} as determined by the values' {@code toString} method. If
+     * two different values occur at the same index (meaning that one is a prefix of the other), the longer value is
+     * preferred. The value is returned along with the index at which it is found. If no value is found, an empty
+     * {@code Optional} is returned.
      *
      * <ul>
      *  <li>{@code xs} cannot contain any nulls.</li>
-     *  <li>{@code s} cannot be null.</li>
      *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without returning a null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
+     *  <li>The result must be called on {@code String}s such that {@code read.apply(s)} terminates and returns a
+     *  result such that if it is non-empty, then neither of the its components is null, and the second component is
+     *  non-negative.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of values
-     * @param s a {@code String} to be searched in
      * @param <T> the type of the values in {@code xs}
-     * @return the first value found in {@code s} and its index.
+     * @return a function which takes a {@code String} and returns the first occurrence of a value
      */
-    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(@NotNull Iterable<T> xs, @NotNull String s) {
-        Iterable<Triple<T, String, Integer>> candidates = filter(
-                u -> u.c != -1,
-                map(
-                        x -> {
-                            String t = x.toString();
-                            return new Triple<>(x, t, s.indexOf(t));
-                        },
-                        xs
-                )
-        );
-        if (isEmpty(candidates)) return Optional.empty();
-        Comparator<Triple<T, String, Integer>> comparator = (x, y) -> {
-            if (x.c < y.c) return -1;
-            if (x.c > y.c) return 1;
-            if (x.b.length() > y.b.length()) return -1;
-            if (x.b.length() < y.b.length()) return 1;
-            return 0;
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull Iterable<T> xs) {
+        return s -> {
+            Iterable<Triple<T, String, Integer>> candidates = filter(
+                    u -> u.c != -1,
+                    map(
+                            x -> {
+                                String t = x.toString();
+                                return new Triple<>(x, t, s.indexOf(t));
+                            },
+                            xs
+                    )
+            );
+            if (isEmpty(candidates)) return Optional.empty();
+            Comparator<Triple<T, String, Integer>> comparator = (x, y) -> {
+                if (x.c < y.c) return -1;
+                if (x.c > y.c) return 1;
+                if (x.b.length() > y.b.length()) return -1;
+                if (x.b.length() < y.b.length()) return 1;
+                return 0;
+            };
+            Triple<T, String, Integer> bestResult = minimum(comparator, candidates);
+            return Optional.of(new Pair<>(bestResult.a, bestResult.c));
         };
-        Triple<T, String, Integer> bestResult = minimum(comparator, candidates);
-        return Optional.of(new Pair<>(bestResult.a, bestResult.c));
     }
 
     /**
@@ -203,7 +200,7 @@ public class Readers {
      * @return the first {@code boolean} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<Boolean, Integer>> findBooleanIn(@NotNull String s) {
-        return genericFindIn(Arrays.asList(false, true), s);
+        return genericFindIn(Arrays.asList(false, true)).apply(s);
     }
 
     /**
@@ -245,7 +242,7 @@ public class Readers {
      * @return the first {@code Ordering} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<Ordering, Integer>> findOrderingIn(@NotNull String s) {
-        return genericFindIn(Arrays.asList(Ordering.values()), s);
+        return genericFindIn(Arrays.asList(Ordering.values())).apply(s);
     }
 
     /**
@@ -297,7 +294,7 @@ public class Readers {
      * @return the first {@code RoundingMode} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<RoundingMode, Integer>> findRoundingModeIn(@NotNull String s) {
-        return genericFindIn(Arrays.asList(RoundingMode.values()), s);
+        return genericFindIn(Arrays.asList(RoundingMode.values())).apply(s);
     }
 
     /**

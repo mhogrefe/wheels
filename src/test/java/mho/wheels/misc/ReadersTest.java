@@ -98,17 +98,17 @@ public class ReadersTest {
 
     @Test
     public void testGenericFindIn_Iterable_T_String() {
-        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 3 numbers").get(), "(3, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 3, 3), "there are 3 numbers").get(), "(3, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there are 12 numbers").get(), "(12, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 12, 3), "there is 1 number").get(), "(1, 9)");
-        assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "there are no numbers").isPresent());
-        assertFalse(genericFindIn(Arrays.asList(1, 12, 3), "").isPresent());
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 3, 3)).apply("there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are no numbers").isPresent());
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("").isPresent());
         try {
-            genericFindIn(Arrays.asList(1, null, 3), "there are 3 numbers");
+            genericFindIn(Arrays.asList(1, null, 3)).apply("there are 3 numbers");
             fail();
         } catch (NullPointerException ignored) {}
-        genericFindIn(Arrays.asList(1, 1, 3), "there are 3 numbers");
+        genericFindIn(Arrays.asList(1, 1, 3)).apply("there are 3 numbers");
 
         List<WordyIntegerWithNullToString> xs = new ArrayList<>();
         xs.add(new WordyIntegerWithNullToString(1));
@@ -116,7 +116,7 @@ public class ReadersTest {
         xs.add(new WordyIntegerWithNullToString(3));
         xs.add(new WordyIntegerWithNullToString(4));
         try {
-            genericFindIn(xs, "there are 3 numbers");
+            genericFindIn(xs).apply("there are 3 numbers");
             fail();
         } catch (NullPointerException ignored) {}
     }
