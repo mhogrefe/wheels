@@ -61,16 +61,15 @@ public class Readers {
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Function<String, Optional<T>> genericRead(@NotNull Function<String, T> read) {
         return s -> {
-            boolean nullResult = false;
+            T x;
             try {
-                T x = read.apply(s);
-                if (x == null) nullResult = true;
-                return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
+                x = read.apply(s);
             } catch (Exception e) {
-                if (nullResult)
-                    throw new IllegalArgumentException("read function cannot return null on " + s);
                 return Optional.empty();
             }
+            if (x == null)
+                throw new IllegalArgumentException("read function cannot return null on " + s);
+            return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
         };
     }
 
