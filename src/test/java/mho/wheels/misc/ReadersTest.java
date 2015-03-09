@@ -547,19 +547,19 @@ public class ReadersTest {
 
     @Test
     public void testReadWithNulls() {
-        aeq(readWithNulls(Readers::readInteger, "23").get(), "23");
-        aeq(readWithNulls(Readers::readInteger, "-500").get(), "-500");
-        assertNull(readWithNulls(Readers::readInteger, "null").get());
-        aeq(readWithNulls(Readers::readString, "hello").get(), "hello");
-        aeq(readWithNulls(Readers::readString, "bye").get(), "bye");
-        aeq(readWithNulls(Readers::readString, "nullification").get(), "nullification");
-        aeq(readWithNulls(Readers::readString, "").get(), "");
-        assertNull(readWithNulls(Readers::readString, "null").get());
-        assertFalse(readWithNulls(Readers::readInteger, "annull").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger, "--").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger, "").isPresent());
+        aeq(readWithNulls(Readers::readInteger).apply("23").get(), "23");
+        aeq(readWithNulls(Readers::readInteger).apply("-500").get(), "-500");
+        assertNull(readWithNulls(Readers::readInteger).apply("null").get());
+        aeq(readWithNulls(Readers::readString).apply("hello").get(), "hello");
+        aeq(readWithNulls(Readers::readString).apply("bye").get(), "bye");
+        aeq(readWithNulls(Readers::readString).apply("nullification").get(), "nullification");
+        aeq(readWithNulls(Readers::readString).apply("").get(), "");
+        assertNull(readWithNulls(Readers::readString).apply("null").get());
+        assertFalse(readWithNulls(Readers::readInteger).apply("annull").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger).apply("--").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger).apply("").isPresent());
         try {
-            readWithNulls(s -> null, "hello");
+            readWithNulls(s -> null).apply("hello");
         } catch (IllegalArgumentException ignored) {}
     }
 
@@ -659,8 +659,8 @@ public class ReadersTest {
 
     @Test
     public void testReadNullableOptional() {
-        Function<String, NullableOptional<Integer>> fi = s -> readWithNulls(Readers::readInteger, s);
-        Function<String, NullableOptional<Boolean>> fb = s -> readWithNulls(Readers::readBoolean, s);
+        Function<String, NullableOptional<Integer>> fi = s -> readWithNulls(Readers::readInteger).apply(s);
+        Function<String, NullableOptional<Boolean>> fb = s -> readWithNulls(Readers::readBoolean).apply(s);
         aeq(readNullableOptional(fi, "NullableOptional[23]").get(), "NullableOptional[23]");
         aeq(readNullableOptional(fi, "NullableOptional[0]").get(), "NullableOptional[0]");
         aeq(readNullableOptional(fi, "NullableOptional[-5]").get(), "NullableOptional[-5]");

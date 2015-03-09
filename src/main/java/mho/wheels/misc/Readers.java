@@ -715,29 +715,27 @@ public class Readers {
     }
 
     /**
-     * Given a read function and a {@code String}, reads either null or the value given by the function.
+     * Transforms a read function into a read function that can also read nulls if necessary
      *
      * <ul>
-     *  <li>{@code read} must terminate on {@code s} and not return a null.</li>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>{@code read} must be non-null</li>
+     *  <li>The result must be called on {@code String}s that {@code read} terminates and doesn't return null on.</li>
      * </ul>
      *
      * @param read a function which takes a {@code String} and returns an {@code Optional{@literal<T>}}.
-     * @param s the input {@code String}
      * @param <T> the type of the value to be read
-     * @return the value of {@code T} represented by {@code s}, or a wrapped null, or an empty {@code NullableOptional}
-     * if {@code s} does not represent any value of {@code T} or null
+     * @return a null-handling version of {@code read}
      */
-    public static @NotNull <T> NullableOptional<T> readWithNulls(
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, NullableOptional<T>> readWithNulls(
+            @NotNull Function<String, Optional<T>> read
     ) {
-        if (s.equals("null")) {
-            return NullableOptional.of(null);
-        } else {
-            return NullableOptional.fromOptional(read.apply(s));
-        }
+        return s -> {
+            if (s.equals("null")) {
+                return NullableOptional.of(null);
+            } else {
+                return NullableOptional.fromOptional(read.apply(s));
+            }
+        };
     }
 
     /**
@@ -1005,7 +1003,7 @@ public class Readers {
                 sb.append(prefix);
                 sb.append(tokens[i]);
                 prefix = ", ";
-                NullableOptional<T> candidate = readWithNulls(read, sb.toString());
+                NullableOptional<T> candidate = readWithNulls(read).apply(sb.toString());
                 if (candidate.isPresent()) {
                     result.add(candidate.get());
                     break;
