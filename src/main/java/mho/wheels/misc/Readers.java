@@ -50,8 +50,8 @@ public class Readers {
      *
      * <ul>
      *  <li>{@code read} must be non-null.</li>
-     *  <li>The result must be called on {@code String}s such that {@code read.apply(s)} terminates (possibly by
-     *  throwing an exception) and does not return null.</li>
+     *  <li>The result must be called on {@code String}s {@code s} such that {@code read.apply(s)} terminates (possibly
+     *  by throwing an exception) and does not return null.</li>
      * </ul>
      *
      * @param read the original read function
@@ -84,9 +84,6 @@ public class Readers {
      * <ul>
      *  <li>{@code xs} cannot contain any nulls.</li>
      *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without returning a null.</li>
-     *  <li>The result must be called on {@code String}s such that {@code read.apply(s)} terminates and returns a
-     *  result such that if it is non-empty, then neither of the its components is null, and the second component is
-     *  non-negative.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of values
@@ -119,55 +116,54 @@ public class Readers {
     }
 
     /**
-     * Given a function {@code read} to convert a {@code String} to a value, a {@code String} {@code usedChars}
-     * containing all characters needed to represent any value of that type as a {@code String}, and a {@code String}
-     * {@code s} to find values in, finds the first occurrence of a value. If two different values occur at the same
-     * index (meaning that one is a prefix of the other), the longer value is preferred. The value is returned along
-     * with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
+     * Given a function {@code read} to convert a {@code String} to a value, and a {@code String} {@code usedChars}
+     * containing all characters needed to represent any value of that type as a {@code String}, returns a function
+     * which takes a {@code String} and finds the first occurrence of a value. If two different values occur at the
+     * same index (meaning that one is a prefix of the other), the longer value is preferred. The value is returned
+     * along with the index at which it is found. If no value is found, an empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code read} must always terminate and never return a null on any substring of {@code s}. (This
-     *  precondition is not checked for every substring.)</li>
+     *  <li>{@code read} must be non-null.</li>
      *  <li>{@code usedChars} must contain all characters that the result of {@code T}'s {@code toString} method could
      *  possibly contain. (This precondition is not checked.)</li>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
+     *  <li>The result must be called on {@code String}s {@code s} such that {@code read} always terminates and never
+     *  returns a null on any substring of {@code s}. (This precondition is not checked for every substring.)</li>
      * </ul>
      *
      * @param read a function which converts a {@code String} to a value.
      * @param usedChars all the characters needed to represent a value of type {@code T} as a {@code String}.
-     * @param s a {@code String} to be searched in
      * @param <T> the type of the values in {@code xs}
-     * @return the first value found in {@code s} and its index.
+     * @return a function which takes a {@code String} and returns the first occurrence of a value
      */
-    public static @NotNull <T> Optional<Pair<T, Integer>> genericFindIn(
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(
             @NotNull Function<String, Optional<T>> read,
-            @NotNull String usedChars,
-            @NotNull String s
+            @NotNull String usedChars
     ) {
-        if (isEmpty(s)) return Optional.empty();
-        Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
-        Iterable<Integer> indices = scanl(p -> p.a + p.b, 0, map(String::length, grouped));
-        Iterable<Boolean> mask;
-        if (elem(head(head(grouped)), usedChars)) {
-            mask = cycle(Arrays.asList(true, false));
-        } else {
-            mask = cycle(Arrays.asList(false, true));
-        }
-        for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
-            int offset = p.b;
-            String substring = p.a;
-            for (int i = 0; i < substring.length(); i++) {
-                for (int j = substring.length(); j > i; j--) {
-                    Optional<T> ox = read.apply(substring.substring(i, j));
-                    if (ox.isPresent()) {
-                        return Optional.of(new Pair<>(ox.get(), offset + i));
+        return s -> {
+            if (isEmpty(s)) return Optional.empty();
+            Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
+            Iterable<Integer> indices = scanl(p -> p.a + p.b, 0, map(String::length, grouped));
+            Iterable<Boolean> mask;
+            if (elem(head(head(grouped)), usedChars)) {
+                mask = cycle(Arrays.asList(true, false));
+            } else {
+                mask = cycle(Arrays.asList(false, true));
+            }
+            for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
+                int offset = p.b;
+                String substring = p.a;
+                for (int i = 0; i < substring.length(); i++) {
+                    for (int j = substring.length(); j > i; j--) {
+                        Optional<T> ox = read.apply(substring.substring(i, j));
+                        if (ox.isPresent()) {
+                            return Optional.of(new Pair<>(ox.get(), offset + i));
+                        }
                     }
                 }
             }
-        }
-        return Optional.empty();
+            return Optional.empty();
+        };
     }
 
     /**
@@ -580,7 +576,7 @@ public class Readers {
      * @return the first {@code Float} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<Float, Integer>> findFloatIn(@NotNull String s) {
-        return genericFindIn(Readers::readFloat, "-.0123456789EINafinty", s);
+        return genericFindIn(Readers::readFloat, "-.0123456789EINafinty").apply(s);
     }
 
     /**
@@ -616,7 +612,7 @@ public class Readers {
      * @return the first {@code Double} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<Double, Integer>> findDoubleIn(@NotNull String s) {
-        return genericFindIn(Readers::readDouble, "-.0123456789EINafinty", s);
+        return genericFindIn(Readers::readDouble, "-.0123456789EINafinty").apply(s);
     }
 
     /**
@@ -652,7 +648,7 @@ public class Readers {
      * @return the first {@code BigDecimal} found in {@code s}, and the index at which it was found
      */
     public static @NotNull Optional<Pair<BigDecimal, Integer>> findBigDecimalIn(@NotNull String s) {
-        return genericFindIn(Readers::readBigDecimal, "+-.0123456789E", s);
+        return genericFindIn(Readers::readBigDecimal, "+-.0123456789E").apply(s);
     }
 
     /**
@@ -1052,7 +1048,7 @@ public class Readers {
             @NotNull String usedChars,
             @NotNull String s
     ) {
-        return genericFindIn(t -> readList(read, t), nub(sort(usedChars + "[, ]")), s);
+        return genericFindIn(t -> readList(read, t), nub(sort(usedChars + "[, ]"))).apply(s);
     }
 
     public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListWithNullsIn(
@@ -1060,6 +1056,6 @@ public class Readers {
             @NotNull String usedChars,
             @NotNull String s
     ) {
-        return genericFindIn(t -> readListWithNulls(read, t), nub(sort(usedChars + "[null, ]")), s);
+        return genericFindIn(t -> readListWithNulls(read, t), nub(sort(usedChars + "[null, ]"))).apply(s);
     }
 }

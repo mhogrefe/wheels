@@ -123,22 +123,30 @@ public class ReadersTest {
 
     @Test
     public void testGenericFindIn_Function_T_Optional_T_String_String() {
-        Function<String, Optional<WordyInteger>> f = s -> {
+        Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
             if (s.equals("one")) return Optional.of(new WordyInteger(1));
             if (s.equals("two")) return Optional.of(new WordyInteger(2));
             if (s.equals("three")) return Optional.of(new WordyInteger(3));
             if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
             return Optional.empty();
-        };
-        aeq(genericFindIn(f, " dehnortuw", "vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
-        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
+        }, " dehnortuw");
+        aeq(f.apply("vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
+        aeq(f.apply("vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
+        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
+        aeq(f.apply("vdfsmvldfvfdsz"), "Optional.empty");
+
         //exclude "one hundred" chars
-        aeq(genericFindIn(f, "ehnortw", "vdfsmvldfone hundredvfdsz"), "Optional[(one, 9)]");
-        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
-        aeq(genericFindIn(f, " dehnortuw", "vdfsmvldfvfdsz"), "Optional.empty");
+        f = genericFindIn(s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
+            return Optional.empty();
+        }, "ehnortw");
+        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(one, 9)]");
 
         try {
-            genericFindIn(s -> null, " dehnortuw", "vdfsmvlefqvehthreefdsz");
+            genericFindIn(s -> null, " dehnortuw").apply("vdfsmvlefqvehthreefdsz");
             fail();
         } catch (NullPointerException ignored) {}
     }
