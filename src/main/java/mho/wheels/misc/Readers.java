@@ -715,10 +715,10 @@ public class Readers {
     }
 
     /**
-     * Transforms a read function into a read function that can also read nulls if necessary
+     * Transforms a read function into a read function that can also read nulls if necessary.
      *
      * <ul>
-     *  <li>{@code read} must be non-null</li>
+     *  <li>{@code read} must be non-null.</li>
      *  <li>The result must be called on {@code String}s that {@code read} terminates and doesn't return null on.</li>
      * </ul>
      *
@@ -739,44 +739,42 @@ public class Readers {
     }
 
     /**
-     * Given a find-in function and a {@code String} {@code s}, return the value and index of the first "null" or
-     * value-string found in {@code s}.
+     * Transforms a find-in function into a find-in function that can also read nulls if necessary.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to {@code s}, must not return null, and, if the result is non-empty, its
-     *  elements are both non-null and the second element is non-negative.</li>
+     *  <li>{@code findIn} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null, and, if it is non-empty, the second element is non-negative.</li>
+     *  <li>The result must be called on {@code String}s {@code s} such that {@code findIn.apply(s)} returns a pair
+     *  with neither element null and the second element non-negative.</li>
      * </ul>
      *
      * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
      *               found.
-     * @param s the input {@code String}
      * @param <T> the type of value to be read
-     * @return the index and value of the first "null" or value-string, or an empty {@code Optional} if nothing is
-     * found
+     * @return a null-handling version of {@code findIn}
      */
-    public static @NotNull <T> Optional<Pair<T, Integer>> findInWithNulls(
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> findInWithNulls(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn
     ) {
-        Optional<Pair<T, Integer>> nonNullResult = findIn.apply(s);
-        if (nonNullResult.isPresent()) {
-            Pair<T, Integer> result = nonNullResult.get();
-            if (result.a == null || result.b == null)
-                throw new NullPointerException();
-            if (result.b < 0)
-                throw new IllegalArgumentException("findIn should not return indices less than 0");
-        }
-        int nullIndex = s.indexOf("null");
-        if (nullIndex == -1) return nonNullResult;
-        if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
-        Pair<T, Integer> unwrapped = nonNullResult.get();
-        if (nullIndex > unwrapped.b || (nullIndex == unwrapped.b && unwrapped.a.toString().length() >= 4)) {
-            return nonNullResult;
-        } else {
-            return Optional.of(new Pair<>(null, nullIndex));
-        }
+        return s -> {
+            Optional<Pair<T, Integer>> nonNullResult = findIn.apply(s);
+            if (nonNullResult.isPresent()) {
+                Pair<T, Integer> result = nonNullResult.get();
+                if (result.a == null || result.b == null)
+                    throw new NullPointerException();
+                if (result.b < 0)
+                    throw new IllegalArgumentException("findIn should not return indices less than 0");
+            }
+            int nullIndex = s.indexOf("null");
+            if (nullIndex == -1) return nonNullResult;
+            if (!nonNullResult.isPresent()) return Optional.of(new Pair<>(null, nullIndex));
+            Pair<T, Integer> unwrapped = nonNullResult.get();
+            if (nullIndex > unwrapped.b || (nullIndex == unwrapped.b && unwrapped.a.toString().length() >= 4)) {
+                return nonNullResult;
+            } else {
+                return Optional.of(new Pair<>(null, nullIndex));
+            }
+        };
     }
 
     /**

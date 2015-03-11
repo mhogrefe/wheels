@@ -565,33 +565,33 @@ public class ReadersTest {
 
     @Test
     public void testFindInWithNulls() {
-        aeq(findInWithNulls(Readers::findIntegerIn, "xyz123xyz").get(), "(123, 3)");
-        aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
-        assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
-        aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
-        assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
-        aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
-        assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("xyz123xyz").get(), "(123, 3)");
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("123null").get(), "(123, 0)");
+        assertNull(findInWithNulls(Readers::findIntegerIn).apply("null123").get().a);
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("--500").get(), "(-500, 1)");
+        assertNull(findInWithNulls(Readers::findIntegerIn).apply("thisisnull").get().a);
+        aeq(findInWithNulls(Readers::findBooleanIn).apply("falsenull").get(), "(false, 0)");
+        assertNull(findInWithNulls(Readers::findBooleanIn).apply("nullfalse").get().a);
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("xyz").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("--").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("").isPresent());
         try {
-            findInWithNulls(s -> null, "hello");
+            findInWithNulls(s -> null).apply("hello");
         } catch (NullPointerException ignored) {}
         try {
-            findInWithNulls(s -> Optional.of(new Pair<>('a', null)), "hello");
+            findInWithNulls(s -> Optional.of(new Pair<>('a', null))).apply("hello");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findInWithNulls(s -> Optional.of(new Pair<>(null, 3)), "hello");
+            findInWithNulls(s -> Optional.of(new Pair<>(null, 3))).apply("hello");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findInWithNulls(s -> Optional.of(new Pair<>(null, null)), "hello");
+            findInWithNulls(s -> Optional.of(new Pair<>(null, null))).apply("hello");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findInWithNulls(s -> Optional.of(new Pair<>('a', -1)), "hello");
+            findInWithNulls(s -> Optional.of(new Pair<>('a', -1))).apply("hello");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -685,7 +685,7 @@ public class ReadersTest {
 
     @Test
     public void testFindNullableOptionalIn() {
-        Function<String, Optional<Pair<Integer, Integer>>> fi = s -> findInWithNulls(Readers::findIntegerIn, s);
+        Function<String, Optional<Pair<Integer, Integer>>> fi = findInWithNulls(Readers::findIntegerIn);
         aeq(
                 findNullableOptionalIn(fi, "xyzNullableOptional[23]xyz"),
                 "Optional[(NullableOptional[23], 3)]"
