@@ -778,33 +778,35 @@ public class Readers {
     }
 
     /**
-     * Reads an {@link java.util.Optional} from a {@code String}. Only {@code String}s which could have been emitted
-     * by {@link java.util.Optional#toString} are recognized.
+     * Transform a function which reads a {@code String} into a value to a function which reads a {@code String} into
+     * an optional value. That function only returns {@code String}s which could have been returned by
+     * {@link Optional#toString}, and returns an empty {@code Optional<Optional<T>>} if the {@code String} does not
+     * represent an {@code Optional<T>}.
      *
      * <ul>
      *  <li>If {@code s} is of the form {@code "Optional[" + t + "]"}, {@code read} must terminate and not return a
      *  null on {@code t}.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>The result is must only be called on {@code String}s {@code s} such that if {@code s} is of the form
+     *  {@code "Optional[" + t + "]"}, {@code read} terminates and does not return a null on {@code t}.</li>
      * </ul>
      *
      * @param read a function which reads {@code s} into a value of type {@code T}
-     * @param s the input {@code String}
      * @param <T> the type of the {@code Optional}'s value
-     * @return the {@code Optional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
-     * represent an {@code Optional}
+     * @return a function which reads an optional value.
      */
-    public static @NotNull <T> Optional<Optional<T>> readOptional(
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<Optional<T>>> readOptional(
+            @NotNull Function<String, Optional<T>> read
     ) {
-        if (!s.startsWith("Optional")) return Optional.empty();
-        s = s.substring("Optional".length());
-        if (s.equals(".empty")) return Optional.of(Optional.<T>empty());
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        Optional<T> ot = read.apply(s);
-        return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
+        return s -> {
+            if (!s.startsWith("Optional")) return Optional.empty();
+            s = s.substring("Optional".length());
+            if (s.equals(".empty")) return Optional.of(Optional.<T>empty());
+            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+            s = tail(init(s));
+            Optional<T> ot = read.apply(s);
+            return ot.isPresent() ? Optional.of(ot) : Optional.<Optional<T>>empty();
+        };
     }
 
     /**

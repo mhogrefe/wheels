@@ -598,23 +598,23 @@ public class ReadersTest {
 
     @Test
     public void testReadOptional() {
-        aeq(readOptional(Readers::readInteger, "Optional[23]").get(), "Optional[23]");
-        aeq(readOptional(Readers::readInteger, "Optional[0]").get(), "Optional[0]");
-        aeq(readOptional(Readers::readInteger, "Optional[-5]").get(), "Optional[-5]");
-        aeq(readOptional(Readers::readInteger, "Optional.empty").get(), "Optional.empty");
-        aeq(readOptional(Readers::readBoolean, "Optional[false]").get(), "Optional[false]");
-        aeq(readOptional(Readers::readBoolean, "Optional[true]").get(), "Optional[true]");
-        aeq(readOptional(Readers::readBoolean, "Optional.empty").get(), "Optional.empty");
-        assertFalse(readOptional(Readers::readInteger, "Optional[10000000000000000000]").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "Optional[xyz]").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "Optional[null]").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "Optional[10").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "Optional").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "xyz").isPresent());
-        assertFalse(readOptional(Readers::readInteger, "").isPresent());
-        assertFalse(readOptional(Readers::readBoolean, "Optional[12]").isPresent());
+        aeq(readOptional(Readers::readInteger).apply("Optional[23]").get(), "Optional[23]");
+        aeq(readOptional(Readers::readInteger).apply("Optional[0]").get(), "Optional[0]");
+        aeq(readOptional(Readers::readInteger).apply("Optional[-5]").get(), "Optional[-5]");
+        aeq(readOptional(Readers::readInteger).apply("Optional.empty").get(), "Optional.empty");
+        aeq(readOptional(Readers::readBoolean).apply("Optional[false]").get(), "Optional[false]");
+        aeq(readOptional(Readers::readBoolean).apply("Optional[true]").get(), "Optional[true]");
+        aeq(readOptional(Readers::readBoolean).apply("Optional.empty").get(), "Optional.empty");
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[10000000000000000000]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[xyz]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[null]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[10").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("xyz").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("").isPresent());
+        assertFalse(readOptional(Readers::readBoolean).apply("Optional[12]").isPresent());
         try {
-            readOptional(s -> null, "Optional[hello]");
+            readOptional(s -> null).apply("Optional[hello]");
         } catch (NullPointerException ignored) {}
     }
 
