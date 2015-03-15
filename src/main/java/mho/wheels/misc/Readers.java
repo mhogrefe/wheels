@@ -779,13 +779,12 @@ public class Readers {
 
     /**
      * Transform a function which reads a {@code String} into a value to a function which reads a {@code String} into
-     * an optional value. That function only returns {@code String}s which could have been returned by
+     * an {@code Optional} value. That function only returns {@code String}s which could have been returned by
      * {@link Optional#toString}, and returns an empty {@code Optional<Optional<T>>} if the {@code String} does not
      * represent an {@code Optional<T>}.
      *
      * <ul>
-     *  <li>If {@code s} is of the form {@code "Optional[" + t + "]"}, {@code read} must terminate and not return a
-     *  null on {@code t}.</li>
+     *  <li>{@code read} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result is must only be called on {@code String}s {@code s} such that if {@code s} is of the form
      *  {@code "Optional[" + t + "]"}, {@code read} terminates and does not return a null on {@code t}.</li>
@@ -793,7 +792,7 @@ public class Readers {
      *
      * @param read a function which reads {@code s} into a value of type {@code T}
      * @param <T> the type of the {@code Optional}'s value
-     * @return a function which reads an optional value
+     * @return a function which reads an {@code Optional} value
      */
     public static @NotNull <T> Function<String, Optional<Optional<T>>> readOptional(
             @NotNull Function<String, Optional<T>> read
@@ -861,33 +860,34 @@ public class Readers {
     }
 
     /**
-     * Reads a {@link mho.wheels.structures.NullableOptional} from a {@code String}. Only {@code String}s which could
-     * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized.
+     * Transform a function which reads a {@code String} into a possibly-null value to a function which reads a
+     * {@code String} into a {@code NullableOptional} value. That function only returns {@code String}s which could
+     * have been returned by {@link NullableOptional#toString}, and returns an empty
+     * {@code Optional<NullableOptional<T>>} if the {@code String} does not represent a {@code NullableOptional<T>}.
      *
      * <ul>
-     *  <li>If {@code s} is of the form {@code "NullableOptional[" + t + "]"}, {@code read} must terminate and not
-     *  return a null on {@code t}.</li>
+     *  <li>{@code read} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>The result is must only be called on {@code String}s {@code s} such that if {@code s} is of the form
+     *  {@code "NullableOptional[" + t + "]"}, {@code read} terminates and does not return a null on {@code t}.</li>
      * </ul>
      *
      * @param read a function which reads {@code s} into a value of type {@code T}
-     * @param s the input {@code String}
      * @param <T> the type of the {@code NullableOptional}'s value
-     * @return the {@code NullableOptional} represented by {@code s}, or {@code Optional.empty} if {@code s} does not
-     * represent a {@code NullableOptional}
+     * @return a function which reads a {@code NullableOptional} value
      */
-    public static @NotNull <T> Optional<NullableOptional<T>> readNullableOptional(
-            @NotNull Function<String, NullableOptional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<NullableOptional<T>>> readNullableOptional(
+            @NotNull Function<String, NullableOptional<T>> read
     ) {
-        if (!s.startsWith("NullableOptional")) return Optional.empty();
-        s = s.substring("NullableOptional".length());
-        if (s.equals(".empty")) return Optional.of(NullableOptional.<T>empty());
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        NullableOptional<T> ot = read.apply(s);
-        return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
+        return s -> {
+            if (!s.startsWith("NullableOptional")) return Optional.empty();
+            s = s.substring("NullableOptional".length());
+            if (s.equals(".empty")) return Optional.of(NullableOptional.<T>empty());
+            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+            s = tail(init(s));
+            NullableOptional<T> ot = read.apply(s);
+            return ot.isPresent() ? Optional.of(ot) : Optional.<NullableOptional<T>>empty();
+        };
     }
 
     /**

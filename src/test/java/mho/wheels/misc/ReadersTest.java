@@ -659,27 +659,31 @@ public class ReadersTest {
 
     @Test
     public void testReadNullableOptional() {
-        Function<String, NullableOptional<Integer>> fi = s -> readWithNulls(Readers::readInteger).apply(s);
-        Function<String, NullableOptional<Boolean>> fb = s -> readWithNulls(Readers::readBoolean).apply(s);
-        aeq(readNullableOptional(fi, "NullableOptional[23]").get(), "NullableOptional[23]");
-        aeq(readNullableOptional(fi, "NullableOptional[0]").get(), "NullableOptional[0]");
-        aeq(readNullableOptional(fi, "NullableOptional[-5]").get(), "NullableOptional[-5]");
-        aeq(readNullableOptional(fi, "NullableOptional[null]").get(), "NullableOptional[null]");
-        aeq(readNullableOptional(fi, "NullableOptional.empty").get(), "NullableOptional.empty");
-        aeq(readNullableOptional(fb, "NullableOptional[false]").get(), "NullableOptional[false]");
-        aeq(readNullableOptional(fb, "NullableOptional[true]").get(), "NullableOptional[true]");
-        aeq(readNullableOptional(fb, "NullableOptional[null]").get(), "NullableOptional[null]");
-        aeq(readNullableOptional(fb, "NullableOptional.empty").get(), "NullableOptional.empty");
-        assertFalse(readNullableOptional(fi, "Optional[23]").isPresent());
-        assertFalse(readNullableOptional(fi, "NullableOptional[10000000000000000000]").isPresent());
-        assertFalse(readNullableOptional(fi, "NullableOptional[xyz]").isPresent());
-        assertFalse(readNullableOptional(fi, "NullableOptional[10").isPresent());
-        assertFalse(readNullableOptional(fi, "NullableOptional").isPresent());
-        assertFalse(readNullableOptional(fi, "xyz").isPresent());
-        assertFalse(readNullableOptional(fi, "").isPresent());
-        assertFalse(readNullableOptional(fb, "NullableOptional[12]").isPresent());
+        Function<String, Optional<NullableOptional<Integer>>> fi = readNullableOptional(
+                readWithNulls(Readers::readInteger)
+        );
+        Function<String, Optional<NullableOptional<Boolean>>> fb = readNullableOptional(
+                readWithNulls(Readers::readBoolean)
+        );
+        aeq(fi.apply("NullableOptional[23]").get(), "NullableOptional[23]");
+        aeq(fi.apply("NullableOptional[0]").get(), "NullableOptional[0]");
+        aeq(fi.apply("NullableOptional[-5]").get(), "NullableOptional[-5]");
+        aeq(fi.apply("NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(fi.apply("NullableOptional.empty").get(), "NullableOptional.empty");
+        aeq(fb.apply("NullableOptional[false]").get(), "NullableOptional[false]");
+        aeq(fb.apply("NullableOptional[true]").get(), "NullableOptional[true]");
+        aeq(fb.apply("NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(fb.apply("NullableOptional.empty").get(), "NullableOptional.empty");
+        assertFalse(fi.apply("Optional[23]").isPresent());
+        assertFalse(fi.apply("NullableOptional[10000000000000000000]").isPresent());
+        assertFalse(fi.apply("NullableOptional[xyz]").isPresent());
+        assertFalse(fi.apply("NullableOptional[10").isPresent());
+        assertFalse(fi.apply("NullableOptional").isPresent());
+        assertFalse(fi.apply("xyz").isPresent());
+        assertFalse(fi.apply("").isPresent());
+        assertFalse(fb.apply("NullableOptional[12]").isPresent());
         try {
-            readNullableOptional(s -> null, "NullableOptional[hello]");
+            readNullableOptional(s -> null).apply("NullableOptional[hello]");
         } catch (NullPointerException ignored) {}
     }
 
