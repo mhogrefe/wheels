@@ -1,9 +1,17 @@
 package mho.wheels.misc;
 
+import mho.wheels.structures.NullableOptional;
+import mho.wheels.structures.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static mho.wheels.misc.Readers.*;
 import static org.junit.Assert.*;
@@ -15,6 +23,132 @@ public class ReadersTest {
         aeq(MAX_POSITIVE_SHORT_LENGTH, 5);
         aeq(MAX_POSITIVE_INTEGER_LENGTH, 10);
         aeq(MAX_POSITIVE_LONG_LENGTH, 19);
+    }
+
+    private static class WordyInteger {
+        private final int i;
+
+        public WordyInteger(int i) {
+            this.i = i;
+        }
+
+        public @NotNull String toString() {
+            switch (i) {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                default: return "many";
+            }
+        }
+    }
+
+    private static class WordyIntegerWithNullToString {
+        private final int i;
+
+        public WordyIntegerWithNullToString(int i) {
+            this.i = i;
+        }
+
+        public @Nullable String toString() {
+            switch (i) {
+                case 1: return "one";
+                case 2: return "two";
+                case 3: return "three";
+                default: return null;
+            }
+        }
+    }
+
+    @Test
+    public void testGenericRead() {
+        Function<String, Optional<WordyInteger>> f = genericRead(s -> {
+            if (s.equals("one")) return new WordyInteger(1);
+            if (s.equals("two")) return new WordyInteger(2);
+            if (s.equals("three")) return new WordyInteger(3);
+            throw new ArithmeticException();
+        });
+        aeq(f.apply("one").get(), "one");
+        aeq(f.apply("two").get(), "two");
+        aeq(f.apply("three").get(), "three");
+        assertFalse(f.apply("four").isPresent());
+        assertFalse(f.apply("").isPresent());
+        assertFalse(f.apply(" ").isPresent());
+        assertFalse(f.apply("null").isPresent());
+
+        f = genericRead(s -> {
+            if (s.equals("one")) return new WordyInteger(1);
+            if (s.equals("two")) return new WordyInteger(2);
+            if (s.equals("three")) return new WordyInteger(3);
+            return new WordyInteger(10);
+        });
+        aeq(f.apply("one").get(), "one");
+        aeq(f.apply("two").get(), "two");
+        aeq(f.apply("three").get(), "three");
+        aeq(f.apply("many").get(), "many");
+        assertFalse(f.apply("four").isPresent());
+        assertFalse(f.apply("").isPresent());
+        assertFalse(f.apply(" ").isPresent());
+        assertFalse(f.apply("null").isPresent());
+
+        try {
+            genericRead(s -> null).apply("four");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testGenericFindIn_Iterable_T_String() {
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 3, 3)).apply("there are 3 numbers").get(), "(3, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
+        aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are no numbers").isPresent());
+        assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("").isPresent());
+        try {
+            genericFindIn(Arrays.asList(1, null, 3)).apply("there are 3 numbers");
+            fail();
+        } catch (NullPointerException ignored) {}
+        genericFindIn(Arrays.asList(1, 1, 3)).apply("there are 3 numbers");
+
+        List<WordyIntegerWithNullToString> xs = new ArrayList<>();
+        xs.add(new WordyIntegerWithNullToString(1));
+        xs.add(new WordyIntegerWithNullToString(2));
+        xs.add(new WordyIntegerWithNullToString(3));
+        xs.add(new WordyIntegerWithNullToString(4));
+        try {
+            genericFindIn(xs).apply("there are 3 numbers");
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testGenericFindIn_Function_T_Optional_T_String_String() {
+        Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
+            return Optional.empty();
+        }, " dehnortuw");
+        aeq(f.apply("vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
+        aeq(f.apply("vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
+        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
+        aeq(f.apply("vdfsmvldfvfdsz"), "Optional.empty");
+
+        //exclude "one hundred" chars
+        f = genericFindIn(s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
+            return Optional.empty();
+        }, "ehnortw");
+        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(one, 9)]");
+
+        try {
+            genericFindIn(s -> null, " dehnortuw").apply("vdfsmvlefqvehthreefdsz");
+            fail();
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
@@ -38,6 +172,7 @@ public class ReadersTest {
         assertFalse(findOrderingIn("").isPresent());
     }
 
+    @Test
     public void testReadOrdering() {
         aeq(readOrdering("LT").get(), "LT");
         aeq(readOrdering("EQ").get(), "EQ");
@@ -59,6 +194,7 @@ public class ReadersTest {
         assertFalse(findOrderingIn("").isPresent());
     }
 
+    @Test
     public void testReadRoundingMode() {
         aeq(readRoundingMode("UP").get(), "UP");
         aeq(readRoundingMode("UNNECESSARY").get(), "UNNECESSARY");
@@ -89,7 +225,6 @@ public class ReadersTest {
         assertFalse(readBigInteger(" 1").isPresent());
         assertFalse(readBigInteger("00").isPresent());
         assertFalse(readBigInteger("-0").isPresent());
-        assertFalse(readBigInteger("0xff").isPresent());
         assertFalse(readBigInteger("0xff").isPresent());
         assertFalse(readBigInteger("2 ").isPresent());
         assertFalse(readBigInteger("--1").isPresent());
@@ -404,32 +539,239 @@ public class ReadersTest {
     }
 
     @Test
+    public void testFindStringIn() {
+        aeq(findStringIn("Hello"), "Optional[(Hello, 0)]");
+        aeq(findStringIn("ø"), "Optional[(ø, 0)]");
+        aeq(findStringIn(""), "Optional[(, 0)]");
+    }
+
+    @Test
     public void testReadWithNulls() {
-        aeq(readWithNulls(Readers::readInteger, "23").get(), "23");
-        aeq(readWithNulls(Readers::readInteger, "-500").get(), "-500");
-        assertNull(readWithNulls(Readers::readInteger, "null").get());
-        aeq(readWithNulls(Readers::readString, "hello").get(), "hello");
-        aeq(readWithNulls(Readers::readString, "bye").get(), "bye");
-        aeq(readWithNulls(Readers::readString, "nullification").get(), "nullification");
-        aeq(readWithNulls(Readers::readString, "").get(), "");
-        assertNull(readWithNulls(Readers::readString, "null").get());
-        assertFalse(readWithNulls(Readers::readInteger, "annull").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger, "--").isPresent());
-        assertFalse(readWithNulls(Readers::readInteger, "").isPresent());
+        aeq(readWithNulls(Readers::readInteger).apply("23").get(), "23");
+        aeq(readWithNulls(Readers::readInteger).apply("-500").get(), "-500");
+        assertNull(readWithNulls(Readers::readInteger).apply("null").get());
+        aeq(readWithNulls(Readers::readString).apply("hello").get(), "hello");
+        aeq(readWithNulls(Readers::readString).apply("bye").get(), "bye");
+        aeq(readWithNulls(Readers::readString).apply("nullification").get(), "nullification");
+        aeq(readWithNulls(Readers::readString).apply("").get(), "");
+        assertNull(readWithNulls(Readers::readString).apply("null").get());
+        assertFalse(readWithNulls(Readers::readInteger).apply("annull").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger).apply("--").isPresent());
+        assertFalse(readWithNulls(Readers::readInteger).apply("").isPresent());
+        try {
+            readWithNulls(s -> null).apply("hello");
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testFindInWithNulls() {
-        aeq(findInWithNulls(Readers::findIntegerIn, "xyz123xyz").get(), "(123, 3)");
-        aeq(findInWithNulls(Readers::findIntegerIn, "123null").get(), "(123, 0)");
-        assertNull(findInWithNulls(Readers::findIntegerIn, "null123").get().a);
-        aeq(findInWithNulls(Readers::findIntegerIn, "--500").get(), "(-500, 1)");
-        assertNull(findInWithNulls(Readers::findIntegerIn, "thisisnull").get().a);
-        aeq(findInWithNulls(Readers::findBooleanIn, "falsenull").get(), "(false, 0)");
-        assertNull(findInWithNulls(Readers::findBooleanIn, "nullfalse").get().a);
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "xyz").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "--").isPresent());
-        assertFalse(findInWithNulls(Readers::findIntegerIn, "").isPresent());
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("xyz123xyz").get(), "(123, 3)");
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("123null").get(), "(123, 0)");
+        assertNull(findInWithNulls(Readers::findIntegerIn).apply("null123").get().a);
+        aeq(findInWithNulls(Readers::findIntegerIn).apply("--500").get(), "(-500, 1)");
+        assertNull(findInWithNulls(Readers::findIntegerIn).apply("thisisnull").get().a);
+        aeq(findInWithNulls(Readers::findBooleanIn).apply("falsenull").get(), "(false, 0)");
+        assertNull(findInWithNulls(Readers::findBooleanIn).apply("nullfalse").get().a);
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("xyz").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("--").isPresent());
+        assertFalse(findInWithNulls(Readers::findIntegerIn).apply("").isPresent());
+        try {
+            findInWithNulls(s -> null).apply("hello");
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>('a', null))).apply("hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>(null, 3))).apply("hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>(null, null))).apply("hello");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findInWithNulls(s -> Optional.of(new Pair<>('a', -1))).apply("hello");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testReadOptional() {
+        aeq(readOptional(Readers::readInteger).apply("Optional[23]").get(), "Optional[23]");
+        aeq(readOptional(Readers::readInteger).apply("Optional[0]").get(), "Optional[0]");
+        aeq(readOptional(Readers::readInteger).apply("Optional[-5]").get(), "Optional[-5]");
+        aeq(readOptional(Readers::readInteger).apply("Optional.empty").get(), "Optional.empty");
+        aeq(readOptional(Readers::readBoolean).apply("Optional[false]").get(), "Optional[false]");
+        aeq(readOptional(Readers::readBoolean).apply("Optional[true]").get(), "Optional[true]");
+        aeq(readOptional(Readers::readBoolean).apply("Optional.empty").get(), "Optional.empty");
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[10000000000000000000]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[xyz]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[null]").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional[10").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("Optional").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("xyz").isPresent());
+        assertFalse(readOptional(Readers::readInteger).apply("").isPresent());
+        assertFalse(readOptional(Readers::readBoolean).apply("Optional[12]").isPresent());
+        try {
+            readOptional(s -> null).apply("Optional[hello]");
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testFindOptionalIn() {
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[23]xyz"), "Optional[(Optional[23], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[0]xyz"), "Optional[(Optional[0], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional[-5]xyz"), "Optional[(Optional[-5], 3)]");
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("Optional[]Optional[-5]xyz"), "Optional[(Optional[-5], 2)]");
+        aeq(
+                findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[1000000000000000000]Optional[-5]xyz"),
+                "Optional[(Optional[-5], 10)]"
+        );
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("Optional[3]Optional[-5]xyz"), "Optional[(Optional[3], 0)]");
+        aeq(findOptionalIn(Readers::findIntegerIn).apply("xyzOptional.emptyxyz"), "Optional[(Optional.empty, 3)]");
+        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[1000000000000000000]xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptional[null]xyz").isPresent());
+        assertFalse(findOptionalIn(Readers::findIntegerIn).apply("vdsfvOptinal[3]xyz").isPresent());
+        try {
+            findOptionalIn(s -> null).apply("Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>('a', null))).apply("Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>(null, 3))).apply("Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>(null, null))).apply("Optional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findOptionalIn(s -> Optional.of(new Pair<>('a', -1))).apply("Optional[hello]");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testReadNullableOptional() {
+        Function<String, Optional<NullableOptional<Integer>>> fi = readNullableOptional(
+                readWithNulls(Readers::readInteger)
+        );
+        Function<String, Optional<NullableOptional<Boolean>>> fb = readNullableOptional(
+                readWithNulls(Readers::readBoolean)
+        );
+        aeq(fi.apply("NullableOptional[23]").get(), "NullableOptional[23]");
+        aeq(fi.apply("NullableOptional[0]").get(), "NullableOptional[0]");
+        aeq(fi.apply("NullableOptional[-5]").get(), "NullableOptional[-5]");
+        aeq(fi.apply("NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(fi.apply("NullableOptional.empty").get(), "NullableOptional.empty");
+        aeq(fb.apply("NullableOptional[false]").get(), "NullableOptional[false]");
+        aeq(fb.apply("NullableOptional[true]").get(), "NullableOptional[true]");
+        aeq(fb.apply("NullableOptional[null]").get(), "NullableOptional[null]");
+        aeq(fb.apply("NullableOptional.empty").get(), "NullableOptional.empty");
+        assertFalse(fi.apply("Optional[23]").isPresent());
+        assertFalse(fi.apply("NullableOptional[10000000000000000000]").isPresent());
+        assertFalse(fi.apply("NullableOptional[xyz]").isPresent());
+        assertFalse(fi.apply("NullableOptional[10").isPresent());
+        assertFalse(fi.apply("NullableOptional").isPresent());
+        assertFalse(fi.apply("xyz").isPresent());
+        assertFalse(fi.apply("").isPresent());
+        assertFalse(fb.apply("NullableOptional[12]").isPresent());
+        try {
+            readNullableOptional(s -> null).apply("NullableOptional[hello]");
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testFindNullableOptionalIn() {
+        Function<String, Optional<Pair<Integer, Integer>>> fi = findInWithNulls(Readers::findIntegerIn);
+        aeq(
+                findNullableOptionalIn(fi, "xyzNullableOptional[23]xyz"),
+                "Optional[(NullableOptional[23], 3)]"
+        );
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[0]xyz"), "Optional[(NullableOptional[0], 3)]");
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 3)]");
+        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[null]xyz"), "Optional[(NullableOptional[null], 3)]");
+        aeq(
+                findNullableOptionalIn(fi, "NullableOptional[]NullableOptional[-5]xyz"),
+                "Optional[(NullableOptional[-5], 2)]"
+        );
+        aeq(
+                findNullableOptionalIn(
+                        Readers::findIntegerIn,
+                        "vdsfvNullableOptional[1000000000000000000]NullableOptional[-5]xyz"
+                ),
+                "Optional[(NullableOptional[-5], 10)]"
+        );
+        aeq(
+                findNullableOptionalIn(Readers::findIntegerIn, "NullableOptional[3]NullableOptional[-5]xyz"),
+                "Optional[(NullableOptional[3], 0)]"
+        );
+        aeq(
+                findNullableOptionalIn(Readers::findIntegerIn, "xyzNullableOptional.emptyxyz"),
+                "Optional[(NullableOptional.empty, 3)]"
+        );
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "xyz").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvOptional[23]xyz").isPresent());
+        assertFalse(
+                findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[1000000000000000000]xyz")
+                        .isPresent()
+        );
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[null]xyz").isPresent());
+        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptinal[3]xyz").isPresent());
+        try {
+            findNullableOptionalIn(s -> null, "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', null)), "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>(null, null)), "NullableOptional[hello]");
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', -1)), "NullableOptional[hello]");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testReadList() {
+        aeq(readList(Readers::readInteger, "[]").get(), "[]");
+        aeq(readList(Readers::readInteger, "[1]").get(), "[1]");
+        aeq(readList(Readers::readInteger, "[1, 2, -3]").get(), "[1, 2, -3]");
+        assertFalse(readList(Readers::readInteger, "[1000000000000000]").isPresent());
+        assertFalse(readList(Readers::readInteger, "[null]").isPresent());
+        assertFalse(readList(Readers::readInteger, "[1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger, "1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger, "[a]").isPresent());
+        assertFalse(readList(Readers::readInteger, "[00]").isPresent());
+        Optional<List<String>> ss;
+
+        ss = readList(Readers::readString, "[hello]");
+        aeq(ss.get(), "[hello]");
+        aeq(ss.get().size(), 1);
+
+        ss = readList(Readers::readString, "[hello, bye]");
+        aeq(ss.get(), "[hello, bye]");
+        aeq(ss.get().size(), 2);
+
+        ss = readList(Readers::readString, "[a, b, c]");
+        aeq(ss.get(), "[a, b, c]");
+        aeq(ss.get().size(), 3);
+    }
+
+    @Test
+    public void testFindListIn() {
+        //todo
     }
 
     private static void aeq(Object a, Object b) {

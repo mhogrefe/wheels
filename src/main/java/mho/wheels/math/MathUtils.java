@@ -125,6 +125,26 @@ public final class MathUtils {
     }
 
     /**
+     * The least common multiple of two positive {@code BigInteger}s. Versions of this method for {@code int}s and
+     * {@code long}s are not provided to avoid overflow concerns.
+     *
+     * <ul>
+     *  <li>{@code x} must be positive.</li>
+     *  <li>{@code y} must be positive.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @param x the first number
+     * @param y the second number
+     * @return lcm(x, y)
+     */
+    public static @NotNull BigInteger lcm(@NotNull BigInteger x, @NotNull BigInteger y) {
+        if (x.signum() != 1 || y.signum() != 1)
+            throw new ArithmeticException("both lcm arguments must be positive");
+        return x.divide(x.gcd(y)).multiply(y);
+    }
+
+    /**
      * Returns the bits of a non-negative {@code int}. The {@link Iterable} returned is little-endian; the
      * least-significant bits come first. Zero gives an empty {@code Iterable}. There are no trailing unset bits. Does
      * not support removal.
@@ -184,7 +204,7 @@ public final class MathUtils {
     public static @NotNull Iterable<Boolean> bits(@NotNull BigInteger n) {
         if (n.signum() == -1)
             throw new ArithmeticException("cannot get bits of a negative number");
-        return take(n.bitLength(), map(n::testBit, range(0)));
+        return take(n.bitLength(), map(n::testBit, rangeUp(0)));
     }
 
     /**
@@ -232,7 +252,7 @@ public final class MathUtils {
             throw new ArithmeticException("cannot pad with a negative length");
         if (n.signum() == -1)
             throw new ArithmeticException("cannot get bits of a negative number");
-        return take(length, map(n::testBit, range(0)));
+        return take(length, map(n::testBit, rangeUp(0)));
     }
 
     /**
@@ -327,7 +347,7 @@ public final class MathUtils {
      */
     public static @NotNull BigInteger fromBits(@NotNull Iterable<Boolean> bits) {
         BigInteger n = BigInteger.ZERO;
-        for (int i : select(bits, range(0))) {
+        for (int i : select(bits, rangeUp(0))) {
             n = n.setBit(i);
         }
         return n;
@@ -1143,7 +1163,7 @@ public final class MathUtils {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
                     return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
                 },
-                range(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+                rangeUp(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
         for (BigInteger candidate : takeWhile(i -> le(i, limit), candidates)) {
             if (n.mod(candidate).equals(BigInteger.ZERO)) return candidate;
@@ -1225,7 +1245,7 @@ public final class MathUtils {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));
                     return Arrays.asList(sixI.subtract(BigInteger.ONE), sixI.add(BigInteger.ONE));
                 },
-                range(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
+                rangeUp(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
         //noinspection Convert2MethodRef
         return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filter(MathUtils::isPrime, candidates));

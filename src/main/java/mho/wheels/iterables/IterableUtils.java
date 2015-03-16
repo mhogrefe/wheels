@@ -246,7 +246,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Byte> range(byte a) {
+    public static @NotNull Iterable<Byte> rangeUp(byte a) {
         return range(a, Byte.MAX_VALUE);
     }
 
@@ -264,7 +264,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Short> range(short a) {
+    public static @NotNull Iterable<Short> rangeUp(short a) {
         return range(a, Short.MAX_VALUE);
     }
 
@@ -283,7 +283,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Integer> range(int a) {
+    public static @NotNull Iterable<Integer> rangeUp(int a) {
         return range(a, Integer.MAX_VALUE);
     }
 
@@ -301,7 +301,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Long> range(long a) {
+    public static @NotNull Iterable<Long> rangeUp(long a) {
         return range(a, Long.MAX_VALUE);
     }
 
@@ -318,7 +318,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a) {
+    public static @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         return iterate(i -> i.add(BigInteger.ONE), a);
     }
 
@@ -336,7 +336,7 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a) {
+    public static @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
         return iterate(i -> i.add(BigDecimal.ONE), a);
     }
 
@@ -355,7 +355,7 @@ public final class IterableUtils {
      * @param a the starting value of this {@code Character} sequence
      * @return an sequence of consecutive {@code Character}s, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Character> range(char a) {
+    public static @NotNull Iterable<Character> rangeUp(char a) {
         return range(a, Character.MAX_VALUE);
     }
 
@@ -379,13 +379,13 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Float> range(float a) {
+    public static @NotNull Iterable<Float> rangeUp(float a) {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
             return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
         }
-        Iterable<Float> fs = map(BigDecimal::floatValue, range(new BigDecimal(Float.toString(a))));
+        Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
         return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
     }
 
@@ -409,13 +409,13 @@ public final class IterableUtils {
      * @param a the starting value of this arithmetic progression
      * @return an arithmetic progression with an increment of 1, starting at {@code a} (inclusive)
      */
-    public static @NotNull Iterable<Double> range(double a) {
+    public static @NotNull Iterable<Double> rangeUp(double a) {
         if (Double.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
             return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
         }
-        Iterable<Double> ds = map(BigDecimal::doubleValue, range(BigDecimal.valueOf(a)));
+        Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
         return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
     }
 
@@ -747,7 +747,7 @@ public final class IterableUtils {
             return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
         }
         if (Float.isInfinite(b)) {
-            return range(a);
+            return rangeUp(a);
         }
         Iterable<Float> fs = map(
                 BigDecimal::floatValue,
@@ -792,7 +792,7 @@ public final class IterableUtils {
             return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
         }
         if (Double.isInfinite(b)) {
-            return range(a);
+            return rangeUp(a);
         }
         Iterable<Double> ds = map(
                 BigDecimal::doubleValue,
@@ -2533,7 +2533,7 @@ public final class IterableUtils {
         return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
     }
 
-    public static @NotNull <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static @Nullable <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1(p -> max(p.a, p.b), xs);
     }
 
@@ -2541,7 +2541,7 @@ public final class IterableUtils {
         return foldl1(p -> max(p.a, p.b), fromString(s));
     }
 
-    public static @NotNull <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static @Nullable <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1(p -> min(p.a, p.b), xs);
     }
 
@@ -3744,11 +3744,11 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> gt(p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nondecreasing(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> le(p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nonincreasing(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
         return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
     }
 
@@ -3774,14 +3774,14 @@ public final class IterableUtils {
         return and(adjacentPairsWith(p -> gt(comparator, p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nondecreasing(
+    public static <T extends Comparable<T>> boolean weaklyIncreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
         return and(adjacentPairsWith(p -> le(comparator, p.a, p.b), xs));
     }
 
-    public static <T extends Comparable<T>> boolean nonincreasing(
+    public static <T extends Comparable<T>> boolean weaklyDecreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
@@ -4075,15 +4075,15 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<Integer> elemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
-        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(0), xs)));
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(rangeUp(0), xs)));
     }
 
     public static @NotNull <T> Iterable<BigInteger> bigIntegerElemIndices(@Nullable T x, @NotNull Iterable<T> xs) {
-        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(range(BigInteger.ZERO), xs)));
+        return map(p -> p.a, filter(p -> Objects.equals(x, p.b), zip(rangeUp(BigInteger.ZERO), xs)));
     }
 
     public static @NotNull Iterable<Integer> elemIndices(char c, @NotNull String s) {
-        return map(p -> p.a, filter(p -> p.b == c, zip(range(0), fromString(s))));
+        return map(p -> p.a, filter(p -> p.b == c, zip(rangeUp(0), fromString(s))));
     }
 
     public static @NotNull <T> Optional<Integer> findIndex(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
@@ -4115,18 +4115,18 @@ public final class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<Integer> findIndices(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), xs)));
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(0), xs)));
     }
 
     public static @NotNull <T> Iterable<BigInteger> bigIntegerFindIndices(
             @NotNull Predicate<T> p,
             @NotNull Iterable<T> xs
     ) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(BigInteger.ZERO), xs)));
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(BigInteger.ZERO), xs)));
     }
 
     public static @NotNull Iterable<Integer> findIndices(@NotNull Predicate<Character> p, @NotNull String s) {
-        return map(q -> q.a, filter(q -> p.test(q.b), zip(range(0), fromString(s))));
+        return map(q -> q.a, filter(q -> p.test(q.b), zip(rangeUp(0), fromString(s))));
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
@@ -4979,6 +4979,172 @@ public final class IterableUtils {
         return filter(c -> elem(c, t), s);
     }
 
+    public static @NotNull <T extends Comparable<T>> Iterable<T> merge(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<T> ysi = ys.iterator();
+            private NullableOptional<T> ox = NullableOptional.empty();
+            private NullableOptional<T> oy = NullableOptional.empty();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext() || ysi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (!xsi.hasNext()) {
+                    if (oy.isPresent()) {
+                        T y = oy.get();
+                        oy = NullableOptional.empty();
+                        return y;
+                    } else {
+                        return ysi.next();
+                    }
+                }
+                if (!xsi.hasNext()) {
+                    if (ox.isPresent()) {
+                        T x = ox.get();
+                        ox = NullableOptional.empty();
+                        return x;
+                    } else {
+                        return xsi.next();
+                    }
+                }
+                if (!ox.isPresent() && xsi.hasNext()) {
+                    ox = NullableOptional.of(xsi.next());
+                }
+                if (!oy.isPresent() && ysi.hasNext()) {
+                    oy = NullableOptional.of(ysi.next());
+                }
+                T next;
+                if (lt(ox.get(), oy.get())) {
+                    next = ox.get();
+                    ox = NullableOptional.empty();
+                } else {
+                    next = oy.get();
+                    oy = NullableOptional.empty();
+                }
+                return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    public static @NotNull <T extends Comparable<T>> Iterable<T> orderedIntersection(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        Iterable<Pair<T, Integer>> merged = merge(
+                (p, q) -> {
+                    Ordering o = compare(p.a, q.a);
+                    if (o != EQ) return o.toInt();
+                    return Integer.compare(p.b, q.b);
+                },
+                countAdjacent(xs),
+                countAdjacent(ys)
+        );
+        Iterable<Pair<T, Integer>> intersected = map(
+                ps -> {
+                    int frequency = ps.size() == 1 ? 0 : min(ps.get(0).b, ps.get(1).b);
+                    return new Pair<>(ps.get(0).a, frequency);
+                },
+                group(p -> p.a.a.equals(p.b.a), merged)
+        );
+        return concatMap(p -> replicate(p.b, p.a), intersected);
+    }
+
+    public static @NotNull <T extends Comparable<T>> Iterable<T> orderedIntersection(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        Iterable<Pair<T, Integer>> merged = merge(
+                (p, q) -> {
+                    Ordering o = compare(comparator, p.a, q.a);
+                    if (o != EQ) return o.toInt();
+                    return Integer.compare(p.b, q.b);
+                },
+                countAdjacent(xs),
+                countAdjacent(ys)
+        );
+        Iterable<Pair<T, Integer>> intersected = map(
+                ps -> {
+                    int frequency = ps.size() == 1 ? 0 : min(ps.get(0).b, ps.get(1).b);
+                    return new Pair<>(ps.get(0).a, frequency);
+                },
+                group(p -> p.a.a.equals(p.b.a), merged)
+        );
+        return concatMap(p -> replicate(p.b, p.a), intersected);
+    }
+
+    public static @NotNull <T> Iterable<T> merge(
+            @NotNull Comparator<T> comparator,
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        return () -> new Iterator<T>() {
+            private Iterator<T> xsi = xs.iterator();
+            private Iterator<T> ysi = ys.iterator();
+            private NullableOptional<T> ox = NullableOptional.empty();
+            private NullableOptional<T> oy = NullableOptional.empty();
+
+            @Override
+            public boolean hasNext() {
+                return xsi.hasNext() || ysi.hasNext();
+            }
+
+            @Override
+            public T next() {
+                if (!xsi.hasNext()) {
+                    if (oy.isPresent()) {
+                        T y = oy.get();
+                        oy = NullableOptional.empty();
+                        return y;
+                    } else {
+                        return ysi.next();
+                    }
+                }
+                if (!xsi.hasNext()) {
+                    if (ox.isPresent()) {
+                        T x = ox.get();
+                        ox = NullableOptional.empty();
+                        return x;
+                    } else {
+                        return xsi.next();
+                    }
+                }
+                if (!ox.isPresent() && xsi.hasNext()) {
+                    ox = NullableOptional.of(xsi.next());
+                }
+                if (!oy.isPresent() && ysi.hasNext()) {
+                    oy = NullableOptional.of(ysi.next());
+                }
+                T next;
+                if (lt(comparator, ox.get(), oy.get())) {
+                    next = ox.get();
+                    ox = NullableOptional.empty();
+                } else {
+                    next = oy.get();
+                    oy = NullableOptional.empty();
+                }
+                return next;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
     public static @NotNull <T extends Comparable<T>> List<T> sort(@NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list);
@@ -5066,7 +5232,7 @@ public final class IterableUtils {
         return charsToString(list);
     }
 
-    public static @NotNull <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static @Nullable <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1(p -> max(comparator, p.a, p.b), xs);
     }
 
@@ -5074,7 +5240,7 @@ public final class IterableUtils {
         return foldl1(p -> max(comparator, p.a, p.b), fromString(s));
     }
 
-    public static @NotNull <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static @Nullable <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1(p -> min(comparator, p.a, p.b), xs);
     }
 

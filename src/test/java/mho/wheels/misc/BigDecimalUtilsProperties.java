@@ -41,6 +41,8 @@ public class BigDecimalUtilsProperties {
             System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
             USE_RANDOM = useRandom;
             propertiesSetPrecision();
+            propertiesSuccessor();
+            propertiesPredecessor();
         }
         System.out.println("Done");
     }
@@ -91,6 +93,30 @@ public class BigDecimalUtilsProperties {
                 setPrecision(p.a, p.b);
                 fail(p.toString());
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesSuccessor() {
+        initialize();
+        System.out.println("\t\ttesting successor(BigDecimal) properties...");
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            BigDecimal successor = successor(bd);
+            assertEquals(bd.toString(), bd.scale(), successor.scale());
+            assertEquals(bd.toString(), predecessor(successor), bd);
+            assertEquals(bd.toString(), successor(bd.negate()), predecessor(bd).negate());
+        }
+    }
+
+    private static void propertiesPredecessor() {
+        initialize();
+        System.out.println("\t\ttesting predecessor(BigDecimal) properties...");
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            BigDecimal predecessor = predecessor(bd);
+            assertEquals(bd.toString(), bd.scale(), predecessor.scale());
+            assertEquals(bd.toString(), successor(predecessor), bd);
+            assertEquals(bd.toString(), predecessor(bd.negate()), successor(bd).negate());
         }
     }
 }

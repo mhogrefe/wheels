@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 public class MathUtilsProperties {
     private static boolean USE_RANDOM;
     private static final int SMALL_LIMIT = 3000;
+    private static final int TINY_LIMIT = 10;
     private static int LIMIT;
 
     private static IterableProvider P;
@@ -52,6 +53,8 @@ public class MathUtilsProperties {
             compareImplementationsGcd_int_int();
             propertiesGcd_long_long();
             compareImplementationsGcd_long_long();
+            propertiesLcm();
+            compareImplementationsLcm();
             propertiesBits_int();
             compareImplementationsBits_int();
             propertiesBits_BigInteger();
@@ -124,8 +127,33 @@ public class MathUtilsProperties {
             int gcd = gcd(p.a, p.b);
             assertEquals(p.toString(), gcd, gcd_int_int_simplest(p.a, p.b));
             assertEquals(p.toString(), gcd, gcd_int_int_explicit(p.a, p.b));
+            assertEquals(p.toString(), gcd, gcd(p.b, p.a));
+            assertEquals(p.toString(), p.a % gcd, 0);
+            assertEquals(p.toString(), p.b % gcd, 0);
             assertTrue(p.toString(), gcd >= 0);
             assertEquals(p.toString(), gcd, gcd(Math.abs(p.a), Math.abs(p.b)));
+            for (int i : take(TINY_LIMIT, P.rangeUp(gcd + 1))) {
+                assertFalse(p.toString(), p.a % i == 0 && p.b % i == 0);
+            }
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            assertEquals(gcd(i, 1), 1);
+        }
+
+        for (int i : take(LIMIT, filter(j -> j != 0, P.integers()))) {
+            assertEquals(gcd(i, i), Math.abs(i));
+            assertEquals(gcd(i, 0), Math.abs(i));
+        }
+
+        Iterable<Triple<Integer, Integer, Integer>> ts = filter(
+                u -> (u.a != 0 || u.b != 0) && (u.b != 0 || u.c != 0),
+                P.triples(P.integers())
+        );
+        for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
+            int gcd1 = gcd(gcd(t.a, t.b), t.c);
+            int gcd2 = gcd(t.a, gcd(t.b, t.c));
+            assertEquals(t.toString(), gcd1, gcd2);
         }
     }
 
@@ -181,8 +209,33 @@ public class MathUtilsProperties {
             if (Math.abs(p.a) <= Integer.MAX_VALUE && Math.abs(p.b) <= Integer.MAX_VALUE) {
                 assertEquals(p.toString(), gcd, gcd_long_long_explicit(p.a, p.b));
             }
+            assertEquals(p.toString(), gcd, gcd(p.b, p.a));
             assertTrue(p.toString(), gcd >= 0);
+            assertEquals(p.toString(), p.a % gcd, 0);
+            assertEquals(p.toString(), p.b % gcd, 0);
             assertEquals(p.toString(), gcd, gcd(Math.abs(p.a), Math.abs(p.b)));
+            for (long l : take(TINY_LIMIT, P.rangeUp(gcd + 1))) {
+                assertFalse(p.toString(), p.a % l == 0 && p.b % l == 0);
+            }
+        }
+
+        for (long l : take(LIMIT, P.longs())) {
+            assertEquals(gcd(l, 1L), 1);
+        }
+
+        for (long l : take(LIMIT, filter(m -> m != 0L, P.longs()))) {
+            assertEquals(gcd(l, l), Math.abs(l));
+            assertEquals(gcd(l, 0L), Math.abs(l));
+        }
+
+        Iterable<Triple<Long, Long, Long>> ts = filter(
+                u -> (u.a != 0L || u.b != 0L) && (u.b != 0L || u.c != 0L),
+                P.triples(P.longs())
+        );
+        for (Triple<Long, Long, Long> t : take(LIMIT, ts)) {
+            long gcd1 = gcd(gcd(t.a, t.b), t.c);
+            long gcd2 = gcd(t.a, gcd(t.b, t.c));
+            assertEquals(t.toString(), gcd1, gcd2);
         }
     }
 
@@ -200,6 +253,7 @@ public class MathUtilsProperties {
         System.out.println("\t\t\tsimplest: " + ((double) totalTime) / 1e9 + " s");
 
         if (P instanceof ExhaustiveProvider) {
+            totalTime = 0;
             for (Pair<Long, Long> p : take(LIMIT, ps)) {
                 long time = System.nanoTime();
                 gcd_long_long_explicit(p.a, p.b);
@@ -214,6 +268,88 @@ public class MathUtilsProperties {
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
             gcd(p.a, p.b);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+    }
+
+    private static @NotNull BigInteger lcm_explicit(@NotNull BigInteger x, @NotNull BigInteger y) {
+        return head(orderedIntersection(rangeBy(x, x), rangeBy(y, y)));
+    }
+
+    private static void propertiesLcm() {
+        initialize();
+        System.out.println("\t\ttesting lcm(BigInteger, BigInteger) properties...");
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
+            BigInteger lcm = lcm(p.a, p.b);
+            assertEquals(p.toString(), lcm, lcm(p.b, p.a));
+            assertEquals(p.toString(), lcm.signum(), 1);
+            assertEquals(p.toString(), lcm.mod(p.a), BigInteger.ZERO);
+            assertEquals(p.toString(), lcm.mod(p.b), BigInteger.ZERO);
+            for (BigInteger i : take(TINY_LIMIT, P.range(BigInteger.ONE, lcm.subtract(BigInteger.ONE)))) {
+                assertFalse(p.toString(), i.mod(p.a).equals(BigInteger.ZERO) && i.mod(p.b).equals(BigInteger.ZERO));
+            }
+        }
+
+        Iterable<Pair<BigInteger, BigInteger>> ps;
+        if (P instanceof ExhaustiveProvider) {
+            ps = P.pairs(P.positiveBigIntegers());
+        } else {
+            ps = P.pairs(
+                    filter(i -> le(i, BigInteger.valueOf(1000000)), ((RandomProvider) P).positiveBigIntegers(10))
+            );
+        }
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
+            BigInteger lcm = lcm(p.a, p.b);
+            assertEquals(p.toString(), lcm, lcm_explicit(p.a, p.b));
+        }
+
+        for (BigInteger i : take(LIMIT, P.positiveBigIntegers())) {
+            assertEquals(lcm(i, BigInteger.ONE), i);
+            assertEquals(lcm(i, i), i);
+        }
+
+        for (Triple<BigInteger, BigInteger, BigInteger> t : take(LIMIT, P.triples(P.positiveBigIntegers()))) {
+            BigInteger lcm1 = lcm(lcm(t.a, t.b), t.c);
+            BigInteger lcm2 = lcm(t.a, lcm(t.b, t.c));
+            assertEquals(t.toString(), lcm1, lcm2);
+        }
+
+        Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(P.rangeDown(BigInteger.ZERO), P.positiveBigIntegers());
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
+            try {
+                lcm(p.a, p.b);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+            try {
+                lcm(p.b, p.a);
+                fail(p.toString());
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void compareImplementationsLcm() {
+        initialize();
+        System.out.println("\t\tcomparing lcm(BigInteger, BigInteger) implementations...");
+
+        long totalTime = 0;
+
+        if (P instanceof ExhaustiveProvider) {
+            for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
+                long time = System.nanoTime();
+                lcm_explicit(p.a, p.b);
+                totalTime += (System.nanoTime() - time);
+            }
+            System.out.println("\t\t\texplicit: " + ((double) totalTime) / 1e9 + " s");
+        } else {
+            System.out.println("\t\t\texplicit: too long");
+        }
+
+        totalTime = 0;
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
+            long time = System.nanoTime();
+            lcm(p.a, p.b);
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
@@ -379,7 +515,7 @@ public class MathUtilsProperties {
             } catch (UnsupportedOperationException ignored) {}
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> rangeUp(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits).intValueExact(), p.a.intValue());
@@ -450,7 +586,7 @@ public class MathUtilsProperties {
             } catch (UnsupportedOperationException ignored) {}
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> rangeUp(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = toList(bitsPadded(p.b, p.a));
             assertEquals(p.toString(), fromBits(bits), p.a);
@@ -571,7 +707,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> range(BigInteger.valueOf(i).bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalIntegers(), i -> rangeUp(BigInteger.valueOf(i).bitLength()));
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits).intValueExact(), p.a.intValue());
@@ -636,7 +772,7 @@ public class MathUtilsProperties {
             assertEquals(p.toString(), bits.size(), p.b.intValue());
         }
 
-        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> range(i.bitLength()));
+        ps = P.dependentPairsLogarithmic(P.naturalBigIntegers(), i -> rangeUp(i.bitLength()));
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
             assertEquals(p.toString(), fromBigEndianBits(bits), p.a);

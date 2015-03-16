@@ -13,8 +13,8 @@ import static mho.wheels.ordering.Ordering.*;
  * Compares two {@code Iterable}s lexicographically (by "dictionary order"). This {@code Comparator} looks at the
  * elements of both {@code Iterable}s in parallel, left-to-right. The first pair of elements which aren't equal
  * determine the ordering. If one of the {@code Iterator}s ends during this process (that is, the corresponding
- * {@code Iterable} is a prefix of the {@code Iterable} it's being compared to), the corresponding {@code Iterable} is
- * considered smaller.
+ * {@code Iterable} is a prefix of the {@code Iterable} it's being compared to), that {@code Iterable} is considered
+ * smaller.
  *
  * @param <T> the type of the {@code Iterable}s' values
  */
@@ -66,10 +66,11 @@ public class LexComparator<T extends Comparable<T>> implements Comparator<Iterab
      */
     @Override
     public int compare(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        if (xs == ys) return 0;
         Iterator<T> xsi = xs.iterator();
         Iterator<T> ysi = ys.iterator();
         while (xsi.hasNext()) {
-            if (!ysi.hasNext()) return GT.toInt();
+            if (!ysi.hasNext()) return 1;
             Ordering elementOrdering;
             if (elementComparator == null) {
                 elementOrdering = Ordering.compare(xsi.next(), ysi.next());
@@ -78,6 +79,6 @@ public class LexComparator<T extends Comparable<T>> implements Comparator<Iterab
             }
             if (elementOrdering != EQ) return elementOrdering.toInt();
         }
-        return (ysi.hasNext() ? LT : EQ).toInt();
+        return ysi.hasNext() ? -1 : 0;
     }
 }

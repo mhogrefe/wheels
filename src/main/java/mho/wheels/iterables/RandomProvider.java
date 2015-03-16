@@ -220,23 +220,27 @@ public class RandomProvider implements IterableProvider {
     //b - a + 1
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return new ArrayList<>();
         return map(i -> (byte) (i + a), randomInts((int) b - a + 1));
     }
 
     //b - a + 1
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
+        if (a > b) return new ArrayList<>();
         return map(i -> (short) (i + a), randomInts((int) b - a + 1));
     }
 
     //b - a + 1
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
+        if (a > b) return new ArrayList<>();
         return map(i -> (int) (i + a), randomLongs(b - a + 1));
     }
 
     //b - a + 1
     public @NotNull Iterable<Long> range(long a, long b) {
+        if (a > b) return new ArrayList<>();
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
                 randomBigIntegers(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
@@ -246,11 +250,13 @@ public class RandomProvider implements IterableProvider {
     //b - a + 1
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (Ordering.gt(a, b)) return new ArrayList<>();
         return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
     }
 
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
+        if (a > b) return new ArrayList<>();
         return map(i -> (char) (i + a), randomInts(b - a + 1));
     }
 
@@ -1154,6 +1160,48 @@ public class RandomProvider implements IterableProvider {
                 xs,
                 x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
                 MathUtils::logarithmicDemux
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                MathUtils::squareRootDemux
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
         );
     }
 

@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.misc.BigDecimalUtils.predecessor;
 import static mho.wheels.misc.BigDecimalUtils.setPrecision;
+import static mho.wheels.misc.BigDecimalUtils.successor;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {
@@ -37,6 +39,20 @@ public class BigDecimalUtilsDemos {
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             System.out.println("setPrecision(" + p.a + ", " + p.b + ") = " + setPrecision(p.a, p.b));
+        }
+    }
+
+    private static void demoSuccessor() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            System.out.println("successor(" + bd + ") = " + successor(bd));
+        }
+    }
+
+    private static void demoPredecessor() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            System.out.println("predecessor(" + bd + ") = " + predecessor(bd));
         }
     }
 }

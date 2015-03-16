@@ -4,7 +4,9 @@ import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -62,6 +64,10 @@ public final class Quadruple<A, B, C, D> {
         this.b = b;
         this.c = c;
         this.d = d;
+    }
+
+    public static <T> List<T> toList(Quadruple<T, T, T, T> q) {
+        return Arrays.asList(q.a, q.b, q.c, q.d);
     }
 
     /**

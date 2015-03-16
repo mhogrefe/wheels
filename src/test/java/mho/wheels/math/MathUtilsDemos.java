@@ -15,7 +15,6 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
@@ -48,6 +47,13 @@ public class MathUtilsDemos {
         Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
         for (Pair<Long, Long> p : take(LIMIT, ps)) {
             System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
+        }
+    }
+
+    private static void demoLcm() {
+        initialize();
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
+            System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
         }
     }
 

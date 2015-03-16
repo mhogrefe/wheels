@@ -4,7 +4,9 @@ import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -96,6 +98,10 @@ public final class Septuple<A, B, C, D, E, F, G> {
         this.e = e;
         this.f = f;
         this.g = g;
+    }
+
+    public static <T> List<T> toList(Septuple<T, T, T, T, T, T, T> s) {
+        return Arrays.asList(s.a, s.b, s.c, s.d, s.e, s.f, s.g);
     }
 
     /**

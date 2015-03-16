@@ -49,6 +49,36 @@ public class BigDecimalUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    @Test
+    public void testSuccessor() {
+        aeq(successor(new BigDecimal("3.14159")), "3.14160");
+        aeq(successor(new BigDecimal("1200")), "1201");
+        aeq(successor(new BigDecimal("1.2E+3")), "1.3E+3");
+        aeq(successor(new BigDecimal("-9")), "-8");
+        aeq(successor(new BigDecimal("0.99")), "1.00");
+        aeq(successor(new BigDecimal("0.999")), "1.000");
+        aeq(successor(new BigDecimal("-0.99")), "-0.98");
+        aeq(successor(new BigDecimal("-0.999")), "-0.998");
+        aeq(successor(new BigDecimal("0")), "1");
+        aeq(successor(new BigDecimal("0E+1")), "1E+1");
+        aeq(successor(new BigDecimal("0.0")), "0.1");
+    }
+
+    @Test
+    public void testPredecessor() {
+        aeq(predecessor(new BigDecimal("3.14159")), "3.14158");
+        aeq(predecessor(new BigDecimal("1200")), "1199");
+        aeq(predecessor(new BigDecimal("1.2E+3")), "1.1E+3");
+        aeq(predecessor(new BigDecimal("-9")), "-10");
+        aeq(predecessor(new BigDecimal("0.99")), "0.98");
+        aeq(predecessor(new BigDecimal("0.999")), "0.998");
+        aeq(predecessor(new BigDecimal("-0.99")), "-1.00");
+        aeq(predecessor(new BigDecimal("-0.999")), "-1.000");
+        aeq(predecessor(new BigDecimal("0")), "-1");
+        aeq(predecessor(new BigDecimal("0E+1")), "-1E+1");
+        aeq(predecessor(new BigDecimal("0.0")), "-0.1");
+    }
+
     private static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }

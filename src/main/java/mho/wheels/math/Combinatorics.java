@@ -6,7 +6,6 @@ import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
 import java.util.function.Function;
@@ -1307,8 +1306,8 @@ public final class Combinatorics {
                                 lastPair,
                                 map(p2p, pairsByFunction(
                                         unpairingFunction,
-                                        range(BigInteger.ZERO),
-                                        range(BigInteger.ZERO))
+                                        rangeUp(BigInteger.ZERO),
+                                        rangeUp(BigInteger.ZERO))
                                 )
                         )
                 )
@@ -1367,32 +1366,58 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
     }
 
+    public static @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
+        return filter(p -> !p.a.equals(p.b), pairs(xs));
+    }
+
     public static @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
     }
 
+    public static @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
+        return filter(t -> !t.a.equals(t.b) && !t.a.equals(t.c) && !t.b.equals(t.c), triples(xs));
+    }
+
     public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
     }
 
+    public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
+        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quadruple.toList(q)))), quadruples(xs));
+    }
+
     public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
                 lists(5, xs)
         );
     }
 
+    public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
+        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quintuple.toList(q)))), quintuples(xs));
+    }
+
     public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
                 lists(6, xs)
         );
     }
 
+    public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
+        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Sextuple.toList(s)))), sextuples(xs));
+    }
+
     public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Septuple<>(
                         list.get(0),
@@ -1405,6 +1430,10 @@ public final class Combinatorics {
                 ),
                 lists(7, xs)
         );
+    }
+
+    public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
+        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Septuple.toList(s)))), septuples(xs));
     }
 
     public static @NotNull <T> Iterable<List<T>> lists(Iterable<T> xs) {
@@ -1490,8 +1519,20 @@ public final class Combinatorics {
         };
     }
 
-    public static @NotNull <T> Iterable<String> orderedSubstrings(@NotNull String s) {
+    public static @NotNull Iterable<String> orderedSubstrings(@NotNull String s) {
         return map(IterableUtils::charsToString, orderedSubsequences(fromString(s)));
+    }
+
+    public static @NotNull <T> Iterable<List<T>> subsequences(@NotNull Iterable<T> xs) {
+        CachedIterable<T> cxs = new CachedIterable<>(xs);
+        return map(
+                Optional::get,
+                takeWhile(Optional::isPresent, map(i -> cxs.select(MathUtils.bits(i)), rangeUp(BigInteger.ZERO)))
+        );
+    }
+
+    public static @NotNull Iterable<String> substrings(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsequences(fromString(s)));
     }
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
@@ -1506,7 +1547,7 @@ public final class Combinatorics {
             @Override
             public List<Integer> next() {
                 List<Integer> oldIndices = indices;
-                if (nonincreasing(indices)) {
+                if (weaklyDecreasing(indices)) {
                     indices = null;
                 } else {
                     int i;
@@ -1541,7 +1582,7 @@ public final class Combinatorics {
 
     public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
         List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, range(0)));
+        Map<T, Integer> indexMap = toMap(zip(nub, rangeUp(0)));
         List<Integer> startingIndices = sort(map(indexMap::get, xs));
         return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
