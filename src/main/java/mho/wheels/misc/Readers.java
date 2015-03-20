@@ -889,7 +889,7 @@ public class Readers {
     }
 
     /**
-     * Returns a function which Finds the first occurrence of a {@code NullableOptional} of a given type in a
+     * Returns a function which finds the first occurrence of a {@code NullableOptional} of a given type in a
      * {@code String}. Takes the type's {@code findIn} function. The result returns the {@code NullableOptional} and
      * the index at which it was found and returns an empty outer {@code Optional} if no {@code NullableOptional} is
      * found. Only {@code NullableOptional}s which could have been emitted by
@@ -939,52 +939,52 @@ public class Readers {
     }
 
     /**
-     * Reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could have been emitted by
-     * {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for example, when reading
-     * {@code "[a, b, c]"} as a list of {@code String}s, both {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are
-     * valid interpretations. This method stops reading each list element as soon as possible, so the first option
-     * would be returned.
+     * Returns a function which reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could
+     * have been emitted by {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for
+     * example, when reading {@code "[a, b, c]"} as a list of {@code String}s, both {@code ["a", "b", "c"]} and
+     * {@code ["a, b, c"]} are valid interpretations. This method stops reading each list element as soon as possible,
+     * so the first option would be returned.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to any substring of {@code s}, must terminate and not return null. (This
-     *  precondition is not checked for every substring.)</li>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>{@code read} must be non-null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s}, must terminate and not return null. (This precondition is not checked for every
+     *  substring.)</li>
      * </ul>
      *
-     * @param s the input {@code String}
+     * @param read a function which reads a {@code String} into a value of type {@code T}
      * @param <T> the type of the {@code List}'s values
-     * @return the {@code List} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
-     * {@code List}
+     * @return a function which reads a {@code List}
      */
-    public static @NotNull <T> Optional<List<T>> readList(
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<List<T>>> readList(
+            @NotNull Function<String, Optional<T>> read
     ) {
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        if (s.isEmpty()) return Optional.of(new ArrayList<T>());
-        String[] tokens = s.split(", ");
-        List<T> result = new ArrayList<>();
-        int i;
-        for (i = 0; i < tokens.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            String prefix = "";
-            for (; i < tokens.length; i++) {
-                sb.append(prefix);
-                sb.append(tokens[i]);
-                prefix = ", ";
-                Optional<T> candidate = read.apply(sb.toString());
-                if (candidate.isPresent()) {
-                    result.add(candidate.get());
-                    break;
-                }
-                if (i == tokens.length - 1) {
-                    return Optional.empty();
+        return s -> {
+            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+            s = tail(init(s));
+            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+            String[] tokens = s.split(", ");
+            List<T> result = new ArrayList<>();
+            int i;
+            for (i = 0; i < tokens.length; i++) {
+                StringBuilder sb = new StringBuilder();
+                String prefix = "";
+                for (; i < tokens.length; i++) {
+                    sb.append(prefix);
+                    sb.append(tokens[i]);
+                    prefix = ", ";
+                    Optional<T> candidate = read.apply(sb.toString());
+                    if (candidate.isPresent()) {
+                        result.add(candidate.get());
+                        break;
+                    }
+                    if (i == tokens.length - 1) {
+                        return Optional.empty();
+                    }
                 }
             }
-        }
-        return Optional.of(result);
+            return Optional.of(result);
+        };
     }
 
     public static @NotNull <T> Optional<List<T>> readListWithNulls(
@@ -1046,7 +1046,7 @@ public class Readers {
             @NotNull String usedChars,
             @NotNull String s
     ) {
-        return genericFindIn(t -> readList(read, t), nub(sort(usedChars + "[, ]"))).apply(s);
+        return genericFindIn(readList(read), nub(sort(usedChars + "[, ]"))).apply(s);
     }
 
     public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListWithNullsIn(

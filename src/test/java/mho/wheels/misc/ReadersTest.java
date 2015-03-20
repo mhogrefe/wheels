@@ -729,32 +729,42 @@ public class ReadersTest {
 
     @Test
     public void testReadList() {
-        aeq(readList(Readers::readInteger, "[]").get(), "[]");
-        aeq(readList(Readers::readInteger, "[1]").get(), "[1]");
-        aeq(readList(Readers::readInteger, "[1, 2, -3]").get(), "[1, 2, -3]");
-        assertFalse(readList(Readers::readInteger, "[1000000000000000]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[null]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger, "1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger, "[a]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[00]").isPresent());
+        aeq(readList(Readers::readInteger).apply("[]").get(), "[]");
+        aeq(readList(Readers::readInteger).apply("[1]").get(), "[1]");
+        aeq(readList(Readers::readInteger).apply("[1, 2, -3]").get(), "[1, 2, -3]");
+        assertFalse(readList(Readers::readInteger).apply("[1000000000000000]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[null]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[a]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[00]").isPresent());
         Optional<List<String>> ss;
 
-        ss = readList(Readers::readString, "[hello]");
+        ss = readList(Readers::readString).apply("[hello]");
         aeq(ss.get(), "[hello]");
         aeq(ss.get().size(), 1);
 
-        ss = readList(Readers::readString, "[hello, bye]");
+        ss = readList(Readers::readString).apply("[hello, bye]");
         aeq(ss.get(), "[hello, bye]");
         aeq(ss.get().size(), 2);
 
-        ss = readList(Readers::readString, "[a, b, c]");
+        ss = readList(Readers::readString).apply("[a, b, c]");
         aeq(ss.get(), "[a, b, c]");
         aeq(ss.get().size(), 3);
     }
 
     @Test
+    public void testReadListWithNulls() {
+        //todo
+    }
+
+    @Test
     public void testFindListIn() {
+        //todo
+    }
+
+    @Test
+    public void testFindListWithNullsIn() {
         //todo
     }
 
