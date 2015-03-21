@@ -689,88 +689,82 @@ public class ReadersTest {
 
     @Test
     public void testFindNullableOptionalIn() {
-        Function<String, Optional<Pair<Integer, Integer>>> fi = findInWithNulls(Readers::findIntegerIn);
+        Function<String, Optional<Pair<NullableOptional<Integer>, Integer>>> fi =
+                findNullableOptionalIn(Readers.findInWithNulls(Readers::findIntegerIn));
+        aeq(fi.apply("xyzNullableOptional[23]xyz"), "Optional[(NullableOptional[23], 3)]");
+        aeq(fi.apply("xyzNullableOptional[0]xyz"), "Optional[(NullableOptional[0], 3)]");
+        aeq(fi.apply("xyzNullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 3)]");
+        aeq(fi.apply("xyzNullableOptional[null]xyz"), "Optional[(NullableOptional[null], 3)]");
+        aeq(fi.apply("NullableOptional[]NullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 2)]");
         aeq(
-                findNullableOptionalIn(fi, "xyzNullableOptional[23]xyz"),
-                "Optional[(NullableOptional[23], 3)]"
-        );
-        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[0]xyz"), "Optional[(NullableOptional[0], 3)]");
-        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[-5]xyz"), "Optional[(NullableOptional[-5], 3)]");
-        aeq(findNullableOptionalIn(fi, "xyzNullableOptional[null]xyz"), "Optional[(NullableOptional[null], 3)]");
-        aeq(
-                findNullableOptionalIn(fi, "NullableOptional[]NullableOptional[-5]xyz"),
-                "Optional[(NullableOptional[-5], 2)]"
-        );
-        aeq(
-                findNullableOptionalIn(
-                        Readers::findIntegerIn,
-                        "vdsfvNullableOptional[1000000000000000000]NullableOptional[-5]xyz"
-                ),
+                fi.apply("vdsfvNullableOptional[1000000000000000000]NullableOptional[-5]xyz"),
                 "Optional[(NullableOptional[-5], 10)]"
         );
-        aeq(
-                findNullableOptionalIn(Readers::findIntegerIn, "NullableOptional[3]NullableOptional[-5]xyz"),
-                "Optional[(NullableOptional[3], 0)]"
-        );
-        aeq(
-                findNullableOptionalIn(Readers::findIntegerIn, "xyzNullableOptional.emptyxyz"),
-                "Optional[(NullableOptional.empty, 3)]"
-        );
-        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "xyz").isPresent());
-        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "").isPresent());
-        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvOptional[23]xyz").isPresent());
-        assertFalse(
-                findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[1000000000000000000]xyz")
-                        .isPresent()
-        );
-        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptional[null]xyz").isPresent());
-        assertFalse(findNullableOptionalIn(Readers::findIntegerIn, "vdsfvNullableOptinal[3]xyz").isPresent());
+        aeq(fi.apply("NullableOptional[3]NullableOptional[-5]xyz"), "Optional[(NullableOptional[3], 0)]");
+        aeq(fi.apply("xyzNullableOptional.emptyxyz"), "Optional[(NullableOptional.empty, 3)]");
+        assertFalse(fi.apply("xyz").isPresent());
+        assertFalse(fi.apply("").isPresent());
+        assertFalse(fi.apply("vdsfvOptional[23]xyz").isPresent());
+        assertFalse(fi.apply("vdsfvNullableOptional[1000000000000000000]xyz").isPresent());
+        assertFalse(fi.apply("vdsfvNullableOptinal[3]xyz").isPresent());
+        fi = findNullableOptionalIn(Readers::findIntegerIn);
+        assertFalse(fi.apply("vdsfvNullableOptional[null]xyz").isPresent());
         try {
-            findNullableOptionalIn(s -> null, "NullableOptional[hello]");
+            findNullableOptionalIn(s -> null).apply("NullableOptional[hello]");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', null)), "NullableOptional[hello]");
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', null))).apply("NullableOptional[hello]");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>(null, null)), "NullableOptional[hello]");
+            findNullableOptionalIn(s -> Optional.of(new Pair<>(null, null))).apply("NullableOptional[hello]");
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', -1)), "NullableOptional[hello]");
+            findNullableOptionalIn(s -> Optional.of(new Pair<>('a', -1))).apply("NullableOptional[hello]");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testReadList() {
-        aeq(readList(Readers::readInteger, "[]").get(), "[]");
-        aeq(readList(Readers::readInteger, "[1]").get(), "[1]");
-        aeq(readList(Readers::readInteger, "[1, 2, -3]").get(), "[1, 2, -3]");
-        assertFalse(readList(Readers::readInteger, "[1000000000000000]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[null]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger, "1, 2").isPresent());
-        assertFalse(readList(Readers::readInteger, "[a]").isPresent());
-        assertFalse(readList(Readers::readInteger, "[00]").isPresent());
+        aeq(readList(Readers::readInteger).apply("[]").get(), "[]");
+        aeq(readList(Readers::readInteger).apply("[1]").get(), "[1]");
+        aeq(readList(Readers::readInteger).apply("[1, 2, -3]").get(), "[1, 2, -3]");
+        assertFalse(readList(Readers::readInteger).apply("[1000000000000000]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[null]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("1, 2").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[a]").isPresent());
+        assertFalse(readList(Readers::readInteger).apply("[00]").isPresent());
         Optional<List<String>> ss;
 
-        ss = readList(Readers::readString, "[hello]");
+        ss = readList(Readers::readString).apply("[hello]");
         aeq(ss.get(), "[hello]");
         aeq(ss.get().size(), 1);
 
-        ss = readList(Readers::readString, "[hello, bye]");
+        ss = readList(Readers::readString).apply("[hello, bye]");
         aeq(ss.get(), "[hello, bye]");
         aeq(ss.get().size(), 2);
 
-        ss = readList(Readers::readString, "[a, b, c]");
+        ss = readList(Readers::readString).apply("[a, b, c]");
         aeq(ss.get(), "[a, b, c]");
         aeq(ss.get().size(), 3);
     }
 
     @Test
+    public void testReadListWithNulls() {
+        //todo
+    }
+
+    @Test
     public void testFindListIn() {
+        //todo
+    }
+
+    @Test
+    public void testFindListWithNullsIn() {
         //todo
     }
 

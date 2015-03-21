@@ -816,9 +816,7 @@ public class Readers {
      * {@code Optional} is parsed.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to any suffix of {@code s}, must not return null, and, if the result is
-     *  non-empty, its elements are both non-null and the second element is non-negative. (This precondition is not
-     *  checked for every suffix of {@code s}.)</li>
+     *  <li>{@code findIn} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
      *  <li>The result must only be called on {@code String}s {@code s} such that {@code findIn}, when applied to any
      *  suffix of {@code s}, must not return null, and, if the result is non-empty, its elements are both non-null and
@@ -828,7 +826,7 @@ public class Readers {
      * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
      *               found.
      * @param <T> the type of the {@code Optional}'s value
-     * @return a function which finds an optional value
+     * @return a function which finds an {@code Optional} value
      */
     public static @NotNull <T> Function<String, Optional<Pair<Optional<T>, Integer>>> findOptionalIn(
             @NotNull Function<String, Optional<Pair<T, Integer>>> findIn
@@ -891,101 +889,102 @@ public class Readers {
     }
 
     /**
-     * Finds the first occurrence of a {@code NullableOptional} of a given type in a {@code String}. Takes the type's
-     * {@code findIn} function. Returns the {@code NullableOptional} and the index at which it was found. Returns an
-     * empty outer {@code Optional} if no {@code NullableOptional} is found. Only {@code NullableOptional}s which could
-     * have been emitted by {@link mho.wheels.structures.NullableOptional#toString} are recognized. The longest
-     * possible {@code NullableOptional} is parsed.
+     * Returns a function which finds the first occurrence of a {@code NullableOptional} of a given type in a
+     * {@code String}. Takes the type's {@code findIn} function. The result returns the {@code NullableOptional} and
+     * the index at which it was found and returns an empty outer {@code Optional} if no {@code NullableOptional} is
+     * found. Only {@code NullableOptional}s which could have been emitted by
+     * {@link mho.wheels.structures.NullableOptional#toString} are recognized. The longest possible
+     * {@code NullableOptional} is parsed.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to {@code s}, must terminate and not return null, and, if the result is
-     *  non-empty, its second element is non-negative. The first element may be null.</li>
+     *  <li>{@code findIn} must be non-null.</li>
      *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
-     *  second component is non-negative.</li>
+     *  <li>The result must only be called on {@code String}s {@code s} such that {@code findIn}, when applied to any
+     *  suffix of {@code s}, must not return null, and, if the result is non-empty, its second element is non-negative.
+     *  (This precondition is not checked for every suffix of {@code s}.)</li>
      * </ul>
      *
      * @param findIn a function which takes a {@code String} and returns the index and value of the first value-string
      *               found.
-     * @param s the input {@code String}
-     * @param <T> the type of the {@code Optional}'s value
-     * @return the first {@code Optional<T>} found in {@code s}, and the index at which it was found
+     * @param <T> the type of the {@code NullableOptional}'s value
+     * @return a function which finds a {@code NullableOptional} value
      */
-    public static @NotNull <T> Optional<Pair<NullableOptional<T>, Integer>> findNullableOptionalIn(
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<Pair<NullableOptional<T>, Integer>>> findNullableOptionalIn(
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn
     ) {
-        while (true) {
-            int optionalIndex = s.indexOf("NullableOptional");
-            if (optionalIndex == -1) return Optional.empty();
-            s = s.substring(optionalIndex + "NullableOptional".length());
-            if (s.startsWith(".empty")) return Optional.of(new Pair<>(NullableOptional.<T>empty(), optionalIndex));
-            if (s.startsWith("[")) {
-                Optional<Pair<T, Integer>> found = findIn.apply(s);
-                if (found.isPresent()) {
-                    Pair<T, Integer> presentFound = found.get();
-                    if (presentFound.b == null)
-                        throw new NullPointerException();
-                    if (presentFound.b < 0)
-                        throw new IllegalArgumentException("findIn should not return indices less than 0");
-                    if (found.get().b == 1 && head(s) == '[') {
-                        s = s.substring(Objects.toString(found.get().a).length() + 1);
-                        if (s.startsWith("]")) {
-                            return Optional.of(new Pair<>(NullableOptional.of(found.get().a), optionalIndex));
+        return s -> {
+            while (true) {
+                int optionalIndex = s.indexOf("NullableOptional");
+                if (optionalIndex == -1) return Optional.empty();
+                s = s.substring(optionalIndex + "NullableOptional".length());
+                if (s.startsWith(".empty")) return Optional.of(new Pair<>(NullableOptional.<T>empty(), optionalIndex));
+                if (s.startsWith("[")) {
+                    Optional<Pair<T, Integer>> found = findIn.apply(s);
+                    if (found.isPresent()) {
+                        Pair<T, Integer> presentFound = found.get();
+                        if (presentFound.b == null)
+                            throw new NullPointerException();
+                        if (presentFound.b < 0)
+                            throw new IllegalArgumentException("findIn should not return indices less than 0");
+                        if (found.get().b == 1 && head(s) == '[') {
+                            s = s.substring(Objects.toString(found.get().a).length() + 1);
+                            if (s.startsWith("]")) {
+                                return Optional.of(new Pair<>(NullableOptional.of(found.get().a), optionalIndex));
+                            }
                         }
                     }
                 }
             }
-        }
+        };
     }
 
     /**
-     * Reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could have been emitted by
-     * {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for example, when reading
-     * {@code "[a, b, c]"} as a list of {@code String}s, both {@code ["a", "b", "c"]} and {@code ["a, b, c"]} are
-     * valid interpretations. This method stops reading each list element as soon as possible, so the first option
-     * would be returned.
+     * Returns a function which reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could
+     * have been emitted by {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for
+     * example, when reading {@code "[a, b, c]"} as a list of {@code String}s, both {@code ["a", "b", "c"]} and
+     * {@code ["a, b, c"]} are valid interpretations. This method stops reading each list element as soon as possible,
+     * so the first option would be returned.
      *
      * <ul>
-     *  <li>{@code findIn}, when applied to any substring of {@code s}, must terminate and not return null. (This
-     *  precondition is not checked for every substring.)</li>
-     *  <li>{@code s} must be non-null.</li>
-     *  <li>The result is non-null.</li>
+     *  <li>{@code read} must be non-null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s}, must terminate and not return null. (This precondition is not checked for every
+     *  substring.)</li>
      * </ul>
      *
-     * @param s the input {@code String}
+     * @param read a function which reads a {@code String} into a value of type {@code T}
      * @param <T> the type of the {@code List}'s values
-     * @return the {@code List} represented by {@code s}, or {@code Optional.empty} if {@code s} does not represent a
-     * {@code List}
+     * @return a function which reads a {@code List}
      */
-    public static @NotNull <T> Optional<List<T>> readList(
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<List<T>>> readList(
+            @NotNull Function<String, Optional<T>> read
     ) {
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        if (s.isEmpty()) return Optional.of(new ArrayList<T>());
-        String[] tokens = s.split(", ");
-        List<T> result = new ArrayList<>();
-        int i;
-        for (i = 0; i < tokens.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            String prefix = "";
-            for (; i < tokens.length; i++) {
-                sb.append(prefix);
-                sb.append(tokens[i]);
-                prefix = ", ";
-                Optional<T> candidate = read.apply(sb.toString());
-                if (candidate.isPresent()) {
-                    result.add(candidate.get());
-                    break;
-                }
-                if (i == tokens.length - 1) {
-                    return Optional.empty();
+        return s -> {
+            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+            s = tail(init(s));
+            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+            String[] tokens = s.split(", ");
+            List<T> result = new ArrayList<>();
+            int i;
+            for (i = 0; i < tokens.length; i++) {
+                StringBuilder sb = new StringBuilder();
+                String prefix = "";
+                for (; i < tokens.length; i++) {
+                    sb.append(prefix);
+                    sb.append(tokens[i]);
+                    prefix = ", ";
+                    Optional<T> candidate = read.apply(sb.toString());
+                    if (candidate.isPresent()) {
+                        result.add(candidate.get());
+                        break;
+                    }
+                    if (i == tokens.length - 1) {
+                        return Optional.empty();
+                    }
                 }
             }
-        }
-        return Optional.of(result);
+            return Optional.of(result);
+        };
     }
 
     public static @NotNull <T> Optional<List<T>> readListWithNulls(
@@ -1047,7 +1046,7 @@ public class Readers {
             @NotNull String usedChars,
             @NotNull String s
     ) {
-        return genericFindIn(t -> readList(read, t), nub(sort(usedChars + "[, ]"))).apply(s);
+        return genericFindIn(readList(read), nub(sort(usedChars + "[, ]"))).apply(s);
     }
 
     public static @NotNull <T> Optional<Pair<List<T>, Integer>> findListWithNullsIn(
