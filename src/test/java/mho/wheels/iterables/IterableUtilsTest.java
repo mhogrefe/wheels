@@ -1505,7 +1505,7 @@ public class IterableUtilsTest {
     }
 
     private static @NotNull Optional<List<Integer>> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger, s);
+        return Readers.readListWithNulls(Readers::readInteger).apply(s);
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
@@ -1513,7 +1513,7 @@ public class IterableUtilsTest {
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger, s);
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s);
     }
 
     private static @NotNull Optional<List<BigDecimal>> readBigDecimalList(@NotNull String s) {
@@ -1521,6 +1521,6 @@ public class IterableUtilsTest {
     }
 
     private static @NotNull Optional<List<BigDecimal>> readBigDecimalListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigDecimal, s);
+        return Readers.readListWithNulls(Readers::readBigDecimal).apply(s);
     }
 }

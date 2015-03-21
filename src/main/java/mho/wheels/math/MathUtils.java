@@ -1215,7 +1215,7 @@ public final class MathUtils {
                 toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
-                zipWith(p -> BigInteger.valueOf(p.a).pow(p.b).intValueExact(), map(q -> q.a, cpf), exponents)
+                zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, cpf), exponents)
         );
         return sort(map(f, possibleExponents));
     }
@@ -1226,7 +1226,7 @@ public final class MathUtils {
                 toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
-                zipWith(p -> p.a.pow(p.b), map(q -> q.a, cpf), exponents)
+                zipWith(BigInteger::pow, map(q -> q.a, cpf), exponents)
         );
         return sort(map(f, possibleExponents));
     }

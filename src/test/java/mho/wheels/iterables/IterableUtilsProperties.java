@@ -11,11 +11,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.MathUtils.bigEndianDigits;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;
 
@@ -212,9 +210,7 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
-                q -> {
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.integers()), Combinatorics::permutationsIncreasing)
         );
 
@@ -370,7 +366,7 @@ public class IterableUtilsProperties {
 
     private static @NotNull BigInteger sumBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
         return foldl(
-                p -> p.a.add(p.b),
+                BigInteger::add,
                 BigInteger.ZERO,
                 sort(
                         (x, y) -> {
@@ -740,7 +736,7 @@ public class IterableUtilsProperties {
 
     private static @NotNull BigInteger productBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
         return foldl(
-                p -> p.a.multiply(p.b),
+                BigInteger::multiply,
                 BigInteger.ONE,
                 sort(
                         (x, y) -> {
@@ -1211,6 +1207,7 @@ public class IterableUtilsProperties {
         assertEquals(message, i, j);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     private static void aeq(String message, long i, long j) {
         assertEquals(message, i, j);
     }

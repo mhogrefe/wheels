@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -386,7 +387,7 @@ public final class Combinatorics {
         if (length < 0)
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (length == 0) {
-            return Arrays.asList(new ArrayList<T>());
+            return Arrays.asList(new ArrayList<>());
         }
         Function<T, List<T>> makeSingleton = x -> {
             List<T> list = new ArrayList<>();
@@ -426,7 +427,7 @@ public final class Combinatorics {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (eq(length, BigInteger.ZERO)) {
-            return Arrays.asList(new ArrayList<T>());
+            return Arrays.asList(new ArrayList<>());
         }
         Function<T, List<T>> makeSingleton = x -> {
             List<T> list = new ArrayList<>();
@@ -535,7 +536,7 @@ public final class Combinatorics {
      * @return all lists created from <tt>xs</tt>
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        if (isEmpty(xs)) return Arrays.asList(new ArrayList<>());
         return concatMap(i -> listsIncreasing(i, xs), P.naturalBigIntegers());
     }
 
@@ -587,7 +588,7 @@ public final class Combinatorics {
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(optA.get(), optB.get()));
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
         Predicate<Optional<Pair<A, B>>> lastPair = o -> {
             if (!o.isPresent()) return false;
@@ -603,7 +604,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastPair,
                                 (Iterable<Optional<Pair<A, B>>>)
-                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
+                                        map(f::apply, P.naturalBigIntegers())
                         )
                 )
         );
@@ -636,7 +637,7 @@ public final class Combinatorics {
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
         Predicate<Optional<Pair<T, T>>> lastPair = o -> {
             if (!o.isPresent()) return false;
@@ -652,7 +653,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastPair,
                                 (Iterable<Optional<Pair<T, T>>>)
-                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
+                                        map(f::apply, P.naturalBigIntegers())
                         )
                 )
         );
@@ -713,7 +714,7 @@ public final class Combinatorics {
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<T, T>(optA.get(), optB.get()));
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
         Predicate<Optional<Pair<T, T>>> lastPair = o -> {
             if (!o.isPresent()) return false;
@@ -729,7 +730,7 @@ public final class Combinatorics {
                         stopAt(
                                 lastPair,
                                 (Iterable<Optional<Pair<T, T>>>)
-                                        map(bi -> f.apply(bi), P.naturalBigIntegers())
+                                        map(f::apply, P.naturalBigIntegers())
                         )
                 )
         );
@@ -834,7 +835,7 @@ public final class Combinatorics {
             if (!optB.isPresent()) return Optional.empty();
             NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
             if (!optC.isPresent()) return Optional.empty();
-            return Optional.of(new Triple<A, B, C>(optA.get(), optB.get(), optC.get()));
+            return Optional.of(new Triple<>(optA.get(), optB.get(), optC.get()));
         };
         Predicate<Optional<Triple<A, B, C>>> lastTriple = o -> {
             if (!o.isPresent()) return false;
@@ -1278,15 +1279,15 @@ public final class Combinatorics {
             @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction
     ) {
         CachedIterable<Pair<A, CachedIterable<B>>> pairs = new CachedIterable<>(
-                map(x -> new Pair<A, CachedIterable<B>>(x, new CachedIterable<B>(f.apply(x))), xs)
+                map(x -> new Pair<>(x, new CachedIterable<>(f.apply(x))), xs)
         );
-        Function<Pair<BigInteger, BigInteger>, Optional<Pair<A, B>>> p2p = p -> {
-            NullableOptional<Pair<A, CachedIterable<B>>> optPair = pairs.get(p.a.intValueExact());
+        BiFunction<BigInteger, BigInteger, Optional<Pair<A, B>>> p2p = (x, y) -> {
+            NullableOptional<Pair<A, CachedIterable<B>>> optPair = pairs.get(x.intValueExact());
             if (!optPair.isPresent()) return Optional.empty();
             Pair<A, CachedIterable<B>> pair = optPair.get();
-            NullableOptional<B> optB = pair.b.get(p.b.intValueExact());
+            NullableOptional<B> optB = pair.b.get(y.intValueExact());
             if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<A, B>(pair.a, optB.get()));
+            return Optional.of(new Pair<>(pair.a, optB.get()));
         };
         Predicate<Optional<Pair<A, B>>> lastPair = o -> {
             if (!o.isPresent()) return false;
@@ -1304,7 +1305,7 @@ public final class Combinatorics {
                         Optional<Pair<A, B>>::isPresent,
                         stopAt(
                                 lastPair,
-                                map(p2p, pairsByFunction(
+                                map(p -> p2p.apply(p.a, p.b), pairsByFunction(
                                         unpairingFunction,
                                         rangeUp(BigInteger.ZERO),
                                         rangeUp(BigInteger.ZERO))

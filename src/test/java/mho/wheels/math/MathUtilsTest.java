@@ -1375,6 +1375,6 @@ public class MathUtilsTest {
     }
 
     private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger, s);
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s);
     }
 }

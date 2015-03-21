@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -142,7 +143,7 @@ public class Readers {
         return s -> {
             if (isEmpty(s)) return Optional.empty();
             Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
-            Iterable<Integer> indices = scanl(p -> p.a + p.b, 0, map(String::length, grouped));
+            Iterable<Integer> indices = scanl((x, y) -> x + y, 0, map(String::length, grouped));
             Iterable<Boolean> mask;
             if (elem(head(head(grouped)), usedChars)) {
                 mask = cycle(Arrays.asList(true, false));
@@ -938,6 +939,33 @@ public class Readers {
         };
     }
 
+    private static @NotNull <T> Function<String, Optional<List<T>>> genericReadList(
+            @NotNull BiFunction<String, List<T>, Boolean> genericRead
+    ) {
+        return s -> {
+            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
+            s = tail(init(s));
+            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+            String[] tokens = s.split(", ");
+            List<T> result = new ArrayList<>();
+            int i;
+            for (i = 0; i < tokens.length; i++) {
+                StringBuilder sb = new StringBuilder();
+                String prefix = "";
+                for (; i < tokens.length; i++) {
+                    sb.append(prefix);
+                    sb.append(tokens[i]);
+                    prefix = ", ";
+                    if (genericRead.apply(sb.toString(), result)) break;
+                    if (i == tokens.length - 1) {
+                        return Optional.empty();
+                    }
+                }
+            }
+            return Optional.of(result);
+        };
+    }
+
     /**
      * Returns a function which reads a {@link java.util.List} from a {@code String}. Only {@code String}s which could
      * have been emitted by {@code java.util.List#toString} are recognized. In some cases there may be ambiguity; for
@@ -959,62 +987,31 @@ public class Readers {
     public static @NotNull <T> Function<String, Optional<List<T>>> readList(
             @NotNull Function<String, Optional<T>> read
     ) {
-        return s -> {
-            if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-            s = tail(init(s));
-            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
-            String[] tokens = s.split(", ");
-            List<T> result = new ArrayList<>();
-            int i;
-            for (i = 0; i < tokens.length; i++) {
-                StringBuilder sb = new StringBuilder();
-                String prefix = "";
-                for (; i < tokens.length; i++) {
-                    sb.append(prefix);
-                    sb.append(tokens[i]);
-                    prefix = ", ";
-                    Optional<T> candidate = read.apply(sb.toString());
+        return genericReadList(
+                (s, result) -> {
+                    Optional<T> candidate = read.apply(s);
                     if (candidate.isPresent()) {
                         result.add(candidate.get());
-                        break;
+                        return true;
                     }
-                    if (i == tokens.length - 1) {
-                        return Optional.empty();
-                    }
+                    return false;
                 }
-            }
-            return Optional.of(result);
-        };
+        );
     }
 
-    public static @NotNull <T> Optional<List<T>> readListWithNulls(
-            @NotNull Function<String, Optional<T>> read,
-            @NotNull String s
+    public static @NotNull <T> Function<String, Optional<List<T>>> readListWithNulls(
+            @NotNull Function<String, Optional<T>> read
     ) {
-        if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
-        s = tail(init(s));
-        if (s.isEmpty()) return Optional.of(new ArrayList<T>());
-        String[] tokens = s.split(", ");
-        List<T> result = new ArrayList<>();
-        int i;
-        for (i = 0; i < tokens.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            String prefix = "";
-            for (; i < tokens.length; i++) {
-                sb.append(prefix);
-                sb.append(tokens[i]);
-                prefix = ", ";
-                NullableOptional<T> candidate = readWithNulls(read).apply(sb.toString());
-                if (candidate.isPresent()) {
-                    result.add(candidate.get());
-                    break;
+        return genericReadList(
+                (s, result) -> {
+                    NullableOptional<T> candidate = readWithNulls(read).apply(s);
+                    if (candidate.isPresent()) {
+                        result.add(candidate.get());
+                        return true;
+                    }
+                    return false;
                 }
-                if (i == tokens.length - 1) {
-                    return Optional.empty();
-                }
-            }
-        }
-        return Optional.of(result);
+        );
     }
 
     /**
@@ -1054,6 +1051,6 @@ public class Readers {
             @NotNull String usedChars,
             @NotNull String s
     ) {
-        return genericFindIn(t -> readListWithNulls(read, t), nub(sort(usedChars + "[null, ]"))).apply(s);
+        return genericFindIn(readListWithNulls(read), nub(sort(usedChars + "[null, ]"))).apply(s);
     }
 }
