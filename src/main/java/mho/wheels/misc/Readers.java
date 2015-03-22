@@ -115,6 +115,22 @@ public class Readers {
         };
     }
 
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(
+            @NotNull Function<String, Optional<T>> read
+    ) {
+        return s -> {
+            for (int i = 0; i < s.length(); i++) {
+                for (int j = s.length(); j > i; j--) {
+                    Optional<T> ox = read.apply(s.substring(i, j));
+                    if (ox.isPresent()) {
+                        return Optional.of(new Pair<>(ox.get(), i));
+                    }
+                }
+            }
+            return Optional.empty();
+        };
+    }
+
     /**
      * Given a function {@code read} to convert a {@code String} to a value, and a {@code String} {@code usedChars}
      * containing all characters needed to represent any value of that type as a {@code String}, returns a function
@@ -150,16 +166,12 @@ public class Readers {
             } else {
                 mask = cycle(Arrays.asList(false, true));
             }
+            Function<String, Optional<Pair<T, Integer>>> findIn = genericFindIn(read);
             for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
-                int offset = p.b;
-                String substring = p.a;
-                for (int i = 0; i < substring.length(); i++) {
-                    for (int j = substring.length(); j > i; j--) {
-                        Optional<T> ox = read.apply(substring.substring(i, j));
-                        if (ox.isPresent()) {
-                            return Optional.of(new Pair<>(ox.get(), offset + i));
-                        }
-                    }
+                Optional<Pair<T, Integer>> oResult = findIn.apply(p.a);
+                if (oResult.isPresent()) {
+                    Pair<T, Integer> result = oResult.get();
+                    return Optional.of(new Pair<>(result.a, result.b + p.b));
                 }
             }
             return Optional.empty();
