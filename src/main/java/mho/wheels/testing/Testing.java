@@ -9,6 +9,22 @@ import java.util.function.Function;
 import static org.junit.Assert.*;
 
 public class Testing {
+    public static void aeq(String message, int i, int j) {
+        assertEquals(message, i, j);
+    }
+
+    public static void aeq(String message, long i, long j) {
+        assertEquals(message, i, j);
+    }
+
+    public static void aeq(String message, float f1, float f2) {
+        assertEquals(message, Float.toString(f1), Float.toString(f2));
+    }
+
+    public static void aeq(String message, double d1, double d2) {
+        assertEquals(message, Double.toString(d1), Double.toString(d2));
+    }
+
     public static void aeq(Object a, Object b) {
         assertEquals(a.toString(), b.toString());
     }
@@ -35,7 +51,7 @@ public class Testing {
                 function.apply(input);
                 totalTime += (System.nanoTime() - time);
             }
-            System.out.println("\t\t\t" + entry.getKey() + ((double) totalTime) / 1e9 + " s");
+            System.out.println("\t\t\t" + entry.getKey() + ": " + ((double) totalTime) / 1e9 + " s");
         }
     }
 }
