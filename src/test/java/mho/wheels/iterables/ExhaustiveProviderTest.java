@@ -2,13 +2,11 @@ package mho.wheels.iterables;
 
 import org.junit.Test;
 
-import java.util.List;
-
 import static mho.wheels.iterables.IterableUtils.*;
-import static org.junit.Assert.assertEquals;
+import static mho.wheels.testing.Testing.*;
 
 public class ExhaustiveProviderTest {
-    private static final ExhaustiveProvider P = new ExhaustiveProvider();
+    private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
 
     @Test
     public void testBooleans() {
@@ -32,23 +30,23 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testBytesIncreasing() {
-        assertEquals(length(P.bytesIncreasing()), 256);
-        aeq(take(20, P.bytesIncreasing()),
+        aeq(length(P.bytesIncreasing()), 256);
+        aeqit(take(20, P.bytesIncreasing()),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
                 " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
     }
 
     @Test
     public void testShortsIncreasing() {
-        assertEquals(length(P.shortsIncreasing()), 65536);
-        aeq(take(20, P.shortsIncreasing()),
+        aeq(length(P.shortsIncreasing()), 65536);
+        aeqit(take(20, P.shortsIncreasing()),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
                 " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
     }
 
     @Test
     public void testIntegersIncreasing() {
-        aeq(take(20, P.integersIncreasing()),
+        aeqit(take(20, P.integersIncreasing()),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
                 " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
                 " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
@@ -57,7 +55,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testLongsIncreasing() {
-        aeq(take(20, P.longsIncreasing()),
+        aeqit(take(20, P.longsIncreasing()),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
@@ -67,119 +65,120 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBytes() {
-        assertEquals(length(P.positiveBytes()), 127);
-        aeq(take(20, P.positiveBytes()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        aeq(length(P.positiveBytes()), 127);
+        aeqit(take(20, P.positiveBytes()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
     @Test
     public void testPositiveShorts() {
-        assertEquals(length(P.positiveShorts()), 32767);
-        aeq(take(20, P.positiveShorts()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        aeq(length(P.positiveShorts()), 32767);
+        aeqit(take(20, P.positiveShorts()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
     @Test
     public void testPositiveIntegers() {
-        aeq(take(20, P.positiveIntegers()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        aeqit(take(20, P.positiveIntegers()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
     @Test
     public void testPositiveLongs() {
-        aeq(take(20, P.positiveLongs()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        aeqit(take(20, P.positiveLongs()), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
     @Test
     public void testPositiveBigIntegers() {
-        aeq(take(20, P.positiveBigIntegers()),
+        aeqit(take(20, P.positiveBigIntegers()),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
     }
 
     @Test
     public void testNegativeBytes() {
-        assertEquals(length(P.negativeBytes()), 128);
-        aeq(take(20, P.negativeBytes()),
+        aeq(length(P.negativeBytes()), 128);
+        aeqit(take(20, P.negativeBytes()),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
     @Test
     public void testNegativeShorts() {
-        assertEquals(length(P.negativeShorts()), 32768);
-        aeq(take(20, P.negativeShorts()),
+        aeq(length(P.negativeShorts()), 32768);
+        aeqit(take(20, P.negativeShorts()),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
     @Test
     public void testNegativeIntegers() {
-        aeq(take(20, P.negativeIntegers()),
+        aeqit(take(20, P.negativeIntegers()),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
     @Test
     public void testNegativeLongs() {
-        aeq(take(20, P.negativeLongs()),
+        aeqit(take(20, P.negativeLongs()),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
     @Test
     public void testNegativeBigIntegers() {
-        aeq(take(20, P.negativeBigIntegers()),
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
     }
 
     @Test
     public void testNaturalBytes() {
-        assertEquals(length(P.naturalBytes()), 128);
-        aeq(take(20, P.naturalBytes()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeq(length(P.naturalBytes()), 128);
+        aeqit(take(20, P.naturalBytes()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
     @Test
     public void testNaturalShorts() {
-        assertEquals(length(P.naturalShorts()), 32768);
-        aeq(take(20, P.naturalShorts()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeq(length(P.naturalShorts()), 32768);
+        aeqit(take(20, P.naturalShorts()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
     @Test
     public void testNaturalIntegers() {
-        aeq(take(20, P.naturalIntegers()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, P.naturalIntegers()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
     @Test
     public void testNaturalLongs() {
-        aeq(take(20, P.naturalLongs()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, P.naturalLongs()), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
     @Test
     public void testNaturalBigIntegers() {
-        aeq(take(20, P.naturalBigIntegers()),
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
     }
 
     @Test
     public void testBytes() {
-        assertEquals(length(P.bytes()), 256);
-        aeq(take(5, (List<Byte>) reverse(P.bytes())), "[-128, -127, 127, -126, 126]");
-        aeq(take(20, P.bytes()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeq(length(P.bytes()), 256);
+        aeqit(take(5, reverse(P.bytes())), "[-128, -127, 127, -126, 126]");
+        aeqit(take(20, P.bytes()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
     public void testShorts() {
-        assertEquals(length(P.shorts()), 65536);
-        aeq(take(5, (List<Short>) reverse(P.shorts())), "[-32768, -32767, 32767, -32766, 32766]");
-        aeq(take(20, P.shorts()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeq(length(P.shorts()), 65536);
+        aeqit(take(5, reverse(P.shorts())), "[-32768, -32767, 32767, -32766, 32766]");
+        aeqit(take(20, P.shorts()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
     public void testIntegers() {
-        aeq(take(20, P.integers()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeqit(take(20, P.integers()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
     public void testLongs() {
-        aeq(take(20, P.longs()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeqit(take(20, P.longs()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
     public void testBigIntegers() {
-        aeq(take(20, P.bigIntegers()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeqit(take(20, P.bigIntegers()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
@@ -228,14 +227,14 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveOrdinaryFloatsIncreasing() {
-        aeq(take(20, P.positiveOrdinaryFloatsIncreasing()),
+        aeqit(take(20, P.positiveOrdinaryFloatsIncreasing()),
                 "[1.4E-45, 2.8E-45, 4.2E-45, 5.6E-45, 7.0E-45, 8.4E-45, 9.8E-45, 1.1E-44, 1.3E-44, 1.4E-44," +
                 " 1.5E-44, 1.7E-44, 1.8E-44, 2.0E-44, 2.1E-44, 2.24E-44, 2.4E-44, 2.5E-44, 2.7E-44, 2.8E-44]");
     }
 
     @Test
     public void testNegativeOrdinaryFloatsIncreasing() {
-        aeq(take(20, P.negativeOrdinaryFloatsIncreasing()),
+        aeqit(take(20, P.negativeOrdinaryFloatsIncreasing()),
                 "[-3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38, -3.4028225E38," +
                 " -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38, -3.4028212E38," +
                 " -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38, -3.40282E38," +
@@ -244,7 +243,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testOrdinaryFloatsIncreasing() {
-        aeq(take(20, P.ordinaryFloatsIncreasing()),
+        aeqit(take(20, P.ordinaryFloatsIncreasing()),
                 "[-3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38, -3.4028225E38," +
                 " -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38, -3.4028212E38," +
                 " -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38, -3.40282E38," +
@@ -253,7 +252,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testFloatsIncreasing() {
-        aeq(take(20, P.floatsIncreasing()),
+        aeqit(take(20, P.floatsIncreasing()),
                 "[-Infinity, -3.4028235E38, -3.4028233E38, -3.402823E38, -3.4028229E38, -3.4028227E38," +
                 " -3.4028225E38, -3.4028222E38, -3.402822E38, -3.4028218E38, -3.4028216E38, -3.4028214E38," +
                 " -3.4028212E38, -3.402821E38, -3.4028208E38, -3.4028206E38, -3.4028204E38, -3.4028202E38," +
@@ -262,7 +261,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveOrdinaryFloats() {
-        aeq(take(50, P.positiveOrdinaryFloats()),
+        aeqit(take(50, P.positiveOrdinaryFloats()),
                 "[1.0, 2.0, 3.0, 6.0, 0.5, 4.0, 1.5, 12.0, 5.0, 10.0, 7.0, 14.0, 2.5, 20.0, 3.5, 28.0, 0.25, 8.0," +
                 " 0.75, 24.0, 0.125, 16.0, 0.375, 48.0, 1.25, 40.0, 1.75, 56.0, 0.625, 80.0, 0.875, 112.0, 9.0," +
                 " 18.0, 11.0, 22.0, 4.5, 36.0, 5.5, 44.0, 13.0, 26.0, 15.0, 30.0, 6.5, 52.0, 7.5, 60.0, 2.25, 72.0]");
@@ -270,7 +269,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeOrdinaryFloats() {
-        aeq(take(50, P.negativeOrdinaryFloats()),
+        aeqit(take(50, P.negativeOrdinaryFloats()),
                 "[-1.0, -2.0, -3.0, -6.0, -0.5, -4.0, -1.5, -12.0, -5.0, -10.0, -7.0, -14.0, -2.5, -20.0, -3.5," +
                 " -28.0, -0.25, -8.0, -0.75, -24.0, -0.125, -16.0, -0.375, -48.0, -1.25, -40.0, -1.75, -56.0," +
                 " -0.625, -80.0, -0.875, -112.0, -9.0, -18.0, -11.0, -22.0, -4.5, -36.0, -5.5, -44.0, -13.0, -26.0," +
@@ -279,7 +278,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testOrdinaryFloats() {
-        aeq(take(50, P.ordinaryFloats()),
+        aeqit(take(50, P.ordinaryFloats()),
                 "[0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0, -4.0, 1.5, -1.5, 12.0, -12.0," +
                 " 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0, -20.0, 3.5, -3.5, 28.0, -28.0," +
                 " 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125, 16.0, -16.0, 0.375, -0.375, 48.0," +
@@ -288,7 +287,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testFloats() {
-        aeq(take(50, P.floats()),
+        aeqit(take(50, P.floats()),
                 "[NaN, Infinity, -Infinity, 0.0, -0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0," +
                 " -4.0, 1.5, -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0," +
                 " -20.0, 3.5, -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125," +
@@ -297,7 +296,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveOrdinaryDoublesIncreasing() {
-        aeq(take(20, P.positiveOrdinaryDoublesIncreasing()),
+        aeqit(take(20, P.positiveOrdinaryDoublesIncreasing()),
                 "[4.9E-324, 1.0E-323, 1.5E-323, 2.0E-323, 2.5E-323, 3.0E-323, 3.5E-323, 4.0E-323, 4.4E-323," +
                 " 4.9E-323, 5.4E-323, 5.9E-323, 6.4E-323, 6.9E-323, 7.4E-323, 7.9E-323, 8.4E-323, 8.9E-323," +
                 " 9.4E-323, 1.0E-322]");
@@ -305,7 +304,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeOrdinaryDoublesIncreasing() {
-        aeq(take(20, P.negativeOrdinaryDoublesIncreasing()),
+        aeqit(take(20, P.negativeOrdinaryDoublesIncreasing()),
                 "[-1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +
@@ -317,7 +316,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testOrdinaryDoublesIncreasing() {
-        aeq(take(20, P.ordinaryDoublesIncreasing()),
+        aeqit(take(20, P.ordinaryDoublesIncreasing()),
                 "[-1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +
@@ -329,7 +328,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testDoublesIncreasing() {
-        aeq(take(20, P.doublesIncreasing()),
+        aeqit(take(20, P.doublesIncreasing()),
                 "[-Infinity, -1.7976931348623157E308, -1.7976931348623155E308, -1.7976931348623153E308," +
                 " -1.7976931348623151E308, -1.797693134862315E308, -1.7976931348623147E308," +
                 " -1.7976931348623145E308, -1.7976931348623143E308, -1.7976931348623141E308," +
@@ -341,7 +340,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveOrdinaryDoubles() {
-        aeq(take(50, P.positiveOrdinaryDoubles()),
+        aeqit(take(50, P.positiveOrdinaryDoubles()),
                 "[1.0, 2.0, 3.0, 6.0, 0.5, 4.0, 1.5, 12.0, 5.0, 10.0, 7.0, 14.0, 2.5, 20.0, 3.5, 28.0, 0.25, 8.0," +
                 " 0.75, 24.0, 0.125, 16.0, 0.375, 48.0, 1.25, 40.0, 1.75, 56.0, 0.625, 80.0, 0.875, 112.0, 9.0," +
                 " 18.0, 11.0, 22.0, 4.5, 36.0, 5.5, 44.0, 13.0, 26.0, 15.0, 30.0, 6.5, 52.0, 7.5, 60.0, 2.25, 72.0]");
@@ -349,7 +348,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeOrdinaryDoubles() {
-        aeq(take(50, P.negativeOrdinaryDoubles()),
+        aeqit(take(50, P.negativeOrdinaryDoubles()),
                 "[-1.0, -2.0, -3.0, -6.0, -0.5, -4.0, -1.5, -12.0, -5.0, -10.0, -7.0, -14.0, -2.5, -20.0, -3.5," +
                 " -28.0, -0.25, -8.0, -0.75, -24.0, -0.125, -16.0, -0.375, -48.0, -1.25, -40.0, -1.75, -56.0," +
                 " -0.625, -80.0, -0.875, -112.0, -9.0, -18.0, -11.0, -22.0, -4.5, -36.0, -5.5, -44.0, -13.0, -26.0," +
@@ -358,7 +357,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testOrdinaryDoubles() {
-        aeq(take(50, P.ordinaryDoubles()),
+        aeqit(take(50, P.ordinaryDoubles()),
                 "[0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0, -4.0, 1.5, -1.5, 12.0, -12.0," +
                 " 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0, -20.0, 3.5, -3.5, 28.0, -28.0," +
                 " 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125, 16.0, -16.0, 0.375, -0.375, 48.0," +
@@ -367,7 +366,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testDoubles() {
-        aeq(take(50, P.doubles()),
+        aeqit(take(50, P.doubles()),
                 "[NaN, Infinity, -Infinity, 0.0, -0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0," +
                 " -4.0, 1.5, -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0," +
                 " -20.0, 3.5, -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125," +
@@ -376,7 +375,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBigDecimals() {
-        aeq(take(50, P.positiveBigDecimals()),
+        aeqit(take(50, P.positiveBigDecimals()),
                 "[1, 0.1, 2, 1E+1, 3, 0.2, 4, 0.01, 5, 0.3, 6, 2E+1, 7, 0.4, 8, 1E+2, 9, 0.5, 10, 3E+1, 11, 0.6, 12," +
                 " 0.02, 13, 0.7, 14, 4E+1, 15, 0.8, 16, 0.001, 17, 0.9, 18, 5E+1, 19, 1.0, 20, 0.03, 21, 1.1, 22," +
                 " 6E+1, 23, 1.2, 24, 2E+2, 25, 1.3]");
@@ -384,7 +383,7 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeBigDecimals() {
-        aeq(take(50, P.negativeBigDecimals()),
+        aeqit(take(50, P.negativeBigDecimals()),
                 "[-1, -0.1, -2, -1E+1, -3, -0.2, -4, -0.01, -5, -0.3, -6, -2E+1, -7, -0.4, -8, -1E+2, -9, -0.5, -10," +
                 " -3E+1, -11, -0.6, -12, -0.02, -13, -0.7, -14, -4E+1, -15, -0.8, -16, -0.001, -17, -0.9, -18," +
                 " -5E+1, -19, -1.0, -20, -0.03, -21, -1.1, -22, -6E+1, -23, -1.2, -24, -2E+2, -25, -1.3]");
@@ -392,17 +391,9 @@ public class ExhaustiveProviderTest {
 
     @Test
     public void testBigDecimals() {
-        aeq(take(50, P.bigDecimals()),
+        aeqit(take(50, P.bigDecimals()),
                 "[0, 0.0, 1, 0E+1, -1, 0.1, 2, 0.00, -2, -0.1, 3, 1E+1, -3, 0.2, 4, 0E+2, -4, -0.2, 5, -1E+1, -5," +
                 " 0.3, 6, 0.01, -6, -0.3, 7, 2E+1, -7, 0.4, 8, 0.000, -8, -0.4, 9, -2E+1, -9, 0.5, 10, -0.01, -10," +
                 " -0.5, 11, 3E+1, -11, 0.6, 12, 1E+2, -12, -0.6]");
-    }
-
-    private static void aeq(Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(a), b.toString());
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }
