@@ -26,7 +26,7 @@ public class Testing {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 
-    private static void aeq(String message, BigDecimal x, BigDecimal y) {
+    public static void aeq(String message, BigDecimal x, BigDecimal y) {
         assertEquals(message, x.stripTrailingZeros(), y.stripTrailingZeros());
     }
 
