@@ -3,6 +3,7 @@ package mho.wheels.testing;
 import mho.wheels.iterables.IterableUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -23,6 +24,10 @@ public class Testing {
 
     public static void aeq(String message, double d1, double d2) {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
+    }
+
+    private static void aeq(String message, BigDecimal x, BigDecimal y) {
+        assertEquals(message, x.stripTrailingZeros(), y.stripTrailingZeros());
     }
 
     public static void aeq(Object a, Object b) {
