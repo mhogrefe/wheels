@@ -6,7 +6,8 @@ import mho.wheels.iterables.RandomProvider;
 
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.fromString;
+import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.Readers.*;
 
 @SuppressWarnings("UnusedDeclaration")

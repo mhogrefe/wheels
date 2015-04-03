@@ -15,6 +15,8 @@ import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.math.MathUtils.demux;
+import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})

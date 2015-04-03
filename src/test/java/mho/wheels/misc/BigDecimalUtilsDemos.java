@@ -8,10 +8,8 @@ import mho.wheels.structures.Pair;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.BigDecimalUtils.predecessor;
-import static mho.wheels.misc.BigDecimalUtils.setPrecision;
-import static mho.wheels.misc.BigDecimalUtils.successor;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.misc.BigDecimalUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {

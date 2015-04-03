@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code Iterable}s lexicographically (by "dictionary order"). This {@code Comparator} looks at the

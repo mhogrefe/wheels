@@ -5,7 +5,8 @@ import org.junit.Test;
 import java.math.BigDecimal;
 
 import static mho.wheels.misc.BigDecimalUtils.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class BigDecimalUtilsTest {
     @Test

@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.misc.Readers;
-import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -11,7 +10,8 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.*;
 
 public class IterableUtilsTest {

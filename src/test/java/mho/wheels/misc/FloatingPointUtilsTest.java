@@ -4,7 +4,8 @@ import org.junit.Test;
 
 import static mho.wheels.misc.FloatingPointUtils.predecessor;
 import static mho.wheels.misc.FloatingPointUtils.successor;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class FloatingPointUtilsTest {
     @Test

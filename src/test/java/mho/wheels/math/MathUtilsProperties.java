@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.math.MathUtils.demux;
 import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.*;

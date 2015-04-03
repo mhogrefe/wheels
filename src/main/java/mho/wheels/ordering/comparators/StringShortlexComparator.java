@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.EQ;
 
 /**
  * Compares two {@code String}s via shortlex order. First the lengths of the {@code Iterable}s are compared. If one

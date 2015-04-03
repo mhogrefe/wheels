@@ -6,8 +6,10 @@ import mho.wheels.iterables.RandomProvider;
 
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.FloatingPointUtils.*;
+import static mho.wheels.iterables.IterableUtils.filter;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.misc.FloatingPointUtils.predecessor;
+import static mho.wheels.misc.FloatingPointUtils.successor;
 
 @SuppressWarnings("UnusedDeclaration")
 public class FloatingPointUtilsDemos {
