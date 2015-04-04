@@ -21,10 +21,16 @@ import static mho.wheels.ordering.Ordering.lt;
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
 public class RandomProvider extends IterableProvider {
-    protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
-    protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
-    protected static final int MEAN_LIST_SIZE = 10;
-    protected static final int SPECIAL_ELEMENT_RATIO = 50;
+    public static final int DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE = 64;
+    public static final int DEFAULT_BIG_DECIMAL_MEAN_SCALE =
+            (int) Math.round(Math.log10(2) * DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE);
+    public static final int DEFAULT_MEAN_LIST_SIZE = 10;
+    public static final int DEFAULT_SPECIAL_ELEMENT_RATIO = 50;
+
+    private int bigIntegerMeanBitSize = DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE;
+    private int bigDecimalMeanScale = DEFAULT_BIG_DECIMAL_MEAN_SCALE;
+    private int meanListSize = DEFAULT_MEAN_LIST_SIZE;
+    private int specialElementRatio = DEFAULT_SPECIAL_ELEMENT_RATIO;
 
     protected final @NotNull Random generator;
 
@@ -34,6 +40,29 @@ public class RandomProvider extends IterableProvider {
 
     public RandomProvider(@NotNull Random generator) {
         this.generator = generator;
+    }
+
+    public void setBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
+        this.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
+    }
+
+    public void setBigDecimalMeanScale(int bigDecimalMeanScale) {
+        this.bigDecimalMeanScale = bigDecimalMeanScale;
+    }
+
+    public void setMeanListSize(int meanListSize) {
+        this.meanListSize = meanListSize;
+    }
+
+    public void setSpecialElementRatio(int specialElementRatio) {
+        this.specialElementRatio = specialElementRatio;
+    }
+
+    public void reset() {
+        bigIntegerMeanBitSize = DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE;
+        bigDecimalMeanScale = DEFAULT_BIG_DECIMAL_MEAN_SCALE;
+        meanListSize = DEFAULT_MEAN_LIST_SIZE;
+        specialElementRatio = DEFAULT_SPECIAL_ELEMENT_RATIO;
     }
 
     /**
@@ -401,11 +430,9 @@ public class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
      */
-    public @NotNull Iterable<BigInteger> positiveBigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
+    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
+        if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             @Override
@@ -418,7 +445,7 @@ public class RandomProvider extends IterableProvider {
                 List<Boolean> bits = new ArrayList<>();
                 bits.add(true);
                 while (true) {
-                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
+                    if (generator.nextDouble() < 1.0 / (bigIntegerMeanBitSize - 1)) {
                         break;
                     } else {
                         bits.add(generator.nextBoolean());
@@ -432,17 +459,6 @@ public class RandomProvider extends IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return positiveBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
     /**
@@ -530,18 +546,6 @@ public class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
-     */
-    public @NotNull Iterable<BigInteger> negativeBigIntegers(int meanBitSize) {
-        return map(BigInteger::negate, positiveBigIntegers(meanBitSize));
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
-     *
-     * Length is infinite
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
@@ -603,11 +607,10 @@ public class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
      */
-    public @NotNull Iterable<BigInteger> naturalBigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
+    @Override
+    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             @Override
@@ -619,7 +622,7 @@ public class RandomProvider extends IterableProvider {
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
                 while (true) {
-                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
+                    if (generator.nextDouble() < 1.0 / (bigIntegerMeanBitSize - 1)) {
                         break;
                     } else {
                         bits.add(generator.nextBoolean());
@@ -633,17 +636,6 @@ public class RandomProvider extends IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is chosen from
-     * a geometric distribution with mean approximately 64. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return naturalBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
     /**
@@ -727,14 +719,13 @@ public class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
      */
-    public @NotNull Iterable<BigInteger> bigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
+    @Override
+    public @NotNull Iterable<BigInteger> bigIntegers() {
+        if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
-            private final Iterator<BigInteger> it = naturalBigIntegers(meanBitSize).iterator();
+            private final Iterator<BigInteger> it = naturalBigIntegers().iterator();
 
             @Override
             public boolean hasNext() {
@@ -755,17 +746,6 @@ public class RandomProvider extends IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> bigIntegers() {
-        return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
     }
 
     /**
@@ -1063,43 +1043,31 @@ public class RandomProvider extends IterableProvider {
         };
     }
 
-    public @NotNull Iterable<BigDecimal> positiveBigDecimals(int meanScale) {
-        return map(
-                p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(meanScale))
-        );
-    }
-
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
-        return positiveBigDecimals(BIG_DECIMAL_MEAN_SCALE);
-    }
-
-    public @NotNull Iterable<BigDecimal> negativeBigDecimals(int meanScale) {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(meanScale))
+                pairs(negativeBigIntegers(), integersGeometric(bigDecimalMeanScale))
         );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
-        return negativeBigDecimals(BIG_DECIMAL_MEAN_SCALE);
-    }
-
-    public @NotNull Iterable<BigDecimal> bigDecimals(int meanScale) {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(meanScale)));
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(negativeBigIntegers(), integersGeometric(bigDecimalMeanScale))
+        );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(bigDecimalMeanScale)));
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
+            private Iterator<Integer> specialSelector = randomInts(specialElementRatio).iterator();
             boolean specialSelection = specialSelector.next() == 0;
 
             @Override
@@ -1143,7 +1111,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                x -> geometricSample(meanListSize, f.apply(x)),
                 (BigInteger i) -> {
                     List<BigInteger> list = MathUtils.demux(2, i);
                     return new Pair<>(list.get(0), list.get(1));
@@ -1158,7 +1126,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                x -> geometricSample(meanListSize, f.apply(x)),
                 MathUtils::logarithmicDemux
         );
     }
@@ -1170,7 +1138,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                x -> geometricSample(meanListSize, f.apply(x)),
                 MathUtils::squareRootDemux
         );
     }
@@ -1182,7 +1150,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                x -> geometricSample(meanListSize, f.apply(x)),
                 i -> {
                     Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
                     return new Pair<>(p.b, p.a);
@@ -1197,7 +1165,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
+                x -> geometricSample(meanListSize, f.apply(x)),
                 i -> {
                     Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
                     return new Pair<>(p.b, p.a);
@@ -1311,7 +1279,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1340,7 +1308,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1374,7 +1342,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1413,7 +1381,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
 
             @Override
             public boolean hasNext() {

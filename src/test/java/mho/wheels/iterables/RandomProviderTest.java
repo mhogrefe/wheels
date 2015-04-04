@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.testing.Testing;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,15 +71,20 @@ public class RandomProviderTest {
 
     @Test
     public void testPositiveBigIntegers_Int() {
-        aeqit(take(20, P.positiveBigIntegers(3)), "[15, 1, 7, 3, 1, 2, 8, 1, 13, 5, 20, 2, 1, 1, 1, 1, 1, 1, 3, 1]");
-        aeqit(take(20, P.positiveBigIntegers(4)),
+        P.setBigIntegerMeanBitSize(3);
+        aeqit(take(20, P.positiveBigIntegers()), "[15, 1, 7, 3, 1, 2, 8, 1, 13, 5, 20, 2, 1, 1, 1, 1, 1, 1, 3, 1]");
+        P.setBigIntegerMeanBitSize(4);
+        aeqit(take(20, P.positiveBigIntegers()),
                 "[1, 1, 1, 6, 4, 94, 59, 4, 1, 1, 1, 43, 15, 1, 3, 1, 2, 103103, 393, 12]");
-        aeqit(take(20, P.positiveBigIntegers(5)),
+        P.setBigIntegerMeanBitSize(5);
+        aeqit(take(20, P.positiveBigIntegers()),
                 "[1, 2, 2821, 1, 13, 1, 273, 1, 3, 3, 1, 3, 15, 2, 6, 14, 5, 7, 1, 1]");
-        aeqit(take(20, P.positiveBigIntegers(10)),
+        P.setBigIntegerMeanBitSize(10);
+        aeqit(take(20, P.positiveBigIntegers()),
                 "[418, 1, 886, 15, 2, 1023538995542242, 2527383, 11, 2, 3411," +
                 " 10, 4891, 8, 2, 25, 3, 10, 349, 110732294, 3877]");
-        aeqit(take(20, P.positiveBigIntegers(100)),
+        P.setBigIntegerMeanBitSize(100);
+        aeqit(take(20, P.positiveBigIntegers()),
                 "[631847851262602872164, 62178362933629457256170097449498832870026795417, 547758176," +
                 " 2346149950119691144404, 311, 4742738, 67302549518065217887062796935441749979, 53471, 4223," +
                 " 17312403, 316463874199, 6, 447122575, 1176, 704610823827," +
@@ -88,17 +92,21 @@ public class RandomProviderTest {
                 "51261283498014102904063, 7517586777550828054626795662503, 741109, 101419744017795180979313623318," +
                 " 25612091393]");
         try {
-            P.positiveBigIntegers(2);
+            P.setBigIntegerMeanBitSize(2);
+            P.positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.positiveBigIntegers(0);
+            P.setBigIntegerMeanBitSize(0);
+            P.positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.positiveBigIntegers(-4);
+            P.setBigIntegerMeanBitSize(-4);
+            P.positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
+        P.reset();
     }
 
     @Test
@@ -144,16 +152,21 @@ public class RandomProviderTest {
 
     @Test
     public void testNegativeBigIntegers_Int() {
-        aeqit(take(20, P.negativeBigIntegers(3)),
+        P.setBigIntegerMeanBitSize(3);
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-15, -1, -7, -3, -1, -2, -8, -1, -13, -5, -20, -2, -1, -1, -1, -1, -1, -1, -3, -1]");
-        aeqit(take(20, P.negativeBigIntegers(4)),
+        P.setBigIntegerMeanBitSize(4);
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-1, -1, -1, -6, -4, -94, -59, -4, -1, -1, -1, -43, -15, -1, -3, -1, -2, -103103, -393, -12]");
-        aeqit(take(20, P.negativeBigIntegers(5)),
+        P.setBigIntegerMeanBitSize(5);
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-1, -2, -2821, -1, -13, -1, -273, -1, -3, -3, -1, -3, -15, -2, -6, -14, -5, -7, -1, -1]");
-        aeqit(take(20, P.negativeBigIntegers(10)),
+        P.setBigIntegerMeanBitSize(10);
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-418, -1, -886, -15, -2, -1023538995542242, -2527383, -11, -2, -3411, -10, -4891, -8, -2, -25, -3," +
                         " -10, -349, -110732294, -3877]");
-        aeqit(take(20, P.negativeBigIntegers(100)),
+        P.setBigIntegerMeanBitSize(100);
+        aeqit(take(20, P.negativeBigIntegers()),
                 "[-631847851262602872164, -62178362933629457256170097449498832870026795417, -547758176," +
                 " -2346149950119691144404, -311, -4742738, -67302549518065217887062796935441749979, -53471, -4223," +
                 " -17312403, -316463874199, -6, -447122575, -1176, -704610823827," +
@@ -161,17 +174,21 @@ public class RandomProviderTest {
                 "251261283498014102904063, -7517586777550828054626795662503, -741109," +
                 " -101419744017795180979313623318, -25612091393]");
         try {
-            P.negativeBigIntegers(2);
+            P.setBigIntegerMeanBitSize(2);
+            P.negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.negativeBigIntegers(0);
+            P.setBigIntegerMeanBitSize(0);
+            P.negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.negativeBigIntegers(-4);
+            P.setBigIntegerMeanBitSize(-4);
+            P.negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
+        P.reset();
     }
 
     @Test
@@ -216,15 +233,20 @@ public class RandomProviderTest {
 
     @Test
     public void testNaturalBigIntegers_Int() {
-        aeqit(take(20, P.naturalBigIntegers(3)),
+        P.setBigIntegerMeanBitSize(3);
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[7, 0, 3, 1, 0, 0, 0, 0, 5, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0]");
-        aeqit(take(20, P.naturalBigIntegers(4)),
+        P.setBigIntegerMeanBitSize(4);
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[0, 0, 0, 2, 0, 30, 27, 0, 0, 0, 0, 11, 7, 0, 1, 0, 0, 37567, 137, 4]");
-        aeqit(take(20, P.naturalBigIntegers(5)),
+        P.setBigIntegerMeanBitSize(5);
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[0, 0, 773, 0, 5, 0, 17, 0, 1, 1, 0, 1, 7, 0, 2, 6, 1, 3, 0, 0]");
-        aeqit(take(20, P.naturalBigIntegers(10)),
+        P.setBigIntegerMeanBitSize(10);
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[162, 0, 374, 7, 0, 460589042120930, 430231, 3, 0, 1363, 2, 795, 0, 0, 9, 1, 2, 93, 43623430, 1829]");
-        aeqit(take(20, P.naturalBigIntegers(100)),
+        P.setBigIntegerMeanBitSize(100);
+        aeqit(take(20, P.naturalBigIntegers()),
                 "[41552040903897220452, 16506436767038741062304946427114988505778903449, 10887264," +
                 " 1165558329402279840980, 55, 548434, 24767253652947909954140971006470723547, 20703, 127, 535187," +
                 " 41585967255, 2, 178687119, 152, 154855009939," +
@@ -232,17 +254,21 @@ public class RandomProviderTest {
                 "9825380326041355410687, 2446984376637910448639982840999, 216821, 22191581503530843385769672982," +
                 " 8432222209]");
         try {
-            P.naturalBigIntegers(2);
+            P.setBigIntegerMeanBitSize(2);
+            P.naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.naturalBigIntegers(0);
+            P.setBigIntegerMeanBitSize(0);
+            P.naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.naturalBigIntegers(-4);
+            P.setBigIntegerMeanBitSize(-4);
+            P.naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
+        P.reset();
     }
 
     @Test
@@ -287,31 +313,40 @@ public class RandomProviderTest {
 
     @Test
     public void testBigIntegers_Int() {
-        aeqit(take(20, P.bigIntegers(3)), "[7, -1, 1, -1, 0, 0, -1, -6, -1, 6, -1, 0, -1, 0, -1, 1, 1, 1, 0, -1]");
-        aeqit(take(20, P.bigIntegers(4)), "[1, 1, -7, 4, -2, 0, 10, -1, 0, 0, -2, -8, -6, 3, 0, -1, 0, 0, -2, 4]");
-        aeqit(take(20, P.bigIntegers(5)),
+        P.setBigIntegerMeanBitSize(3);
+        aeqit(take(20, P.bigIntegers()), "[7, -1, 1, -1, 0, 0, -1, -6, -1, 6, -1, 0, -1, 0, -1, 1, 1, 1, 0, -1]");
+        P.setBigIntegerMeanBitSize(4);
+        aeqit(take(20, P.bigIntegers()), "[1, 1, -7, 4, -2, 0, 10, -1, 0, 0, -2, -8, -6, 3, 0, -1, 0, 0, -2, 4]");
+        P.setBigIntegerMeanBitSize(5);
+        aeqit(take(20, P.bigIntegers()),
                 "[1, 773, 2, 0, 24, -10, -1, -2, -1, 1, -3, 3, -2, 7, 10, 2, 3271, 120, 11, 0]");
-        aeqit(take(20, P.bigIntegers(10)),
+        P.setBigIntegerMeanBitSize(10);
+        aeqit(take(20, P.bigIntegers()),
                 "[-2, 11, -454, -19342463128, -3412, 13, -1, -55, 0, -4," +
                 " 0, 3, 35, -1, -43623431, -8, 0, 19579, -29, 4]");
-        aeqit(take(20, P.bigIntegers(100)),
+        P.setBigIntegerMeanBitSize(100);
+        aeqit(take(20, P.bigIntegers()),
                 "[-88557569903630551599799955827784349169626451040329715964314, 202, 60318599134," +
                 " 1640702634687943479, -61191085979970053457695, 4254037577138942334193887, 12821954296221206544535," +
                 " -1638087117977, 3, 582, 230, 16168191, 26, 51481126197039749041591204, -71523839508501956928333," +
                 " 1325372505506602807026564, 3757547800543576, 4364599426705721714," +
                 " 113847612089673464000064561451248807, -400979282943760427063214761070268927754993666]");
         try {
-            P.bigIntegers(2);
+            P.setBigIntegerMeanBitSize(2);
+            P.bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.bigIntegers(0);
+            P.setBigIntegerMeanBitSize(0);
+            P.bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.bigIntegers(-4);
+            P.setBigIntegerMeanBitSize(-4);
+            P.bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
+        P.reset();
     }
 
     @Test
@@ -328,7 +363,8 @@ public class RandomProviderTest {
     public void testNaturalIntegersGeometric() {
         aeqit(take(20, P.naturalIntegersGeometric(2)), "[2, 2, 0, 3, 0, 0, 0, 1, 3, 0, 0, 0, 2, 7, 4, 0, 0, 0, 0, 0]");
         aeqit(take(20, P.naturalIntegersGeometric(3)), "[2, 0, 7, 1, 0, 2, 9, 4, 3, 2, 0, 0, 0, 0, 4, 3, 0, 2, 0, 0]");
-        aeqit(take(20, P.naturalIntegersGeometric(4)), "[5, 2, 1, 18, 0, 4, 7, 4, 3, 1, 0, 2, 1, 0, 5, 6, 1, 0, 8, 3]");
+        aeqit(take(20, P.naturalIntegersGeometric(4)),
+                "[5, 2, 1, 18, 0, 4, 7, 4, 3, 1, 0, 2, 1, 0, 5, 6, 1, 0, 8, 3]");
         aeqit(take(20, P.naturalIntegersGeometric(5)),
                 "[0, 4, 0, 7, 1, 1, 2, 3, 0, 1, 1, 3, 1, 12, 0, 5, 13, 1, 14, 6]");
         aeqit(take(20, P.naturalIntegersGeometric(10)),
@@ -351,9 +387,12 @@ public class RandomProviderTest {
 
     @Test
     public void testPositiveIntegersGeometric() {
-        aeqit(take(20, P.positiveIntegersGeometric(3)), "[3, 3, 1, 4, 1, 1, 1, 2, 4, 1, 1, 1, 3, 8, 5, 1, 1, 1, 1, 1]");
-        aeqit(take(20, P.positiveIntegersGeometric(4)), "[3, 1, 8, 2, 1, 3, 10, 5, 4, 3, 1, 1, 1, 1, 5, 4, 1, 3, 1, 1]");
-        aeqit(take(20, P.positiveIntegersGeometric(5)), "[6, 3, 2, 19, 1, 5, 8, 5, 4, 2, 1, 3, 2, 1, 6, 7, 2, 1, 9, 4]");
+        aeqit(take(20, P.positiveIntegersGeometric(3)),
+                "[3, 3, 1, 4, 1, 1, 1, 2, 4, 1, 1, 1, 3, 8, 5, 1, 1, 1, 1, 1]");
+        aeqit(take(20, P.positiveIntegersGeometric(4)),
+                "[3, 1, 8, 2, 1, 3, 10, 5, 4, 3, 1, 1, 1, 1, 5, 4, 1, 3, 1, 1]");
+        aeqit(take(20, P.positiveIntegersGeometric(5)),
+                "[6, 3, 2, 19, 1, 5, 8, 5, 4, 2, 1, 3, 2, 1, 6, 7, 2, 1, 9, 4]");
         aeqit(take(20, P.positiveIntegersGeometric(10)),
                 "[1, 5, 1, 12, 3, 9, 19, 1, 6, 14, 24, 13, 27, 6, 3, 4, 15, 3, 5, 15]");
         aeqit(take(20, P.positiveIntegersGeometric(100)),
@@ -431,7 +470,7 @@ public class RandomProviderTest {
     public void testAsciiCharacters() {
         aeq(charsToString(take(100, P.asciiCharacters())),
                 "PG1~AdF\f;{\13yx\33}\25&A0\26zW\3?\n~\24>\\\rvU9X!=G4*FV:3ByK$$YU\32cE" +
-                "S\37#\f\32\34\27\16Q\13 \20@p:PN\t\30YDC\f\30Wp,.d72\6}K$*#`4RUYh>IE}");
+                        "S\37#\f\32\34\27\16Q\13 \20@p:PN\t\30YDC\f\30Wp,.d72\6}K$*#`4RUYh>IE}");
     }
 
     @Test
@@ -520,13 +559,5 @@ public class RandomProviderTest {
                 " 4.813417096972919E-51, 1.3135493453396428E-126, -1.4224921830272466E88, 1.4069651251380964E77," +
                 " -2.1879373410803317E-265, -3.027783021197556E-242, -1.1079692399020062E285," +
                 " 4.408373100689709E-147]");
-    }
-
-    private static void aeq(Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(a), b.toString());
-    }
-
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
     }
 }

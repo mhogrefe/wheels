@@ -12,6 +12,16 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class IterableProvider {
+    public void setBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {}
+
+    public void setBigDecimalMeanScale(int bigDecimalMeanScale) {}
+
+    public void setMeanListSize(int meanListSize) {}
+
+    public void setSpecialElementRatio(int specialElementRatio) {}
+
+    public void reset() {}
+
     public abstract @NotNull Iterable<Boolean> booleans();
     public abstract @NotNull Iterable<Ordering> orderings();
     public abstract @NotNull Iterable<RoundingMode> roundingModes();

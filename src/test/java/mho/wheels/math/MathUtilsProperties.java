@@ -294,14 +294,11 @@ public class MathUtilsProperties {
             }
         }
 
-        Iterable<Pair<BigInteger, BigInteger>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = P.pairs(P.positiveBigIntegers());
-        } else {
-            ps = P.pairs(
-                    filter(i -> le(i, BigInteger.valueOf(1000000)), ((RandomProvider) P).positiveBigIntegers(10))
-            );
-        }
+        P.setBigIntegerMeanBitSize(10);
+        Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
+                filter(i -> le(i, BigInteger.valueOf(1000000)), P.positiveBigIntegers())
+        );
+        P.reset();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             BigInteger lcm = lcm(p.a, p.b);
             assertEquals(p.toString(), lcm, lcm_explicit(p.a, p.b));
