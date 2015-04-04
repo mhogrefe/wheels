@@ -42,27 +42,37 @@ public class RandomProvider extends IterableProvider {
         this.generator = generator;
     }
 
-    public void setBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
-        this.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
+    public RandomProvider copy() {
+        RandomProvider copy = new RandomProvider(generator);
+        copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
+        copy.bigDecimalMeanScale = bigDecimalMeanScale;
+        copy.meanListSize = meanListSize;
+        copy.specialElementRatio = specialElementRatio;
+        return copy;
     }
 
-    public void setBigDecimalMeanScale(int bigDecimalMeanScale) {
-        this.bigDecimalMeanScale = bigDecimalMeanScale;
+    public RandomProvider withBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
+        RandomProvider newRandomProvider = copy();
+        newRandomProvider.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
+        return newRandomProvider;
     }
 
-    public void setMeanListSize(int meanListSize) {
-        this.meanListSize = meanListSize;
+    public RandomProvider withBigDecimalMeanScale(int bigDecimalMeanScale) {
+        RandomProvider newRandomProvider = copy();
+        newRandomProvider.bigDecimalMeanScale = bigDecimalMeanScale;
+        return newRandomProvider;
     }
 
-    public void setSpecialElementRatio(int specialElementRatio) {
-        this.specialElementRatio = specialElementRatio;
+    public RandomProvider withMeanListSize(int meanListSize) {
+        RandomProvider newRandomProvider = copy();
+        newRandomProvider.meanListSize = meanListSize;
+        return newRandomProvider;
     }
 
-    public void reset() {
-        bigIntegerMeanBitSize = DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE;
-        bigDecimalMeanScale = DEFAULT_BIG_DECIMAL_MEAN_SCALE;
-        meanListSize = DEFAULT_MEAN_LIST_SIZE;
-        specialElementRatio = DEFAULT_SPECIAL_ELEMENT_RATIO;
+    public RandomProvider withSpecialElementRatio(int specialElementRatio) {
+        RandomProvider newRandomProvider = copy();
+        newRandomProvider.specialElementRatio = specialElementRatio;
+        return newRandomProvider;
     }
 
     /**

@@ -294,11 +294,9 @@ public class MathUtilsProperties {
             }
         }
 
-        P.setBigIntegerMeanBitSize(10);
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
-                filter(i -> le(i, BigInteger.valueOf(1000000)), P.positiveBigIntegers())
+                filter(i -> le(i, BigInteger.valueOf(1000000)), P.withBigIntegerMeanBitSize(10).positiveBigIntegers())
         );
-        P.reset();
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             BigInteger lcm = lcm(p.a, p.b);
             assertEquals(p.toString(), lcm, lcm_explicit(p.a, p.b));

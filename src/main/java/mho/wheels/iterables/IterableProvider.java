@@ -12,15 +12,21 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public abstract class IterableProvider {
-    public void setBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {}
+    public IterableProvider withBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
+        return this;
+    }
 
-    public void setBigDecimalMeanScale(int bigDecimalMeanScale) {}
+    public IterableProvider withBigDecimalMeanScale(int bigDecimalMeanScale) {
+        return this;
+    }
 
-    public void setMeanListSize(int meanListSize) {}
+    public IterableProvider withMeanListSize(int meanListSize) {
+        return this;
+    }
 
-    public void setSpecialElementRatio(int specialElementRatio) {}
-
-    public void reset() {}
+    public IterableProvider withSpecialElementRatio(int specialElementRatio) {
+        return this;
+    }
 
     public abstract @NotNull Iterable<Boolean> booleans();
     public abstract @NotNull Iterable<Ordering> orderings();
