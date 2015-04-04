@@ -21,11 +21,11 @@ import static mho.wheels.ordering.Ordering.lt;
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
 public class RandomProvider extends IterableProvider {
-    public static final int DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE = 64;
-    public static final int DEFAULT_BIG_DECIMAL_MEAN_SCALE =
+    private static final int DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE = 64;
+    private static final int DEFAULT_BIG_DECIMAL_MEAN_SCALE =
             (int) Math.round(Math.log10(2) * DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE);
-    public static final int DEFAULT_MEAN_LIST_SIZE = 10;
-    public static final int DEFAULT_SPECIAL_ELEMENT_RATIO = 50;
+    private static final int DEFAULT_MEAN_LIST_SIZE = 10;
+    private static final int DEFAULT_SPECIAL_ELEMENT_RATIO = 50;
 
     private int bigIntegerMeanBitSize = DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE;
     private int bigDecimalMeanScale = DEFAULT_BIG_DECIMAL_MEAN_SCALE;
