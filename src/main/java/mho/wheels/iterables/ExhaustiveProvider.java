@@ -25,7 +25,7 @@ import static mho.wheels.ordering.Ordering.*;
  * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
  */
 @SuppressWarnings("ConstantConditions")
-public class ExhaustiveProvider implements IterableProvider {
+public class ExhaustiveProvider extends IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
 

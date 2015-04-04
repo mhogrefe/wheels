@@ -20,7 +20,7 @@ import static mho.wheels.ordering.Ordering.lt;
 /**
  * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
  */
-public class RandomProvider implements IterableProvider {
+public class RandomProvider extends IterableProvider {
     protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
     protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
     protected static final int MEAN_LIST_SIZE = 10;
