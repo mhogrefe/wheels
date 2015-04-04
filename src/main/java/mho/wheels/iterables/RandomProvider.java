@@ -42,6 +42,22 @@ public class RandomProvider extends IterableProvider {
         this.generator = generator;
     }
 
+    public int getBigIntegerMeanBitSize() {
+        return bigIntegerMeanBitSize;
+    }
+
+    public int getBigDecimalMeanScale() {
+        return bigDecimalMeanScale;
+    }
+
+    public int getMeanListSize() {
+        return meanListSize;
+    }
+
+    public int getSpecialElementRatio() {
+        return specialElementRatio;
+    }
+
     public RandomProvider copy() {
         RandomProvider copy = new RandomProvider(generator);
         copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
