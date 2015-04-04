@@ -11,6 +11,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class Testing {
+    /**
+     * Disallow instantiation
+     */
+    private Testing() {}
+
     public static void aeq(String message, int i, int j) {
         assertEquals(message, i, j);
     }

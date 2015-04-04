@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -1058,7 +1059,11 @@ public class IterableUtilsProperties {
             Iterable<Float> deltas = deltaFloat(fs);
             aeq(fs.toString(), length(deltas), length(fs) - 1);
             Iterable<Float> reversed = reverse(map(f -> -f, deltaFloat(reverse(fs))));
-            aeqit(fs.toString(), absFloatNegativeZeros(deltas), absFloatNegativeZeros(reversed));
+            aeqit(
+                    fs.toString(),
+                    map(FloatingPointUtils::absNegativeZeros, deltas),
+                    map(FloatingPointUtils::absNegativeZeros, reversed)
+            );
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
@@ -1095,7 +1100,11 @@ public class IterableUtilsProperties {
             Iterable<Double> deltas = deltaDouble(ds);
             aeq(ds.toString(), length(deltas), length(ds) - 1);
             Iterable<Double> reversed = reverse(map(d -> -d, deltaDouble(reverse(ds))));
-            aeqit(ds.toString(), absDoubleNegativeZeros(deltas), absDoubleNegativeZeros(reversed));
+            aeqit(
+                    ds.toString(),
+                    map(FloatingPointUtils::absNegativeZeros, deltas),
+                    map(FloatingPointUtils::absNegativeZeros, reversed)
+            );
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
@@ -1159,13 +1168,5 @@ public class IterableUtilsProperties {
                 fail(cs.toString());
             } catch (NullPointerException ignored) {}
         }
-    }
-
-    private static @NotNull Iterable<Float> absFloatNegativeZeros(@NotNull Iterable<Float> fs) {
-        return map(f -> f == 0.0f ? 0.0f : f, fs);
-    }
-
-    private static @NotNull Iterable<Double> absDoubleNegativeZeros(@NotNull Iterable<Double> ds) {
-        return map(d -> d == 0.0 ? 0.0 : d, ds);
     }
 }

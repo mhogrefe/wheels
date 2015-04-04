@@ -19,7 +19,7 @@ Progress
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| FloatUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
+| FloatingPointUtils       | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
