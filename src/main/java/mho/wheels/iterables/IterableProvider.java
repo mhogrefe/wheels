@@ -49,6 +49,8 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Long> range(long a, long b);
     public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
     public abstract @NotNull Iterable<Character> range(char a, char b);
+    public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
+    public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
     public abstract @NotNull Iterable<Byte> positiveBytes();
     public abstract @NotNull Iterable<Short> positiveShorts();
     public abstract @NotNull Iterable<Integer> positiveIntegers();

@@ -258,6 +258,16 @@ public class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.range(a, b);
     }
 
+    @Override
+    public @NotNull <T> List<T> uniformSample(@NotNull List<T> xs) {
+        return xs;
+    }
+
+    @Override
+    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
+        return fromString(s);
+    }
+
     /**
      * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
      *

@@ -315,11 +315,13 @@ public class RandomProvider extends IterableProvider {
         return map(i -> (char) (i + a), randomInts(b - a + 1));
     }
 
+    @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
         return map(xs::get, range(0, xs.size() - 1));
     }
 
+    @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
         if (s.isEmpty()) return new ArrayList<>();
         return map(s::charAt, range(0, s.length() - 1));
