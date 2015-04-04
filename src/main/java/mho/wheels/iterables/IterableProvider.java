@@ -69,6 +69,18 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Integer> integers();
     public abstract @NotNull Iterable<Long> longs();
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
+    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
+        return naturalIntegers();
+    }
+    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
+        return positiveIntegers();
+    }
+    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
+        return negativeIntegers();
+    }
+    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
+        return integers();
+    }
     public abstract @NotNull Iterable<Character> asciiCharacters();
     public abstract @NotNull Iterable<Character> characters();
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
