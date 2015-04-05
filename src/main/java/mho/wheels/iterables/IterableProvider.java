@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.Combinatorics;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -99,6 +100,24 @@ public abstract class IterableProvider {
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs);
+    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
+        return pairs(xs);
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return pairs(as, bs);
+    }
+    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        return pairs(xs);
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return pairs(as, bs);
+    }
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f

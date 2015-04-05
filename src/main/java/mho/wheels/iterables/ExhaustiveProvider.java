@@ -880,6 +880,7 @@ public class ExhaustiveProvider extends IterableProvider {
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all pairs of elements from {@code xs} in logarithmic order
      */
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsLogarithmicOrder(xs);
     }
@@ -893,6 +894,7 @@ public class ExhaustiveProvider extends IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
@@ -907,6 +909,7 @@ public class ExhaustiveProvider extends IterableProvider {
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all pairs of elements from {@code xs} in square-root order
      */
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsSquareRootOrder(xs);
     }
@@ -920,6 +923,7 @@ public class ExhaustiveProvider extends IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all pairs of elements from {@code as} and {@code bs} in square-root order
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
