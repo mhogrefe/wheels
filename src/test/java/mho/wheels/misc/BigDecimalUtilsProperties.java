@@ -5,11 +5,14 @@ import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Triple;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -20,27 +23,19 @@ import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
 public class BigDecimalUtilsProperties {
-    private static boolean USE_RANDOM;
     private static int LIMIT;
-
     private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
 
     @Test
     public void testAllProperties() {
+        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
+        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
+        configs.add(new Triple<>(new RandomProvider(0x6af477d9a7e54fcaL), 1000, "randomly"));
         System.out.println("BigDecimalUtils properties");
-        for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
-            USE_RANDOM = useRandom;
+        for (Triple<IterableProvider, Integer, String> config : configs) {
+            P = config.a;
+            LIMIT = config.b;
+            System.out.println("\ttesting " + config.c);
             propertiesSetPrecision();
             propertiesSuccessor();
             propertiesPredecessor();
@@ -49,7 +44,6 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesSetPrecision() {
-        initialize();
         System.out.println("\t\ttesting setPrecision(BigDecimal, int) properties...");
 
         Iterable<Pair<BigDecimal, Integer>> ps;
@@ -98,7 +92,6 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesSuccessor() {
-        initialize();
         System.out.println("\t\ttesting successor(BigDecimal) properties...");
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
@@ -110,7 +103,6 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesPredecessor() {
-        initialize();
         System.out.println("\t\ttesting predecessor(BigDecimal) properties...");
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {

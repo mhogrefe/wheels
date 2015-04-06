@@ -32,7 +32,7 @@ public class ExhaustiveProvider extends IterableProvider {
     protected ExhaustiveProvider() {}
 
     /**
-     * A {@link List} that contains both {@link Boolean}s.
+     * A {@link List} that contains both {@link boolean}s.
      *
      * Length is 2
      */

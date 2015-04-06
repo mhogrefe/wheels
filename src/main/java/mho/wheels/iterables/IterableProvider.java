@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * This class provides {@code Iterables} for testing. Subclasses should be immutable.
+ */
 public abstract class IterableProvider {
     public IterableProvider withBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
         return this;
@@ -50,8 +53,26 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Long> range(long a, long b);
     public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
     public abstract @NotNull Iterable<Character> range(char a, char b);
+
     public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
+
+    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
+        return naturalIntegers();
+    }
+    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
+        return positiveIntegers();
+    }
+    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
+        return negativeIntegers();
+    }
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric(int meanSize) {
+        return integers();
+    }
+    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
+        return integers();
+    }
+
     public abstract @NotNull Iterable<Byte> positiveBytes();
     public abstract @NotNull Iterable<Short> positiveShorts();
     public abstract @NotNull Iterable<Integer> positiveIntegers();
@@ -72,20 +93,9 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Integer> integers();
     public abstract @NotNull Iterable<Long> longs();
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
-        return naturalIntegers();
-    }
-    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
-        return positiveIntegers();
-    }
-    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
-        return negativeIntegers();
-    }
-    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
-        return integers();
-    }
     public abstract @NotNull Iterable<Character> asciiCharacters();
     public abstract @NotNull Iterable<Character> characters();
+
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
     public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();
     public abstract @NotNull Iterable<Float> ordinaryFloats();
@@ -94,9 +104,11 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Double> negativeOrdinaryDoubles();
     public abstract @NotNull Iterable<Double> ordinaryDoubles();
     public abstract @NotNull Iterable<Double> doubles();
+
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
+
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs);
@@ -183,6 +195,7 @@ public abstract class IterableProvider {
     public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
+
     public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
     public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
     public abstract @NotNull Iterable<String> strings(int size);

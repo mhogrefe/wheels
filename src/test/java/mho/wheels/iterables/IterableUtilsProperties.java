@@ -27,7 +27,7 @@ public class IterableUtilsProperties {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = new RandomProvider(0x6af477d9a7e54fcaL);
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
@@ -285,15 +285,15 @@ public class IterableUtilsProperties {
         ));
 
         for (List<Float> fs : take(LIMIT, fss)) {
-            aeq(fs.toString(), sumFloat(fs), Float.NaN);
+            aeqf(fs.toString(), sumFloat(fs), Float.NaN);
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeq(Float.toString(f), sumFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), sumFloat(Arrays.asList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeq(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
+            aeqf(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -327,15 +327,15 @@ public class IterableUtilsProperties {
         ));
 
         for (List<Double> ds : take(LIMIT, dss)) {
-            aeq(ds.toString(), sumDouble(ds), Double.NaN);
+            aeqd(ds.toString(), sumDouble(ds), Double.NaN);
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeq(Double.toString(d), sumDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), sumDouble(Arrays.asList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeq(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
+            aeqd(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Double>> dssFail = map(
@@ -645,15 +645,15 @@ public class IterableUtilsProperties {
         );
 
         for (List<Float> fs : take(LIMIT, fss)) {
-            aeq(fs.toString(), productFloat(fs), Float.NaN);
+            aeqf(fs.toString(), productFloat(fs), Float.NaN);
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeq(Float.toString(f), productFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), productFloat(Arrays.asList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeq(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
+            aeqf(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -688,15 +688,15 @@ public class IterableUtilsProperties {
         );
 
         for (List<Double> ds : take(LIMIT, dss)) {
-            aeq(ds.toString(), productDouble(ds), Double.NaN);
+            aeqd(ds.toString(), productDouble(ds), Double.NaN);
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeq(Double.toString(d), productDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), productDouble(Arrays.asList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeq(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
+            aeqd(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
         Iterable<List<Double>> dssFail = map(

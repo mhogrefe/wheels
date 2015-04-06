@@ -24,11 +24,19 @@ public class Testing {
         assertEquals(message, i, j);
     }
 
-    public static void aeq(String message, float f1, float f2) {
+    public static void aeqf(float f, float g) {
+        assertEquals(Float.toString(f) + " != " + Float.toString(g), Float.toString(f), Float.toString(g));
+    }
+
+    public static void aeqd(double d, double e) {
+        assertEquals(Double.toString(d) + " != " + Double.toString(e), Double.toString(d), Double.toString(e));
+    }
+
+    public static void aeqf(String message, float f1, float f2) {
         assertEquals(message, Float.toString(f1), Float.toString(f2));
     }
 
-    public static void aeq(String message, double d1, double d2) {
+    public static void aeqd(String message, double d1, double d2) {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 

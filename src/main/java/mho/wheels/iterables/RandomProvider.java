@@ -18,7 +18,7 @@ import static mho.wheels.ordering.Ordering.fromInt;
 import static mho.wheels.ordering.Ordering.lt;
 
 /**
- * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
+ * {@code Iterable}s that randomly generate all (or some important subset) of a type's values.
  */
 public class RandomProvider extends IterableProvider {
     private static final int DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE = 64;
@@ -32,14 +32,14 @@ public class RandomProvider extends IterableProvider {
     private int meanListSize = DEFAULT_MEAN_LIST_SIZE;
     private int specialElementRatio = DEFAULT_SPECIAL_ELEMENT_RATIO;
 
-    protected final @NotNull Random generator;
+    protected final long seed;
 
     public RandomProvider() {
-        generator = new Random();
+        seed = new Random().nextLong();
     }
 
-    public RandomProvider(@NotNull Random generator) {
-        this.generator = generator;
+    public RandomProvider(long seed) {
+        this.seed = seed;
     }
 
     public int getBigIntegerMeanBitSize() {
@@ -59,7 +59,16 @@ public class RandomProvider extends IterableProvider {
     }
 
     public RandomProvider copy() {
-        RandomProvider copy = new RandomProvider(generator);
+        RandomProvider copy = new RandomProvider(seed);
+        copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
+        copy.bigDecimalMeanScale = bigDecimalMeanScale;
+        copy.meanListSize = meanListSize;
+        copy.specialElementRatio = specialElementRatio;
+        return copy;
+    }
+
+    public RandomProvider alt() {
+        RandomProvider copy = new RandomProvider(new Random(seed).nextLong());
         copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
         copy.bigDecimalMeanScale = bigDecimalMeanScale;
         copy.meanListSize = meanListSize;
@@ -92,14 +101,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterator</tt> that generates both <tt>Boolean</tt>s from a uniform distribution. Does not support
-     * removal.
+     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
         return () -> new Iterator<Boolean>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -118,14 +128,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterator</tt> that generates all <tt>Ordering</tt>s from a uniform distribution. Does not support
-     * removal.
+     * An {@code Iterator} that generates all {@code Ordering}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Ordering> orderings() {
         return () -> new Iterator<Ordering>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -144,7 +155,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>RoundingMode</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all {@code RoundingMode}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -340,7 +351,172 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Byte</tt>s from a uniform distribution. Does not support
+     * Returns an {@code int} taken from the geometric distribution with support on the positive integers and a mean
+     * of {@code meanValue}.
+     *
+     * @param generator
+     * @param meanValue
+     * @return
+     */
+    private static int nextIntGeometric(@NotNull Random generator, int meanValue) {
+        int x = 1;
+        while (true) {
+            if (generator.nextDouble() < 1.0 / meanValue) return x;
+            x++;
+        }
+    }
+
+
+    /**
+     * @return An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution
+     * with mean {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code mean} cannot be negative.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all natural {@code Integer}s, or 0.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param mean the approximate mean bit size of the {@code Integer}s generated
+     */
+    public @NotNull Iterable<Integer> naturalIntegersGeometric(int mean) {
+        if (mean < 0)
+            throw new IllegalArgumentException("mean cannot be negative.");
+        if (mean == 0) return repeat(0);
+        return () -> new Iterator<Integer>() {
+            private Random generator = new Random(seed);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return nextIntGeometric(generator, mean + 1) - 1;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * @return An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution
+     * with mean {@code mean}, or all ones if {@code mean} is 1. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code mean} must be positive.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all positive {@code Integer}s, or 1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param mean the approximate mean size of the {@code Integer}s generated
+     */
+    public @NotNull Iterable<Integer> positiveIntegersGeometric(int mean) {
+        if (mean <= 0)
+            throw new IllegalArgumentException("mean must be positive.");
+        if (mean == 1) return repeat(1);
+        return () -> new Iterator<Integer>() {
+            private Random generator = new Random(seed);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return nextIntGeometric(generator, mean);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * @return An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution
+     * with mean {@code mean}, or all –1s if {@code mean} is –1. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code mean} must be negative.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all negative {@code Integer}s, or –1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param mean the approximate absolute mean size of the {@code Integer}s generated
+     */
+    public @NotNull Iterable<Integer> negativeIntegersGeometric(int mean) {
+        return map(i -> -i, positiveIntegersGeometric(-mean));
+    }
+
+    /**
+     * @return An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code mean} is 1)
+     * whose absolute value is chosen from a geometric distribution with absolute mean {@code mean}, and whose sign is
+     * chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code mean} cannot be negative.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all nonzero {@code Integer}s, or –1 and 1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param mean the approximate mean bit size of the {@code Integer}s generated
+     */
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric(int mean) {
+        return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(mean), booleans());
+    }
+
+    /**
+     * @return An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with absolute mean {@code mean}, and whose sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code mean} must be greater than 1.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param mean the approximate mean bit size of the {@code Integer}s generated
+     */
+    public @NotNull Iterable<Integer> integersGeometric(int mean) {
+        if (mean < 0)
+            throw new IllegalArgumentException("mean cannot be negative.");
+        if (mean == 0) return repeat(0);
+        return () -> new Iterator<Integer>() {
+            private Random generator = new Random(seed);
+            private final Iterator<Integer> nats = naturalIntegersGeometric(mean).iterator();
+            private final Iterator<Integer> negs = alt().negativeIntegersGeometric(-mean).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                return generator.nextBoolean() ? nats.next() : negs.next();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Byte}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -348,6 +524,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
         return () -> new Iterator<Byte>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -366,7 +544,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Short</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all positive {@code Short}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -374,6 +552,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
         return () -> new Iterator<Short>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -392,7 +572,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all positive {@code Integer}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -400,6 +580,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
         return () -> new Iterator<Integer>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -418,7 +600,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Long</tt>s from a uniform distribution from a uniform
+     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution from a uniform
      * distribution. Does not support removal.
      *
      * Length is infinite
@@ -426,6 +608,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
         return () -> new Iterator<Long>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -448,13 +632,13 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a
-     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * @return An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     *  <li>{@code meanBitSize} must be greater than 2.</li>
+     *  <li>The is an infinite pseudorandom sequence of all {@code BigInteger}s</li>
      * </ul>
      *
      * Length is infinite
@@ -463,6 +647,8 @@ public class RandomProvider extends IterableProvider {
         if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -472,12 +658,9 @@ public class RandomProvider extends IterableProvider {
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
                 bits.add(true);
-                while (true) {
-                    if (generator.nextDouble() < 1.0 / (bigIntegerMeanBitSize - 1)) {
-                        break;
-                    } else {
-                        bits.add(generator.nextBoolean());
-                    }
+                int bitSize = nextIntGeometric(generator, bigIntegerMeanBitSize);
+                for (int i = 0; i < bitSize - 1; i++) {
+                    bits.add(generator.nextBoolean());
                 }
                 return MathUtils.fromBigEndianBits(bits);
             }
@@ -490,7 +673,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Byte</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all negative {@code Byte}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -498,6 +681,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
         return () -> new Iterator<Byte>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -516,7 +701,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Short</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all negative {@code Short}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -524,6 +709,8 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
         return () -> new Iterator<Short>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -542,7 +729,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all negative {@code Integer}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -553,7 +740,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Long</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all negative {@code Long}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -564,13 +751,13 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a
-     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * @return An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code meanBitSize} must be greater than 2.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -581,7 +768,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Byte</tt>s (including 0) from a uniform distribution. Does
+     * An {@code Iterable} that generates all natural {@code Byte}s (including 0) from a uniform distribution. Does
      * not support removal.
      *
      * Length is infinite
@@ -592,7 +779,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Short</tt>s (including 0) from a uniform distribution. Does
+     * An {@code Iterable} that generates all natural {@code Short}s (including 0) from a uniform distribution. Does
      * not support removal.
      *
      * Length is infinite
@@ -603,7 +790,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s (including 0) from a uniform distribution.
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) from a uniform distribution.
      * Does not support removal.
      *
      * Length is infinite
@@ -614,7 +801,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Long</tt>s (including 0) from a uniform distribution. Does
+     * An {@code Iterable} that generates all natural {@code Long}s (including 0) from a uniform distribution. Does
      * not support removal.
      *
      * Length is infinite
@@ -625,13 +812,13 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is
-     * chosen from a geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual
-     * mean and <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * @return An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). The bit size is
+     * chosen from a geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual
+     * mean and {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code meanBitSize} must be greater than 2.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -641,6 +828,8 @@ public class RandomProvider extends IterableProvider {
         if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -649,12 +838,12 @@ public class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
-                while (true) {
-                    if (generator.nextDouble() < 1.0 / (bigIntegerMeanBitSize - 1)) {
-                        break;
-                    } else {
-                        bits.add(generator.nextBoolean());
-                    }
+                int bitSize = nextIntGeometric(generator, bigIntegerMeanBitSize + 1) - 1;
+                if (bitSize != 0) {
+                    bits.add(true);
+                }
+                for (int i = 0; i < bitSize - 1; i++) {
+                    bits.add(generator.nextBoolean());
                 }
                 return MathUtils.fromBigEndianBits(bits);
             }
@@ -667,7 +856,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Byte</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
@@ -677,7 +866,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Short</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Short}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
@@ -687,13 +876,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Integer</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
         return () -> new Iterator<Integer>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -712,13 +903,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Long</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Long> longs() {
         return () -> new Iterator<Long>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -737,13 +930,13 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * @return An {@code Iterable} that generates all {@code BigInteger}s. The bit size is chosen from a geometric
+     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code meanBitSize} must be greater than 2.</li>
+     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -753,6 +946,8 @@ public class RandomProvider extends IterableProvider {
         if (bigIntegerMeanBitSize <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
+            private Random generator = new Random(seed);
+
             private final Iterator<BigInteger> it = naturalBigIntegers().iterator();
 
             @Override
@@ -777,144 +972,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s chosen from a geometric distribution
-     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
-     * <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 1.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all natural <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
-        if (meanSize <= 1)
-            throw new IllegalArgumentException("meanSize must be greater than 1.");
-        return () -> new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                int i = 0;
-                while (generator.nextDouble() >= 1.0 / meanSize) {
-                    i++;
-                }
-                return i;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s chosen from a geometric distribution
-     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
-     * <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all positive <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
-        if (meanSize <= 2)
-            throw new IllegalArgumentException("meanSize must be greater than 2.");
-        return () -> new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                int i = 1;
-                while (generator.nextDouble() >= 1.0 / (meanSize - 1)) {
-                    i++;
-                }
-                return i;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s chosen from a geometric distribution
-     * with absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and
-     * <tt>meanSize</tt> decreases as <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all negative <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate absolute mean size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
-        return map(i -> -i, positiveIntegersGeometric(meanSize));
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all <tt>Integer</tt>s chosen from a geometric distribution with
-     * absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and <tt>meanSize</tt>
-     * decreases as <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 1.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
-        if (meanSize <= 1)
-            throw new IllegalArgumentException("meanSize must be greater than 1.");
-        return () -> new Iterator<Integer>() {
-            private final Iterator<Integer> it = naturalIntegersGeometric(meanSize).iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                Integer ni = it.next();
-                if (generator.nextBoolean()) {
-                    ni = -ni - 1;
-                }
-                return ni;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all ASCII <tt>Character</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all ASCII {@code Character}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -925,7 +983,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Character</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all {@code Character}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
@@ -936,7 +994,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.
      *
      * Length is infinite.
@@ -950,7 +1008,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
+     * @return An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a
      * uniform distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
@@ -961,7 +1019,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
      * Does not support removal.
      *
      * Length is infinite.
@@ -972,13 +1030,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Float</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Float}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Float> floats() {
         return () -> new Iterator<Float>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -1004,7 +1064,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.
      *
      * Length is infinite.
@@ -1018,7 +1078,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
+     * @return An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a
      * uniform distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
@@ -1029,7 +1089,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
      * Does not support removal.
      *
      * Length is infinite.
@@ -1040,13 +1100,15 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Double</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Double}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
         return () -> new Iterator<Double>() {
+            private Random generator = new Random(seed);
+
             @Override
             public boolean hasNext() {
                 return true;
