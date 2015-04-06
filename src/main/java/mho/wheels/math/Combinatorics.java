@@ -17,12 +17,12 @@ import static mho.wheels.ordering.Ordering.eq;
 import static mho.wheels.ordering.Ordering.lt;
 
 /**
- * Various combinatorial functions and <tt>Iterable</tt>s.
+ * Various combinatorial functions and {@code Iterable}s.
  */
 @SuppressWarnings("ConstantConditions")
 public final class Combinatorics {
     /**
-     * A provider of <tt>Iterable</tt>s containing every value of some type.
+     * A provider of {@code Iterable}s containing every value of some type.
      */
     private static final @NotNull ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
 
@@ -32,15 +32,15 @@ public final class Combinatorics {
     private Combinatorics() {}
 
     /**
-     * The factorial function <tt>n</tt>!
+     * The factorial function {@code n}!
      *
      * <ul>
-     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>{@code n} must be non-negative.</li>
      *  <li>The result is a factorial.</li>
      * </ul>
      *
      * @param n the argument
-     * @return <tt>n</tt>!
+     * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(int n) {
         if (n < 0)
@@ -49,15 +49,15 @@ public final class Combinatorics {
     }
 
     /**
-     * The factorial function <tt>n</tt>!
+     * The factorial function {@code n}!
      *
      * <ul>
-     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>{@code n} must be non-negative.</li>
      *  <li>The result is a factorial.</li>
      * </ul>
      *
      * @param n the argument
-     * @return <tt>n</tt>!
+     * @return {@code n}!
      */
     public static @NotNull BigInteger factorial(@NotNull BigInteger n) {
         if (n.signum() == -1)
@@ -66,15 +66,15 @@ public final class Combinatorics {
     }
 
     /**
-     * The subfactorial function !<tt>n</tt>
+     * The subfactorial function !{@code n}
      *
      * <ul>
-     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>{@code n} must be non-negative.</li>
      *  <li>The result is a subfactorial (rencontres number).</li>
      * </ul>
      *
      * @param n the argument
-     * @return !<tt>n</tt>
+     * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(int n) {
         if (n < 0)
@@ -92,15 +92,15 @@ public final class Combinatorics {
     }
 
     /**
-     * The subfactorial function !<tt>n</tt>
+     * The subfactorial function !{@code n}
      *
      * <ul>
-     *  <li><tt>n</tt> must be non-negative.</li>
+     *  <li>{@code n} must be non-negative.</li>
      *  <li>The result is a subfactorial (rencontres number).</li>
      * </ul>
      *
      * @param n the argument
-     * @return !<tt>n</tt>
+     * @return !{@code n}
      */
     public static @NotNull BigInteger subfactorial(@NotNull BigInteger n) {
         if (n.signum() == -1)
@@ -118,23 +118,23 @@ public final class Combinatorics {
     }
 
     /**
-     * Given two <tt>Iterable</tt>s, returns all ordered pairs of elements from these <tt>Iterable</tt>s in increasing
-     * order. The second <tt>Iterable</tt> must be finite; using a long second <tt>Iterable</tt> is possible but
+     * Given two {@code Iterable}s, returns all ordered pairs of elements from these {@code Iterable}s in increasing
+     * order. The second {@code Iterable} must be finite; using a long second {@code Iterable} is possible but
      * discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of two finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>The result is the Cartesian product of two finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * Result length is |{@code as}||{@code bs}|
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all ordered pairs of elements from <tt>as</tt> and <tt>bs</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all ordered pairs of elements from {@code as} and {@code bs}
      */
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairsIncreasing(
             @NotNull Iterable<A> as,
@@ -144,26 +144,26 @@ public final class Combinatorics {
     }
 
     /**
-     * Given three <tt>Iterable</tt>s, returns all ordered triples of elements from these <tt>Iterable</tt>s in
-     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * Given three {@code Iterable}s, returns all ordered triples of elements from these {@code Iterable}s in
+     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li><tt>cs</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of three finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code cs} must be finite.</li>
+     *  <li>The result is the Cartesian product of three finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}|
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param cs the third <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @return all ordered triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @return all ordered triples of elements from {@code as}, {@code bs}, and {@code cs}
      */
     public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesIncreasing(
             @NotNull Iterable<A> as,
@@ -177,29 +177,29 @@ public final class Combinatorics {
     }
 
     /**
-     * Given four <tt>Iterable</tt>s, returns all ordered quadruples of elements from these <tt>Iterable</tt>s in
-     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * Given four {@code Iterable}s, returns all ordered quadruples of elements from these {@code Iterable}s in
+     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li><tt>cs</tt> must be finite.</li>
-     *  <li><tt>ds</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of four finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code cs} must be finite.</li>
+     *  <li>{@code ds} must be finite.</li>
+     *  <li>The result is the Cartesian product of four finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param cs the third <tt>Iterable</tt>
-     * @param ds the fourth <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @return all ordered quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @return all ordered quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
     public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesIncreasing(
             @NotNull Iterable<A> as,
@@ -217,33 +217,33 @@ public final class Combinatorics {
     }
 
     /**
-     * Given five <tt>Iterable</tt>s, returns all ordered quintuples of elements from these <tt>Iterable</tt>s in
-     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * Given five {@code Iterable}s, returns all ordered quintuples of elements from these {@code Iterable}s in
+     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li><tt>cs</tt> must be finite.</li>
-     *  <li><tt>ds</tt> must be finite.</li>
-     *  <li><tt>es</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of five finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code cs} must be finite.</li>
+     *  <li>{@code ds} must be finite.</li>
+     *  <li>{@code es} must be finite.</li>
+     *  <li>The result is the Cartesian product of five finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param cs the third <tt>Iterable</tt>
-     * @param ds the fourth <tt>Iterable</tt>
-     * @param es the fifth <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @return all ordered quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and
-     * <tt>es</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @return all ordered quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
+     * {@code es}
      */
     public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesIncreasing(
             @NotNull Iterable<A> as,
@@ -262,36 +262,36 @@ public final class Combinatorics {
     }
 
     /**
-     * Given six <tt>Iterable</tt>s, returns all ordered sextuples of elements from these <tt>Iterable</tt>s in
-     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * Given six {@code Iterable}s, returns all ordered sextuples of elements from these {@code Iterable}s in
+     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li><tt>cs</tt> must be finite.</li>
-     *  <li><tt>ds</tt> must be finite.</li>
-     *  <li><tt>es</tt> must be finite.</li>
-     *  <li><tt>fs</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of six finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code cs} must be finite.</li>
+     *  <li>{@code ds} must be finite.</li>
+     *  <li>{@code es} must be finite.</li>
+     *  <li>{@code fs} must be finite.</li>
+     *  <li>The result is the Cartesian product of six finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param cs the third <tt>Iterable</tt>
-     * @param ds the fourth <tt>Iterable</tt>
-     * @param es the fifth <tt>Iterable</tt>
-     * @param fs the sixth <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @return all ordered sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
-     * and <tt>fs</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @return all ordered sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * and {@code fs}
      */
     public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesIncreasing(
             @NotNull Iterable<A> as,
@@ -311,39 +311,39 @@ public final class Combinatorics {
     }
 
     /**
-     * Given seven <tt>Iterable</tt>s, returns all ordered septuples of elements from these <tt>Iterable</tt>s in
-     * increasing order. All <tt>Iterable</tt>s but the first must be finite; using long <tt>Iterable</tt>s in any
+     * Given seven {@code Iterable}s, returns all ordered septuples of elements from these {@code Iterable}s in
+     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
      * position but the first is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>as</tt> must be non-null.</li>
-     *  <li><tt>bs</tt> must be finite.</li>
-     *  <li><tt>cs</tt> must be finite.</li>
-     *  <li><tt>ds</tt> must be finite.</li>
-     *  <li><tt>es</tt> must be finite.</li>
-     *  <li><tt>fs</tt> must be finite.</li>
-     *  <li><tt>gs</tt> must be finite.</li>
-     *  <li>The result is the Cartesian product of seven finite <tt>Iterable</tt>s.</li>
+     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code cs} must be finite.</li>
+     *  <li>{@code ds} must be finite.</li>
+     *  <li>{@code es} must be finite.</li>
+     *  <li>{@code fs} must be finite.</li>
+     *  <li>{@code gs} must be finite.</li>
+     *  <li>The result is the Cartesian product of seven finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}
      *
-     * @param as the first <tt>Iterable</tt>
-     * @param bs the second <tt>Iterable</tt>
-     * @param cs the third <tt>Iterable</tt>
-     * @param ds the fourth <tt>Iterable</tt>
-     * @param es the fifth <tt>Iterable</tt>
-     * @param fs the sixth <tt>Iterable</tt>
-     * @param gs the seventh <tt>Iterable</tt>
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @param <G> the type of the seventh <tt>Iterable</tt>'s elements
-     * @return all ordered septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
-     * <tt>fs</tt>, and <tt>gs</tt>
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param gs the seventh {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     * @return all ordered septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * {@code fs}, and {@code gs}
      */
     public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesIncreasing(
             @NotNull Iterable<A> as,
@@ -364,24 +364,24 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all lists of a given length with elements from a given
-     * <tt>Iterable</tt>. The lists are ordered lexicographically, matching the order given by the original
-     * <tt>Iterable</tt>. The <tt>Iterable</tt> must be finite; using a long <tt>Iterable</tt> is possible but
+     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
+     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
      * discouraged.
      *
      * <ul>
-     *  <li><tt>length</tt> must be non-negative.</li>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|<sup><tt>length</tt></sup>
+     * Result length is |{@code xs}|<sup>{@code length}</sup>
      *
      * @param length the length of the result lists
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all lists of a given length created from <tt>xs</tt>
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all lists of a given length created from {@code xs}
      */
     public static @NotNull <T> Iterable<List<T>> listsIncreasing(int length, @NotNull Iterable<T> xs) {
         if (length < 0)
@@ -404,24 +404,24 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all lists of a given length with elements from a given
-     * <tt>Iterable</tt>. The lists are ordered lexicographically, matching the order given by the original
-     * <tt>Iterable</tt>. The <tt>Iterable</tt> must be finite; using a long <tt>Iterable</tt> is possible but
+     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
+     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
      * discouraged.
      *
      * <ul>
-     *  <li><tt>length</tt> must be non-negative.</li>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|<sup><tt>length</tt></sup>
+     * Result length is |{@code xs}|<sup>{@code length}</sup>
      *
      * @param length the length of the result lists
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all lists of a given length created from <tt>xs</tt>
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all lists of a given length created from {@code xs}
      */
     public static @NotNull <T> Iterable<List<T>> listsIncreasing(@NotNull BigInteger length, @NotNull Iterable<T> xs) {
         if (lt(length, BigInteger.ZERO))
@@ -444,22 +444,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s of a given length with characters from a given
-     * <tt>Iterable</tt>. The <tt>String</tt>s are ordered lexicographically, matching the order given by the original
-     * <tt>Iterable</tt>. Using long <tt>String</tt> is possible but discouraged.
+     * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
+     * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. Using long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>length</tt> must be non-negative.</li>
-     *  <li><tt>s</tt> is non-null.</li>
-     *  <li>The result is finite. All of its <tt>String</tt>s have the same length. None are empty, unless the result
-     *  consists entirely of one empty <tt>String</tt>.</li>
+     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code s} is non-null.</li>
+     *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
+     *  consists entirely of one empty {@code String}.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|<sup><tt>length</tt></sup>
+     * Result length is |{@code s}|<sup>{@code length}</sup>
      *
-     * @param length the length of the result <tt>String</tt>
-     * @param s the <tt>String</tt> from which characters are selected
-     * @return all Strings of a given length created from <tt>s</tt>
+     * @param length the length of the result {@code String}
+     * @param s the {@code String} from which characters are selected
+     * @return all Strings of a given length created from {@code s}
      */
     public static @NotNull Iterable<String> stringsIncreasing(int length, @NotNull String s) {
         if (length < 0)
@@ -481,22 +481,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s of a given length with characters from a given
-     * <tt>Iterable</tt>. The <tt>String</tt>s are ordered lexicographically, matching the order given by the original
-     * <tt>Iterable</tt>. Using long <tt>String</tt> is possible but discouraged.
+     * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
+     * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. Using long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>length</tt> must be non-negative.</li>
-     *  <li><tt>s</tt> is non-null.</li>
-     *  <li>The result is finite. All of its <tt>String</tt>s have the same length. None are empty, unless the result
-     *  consists entirely of one empty <tt>String</tt>.</li>
+     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code s} is non-null.</li>
+     *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
+     *  consists entirely of one empty {@code String}.</li>
      * </ul>
      *
-     * Result length is |<tt>s</tt>|<sup><tt>length</tt></sup>
+     * Result length is |{@code s}|<sup>{@code length}</sup>
      *
-     * @param length the length of the result <tt>String</tt>
-     * @param s the <tt>String</tt> from which characters are selected
-     * @return all Strings of a given length created from <tt>s</tt>
+     * @param length the length of the result {@code String}
+     * @param s the {@code String} from which characters are selected
+     * @return all Strings of a given length created from {@code s}
      */
     public static @NotNull Iterable<String> stringsIncreasing(@NotNull BigInteger length, @NotNull String s) {
         if (lt(length, BigInteger.ZERO))
@@ -518,22 +518,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all lists with elements from a given <tt>Iterable</tt>. The lists are in
+     * Returns an {@code Iterable} containing all lists with elements from a given {@code Iterable}. The lists are in
      * shortlex order; that is, shorter lists precede longer lists, and lists of the same length are ordered
-     * lexicographically, matching the order given by the original <tt>Iterable</tt>. The <tt>Iterable</tt> must be
-     * finite; using a long <tt>Iterable</tt> is possible but discouraged.
+     * lexicographically, matching the order given by the original {@code Iterable}. The {@code Iterable} must be
+     * finite; using a long {@code Iterable} is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>xs</tt> must be finite.</li>
+     *  <li>{@code xs} must be finite.</li>
      *  <li>The result either consists of a single empty list, or is infinite. It is in shortlex order (according to
      *  some ordering of its elements) and contains every list of elements drawn from some sequence.</li>
      * </ul>
      *
-     * Result length is 1 if <tt>xs</tt> is empty, infinite otherwise
+     * Result length is 1 if {@code xs} is empty, infinite otherwise
      *
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all lists created from <tt>xs</tt>
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all lists created from {@code xs}
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<>());
@@ -541,22 +541,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns an <tt>Iterable</tt> containing all <tt>String</tt>s with characters from a given <tt>String</tt>. The
-     * <tt>String</tt>s are in shortlex order; that is, shorter <tt>String</tt>s precede longer <tt>String</tt>s, and
-     * <tt>String</tt>s of the same length are ordered lexicographically, matching the order given by the original
-     * <tt>String</tt>. Using a long <tt>String</tt> is possible but discouraged.
+     * Returns an {@code Iterable} containing all {@code String}s with characters from a given {@code String}. The
+     * {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer {@code String}s, and
+     * {@code String}s of the same length are ordered lexicographically, matching the order given by the original
+     * {@code String}. Using a long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li><tt>s</tt> must be non-null.</li>
-     *  <li>The result either consists of a single empty <tt>String</tt>, or is infinite. It is in shortlex order
-     *  (according to some ordering of its characters) and contains every <tt>String</tt> with characters drawn from
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result either consists of a single empty {@code String}, or is infinite. It is in shortlex order
+     *  (according to some ordering of its characters) and contains every {@code String} with characters drawn from
      *  some sequence.</li>
      * </ul>
      *
-     * Result length is 1 if <tt>s</tt> is empty, infinite otherwise
+     * Result length is 1 if {@code s} is empty, infinite otherwise
      *
-     * @param s the <tt>String</tt> from which characters are selected
-     * @return all <tt>String</tt>s created from <tt>s</tt>
+     * @param s the {@code String} from which characters are selected
+     * @return all {@code String}s created from {@code s}
      */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Arrays.asList("");
@@ -611,22 +611,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all pairs of elements taken from one <tt>Iterable</tt>s in such a way that the first component grows
+     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
      * linearly but the second grows logarithmically (hence the name).
      *
      * <ul>
-     *  <li><tt>xs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from some <tt>Iterable</tt>.
+     *  <li>{@code xs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>.</li>
+     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|<sup>2</sup>
+     * Result length is |{@code xs}|<sup>2</sup>
      *
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>xs</tt> in logarithmic order
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in logarithmic order
      */
     public static @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -660,25 +660,25 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
      * linearly but the second grows logarithmically.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.logarithmicDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>s.</li>
+     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * Result length is |{@code as}||{@code bs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in logarithmic order
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
      */
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
@@ -688,22 +688,22 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all pairs of elements taken from one <tt>Iterable</tt>s in such a way that the first component grows
+     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
      * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
      *
      * <ul>
-     *  <li><tt>xs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from some <tt>Iterable</tt>.
+     *  <li>{@code xs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.squareRootDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>.</li>
+     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}.</li>
      * </ul>
      *
-     * Result length is |<tt>xs</tt>|<sup>2</sup>
+     * Result length is |{@code xs}|<sup>2</sup>
      *
-     * @param xs the <tt>Iterable</tt> from which elements are selected
-     * @param <T> the type of the given <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>xs</tt> in square-root order
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in square-root order
      */
     public static @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -737,25 +737,25 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that the first component grows
+     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
      * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  <tt>BasicMath.squareRootDemux</tt> and interpreting the resulting pairs as indices into the original
-     *  <tt>Iterable</tt>s.</li>
+     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * Result length is |{@code as}||{@code bs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt> in square-root order
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in square-root order
      */
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
@@ -765,24 +765,24 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all pairs of elements taken from two <tt>Iterable</tt>s in such a way that both components grow as the
+     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that both components grow as the
      * square root of the number of pairs iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all pairs of elements taken from two <tt>Iterable</tt>s.
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
      *  The elements are ordered by following a Z-curve through the pair space. The curve is computed by
      *  un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>|
+     * Result length is |{@code as}||{@code bs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the pairs are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the pairs are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @return all pairs of elements from <tt>as</tt> and <tt>bs</tt>
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs}
      */
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return pairsByFunction(
@@ -796,27 +796,27 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all triples of elements taken from three <tt>Iterable</tt>s in such a way that all components grow as
+     * Returns all triples of elements taken from three {@code Iterable}s in such a way that all components grow as
      * the cube root of the number of triples iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all triples of elements taken from three <tt>Iterable</tt>s.
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>{@code cs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all triples of elements taken from three {@code Iterable}s.
      *  The elements are ordered by following a Z-curve through the triple space. The curve is computed by
      *  un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the triples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the triples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the triples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @return all triples of elements from <tt>as</tt>, <tt>bs</tt>, and <tt>cs</tt>
+     * @param as the {@code Iterable} from which the first components of the triples are selected
+     * @param bs the {@code Iterable} from which the second components of the triples are selected
+     * @param cs the {@code Iterable} from which the third components of the triples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @return all triples of elements from {@code as}, {@code bs}, and {@code cs}
      */
     public static @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
@@ -864,30 +864,30 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all quadruples of elements taken from four <tt>Iterable</tt>s in such a way that all components grow as
+     * Returns all quadruples of elements taken from four {@code Iterable}s in such a way that all components grow as
      * the fourth root of the number of quadruples iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all quadruples of elements taken from four
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quadruple space. The curve is
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>{@code cs} is non-null.</li>
+     *  <li>{@code ds} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all quadruples of elements taken from four
+     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the quadruple space. The curve is
      *  computed by un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the quadruples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the quadruples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the quadruples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the quadruples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @return all quadruples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, and <tt>ds</tt>
+     * @param as the {@code Iterable} from which the first components of the quadruples are selected
+     * @param bs the {@code Iterable} from which the second components of the quadruples are selected
+     * @param cs the {@code Iterable} from which the third components of the quadruples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the quadruples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @return all quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
     public static @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
@@ -942,33 +942,33 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all quintuples of elements taken from five <tt>Iterable</tt>s in such a way that all components grow as
+     * Returns all quintuples of elements taken from five {@code Iterable}s in such a way that all components grow as
      * the fifth root of the number of quintuples iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all quintuples of elements taken from five
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the quintuple space. The curve is
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>{@code cs} is non-null.</li>
+     *  <li>{@code ds} is non-null.</li>
+     *  <li>{@code es} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all quintuples of elements taken from five
+     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the quintuple space. The curve is
      *  computed by un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the quintuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the quintuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the quintuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the quintuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the quintuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @return all quintuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, and <tt>es</tt>
+     * @param as the {@code Iterable} from which the first components of the quintuples are selected
+     * @param bs the {@code Iterable} from which the second components of the quintuples are selected
+     * @param cs the {@code Iterable} from which the third components of the quintuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the quintuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the quintuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @return all quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and {@code es}
      */
     public static @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
@@ -1036,37 +1036,37 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all sextuples of elements taken from six <tt>Iterable</tt>s in such a way that all components grow as
+     * Returns all sextuples of elements taken from six {@code Iterable}s in such a way that all components grow as
      * the sixth root of the number of sextuples iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li><tt>fs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all sextuples of elements taken from six <tt>Iterable</tt>s.
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>{@code cs} is non-null.</li>
+     *  <li>{@code ds} is non-null.</li>
+     *  <li>{@code es} is non-null.</li>
+     *  <li>{@code fs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all sextuples of elements taken from six {@code Iterable}s.
      *  The elements are ordered by following a Z-curve through the sextuple space. The curve is computed by
      *  un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the sextuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the sextuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the sextuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the sextuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the sextuples are selected
-     * @param fs the <tt>Iterable</tt> from which the sixth components of the sextuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @return all sextuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>, and
-     * <tt>fs</tt>
+     * @param as the {@code Iterable} from which the first components of the sextuples are selected
+     * @param bs the {@code Iterable} from which the second components of the sextuples are selected
+     * @param cs the {@code Iterable} from which the third components of the sextuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the sextuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the sextuples are selected
+     * @param fs the {@code Iterable} from which the sixth components of the sextuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @return all sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es}, and
+     * {@code fs}
      */
     public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
@@ -1149,40 +1149,40 @@ public final class Combinatorics {
     }
 
     /**
-     * Returns all septuples of elements taken from seven <tt>Iterable</tt>s in such a way that all components grow as
+     * Returns all septuples of elements taken from seven {@code Iterable}s in such a way that all components grow as
      * the seventh root of the number of septuples iterated.
      *
      * <ul>
-     *  <li><tt>as</tt> is non-null.</li>
-     *  <li><tt>bs</tt> is non-null.</li>
-     *  <li><tt>cs</tt> is non-null.</li>
-     *  <li><tt>ds</tt> is non-null.</li>
-     *  <li><tt>es</tt> is non-null.</li>
-     *  <li><tt>fs</tt> is non-null.</li>
-     *  <li><tt>gs</tt> is non-null.</li>
-     *  <li>The result is an <tt>Iterable</tt> containing all septuples of elements taken from seven
-     *  <tt>Iterable</tt>s. The elements are ordered by following a Z-curve through the septuple space. The curve is
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>{@code cs} is non-null.</li>
+     *  <li>{@code ds} is non-null.</li>
+     *  <li>{@code es} is non-null.</li>
+     *  <li>{@code fs} is non-null.</li>
+     *  <li>{@code gs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all septuples of elements taken from seven
+     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the septuple space. The curve is
      *  computed by un-interleaving bits of successive integers.</li>
      * </ul>
      *
-     * Result length is |<tt>as</tt>||<tt>bs</tt>||<tt>cs</tt>||<tt>ds</tt>||<tt>es</tt>||<tt>fs</tt>||<tt>gs</tt>|
+     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}|
      *
-     * @param as the <tt>Iterable</tt> from which the first components of the septuples are selected
-     * @param bs the <tt>Iterable</tt> from which the second components of the septuples are selected
-     * @param cs the <tt>Iterable</tt> from which the third components of the septuples are selected
-     * @param ds the <tt>Iterable</tt> from which the fourth components of the septuples are selected
-     * @param es the <tt>Iterable</tt> from which the fifth components of the septuples are selected
-     * @param fs the <tt>Iterable</tt> from which the sixth components of the septuples are selected
-     * @param gs the <tt>Iterable</tt> from which the seventh components of the septuples are selected
-     * @param <A> the type of the first <tt>Iterable</tt>'s elements
-     * @param <B> the type of the second <tt>Iterable</tt>'s elements
-     * @param <C> the type of the third <tt>Iterable</tt>'s elements
-     * @param <D> the type of the fourth <tt>Iterable</tt>'s elements
-     * @param <E> the type of the fifth <tt>Iterable</tt>'s elements
-     * @param <F> the type of the sixth <tt>Iterable</tt>'s elements
-     * @param <G> the type of the seventh <tt>Iterable</tt>'s elements
-     * @return all septuples of elements from <tt>as</tt>, <tt>bs</tt>, <tt>cs</tt>, <tt>ds</tt>, <tt>es</tt>,
-     * <tt>fs</tt>, and <tt>gs</tt>
+     * @param as the {@code Iterable} from which the first components of the septuples are selected
+     * @param bs the {@code Iterable} from which the second components of the septuples are selected
+     * @param cs the {@code Iterable} from which the third components of the septuples are selected
+     * @param ds the {@code Iterable} from which the fourth components of the septuples are selected
+     * @param es the {@code Iterable} from which the fifth components of the septuples are selected
+     * @param fs the {@code Iterable} from which the sixth components of the septuples are selected
+     * @param gs the {@code Iterable} from which the seventh components of the septuples are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     * @return all septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * {@code fs}, and {@code gs}
      */
     public static @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
