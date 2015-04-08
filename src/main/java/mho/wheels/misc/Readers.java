@@ -42,6 +42,11 @@ public class Readers {
     public static final int MAX_POSITIVE_LONG_LENGTH = Long.toString(Long.MAX_VALUE).length();
 
     /**
+     * Disallow instantiation
+     */
+    private Readers() {}
+
+    /**
      * Turns a function {@code read} from {@code String} to {@code T} into a function from {@code String} to
      * {@code Optional<T>} such that the new function returns an empty {@code Optional} whenever {@code read} would
      * throw an exception, or whenever the {@code T} value produced by {@code read} has a different {@code String}

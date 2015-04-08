@@ -19,17 +19,25 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 /**
- * {@link Iterable}s that contain all (or some important subset) of a type's values. These are useful for exhaustive
- * testing. Nulls are not included by default, but may easily be added via
- * {@link mho.wheels.iterables.IterableUtils#cons}. The {@code Iterable}'s elements are typically in order of
- * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
+ * An {@code ExhaustiveProvider} produces {@code Iterable}s that generate some set of values in a specified order.
  */
 @SuppressWarnings("ConstantConditions")
 public class ExhaustiveProvider extends IterableProvider {
+    /**
+     * The single instance of this class.
+     */
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
+
+    /**
+     * The transition between algorithms for generating lists of values. If the number of values is less than or equal
+     * to this value, we use lexicographic ordering; otherwise, Z-curve ordering.
+     */
     private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
 
-    protected ExhaustiveProvider() {}
+    /**
+     * Disallow instantiation
+     */
+    private ExhaustiveProvider() {}
 
     /**
      * A {@link List} that contains both {@link boolean}s.

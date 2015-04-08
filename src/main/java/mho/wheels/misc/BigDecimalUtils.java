@@ -12,6 +12,11 @@ import java.math.RoundingMode;
  */
 public class BigDecimalUtils {
     /**
+     * Disallow instantiation
+     */
+    private BigDecimalUtils() {}
+
+    /**
      * Rounds a {@code BigDecimal} to a specified precision (number of significant figures). If the precision is
      * greater than the {@code BigDecimal}'s, trailing zeroes are appended; otherwise, the {@code BigDecimal} is
      * rounded according to {@code RoundingMode.HALF_EVEN}. Zero is treated specially: setting the precision of any

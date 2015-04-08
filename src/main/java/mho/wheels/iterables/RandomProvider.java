@@ -18,21 +18,19 @@ import static mho.wheels.ordering.Ordering.fromInt;
 import static mho.wheels.ordering.Ordering.lt;
 
 /**
- * {@code Iterable}s that randomly generate all (or some important subset) of a type's values.
+ * A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
+ * distribution. A {@code RandomProvider} is immutable and deterministic. The source of its randomness is a
+ * {@code long} seed. It contains two scale parameters which some of the distributions depend on; the exact
+ * relationship between the parameters and the distributions is specified in the distribution's documentation;
  */
 public class RandomProvider extends IterableProvider {
-    private static final int DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE = 64;
-    private static final int DEFAULT_BIG_DECIMAL_MEAN_SCALE =
-            (int) Math.round(Math.log10(2) * DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE);
-    private static final int DEFAULT_MEAN_LIST_SIZE = 10;
-    private static final int DEFAULT_SPECIAL_ELEMENT_RATIO = 50;
+    private static final int DEFAULT_SCALE = 32;
+    private static final int DEFAULT_SECONDARY_SCALE = 32;
+    private static final int SPECIAL_ELEMENT_RATIO = 50;
 
-    private int bigIntegerMeanBitSize = DEFAULT_BIG_INTEGER_MEAN_BIT_SIZE;
-    private int bigDecimalMeanScale = DEFAULT_BIG_DECIMAL_MEAN_SCALE;
-    private int meanListSize = DEFAULT_MEAN_LIST_SIZE;
-    private int specialElementRatio = DEFAULT_SPECIAL_ELEMENT_RATIO;
-
-    protected final long seed;
+    private long seed;
+    private int scale = DEFAULT_SCALE;
+    private int secondaryScale = DEFAULT_SECONDARY_SCALE;
 
     public RandomProvider() {
         seed = new Random().nextLong();
@@ -42,62 +40,41 @@ public class RandomProvider extends IterableProvider {
         this.seed = seed;
     }
 
-    public int getBigIntegerMeanBitSize() {
-        return bigIntegerMeanBitSize;
+    public int getScale() {
+        return scale;
     }
 
-    public int getBigDecimalMeanScale() {
-        return bigDecimalMeanScale;
+    public int getSecondaryScale() {
+        return secondaryScale;
     }
 
-    public int getMeanListSize() {
-        return meanListSize;
-    }
-
-    public int getSpecialElementRatio() {
-        return specialElementRatio;
+    public long getSeed() {
+        return seed;
     }
 
     public RandomProvider copy() {
         RandomProvider copy = new RandomProvider(seed);
-        copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
-        copy.bigDecimalMeanScale = bigDecimalMeanScale;
-        copy.meanListSize = meanListSize;
-        copy.specialElementRatio = specialElementRatio;
+        copy.scale = scale;
+        copy.secondaryScale = secondaryScale;
         return copy;
     }
 
     public RandomProvider alt() {
-        RandomProvider copy = new RandomProvider(new Random(seed).nextLong());
-        copy.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
-        copy.bigDecimalMeanScale = bigDecimalMeanScale;
-        copy.meanListSize = meanListSize;
-        copy.specialElementRatio = specialElementRatio;
+        RandomProvider alt = copy();
+        alt.seed = new Random(seed).nextLong();
+        return alt;
+    }
+
+    public RandomProvider withScale(int scale) {
+        RandomProvider copy = copy();
+        copy.scale = scale;
         return copy;
     }
 
-    public RandomProvider withBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
-        RandomProvider newRandomProvider = copy();
-        newRandomProvider.bigIntegerMeanBitSize = bigIntegerMeanBitSize;
-        return newRandomProvider;
-    }
-
-    public RandomProvider withBigDecimalMeanScale(int bigDecimalMeanScale) {
-        RandomProvider newRandomProvider = copy();
-        newRandomProvider.bigDecimalMeanScale = bigDecimalMeanScale;
-        return newRandomProvider;
-    }
-
-    public RandomProvider withMeanListSize(int meanListSize) {
-        RandomProvider newRandomProvider = copy();
-        newRandomProvider.meanListSize = meanListSize;
-        return newRandomProvider;
-    }
-
-    public RandomProvider withSpecialElementRatio(int specialElementRatio) {
-        RandomProvider newRandomProvider = copy();
-        newRandomProvider.specialElementRatio = specialElementRatio;
-        return newRandomProvider;
+    public RandomProvider withSecondaryScale(int scale) {
+        RandomProvider copy = copy();
+        copy.secondaryScale = secondaryScale;
+        return copy;
     }
 
     /**
@@ -644,7 +621,7 @@ public class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        if (bigIntegerMeanBitSize <= 2)
+        if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             private Random generator = new Random(seed);
@@ -658,7 +635,7 @@ public class RandomProvider extends IterableProvider {
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
                 bits.add(true);
-                int bitSize = nextIntGeometric(generator, bigIntegerMeanBitSize);
+                int bitSize = nextIntGeometric(generator, scale);
                 for (int i = 0; i < bitSize - 1; i++) {
                     bits.add(generator.nextBoolean());
                 }
@@ -825,7 +802,7 @@ public class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        if (bigIntegerMeanBitSize <= 2)
+        if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             private Random generator = new Random(seed);
@@ -838,7 +815,7 @@ public class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
-                int bitSize = nextIntGeometric(generator, bigIntegerMeanBitSize + 1) - 1;
+                int bitSize = nextIntGeometric(generator, scale + 1) - 1;
                 if (bitSize != 0) {
                     bits.add(true);
                 }
@@ -943,7 +920,7 @@ public class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        if (bigIntegerMeanBitSize <= 2)
+        if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             private Random generator = new Random(seed);
@@ -1137,7 +1114,7 @@ public class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(bigDecimalMeanScale))
+                pairs(negativeBigIntegers(), integersGeometric(scale))
         );
     }
 
@@ -1145,19 +1122,19 @@ public class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(bigDecimalMeanScale))
+                pairs(negativeBigIntegers(), integersGeometric(scale))
         );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(bigDecimalMeanScale)));
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(scale)));
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> specialSelector = randomInts(specialElementRatio).iterator();
+            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
             boolean specialSelection = specialSelector.next() == 0;
 
             @Override
@@ -1201,7 +1178,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(meanListSize, f.apply(x)),
+                x -> geometricSample(scale, f.apply(x)),
                 (BigInteger i) -> {
                     List<BigInteger> list = MathUtils.demux(2, i);
                     return new Pair<>(list.get(0), list.get(1));
@@ -1216,7 +1193,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(meanListSize, f.apply(x)),
+                x -> geometricSample(scale, f.apply(x)),
                 MathUtils::logarithmicDemux
         );
     }
@@ -1228,7 +1205,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(meanListSize, f.apply(x)),
+                x -> geometricSample(scale, f.apply(x)),
                 MathUtils::squareRootDemux
         );
     }
@@ -1240,7 +1217,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(meanListSize, f.apply(x)),
+                x -> geometricSample(scale, f.apply(x)),
                 i -> {
                     Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
                     return new Pair<>(p.b, p.a);
@@ -1255,7 +1232,7 @@ public class RandomProvider extends IterableProvider {
     ) {
         return Combinatorics.dependentPairs(
                 xs,
-                x -> geometricSample(meanListSize, f.apply(x)),
+                x -> geometricSample(scale, f.apply(x)),
                 i -> {
                     Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
                     return new Pair<>(p.b, p.a);
@@ -1369,7 +1346,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1398,7 +1375,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1432,7 +1409,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1471,7 +1448,7 @@ public class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(meanListSize).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1498,5 +1475,25 @@ public class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return strings(characters());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RandomProvider that = (RandomProvider) o;
+        return scale == that.scale && secondaryScale == that.secondaryScale && seed == that.seed;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = scale;
+        result = 31 * result + secondaryScale;
+        result = 31 * result + (int) (seed ^ (seed >>> 32));
+        return result;
+    }
+
+    public String toString() {
+        return "RandomProvider[" + seed + ", " + scale + ", " + secondaryScale + "]";
     }
 }
