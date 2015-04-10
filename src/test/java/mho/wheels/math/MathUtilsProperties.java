@@ -295,7 +295,7 @@ public class MathUtilsProperties {
         }
 
         Iterable<Pair<BigInteger, BigInteger>> ps = P.pairs(
-                filter(i -> le(i, BigInteger.valueOf(1000000)), P.withBigIntegerMeanBitSize(10).positiveBigIntegers())
+                filter(i -> le(i, BigInteger.valueOf(1000000)), P.withScale(10).positiveBigIntegers())
         );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             BigInteger lcm = lcm(p.a, p.b);

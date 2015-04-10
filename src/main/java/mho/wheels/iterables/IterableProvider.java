@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.math.Combinatorics;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -12,23 +11,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.map;
+
 /**
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.
  */
 public abstract class IterableProvider {
-    public IterableProvider withBigIntegerMeanBitSize(int bigIntegerMeanBitSize) {
+    public @NotNull IterableProvider alt() {
         return this;
     }
-
-    public IterableProvider withBigDecimalMeanScale(int bigDecimalMeanScale) {
+    public @NotNull IterableProvider withScale(int scale) {
         return this;
     }
-
-    public IterableProvider withMeanListSize(int meanListSize) {
-        return this;
-    }
-
-    public IterableProvider withSpecialElementRatio(int specialElementRatio) {
+    public @NotNull IterableProvider withSecondaryScale(int secondaryScale) {
         return this;
     }
 
@@ -202,4 +197,15 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<String> stringsAtLeast(int size);
     public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
     public abstract @NotNull Iterable<String> strings();
+
+    public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
+        return map(l -> new RandomProvider(l).withScale(scale).withSecondaryScale(secondaryScale), longs());
+    }
+    @SuppressWarnings("ConstantConditions")
+    public @NotNull Iterable<RandomProvider> randomProviders() {
+        return map(
+                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
+                pairs(longs(), pairs(naturalIntegers()))
+        );
+    }
 }

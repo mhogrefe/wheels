@@ -488,7 +488,7 @@ public class RandomProviderTest {
     }
 
     private void positiveBigIntegers_int_helper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withBigIntegerMeanBitSize(meanBitSize).positiveBigIntegers()), output);
+        aeqit(take(20, P.withScale(meanBitSize).positiveBigIntegers()), output);
     }
 
     @Test
@@ -508,15 +508,15 @@ public class RandomProviderTest {
                         "51261283498014102904063, 7517586777550828054626795662503, 741109, 101419744017795180979313623318," +
                         " 25612091393]");
         try {
-            P.withBigIntegerMeanBitSize(2).positiveBigIntegers();
+            P.withScale(2).positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(0).positiveBigIntegers();
+            P.withScale(0).positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(-4).positiveBigIntegers();
+            P.withScale(-4).positiveBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -568,7 +568,7 @@ public class RandomProviderTest {
     }
 
     private void negativeBigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withBigIntegerMeanBitSize(meanBitSize).negativeBigIntegers()), output);
+        aeqit(take(20, P.withScale(meanBitSize).negativeBigIntegers()), output);
     }
 
     @Test
@@ -591,15 +591,15 @@ public class RandomProviderTest {
                 "251261283498014102904063, -7517586777550828054626795662503, -741109," +
                 " -101419744017795180979313623318, -25612091393]");
         try {
-            P.withBigIntegerMeanBitSize(2).negativeBigIntegers();
+            P.withScale(2).negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(0).negativeBigIntegers();
+            P.withScale(0).negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(-4).negativeBigIntegers();
+            P.withScale(-4).negativeBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -650,7 +650,7 @@ public class RandomProviderTest {
     }
 
     private void naturalBigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withBigIntegerMeanBitSize(meanBitSize).naturalBigIntegers()), output);
+        aeqit(take(20, P.withScale(meanBitSize).naturalBigIntegers()), output);
     }
 
     @Test
@@ -669,15 +669,15 @@ public class RandomProviderTest {
                 "9825380326041355410687, 2446984376637910448639982840999, 216821, 22191581503530843385769672982," +
                 " 8432222209]");
         try {
-            P.withBigIntegerMeanBitSize(2).naturalBigIntegers();
+            P.withScale(2).naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(0).naturalBigIntegers();
+            P.withScale(0).naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(-4).naturalBigIntegers();
+            P.withScale(-4).naturalBigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -728,7 +728,7 @@ public class RandomProviderTest {
     }
 
     private void bigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withBigIntegerMeanBitSize(meanBitSize).bigIntegers()), output);
+        aeqit(take(20, P.withScale(meanBitSize).bigIntegers()), output);
     }
 
     @Test
@@ -746,15 +746,15 @@ public class RandomProviderTest {
                 " 1325372505506602807026564, 3757547800543576, 4364599426705721714," +
                 " 113847612089673464000064561451248807, -400979282943760427063214761070268927754993666]");
         try {
-            P.withBigIntegerMeanBitSize(2).bigIntegers();
+            P.withScale(2).bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(0).bigIntegers();
+            P.withScale(0).bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.withBigIntegerMeanBitSize(-4).bigIntegers();
+            P.withScale(-4).bigIntegers();
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

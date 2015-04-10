@@ -18,60 +18,177 @@ import static mho.wheels.ordering.Ordering.fromInt;
 import static mho.wheels.ordering.Ordering.lt;
 
 /**
- * A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
+ * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
  * distribution. A {@code RandomProvider} is immutable and deterministic. The source of its randomness is a
  * {@code long} seed. It contains two scale parameters which some of the distributions depend on; the exact
- * relationship between the parameters and the distributions is specified in the distribution's documentation;
+ * relationship between the parameters and the distributions is specified in the distribution's documentation.
+ *
+ * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
+ * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a period of 2<sup>48</sup>, and
+ * will produce no more than that many unique {@code String}s. So in general, the documentation often pretends that
+ * the source of randomness is perfect (but still deterministic).
  */
 public class RandomProvider extends IterableProvider {
+    /**
+     * The default value of {@code scale}.
+     */
     private static final int DEFAULT_SCALE = 32;
+
+    /**
+     * The default value of {@code secondaryScale}.
+     */
     private static final int DEFAULT_SECONDARY_SCALE = 32;
+
+    /**
+     * Sometimes a "special element" (for example, null) is inserted into an {@code Iterable} with some probability.
+     * That probability is 1/{@code SPECIAL_ELEMENT_RATIO}.
+     */
     private static final int SPECIAL_ELEMENT_RATIO = 50;
 
+    /**
+     * A number which determines exactly which values will be deterministically output over the life of {@code this}.
+     */
     private long seed;
+
+    /**
+     * A parameter that determines the size of some of the generated objects. Cannot be negative.
+     */
     private int scale = DEFAULT_SCALE;
+
+    /**
+     * Another parameter that determines the size of some of the generated objects. Cannot be negative.
+     */
     private int secondaryScale = DEFAULT_SECONDARY_SCALE;
 
+    /**
+     * Constructs a {@code RandomProvider} with a seed generated from the current system time.
+     *
+     * <ul>
+     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be
+     *  constructed with this constructor.</li>
+     * </ul>
+     */
     public RandomProvider() {
         seed = new Random().nextLong();
     }
 
+    /**
+     * Constructs a {@code RandomProvider} with a seed generated from the current system time.
+     *
+     * <ul>
+     *  <li>{@code seed} may be any {@code long}.</li>
+     *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
+     *  this constructor.</li>
+     * </ul>
+     */
     public RandomProvider(long seed) {
         this.seed = seed;
     }
 
+    /**
+     * Returns {@code this}'s scale parameter.
+     *
+     * <ul>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @return the scale parameter of {@code this}
+     */
     public int getScale() {
         return scale;
     }
 
+    /**
+     * Returns {@code this}'s other scale parameter.
+     *
+     * <ul>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @return the other scale parameter of {@code this}
+     */
     public int getSecondaryScale() {
         return secondaryScale;
     }
 
+    /**
+     * Returns {@code this}'s scale parameter.
+     *
+     * <ul>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @return the scale parameter of {@code this}
+     */
     public long getSeed() {
         return seed;
     }
 
-    public RandomProvider copy() {
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this}.
+     *
+     * <ul>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return A copy of {@code this}.
+     */
+    private @NotNull RandomProvider copy() {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
         copy.secondaryScale = secondaryScale;
         return copy;
     }
 
-    public RandomProvider alt() {
+    /**
+     * A new {@code RandomProvider} with a different, deterministically-chosen seed.
+     *
+     * <ul>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return another {@code RandomProvider}
+     */
+    @Override
+    public @NotNull RandomProvider alt() {
         RandomProvider alt = copy();
         alt.seed = new Random(seed).nextLong();
         return alt;
     }
 
-    public RandomProvider withScale(int scale) {
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this} except for a new scale.
+     *
+     * <ul>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param scale the new scale
+     * @return A copy of {@code this} with a new scale
+     */
+    @Override
+    public @NotNull RandomProvider withScale(int scale) {
+        if (scale < 0)
+            throw new IllegalArgumentException("scale cannot be negative");
         RandomProvider copy = copy();
         copy.scale = scale;
         return copy;
     }
 
-    public RandomProvider withSecondaryScale(int scale) {
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this} except for a new secondary scale.
+     *
+     * <ul>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param secondaryScale the new secondary scale
+     * @return A copy of {@code this} with a new secondary scale
+     */
+    @Override
+    public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
+        if (secondaryScale < 0)
+            throw new IllegalArgumentException("secondary scale cannot be negative");
         RandomProvider copy = copy();
         copy.secondaryScale = secondaryScale;
         return copy;
