@@ -463,8 +463,8 @@ public class RandomProvider extends IterableProvider {
 
 
     /**
-     * @return An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution
-     * with mean {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
+     * {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
      *
      * <ul>
      *  <li>{@code mean} cannot be negative.</li>
@@ -500,8 +500,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution
-     * with mean {@code mean}, or all ones if {@code mean} is 1. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
+     * {@code mean}, or all ones if {@code mean} is 1. Does not support removal.
      *
      * <ul>
      *  <li>{@code mean} must be positive.</li>
@@ -537,8 +537,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution
-     * with mean {@code mean}, or all –1s if {@code mean} is –1. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
+     * {@code mean}, or all –1s if {@code mean} is –1. Does not support removal.
      *
      * <ul>
      *  <li>{@code mean} must be negative.</li>
@@ -554,9 +554,9 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code mean} is 1)
-     * whose absolute value is chosen from a geometric distribution with absolute mean {@code mean}, and whose sign is
-     * chosen uniformly. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code mean} is 1) whose
+     * absolute value is chosen from a geometric distribution with absolute mean {@code mean}, and whose sign is chosen
+     * uniformly. Does not support removal.
      *
      * <ul>
      *  <li>{@code mean} cannot be negative.</li>
@@ -572,7 +572,7 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
      * distribution with absolute mean {@code mean}, and whose sign is chosen uniformly. Does not support removal.
      *
      * <ul>
@@ -727,8 +727,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a
-     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
+     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
      * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
@@ -846,8 +846,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a
-     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a geometric
+     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
      * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
@@ -907,9 +907,9 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). The bit size is
-     * chosen from a geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual
-     * mean and {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
+     * An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). The bit size is chosen from a
+     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
+     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
      *  <li>{@code meanBitSize} must be greater than 2.</li>
@@ -1025,9 +1025,9 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all {@code BigInteger}s. The bit size is chosen from a geometric
-     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
-     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
+     * An {@code Iterable} that generates all {@code BigInteger}s. The bit size is chosen from a geometric distribution
+     * with mean approximately {@code meanBitSize} (The ratio between the actual mean and {@code meanBitSize} decreases
+     * as {@code meanBitSize} increases). Does not support removal.
      *
      * <ul>
      *  <li>{@code meanBitSize} must be greater than 2.</li>
@@ -1103,8 +1103,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a
-     * uniform distribution. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
+     * distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
      */
@@ -1173,8 +1173,8 @@ public class RandomProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a
-     * uniform distribution. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
+     * distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
      */
