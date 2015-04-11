@@ -41,6 +41,13 @@ public class RandomProviderTest {
         aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
     }
 
+    @Test
+    public void testGetSeed() {
+        aeq(new RandomProvider(5).getSeed(), 5);
+        aeq(new RandomProvider(100).getSeed(), 100);
+        aeq(new RandomProvider(-3).getSeed(), -3);
+    }
+
     private static <T> void simpleProviderHelper(
             @NotNull Iterable<T> xs,
             @NotNull String output,
