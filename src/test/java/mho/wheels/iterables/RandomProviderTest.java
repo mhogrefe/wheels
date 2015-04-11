@@ -27,6 +27,20 @@ public class RandomProviderTest {
         aeq(new RandomProvider(-3), "RandomProvider[-3, 32, 8]");
     }
 
+    @Test
+    public void testGetScale() {
+        aeq(new RandomProvider().getScale(), 32);
+        aeq(new RandomProvider().withScale(100).getScale(), 100);
+        aeq(new RandomProvider().withScale(3).getScale(), 3);
+    }
+
+    @Test
+    public void testGetSecondaryScale() {
+        aeq(new RandomProvider().getSecondaryScale(), 8);
+        aeq(new RandomProvider().withSecondaryScale(100).getSecondaryScale(), 100);
+        aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
+    }
+
     private static <T> void simpleProviderHelper(
             @NotNull Iterable<T> xs,
             @NotNull String output,
