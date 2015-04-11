@@ -29,23 +29,52 @@ public class RandomProviderTest {
 
     @Test
     public void testGetScale() {
-        aeq(new RandomProvider().getScale(), 32);
+        aeq(P.getScale(), 32);
         aeq(new RandomProvider().withScale(100).getScale(), 100);
         aeq(new RandomProvider().withScale(3).getScale(), 3);
     }
 
     @Test
     public void testGetSecondaryScale() {
-        aeq(new RandomProvider().getSecondaryScale(), 8);
+        aeq(P.getSecondaryScale(), 8);
         aeq(new RandomProvider().withSecondaryScale(100).getSecondaryScale(), 100);
         aeq(new RandomProvider().withSecondaryScale(3).getSecondaryScale(), 3);
     }
 
     @Test
     public void testGetSeed() {
-        aeq(new RandomProvider(5).getSeed(), 5);
+        aeq(P.getSeed(), 7706916639046193098L);
         aeq(new RandomProvider(100).getSeed(), 100);
         aeq(new RandomProvider(-3).getSeed(), -3);
+    }
+
+    @Test
+    public void testAlt() {
+        aeq(P.alt(), "RandomProvider[7199126587670897765, 32, 8]");
+        aeq(new RandomProvider(100).alt(), "RandomProvider[-5128016860359238732, 32, 8]");
+        aeq(new RandomProvider(-3).alt(), "RandomProvider[4957811011739826691, 32, 8]");
+    }
+
+    @Test
+    public void testWithScale() {
+        aeq(P.withScale(100), "RandomProvider[7706916639046193098, 100, 8]");
+        aeq(new RandomProvider(100).withScale(3), "RandomProvider[100, 3, 8]");
+        aeq(new RandomProvider(-5).withScale(0), "RandomProvider[-5, 0, 8]");
+        try {
+            P.withScale(-5);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testWithSecondaryScale() {
+        aeq(P.withSecondaryScale(100), "RandomProvider[7706916639046193098, 32, 100]");
+        aeq(new RandomProvider(100).withSecondaryScale(3), "RandomProvider[100, 32, 3]");
+        aeq(new RandomProvider(-5).withSecondaryScale(0), "RandomProvider[-5, 32, 0]");
+        try {
+            P.withSecondaryScale(-5);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     private static <T> void simpleProviderHelper(
