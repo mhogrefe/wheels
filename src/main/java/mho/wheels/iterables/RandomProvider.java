@@ -16,6 +16,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.fromInt;
 import static mho.wheels.ordering.Ordering.lt;
+import static org.junit.Assert.assertTrue;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
@@ -37,7 +38,7 @@ public class RandomProvider extends IterableProvider {
     /**
      * The default value of {@code secondaryScale}.
      */
-    private static final int DEFAULT_SECONDARY_SCALE = 32;
+    private static final int DEFAULT_SECONDARY_SCALE = 8;
 
     /**
      * Sometimes a "special element" (for example, null) is inserted into an {@code Iterable} with some probability.
@@ -1594,14 +1595,36 @@ public class RandomProvider extends IterableProvider {
         return strings(characters());
     }
 
+    /**
+     * Determines whether {@code this} is equal to {@code that}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param that The {@code RandomProvider} to be compared with {@code this}
+     * @return {@code this}={@code that}
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RandomProvider that = (RandomProvider) o;
-        return scale == that.scale && secondaryScale == that.secondaryScale && seed == that.seed;
+    public boolean equals(Object that) {
+        if (this == that) return true;
+        if (that == null || getClass() != that.getClass()) return false;
+        RandomProvider provider = (RandomProvider) that;
+        return scale == provider.scale && secondaryScale == provider.secondaryScale && seed == provider.seed;
     }
 
+    /**
+     * Calculates the hash code of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return {@code this}'s hash code.
+     */
     @Override
     public int hashCode() {
         int result = scale;
@@ -1610,7 +1633,25 @@ public class RandomProvider extends IterableProvider {
         return result;
     }
 
+    /**
+     * Creates a {@code String} representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>See tests and demos for example results.</li>
+     * </ul>
+     *
+     * @return a {@code String} representation of {@code this}
+     */
     public String toString() {
         return "RandomProvider[" + seed + ", " + scale + ", " + secondaryScale + "]";
+    }
+
+    /**
+     * Ensures that {@code this} is valid. Must return true for any {@code RandomProvider} used outside this class.
+     */
+    public void validate() {
+        assertTrue(toString(), scale >= 0);
+        assertTrue(toString(), secondaryScale >= 0);
     }
 }
