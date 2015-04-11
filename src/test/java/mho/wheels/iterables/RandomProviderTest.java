@@ -4,77 +4,57 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.*;
-
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.fail;
 
 public class RandomProviderTest {
     private static final RandomProvider P = new RandomProvider(0x6af477d9a7e54fcaL);
-    private static final int SAMPLE_SIZE = 1000000;
-    private static final int TOP_SAMPLES = 10;
+    private static final int DEFAULT_SAMPLE_SIZE = 1000000;
+    private static final int DEFAULT_TOP_COUNT = 10;
 
-    private static <T> Map<T, Integer> sampleCount(@NotNull Iterable<T> xs) {
-        Map<T, Integer> counts = new LinkedHashMap<>();
-        for (T value : take(SAMPLE_SIZE, xs)) {
-            Integer count = counts.get(value);
-            if (count == null) count = 0;
-            counts.put(value, count + 1);
-        }
-        return counts;
+    @Test
+    public void testConstructor() {
+
     }
 
-    private static <T> Map<T, Integer> topSampleCount(@NotNull Iterable<T> xs) {
-        SortedMap<Integer, List<T>> frequencyMap = new TreeMap<>();
-        for (Map.Entry<T, Integer> entry : sampleCount(xs).entrySet()) {
-            int frequency = entry.getValue();
-            List<T> elements = frequencyMap.get(frequency);
-            if (elements == null) {
-                elements = new ArrayList<>();
-                frequencyMap.put(-frequency, elements);
-            }
-            elements.add(entry.getKey());
-        }
-        Map<T, Integer> filteredCounts = new LinkedHashMap<>();
-        int i = 0;
-        for (Map.Entry<Integer, List<T>> entry : frequencyMap.entrySet()) {
-            for (T x : entry.getValue()) {
-                if (i == TOP_SAMPLES) return filteredCounts;
-                filteredCounts.put(x, -entry.getKey());
-                i++;
-            }
-        }
-        return filteredCounts;
-    }
-
-    private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {
-        return sumDouble(map(i -> (double) i / SAMPLE_SIZE, take(SAMPLE_SIZE, xs)));
+    private static <T> void simpleProviderHelper(
+            @NotNull Iterable<T> xs,
+            @NotNull String output,
+            @NotNull String sampleCountOutput
+    ) {
+        aeqit(take(20, xs), output);
+        aeqit(sampleCount(DEFAULT_SAMPLE_SIZE, xs).entrySet(), sampleCountOutput);
     }
 
     @Test
     public void testBooleans() {
-        aeqit(take(20, P.booleans()),
+        simpleProviderHelper(
+                P.booleans(),
                 "[false, false, false, true, false, true, true, false, true, true, false, false, false, true, true," +
-                " false, false, true, true, false]");
-        aeq(sampleCount(P.booleans()).entrySet(), "[false=500122, true=499878]");
+                " false, false, true, true, false]",
+                "[false=500122, true=499878]"
+        );
     }
 
     @Test
     public void testOrderings() {
-        aeqit(take(20, P.orderings()),
-                "[EQ, GT, EQ, EQ, EQ, GT, LT, GT, LT, EQ, EQ, LT, LT, GT, EQ, LT, LT, LT, GT, EQ]");
-        aeq(sampleCount(P.orderings()).entrySet(), "[EQ=333219, GT=333296, LT=333485]");
+        simpleProviderHelper(
+                P.orderings(),
+                "[EQ, GT, EQ, EQ, EQ, GT, LT, GT, LT, EQ, EQ, LT, LT, GT, EQ, LT, LT, LT, GT, EQ]",
+                "[EQ=333219, GT=333296, LT=333485]"
+        );
     }
 
     @Test
     public void testRoundingModes() {
-        aeqit(take(20, P.roundingModes()),
+        simpleProviderHelper(
+                P.roundingModes(),
                 "[HALF_UP, HALF_UP, HALF_UP, DOWN, HALF_DOWN, UP, DOWN, CEILING, UNNECESSARY, HALF_DOWN, HALF_DOWN," +
-                " CEILING, FLOOR, HALF_DOWN, UNNECESSARY, FLOOR, FLOOR, HALF_EVEN, UP, HALF_DOWN]");
-        aeq(sampleCount(P.roundingModes()).entrySet(),
+                " CEILING, FLOOR, HALF_DOWN, UNNECESSARY, FLOOR, FLOOR, HALF_EVEN, UP, HALF_DOWN]",
                 "[HALF_UP=125006, DOWN=125075, HALF_DOWN=124925, UP=124892, CEILING=125057, UNNECESSARY=125002," +
-                " FLOOR=125061, HALF_EVEN=124982]");
+                " FLOOR=125061, HALF_EVEN=124982]"
+        );
     }
 
     private static void geometricHelper(
@@ -84,7 +64,7 @@ public class RandomProviderTest {
             double sampleMean
     ) {
         aeqit(take(20, xs), output);
-        aeq(topSampleCount(xs), topSampleCount);
+        aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
         aeq(meanOfIntegers(xs), sampleMean);
     }
 
@@ -873,5 +853,9 @@ public class RandomProviderTest {
                 " 4.813417096972919E-51, 1.3135493453396428E-126, -1.4224921830272466E88, 1.4069651251380964E77," +
                 " -2.1879373410803317E-265, -3.027783021197556E-242, -1.1079692399020062E285," +
                 " 4.408373100689709E-147]");
+    }
+
+    private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {
+        return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, take(DEFAULT_SAMPLE_SIZE, xs)));
     }
 }

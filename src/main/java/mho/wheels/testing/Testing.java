@@ -4,9 +4,10 @@ import mho.wheels.iterables.IterableUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.take;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -72,5 +73,38 @@ public class Testing {
             }
             System.out.println("\t\t\t" + entry.getKey() + ": " + ((double) totalTime) / 1e9 + " s");
         }
+    }
+
+    public static <T> Map<T, Integer> sampleCount(int sampleSize, @NotNull Iterable<T> xs) {
+        Map<T, Integer> counts = new LinkedHashMap<>();
+        for (T value : take(sampleSize, xs)) {
+            Integer count = counts.get(value);
+            if (count == null) count = 0;
+            counts.put(value, count + 1);
+        }
+        return counts;
+    }
+
+    public static <T> Map<T, Integer> topSampleCount(int sampleSize, int topCount, @NotNull Iterable<T> xs) {
+        SortedMap<Integer, List<T>> frequencyMap = new TreeMap<>();
+        for (Map.Entry<T, Integer> entry : sampleCount(sampleSize, xs).entrySet()) {
+            int frequency = entry.getValue();
+            List<T> elements = frequencyMap.get(frequency);
+            if (elements == null) {
+                elements = new ArrayList<>();
+                frequencyMap.put(-frequency, elements);
+            }
+            elements.add(entry.getKey());
+        }
+        Map<T, Integer> filteredCounts = new LinkedHashMap<>();
+        int i = 0;
+        for (Map.Entry<Integer, List<T>> entry : frequencyMap.entrySet()) {
+            for (T x : entry.getValue()) {
+                if (i == topCount) return filteredCounts;
+                filteredCounts.put(x, -entry.getKey());
+                i++;
+            }
+        }
+        return filteredCounts;
     }
 }
