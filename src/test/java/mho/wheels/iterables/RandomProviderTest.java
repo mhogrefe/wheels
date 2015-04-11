@@ -15,7 +15,16 @@ public class RandomProviderTest {
 
     @Test
     public void testConstructor() {
+        RandomProvider provider = new RandomProvider();
+        aeq(provider.getScale(), 32);
+        aeq(provider.getSecondaryScale(), 8);
+    }
 
+    @Test
+    public void testConstructor_int() {
+        aeq(new RandomProvider(5), "RandomProvider[5, 32, 8]");
+        aeq(new RandomProvider(100), "RandomProvider[100, 32, 8]");
+        aeq(new RandomProvider(-3), "RandomProvider[-3, 32, 8]");
     }
 
     private static <T> void simpleProviderHelper(
