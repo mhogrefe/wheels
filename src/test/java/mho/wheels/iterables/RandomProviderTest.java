@@ -4,8 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class RandomProviderTest {
@@ -912,6 +916,21 @@ public class RandomProviderTest {
                 " 4.813417096972919E-51, 1.3135493453396428E-126, -1.4224921830272466E88, 1.4069651251380964E77," +
                 " -2.1879373410803317E-265, -3.027783021197556E-242, -1.1079692399020062E285," +
                 " 4.408373100689709E-147]");
+    }
+
+    @Test
+    public void testEquals() {
+        List<RandomProvider> xs = Arrays.asList(
+                P,
+                new RandomProvider(100).withScale(3).withSecondaryScale(0),
+                new RandomProvider(-5).withScale(0).withSecondaryScale(8)
+        );
+        List<RandomProvider> ys = Arrays.asList(
+                P,
+                new RandomProvider(100).withScale(3).withSecondaryScale(0),
+                new RandomProvider(-5).withScale(0).withSecondaryScale(8)
+        );
+        testEqualsHelper(xs, ys);
     }
 
     private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {

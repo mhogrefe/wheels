@@ -1,15 +1,18 @@
 package mho.wheels.testing;
 
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.structures.Pair;
+import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.take;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class Testing {
     /**
@@ -106,5 +109,61 @@ public class Testing {
             }
         }
         return filteredCounts;
+    }
+
+    public static <T> void symmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
+        assertEquals(p.toString(), relation.test(p.a, p.b), relation.test(p.b, p.a));
+    }
+
+    public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
+        assertNotEquals(p.toString(), relation.test(p.a, p.b), relation.test(p.b, p.a));
+    }
+
+    public static <T> void transitive(@NotNull BiPredicate<T, T> relation, @NotNull Triple<T, T, T> t) {
+        if (relation.test(t.a, t.b) && relation.test(t.b, t.c)) {
+            assertTrue(t.toString(), relation.test(t.a, t.c));
+        }
+    }
+
+    public static <T> void fixedPoint(@NotNull Function<T, T> f, @NotNull T x) {
+        assertEquals(x.toString(), f.apply(x), x);
+    }
+
+    public static <T> void idempotent(@NotNull Function<T, T> f, @NotNull T x) {
+        T y = f.apply(x);
+        assertEquals(x.toString(), f.apply(y), y);
+    }
+
+    public static <T> void isInvolution(@NotNull Function<T, T> f, @NotNull T x) {
+        assertEquals(x.toString(), f.apply(f.apply(x)), x);
+    }
+
+    public static <A, B> void commutative(@NotNull BiFunction<A, A, B> f, @NotNull Pair<A, A> p) {
+        assertEquals(p.toString(), f.apply(p.a, p.b), f.apply(p.b, p.a));
+    }
+
+    public static <A, B> void anticommutative(
+            @NotNull BiFunction<A, A, B> f,
+            @NotNull Function<B, B> negate,
+            @NotNull Pair<A, A> p) {
+        assertEquals(p.toString(), f.apply(p.a, p.b), negate.apply(f.apply(p.b, p.a)));
+    }
+
+    public static <T> void associative(@NotNull BiFunction<T, T, T> f, @NotNull Triple<T, T, T> t) {
+        assertEquals(t.toString(), f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
+    }
+
+    public static <T> void testEqualsHelper(@NotNull List<T> xs, @NotNull List<T> ys) {
+        for (T x : xs) {
+            //noinspection ObjectEqualsNull
+            assertFalse(x.toString(), x.equals(null));
+        }
+        for (int i = 0; i < xs.size(); i++) {
+            for (int j = 0; j < xs.size(); j++) {
+                T x = xs.get(i);
+                T y = ys.get(j);
+                assertEquals(new Pair<>(x, y).toString(), i == j, x.equals(y));
+            }
+        }
     }
 }
