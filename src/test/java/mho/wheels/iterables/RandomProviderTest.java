@@ -923,14 +923,28 @@ public class RandomProviderTest {
         List<RandomProvider> xs = Arrays.asList(
                 P,
                 new RandomProvider(100).withScale(3).withSecondaryScale(0),
-                new RandomProvider(-5).withScale(0).withSecondaryScale(8)
+                new RandomProvider(-5).withScale(0).withSecondaryScale(10)
         );
         List<RandomProvider> ys = Arrays.asList(
                 P,
                 new RandomProvider(100).withScale(3).withSecondaryScale(0),
-                new RandomProvider(-5).withScale(0).withSecondaryScale(8)
+                new RandomProvider(-5).withScale(0).withSecondaryScale(10)
         );
         testEqualsHelper(xs, ys);
+    }
+
+    @Test
+    public void testHashCode() {
+        aeq(P.hashCode(), -854478549);
+        aeq(new RandomProvider(100).withScale(3).withSecondaryScale(0).hashCode(), 2983);
+        aeq(new RandomProvider(-5).withScale(0).withSecondaryScale(10).hashCode(), 314);
+    }
+
+    @Test
+    public void testToString() {
+        aeq(P, "RandomProvider[7706916639046193098, 32, 8]");
+        aeq(new RandomProvider(100).withScale(3).withSecondaryScale(0), "RandomProvider[100, 3, 0]");
+        aeq(new RandomProvider(-5).withScale(0).withSecondaryScale(10), "RandomProvider[-5, 0, 10]");
     }
 
     private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {
