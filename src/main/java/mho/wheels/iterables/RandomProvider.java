@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
  * will produce no more than that many unique {@code String}s. So in general, the documentation often pretends that
  * the source of randomness is perfect (but still deterministic).
  */
-public class RandomProvider extends IterableProvider {
+public final class RandomProvider extends IterableProvider {
     /**
      * The default value of {@code scale}.
      */

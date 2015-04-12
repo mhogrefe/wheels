@@ -931,6 +931,8 @@ public class RandomProviderTest {
                 new RandomProvider(-5).withScale(0).withSecondaryScale(10)
         );
         testEqualsHelper(xs, ys);
+        //noinspection EqualsBetweenInconvertibleTypes
+        assertFalse(P.equals("hello"));
     }
 
     @Test

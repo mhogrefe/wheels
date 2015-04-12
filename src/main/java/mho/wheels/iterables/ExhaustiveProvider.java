@@ -20,9 +20,10 @@ import static mho.wheels.ordering.Ordering.*;
 
 /**
  * An {@code ExhaustiveProvider} produces {@code Iterable}s that generate some set of values in a specified order.
+ * There is only a single instance of this class.
  */
 @SuppressWarnings("ConstantConditions")
-public class ExhaustiveProvider extends IterableProvider {
+public final class ExhaustiveProvider extends IterableProvider {
     /**
      * The single instance of this class.
      */
@@ -1241,5 +1242,53 @@ public class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
+    }
+
+    /**
+     * Determines whether {@code this} is equal to {@code that}. This implementation is the same as in
+     * {@link java.lang.Object#equals}, but repeated here for clarity.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param that The {@code ExhaustiveProvider} to be compared with {@code this}
+     * @return {@code this}={@code that}
+     */
+    @Override
+    public boolean equals(@NotNull Object that) {
+        return this == that;
+    }
+
+    /**
+     * Calculates the hash code of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>The result is 0.</li>
+     * </ul>
+     *
+     * @return {@code this}'s hash code.
+     */
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    /**
+     * Creates a {@code String} representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>The result is {@code "ExhaustiveProvider"}.</li>
+     * </ul>
+     *
+     * @return a {@code String} representation of {@code this}
+     */
+    @Override
+    public String toString() {
+        return "ExhaustiveProvider";
     }
 }
