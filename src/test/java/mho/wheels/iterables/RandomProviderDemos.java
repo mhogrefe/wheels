@@ -24,4 +24,39 @@ public class RandomProviderDemos {
             System.out.println("RandomProvider() = " + new RandomProvider());
         }
     }
+
+    private static void demoConstructor_int() {
+        initialize();
+        for (long l : take(LIMIT, P.longs())) {
+            System.out.println("RandomProvider(" + l + ") = " + new RandomProvider(l));
+        }
+    }
+
+    private static void demoGetScale() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("getScale(" + rp + ") = " + rp.getScale());
+        }
+    }
+
+    private static void demoGetSecondaryScale() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("getSecondaryScale(" + rp + ") = " + rp.getSecondaryScale());
+        }
+    }
+
+    private static void demoGetSeed() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
+        }
+    }
+
+    private static void demoToString() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println(rp);
+        }
+    }
 }
