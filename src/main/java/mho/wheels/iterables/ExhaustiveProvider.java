@@ -1258,7 +1258,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      * @return {@code this}={@code that}
      */
     @Override
-    public boolean equals(@NotNull Object that) {
+    public boolean equals(Object that) {
         return this == that;
     }
 

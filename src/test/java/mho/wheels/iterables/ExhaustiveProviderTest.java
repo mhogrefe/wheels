@@ -5,6 +5,8 @@ import org.junit.Test;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.aeqit;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 public class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
@@ -396,5 +398,25 @@ public class ExhaustiveProviderTest {
                 "[0, 0.0, 1, 0E+1, -1, 0.1, 2, 0.00, -2, -0.1, 3, 1E+1, -3, 0.2, 4, 0E+2, -4, -0.2, 5, -1E+1, -5," +
                 " 0.3, 6, 0.01, -6, -0.3, 7, 2E+1, -7, 0.4, 8, 0.000, -8, -0.4, 9, -2E+1, -9, 0.5, 10, -0.01, -10," +
                 " -0.5, 11, 3E+1, -11, 0.6, 12, 1E+2, -12, -0.6]");
+    }
+
+    @Test
+    public void testEquals() {
+        //noinspection EqualsWithItself
+        assertTrue(P.equals(P));
+        //noinspection ConstantConditions
+        assertFalse(P.equals(null));
+        //noinspection EqualsBetweenInconvertibleTypes
+        assertFalse(P.equals("hello"));
+    }
+
+    @Test
+    public void testHashCode() {
+        aeq(P.hashCode(), 0);
+    }
+
+    @Test
+    public void testToString() {
+        aeq(P, "ExhaustiveProvider");
     }
 }
