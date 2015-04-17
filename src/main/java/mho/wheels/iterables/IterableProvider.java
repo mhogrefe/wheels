@@ -205,7 +205,7 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(longs(), pairs(naturalIntegersGeometric(32)))
+                pairs(longs(), alt().pairs(naturalIntegersGeometric(32)))
         );
     }
 }

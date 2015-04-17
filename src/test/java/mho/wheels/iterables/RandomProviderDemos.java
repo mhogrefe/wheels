@@ -1,8 +1,10 @@
 package mho.wheels.iterables;
 
+import mho.wheels.structures.Pair;
+
 import static mho.wheels.iterables.IterableUtils.*;
 
-@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
@@ -50,6 +52,27 @@ public class RandomProviderDemos {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             System.out.println("getSeed(" + rp + ") = " + rp.getSeed());
+        }
+    }
+
+    private static void demoAlt() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("alt(" + rp + ") = " + rp.alt());
+        }
+    }
+
+    private static void demoWithScale() {
+        initialize();
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            System.out.println("withScale(" + p.a + ", " + p.b + ") = " + p.a.withScale(p.b));
+        }
+    }
+
+    private static void demoWithSecondaryScale() {
+        initialize();
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            System.out.println("withSecondaryScale(" + p.a + ", " + p.b + ") = " + p.a.withSecondaryScale(p.b));
         }
     }
 
