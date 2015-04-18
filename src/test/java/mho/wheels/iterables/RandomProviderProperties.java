@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.*;
 import static mho.wheels.iterables.IterableUtils.repeat;
@@ -28,6 +27,9 @@ public class RandomProviderProperties {
             System.out.println("\ttesting " + config.c);
             propertiesConstructor();
             propertiesConstructor_int();
+            propertiesGetScale();
+            propertiesGetSecondaryScale();
+            propertiesGetSeed();
         }
         System.out.println("Done");
     }
@@ -49,6 +51,39 @@ public class RandomProviderProperties {
             rp.validate();
             assertEquals(Long.toString(l), rp.getScale(), 32);
             assertEquals(Long.toString(l), rp.getSecondaryScale(), 8);
+        }
+    }
+
+    private static void propertiesGetScale() {
+        System.out.println("\t\ttesting getScale() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            int scale = rp.getScale();
+            assertTrue(rp.toString(), scale >= 0);
+            assertEquals(rp.toString(), rp.withScale(scale), rp);
+        }
+    }
+
+    private static void propertiesGetSecondaryScale() {
+        System.out.println("\t\ttesting getSecondaryScale() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            int secondaryScale = rp.getSecondaryScale();
+            assertTrue(rp.toString(), secondaryScale >= 0);
+            assertEquals(rp.toString(), rp.withSecondaryScale(secondaryScale), rp);
+        }
+    }
+
+    private static void propertiesGetSeed() {
+        System.out.println("\t\ttesting getSeed() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            long seed = rp.getSeed();
+            assertEquals(
+                    rp.toString(),
+                    new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale()),
+                    rp
+            );
         }
     }
 }
