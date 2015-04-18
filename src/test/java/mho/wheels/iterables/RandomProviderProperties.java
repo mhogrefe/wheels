@@ -1,11 +1,14 @@
 package mho.wheels.iterables;
 
+import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.Testing;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 import static mho.wheels.iterables.IterableUtils.repeat;
 import static mho.wheels.iterables.IterableUtils.take;
@@ -31,6 +34,8 @@ public class RandomProviderProperties {
             propertiesGetSecondaryScale();
             propertiesGetSeed();
             propertiesAlt();
+            propertiesWithScale();
+            propertiesWithSecondaryScale();
         }
         System.out.println("Done");
     }
@@ -96,6 +101,58 @@ public class RandomProviderProperties {
             alt.validate();
             assertEquals(rp.toString(), alt.getScale(), rp.getScale());
             assertEquals(rp.toString(), alt.getSecondaryScale(), rp.getSecondaryScale());
+        }
+    }
+
+    private static void propertiesWithScale() {
+        System.out.println("\t\ttesting withScale(int) properties...");
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            RandomProvider rp = p.a.withScale(p.b);
+            rp.validate();
+            assertEquals(p.toString(), rp.getScale(), p.b.intValue());
+            assertEquals(p.toString(), rp.getSecondaryScale(), p.a.getSecondaryScale());
+            assertEquals(p.toString(), rp.getSeed(), p.a.getSeed());
+            inverses(x -> x.withScale(p.b), (RandomProvider y) -> y.withScale(p.a.getScale()), p.a);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            idempotent(x -> x.withScale(rp.getScale()), rp);
+        }
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.negativeIntegers()))) {
+            try {
+                p.a.withScale(p.b);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesWithSecondaryScale() {
+        System.out.println("\t\ttesting withSecondaryScale(int) properties...");
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+            RandomProvider rp = p.a.withSecondaryScale(p.b);
+            rp.validate();
+            assertEquals(p.toString(), rp.getScale(), p.a.getScale());
+            assertEquals(p.toString(), rp.getSecondaryScale(), p.b.intValue());
+            assertEquals(p.toString(), rp.getSeed(), p.a.getSeed());
+            inverses(
+                    x -> x.withSecondaryScale(p.b),
+                    (RandomProvider y) -> y.withSecondaryScale(p.a.getSecondaryScale()),
+                    p.a
+            );
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            idempotent(x -> x.withSecondaryScale(rp.getSecondaryScale()), rp);
+        }
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.negativeIntegers()))) {
+            try {
+                p.a.withSecondaryScale(p.b);
+                fail(p.toString());
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }

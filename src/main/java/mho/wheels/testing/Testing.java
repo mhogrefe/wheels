@@ -138,6 +138,10 @@ public class Testing {
         assertEquals(x.toString(), f.apply(f.apply(x)), x);
     }
 
+    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @NotNull A x) {
+        assertEquals(x.toString(), g.apply(f.apply(x)), x);
+    }
+
     public static <A, B> void commutative(@NotNull BiFunction<A, A, B> f, @NotNull Pair<A, A> p) {
         assertEquals(p.toString(), f.apply(p.a, p.b), f.apply(p.b, p.a));
     }
