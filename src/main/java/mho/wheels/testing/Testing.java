@@ -1,5 +1,6 @@
 package mho.wheels.testing;
 
+import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -12,6 +13,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.zip;
 import static org.junit.Assert.*;
 
 public class Testing {
@@ -168,6 +170,40 @@ public class Testing {
                 T y = ys.get(j);
                 assertEquals(new Pair<>(x, y).toString(), i == j, x.equals(y));
             }
+        }
+    }
+
+    public static <T> void propertiesEqualsHelper(
+            @NotNull IterableProvider P,
+            @NotNull Iterable<T> xs,
+            @NotNull BiPredicate<T, T> equals,
+            int limit
+    ) {
+        for (T x : take(limit, xs)) {
+            //noinspection EqualsWithItself
+            assertTrue(x.toString(), x.equals(x));
+            //noinspection ObjectEqualsNull
+            assertFalse(x.toString(), x.equals(null));
+        }
+
+        for (Pair<T, T> p : take(limit, zip(xs, xs))) {
+            //noinspection ConstantConditions
+            assertTrue(p.toString(), p.a.equals(p.b));
+        }
+
+        for (Pair<T, T> p : take(limit, P.pairs(xs, xs))) {
+            symmetric(equals, p);
+        }
+
+        Iterable<Triple<T, T, T>> ts = P.triples(xs, xs, xs);
+        for (Triple<T, T, T> t : take(limit, ts)) {
+            transitive(equals, t);
+        }
+    }
+
+    public static <T> void propertiesHashCodeHelper(@NotNull Iterable<T> xs, int limit) {
+        for (Pair<T, T> p : take(limit, zip(xs, xs))) {
+            assertEquals(p.toString(), xs.hashCode(), xs.hashCode());
         }
     }
 }

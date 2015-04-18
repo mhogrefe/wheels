@@ -7,13 +7,13 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
-import static mho.wheels.iterables.IterableUtils.repeat;
-import static mho.wheels.iterables.IterableUtils.take;
 
 @SuppressWarnings("ConstantConditions")
 public class RandomProviderProperties {
+    private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789PR[]adeimnorv";
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -35,6 +35,9 @@ public class RandomProviderProperties {
             propertiesAlt();
             propertiesWithScale();
             propertiesWithSecondaryScale();
+            propertiesEquals();
+            propertiesHashCode();
+            propertiesToString();
         }
         System.out.println("Done");
     }
@@ -152,6 +155,27 @@ public class RandomProviderProperties {
                 p.a.withSecondaryScale(p.b);
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesEquals() {
+        System.out.println("\t\ttesting equals(Object) properties...");
+
+        propertiesEqualsHelper(P, P.randomProviders(), RandomProvider::equals, LIMIT);
+    }
+
+    private static void propertiesHashCode() {
+        System.out.println("\t\ttesting hashCode() properties...");
+
+        propertiesHashCodeHelper(P.randomProviders(), LIMIT);
+    }
+
+    private static void propertiesToString() {
+        System.out.println("\t\ttesting toString() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            String s = rp.toString();
+            assertTrue(rp.toString(), isSubsetOf(s, RANDOM_PROVIDER_CHARS));
         }
     }
 }
