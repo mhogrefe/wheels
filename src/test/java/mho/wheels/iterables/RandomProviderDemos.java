@@ -76,6 +76,28 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoEquals_RandomProvider() {
+        initialize();
+        for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private static void demoEquals_null() {
+        initialize();
+        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
+            //noinspection ObjectEqualsNull
+            System.out.println(r + (r.equals(null) ? " = " : " ≠ ") + null);
+        }
+    }
+
+    private static void demoHashCode() {
+        initialize();
+        for (RandomProvider r : take(LIMIT, P.randomProviders())) {
+            System.out.println("hashCode(" + r + ") = " + r.hashCode());
+        }
+    }
+
     private static void demoToString() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {

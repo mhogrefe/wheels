@@ -2,7 +2,6 @@ package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
-import mho.wheels.testing.Testing;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class RandomProviderProperties {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(new RandomProvider(0x6af477d9a7e54fcaL), 1000, "randomly"));
-        System.out.println("BigDecimalUtils properties");
+        System.out.println("RandomProvider properties");
         for (Triple<IterableProvider, Integer, String> config : configs) {
             P = config.a;
             LIMIT = config.b;
