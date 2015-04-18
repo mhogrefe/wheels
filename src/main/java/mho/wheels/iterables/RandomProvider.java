@@ -142,7 +142,8 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * A new {@code RandomProvider} with a different, deterministically-chosen seed.
+     * A new {@code RandomProvider} with a different, deterministically-chosen seed, and the same scale and secondary
+     * scale.
      *
      * <ul>
      *  <li>The result is not null.</li>

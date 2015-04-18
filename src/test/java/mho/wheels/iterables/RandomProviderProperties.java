@@ -30,6 +30,7 @@ public class RandomProviderProperties {
             propertiesGetScale();
             propertiesGetSecondaryScale();
             propertiesGetSeed();
+            propertiesAlt();
         }
         System.out.println("Done");
     }
@@ -84,6 +85,17 @@ public class RandomProviderProperties {
                     new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale()),
                     rp
             );
+        }
+    }
+
+    private static void propertiesAlt() {
+        System.out.println("\t\ttesting alt() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            RandomProvider alt = rp.alt();
+            alt.validate();
+            assertEquals(rp.toString(), alt.getScale(), rp.getScale());
+            assertEquals(rp.toString(), alt.getSecondaryScale(), rp.getSecondaryScale());
         }
     }
 }
