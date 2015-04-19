@@ -206,4 +206,15 @@ public class Testing {
             assertEquals(p.toString(), xs.hashCode(), xs.hashCode());
         }
     }
+
+    public static <T> void testNoRemove(@NotNull Iterable<T> xs) {
+        Iterator<T> it = xs.iterator();
+        while (it.hasNext()) {
+            it.next();
+            try {
+                it.remove();
+                fail(IterableUtils.toString(20, xs));
+            } catch (UnsupportedOperationException ignored) {}
+        }
+    }
 }

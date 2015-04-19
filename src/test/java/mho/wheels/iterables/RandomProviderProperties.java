@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
 @SuppressWarnings("ConstantConditions")
 public class RandomProviderProperties {
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789PR[]adeimnorv";
+    private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -35,6 +36,8 @@ public class RandomProviderProperties {
             propertiesAlt();
             propertiesWithScale();
             propertiesWithSecondaryScale();
+            propertiesIntegers();
+            propertiesLongs();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -155,6 +158,26 @@ public class RandomProviderProperties {
                 p.a.withSecondaryScale(p.b);
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesIntegers() {
+        System.out.println("\t\ttesting integers() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            Iterable<Integer> integers = take(TINY_LIMIT, rp.integers());
+            assertTrue(rp.toString(), all(i -> i != null, integers));
+            testNoRemove(integers);
+        }
+    }
+
+    private static void propertiesLongs() {
+        System.out.println("\t\ttesting longs() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            Iterable<Long> longs = take(TINY_LIMIT, rp.longs());
+            assertTrue(rp.toString(), all(i -> i != null, longs));
+            testNoRemove(longs);
         }
     }
 
