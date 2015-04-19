@@ -221,11 +221,11 @@ public class Testing {
         }
     }
 
-    public static <T> String its(@NotNull Iterable<T> xs) {
+    public static @NotNull <T> String its(@NotNull Iterable<T> xs) {
         return IterableUtils.toString(TINY_LIMIT, xs);
     }
 
-    public static String cits(@NotNull Iterable<Character> xs) {
+    public static @NotNull String cits(@NotNull Iterable<Character> xs) {
         return charsToString(take(TINY_LIMIT, xs));
     }
 }

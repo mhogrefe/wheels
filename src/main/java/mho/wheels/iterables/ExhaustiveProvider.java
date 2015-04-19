@@ -41,44 +41,44 @@ public final class ExhaustiveProvider extends IterableProvider {
     private ExhaustiveProvider() {}
 
     /**
-     * A {@link List} that contains both {@link boolean}s.
+     * An {@link Iterable} that contains both {@link boolean}s. Does not support removal.
      *
      * Length is 2
      */
     @Override
-    public @NotNull List<Boolean> booleans() {
-        return Arrays.asList(false, true);
+    public @NotNull Iterable<Boolean> booleans() {
+        return new NoRemoveIterable<>(Arrays.asList(false, true));
     }
 
     /**
-     * A {@code List} that contains all {@link Ordering}s in increasing order.
+     * An {@code Iterable} that contains all {@link Ordering}s in increasing order. Does not support removal.
      *
      * Length is 3
      *
      * @return the {@code List} described above.
      */
-    public @NotNull List<Ordering> orderingsIncreasing() {
-        return Arrays.asList(LT, EQ, GT);
+    public @NotNull Iterable<Ordering> orderingsIncreasing() {
+        return new NoRemoveIterable<>(Arrays.asList(LT, EQ, GT));
     }
 
     /**
-     * A {@code List} that contains all {@code Ordering}s.
+     * An {@code Iterable} that contains all {@code Ordering}s. Does not support removal.
      *
      * Length is 3
      */
     @Override
-    public @NotNull List<Ordering> orderings() {
-        return Arrays.asList(EQ, LT, GT);
+    public @NotNull Iterable<Ordering> orderings() {
+        return new NoRemoveIterable<>(Arrays.asList(EQ, LT, GT));
     }
 
     /**
-     * A {@code List} that contains all {@link RoundingMode}s.
+     * An {@code Iterable} that contains all {@link RoundingMode}s. Does not support removal.
      *
      * Length is 8
      */
     @Override
-    public @NotNull List<RoundingMode> roundingModes() {
-        return Arrays.asList(
+    public @NotNull Iterable<RoundingMode> roundingModes() {
+        return new NoRemoveIterable<>(Arrays.asList(
                 RoundingMode.UNNECESSARY,
                 RoundingMode.UP,
                 RoundingMode.DOWN,
@@ -87,11 +87,12 @@ public final class ExhaustiveProvider extends IterableProvider {
                 RoundingMode.HALF_UP,
                 RoundingMode.HALF_DOWN,
                 RoundingMode.HALF_EVEN
-        );
+        ));
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code byte}.</li>
@@ -113,7 +114,8 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code short}.</li>
@@ -137,7 +139,8 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Integers}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code Integers}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code int}.</li>
@@ -159,7 +162,8 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code long}.</li>
@@ -181,7 +185,8 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code BigIntegers}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code BigIntegers}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} cannot be null.</li>
@@ -208,7 +213,8 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a}.
+     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code a} may be any {@code char}.</li>

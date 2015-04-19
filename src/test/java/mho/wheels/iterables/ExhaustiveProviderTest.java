@@ -8,30 +8,36 @@ import java.math.BigInteger;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.aeqit;
+import static mho.wheels.testing.Testing.testNoRemove;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 public class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
 
+    private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
+        aeqit(xs, output);
+        testNoRemove(xs);
+    }
+
     @Test
     public void testBooleans() {
-        aeq(P.booleans(), "[false, true]");
+        simpleProviderHelper(P.booleans(), "[false, true]");
     }
 
     @Test
     public void testOrderingsIncreasing() {
-        aeq(P.orderingsIncreasing(), "[LT, EQ, GT]");
+        simpleProviderHelper(P.orderingsIncreasing(), "[LT, EQ, GT]");
     }
 
     @Test
     public void testOrderings() {
-        aeq(P.orderings(), "[EQ, LT, GT]");
+        simpleProviderHelper(P.orderings(), "[EQ, LT, GT]");
     }
 
     @Test
     public void testRoundingModes() {
-        aeq(P.roundingModes(), "[UNNECESSARY, UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN]");
+        simpleProviderHelper(P.roundingModes(), "[UNNECESSARY, UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN]");
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
@@ -293,10 +299,10 @@ public class ExhaustiveProviderTest {
         aeq(length(P.characters()), 65536);
         aeq(charsToString(take(256, P.characters())),
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~" +
-                        "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37 \177" +
-                        "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008A\u008B\u008C\u008D\u008E\u008F" +
-                        "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009A\u009B\u009C\u009D\u009E\u009F" +
-                        " ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37 \177" +
+                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008A\u008B\u008C\u008D\u008E\u008F" +
+                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009A\u009B\u009C\u009D\u009E\u009F" +
+                " ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
         );
     }
 
