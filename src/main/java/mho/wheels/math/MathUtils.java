@@ -1142,12 +1142,7 @@ public final class MathUtils {
             throw new ArithmeticException("x must be positive. Invalid x: " + x);
         }
         //noinspection SuspiciousNameCombination
-        return fastGrowingCeilingInverse(
-                i -> base.pow(i.intValueExact()),
-                x,
-                BigInteger.ZERO,
-                x //very loose bound
-        );
+        return fastGrowingCeilingInverse(i -> base.pow(i.intValueExact()), x, BigInteger.ZERO, x); //very loose bound
     }
 
     public static @NotNull BigInteger ceilingInverse(

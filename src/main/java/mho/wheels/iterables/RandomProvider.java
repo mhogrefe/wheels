@@ -391,25 +391,73 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
-    //2^7 - a
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
         return map(i -> (byte) (i + a), randomInts(128 - a));
     }
 
-    //2^15 - a
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Short}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
         return map(i -> (short) (i + a), randomInts(32768 - a));
     }
 
-    //2^31 - a
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
         return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
     }
 
-    //2^63 - a
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Long}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
         return map(
