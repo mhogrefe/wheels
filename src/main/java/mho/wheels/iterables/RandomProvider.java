@@ -245,11 +245,35 @@ public final class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} which returns a {@code Integer}s taken from a uniform distribution between 0 and
+     * 2<sup>bits</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be greater than 0 and less than 32.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Integer}s.</li>
+     * </ul>
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
+     * @return uniformly-distributed {@code Integer}s with up to {@code bits} bits.
+     */
     private @NotNull Iterable<Integer> randomIntsPow2(int bits) {
         int mask = (1 << bits) - 1;
         return map(i -> i & mask, integers());
     }
 
+    /**
+     * An {@code Iterable} which return {@code Long}s taken from a uniform distribution between 0 and
+     * 2<sup>bits</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be greater than 0 and less than 64.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Long}s.</li>
+     * </ul>
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
+     * @return uniformly-distributed {@code Long}s with up to {@code bits} bits.
+     */
     private @NotNull Iterable<Long> randomLongsPow2(int bits) {
         long mask = (1L << bits) - 1;
         return map(l -> l & mask, longs());
