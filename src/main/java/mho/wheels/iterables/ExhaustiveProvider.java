@@ -90,6 +90,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    //2^7-a
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
         if (a >= 0) {
@@ -99,6 +100,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    //2^15-a
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
         if (a >= 0) {
@@ -110,6 +112,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    //2^31-a
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
         if (a >= 0) {
@@ -119,6 +122,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    //2^63-a
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
         if (a >= 0) {
@@ -142,6 +146,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    //2^16–a
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
         return IterableUtils.rangeUp(a);
