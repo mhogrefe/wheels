@@ -90,7 +90,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    //2^7-a
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Byte}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
         if (a >= 0) {
@@ -100,7 +112,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
-    //2^15-a
+    /**
+     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Short}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
         if (a >= 0) {
@@ -112,7 +136,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
-    //2^31-a
+    /**
+     * An {@code Iterable} that generates all {@code Integers}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Integer}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
         if (a >= 0) {
@@ -122,7 +158,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
-    //2^63-a
+    /**
+     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Long}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
         if (a >= 0) {
@@ -132,6 +180,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigIntegers}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BigInteger}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         if (a.signum() != -1) {
@@ -146,7 +207,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
-    //2^16–a
+    /**
+     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Character}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
         return IterableUtils.rangeUp(a);
