@@ -7,6 +7,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 @SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
+    private static final int SMALL_LIMIT = 1000;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -73,6 +74,20 @@ public class RandomProviderDemos {
         initialize();
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             System.out.println("withSecondaryScale(" + p.a + ", " + p.b + ") = " + p.a.withSecondaryScale(p.b));
+        }
+    }
+
+    private static void demoIntegers() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+            System.out.println("integers(" + rp + ") = " + IterableUtils.toString(20, rp.integers()));
+        }
+    }
+
+    private static void demoLongs() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+            System.out.println("longs(" + rp + ") = " + IterableUtils.toString(20, rp.longs()));
         }
     }
 
