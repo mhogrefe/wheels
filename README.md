@@ -15,6 +15,7 @@ Progress
 | ExhaustiveProvider       | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IterableProvider         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IterableUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterator         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |

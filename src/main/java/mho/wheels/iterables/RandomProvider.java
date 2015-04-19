@@ -197,13 +197,13 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Boolean> booleans() {
-        return () -> new Iterator<Boolean>() {
+    public @NotNull Iterable<Integer> integers() {
+        return () -> new Iterator<Integer>() {
             private Random generator = new Random(seed);
 
             @Override
@@ -212,8 +212,8 @@ public final class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Boolean next() {
-                return generator.nextBoolean();
+            public Integer next() {
+                return generator.nextInt();
             }
 
             @Override
@@ -224,13 +224,13 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterator} that generates all {@code Ordering}s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Ordering> orderings() {
-        return () -> new Iterator<Ordering>() {
+    public @NotNull Iterable<Long> longs() {
+        return () -> new Iterator<Long>() {
             private Random generator = new Random(seed);
 
             @Override
@@ -239,8 +239,8 @@ public final class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Ordering next() {
-                return fromInt(generator.nextInt(3) - 1);
+            public Long next() {
+                return generator.nextLong();
             }
 
             @Override
@@ -248,29 +248,6 @@ public final class RandomProvider extends IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
-    }
-
-    /**
-     * An {@code Iterable} that generates all {@code RoundingMode}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<RoundingMode> roundingModes() {
-        Function<Integer, RoundingMode> lookup = i -> {
-            switch (i) {
-                case 0:  return RoundingMode.UNNECESSARY;
-                case 1:  return RoundingMode.UP;
-                case 2:  return RoundingMode.DOWN;
-                case 3:  return RoundingMode.CEILING;
-                case 4:  return RoundingMode.FLOOR;
-                case 5:  return RoundingMode.HALF_UP;
-                case 6:  return RoundingMode.HALF_DOWN;
-                default: return RoundingMode.HALF_EVEN;
-            }
-        };
-        return map(lookup, randomIntsPow2(3));
     }
 
     private @NotNull Iterable<Integer> randomIntsPow2(int bits) {
@@ -432,6 +409,83 @@ public final class RandomProvider extends IterableProvider {
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
         if (s.isEmpty()) return new ArrayList<>();
         return map(s::charAt, range(0, s.length() - 1));
+    }
+
+    /**
+     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Boolean> booleans() {
+        return () -> new Iterator<Boolean>() {
+            private Random generator = new Random(seed);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Boolean next() {
+                return generator.nextBoolean();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterator} that generates all {@code Ordering}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Ordering> orderings() {
+        return () -> new Iterator<Ordering>() {
+            private Random generator = new Random(seed);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Ordering next() {
+                return fromInt(generator.nextInt(3) - 1);
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code RoundingMode}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<RoundingMode> roundingModes() {
+        Function<Integer, RoundingMode> lookup = i -> {
+            switch (i) {
+                case 0:  return RoundingMode.UNNECESSARY;
+                case 1:  return RoundingMode.UP;
+                case 2:  return RoundingMode.DOWN;
+                case 3:  return RoundingMode.CEILING;
+                case 4:  return RoundingMode.FLOOR;
+                case 5:  return RoundingMode.HALF_UP;
+                case 6:  return RoundingMode.HALF_DOWN;
+                default: return RoundingMode.HALF_EVEN;
+            }
+        };
+        return map(lookup, randomIntsPow2(3));
     }
 
     public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
@@ -969,60 +1023,6 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> shorts() {
         return map(Integer::shortValue, randomIntsPow2(16));
-    }
-
-    /**
-     * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> integers() {
-        return () -> new Iterator<Integer>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return generator.nextInt();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> longs() {
-        return () -> new Iterator<Long>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Long next() {
-                return generator.nextLong();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
     }
 
     /**
