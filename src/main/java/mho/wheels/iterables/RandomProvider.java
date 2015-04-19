@@ -202,6 +202,33 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
+     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Boolean> booleans() {
+        return () -> new Iterator<Boolean>() {
+            private Random generator = new Random(seed);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Boolean next() {
+                return generator.nextBoolean();
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
      * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
@@ -254,6 +281,8 @@ public final class RandomProvider extends IterableProvider {
      *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Integer}s.</li>
      * </ul>
      *
+     * Length is infinite
+     *
      * @param bits the maximum number of bits of any element in the output {@code Iterable}.
      * @return uniformly-distributed {@code Integer}s with up to {@code bits} bits.
      */
@@ -263,13 +292,15 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} which return {@code Long}s taken from a uniform distribution between 0 and
+     * An {@code Iterable} which returns {@code Long}s taken from a uniform distribution between 0 and
      * 2<sup>bits</sup>–1, inclusive.
      *
      * <ul>
      *  <li>{@code bits} must be greater than 0 and less than 64.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Long}s.</li>
      * </ul>
+     *
+     * Length is infinite
      *
      * @param bits the maximum number of bits of any element in the output {@code Iterable}.
      * @return uniformly-distributed {@code Long}s with up to {@code bits} bits.
@@ -279,6 +310,20 @@ public final class RandomProvider extends IterableProvider {
         return map(l -> l & mask, longs());
     }
 
+    /**
+     * An {@code Iterable} which returns {@code BigInteger}s taken from a uniform distribution between 0 and
+     * 2<sup>bits</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
+     * @return uniformly-distributed {@code BigInteger}s with up to {@code bits} bits.
+     */
     private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
         return map(MathUtils::fromBits, lists(bits, booleans()));
     }
@@ -428,33 +473,6 @@ public final class RandomProvider extends IterableProvider {
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
         if (s.isEmpty()) return new ArrayList<>();
         return map(s::charAt, range(0, s.length() - 1));
-    }
-
-    /**
-     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Boolean> booleans() {
-        return () -> new Iterator<Boolean>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Boolean next() {
-                return generator.nextBoolean();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
     }
 
     /**

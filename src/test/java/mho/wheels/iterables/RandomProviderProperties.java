@@ -36,6 +36,7 @@ public class RandomProviderProperties {
             propertiesAlt();
             propertiesWithScale();
             propertiesWithSecondaryScale();
+            propertiesBooleans();
             propertiesIntegers();
             propertiesLongs();
             propertiesEquals();
@@ -158,6 +159,16 @@ public class RandomProviderProperties {
                 p.a.withSecondaryScale(p.b);
                 fail(p.toString());
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesBooleans() {
+        System.out.println("\t\ttesting booleans() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            Iterable<Boolean> booleans = take(TINY_LIMIT, rp.booleans());
+            assertTrue(rp.toString(), all(i -> i != null, booleans));
+            testNoRemove(booleans);
         }
     }
 

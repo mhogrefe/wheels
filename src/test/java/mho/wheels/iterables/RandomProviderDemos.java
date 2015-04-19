@@ -77,6 +77,13 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoBooleans() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+            System.out.println("booleans(" + rp + ") = " + IterableUtils.toString(20, rp.booleans()));
+        }
+    }
+
     private static void demoIntegers() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
