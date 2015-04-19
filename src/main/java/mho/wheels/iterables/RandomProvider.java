@@ -162,6 +162,7 @@ public final class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new scale.
      *
      * <ul>
+     *  <li>{@code scale} cannot be negative.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -170,8 +171,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withScale(int scale) {
-        if (scale < 0)
-            throw new IllegalArgumentException("scale cannot be negative");
+        if (scale < 0) {
+            throw new IllegalArgumentException("Scale cannot be negative. Invalid scale: " + scale);
+        }
         RandomProvider copy = copy();
         copy.scale = scale;
         return copy;
@@ -181,6 +183,7 @@ public final class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new secondary scale.
      *
      * <ul>
+     *  <li>{@code secondaryScale} cannot be negative.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -189,8 +192,10 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
-        if (secondaryScale < 0)
-            throw new IllegalArgumentException("secondary scale cannot be negative");
+        if (secondaryScale < 0) {
+            throw new IllegalArgumentException("Secondary scale cannot be negative. Invalid secondary scale: " +
+                    secondaryScale);
+        }
         RandomProvider copy = copy();
         copy.secondaryScale = secondaryScale;
         return copy;
@@ -203,7 +208,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
-        return () -> new Iterator<Integer>() {
+        return () -> new NoRemoveIterator<Integer>() {
             private Random generator = new Random(seed);
 
             @Override
@@ -215,11 +220,6 @@ public final class RandomProvider extends IterableProvider {
             public Integer next() {
                 return generator.nextInt();
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -230,7 +230,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return () -> new Iterator<Long>() {
+        return () -> new NoRemoveIterator<Long>() {
             private Random generator = new Random(seed);
 
             @Override
@@ -241,11 +241,6 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public Long next() {
                 return generator.nextLong();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
