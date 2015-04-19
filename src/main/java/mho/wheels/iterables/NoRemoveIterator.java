@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public abstract class NoRemoveIterator<T> implements Iterator<T> {
     @Override
-    public void remove() {
+    public final void remove() {
         throw new UnsupportedOperationException("This Iterator does not support removal.");
     }
 }
