@@ -1135,10 +1135,12 @@ public final class MathUtils {
     }
 
     public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
-        if (lt(base, BigInteger.valueOf(2)))
+        if (lt(base, BigInteger.valueOf(2))) {
             throw new ArithmeticException("Base must be at least 2. Invalid base: " + base);
-        if (x.signum() != 1)
-            throw new ArithmeticException("Argument must be positive. Invalid argument: " + x);
+        }
+        if (x.signum() != 1) {
+            throw new ArithmeticException("x must be positive. Invalid x: " + x);
+        }
         //noinspection SuspiciousNameCombination
         return fastGrowingCeilingInverse(
                 i -> base.pow(i.intValueExact()),

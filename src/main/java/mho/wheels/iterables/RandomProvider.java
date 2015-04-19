@@ -273,8 +273,8 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} which returns a {@code Integer}s taken from a uniform distribution between 0 and
-     * 2<sup>bits</sup>–1, inclusive.
+     * An {@code Iterable} that generates a {@code Integer}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
      *
      * <ul>
      *  <li>{@code bits} must be greater than 0 and less than 32.</li>
@@ -283,8 +283,8 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      *
-     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
-     * @return uniformly-distributed {@code Integer}s with up to {@code bits} bits.
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Integer}s with up to {@code bits} bits
      */
     private @NotNull Iterable<Integer> randomIntsPow2(int bits) {
         int mask = (1 << bits) - 1;
@@ -292,8 +292,8 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} which returns {@code Long}s taken from a uniform distribution between 0 and
-     * 2<sup>bits</sup>–1, inclusive.
+     * An {@code Iterable} that generates {@code Long}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
      *
      * <ul>
      *  <li>{@code bits} must be greater than 0 and less than 64.</li>
@@ -302,8 +302,8 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      *
-     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
-     * @return uniformly-distributed {@code Long}s with up to {@code bits} bits.
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Long}s with up to {@code bits} bits
      */
     private @NotNull Iterable<Long> randomLongsPow2(int bits) {
         long mask = (1L << bits) - 1;
@@ -311,8 +311,8 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} which returns {@code BigInteger}s taken from a uniform distribution between 0 and
-     * 2<sup>bits</sup>–1, inclusive.
+     * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
      *
      * <ul>
      *  <li>{@code bits} must be positive.</li>
@@ -321,13 +321,27 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      *
-     * @param bits the maximum number of bits of any element in the output {@code Iterable}.
-     * @return uniformly-distributed {@code BigInteger}s with up to {@code bits} bits.
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code BigInteger}s with up to {@code bits} bits
      */
     private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
         return map(MathUtils::fromBits, lists(bits, booleans()));
     }
 
+    /**
+     * An {@code Iterable} that generates {@code Integer}s taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Integer}s less than {@code n}
+     */
     private @NotNull Iterable<Integer> randomInts(int n) {
         return filter(
                 i -> i < n,
@@ -335,6 +349,20 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates {@code Long}s taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Long}s less than {@code n}
+     */
     private @NotNull Iterable<Long> randomLongs(long n) {
         return filter(
                 l -> l < n,
@@ -342,6 +370,20 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
+     * {@code n}–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code BigInteger}s less than {@code n}
+     */
     private @NotNull Iterable<BigInteger> randomBigIntegers(@NotNull BigInteger n) {
         return filter(
                 i -> lt(i, n),
