@@ -172,7 +172,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull RandomProvider withScale(int scale) {
         if (scale < 0) {
-            throw new IllegalArgumentException("Scale cannot be negative. Invalid scale: " + scale);
+            throw new IllegalArgumentException("scale cannot be negative. Invalid scale: " + scale);
         }
         RandomProvider copy = copy();
         copy.scale = scale;
@@ -193,7 +193,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
         if (secondaryScale < 0) {
-            throw new IllegalArgumentException("Secondary scale cannot be negative. Invalid secondary scale: " +
+            throw new IllegalArgumentException("secondaryScale cannot be negative. Invalid secondaryScale: " +
                     secondaryScale);
         }
         RandomProvider copy = copy();
