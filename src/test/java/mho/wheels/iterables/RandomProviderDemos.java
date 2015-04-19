@@ -1,8 +1,10 @@
 package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Testing;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class RandomProviderDemos {
@@ -80,21 +82,21 @@ public class RandomProviderDemos {
     private static void demoBooleans() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
-            System.out.println("booleans(" + rp + ") = " + IterableUtils.toString(20, rp.booleans()));
+            System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
         }
     }
 
     private static void demoIntegers() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
-            System.out.println("integers(" + rp + ") = " + IterableUtils.toString(20, rp.integers()));
+            System.out.println("integers(" + rp + ") = " + its(rp.integers()));
         }
     }
 
     private static void demoLongs() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
-            System.out.println("longs(" + rp + ") = " + IterableUtils.toString(20, rp.longs()));
+            System.out.println("longs(" + rp + ") = " + its(rp.longs()));
         }
     }
 

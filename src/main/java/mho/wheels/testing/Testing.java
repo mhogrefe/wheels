@@ -12,11 +12,14 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.charsToString;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.iterables.IterableUtils.zip;
 import static org.junit.Assert.*;
 
 public class Testing {
+    private static final int TINY_LIMIT = 20;
+
     /**
      * Disallow instantiation
      */
@@ -216,5 +219,13 @@ public class Testing {
                 fail(IterableUtils.toString(20, xs));
             } catch (UnsupportedOperationException ignored) {}
         }
+    }
+
+    public static <T> String its(@NotNull Iterable<T> xs) {
+        return IterableUtils.toString(TINY_LIMIT, xs);
+    }
+
+    public static String cits(@NotNull Iterable<Character> xs) {
+        return charsToString(take(TINY_LIMIT, xs));
     }
 }
