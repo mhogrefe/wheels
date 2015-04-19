@@ -35,7 +35,7 @@ public final class Combinatorics {
      * The factorial function {@code n}!
      *
      * <ul>
-     *  <li>{@code n} must be non-negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
      *  <li>The result is a factorial.</li>
      * </ul>
      *
@@ -52,7 +52,7 @@ public final class Combinatorics {
      * The factorial function {@code n}!
      *
      * <ul>
-     *  <li>{@code n} must be non-negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
      *  <li>The result is a factorial.</li>
      * </ul>
      *
@@ -69,7 +69,7 @@ public final class Combinatorics {
      * The subfactorial function !{@code n}
      *
      * <ul>
-     *  <li>{@code n} must be non-negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
      *  <li>The result is a subfactorial (rencontres number).</li>
      * </ul>
      *
@@ -95,7 +95,7 @@ public final class Combinatorics {
      * The subfactorial function !{@code n}
      *
      * <ul>
-     *  <li>{@code n} must be non-negative.</li>
+     *  <li>{@code n} cannot be negative.</li>
      *  <li>The result is a subfactorial (rencontres number).</li>
      * </ul>
      *
@@ -370,7 +370,7 @@ public final class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code xs} must be finite.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
@@ -410,7 +410,7 @@ public final class Combinatorics {
      * discouraged.
      *
      * <ul>
-     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code xs} must be finite.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
@@ -449,7 +449,7 @@ public final class Combinatorics {
      * {@code Iterable}. Using long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code s} is non-null.</li>
      *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
      *  consists entirely of one empty {@code String}.</li>
@@ -486,7 +486,7 @@ public final class Combinatorics {
      * {@code Iterable}. Using long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li>{@code length} must be non-negative.</li>
+     *  <li>{@code length} cannot be negative.</li>
      *  <li>{@code s} is non-null.</li>
      *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
      *  consists entirely of one empty {@code String}.</li>

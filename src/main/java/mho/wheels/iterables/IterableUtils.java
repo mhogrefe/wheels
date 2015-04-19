@@ -127,7 +127,7 @@ public final class IterableUtils {
      * elements, an ellipsis ({@code ...}) is added at the end of the list.
      *
      * <ul>
-     *  <li>{@code size} must be non-negative.</li>
+     *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code xs} may be any {@code Iterable}.</li>
      *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
      * </ul>
