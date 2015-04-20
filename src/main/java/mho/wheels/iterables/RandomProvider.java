@@ -310,6 +310,20 @@ public final class RandomProvider extends IterableProvider {
         return map(l -> l & mask, longs());
     }
 
+    //todo
+    private static @NotNull BigInteger bigIntegerFromLongs(List<Long> longs) {
+        byte[] array = new byte[longs.size() << 3];
+        for (int i = 0; i < longs.size(); i++) {
+            long x = longs.get(i);
+            for (int j = 0; j < 8; j++) {
+                int offset = ((i + 1) << 3) - 1;
+                array[offset - j] = (byte) x;
+                x >>= 8;
+            }
+        }
+        return new BigInteger(array);
+    }
+
     /**
      * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
      * 2<sup>{@code bits}</sup>–1, inclusive.
@@ -328,7 +342,10 @@ public final class RandomProvider extends IterableProvider {
         if (bits == 0) {
             return repeat(BigInteger.ZERO);
         } else {
-            return map(MathUtils::fromBits, lists(bits, booleans()));
+            return map(
+                    p -> bigIntegerFromLongs(toList(cons(p.a, p.b))),
+                    pairs(randomLongsPow2(bits % 64), lists(bits / 64, longs()))
+            );
         }
     }
 
@@ -1602,7 +1619,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (size == 0) {
-            return Collections.singletonList(Collections.emptyList());
+            return repeat(Collections.emptyList());
         } else {
             return transpose(demux(size, xs));
         }
