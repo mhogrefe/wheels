@@ -216,8 +216,22 @@ public class Testing {
             it.next();
             try {
                 it.remove();
-                fail(IterableUtils.toString(20, xs));
+                fail(IterableUtils.toString(TINY_LIMIT, xs));
             } catch (UnsupportedOperationException ignored) {}
+        }
+    }
+
+    public static <T> void testNoRemove(@NotNull Iterable<T> xs, int limit) {
+        Iterator<T> it = xs.iterator();
+        int i = 0;
+        while (it.hasNext()) {
+            if (i == limit) return;
+            it.next();
+            try {
+                it.remove();
+                fail(IterableUtils.toString(TINY_LIMIT, xs));
+            } catch (UnsupportedOperationException ignored) {}
+            i++;
         }
     }
 

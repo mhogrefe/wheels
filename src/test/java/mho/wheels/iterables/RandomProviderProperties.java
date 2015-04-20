@@ -166,9 +166,9 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting booleans() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
-            Iterable<Boolean> booleans = take(TINY_LIMIT, rp.booleans());
-            assertTrue(rp.toString(), all(i -> i != null, booleans));
-            testNoRemove(booleans);
+            Iterable<Boolean> booleans = rp.booleans();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, booleans)));
+            testNoRemove(booleans, TINY_LIMIT);
         }
     }
 
@@ -176,9 +176,9 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting integers() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
-            Iterable<Integer> integers = take(TINY_LIMIT, rp.integers());
-            assertTrue(rp.toString(), all(i -> i != null, integers));
-            testNoRemove(integers);
+            Iterable<Integer> integers = rp.integers();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, integers)));
+            testNoRemove(integers, TINY_LIMIT);
         }
     }
 
@@ -186,9 +186,9 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting longs() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
-            Iterable<Long> longs = take(TINY_LIMIT, rp.longs());
-            assertTrue(rp.toString(), all(i -> i != null, longs));
-            testNoRemove(longs);
+            Iterable<Long> longs = rp.longs();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, longs)));
+            testNoRemove(longs, TINY_LIMIT);
         }
     }
 
