@@ -7,8 +7,8 @@ import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ExhaustiveProviderDemos {
-    private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final boolean USE_RANDOM = false;
+    private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
 
@@ -59,6 +59,48 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (char c : take(SMALL_LIMIT, P.characters())) {
             System.out.println("rangeUp(" + nicePrint(c) + ") = " + cits(EP.rangeUp(c)));
+        }
+    }
+
+    private static void demoRangeDown_byte() {
+        initialize();
+        for (byte b : take(SMALL_LIMIT, P.bytes())) {
+            System.out.println("rangeDown(" + b + ") = " + its(EP.rangeDown(b)));
+        }
+    }
+
+    private static void demoRangeDown_short() {
+        initialize();
+        for (short s : take(SMALL_LIMIT, P.shorts())) {
+            System.out.println("rangeDown(" + s + ") = " + its(EP.rangeDown(s)));
+        }
+    }
+
+    private static void demoRangeDown_int() {
+        initialize();
+        for (int i : take(SMALL_LIMIT, P.integers())) {
+            System.out.println("rangeDown(" + i + ") = " + its(EP.rangeDown(i)));
+        }
+    }
+
+    private static void demoRangeDown_long() {
+        initialize();
+        for (long l : take(SMALL_LIMIT, P.longs())) {
+            System.out.println("rangeDown(" + l + ") = " + its(EP.rangeDown(l)));
+        }
+    }
+
+    private static void demoRangeDown_BigInteger() {
+        initialize();
+        for (BigInteger i : take(SMALL_LIMIT, P.bigIntegers())) {
+            System.out.println("rangeDown(" + i + ") = " + its(EP.rangeDown(i)));
+        }
+    }
+
+    private static void demoRangeDown_char() {
+        initialize();
+        for (char c : take(SMALL_LIMIT, P.characters())) {
+            System.out.println("rangeDown(" + nicePrint(c) + ") = " + cits(EP.rangeDown(c)));
         }
     }
 }
