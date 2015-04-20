@@ -232,6 +232,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.rangeUp(a);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>7</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Byte}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Byte> rangeDown(byte a) {
         if (a <= 0) {
@@ -241,6 +254,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Short}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>15</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Short}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Short> rangeDown(short a) {
         if (a <= 0) {
@@ -252,6 +278,20 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>31</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Integer}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Integer> rangeDown(int a) {
         if (a <= 0) {
@@ -261,6 +301,19 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Long}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>63</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Long}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Long> rangeDown(long a) {
         if (a <= 0) {
@@ -270,6 +323,20 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
         if (a.signum() != 1) {
@@ -279,6 +346,20 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Character}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Character}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Character> rangeDown(char a) {
         return IterableUtils.range('\0', a);
