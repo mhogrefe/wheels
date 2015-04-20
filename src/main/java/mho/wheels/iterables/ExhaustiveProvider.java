@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -635,7 +636,8 @@ public final class ExhaustiveProvider extends IterableProvider {
                 range(':', '@'),            // ...
                 range('[', '`'),            // ...
                 range('{', '~'),            // ...
-                range((char) 0, (char) 32), // non-printable and whitespace ASCII
+                Collections.singleton(' '), // ' '
+                range((char) 0, (char) 31), // non-printable and whitespace ASCII
                 Arrays.asList((char) 127)   // DEL
         ));
     }
@@ -667,7 +669,8 @@ public final class ExhaustiveProvider extends IterableProvider {
                 range(':', '@'),            // ...
                 range('[', '`'),            // ...
                 range('{', '~'),            // ...
-                range((char) 0, (char) 32), // non-printable and whitespace ASCII
+                Collections.singleton(' '), // ' '
+                range((char) 0, (char) 31), // non-printable and whitespace ASCII
                 rangeUp((char) 127)           // DEL and non-ASCII
         ));
     }

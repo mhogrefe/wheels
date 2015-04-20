@@ -325,7 +325,11 @@ public final class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code BigInteger}s with up to {@code bits} bits
      */
     private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
-        return map(MathUtils::fromBits, lists(bits, booleans()));
+        if (bits == 0) {
+            return repeat(BigInteger.ZERO);
+        } else {
+            return map(MathUtils::fromBits, lists(bits, booleans()));
+        }
     }
 
     /**
@@ -406,7 +410,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
-        return map(i -> (byte) (i + a), randomInts(128 - a));
+        return map(i -> (byte) (i + a), randomInts((1 << 7) - a));
     }
 
     /**
@@ -424,7 +428,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
-        return map(i -> (short) (i + a), randomInts(32768 - a));
+        return map(i -> (short) (i + a), randomInts((1 << 15) - a));
     }
 
     /**
@@ -466,12 +470,25 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
+    //todo docs
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         return map(i -> i.add(a), naturalBigIntegers());
     }
 
-    //2^16 - a
+    /**
+     * An {@code Iterable} that uniformly generates {@code Characters}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Character}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
         return map(i -> (char) (i + a), randomInts(65536 - a));
@@ -1584,7 +1601,11 @@ public final class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        return transpose(demux(size, xs));
+        if (size == 0) {
+            return Collections.singletonList(Collections.emptyList());
+        } else {
+            return transpose(demux(size, xs));
+        }
     }
 
     @Override

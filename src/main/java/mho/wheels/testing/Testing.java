@@ -12,24 +12,23 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
-import static mho.wheels.iterables.IterableUtils.charsToString;
-import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.iterables.IterableUtils.zip;
+import static mho.wheels.iterables.IterableUtils.*;
 import static org.junit.Assert.*;
 
 public class Testing {
     private static final int TINY_LIMIT = 20;
+    private static final int SMALL_LIMIT = 128;
 
     /**
      * Disallow instantiation
      */
     private Testing() {}
 
-    public static void aeq(String message, int i, int j) {
+    public static void aeq(@NotNull String message, int i, int j) {
         assertEquals(message, i, j);
     }
 
-    public static void aeq(String message, long i, long j) {
+    public static void aeq(@NotNull String message, long i, long j) {
         assertEquals(message, i, j);
     }
 
@@ -41,20 +40,25 @@ public class Testing {
         assertEquals(Double.toString(d) + " != " + Double.toString(e), Double.toString(d), Double.toString(e));
     }
 
-    public static void aeqf(String message, float f1, float f2) {
+    public static void aeqf(@NotNull String message, float f1, float f2) {
         assertEquals(message, Float.toString(f1), Float.toString(f2));
     }
 
-    public static void aeqd(String message, double d1, double d2) {
+    public static void aeqd(@NotNull String message, double d1, double d2) {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 
-    public static void aeq(String message, BigDecimal x, BigDecimal y) {
+    public static void aeq(@NotNull String message, @NotNull BigDecimal x, @NotNull BigDecimal y) {
         assertEquals(message, x.stripTrailingZeros(), y.stripTrailingZeros());
     }
 
-    public static void aeq(Object a, Object b) {
+    public static void aeq(@NotNull Object a, @NotNull Object b) {
         assertEquals(a.toString(), b.toString());
+    }
+
+    public static void aeqcs(@NotNull Iterable<Character> cs, @NotNull String s) {
+        String truncated = charsToString(take(SMALL_LIMIT, cs));
+        assertEquals(nicePrint(truncated), truncated, s);
     }
 
     public static void aeqit(Iterable<?> a, Object b) {
@@ -240,6 +244,31 @@ public class Testing {
     }
 
     public static @NotNull String cits(@NotNull Iterable<Character> xs) {
-        return charsToString(take(TINY_LIMIT, xs));
+        return charsToString(take(SMALL_LIMIT, xs));
+    }
+
+    public static @NotNull String nicePrint(char c) {
+        switch (c) {
+            case '\b' : return "\\b";
+            case '\t' : return "\\t";
+            case '\n' : return "\\n";
+            case '\f' : return "\\f";
+            case '\r' : return "\\r";
+            case '"' : return "\\\"";
+            case '\\' : return "\\\\";
+            case '\177' : return "\\177";
+            default:
+                if (c < ' ') {
+                    return "\\" + Integer.toOctalString(c);
+                } else if (c > '\177' && c < '¡' || (c >= 256 && !Character.isLetter(c))) {
+                    return String.format("\\u%04x", (int) c);
+                } else {
+                    return Character.toString(c);
+                }
+        }
+    }
+
+    public static @NotNull String nicePrint(@NotNull String s) {
+        return concatMapStrings(Testing::nicePrint, fromString(s));
     }
 }
