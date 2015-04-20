@@ -139,6 +139,146 @@ public class ExhaustiveProviderTest {
         rangeUp_char_helper(Character.MAX_VALUE, "\uffff");
     }
 
+    private static void rangeDown_byte_helper(byte a, @NotNull String output) {
+        aeqit(take(20, P.rangeDown(a)), output);
+    }
+
+    @Test
+    public void testRangeDown_byte() {
+        rangeDown_byte_helper(
+                (byte) 0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
+        );
+        rangeDown_byte_helper(
+                (byte) 5,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
+        );
+        rangeDown_byte_helper(
+                (byte) -5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
+        );
+        rangeDown_byte_helper(
+                Byte.MAX_VALUE,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8, -9, 9, -10]"
+        );
+        rangeDown_byte_helper(Byte.MIN_VALUE, "[-128]");
+    }
+
+    private static void rangeDown_short_helper(short a, @NotNull String output) {
+        aeqit(take(20, P.rangeDown(a)), output);
+    }
+
+    @Test
+    public void testRangeDown_short() {
+        rangeDown_short_helper(
+                (short) 0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
+        );
+        rangeDown_short_helper(
+                (short) 5,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
+        );
+        rangeDown_short_helper(
+                (short) -5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
+        );
+        rangeDown_short_helper(
+                Short.MAX_VALUE,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8, -9, 9, -10]"
+        );
+        rangeDown_short_helper(Short.MIN_VALUE, "[-32768]");
+    }
+
+    private static void rangeDown_int_helper(int a, @NotNull String output) {
+        aeqit(take(20, P.rangeDown(a)), output);
+    }
+
+    @Test
+    public void testRangeDown_int() {
+        rangeDown_int_helper(
+                0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
+        );
+        rangeDown_int_helper(5, "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, -7, -8, -9, -10, -11, -12, -13, -14]");
+        rangeDown_int_helper(
+                -5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
+        );
+        rangeDown_int_helper(
+                Integer.MAX_VALUE,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8, -9, 9, -10]"
+        );
+        rangeDown_int_helper(Integer.MIN_VALUE, "[-2147483648]");
+    }
+
+    private static void rangeDown_long_helper(long a, @NotNull String output) {
+        aeqit(take(20, P.rangeDown(a)), output);
+    }
+
+    @Test
+    public void testRangeDown_long() {
+        rangeDown_long_helper(
+                0L,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
+        );
+        rangeDown_long_helper(5L, "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, -7, -8, -9, -10, -11, -12, -13, -14]");
+        rangeDown_long_helper(
+                -5L,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
+        );
+        rangeDown_long_helper(
+                Long.MAX_VALUE,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8, -9, 9, -10]"
+        );
+        rangeDown_int_helper(Integer.MIN_VALUE, "[-2147483648]");
+    }
+
+    private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
+        aeqit(take(20, P.rangeDown(BigInteger.valueOf(a))), output);
+    }
+
+    @Test
+    public void testRangeDown_BigInteger() {
+        rangeDown_BigInteger_helper(
+                0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                "[0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
+        );
+        rangeDown_BigInteger_helper(
+                -5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
+        );
+    }
+
+    private static void rangeDown_char_helper(char a, @NotNull String output) {
+        aeqcs(P.rangeDown(a), output);
+    }
+
+    @Test
+    public void testRangeDown_char() {
+        rangeDown_char_helper('\0', "\0");
+        rangeDown_char_helper(
+                'a',
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`a"
+        );
+        rangeDown_char_helper(
+                'Ш',
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
+                "\177"
+        );
+        rangeDown_char_helper(
+                Character.MAX_VALUE,
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
+                "\177"
+        );
+    }
+
     @Test
     public void testBytesIncreasing() {
         aeq(length(P.bytesIncreasing()), 256);
