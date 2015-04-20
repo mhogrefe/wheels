@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
 
@@ -37,6 +36,12 @@ public class ExhaustiveProviderProperties {
             propertiesRangeUp_long();
             propertiesRangeUp_BigInteger();
             propertiesRangeUp_char();
+            propertiesRangeDown_byte();
+            propertiesRangeDown_short();
+            propertiesRangeDown_int();
+            propertiesRangeDown_long();
+            propertiesRangeDown_BigInteger();
+            propertiesRangeDown_char();
         }
         System.out.println("Done");
     }
@@ -116,7 +121,86 @@ public class ExhaustiveProviderProperties {
             testNoRemove(cs, TINY_LIMIT);
             unique(cs);
             assertTrue(Character.toString(c), all(d -> d >= c, cs));
-            assertTrue(Character.toString(c), weaklyIncreasing(cs));
+            assertTrue(Character.toString(c), increasing(cs));
+        }
+    }
+
+    private static void propertiesRangeDown_byte() {
+        System.out.println("\t\ttesting rangeDown(byte) properties...");
+
+        for (byte b : take(LIMIT, P.bytes())) {
+            Iterable<Byte> bs = EP.rangeDown(b);
+            assertTrue(Byte.toString(b), all(c -> c != null, bs));
+            testNoRemove(bs);
+            assertEquals(Byte.toString(b), length(bs), b + (1 << 7) + 1);
+            assertTrue(Byte.toString(b), unique(bs));
+            assertTrue(Byte.toString(b), all(c -> c <= b, bs));
+            assertTrue(Byte.toString(b), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+        }
+    }
+
+    private static void propertiesRangeDown_short() {
+        System.out.println("\t\ttesting rangeDown(short) properties...");
+
+        for (short s : take(LIMIT, P.shorts())) {
+            Iterable<Short> ss = take(TINY_LIMIT, EP.rangeDown(s));
+            assertTrue(Short.toString(s), all(t -> t != null, ss));
+            testNoRemove(ss, TINY_LIMIT);
+            assertTrue(Short.toString(s), unique(ss));
+            assertTrue(Short.toString(s), all(t -> t <= s, ss));
+            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, ss)));
+        }
+    }
+
+    private static void propertiesRangeDown_int() {
+        System.out.println("\t\ttesting rangeDown(int) properties...");
+
+        for (int i : take(LIMIT, P.integers())) {
+            Iterable<Integer> is = take(TINY_LIMIT, EP.rangeDown(i));
+            assertTrue(Integer.toString(i), all(j -> j != null, is));
+            testNoRemove(is, TINY_LIMIT);
+            assertTrue(Integer.toString(i), unique(is));
+            assertTrue(Integer.toString(i), all(j -> j <= i, is));
+            assertTrue(Integer.toString(i), weaklyIncreasing((Iterable<Integer>) map(Math::abs, is)));
+        }
+    }
+
+    private static void propertiesRangeDown_long() {
+        System.out.println("\t\ttesting rangeDown(long) properties...");
+
+        for (long l : take(LIMIT, P.longs())) {
+            Iterable<Long> ls = take(TINY_LIMIT, EP.rangeDown(l));
+            assertTrue(Long.toString(l), all(m -> m != null, ls));
+            testNoRemove(ls, TINY_LIMIT);
+            assertTrue(Long.toString(l), unique(ls));
+            assertTrue(Long.toString(l), all(m -> m <= l, ls));
+            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, ls)));
+        }
+    }
+
+    private static void propertiesRangeDown_BigInteger() {
+        System.out.println("\t\ttesting rangeDown(BigInteger) properties...");
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            Iterable<BigInteger> is = take(TINY_LIMIT, EP.rangeDown(i));
+            assertTrue(i.toString(), all(j -> j != null, is));
+            testNoRemove(is, TINY_LIMIT);
+            assertTrue(i.toString(), unique(is));
+            assertTrue(i.toString(), all(j -> le(j, i), is));
+            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, is)));
+        }
+    }
+
+    private static void propertiesRangeDown_char() {
+        System.out.println("\t\ttesting rangeDown(char) properties...");
+
+        for (char c : take(LIMIT, P.characters())) {
+            Iterable<Character> cs = take(TINY_LIMIT, EP.rangeDown(c));
+            assertTrue(Character.toString(c), all(d -> d != null, cs));
+            testNoRemove(cs, TINY_LIMIT);
+            unique(cs);
+            assertTrue(Character.toString(c), all(d -> d <= c, cs));
+            assertTrue(Character.toString(c), increasing(cs));
         }
     }
 }
