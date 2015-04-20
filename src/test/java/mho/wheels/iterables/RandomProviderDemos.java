@@ -67,14 +67,14 @@ public class RandomProviderDemos {
 
     private static void demoWithScale() {
         initialize();
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().naturalIntegers()))) {
             System.out.println("withScale(" + p.a + ", " + p.b + ") = " + p.a.withScale(p.b));
         }
     }
 
     private static void demoWithSecondaryScale() {
         initialize();
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().naturalIntegers()))) {
             System.out.println("withSecondaryScale(" + p.a + ", " + p.b + ") = " + p.a.withSecondaryScale(p.b));
         }
     }
@@ -97,6 +97,42 @@ public class RandomProviderDemos {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
             System.out.println("longs(" + rp + ") = " + its(rp.longs()));
+        }
+    }
+
+    private static void demoRangeUp_byte() {
+        initialize();
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().bytes()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_short() {
+        initialize();
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().shorts()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_int() {
+        initialize();
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().integers()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_long() {
+        initialize();
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().longs()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProviders(), P.alt().characters());
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeUp(p.b)));
         }
     }
 

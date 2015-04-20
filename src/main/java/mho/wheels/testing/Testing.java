@@ -57,8 +57,8 @@ public class Testing {
     }
 
     public static void aeqcs(@NotNull Iterable<Character> cs, @NotNull String s) {
-        String truncated = charsToString(take(SMALL_LIMIT, cs));
-        assertEquals(nicePrint(truncated), truncated, s);
+        Iterable<Character> truncated = take(SMALL_LIMIT, cs);
+        assertEquals(nicePrint(truncated), charsToString(truncated), s);
     }
 
     public static void aeqit(Iterable<?> a, Object b) {
@@ -244,7 +244,7 @@ public class Testing {
     }
 
     public static @NotNull String cits(@NotNull Iterable<Character> xs) {
-        return charsToString(take(SMALL_LIMIT, xs));
+        return nicePrint(take(SMALL_LIMIT, xs));
     }
 
     public static @NotNull String nicePrint(char c) {
@@ -268,7 +268,7 @@ public class Testing {
         }
     }
 
-    public static @NotNull String nicePrint(@NotNull String s) {
-        return concatMapStrings(Testing::nicePrint, fromString(s));
+    public static @NotNull String nicePrint(@NotNull Iterable<Character> cs) {
+        return concatMapStrings(Testing::nicePrint, cs);
     }
 }

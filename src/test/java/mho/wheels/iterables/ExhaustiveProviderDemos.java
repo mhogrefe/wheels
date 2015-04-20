@@ -58,7 +58,7 @@ public class ExhaustiveProviderDemos {
     private static void demoRangeUp_char() {
         initialize();
         for (char c : take(SMALL_LIMIT, P.characters())) {
-            System.out.println("rangeUp(" + c + ") = " + cits(EP.rangeUp(c)));
+            System.out.println("rangeUp(" + nicePrint(c) + ") = " + cits(EP.rangeUp(c)));
         }
     }
 }

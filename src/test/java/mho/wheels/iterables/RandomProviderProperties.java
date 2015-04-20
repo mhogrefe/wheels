@@ -113,7 +113,7 @@ public class RandomProviderProperties {
     private static void propertiesWithScale() {
         System.out.println("\t\ttesting withScale(int) properties...");
 
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().naturalIntegers()))) {
             RandomProvider rp = p.a.withScale(p.b);
             rp.validate();
             assertEquals(p.toString(), rp.getScale(), p.b.intValue());
@@ -126,7 +126,7 @@ public class RandomProviderProperties {
             idempotent(x -> x.withScale(rp.getScale()), rp);
         }
 
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.negativeIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().negativeIntegers()))) {
             try {
                 p.a.withScale(p.b);
                 fail(p.toString());
@@ -137,7 +137,7 @@ public class RandomProviderProperties {
     private static void propertiesWithSecondaryScale() {
         System.out.println("\t\ttesting withSecondaryScale(int) properties...");
 
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().naturalIntegers()))) {
             RandomProvider rp = p.a.withSecondaryScale(p.b);
             rp.validate();
             assertEquals(p.toString(), rp.getScale(), p.a.getScale());
@@ -154,7 +154,7 @@ public class RandomProviderProperties {
             idempotent(x -> x.withSecondaryScale(rp.getSecondaryScale()), rp);
         }
 
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.negativeIntegers()))) {
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().negativeIntegers()))) {
             try {
                 p.a.withSecondaryScale(p.b);
                 fail(p.toString());
