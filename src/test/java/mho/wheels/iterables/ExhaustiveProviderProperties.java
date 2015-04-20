@@ -49,7 +49,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(Byte.toString(b), all(c -> c != null, bs));
             testNoRemove(bs);
             assertEquals(Byte.toString(b), length(bs), (1 << 7) - b);
-            unique(bs);
+            assertTrue(Byte.toString(b), unique(bs));
             assertTrue(Byte.toString(b), all(c -> c >= b, bs));
             assertTrue(Byte.toString(b), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
         }
@@ -62,7 +62,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Short> ss = take(TINY_LIMIT, EP.rangeUp(s));
             assertTrue(Short.toString(s), all(t -> t != null, ss));
             testNoRemove(ss, TINY_LIMIT);
-            unique(ss);
+            assertTrue(Short.toString(s), unique(ss));
             assertTrue(Short.toString(s), all(t -> t >= s, ss));
             assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, ss)));
         }
@@ -75,7 +75,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Integer> is = take(TINY_LIMIT, EP.rangeUp(i));
             assertTrue(Integer.toString(i), all(j -> j != null, is));
             testNoRemove(is, TINY_LIMIT);
-            unique(is);
+            assertTrue(Integer.toString(i), unique(is));
             assertTrue(Integer.toString(i), all(j -> j >= i, is));
             assertTrue(Integer.toString(i), weaklyIncreasing((Iterable<Integer>) map(Math::abs, is)));
         }
@@ -88,7 +88,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Long> ls = take(TINY_LIMIT, EP.rangeUp(l));
             assertTrue(Long.toString(l), all(m -> m != null, ls));
             testNoRemove(ls, TINY_LIMIT);
-            unique(ls);
+            assertTrue(Long.toString(l), unique(ls));
             assertTrue(Long.toString(l), all(m -> m >= l, ls));
             assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, ls)));
         }
@@ -101,7 +101,7 @@ public class ExhaustiveProviderProperties {
             Iterable<BigInteger> is = take(TINY_LIMIT, EP.rangeUp(i));
             assertTrue(i.toString(), all(j -> j != null, is));
             testNoRemove(is, TINY_LIMIT);
-            unique(is);
+            assertTrue(i.toString(), unique(is));
             assertTrue(i.toString(), all(j -> ge(j, i), is));
             assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, is)));
         }
