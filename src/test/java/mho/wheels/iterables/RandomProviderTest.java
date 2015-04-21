@@ -95,7 +95,7 @@ public class RandomProviderTest {
         simpleProviderHelper(
                 P.booleans(),
                 "[false, false, false, true, false, true, true, false, true, true, false, false, false, true, true," +
-                        " false, false, true, true, false]",
+                " false, false, true, true, false]",
                 "[false=500122, true=499878]"
         );
     }

@@ -74,13 +74,15 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Constructs a {@code RandomProvider} with a seed generated from the current system time.
+     * Constructs a {@code RandomProvider} with a given seed.
      *
      * <ul>
      *  <li>{@code seed} may be any {@code long}.</li>
      *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
      *  this constructor.</li>
      * </ul>
+     *
+     * @param seed the source of randomness
      */
     public RandomProvider(long seed) {
         this.seed = seed;
@@ -208,7 +210,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
-        return () -> new Iterator<Boolean>() {
+        return () -> new NoRemoveIterator<Boolean>() {
             private Random generator = new Random(seed);
 
             @Override
@@ -219,11 +221,6 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public Boolean next() {
                 return generator.nextBoolean();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -310,8 +307,20 @@ public final class RandomProvider extends IterableProvider {
         return map(l -> l & mask, longs());
     }
 
-    //todo
-    private static @NotNull BigInteger bigIntegerFromLongs(List<Long> longs) {
+    /**
+     * Creates a {@code BigInteger} from a {@code List} of {@code long}s. The {@code List} is in big-endian order; the
+     * first {@code long} is most significant. Leading zeroes are allowed. This method is essentially equivalent to
+     * {@link java.math.BigInteger#BigInteger(byte[])}, but with {@code long}s instead of {@code byte}s.
+     *
+     * <ul>
+     *  <li>{@code longs} cannot contain nulls.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param longs a list of {@code long}s representing a {@code BigInteger}
+     * @return the {@code BigInteger} represented by {@code longs}
+     */
+    private static @NotNull BigInteger bigIntegerFromLongs(@NotNull List<Long> longs) {
         byte[] array = new byte[longs.size() << 3];
         for (int i = 0; i < longs.size(); i++) {
             long x = longs.get(i);
@@ -342,9 +351,10 @@ public final class RandomProvider extends IterableProvider {
         if (bits == 0) {
             return repeat(BigInteger.ZERO);
         } else {
+            boolean evenNumberOfLongs = bits % 64 == 0;
             return map(
                     p -> bigIntegerFromLongs(toList(cons(p.a, p.b))),
-                    pairs(randomLongsPow2(bits % 64), lists(bits / 64, longs()))
+                    pairs(evenNumberOfLongs ? repeat(0L) : randomLongsPow2(bits % 64), lists(bits / 64, longs()))
             );
         }
     }
