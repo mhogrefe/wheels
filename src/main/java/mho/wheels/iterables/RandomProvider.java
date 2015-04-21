@@ -521,21 +521,76 @@ public final class RandomProvider extends IterableProvider {
         return map(i -> (char) (i + a), randomInts(65536 - a));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Byte> rangeDown(byte a) {
-        return map(i -> (byte) (i - 128), randomInts(a + 129));
+        int offset = 1 << 7;
+        return map(i -> (byte) (i - offset), randomInts(a + offset + 1));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Short}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Short> rangeDown(short a) {
-        return map(i -> (short) (i - 32768), randomInts(a + 32769));
+        int offset = 1 << 15;
+        return map(i -> (short) (i - offset), randomInts(a + offset + 1));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Integer> rangeDown(int a) {
-        return map(l -> (int) (l - (1L << 31)), randomLongs(a + (1L << 31) + 1));
+        long offset = 1L << 31;
+        return map(l -> (int) (l - offset), randomLongs(a + offset + 1));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Long}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Long> rangeDown(long a) {
         return map(
@@ -544,14 +599,28 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
+    //todo docs
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
         return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Character}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Character> rangeDown(char a) {
-        return range('\0', a);
+        return map(i -> (char) (int) i, randomInts(a + 1));
     }
 
     //b - a + 1
