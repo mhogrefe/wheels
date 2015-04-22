@@ -72,6 +72,7 @@ public class MathUtilsProperties {
             propertiesBigEndianBitsPadded_int_BigInteger();
             propertiesFromBigEndianBits();
             propertiesFromBits();
+            compareImplementationsFromBits();
             propertiesDigits_int_int();
             compareImplementationsDigits_int_int();
             propertiesDigits_BigInteger_BigInteger();
@@ -790,12 +791,27 @@ public class MathUtilsProperties {
         }
     }
 
+    private static @NotNull BigInteger fromBits_alt(@NotNull Iterable<Boolean> xs) {
+        List<Boolean> bits = toList(xs);
+        byte[] bytes = new byte[bits.size() / 8 + 1]; // if bits.size() is a multiple of 8, we get an extra zero to the
+        int byteIndex = bytes.length;                 // left which ensures a positive sign
+        for (int i = 0; i < bits.size(); i++) {
+            int j = i % 8;
+            if (j == 0) byteIndex--;
+            if (bits.get(i)) {
+                bytes[byteIndex] |= 1 << j;
+            }
+        }
+        return new BigInteger(bytes);
+    }
+
     private static void propertiesFromBits() {
         initialize();
         System.out.println("\t\ttesting fromBits(Iterable<Boolean>) properties...");
 
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
             BigInteger i = fromBits(bs);
+            assertEquals(bs.toString(), fromBits_alt(bs), i);
             assertTrue(bs.toString(), i.signum() != -1);
             assertEquals(bs.toString(), i, fromBigEndianBits(reverse(bs)));
         }
@@ -819,6 +835,27 @@ public class MathUtilsProperties {
                 fail(bs.toString());
             } catch (NullPointerException ignored) {}
         }
+    }
+
+    private static void compareImplementationsFromBits() {
+        initialize();
+        System.out.println("\t\tcomparing fromBits(Iterable<Boolean>) implementations...");
+
+        long totalTime = 0;
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            long time = System.nanoTime();
+            fromBits_alt(bs);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
+            long time = System.nanoTime();
+            fromBits(bs);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
     private static void propertiesFromBigEndianBits() {
