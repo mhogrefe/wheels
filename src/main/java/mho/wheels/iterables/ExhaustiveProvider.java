@@ -55,8 +55,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@link Ordering}s in increasing order. Does not support removal.
      *
      * Length is 3
-     *
-     * @return the {@code List} described above.
      */
     public @NotNull Iterable<Ordering> orderingsIncreasing() {
         return new NoRemoveIterable<>(Arrays.asList(LT, EQ, GT));
@@ -365,6 +363,22 @@ public final class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.range('\0', a);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Byte}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a >= 0 && b >= 0) {
@@ -378,6 +392,22 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Short}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
         if (a >= 0 && b >= 0) {
@@ -391,6 +421,22 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Integer}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
         if (a >= 0 && b >= 0) {
@@ -402,6 +448,23 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Long}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
     public @NotNull Iterable<Long> range(long a, long b) {
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);
@@ -412,6 +475,22 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
         if (a.signum() != -1 && b.signum() != -1) {
@@ -428,6 +507,22 @@ public final class ExhaustiveProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Character}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Character}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return IterableUtils.range(a, b);
@@ -447,8 +542,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Byte> bytesIncreasing() {
         return IterableUtils.rangeUp(Byte.MIN_VALUE);
@@ -458,8 +551,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Short> shortsIncreasing() {
         return IterableUtils.rangeUp(Short.MIN_VALUE);
@@ -469,8 +560,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Integer> integersIncreasing() {
         return IterableUtils.rangeUp(Integer.MIN_VALUE);
@@ -480,8 +569,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Long> longsIncreasing() {
         return IterableUtils.rangeUp(Long.MIN_VALUE);
@@ -692,8 +779,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> asciiCharactersIncreasing() {
         return range((char) 0, (char) 127);
@@ -704,8 +789,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
-     *
-     * @return the {@code Iterable} described above.
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
@@ -727,8 +810,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> charactersIncreasing() {
         return range(Character.MIN_VALUE, Character.MAX_VALUE);
@@ -761,8 +842,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * increasing order. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> positiveOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE));
@@ -773,8 +852,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * increasing order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> negativeOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE));
@@ -785,8 +862,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
         //noinspection RedundantCast
@@ -802,8 +877,6 @@ public final class ExhaustiveProvider extends IterableProvider {
      * but here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> floatsIncreasing() {
         //noinspection RedundantCast
