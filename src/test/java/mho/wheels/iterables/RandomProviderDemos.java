@@ -136,6 +136,42 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoRangeDown_byte() {
+        initialize();
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().bytes()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_short() {
+        initialize();
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().shorts()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_int() {
+        initialize();
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().integers()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_long() {
+        initialize();
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().longs()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProviders(), P.alt().characters());
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeDown(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
