@@ -44,6 +44,11 @@ public class RandomProviderProperties {
             propertiesRangeUp_int();
             propertiesRangeUp_long();
             propertiesRangeUp_char();
+            propertiesRangeDown_byte();
+            propertiesRangeDown_short();
+            propertiesRangeDown_int();
+            propertiesRangeDown_long();
+            propertiesRangeDown_char();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -249,6 +254,61 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(b -> b != null, cs));
             testNoRemove(cs);
             assertTrue(p.toString(), all(b -> b >= p.b, cs));
+        }
+    }
+
+    private static void propertiesRangeDown_byte() {
+        System.out.println("\t\ttesting rangeDown(byte) properties...");
+
+        for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().bytes()))) {
+            Iterable<Byte> bs = take(TINY_LIMIT, p.a.rangeDown(p.b));
+            assertTrue(p.toString(), all(b -> b != null, bs));
+            testNoRemove(bs);
+            assertTrue(p.toString(), all(b -> b <= p.b, bs));
+        }
+    }
+
+    private static void propertiesRangeDown_short() {
+        System.out.println("\t\ttesting rangeDown(short) properties...");
+
+        for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().shorts()))) {
+            Iterable<Short> ss = take(TINY_LIMIT, p.a.rangeDown(p.b));
+            assertTrue(p.toString(), all(s -> s != null, ss));
+            testNoRemove(ss);
+            assertTrue(p.toString(), all(s -> s <= p.b, ss));
+        }
+    }
+
+    private static void propertiesRangeDown_int() {
+        System.out.println("\t\ttesting rangeDown(int) properties...");
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().integers()))) {
+            Iterable<Integer> is = take(TINY_LIMIT, p.a.rangeDown(p.b));
+            assertTrue(p.toString(), all(i -> i != null, is));
+            testNoRemove(is);
+            assertTrue(p.toString(), all(i -> i <= p.b, is));
+        }
+    }
+
+    private static void propertiesRangeDown_long() {
+        System.out.println("\t\ttesting rangeDown(long) properties...");
+
+        for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().longs()))) {
+            Iterable<Long> ls = take(TINY_LIMIT, p.a.rangeDown(p.b));
+            assertTrue(p.toString(), all(l -> l != null, ls));
+            testNoRemove(ls);
+            assertTrue(p.toString(), all(l -> l <= p.b, ls));
+        }
+    }
+
+    private static void propertiesRangeDown_char() {
+        System.out.println("\t\ttesting rangeDown(char) properties...");
+
+        for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().characters()))) {
+            Iterable<Character> cs = take(TINY_LIMIT, p.a.rangeDown(p.b));
+            assertTrue(p.toString(), all(b -> b != null, cs));
+            testNoRemove(cs);
+            assertTrue(p.toString(), all(b -> b <= p.b, cs));
         }
     }
 
