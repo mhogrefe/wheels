@@ -279,6 +279,88 @@ public class ExhaustiveProviderTest {
         );
     }
 
+    private static void range_byte_byte_helper(byte a, byte b, @NotNull String output) {
+        aeqit(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_byte_byte() {
+        range_byte_byte_helper((byte) 10, (byte) 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_byte_byte_helper((byte) 10, (byte) 10, "[10]");
+        range_byte_byte_helper((byte) 10, (byte) 9, "[]");
+        range_byte_byte_helper((byte) -20, (byte) -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_byte_byte_helper((byte) -20, (byte) -20, "[-20]");
+        range_byte_byte_helper((byte) -20, (byte) -21, "[]");
+    }
+
+    private static void range_short_short_helper(short a, short b, @NotNull String output) {
+        aeqit(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_short_short() {
+        range_short_short_helper((short) 10, (short) 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_short_short_helper((short) 10, (short) 10, "[10]");
+        range_short_short_helper((short) 10, (short) 9, "[]");
+        range_short_short_helper((short) -20, (short) -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_short_short_helper((short) -20, (short) -20, "[-20]");
+        range_short_short_helper((short) -20, (short) -21, "[]");
+    }
+
+    private static void range_int_int_helper(int a, int b, @NotNull String output) {
+        aeqit(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_int_int() {
+        range_int_int_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_int_int_helper(10, 10, "[10]");
+        range_int_int_helper(10, 9, "[]");
+        range_int_int_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_int_int_helper(-20, -20, "[-20]");
+        range_int_int_helper(-20, -21, "[]");
+    }
+
+    private static void range_long_long_helper(long a, long b, @NotNull String output) {
+        aeqit(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_long_long() {
+        range_long_long_helper(10L, 20L, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_long_long_helper(10L, 10L, "[10]");
+        range_long_long_helper(10L, 9L, "[]");
+        range_long_long_helper(-20L, -10L, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_long_long_helper(-20L, -20L, "[-20]");
+        range_long_long_helper(-20L, -21L, "[]");
+    }
+
+    private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
+        aeqit(P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+    }
+
+    @Test
+    public void testRange_BigInteger_BigInteger() {
+        range_BigInteger_BigInteger_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_BigInteger_BigInteger_helper(10, 10, "[10]");
+        range_BigInteger_BigInteger_helper(10, 9, "[]");
+        range_BigInteger_BigInteger_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_BigInteger_BigInteger_helper(-20, -20, "[-20]");
+        range_BigInteger_BigInteger_helper(-20, -21, "[]");
+    }
+
+    private static void range_char_char_helper(char a, char b, @NotNull String output) {
+        aeqcs(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_char_char() {
+        range_char_char_helper('a', 'z', "abcdefghijklmnopqrstuvwxyz");
+        range_char_char_helper('a', 'a', "a");
+        range_char_char_helper('a', 'A', "");
+        range_char_char_helper('!', '9', "!\"#$%&'()*+,-./0123456789");
+    }
+
     @Test
     public void testBytesIncreasing() {
         aeq(length(P.bytesIncreasing()), 256);
