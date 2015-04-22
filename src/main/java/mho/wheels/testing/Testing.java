@@ -269,6 +269,22 @@ public class Testing {
     }
 
     public static @NotNull String nicePrint(@NotNull Iterable<Character> cs) {
-        return concatMapStrings(Testing::nicePrint, cs);
+        if (isEmpty(cs)) return "";
+        StringBuilder sb = new StringBuilder();
+        Character previous = null;
+        for (char c : cs) {
+            if (previous != null) {
+                if (previous != '\b' && previous != '\t' && previous != '\n' && previous != '\f' && previous != '\r' &&
+                        previous < ' ' && c >= '0' && c <= '9') {
+                    sb.append(String.format("\\u%04x", (int) previous));
+                } else {
+                    sb.append(nicePrint(previous));
+                }
+            }
+            previous = c;
+        }
+        //noinspection ConstantConditions
+        sb.append(nicePrint(previous));
+        return sb.toString();
     }
 }
