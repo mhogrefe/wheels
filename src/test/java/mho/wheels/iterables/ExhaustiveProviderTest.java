@@ -295,6 +295,7 @@ public class ExhaustiveProviderTest {
         range_byte_byte_helper((byte) -5, (byte) 0, "[0, -1, -2, -3, -4, -5]");
         range_byte_byte_helper((byte) -5, (byte) 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
         range_byte_byte_helper((byte) -10, (byte) 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_byte_byte_helper((byte) 5, (byte) -10, "[]");
     }
 
     private static void range_short_short_helper(short a, short b, @NotNull String output) {
@@ -318,6 +319,7 @@ public class ExhaustiveProviderTest {
                 (short) 5,
                 "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]"
         );
+        range_short_short_helper((short) 5, (short) -10, "[]");
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
@@ -337,6 +339,7 @@ public class ExhaustiveProviderTest {
         range_int_int_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
         range_int_int_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
         range_int_int_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_int_int_helper(5, -10, "[]");
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -356,6 +359,7 @@ public class ExhaustiveProviderTest {
         range_long_long_helper(-5L, 0L, "[0, -1, -2, -3, -4, -5]");
         range_long_long_helper(-5L, 10L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
         range_long_long_helper(-10L, 5L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_long_long_helper(5L, -10L, "[]");
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -375,6 +379,7 @@ public class ExhaustiveProviderTest {
         range_BigInteger_BigInteger_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
         range_BigInteger_BigInteger_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
         range_BigInteger_BigInteger_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_BigInteger_BigInteger_helper(5, -10, "[]");
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {

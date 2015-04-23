@@ -386,6 +386,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return Collections.emptyList();
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);
         } else if (a < 0 && b < 0) {
@@ -421,6 +422,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
+        if (a > b) return Collections.emptyList();
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);
         } else if (a < 0 && b < 0) {
@@ -457,6 +459,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
+        if (a > b) return Collections.emptyList();
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);
         } else if (a < 0 && b < 0) {
@@ -484,6 +487,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> range(long a, long b) {
+        if (a > b) return Collections.emptyList();
         if (a >= 0 && b >= 0) {
             return IterableUtils.range(a, b);
         } else if (a < 0 && b < 0) {
@@ -511,6 +515,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) return Collections.emptyList();
         if (a.signum() != -1 && b.signum() != -1) {
             return IterableUtils.range(a, b);
         } else if (a.signum() == -1 && b.signum() == -1) {
