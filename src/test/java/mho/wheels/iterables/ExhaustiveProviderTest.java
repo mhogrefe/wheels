@@ -13,7 +13,6 @@ import static org.junit.Assert.assertFalse;
 public class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
     private static final int TINY_LIMIT = 20;
-    private static final int SMALL_LIMIT = 128;
 
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
         aeqit(xs, output);

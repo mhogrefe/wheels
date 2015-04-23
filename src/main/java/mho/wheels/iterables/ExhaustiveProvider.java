@@ -340,7 +340,12 @@ public final class ExhaustiveProvider extends IterableProvider {
         if (a.signum() != 1) {
             return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
         } else {
-            return mux(Arrays.asList(IterableUtils.range(BigInteger.ZERO, a), IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))));
+            return mux(
+                    Arrays.asList(
+                            IterableUtils.range(BigInteger.ZERO, a),
+                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))
+                    )
+            );
         }
     }
 
