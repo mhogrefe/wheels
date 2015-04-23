@@ -391,8 +391,14 @@ public final class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, (byte) -1, a);
         } else {
-            return mux(
-                    Arrays.asList(IterableUtils.range((byte) 0, b), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
+            return cons(
+                    (byte) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range((byte) 1, b),
+                                    IterableUtils.rangeBy((byte) -1, (byte) -1, a)
+                            )
+                    )
             );
         }
     }
@@ -420,9 +426,16 @@ public final class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, (short) -1, a);
         } else {
-            return mux(
-                    Arrays.asList(IterableUtils.range((short) 0, b), IterableUtils.rangeBy((short) -1, (short) -1, a))
+            return cons(
+                    (short) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range((short) 1, b),
+                                    IterableUtils.rangeBy((short) -1, (short) -1, a)
+                            )
+                    )
             );
+
         }
     }
 
@@ -449,7 +462,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, -1, a);
         } else {
-            return mux(Arrays.asList(IterableUtils.range(0, b), IterableUtils.rangeBy(-1, -1, a)));
+            return cons(0, mux(Arrays.asList(IterableUtils.range(1, b), IterableUtils.rangeBy(-1, -1, a))));
         }
     }
 
@@ -476,7 +489,7 @@ public final class ExhaustiveProvider extends IterableProvider {
         } else if (a < 0 && b < 0) {
             return IterableUtils.rangeBy(b, (byte) -1, a);
         } else {
-            return mux(Arrays.asList(IterableUtils.range(0L, b), IterableUtils.rangeBy(-1L, -1L, a)));
+            return cons(0L, mux(Arrays.asList(IterableUtils.range(1L, b), IterableUtils.rangeBy(-1L, -1L, a))));
         }
     }
 
@@ -503,10 +516,13 @@ public final class ExhaustiveProvider extends IterableProvider {
         } else if (a.signum() == -1 && b.signum() == -1) {
             return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
         } else {
-            return mux(
-                    Arrays.asList(
-                            IterableUtils.range(BigInteger.ZERO, b),
-                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+            return cons(
+                    BigInteger.ZERO,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range(BigInteger.ONE, b),
+                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                            )
                     )
             );
         }
