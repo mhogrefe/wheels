@@ -5317,4 +5317,8 @@ public final class IterableUtils {
         }
         return !ysi.hasNext();
     }
+
+    public static <T> boolean equal(int limit, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return equal(take(limit, xs), take(limit, ys));
+    }
 }

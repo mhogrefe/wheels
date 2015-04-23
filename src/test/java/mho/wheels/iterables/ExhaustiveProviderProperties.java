@@ -1,14 +1,18 @@
 package mho.wheels.iterables;
 
+import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.Testing;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static mho.wheels.testing.Testing.testNoRemove;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -42,6 +46,12 @@ public class ExhaustiveProviderProperties {
             propertiesRangeDown_long();
             propertiesRangeDown_BigInteger();
             propertiesRangeDown_char();
+            propertiesRange_byte_byte();
+            propertiesRange_short_short();
+            propertiesRange_int_int();
+            propertiesRange_long_long();
+            propertiesRange_BigInteger_BigInteger();
+            propertiesRange_char_char();
         }
         System.out.println("Done");
     }
@@ -120,8 +130,8 @@ public class ExhaustiveProviderProperties {
             assertTrue(Character.toString(c), all(d -> d != null, cs));
             testNoRemove(cs, TINY_LIMIT);
             unique(cs);
-            assertTrue(Character.toString(c), all(d -> d >= c, cs));
-            assertTrue(Character.toString(c), increasing(cs));
+            assertTrue(nicePrint(c), all(d -> d >= c, cs));
+            assertTrue(nicePrint(c), increasing(cs));
         }
     }
 
@@ -198,9 +208,127 @@ public class ExhaustiveProviderProperties {
             Iterable<Character> cs = take(TINY_LIMIT, EP.rangeDown(c));
             assertTrue(Character.toString(c), all(d -> d != null, cs));
             testNoRemove(cs, TINY_LIMIT);
-            unique(cs);
-            assertTrue(Character.toString(c), all(d -> d <= c, cs));
-            assertTrue(Character.toString(c), increasing(cs));
+            assertTrue(nicePrint(c), unique(cs));
+            assertTrue(nicePrint(c), all(d -> d <= c, cs));
+            assertTrue(nicePrint(c), increasing(cs));
+        }
+    }
+
+    private static void propertiesRange_byte_byte() {
+        System.out.println("\t\ttesting range(byte, byte) properties...");
+
+        for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
+            Iterable<Byte> bs = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(b -> b != null, bs));
+            testNoRemove(bs, TINY_LIMIT);
+            assertTrue(p.toString(), unique(bs));
+            assertTrue(p.toString(), all(b -> b >= p.a && b <= p.b, bs));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+            assertEquals(p.toString(), p.a > p.b, isEmpty(bs));
+        }
+
+        for (byte b : take(LIMIT, P.bytes())) {
+            aeqit(Byte.toString(b), EP.range(b, b), Arrays.asList(b));
+            aeqit(Byte.toString(b), TINY_LIMIT, EP.range(b, Byte.MAX_VALUE), EP.rangeUp(b));
+            aeqit(Byte.toString(b), TINY_LIMIT, EP.range(Byte.MIN_VALUE, b), EP.rangeDown(b));
+        }
+    }
+
+    private static void propertiesRange_short_short() {
+        System.out.println("\t\ttesting range(short, short) properties...");
+
+        for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
+            Iterable<Short> ss = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(s -> s != null, ss));
+            testNoRemove(ss, TINY_LIMIT);
+            assertTrue(p.toString(), unique(ss));
+            assertTrue(p.toString(), all(s -> s >= p.a && s <= p.b, ss));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, ss)));
+            assertEquals(p.toString(), p.a > p.b, isEmpty(ss));
+        }
+
+        for (short s : take(LIMIT, P.shorts())) {
+            aeqit(Short.toString(s), EP.range(s, s), Arrays.asList(s));
+            aeqit(Short.toString(s), TINY_LIMIT, EP.range(s, Short.MAX_VALUE), EP.rangeUp(s));
+            aeqit(Short.toString(s), TINY_LIMIT, EP.range(Short.MIN_VALUE, s), EP.rangeDown(s));
+        }
+    }
+
+    private static void propertiesRange_int_int() {
+        System.out.println("\t\ttesting range(int, int) properties...");
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+            Iterable<Integer> is = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(i -> i != null, is));
+            testNoRemove(is, TINY_LIMIT);
+            assertTrue(p.toString(), unique(is));
+            assertTrue(p.toString(), all(i -> i >= p.a && i <= p.b, is));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, is)));
+            assertEquals(p.toString(), p.a > p.b, isEmpty(is));
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            aeqit(Integer.toString(i), EP.range(i, i), Arrays.asList(i));
+            aeqit(Integer.toString(i), TINY_LIMIT, EP.range(i, Integer.MAX_VALUE), EP.rangeUp(i));
+            aeqit(Integer.toString(i), TINY_LIMIT, EP.range(Integer.MIN_VALUE, i), EP.rangeDown(i));
+        }
+    }
+
+    private static void propertiesRange_long_long() {
+        System.out.println("\t\ttesting range(long, long) properties...");
+
+        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
+            Iterable<Long> ls = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(l -> l != null, ls));
+            testNoRemove(ls, TINY_LIMIT);
+            assertTrue(p.toString(), unique(ls));
+            assertTrue(p.toString(), all(l -> l >= p.a && l <= p.b, ls));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Long>) map(Math::abs, ls)));
+            assertEquals(p.toString(), p.a > p.b, isEmpty(ls));
+        }
+
+        for (long l : take(LIMIT, P.longs())) {
+            aeqit(Long.toString(l), EP.range(l, l), Arrays.asList(l));
+            aeqit(Long.toString(l), TINY_LIMIT, EP.range(l, Long.MAX_VALUE), EP.rangeUp(l));
+            aeqit(Long.toString(l), TINY_LIMIT, EP.range(Long.MIN_VALUE, l), EP.rangeDown(l));
+        }
+    }
+
+    private static void propertiesRange_BigInteger_BigInteger() {
+        System.out.println("\t\ttesting range(BigInteger, BigInteger) properties...");
+
+        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
+            Iterable<BigInteger> is = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(i -> i != null, is));
+            testNoRemove(is, TINY_LIMIT);
+            assertTrue(p.toString(), unique(is));
+            assertTrue(p.toString(), all(i -> ge(i, p.a) && le(i, p.b), is));
+            assertTrue(p.toString(), weaklyIncreasing(map(BigInteger::abs, is)));
+            assertEquals(p.toString(), gt(p.a, p.b), isEmpty(is));
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            aeqit(i.toString(), EP.range(i, i), Arrays.asList(i));
+        }
+    }
+
+    private static void propertiesRange_char_char() {
+        System.out.println("\t\ttesting range(char, char) properties...");
+
+        for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
+            Iterable<Character> cs = take(TINY_LIMIT, EP.range(p.a, p.b));
+            assertTrue(p.toString(), all(c -> c != null, cs));
+            testNoRemove(cs, TINY_LIMIT);
+            assertTrue(p.toString(), unique(cs));
+            assertTrue(p.toString(), all(c -> c >= p.a && c <= p.b, cs));
+            assertTrue(p.toString(), increasing(cs));
+            assertEquals(p.toString(), p.a > p.b, isEmpty(cs));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            aeqit(nicePrint(c), EP.range(c, c), Arrays.asList(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.range(c, Character.MAX_VALUE), EP.rangeUp(c));
+            aeqit(nicePrint(c), TINY_LIMIT, EP.range('\0', c), EP.rangeDown(c));
         }
     }
 }

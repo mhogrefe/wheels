@@ -69,6 +69,15 @@ public class Testing {
         assertTrue(message, IterableUtils.equal(xs, ys));
     }
 
+    public static <T> void aeqit(
+            @NotNull String message,
+            int limit,
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> ys
+    ) {
+        assertTrue(message, IterableUtils.equal(limit, xs, ys));
+    }
+
     public static <A, B> void compareImplementations(
             @NotNull String method,
             @NotNull Iterable<A> inputs,
