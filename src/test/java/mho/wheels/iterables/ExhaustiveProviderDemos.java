@@ -1,11 +1,13 @@
 package mho.wheels.iterables;
 
+import mho.wheels.structures.Pair;
+
 import java.math.BigInteger;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
@@ -101,6 +103,48 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (char c : take(SMALL_LIMIT, P.characters())) {
             System.out.println("rangeDown(" + nicePrint(c) + ") = " + cits(EP.rangeDown(c)));
+        }
+    }
+
+    private static void demoRange_byte_byte() {
+        initialize();
+        for (Pair<Byte, Byte> p : take(SMALL_LIMIT, P.pairs(P.bytes()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRange_short_short() {
+        initialize();
+        for (Pair<Short, Short> p : take(SMALL_LIMIT, P.pairs(P.shorts()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRange_int_int() {
+        initialize();
+        for (Pair<Integer, Integer> p : take(SMALL_LIMIT, P.pairs(P.integers()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRange_long_long() {
+        initialize();
+        for (Pair<Long, Long> p : take(SMALL_LIMIT, P.pairs(P.longs()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRange_BigInteger_BigInteger() {
+        initialize();
+        for (Pair<BigInteger, BigInteger> p : take(SMALL_LIMIT, P.pairs(P.bigIntegers()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRange_char_char() {
+        initialize();
+        for (Pair<Character, Character> p : take(SMALL_LIMIT, P.pairs(P.characters()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + cits(EP.range(p.a, p.b)));
         }
     }
 }
