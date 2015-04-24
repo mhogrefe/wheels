@@ -65,6 +65,10 @@ public class Testing {
         assertEquals(IterableUtils.toString(a), b.toString());
     }
 
+    public static void aeqit(int limit, Iterable<?> a, Object b) {
+        assertEquals(IterableUtils.toString(limit, a), b.toString());
+    }
+
     public static <T> void aeqit(@NotNull String message, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         assertTrue(message, IterableUtils.equal(xs, ys));
     }

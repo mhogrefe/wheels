@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class RandomProviderTest {
     private static final RandomProvider P = new RandomProvider(0x6af477d9a7e54fcaL);
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
     private static final int DEFAULT_TOP_COUNT = 10;
+    private static final int TINY_LIMIT = 20;
 
     @Test
     public void testConstructor() {
@@ -490,6 +492,299 @@ public class RandomProviderTest {
                 "ဈ얈쐑稘\u2ea4舳\u0bc2풼㞌譠朿䑛அ䠗\u2553혰毮\u09d4\ud9c8䮧彙힌昜蛿쭜擭奵鸪垩맪\udbd1럷\uee5c乶颁\u1772涔麎寗" +
                 "力幄穽堞\u28f4쑋靛䗊汏寁\u23d6티\u3289힓攴ᗷ\u2180\uf551ꂘ\uf790櫬穆풃쟣\u0b7b淉ڝ猊堽\u24d2\u29b5\u08c2繂" +
                 "\uf2cf\ue006譟\ud880鎸鶼㨀㿺ꍠ\uefb6쨄먟똎\uea8c䎼\u296f\ue64cג癡\ue464\uebfe\ue79e㝈"
+        );
+    }
+
+    private static void range_byte_byte_helper(byte a, byte b, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_byte_byte() {
+        range_byte_byte_helper(
+                (byte) 10,
+                (byte) 20,
+                "[15, 12, 16, 19, 20, 10, 16, 18, 14, 14, 19, 16, 12, 18, 20, 13, 13, 16, 18, 16, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) 10,
+                (byte) 10,
+                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
+        );
+        range_byte_byte_helper((byte) 10, (byte) 9, "[]");
+        range_byte_byte_helper(
+                (byte) -20,
+                (byte) -10,
+                "[-15, -18, -14, -11, -10, -20, -14, -12, -16, -16, -11, -14, -18, -12, -10, -17, -17, -14, -12," +
+                " -14, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) -20,
+                (byte) -20,
+                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
+                " -20, ...]"
+        );
+        range_byte_byte_helper((byte) -20, (byte) -21, "[]");
+        range_byte_byte_helper(
+                (byte) 0,
+                (byte) 0,
+                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) 0,
+                (byte) 10,
+                "[5, 2, 6, 9, 10, 0, 6, 8, 4, 4, 9, 6, 2, 8, 10, 3, 3, 6, 8, 6, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) -5,
+                (byte) 0,
+                "[0, 0, 0, -3, -4, -3, -2, -5, -2, -1, -5, -1, -1, -4, -3, -5, -3, -2, -2, -2, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) -5,
+                (byte) 10,
+                "[8, 0, 8, -3, 1, 4, 5, 6, -5, 9, 1, 6, 7, 9, 3, -1, -1, 10, 4, 1, ...]"
+        );
+        range_byte_byte_helper(
+                (byte) -10,
+                (byte) 5,
+                "[3, -5, 3, -8, -4, -1, 0, 1, -10, 4, -4, 1, 2, 4, -2, -6, -6, 5, -1, -4, ...]"
+        );
+        range_byte_byte_helper((byte) 5, (byte) -10, "[]");
+    }
+
+    private static void range_short_short_helper(short a, short b, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_short_short() {
+        range_short_short_helper(
+                (short) 10,
+                (short) 20,
+                "[15, 12, 16, 19, 20, 10, 16, 18, 14, 14, 19, 16, 12, 18, 20, 13, 13, 16, 18, 16, ...]"
+        );
+        range_short_short_helper(
+                (short) 10,
+                (short) 10,
+                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
+        );
+        range_short_short_helper((short) 10, (short) 9, "[]");
+        range_short_short_helper(
+                (short) -20,
+                (short) -10,
+                "[-15, -18, -14, -11, -10, -20, -14, -12, -16, -16, -11, -14, -18, -12, -10, -17, -17, -14, -12," +
+                " -14, ...]"
+        );
+        range_short_short_helper(
+                (short) -20,
+                (short) -20,
+                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
+                " -20, ...]"
+        );
+        range_short_short_helper((short) -20, (short) -21, "[]");
+        range_short_short_helper(
+                (short) 0,
+                (short) 0,
+                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]"
+        );
+        range_short_short_helper(
+                (short) 0,
+                (short) 10,
+                "[5, 2, 6, 9, 10, 0, 6, 8, 4, 4, 9, 6, 2, 8, 10, 3, 3, 6, 8, 6, ...]"
+        );
+        range_short_short_helper(
+                (short) -5,
+                (short) 0,
+                "[0, 0, 0, -3, -4, -3, -2, -5, -2, -1, -5, -1, -1, -4, -3, -5, -3, -2, -2, -2, ...]"
+        );
+        range_short_short_helper(
+                (byte) -5,
+                (byte) 10,
+                "[8, 0, 8, -3, 1, 4, 5, 6, -5, 9, 1, 6, 7, 9, 3, -1, -1, 10, 4, 1, ...]"
+        );
+        range_short_short_helper(
+                (short) -10,
+                (short) 5,
+                "[3, -5, 3, -8, -4, -1, 0, 1, -10, 4, -4, 1, 2, 4, -2, -6, -6, 5, -1, -4, ...]"
+        );
+        range_short_short_helper((short) 5, (short) -10, "[]");
+    }
+
+    private static void range_int_int_helper(int a, int b, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_int_int() {
+        range_int_int_helper(
+                10,
+                20,
+                "[15, 12, 19, 14, 16, 18, 13, 16, 18, 10, 18, 11, 14, 12, 15, 13, 18, 19, 15, 19, ...]"
+        );
+        range_int_int_helper(
+                10,
+                10,
+                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
+        );
+        range_int_int_helper(10, 9, "[]");
+        range_int_int_helper(
+                -20,
+                -10,
+                "[-15, -18, -11, -16, -14, -12, -17, -14, -12, -20, -12, -19, -16, -18, -15, -17, -12, -11, -15," +
+                " -11, ...]"
+        );
+        range_int_int_helper(
+                -20,
+                -20,
+                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
+                " -20, ...]"
+        );
+        range_int_int_helper(-20, -21, "[]");
+        range_int_int_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
+        range_int_int_helper(0, 10, "[5, 2, 9, 4, 6, 8, 3, 6, 8, 0, 8, 1, 4, 2, 5, 3, 8, 9, 5, 9, ...]");
+        range_int_int_helper(
+                -5,
+                0,
+                "[0, -3, -4, -2, -2, -1, -5, -2, -5, -5, -2, -5, -4, -1, -3, -1, 0, -2, -5, -4, ...]"
+        );
+        range_int_int_helper(-5, 10, "[0, -3, 4, 6, 9, 6, 9, -1, 10, 1, 3, -2, 1, 3, -5, 6, 3, -4, -1, -3, ...]");
+        range_int_int_helper(
+                -10,
+                5,
+                "[-5, -8, -1, 1, 4, 1, 4, -6, 5, -4, -2, -7, -4, -2, -10, 1, -2, -9, -6, -8, ...]"
+        );
+        range_int_int_helper(5, -10, "[]");
+    }
+
+    private static void range_long_long_helper(long a, long b, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_long_long() {
+        range_long_long_helper(
+                10L,
+                20L,
+                "[15, 12, 16, 19, 20, 10, 16, 18, 14, 14, 19, 16, 12, 18, 20, 13, 13, 16, 18, 16, ...]"
+        );
+        range_long_long_helper(
+                10L,
+                10L,
+                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
+        );
+        range_long_long_helper(10L, 9L, "[]");
+        range_long_long_helper(
+                -20L,
+                -10L,
+                "[-15, -18, -14, -11, -10, -20, -14, -12, -16, -16, -11, -14, -18, -12, -10, -17, -17, -14, -12," +
+                " -14, ...]"
+        );
+        range_long_long_helper(
+                -20L,
+                -20L,
+                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
+                        " -20, ...]"
+        );
+        range_long_long_helper(-20L, -21L, "[]");
+        range_long_long_helper(0L, 0L, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
+        range_long_long_helper(0L, 10L, "[5, 2, 6, 9, 10, 0, 6, 8, 4, 4, 9, 6, 2, 8, 10, 3, 3, 6, 8, 6, ...]");
+        range_long_long_helper(
+                -5L,
+                0L,
+                "[0, 0, 0, -3, -4, -3, -2, -5, -2, -1, -5, -1, -1, -4, -3, -5, -3, -2, -2, -2, ...]"
+        );
+        range_long_long_helper(-5L, 10L, "[8, 0, 8, -3, 1, 4, 5, 6, -5, 9, 1, 6, 7, 9, 3, -1, -1, 10, 4, 1, ...]");
+        range_long_long_helper(
+                -10L,
+                5L,
+                "[3, -5, 3, -8, -4, -1, 0, 1, -10, 4, -4, 1, 2, 4, -2, -6, -6, 5, -1, -4, ...]"
+        );
+        range_long_long_helper(5L, -10L, "[]");
+    }
+
+    private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+    }
+
+    @Test
+    public void testRange_BigInteger_BigInteger() {
+        range_BigInteger_BigInteger_helper(
+                10,
+                20,
+                "[15, 12, 16, 19, 20, 10, 16, 18, 14, 14, 19, 16, 12, 18, 20, 13, 13, 16, 18, 16, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                10,
+                10,
+                "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
+        );
+        range_BigInteger_BigInteger_helper(10, 9, "[]");
+        range_BigInteger_BigInteger_helper(
+                -20,
+                -10,
+                "[-15, -18, -14, -11, -10, -20, -14, -12, -16, -16, -11, -14, -18, -12, -10, -17, -17, -14, -12," +
+                        " -14, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                -20,
+                -20,
+                "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
+                        " -20, ...]"
+        );
+        range_BigInteger_BigInteger_helper(-20, -21, "[]");
+        range_BigInteger_BigInteger_helper(
+                0,
+                0,
+                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                0,
+                10,
+                "[5, 2, 6, 9, 10, 0, 6, 8, 4, 4, 9, 6, 2, 8, 10, 3, 3, 6, 8, 6, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                -5,
+                0,
+                "[0, 0, 0, -3, -4, -3, -2, -5, -2, -1, -5, -1, -1, -4, -3, -5, -3, -2, -2, -2, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                -5,
+                10,
+                "[8, 0, 8, -3, 1, 4, 5, 6, -5, 9, 1, 6, 7, 9, 3, -1, -1, 10, 4, 1, ...]"
+        );
+        range_BigInteger_BigInteger_helper(
+                -10,
+                5,
+                "[3, -5, 3, -8, -4, -1, 0, 1, -10, 4, -4, 1, 2, 4, -2, -6, -6, 5, -1, -4, ...]"
+        );
+        range_BigInteger_BigInteger_helper(5, -10, "[]");
+    }
+
+    private static void range_char_char_helper(char a, char b, @NotNull String output) {
+        aeqcs(P.range(a, b), output);
+    }
+
+    @Test
+    public void testRange_char_char() {
+        range_char_char_helper(
+                'a',
+                'z',
+                "fnsgzqgmiuujgsykddgliwajliiryetcmafxtqouihzmnvkjkrxwbsuoxkeulkpbwqjtuxaryqmgddjksvccpgayaaweompmsbe" +
+                "ipvhuafplluelhuczunsttuvfszbj"
+        );
+        range_char_char_helper(
+                'a',
+                'a',
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        );
+        range_char_char_helper('a', 'A', "");
+        range_char_char_helper(
+                '!',
+                '9',
+                "&.3'1'-)55*'39+$$',)7!*,))29%4#-!&841/5)(-.6+*+287\"35/8+%5,+0\"71*458!291-'$$*+36##0'!9!!7%/-0-3\"" +
+                "%)06(5!&0,,5%,(5#5.34456&3\"*+'%6"
         );
     }
 
