@@ -300,4 +300,8 @@ public class Testing {
         sb.append(nicePrint(previous));
         return sb.toString();
     }
+
+    public static @NotNull String nicePrint(@NotNull String s) {
+        return nicePrint(fromString(s));
+    }
 }

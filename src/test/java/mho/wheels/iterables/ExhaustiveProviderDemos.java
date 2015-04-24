@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.structures.Pair;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -12,13 +13,16 @@ public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int SMALL_LIMIT = 1000;
+    private static int LIMIT;
     private static IterableProvider P;
 
     private static void initialize() {
         if (USE_RANDOM) {
             P = new RandomProvider(0x6af477d9a7e54fcaL);
+            LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
+            LIMIT = 10000;
         }
     }
 
@@ -145,6 +149,21 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Character, Character> p : take(SMALL_LIMIT, P.pairs(P.characters()))) {
             System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoUniformSample_Iterable() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(xs.toString()));
+            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(xs)));
+        }
+    }
+
+    private static void demoUniformSample_String() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("uniformSample(" + nicePrint(s) + ") = " + cits(EP.uniformSample(s)));
         }
     }
 }
