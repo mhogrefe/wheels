@@ -140,15 +140,23 @@ public final class IterableUtils {
     public static @NotNull <T> String toString(int size, @NotNull Iterable<T> xs) {
         if (size < 0)
             throw new IllegalArgumentException("size cannot be negative");
-        if (size == 0) {
-            return isEmpty(xs) ? "[]" : "[...]";
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        String prefix = "";
+        Iterator<T> it = xs.iterator();
+        int i = 0;
+        while (it.hasNext() && i < size) {
+            sb.append(prefix);
+            sb.append(it.next());
+            prefix = ", ";
+            i++;
         }
-        List<T> list = toList(take(size + 1, xs));
-        String listString = toList(take(size, list)).toString();
-        if (list.size() > size) {
-            listString = init(listString) + ", ...]";
+        if (it.hasNext()) {
+            sb.append(prefix);
+            sb.append("...");
         }
-        return listString;
+        sb.append(']');
+        return sb.toString();
     }
 
     /**
