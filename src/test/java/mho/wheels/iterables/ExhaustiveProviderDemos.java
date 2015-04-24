@@ -154,9 +154,9 @@ public class ExhaustiveProviderDemos {
 
     private static void demoUniformSample_Iterable() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            String listString = tail(init(xs.toString()));
-            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(xs)));
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
         }
     }
 
