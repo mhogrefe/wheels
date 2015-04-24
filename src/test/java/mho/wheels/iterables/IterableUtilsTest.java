@@ -1156,17 +1156,17 @@ public class IterableUtilsTest {
 
     @Test
     public void testUnrepeat() {
-        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]").get()), "[1, 2, 3]");
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]")), "[1, 2, 3]");
         aeq(
-                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]").get()),
+                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]")),
                 "[1, null, 3]"
         );
-        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]").get()), "[1, 2, 3, 4, 5]");
-        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]").get()), "[1, 2, 3, null, 5]");
-        aeq(unrepeat(readIntegerList("[1, 1, 1]").get()), "[1]");
-        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]").get()), "[null]");
-        aeq(unrepeat(readIntegerList("[1]").get()), "[1]");
-        aeq(unrepeat(readIntegerListWithNulls("[null]").get()), "[null]");
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]")), "[1, 2, 3, 4, 5]");
+        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]")), "[1, 2, 3, null, 5]");
+        aeq(unrepeat(readIntegerList("[1, 1, 1]")), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]")), "[null]");
+        aeq(unrepeat(readIntegerList("[1]")), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null]")), "[null]");
         aeq(unrepeat(new ArrayList<>()), "[]");
     }
 
@@ -1250,22 +1250,22 @@ public class IterableUtilsTest {
 
     @Test
     public void testSumBigInteger() {
-        aeq(sumBigInteger(readBigIntegerList("[10, 11, 12]").get()), 33);
-        aeq(sumBigInteger(readBigIntegerList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigInteger(readBigIntegerList("[10, 11, 12]")), 33);
+        aeq(sumBigInteger(readBigIntegerList("[-4, 6, -8]")), -6);
         aeq(sumBigInteger(new ArrayList<>()), 0);
         try {
-            sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testSumBigDecimal() {
-        aeq(sumBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 31.5);
-        aeq(sumBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigDecimal(readBigDecimalList("[10, 10.5, 11]")), 31.5);
+        aeq(sumBigDecimal(readBigDecimalList("[-4, 6, -8]")), -6);
         aeq(sumBigDecimal(new ArrayList<>()), 0);
         try {
-            sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -1351,22 +1351,22 @@ public class IterableUtilsTest {
 
     @Test
     public void testProductBigInteger() {
-        aeq(productBigInteger(readBigIntegerList("[10, 11, 12]").get()), 1320);
-        aeq(productBigInteger(readBigIntegerList("[-4, 6, -8]").get()), 192);
+        aeq(productBigInteger(readBigIntegerList("[10, 11, 12]")), 1320);
+        aeq(productBigInteger(readBigIntegerList("[-4, 6, -8]")), 192);
         aeq(productBigInteger(new ArrayList<>()), 1);
         try {
-            productBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            productBigInteger(readBigIntegerListWithNulls("[10, null, 12]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testProductBigDecimal() {
-        aeq(productBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 1155.0);
-        aeq(productBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), 192);
+        aeq(productBigDecimal(readBigDecimalList("[10, 10.5, 11]")), 1155.0);
+        aeq(productBigDecimal(readBigDecimalList("[-4, 6, -8]")), 192);
         aeq(productBigDecimal(new ArrayList<>()), 1);
         try {
-            productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -1435,28 +1435,28 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaBigInteger() {
-        aeqit(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]").get()), "[-2, 3, -3, 4, 4, -6]");
+        aeqit(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]")), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaBigInteger(Arrays.asList(BigInteger.valueOf(3))), "[]");
         try {
             deltaBigInteger(new ArrayList<>());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get()));
+            toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]")));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testDeltaBigDecimal() {
-        aeqit(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]").get()), "[1.0, 1.8, -3.6]");
+        aeqit(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]")), "[1.0, 1.8, -3.6]");
         aeqit(deltaBigDecimal(Arrays.asList(BigDecimal.valueOf(3))), "[]");
         try {
             deltaBigDecimal(new ArrayList<>());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]").get()));
+            toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]")));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -1508,27 +1508,27 @@ public class IterableUtilsTest {
         } catch (NullPointerException ignored) {}
     }
 
-    private static @NotNull Optional<List<Integer>> readIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readInteger).apply(s);
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<Integer>> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger).apply(s);
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s);
+    private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readBigInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger).apply(s);
+    private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigDecimal>> readBigDecimalList(@NotNull String s) {
-        return Readers.readList(Readers::readBigDecimal).apply(s);
+    private static @NotNull List<BigDecimal> readBigDecimalList(@NotNull String s) {
+        return Readers.readList(Readers::readBigDecimal).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigDecimal>> readBigDecimalListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigDecimal).apply(s);
+    private static @NotNull List<BigDecimal> readBigDecimalListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigDecimal).apply(s).get();
     }
 }

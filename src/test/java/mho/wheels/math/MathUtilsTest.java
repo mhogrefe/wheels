@@ -752,30 +752,30 @@ public class MathUtilsTest {
 
     @Test
     public void testFromDigits_BigInteger_Iterable_BigInteger() {
-        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 0]").get()), 0);
-        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[1, 0]").get()), 1);
-        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[1, 0, 1, 1, 1, 0]").get()), 29);
-        aeq(fromDigits(BigInteger.valueOf(10), readBigIntegerList("[9, 5, 1, 4, 1, 3]").get()), 314159);
-        aeq(fromDigits(BigInteger.valueOf(70), readBigIntegerList("[8, 0, 20, 5, 43]").get()), 1034243008);
-        aeq(fromDigits(BigInteger.valueOf(70), new ArrayList<BigInteger>()), 0);
+        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 0]")), 0);
+        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[1, 0]")), 1);
+        aeq(fromDigits(BigInteger.valueOf(2), readBigIntegerList("[1, 0, 1, 1, 1, 0]")), 29);
+        aeq(fromDigits(BigInteger.valueOf(10), readBigIntegerList("[9, 5, 1, 4, 1, 3]")), 314159);
+        aeq(fromDigits(BigInteger.valueOf(70), readBigIntegerList("[8, 0, 20, 5, 43]")), 1034243008);
+        aeq(fromDigits(BigInteger.valueOf(70), readBigIntegerList("[]")), 0);
         try {
-            fromDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]").get());
+            fromDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]").get());
+            fromDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromDigits(BigInteger.valueOf(-1), readBigIntegerList("[1, 2, 3]").get());
+            fromDigits(BigInteger.valueOf(-1), readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]").get());
+            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]").get());
+            fromDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -812,30 +812,30 @@ public class MathUtilsTest {
 
     @Test
     public void testFromBigEndianDigits_int_Iterable_BigInteger() {
-        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 0]").get()), 0);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 1]").get()), 1);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 1, 1, 1, 0, 1]").get()), 29);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[3, 1, 4, 1, 5, 9]").get()), 314159);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(70), readBigIntegerList("[43, 5, 20, 0, 8]").get()), 1034243008);
-        aeq(fromBigEndianDigits(BigInteger.valueOf(70), new ArrayList<BigInteger>()), 0);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 0]")), 0);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 1]")), 1);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(2), readBigIntegerList("[0, 1, 1, 1, 0, 1]")), 29);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[3, 1, 4, 1, 5, 9]")), 314159);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(70), readBigIntegerList("[43, 5, 20, 0, 8]")), 1034243008);
+        aeq(fromBigEndianDigits(BigInteger.valueOf(70), readBigIntegerList("[]")), 0);
         try {
-            fromBigEndianDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]").get());
+            fromBigEndianDigits(BigInteger.ONE, readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromBigEndianDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]").get());
+            fromBigEndianDigits(BigInteger.ZERO, readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromBigEndianDigits(BigInteger.valueOf(-1), readBigIntegerList("[1, 2, 3]").get());
+            fromBigEndianDigits(BigInteger.valueOf(-1), readBigIntegerList("[1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]").get());
+            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[-1, 2, 3]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]").get());
+            fromBigEndianDigits(BigInteger.valueOf(10), readBigIntegerList("[1, 2, 10]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1304,27 +1304,27 @@ public class MathUtilsTest {
 
     @Test
     public void testMux() {
-        aeq(mux(readBigIntegerList("[]").get()), 0);
-        aeq(mux(readBigIntegerList("[0]").get()), 0);
-        aeq(mux(readBigIntegerList("[1]").get()), 1);
-        aeq(mux(readBigIntegerList("[2]").get()), 2);
-        aeq(mux(readBigIntegerList("[0, 0]").get()), 0);
-        aeq(mux(readBigIntegerList("[0, 1]").get()), 1);
-        aeq(mux(readBigIntegerList("[1, 0]").get()), 2);
-        aeq(mux(readBigIntegerList("[5, 10]").get()), 102);
-        aeq(mux(readBigIntegerList("[10, 5]").get()), 153);
-        aeq(mux(readBigIntegerList("[784, 904]").get()), 1000000);
-        aeq(mux(readBigIntegerList("[0, 0, 0]").get()), 0);
-        aeq(mux(readBigIntegerList("[10, 10, 10]").get()), 3640);
-        aeq(mux(readBigIntegerList("[48, 96, 76]").get()), 1000000);
-        aeq(mux(readBigIntegerList("[1, 2, 3, 4]").get()), 362);
-        aeq(mux(readBigIntegerList("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]").get()), 1000000);
+        aeq(mux(readBigIntegerList("[]")), 0);
+        aeq(mux(readBigIntegerList("[0]")), 0);
+        aeq(mux(readBigIntegerList("[1]")), 1);
+        aeq(mux(readBigIntegerList("[2]")), 2);
+        aeq(mux(readBigIntegerList("[0, 0]")), 0);
+        aeq(mux(readBigIntegerList("[0, 1]")), 1);
+        aeq(mux(readBigIntegerList("[1, 0]")), 2);
+        aeq(mux(readBigIntegerList("[5, 10]")), 102);
+        aeq(mux(readBigIntegerList("[10, 5]")), 153);
+        aeq(mux(readBigIntegerList("[784, 904]")), 1000000);
+        aeq(mux(readBigIntegerList("[0, 0, 0]")), 0);
+        aeq(mux(readBigIntegerList("[10, 10, 10]")), 3640);
+        aeq(mux(readBigIntegerList("[48, 96, 76]")), 1000000);
+        aeq(mux(readBigIntegerList("[1, 2, 3, 4]")), 362);
+        aeq(mux(readBigIntegerList("[3, 2, 2, 3, 0, 2, 0, 0, 0, 0]")), 1000000);
         try {
-            mux(readBigIntegerList("[1, 2, -3]").get());
+            mux(readBigIntegerList("[1, 2, -3]"));
             fail();
         } catch (ArithmeticException ignored) {}
         try {
-            mux(readBigIntegerListWithNulls("[1, null, 2]").get());
+            mux(readBigIntegerListWithNulls("[1, null, 2]"));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1370,11 +1370,11 @@ public class MathUtilsTest {
         assertEquals(a.toString(), b.toString());
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s);
+    private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readBigInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger).apply(s);
+    private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
     }
 }
