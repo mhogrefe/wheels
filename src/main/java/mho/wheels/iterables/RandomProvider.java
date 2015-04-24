@@ -621,58 +621,149 @@ public final class RandomProvider extends IterableProvider {
         return map(i -> (char) (int) i, randomInts(a + 1));
     }
 
-    //b - a + 1
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return new ArrayList<>();
+        if (a > b) return Collections.emptyList();
         return map(i -> (byte) (i + a), randomInts((int) b - a + 1));
     }
 
-    //b - a + 1
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Short}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
-        if (a > b) return new ArrayList<>();
+        if (a > b) return Collections.emptyList();
         return map(i -> (short) (i + a), randomInts((int) b - a + 1));
     }
 
-    //b - a + 1
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
-        if (a > b) return new ArrayList<>();
+        if (a > b) return Collections.emptyList();
         return map(i -> (int) (i + a), randomLongs(b - a + 1));
     }
 
-    //b - a + 1
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Long}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull Iterable<Long> range(long a, long b) {
-        if (a > b) return new ArrayList<>();
+        if (a > b) return Collections.emptyList();
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
                 randomBigIntegers(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
         );
     }
 
-    //b - a + 1
+    /**
+     * An {@code Iterable} that uniformly generates {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (Ordering.gt(a, b)) return new ArrayList<>();
+        if (Ordering.gt(a, b)) return Collections.emptyList();
         return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Character}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
-        if (a > b) return new ArrayList<>();
+        if (a > b) return Collections.emptyList();
         return map(i -> (char) (i + a), randomInts(b - a + 1));
     }
 
     @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
+        if (isEmpty(xs)) return Collections.emptyList();
         return map(xs::get, range(0, xs.size() - 1));
     }
 
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        if (s.isEmpty()) return new ArrayList<>();
+        if (s.isEmpty()) return Collections.emptyList();
         return map(s::charAt, range(0, s.length() - 1));
     }
 
@@ -727,7 +818,7 @@ public final class RandomProvider extends IterableProvider {
     }
 
     public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
+        if (isEmpty(xs)) return Collections.emptyList();
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
                 NullableOptional::get,
@@ -1704,7 +1795,7 @@ public final class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
@@ -1733,7 +1824,7 @@ public final class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
