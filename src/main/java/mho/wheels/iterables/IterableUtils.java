@@ -172,7 +172,7 @@ public final class IterableUtils {
      * @return an {@code Iterable} containing all the {@code String}'s characters in their original order
      */
     public static @NotNull Iterable<Character> fromString(@NotNull String s) {
-        return () -> new Iterator<Character>() {
+        return () -> new NoRemoveIterator<Character>() {
             private int i = 0;
 
             @Override
@@ -183,11 +183,6 @@ public final class IterableUtils {
             @Override
             public Character next() {
                 return s.charAt(i++);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

@@ -578,11 +578,38 @@ public final class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.range(a, b);
     }
 
+    /**
+     * Returns an unmodifiable version of a list. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of {@code xs}'s elements
+     * @return an unmodifiable version of {@code xs}
+     */
     @Override
-    public @NotNull <T> List<T> uniformSample(@NotNull List<T> xs) {
-        return xs;
+    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        return new NoRemoveIterable<>(xs);
     }
 
+    /**
+     * Turns a {@code String} into an {@code Iterable} of {@code Character}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code s}|
+     *
+     * @param s a {@code String}
+     * @return the {@code Character}s in {@code s}
+     */
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
         return fromString(s);
