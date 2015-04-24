@@ -1,9 +1,11 @@
 package mho.wheels.iterables;
 
+import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -397,6 +399,31 @@ public class ExhaustiveProviderTest {
         range_char_char_helper('!', '9', "!\"#$%&'()*+,-./0123456789");
     }
 
+    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
+        aeqit(P.uniformSample(readIntegerList(xs)), output);
+    }
+
+    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+        aeqit(P.uniformSample(readIntegerListWithNulls(xs)), output);
+    }
+
+    @Test
+    public void testUniformSample_Iterable() {
+        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "[3, 1, 4, 1]");
+        uniformSample_Iterable_helper_1("[]", "[]");
+        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "[3, 1, null, 1]");
+    }
+
+    private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
+        aeqcs(P.uniformSample(s), output);
+    }
+
+    @Test
+    public void testUniformSample_String() {
+        uniformSample_String_helper("hello", "hello");
+        uniformSample_String_helper("", "");
+    }
+
     @Test
     public void testBytesIncreasing() {
         aeq(length(P.bytesIncreasing()), 256);
@@ -786,5 +813,13 @@ public class ExhaustiveProviderTest {
     @Test
     public void testToString() {
         aeq(P, "ExhaustiveProvider");
+    }
+
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readInteger).apply(s).get();
+    }
+
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 }
