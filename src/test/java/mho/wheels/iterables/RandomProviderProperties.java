@@ -211,6 +211,10 @@ public class RandomProviderProperties {
             testNoRemove(bs);
             assertTrue(p.toString(), all(b -> b >= p.b, bs));
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Byte.MAX_VALUE), repeat(Byte.MAX_VALUE));
+        }
     }
 
     private static void propertiesRangeUp_short() {
@@ -221,6 +225,10 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(s -> s != null, ss));
             testNoRemove(ss);
             assertTrue(p.toString(), all(s -> s >= p.b, ss));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Short.MAX_VALUE), repeat(Short.MAX_VALUE));
         }
     }
 
@@ -233,6 +241,10 @@ public class RandomProviderProperties {
             testNoRemove(is);
             assertTrue(p.toString(), all(i -> i >= p.b, is));
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Integer.MAX_VALUE), repeat(Integer.MAX_VALUE));
+        }
     }
 
     private static void propertiesRangeUp_long() {
@@ -243,6 +255,10 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(l -> l != null, ls));
             testNoRemove(ls);
             assertTrue(p.toString(), all(l -> l >= p.b, ls));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Long.MAX_VALUE), repeat(Long.MAX_VALUE));
         }
     }
 
@@ -256,6 +272,10 @@ public class RandomProviderProperties {
             testNoRemove(cs);
             assertTrue(p.toString(), all(b -> b >= p.b, cs));
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Character.MAX_VALUE), repeat(Character.MAX_VALUE));
+        }
     }
 
     private static void propertiesRangeDown_byte() {
@@ -266,6 +286,10 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(b -> b != null, bs));
             testNoRemove(bs);
             assertTrue(p.toString(), all(b -> b <= p.b, bs));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeDown(Byte.MIN_VALUE), repeat(Byte.MIN_VALUE));
         }
     }
 
@@ -278,6 +302,10 @@ public class RandomProviderProperties {
             testNoRemove(ss);
             assertTrue(p.toString(), all(s -> s <= p.b, ss));
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeDown(Short.MIN_VALUE), repeat(Short.MIN_VALUE));
+        }
     }
 
     private static void propertiesRangeDown_int() {
@@ -288,6 +316,10 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(i -> i != null, is));
             testNoRemove(is);
             assertTrue(p.toString(), all(i -> i <= p.b, is));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeDown(Integer.MIN_VALUE), repeat(Integer.MIN_VALUE));
         }
     }
 
@@ -300,6 +332,10 @@ public class RandomProviderProperties {
             testNoRemove(ls);
             assertTrue(p.toString(), all(l -> l <= p.b, ls));
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeDown(Long.MIN_VALUE), repeat(Long.MIN_VALUE));
+        }
     }
 
     private static void propertiesRangeDown_char() {
@@ -311,6 +347,10 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(b -> b != null, cs));
             testNoRemove(cs);
             assertTrue(p.toString(), all(b -> b <= p.b, cs));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp.toString(), TINY_LIMIT, rp.rangeDown(Character.MIN_VALUE), repeat(Character.MIN_VALUE));
         }
     }
 
