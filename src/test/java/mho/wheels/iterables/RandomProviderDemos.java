@@ -81,56 +81,58 @@ public class RandomProviderDemos {
 
     private static void demoBooleans() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
         }
     }
 
     private static void demoIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("integers(" + rp + ") = " + its(rp.integers()));
         }
     }
 
     private static void demoLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProviders())) {
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("longs(" + rp + ") = " + its(rp.longs()));
         }
     }
 
     private static void demoRangeUp_byte() {
         initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().bytes()))) {
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeUp_short() {
         initialize();
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().shorts()))) {
+        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeUp_int() {
         initialize();
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().integers()))) {
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeUp_long() {
         initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().longs()))) {
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeUp_char() {
         initialize();
-        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProviders(), P.alt().characters());
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeUp(p.b)));
         }
@@ -138,35 +140,37 @@ public class RandomProviderDemos {
 
     private static void demoRangeDown_byte() {
         initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().bytes()))) {
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
     private static void demoRangeDown_short() {
         initialize();
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().shorts()))) {
+        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
     private static void demoRangeDown_int() {
         initialize();
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().integers()))) {
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
     private static void demoRangeDown_long() {
         initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProviders(), P.alt().longs()))) {
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
     private static void demoRangeDown_char() {
         initialize();
-        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProviders(), P.alt().characters());
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeDown(p.b)));
         }

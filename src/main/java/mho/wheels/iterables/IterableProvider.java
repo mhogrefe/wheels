@@ -201,11 +201,16 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
         return map(l -> new RandomProvider(l).withScale(scale).withSecondaryScale(secondaryScale), longs());
     }
+
     @SuppressWarnings("ConstantConditions")
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
                 pairs(longs(), alt().pairs(naturalIntegersGeometric(32)))
         );
+    }
+
+    public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
+        return map(RandomProvider::new, longs());
     }
 }
