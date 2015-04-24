@@ -145,7 +145,10 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * A new {@code RandomProvider} with a different, deterministically-chosen seed, and the same scale and secondary
-     * scale.
+     * scale. Use this method to avoid correlations between pseudorandom sequences. For example, consider the problem
+     * of generating pairs of positive and negative {@code Integer}s given a {@code RandomProvider P}. Don't use
+     * {@code P.pairs(P.positiveIntegers(), P.negativeIntegers())}; this will give pairs of the form (i, –i). Instead,
+     * use {@code P.pairs(P.positiveIntegers(), P.alt().negativeIntegers())}.
      *
      * <ul>
      *  <li>The result is not null.</li>
