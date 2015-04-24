@@ -218,9 +218,10 @@ public class ExhaustiveProviderProperties {
         System.out.println("\t\ttesting range(byte, byte) properties...");
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            Iterable<Byte> bs = take(TINY_LIMIT, EP.range(p.a, p.b));
+            Iterable<Byte> bs = EP.range(p.a, p.b);
             assertTrue(p.toString(), all(b -> b != null, bs));
             testNoRemove(bs, TINY_LIMIT);
+            assertEquals(p.toString(), length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
             assertTrue(p.toString(), unique(bs));
             assertTrue(p.toString(), all(b -> b >= p.a && b <= p.b, bs));
             assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
