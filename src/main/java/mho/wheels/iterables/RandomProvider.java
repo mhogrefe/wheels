@@ -687,7 +687,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
         if (a > b) return Collections.emptyList();
-        return map(i -> (int) (i + a), randomLongs(b - a + 1));
+        return map(i -> (int) (i + a), randomLongs((long) b - a + 1));
     }
 
     /**
