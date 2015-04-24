@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.map;
 
 /**
@@ -78,6 +79,21 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Integer> negativeIntegers();
     public abstract @NotNull Iterable<Long> negativeLongs();
     public abstract @NotNull Iterable<BigInteger> negativeBigIntegers();
+    public @NotNull Iterable<Byte> nonzeroBytes() {
+        return filter(b -> b != 0, bytes());
+    }
+    public @NotNull Iterable<Short> nonzeroShorts() {
+        return filter(s -> s != 0, shorts());
+    }
+    public @NotNull Iterable<Integer> nonzeroIntegers() {
+        return filter(i -> i != 0, integers());
+    }
+    public @NotNull Iterable<Long> nonzeroLongs() {
+        return filter(l -> l != 0, longs());
+    }
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        return filter(i -> !i.equals(BigInteger.ZERO), bigIntegers());
+    }
     public abstract @NotNull Iterable<Byte> naturalBytes();
     public abstract @NotNull Iterable<Short> naturalShorts();
     public abstract @NotNull Iterable<Integer> naturalIntegers();

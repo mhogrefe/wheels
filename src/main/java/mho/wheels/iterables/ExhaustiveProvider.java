@@ -802,13 +802,63 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>8</sup>–1 = 127
+     */
+    @Override
+    public @NotNull Iterable<Byte> nonzeroBytes() {
+        return mux(Arrays.asList(positiveBytes(), negativeBytes()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>16</sup>–1 = 65,535
+     */
+    @Override
+    public @NotNull Iterable<Short> nonzeroShorts() {
+        return mux(Arrays.asList(positiveShorts(), negativeShorts()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>32</sup>–1 = 4,294,967,295
+     */
+    @Override
+    public @NotNull Iterable<Integer> nonzeroIntegers() {
+        return mux(Arrays.asList(positiveIntegers(), negativeIntegers()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
+     */
+    @Override
+    public @NotNull Iterable<Long> nonzeroLongs() {
+        return mux(Arrays.asList(positiveLongs(), negativeLongs()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
+    }
+
+    /**
      * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return cons((byte) 0, mux(Arrays.asList(positiveBytes(), negativeBytes())));
+        return cons((byte) 0, nonzeroBytes());
     }
 
     /**
@@ -818,7 +868,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return cons((short) 0, mux(Arrays.asList(positiveShorts(), negativeShorts())));
+        return cons((short) 0, nonzeroShorts());
     }
 
     /**
@@ -828,7 +878,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
-        return cons(0, mux(Arrays.asList(positiveIntegers(), negativeIntegers())));
+        return cons(0, nonzeroIntegers());
     }
 
     /**
@@ -838,7 +888,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return cons(0L, mux(Arrays.asList(positiveLongs(), negativeLongs())));
+        return cons(0L, nonzeroLongs());
     }
 
     /**
@@ -848,7 +898,7 @@ public final class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        return cons(BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers())));
+        return cons(BigInteger.ZERO, nonzeroBigIntegers());
     }
 
     /**
