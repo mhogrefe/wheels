@@ -549,17 +549,56 @@ public class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testNonzeroBytes() {
+        Iterable<Byte> bs = P.nonzeroBytes();
+        aeq(length(bs), 255);
+        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
+        aeqit(take(20, bs), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroShorts() {
+        Iterable<Short> ss = P.nonzeroShorts();
+        aeq(length(ss), 65535);
+        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
+        aeqit(take(20, ss), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroIntegers() {
+        aeqit(
+                take(20, P.nonzeroIntegers()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
+        );
+    }
+
+    @Test
+    public void testNonzeroLongs() {
+        aeqit(take(20, P.nonzeroLongs()), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroBigIntegers() {
+        aeqit(
+                take(20, P.nonzeroBigIntegers()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
+        );
+    }
+
+    @Test
     public void testBytes() {
-        aeq(length(P.bytes()), 256);
-        aeqit(take(5, reverse(P.bytes())), "[-128, -127, 127, -126, 126]");
-        aeqit(take(20, P.bytes()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        Iterable<Byte> bs = P.bytes();
+        aeq(length(bs), 256);
+        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
+        aeqit(take(20, bs), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
     public void testShorts() {
-        aeq(length(P.shorts()), 65536);
-        aeqit(take(5, reverse(P.shorts())), "[-32768, -32767, 32767, -32766, 32766]");
-        aeqit(take(20, P.shorts()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        Iterable<Short> ss = P.shorts();
+        aeq(length(ss), 65536);
+        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
+        aeqit(take(20, ss), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
     @Test
