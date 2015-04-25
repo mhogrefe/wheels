@@ -1,5 +1,7 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.Combinatorics;
+import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -142,26 +144,65 @@ public abstract class IterableProvider {
     ) {
         return pairs(as, bs);
     }
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    );
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                (BigInteger i) -> {
+                    List<BigInteger> list = MathUtils.demux(2, i);
+                    return new Pair<>(list.get(0), list.get(1));
+                }
+        );
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    );
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                MathUtils::logarithmicDemux
+        );
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    );
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                MathUtils::squareRootDemux
+        );
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    );
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    );
+    ) {
+        return Combinatorics.dependentPairs(
+                xs,
+                f,
+                i -> {
+                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
+                    return new Pair<>(p.b, p.a);
+                }
+        );
+    }
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
     public abstract @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,

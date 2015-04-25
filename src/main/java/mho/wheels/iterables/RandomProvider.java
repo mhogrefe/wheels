@@ -799,15 +799,42 @@ public final class RandomProvider extends IterableProvider {
         return map(i -> (char) (i + a), randomInts(b - a + 1));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates elements from a list.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is non-removable, contains no nulls, and is either empty or infinite.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs the source list
+     * @param <T> the type of {@code xs}'s elements
+     * @return uniformly-distributed elements of {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        if (isEmpty(xs)) return Collections.emptyList();
+//        if (isEmpty(xs)) return Collections.emptyList();
         return map(xs::get, range(0, xs.size() - 1));
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is an empty or infinite non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code s} is empty, infinite otherwise
+     *
+     * @param s the source {@code String}
+     * @return uniformly-distributed {@code Character}s from {@code s}
+     */
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        if (s.isEmpty()) return Collections.emptyList();
+//        if (s.isEmpty()) return Collections.emptyList();
         return map(s::charAt, range(0, s.length() - 1));
     }
 
@@ -830,18 +857,6 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
         return uniformSample(toList(ExhaustiveProvider.INSTANCE.roundingModes()));
-    }
-
-    public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.emptyList();
-        CachedIterable<T> cxs = new CachedIterable<>(xs);
-        return map(
-                NullableOptional::get,
-                filter(
-                        NullableOptional::isPresent,
-                        (Iterable<NullableOptional<T>>) map(i -> cxs.get(i), naturalIntegersGeometric(meanIndex))
-                )
-        );
     }
 
     /**
@@ -1506,75 +1521,6 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
         return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(scale, f.apply(x)),
-                (BigInteger i) -> {
-                    List<BigInteger> list = MathUtils.demux(2, i);
-                    return new Pair<>(list.get(0), list.get(1));
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(scale, f.apply(x)),
-                MathUtils::logarithmicDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(scale, f.apply(x)),
-                MathUtils::squareRootDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(scale, f.apply(x)),
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(scale, f.apply(x)),
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
     }
 
     @Override
