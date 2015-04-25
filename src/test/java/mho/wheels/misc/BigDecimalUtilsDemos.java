@@ -33,7 +33,7 @@ public class BigDecimalUtilsDemos {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
         } else {
-            ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
+            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             System.out.println("setPrecision(" + p.a + ", " + p.b + ") = " + setPrecision(p.a, p.b));

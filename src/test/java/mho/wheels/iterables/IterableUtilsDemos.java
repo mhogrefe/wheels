@@ -83,7 +83,7 @@ public class IterableUtilsDemos {
                     )
             );
         } else {
-            ps = P.pairs(((RandomProvider) P).naturalIntegersGeometric(20), P.lists(P.integers()));
+            ps = P.pairs(P.withScale(20).naturalIntegersGeometric(), P.lists(P.integers()));
         }
         for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
             System.out.println("toString(" + p.a + ", " + p.b + ") = " + IterableUtils.toString(p.a, p.b));
@@ -103,7 +103,7 @@ public class IterableUtilsDemos {
             );
         } else {
             ps = P.pairs(
-                    ((RandomProvider) P).naturalIntegersGeometric(20),
+                    P.withScale(20).naturalIntegersGeometric(),
                     map(IterableUtils::cycle, P.lists(P.integers()))
             );
         }

@@ -498,7 +498,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
@@ -544,7 +544,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
@@ -570,7 +570,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             Iterable<Boolean> bitsIterable = bitsPadded(p.b, p.a);
@@ -695,7 +695,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
@@ -735,7 +735,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
@@ -761,7 +761,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<Boolean> bits = bigEndianBitsPadded(p.b, p.a);
@@ -900,7 +900,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             Iterable<Integer> digitsIterable = digits(p.b, p.a);
@@ -918,7 +918,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = toList(digits(p.b, p.a));
@@ -971,7 +971,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
@@ -1002,7 +1002,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -1025,7 +1025,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.positiveBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -1091,7 +1091,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
@@ -1136,7 +1136,7 @@ public class MathUtilsProperties {
                     P.dependentPairsLogarithmic(
                             P.pairs(
                                     P.naturalIntegers(),
-                                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
                             ),
                             p -> {
                                 int targetDigitCount = 0;
@@ -1155,7 +1155,7 @@ public class MathUtilsProperties {
                                 final int c = targetDigitCount;
                                 return (Iterable<Integer>) map(
                                         i -> i + c,
-                                        ((RandomProvider) P).naturalIntegersGeometric(20)
+                                        P.withScale(20).naturalIntegersGeometric()
                                 );
                             }
                     )
@@ -1178,7 +1178,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = toList(digitsPadded(p.b, 2, p.a));
@@ -1229,7 +1229,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
@@ -1262,7 +1262,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
@@ -1306,7 +1306,7 @@ public class MathUtilsProperties {
                                     P.naturalBigIntegers(),
                                     map(
                                             i -> BigInteger.valueOf(i + 2),
-                                            ((RandomProvider) P).naturalIntegersGeometric(20)
+                                            P.withScale(20).naturalIntegersGeometric()
                                     )
                             ),
                             p -> {
@@ -1321,7 +1321,7 @@ public class MathUtilsProperties {
                                 final int c = targetDigitCount;
                                 return (Iterable<Integer>) map(
                                         i -> i + c,
-                                        ((RandomProvider) P).naturalIntegersGeometric(20)
+                                        P.withScale(20).naturalIntegersGeometric()
                                 );
                             }
                     )
@@ -1342,7 +1342,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<BigInteger> digits = toList(digitsPadded(p.b, BigInteger.valueOf(2), p.a));
@@ -1390,7 +1390,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = bigEndianDigits(p.b, p.a);
@@ -1403,7 +1403,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.positiveIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = bigEndianDigits(p.b, p.a);
@@ -1456,7 +1456,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.naturalIntegers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
@@ -1487,7 +1487,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -1505,7 +1505,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.positiveBigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -1571,7 +1571,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
@@ -1611,7 +1611,7 @@ public class MathUtilsProperties {
                     P.dependentPairsLogarithmic(
                             P.pairs(
                                     P.naturalIntegers(),
-                                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
                             ),
                             p -> {
                                 int targetDigitCount = 0;
@@ -1630,7 +1630,7 @@ public class MathUtilsProperties {
                                 final int c = targetDigitCount;
                                 return (Iterable<Integer>) map(
                                         i -> i + c,
-                                        ((RandomProvider) P).naturalIntegersGeometric(20)
+                                        P.withScale(20).naturalIntegersGeometric()
                                 );
                             }
                     )
@@ -1653,7 +1653,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             List<Integer> digits = bigEndianDigitsPadded(p.b, 2, p.a);
@@ -1704,7 +1704,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> i + 2, is), P.naturalIntegers());
         }
         for (Triple<Integer, Integer, Integer> t : take(LIMIT, ts)) {
@@ -1737,7 +1737,7 @@ public class MathUtilsProperties {
                     )
             );
         } else {
-            Iterable<Integer> is = ((RandomProvider) P).naturalIntegersGeometric(20);
+            Iterable<Integer> is = P.withScale(20).naturalIntegersGeometric();
             ts = P.triples(is, map(i -> BigInteger.valueOf(i + 2), is), P.naturalBigIntegers());
         }
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, ts)) {
@@ -1776,7 +1776,7 @@ public class MathUtilsProperties {
                                     P.naturalBigIntegers(),
                                     map(
                                             i -> BigInteger.valueOf(i + 2),
-                                            ((RandomProvider) P).naturalIntegersGeometric(20)
+                                            P.withScale(20).naturalIntegersGeometric()
                                     )
                             ),
                             p -> {
@@ -1791,7 +1791,7 @@ public class MathUtilsProperties {
                                 final int c = targetDigitCount;
                                 return (Iterable<Integer>) map(
                                         i -> i + c,
-                                        ((RandomProvider) P).naturalIntegersGeometric(20)
+                                        P.withScale(20).naturalIntegersGeometric()
                                 );
                             }
                     )
@@ -1812,7 +1812,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.naturalIntegers());
         } else {
-            ps = P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).naturalIntegersGeometric(20));
+            ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<BigInteger> digits = bigEndianDigitsPadded(p.b, BigInteger.valueOf(2), p.a);
@@ -1865,8 +1865,8 @@ public class MathUtilsProperties {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
         } else {
             unfilteredPs = P.pairs(
-                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(P.withScale(10).naturalIntegersGeometric()),
+                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
@@ -1932,8 +1932,8 @@ public class MathUtilsProperties {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
         } else {
             unfilteredPs = P.pairs(
-                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(P.withScale(10).naturalIntegersGeometric()),
+                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
@@ -1966,8 +1966,8 @@ public class MathUtilsProperties {
         } else {
             //noinspection Convert2MethodRef
             unfilteredPs = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(map(i -> BigInteger.valueOf(i), P.withScale(10).naturalIntegersGeometric())),
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
@@ -2040,8 +2040,8 @@ public class MathUtilsProperties {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
         } else {
             unfilteredPs = P.pairs(
-                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(P.withScale(10).naturalIntegersGeometric()),
+                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
@@ -2108,8 +2108,8 @@ public class MathUtilsProperties {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.lists(P.naturalIntegers()), P.rangeUp(2));
         } else {
             unfilteredPs = P.pairs(
-                    P.lists(((RandomProvider) P).naturalIntegersGeometric(10)),
-                    map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(P.withScale(10).naturalIntegersGeometric()),
+                    map(i -> i + 2, P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<Integer>, Integer>> ps = filter(p -> all(i -> i < p.b, p.a), unfilteredPs);
@@ -2142,8 +2142,8 @@ public class MathUtilsProperties {
         } else {
             //noinspection Convert2MethodRef
             unfilteredPs = P.pairs(
-                    P.lists(map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(10))),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    P.lists(map(i -> BigInteger.valueOf(i), P.withScale(10).naturalIntegersGeometric())),
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
@@ -2261,7 +2261,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.integers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
@@ -2283,7 +2283,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(37));
         } else {
-            ps = P.pairs(P.integers(), map(i -> i + 37, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.integers(), map(i -> i + 37, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
@@ -2314,7 +2314,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.integers(), P.rangeUp(2));
         } else {
-            ps = P.pairs(P.integers(), map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20)));
+            ps = P.pairs(P.integers(), map(i -> i + 2, P.withScale(20).naturalIntegersGeometric()));
         }
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             long time = System.nanoTime();
@@ -2342,7 +2342,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.bigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -2369,7 +2369,7 @@ public class MathUtilsProperties {
         } else {
             ps = P.pairs(
                     P.bigIntegers(),
-                    map(i -> BigInteger.valueOf(i + 37), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i + 37), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -2404,7 +2404,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             bases = P.rangeUp(2);
         } else {
-            bases = map(i -> i + 2, ((RandomProvider) P).naturalIntegersGeometric(20));
+            bases = map(i -> i + 2, P.withScale(20).naturalIntegersGeometric());
         }
         Iterable<Pair<Integer, String>> ps = P.dependentPairs(
                 bases,
@@ -2512,7 +2512,7 @@ public class MathUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             bases = P.rangeUp(BigInteger.valueOf(2));
         } else {
-            bases = map(i -> BigInteger.valueOf(i + 2), ((RandomProvider) P).naturalIntegersGeometric(20));
+            bases = map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric());
         }
         Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
                 bases,
@@ -2581,7 +2581,7 @@ public class MathUtilsProperties {
             //noinspection Convert2MethodRef
             ps = P.pairs(
                     P.naturalBigIntegers(),
-                    map(i -> BigInteger.valueOf(i), ((RandomProvider) P).naturalIntegersGeometric(20))
+                    map(i -> BigInteger.valueOf(i), P.withScale(20).naturalIntegersGeometric())
             );
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
@@ -2715,7 +2715,7 @@ public class MathUtilsProperties {
         } else {
             ps = ((RandomProvider) P).addSpecialElement(
                     zeroPair,
-                    P.pairs(P.naturalBigIntegers(), ((RandomProvider) P).positiveIntegersGeometric(20))
+                    P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
             );
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {

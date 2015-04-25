@@ -46,8 +46,8 @@ public class IsaacPRNG {
     public static final int SIZE = 1 << SIZE_BITS;   // size of result[] and state[]
     private static final int MASK = (SIZE - 1) << 2; // for pseudorandom lookup
     private int count;                               // count through the results in result[]
-    private int result[];                            // the results given to the user
-    private int state[];                             // the internal state
+    private @NotNull int[] result;                   // the results given to the user
+    private @NotNull int[] state;                    // the internal state
     private int a;                                   // accumulator
     private int b;                                   // the last result
     private int c;                                   // counter, guarantees cycle is at least 2^40
@@ -80,7 +80,7 @@ public class IsaacPRNG {
         initialize();
     }
 
-    public static IsaacPRNG example() {
+    public static @NotNull IsaacPRNG example() {
         return new IsaacPRNG(EXAMPLE_SEED);
     }
 

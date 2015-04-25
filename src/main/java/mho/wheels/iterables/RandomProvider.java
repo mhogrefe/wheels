@@ -1030,112 +1030,84 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
-     * {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code mean} cannot be negative.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all natural {@code Integer}s, or 0.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param mean the approximate mean bit size of the {@code Integer}s generated
-     */
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int mean) {
-        return map(i -> i - 1, positiveIntegersGeometric(mean));
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
-     * {@code mean}, or all ones if {@code mean} is 1. Does not support removal.
+     * {@code scale}, or all ones if {@code scale} is 1. Does not support removal.
      *
      * <ul>
-     *  <li>{@code mean} must be positive.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all positive {@code Integer}s, or 1.</li>
+     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
-     *
-     * @param mean the approximate mean size of the {@code Integer}s generated
      */
-    public @NotNull Iterable<Integer> positiveIntegersGeometric(int mean) {
+    public @NotNull Iterable<Integer> positiveIntegersGeometric() {
         //noinspection ConstantConditions
-        return map(p -> p.b, filter(p -> p.a, countAdjacent(map(i -> i != 0, range(0, mean - 1)))));
+        return map(p -> p.b, filter(p -> p.a, countAdjacent(map(i -> i != 0, range(0, scale - 1)))));
     }
 
     /**
      * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
-     * {@code mean}, or all –1s if {@code mean} is –1. Does not support removal.
+     * –{@code scale}, or all –1s if {@code scale} is 1. Does not support removal.
      *
      * <ul>
-     *  <li>{@code mean} must be negative.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all negative {@code Integer}s, or –1.</li>
+     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
-     *
-     * @param mean the approximate absolute mean size of the {@code Integer}s generated
      */
-    public @NotNull Iterable<Integer> negativeIntegersGeometric(int mean) {
-        return map(i -> -i, positiveIntegersGeometric(-mean));
+    public @NotNull Iterable<Integer> negativeIntegersGeometric() {
+        return map(i -> -i, positiveIntegersGeometric());
     }
 
     /**
-     * An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code mean} is 1) whose
-     * absolute value is chosen from a geometric distribution with absolute mean {@code mean}, and whose sign is chosen
-     * uniformly. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
+     * {@code scale}, or all zeros if {@code mean} is 0. Does not support removal.
      *
      * <ul>
-     *  <li>{@code mean} cannot be negative.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all nonzero {@code Integer}s, or –1 and 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
-     *
-     * @param mean the approximate mean bit size of the {@code Integer}s generated
      */
-    public @NotNull Iterable<Integer> nonzeroIntegersGeometric(int mean) {
-        return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(mean), booleans());
+    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with absolute mean {@code mean}, and whose sign is chosen uniformly. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code scale} is 1) whose
+     * absolute value is chosen from a geometric distribution with absolute mean {@code scale}, and whose sign is
+     * chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code mean} must be greater than 1.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all {@code Integer}s.</li>
+     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
-     *
-     * @param mean the approximate mean bit size of the {@code Integer}s generated
      */
-    public @NotNull Iterable<Integer> integersGeometric(int mean) {
-        if (mean < 0)
-            throw new IllegalArgumentException("mean cannot be negative.");
-        if (mean == 0) return repeat(0);
-        return () -> new Iterator<Integer>() {
-            private Iterator<Boolean> bs = booleans().iterator();
-            private final Iterator<Integer> nats = naturalIntegersGeometric(mean).iterator();
-            private final Iterator<Integer> negs = alt().negativeIntegersGeometric(-mean).iterator();
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
+        return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(), alt().booleans());
+    }
 
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return bs.next() ? nats.next() : negs.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s (or just 0, if {@code scale} is 0) whose absolute value
+     * is chosen from a geometric distribution with absolute mean {@code scale}, and whose sign is chosen uniformly.
+     * an absolute value of 0 and a negative sign come up, that combination is skipped; this prevents having too many
+     * zeros. Does not support removal.
+     *
+     * <ul>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    public @NotNull Iterable<Integer> integersGeometric() {
+        //noinspection ConstantConditions
+        return map(
+                q -> q.b ? q.a : -q.a,
+                filter(p -> p.b || p.a != 0, zip(naturalIntegersGeometric(), alt().booleans()))
+        );
     }
 
     /**
@@ -1155,7 +1127,7 @@ public final class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             private Random generator = new Random(0x6af477d9a7e54fcaL);
-            private Iterator<Integer> geos = positiveIntegersGeometric(scale).iterator();
+            private Iterator<Integer> geos = positiveIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1215,7 +1187,7 @@ public final class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
             private Random generator = new Random(0x6af477d9a7e54fcaL);
-            Iterator<Integer> geos = positiveIntegersGeometric(scale + 1).iterator();
+            Iterator<Integer> geos = positiveIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1428,7 +1400,7 @@ public final class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(scale))
+                pairs(negativeBigIntegers(), integersGeometric())
         );
     }
 
@@ -1436,13 +1408,13 @@ public final class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(scale))
+                pairs(negativeBigIntegers(), integersGeometric())
         );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(scale)));
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
@@ -1595,7 +1567,7 @@ public final class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1624,7 +1596,7 @@ public final class RandomProvider extends IterableProvider {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1658,7 +1630,7 @@ public final class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1697,7 +1669,7 @@ public final class RandomProvider extends IterableProvider {
         if (isEmpty(cs)) return Arrays.asList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(scale).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {

@@ -48,7 +48,7 @@ public class BigDecimalUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
         } else {
-            ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
+            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, IterableUtils.filter(q -> ne(q.a, BigDecimal.ZERO), ps))) {
             BigDecimal bd = setPrecision(p.a, p.b);
@@ -63,9 +63,9 @@ public class BigDecimalUtilsProperties {
         } else {
             Iterable<BigDecimal> zeroes = map(
                     i -> new BigDecimal(BigInteger.ZERO, i),
-                    ((RandomProvider) P).integersGeometric(20)
+                    P.withScale(20).integersGeometric()
             );
-            zeroPs = P.pairs(zeroes, ((RandomProvider) P).positiveIntegersGeometric(20));
+            zeroPs = P.pairs(zeroes, P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, zeroPs)) {
             BigDecimal bd = setPrecision(p.a, p.b);

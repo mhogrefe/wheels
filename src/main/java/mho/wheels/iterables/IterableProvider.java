@@ -56,19 +56,19 @@ public abstract class IterableProvider {
     public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
 
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
+    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
         return naturalIntegers();
     }
-    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
+    public @NotNull Iterable<Integer> positiveIntegersGeometric() {
         return positiveIntegers();
     }
-    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
+    public @NotNull Iterable<Integer> negativeIntegersGeometric() {
         return negativeIntegers();
     }
-    public @NotNull Iterable<Integer> nonzeroIntegersGeometric(int meanSize) {
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
         return integers();
     }
-    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
+    public @NotNull Iterable<Integer> integersGeometric() {
         return integers();
     }
 
@@ -267,7 +267,7 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), alt().pairs(naturalIntegersGeometric(32)))
+                pairs(lists(IsaacPRNG.SIZE, integers()), alt().pairs(alt().naturalIntegersGeometric()))
         );
     }
 
