@@ -86,7 +86,8 @@ public class IsaacPRNG {
             x = state[i];
             a ^= a >>> 6;
             a += state[j++];
-            state[i] = y = state[(x & MASK) >> 2] + a + b;
+            y = state[(x & MASK) >> 2] + a + b;
+            state[i] = y;
             b = state[((y >> SIZE_BITS) & MASK) >> 2] + x;
             result[i++] = b;
 
@@ -194,7 +195,7 @@ public class IsaacPRNG {
             c += h;
             a += b;
 
-            state[i] = a;
+            state[i]     = a;
             state[i + 1] = b;
             state[i + 2] = c;
             state[i + 3] = d;
@@ -247,7 +248,7 @@ public class IsaacPRNG {
             c += h;
             a += b;
 
-            state[i] = a;
+            state[i]     = a;
             state[i + 1] = b;
             state[i + 2] = c;
             state[i + 3] = d;
