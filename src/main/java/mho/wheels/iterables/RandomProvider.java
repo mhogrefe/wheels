@@ -863,7 +863,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return map(Integer::byteValue, filter(i -> i != 0, randomIntsPow2(1 << 7)));
+        return filter(b -> b != 0, naturalBytes());
     }
 
     /**
@@ -874,7 +874,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return map(Integer::shortValue, filter(i -> i != 0, randomIntsPow2(1 << 15)));
+        return filter(s -> s != 0, naturalShorts());
     }
 
     /**
@@ -907,24 +907,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
-        return () -> new Iterator<Byte>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (-1 - generator.nextInt(Byte.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(b -> (byte) -b, positiveBytes());
     }
 
     /**
@@ -935,24 +918,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
-        return () -> new Iterator<Short>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (-1 - generator.nextInt(Short.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(s -> (short) -s, positiveShorts());
     }
 
     /**
