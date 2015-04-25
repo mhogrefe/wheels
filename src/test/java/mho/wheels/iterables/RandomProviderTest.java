@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -839,6 +840,41 @@ public class RandomProviderTest {
                 "**$369&$2(646962'0\"766+0%8,.#3(*%7$-&3%&!$8#&0/34'79-+/1)99%9/43$0,21*63/&'0*'!6'4044&$7&4,30,0\"$" +
                 "28'83&682)#,(5)75!'/*(##4,'39$8"
         );
+    }
+
+    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.uniformSample(readIntegerList(xs)), output);
+    }
+
+    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+        aeqit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
+    }
+
+    @Test
+    public void testUniformSample_Iterable() {
+        uniformSample_Iterable_helper_1(
+                "[3, 1, 4, 1]",
+                "[1, 4, 1, 1, 1, 1, 1, 1, 1, 4, 1, 3, 4, 1, 4, 4, 1, 1, 4, 1, ...]"
+        );
+        uniformSample_Iterable_helper_1("[]", "[]");
+        uniformSample_Iterable_helper_2(
+                "[3, 1, null, 1]",
+                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, 3, null, 1, null, null, 1, 1, null, 1, ...]"
+        );
+    }
+
+    private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
+        aeqcs(P.uniformSample(s), output);
+    }
+
+    @Test
+    public void testUniformSample_String() {
+        uniformSample_String_helper(
+                "hello",
+                "elleeoleleolohlllhlholeeolllllolloelhlooelllhllllolhhllooolllhloohheoeolleeohlhooehhhllhhehllleoell" +
+                "eohlehlllhholhollleeheellolll"
+        );
+        uniformSample_String_helper("", "");
     }
 
     @Test
@@ -1692,5 +1728,13 @@ public class RandomProviderTest {
 
     private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, take(DEFAULT_SAMPLE_SIZE, xs)));
+    }
+
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readInteger).apply(s).get();
+    }
+
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 }

@@ -800,11 +800,11 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that uniformly generates elements from a list.
+     * An {@code Iterable} that uniformly generates elements from a (possibly null-containing) list.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result is non-removable, contains no nulls, and is either empty or infinite.</li>
+     *  <li>The result is non-removable and either empty or infinite.</li>
      * </ul>
      *
      * Length is 0 if {@code xs} is empty, infinite otherwise
@@ -815,7 +815,6 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-//        if (isEmpty(xs)) return Collections.emptyList();
         return map(xs::get, range(0, xs.size() - 1));
     }
 
@@ -834,7 +833,6 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-//        if (s.isEmpty()) return Collections.emptyList();
         return map(s::charAt, range(0, s.length() - 1));
     }
 
