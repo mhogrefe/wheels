@@ -27,6 +27,7 @@ Progress
 | ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IsaacPRNG                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Pair                     | ✘       | ✘       | ✘     | ✘     | ✘          |
