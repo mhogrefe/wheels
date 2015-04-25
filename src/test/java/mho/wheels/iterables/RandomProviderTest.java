@@ -878,24 +878,22 @@ public class RandomProviderTest {
     }
 
     @Test
-    @Ignore
     public void testOrderings() {
         simpleProviderHelper(
                 P.orderings(),
-                "[EQ, GT, EQ, EQ, EQ, GT, LT, GT, LT, EQ, EQ, LT, LT, GT, EQ, LT, LT, LT, GT, EQ]",
-                "[EQ=333219, GT=333296, LT=333485]"
+                "[LT, GT, LT, LT, LT, LT, LT, GT, LT, EQ, GT, GT, GT, LT, GT, LT, GT, LT, EQ, LT]",
+                "[LT=333773, GT=333384, EQ=332843]"
         );
     }
 
     @Test
-    @Ignore
     public void testRoundingModes() {
         simpleProviderHelper(
                 P.roundingModes(),
-                "[HALF_UP, HALF_UP, HALF_UP, DOWN, HALF_DOWN, UP, DOWN, CEILING, UNNECESSARY, HALF_DOWN, HALF_DOWN," +
-                " CEILING, FLOOR, HALF_DOWN, UNNECESSARY, FLOOR, FLOOR, HALF_EVEN, UP, HALF_DOWN]",
-                "[HALF_UP=125006, DOWN=125075, HALF_DOWN=124925, UP=124892, CEILING=125057, UNNECESSARY=125002," +
-                " FLOOR=125061, HALF_EVEN=124982]"
+                "[UP, DOWN, HALF_EVEN, HALF_UP, CEILING, UP, HALF_UP, HALF_UP, HALF_UP, HALF_DOWN, UP, FLOOR," +
+                " HALF_DOWN, HALF_EVEN, HALF_DOWN, DOWN, UP, HALF_EVEN, HALF_DOWN, HALF_UP]",
+                "[UP=125201, DOWN=124277, HALF_EVEN=125246, HALF_UP=125207, CEILING=125091, HALF_DOWN=125195," +
+                " FLOOR=124976, UNNECESSARY=124807]"
         );
     }
 
