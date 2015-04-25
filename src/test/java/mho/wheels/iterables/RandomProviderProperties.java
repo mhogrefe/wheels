@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.ordering.Ordering;
+import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class RandomProviderProperties {
     public void testAllProperties() {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(new RandomProvider(0x6af477d9a7e54fcaL), 1000, "randomly"));
+        configs.add(new Triple<>(RandomProvider.EXAMPLE, 1000, "randomly"));
         System.out.println("RandomProvider properties");
         for (Triple<IterableProvider, Integer, String> config : configs) {
             P = config.a;
@@ -78,11 +79,11 @@ public class RandomProviderProperties {
     private static void propertiesConstructor_int() {
         System.out.println("\t\ttesting RandomProvider(int) properties...");
 
-        for (long l : take(LIMIT, P.longs())) {
-            RandomProvider rp = new RandomProvider(l);
+        for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
+            RandomProvider rp = new RandomProvider(is);
             rp.validate();
-            assertEquals(Long.toString(l), rp.getScale(), 32);
-            assertEquals(Long.toString(l), rp.getSecondaryScale(), 8);
+            assertEquals(is.toString(), rp.getScale(), 32);
+            assertEquals(is.toString(), rp.getSecondaryScale(), 8);
         }
     }
 
@@ -110,7 +111,7 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting getSeed() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
-            long seed = rp.getSeed();
+            List<Integer> seed = rp.getSeed();
             assertEquals(
                     rp.toString(),
                     new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale()),

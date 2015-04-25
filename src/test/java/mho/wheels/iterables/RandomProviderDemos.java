@@ -1,10 +1,12 @@
 package mho.wheels.iterables;
 
+import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import mho.wheels.testing.Testing;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -18,7 +20,7 @@ public class RandomProviderDemos {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(0x6af477d9a7e54fcaL);
+            P = RandomProvider.EXAMPLE;
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
@@ -35,8 +37,8 @@ public class RandomProviderDemos {
 
     private static void demoConstructor_int() {
         initialize();
-        for (long l : take(LIMIT, P.longs())) {
-            System.out.println("RandomProvider(" + l + ") = " + new RandomProvider(l));
+        for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
+            System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));
         }
     }
 

@@ -2,6 +2,8 @@ package mho.wheels.random;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 // Implementation by Bob Jenkins
@@ -41,15 +43,15 @@ public class IsaacPRNG {
              -343754333,  1582291286,  -403235925, -1887850753, -1420066386,  2057770224, -1971167049,   306168777
     };
 
-    final static int SIZE_BITS = 8;          // log of size of result[] and state[]
-    final static int SIZE = 1 << SIZE_BITS;  // size of result[] and state[]
-    final static int MASK = (SIZE - 1) << 2; // for pseudorandom lookup
-    int count;                               // count through the results in result[]
-    int result[];                            // the results given to the user
-    private int state[];                     // the internal state
-    private int a;                           // accumulator
-    private int b;                           // the last result
-    private int c;                           // counter, guarantees cycle is at least 2^40
+    private static final int SIZE_BITS = 8;          // log of size of result[] and state[]
+    public static final int SIZE = 1 << SIZE_BITS;   // size of result[] and state[]
+    private static final int MASK = (SIZE - 1) << 2; // for pseudorandom lookup
+    private int count;                               // count through the results in result[]
+    private int result[];                            // the results given to the user
+    private int state[];                             // the internal state
+    private int a;                                   // accumulator
+    private int b;                                   // the last result
+    private int c;                                   // counter, guarantees cycle is at least 2^40
 
     // Seed from system time
     public IsaacPRNG() {
@@ -63,10 +65,19 @@ public class IsaacPRNG {
     }
 
     // Equivalent to randinit(ctx, TRUE) after putting seed in randctx in C
-    public IsaacPRNG(int seed[]) {
+    private IsaacPRNG(@NotNull int[] seed) {
         state = new int[SIZE];
         result = new int[SIZE];
         System.arraycopy(seed, 0, result, 0, seed.length);
+        initialize();
+    }
+
+    public IsaacPRNG(@NotNull List<Integer> seed) {
+        state = new int[SIZE];
+        result = new int[SIZE];
+        for (int i = 0; i < seed.size(); i++) {
+            result[i] = seed.get(i);
+        }
         initialize();
     }
 

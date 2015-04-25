@@ -28,7 +28,7 @@ public class BigDecimalUtilsProperties {
     public void testAllProperties() {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(new RandomProvider(0x6af477d9a7e54fcaL), 1000, "randomly"));
+        configs.add(new Triple<>(RandomProvider.EXAMPLE, 1000, "randomly"));
         System.out.println("BigDecimalUtils properties");
         for (Triple<IterableProvider, Integer, String> config : configs) {
             P = config.a;

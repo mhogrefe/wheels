@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.ordering.Ordering;
+import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -215,18 +216,21 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<String> strings();
 
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
-        return map(l -> new RandomProvider(l).withScale(scale).withSecondaryScale(secondaryScale), longs());
+        return map(
+                is -> new RandomProvider(is).withScale(scale).withSecondaryScale(secondaryScale),
+                lists(IsaacPRNG.SIZE, integers())
+        );
     }
 
     @SuppressWarnings("ConstantConditions")
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(longs(), alt().pairs(naturalIntegersGeometric(32)))
+                pairs(lists(IsaacPRNG.SIZE, integers()), alt().pairs(naturalIntegersGeometric(32)))
         );
     }
 
     public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
-        return map(RandomProvider::new, longs());
+        return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
     }
 }

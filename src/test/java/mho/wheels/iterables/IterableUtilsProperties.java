@@ -27,7 +27,7 @@ public class IterableUtilsProperties {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(0x6af477d9a7e54fcaL);
+            P = RandomProvider.EXAMPLE;
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;

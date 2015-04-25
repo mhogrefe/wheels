@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,20 +15,23 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.fromInt;
 import static mho.wheels.ordering.Ordering.lt;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
  * distribution. A {@code RandomProvider} is immutable and deterministic. The source of its randomness is a
- * {@code long} seed. It contains two scale parameters which some of the distributions depend on; the exact
+ * {@code int[]} seed. It contains two scale parameters which some of the distributions depend on; the exact
  * relationship between the parameters and the distributions is specified in the distribution's documentation.
  *
+ * <p>{@code RandomProvider} uses the cryptographically-secure ISAAC pseudorandom number generator, implemented in
+ * {@link mho.wheels.random.IsaacPRNG}.
+ *
  * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
- * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a period of 2<sup>48</sup>, and
- * will produce no more than that many unique {@code String}s. So in general, the documentation often pretends that
- * the source of randomness is perfect (but still deterministic).
+ * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
+ * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
+ * source of randomness is perfect (but still deterministic).
  */
 public final class RandomProvider extends IterableProvider {
     /**
@@ -47,9 +51,10 @@ public final class RandomProvider extends IterableProvider {
     private static final int SPECIAL_ELEMENT_RATIO = 50;
 
     /**
-     * A number which determines exactly which values will be deterministically output over the life of {@code this}.
+     * A list of numbers which determines exactly which values will be deterministically output over the life of
+     * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
      */
-    private long seed;
+    private @NotNull List<Integer> seed;
 
     /**
      * A parameter that determines the size of some of the generated objects. Cannot be negative.
@@ -62,6 +67,20 @@ public final class RandomProvider extends IterableProvider {
     private int secondaryScale = DEFAULT_SECONDARY_SCALE;
 
     /**
+     * A {@code RandomProvider} used for testing. This allows for deterministic testing without manually setting up a
+     * lengthy seed each time.
+     */
+    public static final @NotNull RandomProvider EXAMPLE;
+    static {
+        IsaacPRNG prng = IsaacPRNG.example();
+        List<Integer> seed = new ArrayList<>();
+        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
+            seed.add(prng.nextInt());
+        }
+        EXAMPLE = new RandomProvider(seed);
+    }
+
+    /**
      * Constructs a {@code RandomProvider} with a seed generated from the current system time.
      *
      * <ul>
@@ -70,21 +89,29 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      */
     public RandomProvider() {
-        seed = new Random().nextLong();
+        IsaacPRNG prng = new IsaacPRNG();
+        seed = new ArrayList<>();
+        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
+            seed.add(prng.nextInt());
+        }
     }
 
     /**
      * Constructs a {@code RandomProvider} with a given seed.
      *
      * <ul>
-     *  <li>{@code seed} may be any {@code long}.</li>
+     *  <li>{@code seed} must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.</li>
      *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
      *  this constructor.</li>
      * </ul>
      *
      * @param seed the source of randomness
      */
-    public RandomProvider(long seed) {
+    public RandomProvider(@NotNull List<Integer> seed) {
+        if (seed.size() != IsaacPRNG.SIZE) {
+            throw new IllegalArgumentException("seed must have length mho.wheels.random.IsaacPRNG#SIZE, which is " +
+                    IsaacPRNG.SIZE + ". Length of invalid seed: " + seed.size());
+        }
         this.seed = seed;
     }
 
@@ -115,16 +142,16 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns {@code this}'s scale parameter.
+     * Returns {@code this}'s seed. Makes a defensive copy.
      *
      * <ul>
-     *  <li>The result may be any {@code long}.</li>
+     *  <li>The result is an array of {@link mho.wheels.random.IsaacPRNG#SIZE} {@code int}s.</li>
      * </ul>
      *
-     * @return the scale parameter of {@code this}
+     * @return the seed of {@code this}
      */
-    public long getSeed() {
-        return seed;
+    public @NotNull List<Integer> getSeed() {
+        return toList(seed);
     }
 
     /**
@@ -159,7 +186,12 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull RandomProvider alt() {
         RandomProvider alt = copy();
-        alt.seed = new Random(seed).nextLong();
+        IsaacPRNG prng = new IsaacPRNG(seed);
+        List<Integer> newSeed = new ArrayList<>();
+        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
+            newSeed.add(prng.nextInt());
+        }
+        alt.seed = newSeed;
         return alt;
     }
 
@@ -214,7 +246,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Boolean> booleans() {
         return () -> new NoRemoveIterator<Boolean>() {
-            private Random generator = new Random(seed);
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
 
             @Override
             public boolean hasNext() {
@@ -223,7 +255,7 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public Boolean next() {
-                return generator.nextBoolean();
+                return (prng.nextInt() & 1) == 1;
             }
         };
     }
@@ -236,7 +268,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> integers() {
         return () -> new NoRemoveIterator<Integer>() {
-            private Random generator = new Random(seed);
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
 
             @Override
             public boolean hasNext() {
@@ -245,7 +277,7 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public Integer next() {
-                return generator.nextInt();
+                return prng.nextInt();
             }
         };
     }
@@ -258,7 +290,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Long> longs() {
         return () -> new NoRemoveIterator<Long>() {
-            private Random generator = new Random(seed);
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
 
             @Override
             public boolean hasNext() {
@@ -267,9 +299,38 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public Long next() {
-                return generator.nextLong();
+                int a = prng.nextInt();
+                int b = prng.nextInt();
+                return (long) a << 32 | b & 0xffffffffL;
             }
         };
+    }
+
+    /**
+     * Returns the next non-negative {@code BigInteger} of up to {@code bits} bits generated by {@code prng}.
+     *
+     * <ul>
+     *  <li>{@code prng} cannot be null.</li>
+     *  <li>{@code bits} must be positive.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param prng the {@code IsaacPRNG} generating a {@code BigInteger}
+     * @param bits the maximum bitlength of the generated {@code BigInteger}
+     * @return A random {@code BigInteger}
+     */
+    private static @NotNull BigInteger nextBigInteger(@NotNull IsaacPRNG prng, int bits) {
+        byte[] bytes = new byte[bits / 8 + 1];
+        int x = 0;
+        for (int i = 0; i < bytes.length; i++) {
+            if (i % 4 == 0) {
+                x = prng.nextInt();
+            }
+            bytes[i] = (byte) x;
+            x >>= 8;
+        }
+        bytes[0] &= (1 << (bits % 8)) - 1;
+        return new BigInteger(bytes);
     }
 
     /**
@@ -311,26 +372,6 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns the next non-negative {@code BigInteger} of up to {@code bits} bits generated by {@code generator}.
-     *
-     * <ul>
-     *  <li>{@code generator} cannot be null.</li>
-     *  <li>{@code bits} must be positive.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @param generator the {@code Random} generating a {@code BigInteger}
-     * @param bits the maximum bitlength of the generated {@code BigInteger}
-     * @return A random {@code BigInteger}
-     */
-    private static @NotNull BigInteger nextBigInteger(@NotNull Random generator, int bits) {
-        byte[] bytes = new byte[bits / 8 + 1];
-        generator.nextBytes(bytes);
-        bytes[0] &= (1 << (bits % 8)) - 1;
-        return new BigInteger(bytes);
-    }
-
-    /**
      * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
      * 2<sup>{@code bits}</sup>–1, inclusive.
      *
@@ -346,7 +387,7 @@ public final class RandomProvider extends IterableProvider {
      */
     private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
         return () -> new NoRemoveIterator<BigInteger>() {
-            private Random generator = new Random(seed);
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
 
             @Override
             public boolean hasNext() {
@@ -355,7 +396,7 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public BigInteger next() {
-                return nextBigInteger(generator, bits);
+                return nextBigInteger(prng, bits);
             }
         };
     }
@@ -777,24 +818,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Ordering> orderings() {
-        return () -> new Iterator<Ordering>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Ordering next() {
-                return fromInt(generator.nextInt(3) - 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return uniformSample(toList(ExhaustiveProvider.INSTANCE.orderings()));
     }
 
     /**
@@ -805,19 +829,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
-        Function<Integer, RoundingMode> lookup = i -> {
-            switch (i) {
-                case 0:  return RoundingMode.UNNECESSARY;
-                case 1:  return RoundingMode.UP;
-                case 2:  return RoundingMode.DOWN;
-                case 3:  return RoundingMode.CEILING;
-                case 4:  return RoundingMode.FLOOR;
-                case 5:  return RoundingMode.HALF_UP;
-                case 6:  return RoundingMode.HALF_DOWN;
-                default: return RoundingMode.HALF_EVEN;
-            }
-        };
-        return map(lookup, randomIntsPow2(3));
+        return uniformSample(toList(ExhaustiveProvider.INSTANCE.roundingModes()));
     }
 
     public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
@@ -833,23 +845,6 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code int} taken from the geometric distribution with support on the positive integers and a mean
-     * of {@code meanValue}.
-     *
-     * @param generator
-     * @param meanValue
-     * @return
-     */
-    private static int nextIntGeometric(@NotNull Random generator, int meanValue) {
-        int x = 1;
-        while (true) {
-            if (generator.nextDouble() < 1.0 / meanValue) return x;
-            x++;
-        }
-    }
-
-
-    /**
      * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
      * {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
      *
@@ -863,27 +858,7 @@ public final class RandomProvider extends IterableProvider {
      * @param mean the approximate mean bit size of the {@code Integer}s generated
      */
     public @NotNull Iterable<Integer> naturalIntegersGeometric(int mean) {
-        if (mean < 0)
-            throw new IllegalArgumentException("mean cannot be negative.");
-        if (mean == 0) return repeat(0);
-        return () -> new Iterator<Integer>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return nextIntGeometric(generator, mean + 1) - 1;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(i -> i - 1, positiveIntegersGeometric(mean));
     }
 
     /**
@@ -900,27 +875,7 @@ public final class RandomProvider extends IterableProvider {
      * @param mean the approximate mean size of the {@code Integer}s generated
      */
     public @NotNull Iterable<Integer> positiveIntegersGeometric(int mean) {
-        if (mean <= 0)
-            throw new IllegalArgumentException("mean must be positive.");
-        if (mean == 1) return repeat(1);
-        return () -> new Iterator<Integer>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return nextIntGeometric(generator, mean);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(List::size, filter(IterableUtils::head, group(map(i -> i == 0, range(0, mean - 1)))));
     }
 
     /**
@@ -976,7 +931,7 @@ public final class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("mean cannot be negative.");
         if (mean == 0) return repeat(0);
         return () -> new Iterator<Integer>() {
-            private Random generator = new Random(seed);
+            private Iterator<Boolean> bs = booleans().iterator();
             private final Iterator<Integer> nats = naturalIntegersGeometric(mean).iterator();
             private final Iterator<Integer> negs = alt().negativeIntegersGeometric(-mean).iterator();
 
@@ -987,7 +942,7 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public Integer next() {
-                return generator.nextBoolean() ? nats.next() : negs.next();
+                return bs.next() ? nats.next() : negs.next();
             }
 
             @Override
@@ -1005,24 +960,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return () -> new Iterator<Byte>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (generator.nextInt(Byte.MAX_VALUE) + 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(Integer::byteValue, filter(i -> i != 0, randomIntsPow2(1 << 7)));
     }
 
     /**
@@ -1033,24 +971,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return () -> new Iterator<Short>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (generator.nextInt(Short.MAX_VALUE) + 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return map(Integer::shortValue, filter(i -> i != 0, randomIntsPow2(1 << 15)));
     }
 
     /**
@@ -1061,24 +982,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
-        return () -> new Iterator<Integer>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return generator.nextInt(Integer.MAX_VALUE) + 1;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return filter(i -> i > 0, integers());
     }
 
     /**
@@ -1089,28 +993,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
-        return () -> new Iterator<Long>() {
-            private Random generator = new Random(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Long next() {
-                long next;
-                do {
-                    next = Math.abs(generator.nextLong());
-                } while (next < 0);
-                return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return filter(l -> l > 0, longs());
     }
 
     /**
@@ -1129,7 +1012,8 @@ public final class RandomProvider extends IterableProvider {
         if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+            private Iterator<Integer> geos = positiveIntegersGeometric(scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1140,7 +1024,7 @@ public final class RandomProvider extends IterableProvider {
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
                 bits.add(true);
-                int bitSize = nextIntGeometric(generator, scale);
+                int bitSize = geos.next();
                 for (int i = 0; i < bitSize - 1; i++) {
                     bits.add(generator.nextBoolean());
                 }
@@ -1163,7 +1047,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
         return () -> new Iterator<Byte>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
 
             @Override
             public boolean hasNext() {
@@ -1191,7 +1075,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
         return () -> new Iterator<Short>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
 
             @Override
             public boolean hasNext() {
@@ -1310,7 +1194,8 @@ public final class RandomProvider extends IterableProvider {
         if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+            Iterator<Integer> geos = positiveIntegersGeometric(scale + 1).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1320,7 +1205,7 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 List<Boolean> bits = new ArrayList<>();
-                int bitSize = nextIntGeometric(generator, scale + 1) - 1;
+                int bitSize = geos.next() - 1;
                 if (bitSize != 0) {
                     bits.add(true);
                 }
@@ -1374,7 +1259,7 @@ public final class RandomProvider extends IterableProvider {
         if (scale <= 2)
             throw new IllegalArgumentException("meanBitSize must be greater than 2.");
         return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
 
             private final Iterator<BigInteger> it = naturalBigIntegers().iterator();
 
@@ -1465,7 +1350,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> floats() {
         return () -> new Iterator<Float>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
 
             @Override
             public boolean hasNext() {
@@ -1535,7 +1420,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> doubles() {
         return () -> new Iterator<Double>() {
-            private Random generator = new Random(seed);
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
 
             @Override
             public boolean hasNext() {
@@ -1949,7 +1834,7 @@ public final class RandomProvider extends IterableProvider {
         if (this == that) return true;
         if (that == null || getClass() != that.getClass()) return false;
         RandomProvider provider = (RandomProvider) that;
-        return scale == provider.scale && secondaryScale == provider.secondaryScale && seed == provider.seed;
+        return scale == provider.scale && secondaryScale == provider.secondaryScale && seed.equals(provider.seed);
     }
 
     /**
@@ -1964,9 +1849,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public int hashCode() {
-        int result = scale;
+        int result = seed.hashCode();
+        result = 31 * result + scale;
         result = 31 * result + secondaryScale;
-        result = 31 * result + (int) (seed ^ (seed >>> 32));
         return result;
     }
 
@@ -1981,13 +1866,14 @@ public final class RandomProvider extends IterableProvider {
      * @return a {@code String} representation of {@code this}
      */
     public String toString() {
-        return "RandomProvider[" + seed + ", " + scale + ", " + secondaryScale + "]";
+        return "RandomProvider[@" + seed.hashCode() + ", " + scale + ", " + secondaryScale + "]";
     }
 
     /**
      * Ensures that {@code this} is valid. Must return true for any {@code RandomProvider} used outside this class.
      */
     public void validate() {
+        assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
         assertTrue(toString(), scale >= 0);
         assertTrue(toString(), secondaryScale >= 0);
     }
