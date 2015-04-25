@@ -875,7 +875,8 @@ public final class RandomProvider extends IterableProvider {
      * @param mean the approximate mean size of the {@code Integer}s generated
      */
     public @NotNull Iterable<Integer> positiveIntegersGeometric(int mean) {
-        return map(List::size, filter(IterableUtils::head, group(map(i -> i == 0, range(0, mean - 1)))));
+        //noinspection ConstantConditions
+        return map(p -> p.b, filter(p -> p.a, countAdjacent(map(i -> i != 0, range(0, mean - 1)))));
     }
 
     /**
