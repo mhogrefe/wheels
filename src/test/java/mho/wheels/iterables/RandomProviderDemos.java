@@ -274,6 +274,20 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoOrderings() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("orderings(" + rp + ") = " + its(rp.orderings()));
+        }
+    }
+
+    private static void demoRoundingModes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("roundingModes(" + rp + ") = " + its(rp.roundingModes()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {

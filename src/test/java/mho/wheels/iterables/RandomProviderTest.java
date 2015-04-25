@@ -30,9 +30,9 @@ public class RandomProviderTest {
 
     @Test
     public void testConstructor_int() {
-        aeq(new RandomProvider(toList(replicate(256, 0))), "RandomProvider[@-394403839, 32, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))), "RandomProvider[@761196673, 32, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -256))), "RandomProvider[@-1550004351, 32, 8]");
+        aeq(new RandomProvider(toList(replicate(256, 0))), "RandomProvider[@405143795, 32, 8]");
+        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))), "RandomProvider[@87945096, 32, 8]");
+        aeq(new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -256))), "RandomProvider[@-1665377083, 32, 8]");
     }
 
     @Test
@@ -125,16 +125,16 @@ public class RandomProviderTest {
 
     @Test
     public void testAlt() {
-        aeq(P.alt(), "RandomProvider[@1759226255, 32, 8]");
-        aeq(new RandomProvider(toList(replicate(256, 0))).alt(), "RandomProvider[@-86517221, 32, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).alt(), "RandomProvider[@1207768845, 32, 8]");
+        aeq(P.alt(), "RandomProvider[@-574662335, 32, 8]");
+        aeq(new RandomProvider(toList(replicate(256, 0))).alt(), "RandomProvider[@1547733404, 32, 8]");
+        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).alt(), "RandomProvider[@-669351379, 32, 8]");
     }
 
     @Test
     public void testWithScale() {
-        aeq(P.withScale(100), "RandomProvider[@1639285344, 100, 8]");
-        aeq(new RandomProvider(toList(replicate(256, 0))).withScale(3), "RandomProvider[@-394403839, 3, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0), "RandomProvider[@761196673, 0, 8]");
+        aeq(P.withScale(100), "RandomProvider[@-1084795351, 100, 8]");
+        aeq(new RandomProvider(toList(replicate(256, 0))).withScale(3), "RandomProvider[@405143795, 3, 8]");
+        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0), "RandomProvider[@87945096, 0, 8]");
         try {
             P.withScale(-5);
             fail();
@@ -143,11 +143,11 @@ public class RandomProviderTest {
 
     @Test
     public void testWithSecondaryScale() {
-        aeq(P.withSecondaryScale(100), "RandomProvider[@1639285344, 32, 100]");
-        aeq(new RandomProvider(toList(replicate(256, 0))).withSecondaryScale(3), "RandomProvider[@-394403839, 32, 3]");
+        aeq(P.withSecondaryScale(100), "RandomProvider[@-1084795351, 32, 100]");
+        aeq(new RandomProvider(toList(replicate(256, 0))).withSecondaryScale(3), "RandomProvider[@405143795, 32, 3]");
         aeq(
                 new RandomProvider(toList(IterableUtils.range(1, 256))).withSecondaryScale(0),
-                "RandomProvider[@761196673, 32, 0]"
+                "RandomProvider[@87945096, 32, 0]"
         );
         try {
             P.withSecondaryScale(-5);
@@ -1713,14 +1713,14 @@ public class RandomProviderTest {
 
     @Test
     public void testToString() {
-        aeq(P, "RandomProvider[@1639285344, 32, 8]");
+        aeq(P, "RandomProvider[@-1084795351, 32, 8]");
         aeq(
                 new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0),
-                "RandomProvider[@-394403839, 3, 0]"
+                "RandomProvider[@405143795, 3, 0]"
         );
         aeq(
                 new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0).withSecondaryScale(10),
-                "RandomProvider[@761196673, 0, 10]"
+                "RandomProvider[@87945096, 0, 10]"
         );
     }
 

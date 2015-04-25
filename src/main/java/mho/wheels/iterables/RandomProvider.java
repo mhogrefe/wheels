@@ -1811,7 +1811,7 @@ public final class RandomProvider extends IterableProvider {
      * @return a {@code String} representation of {@code this}
      */
     public String toString() {
-        return "RandomProvider[@" + seed.hashCode() + ", " + scale + ", " + secondaryScale + "]";
+        return "RandomProvider[@" + new IsaacPRNG(seed).nextInt() + ", " + scale + ", " + secondaryScale + "]";
     }
 
     /**
