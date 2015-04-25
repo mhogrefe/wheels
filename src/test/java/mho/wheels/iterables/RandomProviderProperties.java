@@ -7,6 +7,7 @@ import mho.wheels.structures.Triple;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,6 +63,8 @@ public class RandomProviderProperties {
             propertiesRange_char_char();
             propertiesUniformSample_Iterable();
             propertiesUniformSample_String();
+            propertiesOrderings();
+            propertiesRoundingModes();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -197,9 +200,12 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting booleans() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Boolean> booleans = rp.booleans();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, booleans)));
-            testNoRemove(TINY_LIMIT, booleans);
+            Iterable<Boolean> bs = rp.booleans();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, bs)));
+            testNoRemove(TINY_LIMIT, bs);
+            for (boolean b : ExhaustiveProvider.INSTANCE.booleans()) {
+                assertTrue(rp.toString(), elem(b, bs));
+            }
         }
     }
 
@@ -207,9 +213,9 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting integers() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Integer> integers = rp.integers();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, integers)));
-            testNoRemove(TINY_LIMIT, integers);
+            Iterable<Integer> is = rp.integers();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, is)));
+            testNoRemove(TINY_LIMIT, is);
         }
     }
 
@@ -217,9 +223,9 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting longs() properties...");
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Long> longs = rp.longs();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, longs)));
-            testNoRemove(TINY_LIMIT, longs);
+            Iterable<Long> ls = rp.longs();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, ls)));
+            testNoRemove(TINY_LIMIT, ls);
         }
     }
 
@@ -536,6 +542,32 @@ public class RandomProviderProperties {
             testNoRemove(TINY_LIMIT, cs);
             assertEquals(cs.toString(), isEmpty(cs), p.b.isEmpty());
             assertTrue(cs.toString(), all(c -> elem(c, p.b), take(TINY_LIMIT, cs)));
+        }
+    }
+
+    private static void propertiesOrderings() {
+        System.out.println("\t\ttesting orderings() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Ordering> os = rp.orderings();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, os)));
+            testNoRemove(TINY_LIMIT, os);
+            for (Ordering o : ExhaustiveProvider.INSTANCE.orderings()) {
+                assertTrue(rp.toString(), elem(o, os));
+            }
+        }
+    }
+
+    private static void propertiesRoundingModes() {
+        System.out.println("\t\ttesting roundingModes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<RoundingMode> rms = rp.roundingModes();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, rms)));
+            testNoRemove(TINY_LIMIT, rms);
+            for (RoundingMode rm : ExhaustiveProvider.INSTANCE.roundingModes()) {
+                assertTrue(rp.toString(), elem(rm, rms));
+            }
         }
     }
 
