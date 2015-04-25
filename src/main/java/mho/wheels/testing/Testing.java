@@ -238,7 +238,7 @@ public class Testing {
         }
     }
 
-    public static <T> void testNoRemove(@NotNull Iterable<T> xs, int limit) {
+    public static <T> void testNoRemove(int limit, @NotNull Iterable<T> xs) {
         Iterator<T> it = xs.iterator();
         int i = 0;
         while (it.hasNext()) {

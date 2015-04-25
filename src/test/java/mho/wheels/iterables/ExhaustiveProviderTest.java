@@ -18,7 +18,7 @@ public class ExhaustiveProviderTest {
 
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
         aeqit(xs, output);
-        testNoRemove(xs, TINY_LIMIT);
+        testNoRemove(TINY_LIMIT, xs);
     }
 
     @Test
