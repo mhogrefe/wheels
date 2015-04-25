@@ -253,6 +253,27 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoUniformSample_Iterable() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.alt().lists(P.alt().withNull(P.alt().integers()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            String listString = tail(init(p.b.toString()));
+            System.out.println("uniformSample(" + p.a + ", " + listString + ") = " + its(p.a.uniformSample(p.b)));
+        }
+    }
+
+    private static void demoUniformSample_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.alt().strings());
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("uniformSample(" + p.a + ", " +  nicePrint(p.b) + ") = " +
+                    cits(p.a.uniformSample(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
