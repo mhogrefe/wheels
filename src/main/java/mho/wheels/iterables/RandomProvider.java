@@ -907,7 +907,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
-        return map(b -> (byte) -b, positiveBytes());
+        return map(b -> (byte) ~b, naturalBytes());
     }
 
     /**
@@ -918,7 +918,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
-        return map(s -> (short) -s, positiveShorts());
+        return map(s -> (short) ~s, naturalShorts());
     }
 
     /**
