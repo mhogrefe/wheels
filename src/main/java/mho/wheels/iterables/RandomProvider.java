@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
@@ -12,7 +11,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.lt;
@@ -858,6 +856,214 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
+     * An {@code Iterable} that generates all positive {@code Byte}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> positiveBytes() {
+        return map(Integer::byteValue, filter(i -> i != 0, randomIntsPow2(1 << 7)));
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Short}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> positiveShorts() {
+        return map(Integer::shortValue, filter(i -> i != 0, randomIntsPow2(1 << 15)));
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Integer}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> positiveIntegers() {
+        return filter(i -> i > 0, integers());
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution from a uniform
+     * distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> positiveLongs() {
+        return filter(l -> l > 0, longs());
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Byte}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> negativeBytes() {
+        return () -> new Iterator<Byte>() {
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Byte next() {
+                return (byte) (-1 - generator.nextInt(Byte.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Short}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> negativeShorts() {
+        return () -> new Iterator<Short>() {
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Short next() {
+                return (short) (-1 - generator.nextInt(Short.MAX_VALUE + 1));
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Integer}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> negativeIntegers() {
+        return filter(i -> i < 0, integers());
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Long}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> negativeLongs() {
+        return filter(l -> l < 0, longs());
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Byte}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return map(Integer::byteValue, randomIntsPow2(7));
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Short}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> naturalShorts() {
+        return map(Integer::shortValue, randomIntsPow2(15));
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) from a uniform distribution.
+     * Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return randomIntsPow2(31);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Long}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> naturalLongs() {
+        return randomLongsPow2(63);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> bytes() {
+        return map(Integer::byteValue, randomIntsPow2(8));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> shorts() {
+        return map(Integer::shortValue, randomIntsPow2(16));
+    }
+
+    /**
+     * An {@code Iterable} that generates all ASCII {@code Character}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Character> asciiCharacters() {
+        return map(i -> (char) (int) i, randomIntsPow2(7));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Character> characters() {
+        return map(i -> (char) (int) i, randomIntsPow2(16));
+    }
+
+    /**
      * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
      * {@code mean}, or all zeros if {@code mean} is 0. Does not support removal.
      *
@@ -967,50 +1173,6 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all positive {@code Byte}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> positiveBytes() {
-        return map(Integer::byteValue, filter(i -> i != 0, randomIntsPow2(1 << 7)));
-    }
-
-    /**
-     * An {@code Iterable} that generates all positive {@code Short}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> positiveShorts() {
-        return map(Integer::shortValue, filter(i -> i != 0, randomIntsPow2(1 << 15)));
-    }
-
-    /**
-     * An {@code Iterable} that generates all positive {@code Integer}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> positiveIntegers() {
-        return filter(i -> i > 0, integers());
-    }
-
-    /**
-     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution from a uniform
-     * distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> positiveLongs() {
-        return filter(l -> l > 0, longs());
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
      * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
      * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
@@ -1053,84 +1215,6 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all negative {@code Byte}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> negativeBytes() {
-        return () -> new Iterator<Byte>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (-1 - generator.nextInt(Byte.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An {@code Iterable} that generates all negative {@code Short}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> negativeShorts() {
-        return () -> new Iterator<Short>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (-1 - generator.nextInt(Short.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An {@code Iterable} that generates all negative {@code Integer}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> negativeIntegers() {
-        return filter(i -> i < 0, integers());
-    }
-
-    /**
-     * An {@code Iterable} that generates all negative {@code Long}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> negativeLongs() {
-        return filter(l -> l < 0, longs());
-    }
-
-    /**
      * An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a geometric
      * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
      * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
@@ -1145,50 +1229,6 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
         return map(BigInteger::negate, positiveBigIntegers());
-    }
-
-    /**
-     * An {@code Iterable} that generates all natural {@code Byte}s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> naturalBytes() {
-        return map(Integer::byteValue, randomIntsPow2(7));
-    }
-
-    /**
-     * An {@code Iterable} that generates all natural {@code Short}s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> naturalShorts() {
-        return map(Integer::shortValue, randomIntsPow2(15));
-    }
-
-    /**
-     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) from a uniform distribution.
-     * Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> naturalIntegers() {
-        return randomIntsPow2(31);
-    }
-
-    /**
-     * An {@code Iterable} that generates all natural {@code Long}s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> naturalLongs() {
-        return randomLongsPow2(63);
     }
 
     /**
@@ -1237,26 +1277,6 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> bytes() {
-        return map(Integer::byteValue, randomIntsPow2(8));
-    }
-
-    /**
-     * An {@code Iterable} that generates all {@code Short}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> shorts() {
-        return map(Integer::shortValue, randomIntsPow2(16));
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code BigInteger}s. The bit size is chosen from a geometric distribution
      * with mean approximately {@code meanBitSize} (The ratio between the actual mean and {@code meanBitSize} decreases
      * as {@code meanBitSize} increases). Does not support removal.
@@ -1296,28 +1316,6 @@ public final class RandomProvider extends IterableProvider {
                 throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
-    }
-
-    /**
-     * An {@code Iterable} that generates all ASCII {@code Character}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Character> asciiCharacters() {
-        return map(i -> (char) (int) i, randomIntsPow2(7));
-    }
-
-    /**
-     * An {@code Iterable} that generates all {@code Character}s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Character> characters() {
-        return map(i -> (char) (int) i, randomIntsPow2(16));
     }
 
     /**
