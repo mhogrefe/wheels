@@ -160,7 +160,7 @@ public class RandomProviderTest {
             @NotNull String output,
             @NotNull String sampleCountOutput
     ) {
-        aeqit(take(20, xs), output);
+        aeqit(take(TINY_LIMIT, xs), output);
         aeqit(sampleCount(DEFAULT_SAMPLE_SIZE, xs).entrySet(), sampleCountOutput);
     }
 
@@ -177,7 +177,7 @@ public class RandomProviderTest {
     @Test
     public void testIntegers() {
         aeqit(
-                take(20, P.integers()),
+                take(TINY_LIMIT, P.integers()),
                 "[-1084795351, 1143001545, -1986160253, -1177145870, -968883275, -1465892161, -470080200," +
                 " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
                 " -195502731, 102870776, -1612587755, -483804495, -831718234]"
@@ -187,7 +187,7 @@ public class RandomProviderTest {
     @Test
     public void testLongs() {
         aeqit(
-                take(20, P.longs()),
+                take(TINY_LIMIT, P.longs()),
                 "[-4659160554254839351, -8530493328132264462, -4161321976937299265, -2018979083213524507," +
                 " -1067182698272227165, 1259309150092131537, -6844190056086445547, 2429155385556917621," +
                 " 441826621316521237, -2077924480219546458, 404281420475794401, -3799772176394282532," +
@@ -197,7 +197,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
-        aeqit(take(20, P.rangeUp(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_short_helper(short a, @NotNull String output) {
-        aeqit(take(20, P.rangeUp(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
     @Test
@@ -258,7 +258,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
-        aeqit(take(20, P.rangeUp(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
     @Test
@@ -296,7 +296,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
-        aeqit(take(20, P.rangeUp(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
     @Test
@@ -384,7 +384,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
-        aeqit(take(20, P.rangeDown(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
     @Test
@@ -414,7 +414,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
-        aeqit(take(20, P.rangeDown(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
     @Test
@@ -447,7 +447,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        aeqit(take(20, P.rangeDown(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
     @Test
@@ -485,7 +485,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
-        aeqit(take(20, P.rangeDown(a)), output);
+        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
     @Test
@@ -899,20 +899,20 @@ public class RandomProviderTest {
 
     @Test
     public void testPositiveBytes() {
-        aeqit(take(20, P.positiveBytes()),
+        aeqit(take(TINY_LIMIT, P.positiveBytes()),
                 "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38]");
     }
 
     @Test
     public void testPositiveShorts() {
-        aeqit(take(20, P.positiveShorts()),
+        aeqit(take(TINY_LIMIT, P.positiveShorts()),
                 "[22057, 20937, 6531, 11762, 949, 17087, 9528, 12773, 6909, 163, 30463, 31953, 3431, 25109, 6131," +
                 " 23925, 12024, 23829, 15025, 31910]");
     }
 
     @Test
     public void testPositiveIntegers() {
-        aeqit(take(20, P.positiveIntegers()),
+        aeqit(take(TINY_LIMIT, P.positiveIntegers()),
                 "[1143001545, 1997176995, 293205759, 565581811, 102870776, 94129103, 1488978913, 1855658460," +
                 " 1833521269, 595157118, 1108943146, 1968520527, 80838404, 181782398, 960691757, 442512834," +
                 " 474345991, 896325532, 1936225302, 419244611]");
@@ -920,7 +920,7 @@ public class RandomProviderTest {
 
     @Test
     public void testPositiveLongs() {
-        aeqit(take(20, P.positiveLongs()),
+        aeqit(take(TINY_LIMIT, P.positiveLongs()),
                 "[1259309150092131537, 2429155385556917621, 441826621316521237, 404281420475794401," +
                 " 7874913887470575742, 8454731288392606713, 347198304573602423, 1900578154019506034," +
                 " 2037300520516627497, 3849688850220341092, 8316024350196968003, 8774587835203863104," +
@@ -930,21 +930,21 @@ public class RandomProviderTest {
 
     @Test
     public void testNegativeBytes() {
-        aeqit(take(20, P.negativeBytes()),
+        aeqit(take(TINY_LIMIT, P.negativeBytes()),
                 "[-41, -73, -3, -114, -53, -63, -56, -101, -125, -35, -127, -81, -103, -21, -115, -117, -120, -21," +
                 " -49, -38]");
     }
 
     @Test
     public void testNegativeShorts() {
-        aeqit(take(20, P.negativeShorts()),
+        aeqit(take(TINY_LIMIT, P.negativeShorts()),
                 "[-22057, -20937, -6531, -11762, -949, -17087, -9528, -12773, -6909, -163, -30463, -31953, -3431," +
                 " -25109, -6131, -23925, -12024, -23829, -15025, -31910]");
     }
 
     @Test
     public void testNegativeIntegers() {
-        aeqit(take(20, P.negativeIntegers()),
+        aeqit(take(TINY_LIMIT, P.negativeIntegers()),
                 "[-1084795351, -1986160253, -1177145870, -968883275, -1465892161, -470080200, -2011352603," +
                 " -248472835, -106693423, -1593537177, -206249451, -195502731, -1612587755, -483804495, -831718234," +
                 " -884703402, -759016897, -1408421570, -372683595, -138708033]");
@@ -952,7 +952,7 @@ public class RandomProviderTest {
 
     @Test
     public void testNegativeLongs() {
-        aeqit(take(20, P.negativeLongs()),
+        aeqit(take(TINY_LIMIT, P.negativeLongs()),
                 "[-4659160554254839351, -8530493328132264462, -4161321976937299265, -2018979083213524507," +
                 " -1067182698272227165, -6844190056086445547, -2077924480219546458, -3799772176394282532," +
                 " -3259952746839854786, -1600663848124449857, -6974357164754656982, -601743751419410562," +
@@ -962,20 +962,20 @@ public class RandomProviderTest {
 
     @Test
     public void testNaturalBytes() {
-        aeqit(take(20, P.naturalBytes()),
+        aeqit(take(TINY_LIMIT, P.naturalBytes()),
                 "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38]");
     }
 
     @Test
     public void testNaturalShorts() {
-        aeqit(take(20, P.naturalShorts()),
+        aeqit(take(TINY_LIMIT, P.naturalShorts()),
                 "[22057, 20937, 6531, 11762, 949, 17087, 9528, 12773, 6909, 163, 30463, 31953, 3431, 25109, 6131," +
                 " 23925, 12024, 23829, 15025, 31910]");
     }
 
     @Test
     public void testNaturalIntegers() {
-        aeqit(take(20, P.naturalIntegers()),
+        aeqit(take(TINY_LIMIT, P.naturalIntegers()),
                 "[1062688297, 1143001545, 161323395, 970337778, 1178600373, 681591487, 1677403448, 136131045," +
                 " 1899010813, 1997176995, 293205759, 2040790225, 553946471, 1941234197, 565581811, 1951980917," +
                 " 102870776, 534895893, 1663679153, 1315765414]");
@@ -983,7 +983,7 @@ public class RandomProviderTest {
 
     @Test
     public void testNaturalLongs() {
-        aeqit(take(20, P.naturalLongs()),
+        aeqit(take(TINY_LIMIT, P.naturalLongs()),
                 "[4564211482599936457, 692878708722511346, 5062050059917476543, 7204392953641251301," +
                 " 8156189338582548643, 1259309150092131537, 2379181980768330261, 2429155385556917621," +
                 " 441826621316521237, 7145447556635229350, 404281420475794401, 5423599860460493276," +
@@ -993,20 +993,20 @@ public class RandomProviderTest {
 
     @Test
     public void testNonzeroBytes() {
-        aeqit(take(20, P.nonzeroBytes()),
+        aeqit(take(TINY_LIMIT, P.nonzeroBytes()),
                 "[41, -55, -125, -14, -75, -65, 56, -27, -3, -93, -1, -47, 103, 21, -13, 117, -8, 21, -79, -90]");
     }
 
     @Test
     public void testNonzeroShorts() {
-        aeqit(take(20, P.nonzeroShorts()),
+        aeqit(take(TINY_LIMIT, P.nonzeroShorts()),
                 "[22057, -11831, -26237, 11762, 949, 17087, 9528, 12773, -25859, -32605, -2305, -815, -29337, -7659," +
                 " 6131, -8843, -20744, -8939, -17743, -858]");
     }
 
     @Test
     public void testNonzeroIntegers() {
-        aeqit(take(20, P.nonzeroIntegers()),
+        aeqit(take(TINY_LIMIT, P.nonzeroIntegers()),
                 "[-1084795351, 1143001545, -1986160253, -1177145870, -968883275, -1465892161, -470080200," +
                 " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
                 " -195502731, 102870776, -1612587755, -483804495, -831718234]");
@@ -1014,7 +1014,7 @@ public class RandomProviderTest {
 
     @Test
     public void testNonzeroLongs() {
-        aeqit(take(20, P.nonzeroLongs()),
+        aeqit(take(TINY_LIMIT, P.nonzeroLongs()),
                 "[-4659160554254839351, -8530493328132264462, -4161321976937299265, -2018979083213524507," +
                 " -1067182698272227165, 1259309150092131537, -6844190056086445547, 2429155385556917621," +
                 " 441826621316521237, -2077924480219546458, 404281420475794401, -3799772176394282532," +
@@ -1024,13 +1024,13 @@ public class RandomProviderTest {
 
     @Test
     public void testBytes() {
-        aeqit(take(20, P.bytes()),
+        aeqit(take(TINY_LIMIT, P.bytes()),
                 "[41, -55, -125, -14, -75, -65, 56, -27, -3, -93, -1, -47, 103, 21, -13, 117, -8, 21, -79, -90]");
     }
 
     @Test
     public void testShorts() {
-        aeqit(take(20, P.shorts()),
+        aeqit(take(TINY_LIMIT, P.shorts()),
                 "[22057, -11831, -26237, 11762, 949, 17087, 9528, 12773, -25859, -32605, -2305, -815, -29337, -7659," +
                 " 6131, -8843, -20744, -8939, -17743, -858]");
     }
@@ -1057,7 +1057,7 @@ public class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
-        aeqit(take(20, xs), output);
+        aeqit(take(TINY_LIMIT, xs), output);
         aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
         aeq(meanOfIntegers(xs), sampleMean);
     }
@@ -1433,7 +1433,7 @@ public class RandomProviderTest {
     }
 
     private void positiveBigIntegers_int_helper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withScale(meanBitSize).positiveBigIntegers()), output);
+        aeqit(take(TINY_LIMIT, P.withScale(meanBitSize).positiveBigIntegers()), output);
     }
 
     @Test
@@ -1469,7 +1469,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testPositiveBigIntegers() {
-        aeqit(take(20, P.positiveBigIntegers()),
+        aeqit(take(TINY_LIMIT, P.positiveBigIntegers()),
                 "[65649474733, 50, 1752003, 108680047959250986, 2, 169829217569110637456607575012447814909456," +
                 " 8046132249267142822265255, 78549137, 3080," +
                 " 6955247343603701669934693326084685760295830262297267296665, 547758176, 2133810949," +
@@ -1477,7 +1477,7 @@ public class RandomProviderTest {
     }
 
     private void negativeBigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withScale(meanBitSize).negativeBigIntegers()), output);
+        aeqit(take(TINY_LIMIT, P.withScale(meanBitSize).negativeBigIntegers()), output);
     }
 
     @Test
@@ -1516,7 +1516,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testNegativeBigIntegers() {
-        aeqit(take(20, P.negativeBigIntegers()),
+        aeqit(take(TINY_LIMIT, P.negativeBigIntegers()),
                 "[-65649474733, -50, -1752003, -108680047959250986, -2, -169829217569110637456607575012447814909456," +
                 " -8046132249267142822265255, -78549137, -3080," +
                 " -6955247343603701669934693326084685760295830262297267296665, -547758176, -2133810949," +
@@ -1524,7 +1524,7 @@ public class RandomProviderTest {
     }
 
     private void naturalBigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withScale(meanBitSize).naturalBigIntegers()), output);
+        aeqit(take(TINY_LIMIT, P.withScale(meanBitSize).naturalBigIntegers()), output);
     }
 
     @Test
@@ -1559,7 +1559,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testNaturalBigIntegers() {
-        aeqit(take(20, P.naturalBigIntegers()),
+        aeqit(take(TINY_LIMIT, P.naturalBigIntegers()),
                 "[31289736365, 18, 703427, 36622453921323050, 0, 82716931637350390809983675509915152776720," +
                 " 3210428970808626123440551, 11440273, 1032," +
                 " 678145608217020906098903902877019344193474817833232783769, 10887264, 1060069125, 266470418240311," +
@@ -1567,7 +1567,7 @@ public class RandomProviderTest {
     }
 
     private void bigIntegers_intHelper(int meanBitSize, @NotNull String output) {
-        aeqit(take(20, P.withScale(meanBitSize).bigIntegers()), output);
+        aeqit(take(TINY_LIMIT, P.withScale(meanBitSize).bigIntegers()), output);
     }
 
     @Test
@@ -1601,7 +1601,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testBigIntegers() {
-        aeqit(take(20, P.bigIntegers()),
+        aeqit(take(TINY_LIMIT, P.bigIntegers()),
                 "[31289736365, 1332686935725045463947306, -49775, -12910780249752364756422," +
                 " -23944809563965594065693683811078439336, 0, 320784164," +
                 " -88557569903630551599799955827784349169626451040329715964314, 202, 60318599134," +
@@ -1612,7 +1612,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testPositiveOrdinaryFloats() {
-        aeqit(take(20, P.positiveOrdinaryFloats()),
+        aeqit(take(TINY_LIMIT, P.positiveOrdinaryFloats()),
                 "[1.89613015E10, 1.1960635E-14, 3.3527607E-4, 5.655431E-37, 3.614718E-15, 2.0566479E-25," +
                 " 2.9515041E16, 4.02697717E15, 29027.99, 12970.511, 4.78944453E14, 6.62682E-27, 2.6460455E-35," +
                 " 66049.98, 8.7866956E17, 5.9178722E-21, 5.2186357E-27, 5.710558E33, 1.7919747E36, 5.174596E-35]");
@@ -1621,7 +1621,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testNegativeOrdinaryFloats() {
-        aeqit(take(20, P.negativeOrdinaryFloats()),
+        aeqit(take(TINY_LIMIT, P.negativeOrdinaryFloats()),
                 "[-1.89613015E10, -1.1960635E-14, -3.3527607E-4, -5.655431E-37, -3.614718E-15, -2.0566479E-25," +
                 " -2.9515041E16, -4.02697717E15, -29027.99, -12970.511, -4.78944453E14, -6.62682E-27," +
                 " -2.6460455E-35, -66049.98, -8.7866956E17, -5.9178722E-21, -5.2186357E-27, -5.710558E33," +
@@ -1631,7 +1631,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testOrdinaryFloats() {
-        aeqit(take(20, P.ordinaryFloats()),
+        aeqit(take(TINY_LIMIT, P.ordinaryFloats()),
                 "[-1.89613015E10, -1.1960635E-14, -3.3527607E-4, 5.655431E-37, -3.614718E-15, -2.0566479E-25," +
                 " 2.9515041E16, -4.02697717E15, 29027.99, 12970.511, 4.78944453E14, 6.62682E-27, -2.6460455E-35," +
                 " -66049.98, -8.7866956E17, -5.9178722E-21, 5.2186357E-27, -5.710558E33, 1.7919747E36, 5.174596E-35]");
@@ -1640,7 +1640,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testFloats() {
-        aeqit(take(20, P.floats()),
+        aeqit(take(TINY_LIMIT, P.floats()),
                 "[-1.89613015E10, -1.1960635E-14, -3.3527607E-4, 5.655431E-37, -3.614718E-15, -2.0566479E-25," +
                 " 2.9515041E16, -4.02697717E15, 29027.99, 12970.511, 4.78944453E14, 6.62682E-27, -2.6460455E-35," +
                 " -66049.98, -8.7866956E17, -5.9178722E-21, 5.2186357E-27, -5.710558E33, 1.7919747E36, 5.174596E-35]");
@@ -1649,7 +1649,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testPositiveOrdinaryDoubles() {
-        aeqit(take(20, P.positiveOrdinaryDoubles()),
+        aeqit(take(TINY_LIMIT, P.positiveOrdinaryDoubles()),
                 "[1.0846552561567438E80, 2.38197354700265E-114, 5.149568405861E-293, 2.4985843477357602E-200," +
                 " 4.3189997713962425E122, 4.225116780176157E30, 2.860204612775291E-212, 2.8252505782194046E36," +
                 " 8.566220677325717E-165, 7.422984534814424E267, 3.60536199254296E-277, 1.2019415773498463E252," +
@@ -1660,7 +1660,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testNegativeOrdinaryDoubles() {
-        aeqit(take(20, P.negativeOrdinaryDoubles()),
+        aeqit(take(TINY_LIMIT, P.negativeOrdinaryDoubles()),
                 "[-1.0846552561567438E80, -2.38197354700265E-114, -5.149568405861E-293, -2.4985843477357602E-200," +
                 " -4.3189997713962425E122, -4.225116780176157E30, -2.860204612775291E-212, -2.8252505782194046E36," +
                 " -8.566220677325717E-165, -7.422984534814424E267, -3.60536199254296E-277, -1.2019415773498463E252," +
@@ -1672,7 +1672,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testOrdinaryDoubles() {
-        aeqit(take(20, P.ordinaryDoubles()),
+        aeqit(take(TINY_LIMIT, P.ordinaryDoubles()),
                 "[-1.0846552561567438E80, -2.38197354700265E-114, 5.149568405861E-293, -2.4985843477357602E-200," +
                 " -4.3189997713962425E122, 4.225116780176157E30, 2.860204612775291E-212, -2.8252505782194046E36," +
                 " -8.566220677325717E-165, -7.422984534814424E267, 3.60536199254296E-277, 1.2019415773498463E252," +
@@ -1684,7 +1684,7 @@ public class RandomProviderTest {
     @Test
     @Ignore
     public void testDoubles() {
-        aeqit(take(20, P.doubles()),
+        aeqit(take(TINY_LIMIT, P.doubles()),
                 "[-1.0846552561567438E80, -2.38197354700265E-114, 5.149568405861E-293, -2.4985843477357602E-200," +
                 " -4.3189997713962425E122, 4.225116780176157E30, 2.860204612775291E-212, -2.8252505782194046E36," +
                 " -8.566220677325717E-165, -7.422984534814424E267, 3.60536199254296E-277, 1.2019415773498463E252," +
