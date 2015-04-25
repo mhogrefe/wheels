@@ -923,13 +923,13 @@ public final class ExhaustiveProvider extends IterableProvider {
                 range('a', 'z'),
                 range('A', 'Z'),
                 range('0', '9'),
-                range('!', '/'),            // printable non-alphanumeric ASCII...
-                range(':', '@'),            // ...
-                range('[', '`'),            // ...
-                range('{', '~'),            // ...
-                Collections.singleton(' '), // ' '
-                range((char) 0, (char) 31), // non-printable and whitespace ASCII
-                Arrays.asList((char) 127)   // DEL
+                range('!', '/'),                  // printable non-alphanumeric ASCII...
+                range(':', '@'),                  // ...
+                range('[', '`'),                  // ...
+                range('{', '~'),                  // ...
+                Collections.singleton(' '),       // ' '
+                range((char) 0, (char) 31),       // non-printable and whitespace ASCII
+                Collections.singleton((char) 127) // DEL
         ));
     }
 
@@ -960,7 +960,7 @@ public final class ExhaustiveProvider extends IterableProvider {
                 range('{', '~'),            // ...
                 Collections.singleton(' '), // ' '
                 range((char) 0, (char) 31), // non-printable and whitespace ASCII
-                rangeUp((char) 127)           // DEL and non-ASCII
+                rangeUp((char) 127)         // DEL and non-ASCII
         ));
     }
 
