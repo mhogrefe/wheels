@@ -35,7 +35,7 @@ public class RandomProviderDemos {
         }
     }
 
-    private static void demoConstructor_int() {
+    private static void demoConstructor_List_Integer() {
         initialize();
         for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             System.out.println("RandomProvider(" + is + ") = " + new RandomProvider(is));

@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
 public class RandomProviderProperties {
-    private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789PR[]adeimnorv";
+    private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
     private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
@@ -34,7 +34,7 @@ public class RandomProviderProperties {
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
             propertiesConstructor();
-            propertiesConstructor_int();
+            propertiesConstructor_List_Integer();
             propertiesGetScale();
             propertiesGetSecondaryScale();
             propertiesGetSeed();
@@ -76,14 +76,21 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesConstructor_int() {
-        System.out.println("\t\ttesting RandomProvider(int) properties...");
+    private static void propertiesConstructor_List_Integer() {
+        System.out.println("\t\ttesting RandomProvider(List<Integer>) properties...");
 
         for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             RandomProvider rp = new RandomProvider(is);
             rp.validate();
             assertEquals(is.toString(), rp.getScale(), 32);
             assertEquals(is.toString(), rp.getSecondaryScale(), 8);
+        }
+
+        for (List<Integer> is : take(LIMIT, filter(js -> js.size() != IsaacPRNG.SIZE, P.lists(P.integers())))) {
+            try {
+                new RandomProvider(is);
+                fail(is.toString());
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -112,6 +119,7 @@ public class RandomProviderProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             List<Integer> seed = rp.getSeed();
+            assertEquals(rp.toString(), seed.size(), IsaacPRNG.SIZE);
             assertEquals(
                     rp.toString(),
                     new RandomProvider(seed).withScale(rp.getScale()).withSecondaryScale(rp.getSecondaryScale()),
