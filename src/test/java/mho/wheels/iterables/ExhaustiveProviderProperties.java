@@ -258,11 +258,12 @@ public class ExhaustiveProviderProperties {
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(s -> s != null, take(TINY_LIMIT, ss)));
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(p.toString(), all(s -> s != null, tss));
             testNoRemove(TINY_LIMIT, ss);
-            assertTrue(p.toString(), unique(take(TINY_LIMIT, ss)));
-            assertTrue(p.toString(), all(s -> s >= p.a && s <= p.b, take(TINY_LIMIT, ss)));
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            assertTrue(p.toString(), unique(tss));
+            assertTrue(p.toString(), all(s -> s >= p.a && s <= p.b, tss));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, tss)));
             assertEquals(p.toString(), p.a > p.b, isEmpty(ss));
         }
 
@@ -278,11 +279,12 @@ public class ExhaustiveProviderProperties {
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             Iterable<Integer> is = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(i -> i != null, take(TINY_LIMIT, is)));
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(p.toString(), all(i -> i != null, tis));
             testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), unique(take(TINY_LIMIT, is)));
-            assertTrue(p.toString(), all(i -> i >= p.a && i <= p.b, take(TINY_LIMIT, is)));
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
+            assertTrue(p.toString(), unique(tis));
+            assertTrue(p.toString(), all(i -> i >= p.a && i <= p.b, tis));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
             assertEquals(p.toString(), p.a > p.b, isEmpty(is));
         }
 
@@ -298,11 +300,12 @@ public class ExhaustiveProviderProperties {
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             Iterable<Long> ls = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(l -> l != null, take(TINY_LIMIT, ls)));
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertTrue(p.toString(), all(l -> l != null, tls));
             testNoRemove(TINY_LIMIT, ls);
-            assertTrue(p.toString(), unique(take(TINY_LIMIT, ls)));
-            assertTrue(p.toString(), all(l -> l >= p.a && l <= p.b, take(TINY_LIMIT, ls)));
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
+            assertTrue(p.toString(), unique(tls));
+            assertTrue(p.toString(), all(l -> l >= p.a && l <= p.b, tls));
+            assertTrue(p.toString(), weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
             assertEquals(p.toString(), p.a > p.b, isEmpty(ls));
         }
 
@@ -318,11 +321,12 @@ public class ExhaustiveProviderProperties {
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
             Iterable<BigInteger> is = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(i -> i != null, take(TINY_LIMIT, is)));
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(p.toString(), all(i -> i != null, tis));
             testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), unique(take(TINY_LIMIT, is)));
-            assertTrue(p.toString(), all(i -> ge(i, p.a) && le(i, p.b), take(TINY_LIMIT, is)));
-            assertTrue(p.toString(), weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
+            assertTrue(p.toString(), unique(tis));
+            assertTrue(p.toString(), all(i -> ge(i, p.a) && le(i, p.b), tis));
+            assertTrue(p.toString(), weaklyIncreasing(map(BigInteger::abs, tis)));
             assertEquals(p.toString(), gt(p.a, p.b), isEmpty(is));
         }
 
@@ -336,11 +340,12 @@ public class ExhaustiveProviderProperties {
 
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             Iterable<Character> cs = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(c -> c != null, take(TINY_LIMIT, cs)));
+            Iterable<Character> tcs = take(TINY_LIMIT, cs);
+            assertTrue(p.toString(), all(c -> c != null, tcs));
             testNoRemove(TINY_LIMIT, cs);
-            assertTrue(p.toString(), unique(take(TINY_LIMIT, cs)));
-            assertTrue(p.toString(), all(c -> c >= p.a && c <= p.b, take(TINY_LIMIT, cs)));
-            assertTrue(p.toString(), increasing(take(TINY_LIMIT, cs)));
+            assertTrue(p.toString(), unique(tcs));
+            assertTrue(p.toString(), all(c -> c >= p.a && c <= p.b, tcs));
+            assertTrue(p.toString(), increasing(tcs));
             assertEquals(p.toString(), p.a > p.b, isEmpty(cs));
         }
 
