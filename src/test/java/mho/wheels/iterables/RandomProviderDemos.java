@@ -288,6 +288,146 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoPositiveBytes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveBytes(" + rp + ") = " + its(rp.positiveBytes()));
+        }
+    }
+
+    private static void demoPositiveShorts() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveShorts(" + rp + ") = " + its(rp.positiveShorts()));
+        }
+    }
+
+    private static void demoPositiveIntegers() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveIntegers(" + rp + ") = " + its(rp.positiveIntegers()));
+        }
+    }
+
+    private static void demoPositiveLongs() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveLongs(" + rp + ") = " + its(rp.positiveLongs()));
+        }
+    }
+
+    private static void demoNegativeBytes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeBytes(" + rp + ") = " + its(rp.negativeBytes()));
+        }
+    }
+
+    private static void demoNegativeShorts() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeShorts(" + rp + ") = " + its(rp.negativeShorts()));
+        }
+    }
+
+    private static void demoNegativeIntegers() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeIntegers(" + rp + ") = " + its(rp.negativeIntegers()));
+        }
+    }
+
+    private static void demoNegativeLongs() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeLongs(" + rp + ") = " + its(rp.negativeLongs()));
+        }
+    }
+
+    private static void demoNaturalBytes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("naturalBytes(" + rp + ") = " + its(rp.naturalBytes()));
+        }
+    }
+
+    private static void demoNaturalShorts() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("naturalShorts(" + rp + ") = " + its(rp.naturalShorts()));
+        }
+    }
+
+    private static void demoNaturalIntegers() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("naturalIntegers(" + rp + ") = " + its(rp.naturalIntegers()));
+        }
+    }
+
+    private static void demoNaturalLongs() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("naturalLongs(" + rp + ") = " + its(rp.naturalLongs()));
+        }
+    }
+
+    private static void demoNonzeroBytes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroBytes(" + rp + ") = " + its(rp.nonzeroBytes()));
+        }
+    }
+
+    private static void demoNonzeroShorts() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroShorts(" + rp + ") = " + its(rp.nonzeroShorts()));
+        }
+    }
+
+    private static void demoNonzeroIntegers() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroIntegers(" + rp + ") = " + its(rp.nonzeroIntegers()));
+        }
+    }
+
+    private static void demoNonzeroLongs() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroLongs(" + rp + ") = " + its(rp.nonzeroLongs()));
+        }
+    }
+
+    private static void demoBytes() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("bytes(" + rp + ") = " + its(rp.bytes()));
+        }
+    }
+
+    private static void demoShorts() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("shorts(" + rp + ") = " + its(rp.shorts()));
+        }
+    }
+
+    private static void demoAsciiCharacters() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("asciiCharacters(" + rp + ") = " + cits(rp.asciiCharacters()));
+        }
+    }
+
+    private static void demoCharacters() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("characters(" + rp + ") = " + cits(rp.characters()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
