@@ -243,19 +243,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
-        return () -> new NoRemoveIterator<Boolean>() {
-            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Boolean next() {
-                return (prng.nextInt() & 1) == 1;
-            }
-        };
+        return concatMap(i -> map(p -> (i & (1 << p)) != 0, IterableUtils.range(0, 31)), integers());
     }
 
     /**
@@ -1050,10 +1038,10 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
-     * –{@code scale}, or all –1s if {@code scale} is 1. Does not support removal.
+     * –{@code scale}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code Integer}s.</li>
      * </ul>
      *
@@ -1091,6 +1079,10 @@ public final class RandomProvider extends IterableProvider {
      */
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
         return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(), alt().booleans());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(IterableUtils.toString(20, RandomProvider.EXAMPLE.withScale(10).positiveIntegersGeometric()));
     }
 
     /**

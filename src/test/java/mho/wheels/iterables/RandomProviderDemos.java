@@ -3,7 +3,6 @@ package mho.wheels.iterables;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
-import mho.wheels.testing.Testing;
 
 import java.math.BigInteger;
 import java.util.List;
