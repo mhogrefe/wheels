@@ -1053,15 +1053,19 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
-     * {@code scale}, or all zeros if {@code mean} is 0. Does not support removal.
+     * {@code scale}. Does not support removal.
      *
      * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
      */
     public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
