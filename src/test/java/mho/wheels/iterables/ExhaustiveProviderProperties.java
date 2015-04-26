@@ -34,6 +34,8 @@ public class ExhaustiveProviderProperties {
             P = config.a;
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
+            propertiesUniformSample_Iterable();
+            propertiesUniformSample_String();
             propertiesRangeUp_byte();
             propertiesRangeUp_short();
             propertiesRangeUp_int();
@@ -52,10 +54,28 @@ public class ExhaustiveProviderProperties {
             propertiesRange_long_long();
             propertiesRange_BigInteger_BigInteger();
             propertiesRange_char_char();
-            propertiesUniformSample_Iterable();
-            propertiesUniformSample_String();
         }
         System.out.println("Done");
+    }
+
+    private static void propertiesUniformSample_Iterable() {
+        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
+
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            Iterable<Integer> js = EP.uniformSample(is);
+            aeqit(is.toString(), is, js);
+            testNoRemove(js);
+        }
+    }
+
+    private static void propertiesUniformSample_String() {
+        System.out.println("\t\ttesting uniformSample(String) properties...");
+
+        for (String s : take(LIMIT, P.strings())) {
+            Iterable<Character> cs = EP.uniformSample(s);
+            assertEquals(s, s, charsToString(cs));
+            testNoRemove(cs);
+        }
     }
 
     private static void propertiesRangeUp_byte() {
@@ -353,26 +373,6 @@ public class ExhaustiveProviderProperties {
             aeqit(nicePrint(c), EP.range(c, c), Arrays.asList(c));
             aeqit(nicePrint(c), TINY_LIMIT, EP.range(c, Character.MAX_VALUE), EP.rangeUp(c));
             aeqit(nicePrint(c), TINY_LIMIT, EP.range('\0', c), EP.rangeDown(c));
-        }
-    }
-
-    private static void propertiesUniformSample_Iterable() {
-        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
-
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            Iterable<Integer> js = EP.uniformSample(is);
-            aeqit(is.toString(), is, js);
-            testNoRemove(js);
-        }
-    }
-
-    private static void propertiesUniformSample_String() {
-        System.out.println("\t\ttesting uniformSample(String) properties...");
-
-        for (String s : take(LIMIT, P.strings())) {
-            Iterable<Character> cs = EP.uniformSample(s);
-            assertEquals(s, s, charsToString(cs));
-            testNoRemove(cs);
         }
     }
 }

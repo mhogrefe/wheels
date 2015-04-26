@@ -26,6 +26,21 @@ public class ExhaustiveProviderDemos {
         }
     }
 
+    private static void demoUniformSample_Iterable() {
+        initialize();
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            String listString = tail(init(is.toString()));
+            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
+        }
+    }
+
+    private static void demoUniformSample_String() {
+        initialize();
+        for (String s : take(LIMIT, P.strings())) {
+            System.out.println("uniformSample(" + nicePrint(s) + ") = " + cits(EP.uniformSample(s)));
+        }
+    }
+
     private static void demoRangeUp_byte() {
         initialize();
         for (byte b : take(SMALL_LIMIT, P.bytes())) {
@@ -149,21 +164,6 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Character, Character> p : take(SMALL_LIMIT, P.pairs(P.characters()))) {
             System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
-        }
-    }
-
-    private static void demoUniformSample_Iterable() {
-        initialize();
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            String listString = tail(init(is.toString()));
-            System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
-        }
-    }
-
-    private static void demoUniformSample_String() {
-        initialize();
-        for (String s : take(LIMIT, P.strings())) {
-            System.out.println("uniformSample(" + nicePrint(s) + ") = " + cits(EP.uniformSample(s)));
         }
     }
 }

@@ -104,154 +104,6 @@ public class RandomProviderDemos {
         }
     }
 
-    private static void demoRangeUp_byte() {
-        initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
-            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
-        }
-    }
-
-    private static void demoRangeUp_short() {
-        initialize();
-        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
-        }
-    }
-
-    private static void demoRangeUp_int() {
-        initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
-        }
-    }
-
-    private static void demoRangeUp_long() {
-        initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
-            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
-        }
-    }
-
-    private static void demoRangeUp_char() {
-        initialize();
-        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeUp(p.b)));
-        }
-    }
-
-    private static void demoRangeDown_byte() {
-        initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
-            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
-        }
-    }
-
-    private static void demoRangeDown_short() {
-        initialize();
-        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
-        }
-    }
-
-    private static void demoRangeDown_int() {
-        initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
-        }
-    }
-
-    private static void demoRangeDown_long() {
-        initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
-            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
-        }
-    }
-
-    private static void demoRangeDown_char() {
-        initialize();
-        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("rangeDown(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeDown(p.b)));
-        }
-    }
-
-    private static void demoRange_byte_byte() {
-        initialize();
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().bytes(),
-                P.alt().alt().bytes()
-        );
-        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
-        }
-    }
-
-    private static void demoRange_short_short() {
-        initialize();
-        Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().shorts(),
-                P.alt().alt().shorts()
-        );
-        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
-        }
-    }
-
-    private static void demoRange_int_int() {
-        initialize();
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().integers(),
-                P.alt().alt().integers()
-        );
-        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
-        }
-    }
-
-    private static void demoRange_long_long() {
-        initialize();
-        Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().longs(),
-                P.alt().alt().longs()
-        );
-        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
-        }
-    }
-
-    private static void demoRange_BigInteger_BigInteger() {
-        initialize();
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().bigIntegers(),
-                P.alt().alt().bigIntegers()
-        );
-        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
-        }
-    }
-
-    private static void demoRange_char_char() {
-        initialize();
-        Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
-                P.randomProvidersDefault(),
-                P.alt().characters(),
-                P.alt().alt().characters()
-        );
-        for (Triple<RandomProvider, Character, Character> p : take(SMALL_LIMIT, ts)) {
-            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + cits(p.a.range(p.b, p.c)));
-        }
-    }
-
     private static void demoUniformSample_Iterable() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
@@ -424,6 +276,154 @@ public class RandomProviderDemos {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("characters(" + rp + ") = " + cits(rp.characters()));
+        }
+    }
+
+    private static void demoRangeUp_byte() {
+        initialize();
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_short() {
+        initialize();
+        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_long() {
+        initialize();
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeUp_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_byte() {
+        initialize();
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().bytes()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_short() {
+        initialize();
+        Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.alt().shorts());
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.alt().integers());
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_long() {
+        initialize();
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().longs()))) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRangeDown_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.alt().characters());
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoRange_byte_byte() {
+        initialize();
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().bytes(),
+                P.alt().alt().bytes()
+        );
+        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoRange_short_short() {
+        initialize();
+        Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().shorts(),
+                P.alt().alt().shorts()
+        );
+        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoRange_int_int() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().integers(),
+                P.alt().alt().integers()
+        );
+        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoRange_long_long() {
+        initialize();
+        Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().longs(),
+                P.alt().alt().longs()
+        );
+        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoRange_BigInteger_BigInteger() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().bigIntegers(),
+                P.alt().alt().bigIntegers()
+        );
+        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoRange_char_char() {
+        initialize();
+        Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.alt().characters(),
+                P.alt().alt().characters()
+        );
+        for (Triple<RandomProvider, Character, Character> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + cits(p.a.range(p.b, p.c)));
         }
     }
 

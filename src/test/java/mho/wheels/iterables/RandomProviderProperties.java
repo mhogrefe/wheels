@@ -45,22 +45,6 @@ public class RandomProviderProperties {
             propertiesBooleans();
             propertiesIntegers();
             propertiesLongs();
-            propertiesRangeUp_byte();
-            propertiesRangeUp_short();
-            propertiesRangeUp_int();
-            propertiesRangeUp_long();
-            propertiesRangeUp_char();
-            propertiesRangeDown_byte();
-            propertiesRangeDown_short();
-            propertiesRangeDown_int();
-            propertiesRangeDown_long();
-            propertiesRangeDown_char();
-            propertiesRange_byte_byte();
-            propertiesRange_short_short();
-            propertiesRange_int_int();
-            propertiesRange_long_long();
-            propertiesRange_BigInteger_BigInteger();
-            propertiesRange_char_char();
             propertiesUniformSample_Iterable();
             propertiesUniformSample_String();
             propertiesOrderings();
@@ -85,6 +69,22 @@ public class RandomProviderProperties {
             propertiesShorts();
             propertiesAsciiCharacters();
             propertiesCharacters();
+            propertiesRangeUp_byte();
+            propertiesRangeUp_short();
+            propertiesRangeUp_int();
+            propertiesRangeUp_long();
+            propertiesRangeUp_char();
+            propertiesRangeDown_byte();
+            propertiesRangeDown_short();
+            propertiesRangeDown_int();
+            propertiesRangeDown_long();
+            propertiesRangeDown_char();
+            propertiesRange_byte_byte();
+            propertiesRange_short_short();
+            propertiesRange_int_int();
+            propertiesRange_long_long();
+            propertiesRange_BigInteger_BigInteger();
+            propertiesRange_char_char();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -246,6 +246,294 @@ public class RandomProviderProperties {
             Iterable<Long> ls = rp.longs();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, ls)));
             testNoRemove(TINY_LIMIT, ls);
+        }
+    }
+
+    private static void propertiesUniformSample_Iterable() {
+        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
+
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.alt().lists(P.alt().withNull(P.alt().integers()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Integer> is = p.a.uniformSample(p.b);
+            testNoRemove(TINY_LIMIT, is);
+            assertEquals(is.toString(), isEmpty(is), p.b.isEmpty());
+            assertTrue(is.toString(), all(p.b::contains, take(TINY_LIMIT, is)));
+        }
+    }
+
+    private static void propertiesUniformSample_String() {
+        System.out.println("\t\ttesting uniformSample(String) properties...");
+
+        for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().strings()))) {
+            Iterable<Character> cs = p.a.uniformSample(p.b);
+            testNoRemove(TINY_LIMIT, cs);
+            assertEquals(cs.toString(), isEmpty(cs), p.b.isEmpty());
+            assertTrue(cs.toString(), all(c -> elem(c, p.b), take(TINY_LIMIT, cs)));
+        }
+    }
+
+    private static void propertiesOrderings() {
+        System.out.println("\t\ttesting orderings() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Ordering> os = rp.orderings();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, os)));
+            testNoRemove(TINY_LIMIT, os);
+            for (Ordering o : ExhaustiveProvider.INSTANCE.orderings()) {
+                assertTrue(rp.toString(), elem(o, os));
+            }
+        }
+    }
+
+    private static void propertiesRoundingModes() {
+        System.out.println("\t\ttesting roundingModes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<RoundingMode> rms = rp.roundingModes();
+            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, rms)));
+            testNoRemove(TINY_LIMIT, rms);
+            for (RoundingMode rm : ExhaustiveProvider.INSTANCE.roundingModes()) {
+                assertTrue(rp.toString(), elem(rm, rms));
+            }
+        }
+    }
+
+    private static void propertiesPositiveBytes() {
+        System.out.println("\t\ttesting positiveBytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Byte> bs = rp.positiveBytes();
+            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
+            assertTrue(rp.toString(), all(b -> b != null, tbs));
+            assertTrue(rp.toString(), all(b -> b > 0, tbs));
+            testNoRemove(TINY_LIMIT, bs);
+        }
+    }
+
+    private static void propertiesPositiveShorts() {
+        System.out.println("\t\ttesting positiveShorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Short> ss = rp.positiveShorts();
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(rp.toString(), all(s -> s != null, tss));
+            assertTrue(rp.toString(), all(s -> s > 0, tss));
+            testNoRemove(TINY_LIMIT, ss);
+        }
+    }
+
+    private static void propertiesPositiveIntegers() {
+        System.out.println("\t\ttesting positiveIntegers() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Integer> is = rp.positiveIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i > 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesPositiveLongs() {
+        System.out.println("\t\ttesting positiveLongs() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Long> ls = rp.positiveLongs();
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertTrue(rp.toString(), all(l -> l != null, tls));
+            assertTrue(rp.toString(), all(l -> l > 0, tls));
+            testNoRemove(TINY_LIMIT, ls);
+        }
+    }
+
+    private static void propertiesNegativeBytes() {
+        System.out.println("\t\ttesting negativeBytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Byte> bs = rp.negativeBytes();
+            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
+            assertTrue(rp.toString(), all(b -> b != null, tbs));
+            assertTrue(rp.toString(), all(b -> b < 0, tbs));
+            testNoRemove(TINY_LIMIT, bs);
+        }
+    }
+
+    private static void propertiesNegativeShorts() {
+        System.out.println("\t\ttesting negativeShorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Short> ss = rp.negativeShorts();
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(rp.toString(), all(s -> s != null, tss));
+            assertTrue(rp.toString(), all(s -> s < 0, tss));
+            testNoRemove(TINY_LIMIT, ss);
+        }
+    }
+
+    private static void propertiesNegativeIntegers() {
+        System.out.println("\t\ttesting negativeIntegers() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Integer> is = rp.negativeIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i < 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNegativeLongs() {
+        System.out.println("\t\ttesting negativeLongs() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Long> ls = rp.negativeLongs();
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertTrue(rp.toString(), all(l -> l != null, tls));
+            assertTrue(rp.toString(), all(l -> l < 0, tls));
+            testNoRemove(TINY_LIMIT, ls);
+        }
+    }
+
+    private static void propertiesNaturalBytes() {
+        System.out.println("\t\ttesting naturalBytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Byte> bs = rp.naturalBytes();
+            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
+            assertTrue(rp.toString(), all(b -> b != null, tbs));
+            assertTrue(rp.toString(), all(b -> b >= 0, tbs));
+            testNoRemove(TINY_LIMIT, bs);
+        }
+    }
+
+    private static void propertiesNaturalShorts() {
+        System.out.println("\t\ttesting naturalShorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Short> ss = rp.naturalShorts();
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(rp.toString(), all(s -> s != null, tss));
+            assertTrue(rp.toString(), all(s -> s >= 0, tss));
+            testNoRemove(TINY_LIMIT, ss);
+        }
+    }
+
+    private static void propertiesNaturalIntegers() {
+        System.out.println("\t\ttesting naturalIntegers() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Integer> is = rp.naturalIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i >= 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNaturalLongs() {
+        System.out.println("\t\ttesting naturalLongs() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Long> ls = rp.naturalLongs();
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertTrue(rp.toString(), all(l -> l != null, tls));
+            assertTrue(rp.toString(), all(l -> l >= 0, tls));
+            testNoRemove(TINY_LIMIT, ls);
+        }
+    }
+
+    private static void propertiesNonzeroBytes() {
+        System.out.println("\t\ttesting nonzeroBytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Byte> bs = rp.nonzeroBytes();
+            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
+            assertTrue(rp.toString(), all(b -> b != null, tbs));
+            assertTrue(rp.toString(), all(b -> b != 0, tbs));
+            testNoRemove(TINY_LIMIT, bs);
+        }
+    }
+
+    private static void propertiesNonzeroShorts() {
+        System.out.println("\t\ttesting nonzeroShorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Short> ss = rp.nonzeroShorts();
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(rp.toString(), all(s -> s != null, tss));
+            assertTrue(rp.toString(), all(s -> s != 0, tss));
+            testNoRemove(TINY_LIMIT, ss);
+        }
+    }
+
+    private static void propertiesNonzeroIntegers() {
+        System.out.println("\t\ttesting nonzeroIntegers() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Integer> is = rp.nonzeroIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i != 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNonzeroLongs() {
+        System.out.println("\t\ttesting nonzeroLongs() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Long> ls = rp.nonzeroLongs();
+            Iterable<Long> tls = take(TINY_LIMIT, ls);
+            assertTrue(rp.toString(), all(l -> l != null, tls));
+            assertTrue(rp.toString(), all(l -> l != 0, tls));
+            testNoRemove(TINY_LIMIT, ls);
+        }
+    }
+
+    private static void propertiesBytes() {
+        System.out.println("\t\ttesting bytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Byte> bs = rp.bytes();
+            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
+            assertTrue(rp.toString(), all(b -> b != null, tbs));
+            testNoRemove(TINY_LIMIT, bs);
+        }
+    }
+
+    private static void propertiesShorts() {
+        System.out.println("\t\ttesting shorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Short> ss = rp.shorts();
+            Iterable<Short> tss = take(TINY_LIMIT, ss);
+            assertTrue(rp.toString(), all(s -> s != null, tss));
+            testNoRemove(TINY_LIMIT, ss);
+        }
+    }
+
+    private static void propertiesAsciiCharacters() {
+        System.out.println("\t\ttesting nonzeroBytes() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Character> cs = rp.asciiCharacters();
+            Iterable<Character> tcs = take(TINY_LIMIT, cs);
+            assertTrue(rp.toString(), all(c -> c != null, tcs));
+            assertTrue(rp.toString(), all(c -> c < 128, tcs));
+            testNoRemove(TINY_LIMIT, cs);
+        }
+    }
+
+    private static void propertiesCharacters() {
+        System.out.println("\t\ttesting nonzeroShorts() properties...");
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Character> cs = rp.characters();
+            assertTrue(rp.toString(), all(c -> c != null, take(TINY_LIMIT, cs)));
+            testNoRemove(TINY_LIMIT, cs);
         }
     }
 
@@ -552,294 +840,6 @@ public class RandomProviderProperties {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Character.MAX_VALUE), p.a.rangeUp(p.b));
             aeqit(p.toString(), TINY_LIMIT, p.a.range('\0', p.b), p.a.rangeDown(p.b));
-        }
-    }
-
-    private static void propertiesUniformSample_Iterable() {
-        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
-
-        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
-                P.randomProvidersDefault(),
-                P.alt().lists(P.alt().withNull(P.alt().integers()))
-        );
-        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
-            Iterable<Integer> is = p.a.uniformSample(p.b);
-            testNoRemove(TINY_LIMIT, is);
-            assertEquals(is.toString(), isEmpty(is), p.b.isEmpty());
-            assertTrue(is.toString(), all(p.b::contains, take(TINY_LIMIT, is)));
-        }
-    }
-
-    private static void propertiesUniformSample_String() {
-        System.out.println("\t\ttesting uniformSample(String) properties...");
-
-        for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.alt().strings()))) {
-            Iterable<Character> cs = p.a.uniformSample(p.b);
-            testNoRemove(TINY_LIMIT, cs);
-            assertEquals(cs.toString(), isEmpty(cs), p.b.isEmpty());
-            assertTrue(cs.toString(), all(c -> elem(c, p.b), take(TINY_LIMIT, cs)));
-        }
-    }
-
-    private static void propertiesOrderings() {
-        System.out.println("\t\ttesting orderings() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Ordering> os = rp.orderings();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, os)));
-            testNoRemove(TINY_LIMIT, os);
-            for (Ordering o : ExhaustiveProvider.INSTANCE.orderings()) {
-                assertTrue(rp.toString(), elem(o, os));
-            }
-        }
-    }
-
-    private static void propertiesRoundingModes() {
-        System.out.println("\t\ttesting roundingModes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<RoundingMode> rms = rp.roundingModes();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, rms)));
-            testNoRemove(TINY_LIMIT, rms);
-            for (RoundingMode rm : ExhaustiveProvider.INSTANCE.roundingModes()) {
-                assertTrue(rp.toString(), elem(rm, rms));
-            }
-        }
-    }
-
-    private static void propertiesPositiveBytes() {
-        System.out.println("\t\ttesting positiveBytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Byte> bs = rp.positiveBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b > 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-        }
-    }
-
-    private static void propertiesPositiveShorts() {
-        System.out.println("\t\ttesting positiveShorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Short> ss = rp.positiveShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s > 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
-        }
-    }
-
-    private static void propertiesPositiveIntegers() {
-        System.out.println("\t\ttesting positiveIntegers() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Integer> is = rp.positiveIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i > 0, tis));
-            testNoRemove(TINY_LIMIT, is);
-        }
-    }
-
-    private static void propertiesPositiveLongs() {
-        System.out.println("\t\ttesting positiveLongs() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Long> ls = rp.positiveLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l > 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
-        }
-    }
-
-    private static void propertiesNegativeBytes() {
-        System.out.println("\t\ttesting negativeBytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Byte> bs = rp.negativeBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b < 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-        }
-    }
-
-    private static void propertiesNegativeShorts() {
-        System.out.println("\t\ttesting negativeShorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Short> ss = rp.negativeShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s < 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
-        }
-    }
-
-    private static void propertiesNegativeIntegers() {
-        System.out.println("\t\ttesting negativeIntegers() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Integer> is = rp.negativeIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i < 0, tis));
-            testNoRemove(TINY_LIMIT, is);
-        }
-    }
-
-    private static void propertiesNegativeLongs() {
-        System.out.println("\t\ttesting negativeLongs() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Long> ls = rp.negativeLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l < 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
-        }
-    }
-
-    private static void propertiesNaturalBytes() {
-        System.out.println("\t\ttesting naturalBytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Byte> bs = rp.naturalBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b >= 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-        }
-    }
-
-    private static void propertiesNaturalShorts() {
-        System.out.println("\t\ttesting naturalShorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Short> ss = rp.naturalShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s >= 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
-        }
-    }
-
-    private static void propertiesNaturalIntegers() {
-        System.out.println("\t\ttesting naturalIntegers() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Integer> is = rp.naturalIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i >= 0, tis));
-            testNoRemove(TINY_LIMIT, is);
-        }
-    }
-
-    private static void propertiesNaturalLongs() {
-        System.out.println("\t\ttesting naturalLongs() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Long> ls = rp.naturalLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l >= 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
-        }
-    }
-
-    private static void propertiesNonzeroBytes() {
-        System.out.println("\t\ttesting nonzeroBytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Byte> bs = rp.nonzeroBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b != 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-        }
-    }
-
-    private static void propertiesNonzeroShorts() {
-        System.out.println("\t\ttesting nonzeroShorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Short> ss = rp.nonzeroShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s != 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
-        }
-    }
-
-    private static void propertiesNonzeroIntegers() {
-        System.out.println("\t\ttesting nonzeroIntegers() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Integer> is = rp.nonzeroIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i != 0, tis));
-            testNoRemove(TINY_LIMIT, is);
-        }
-    }
-
-    private static void propertiesNonzeroLongs() {
-        System.out.println("\t\ttesting nonzeroLongs() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Long> ls = rp.nonzeroLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l != 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
-        }
-    }
-
-    private static void propertiesBytes() {
-        System.out.println("\t\ttesting bytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Byte> bs = rp.bytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-        }
-    }
-
-    private static void propertiesShorts() {
-        System.out.println("\t\ttesting shorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Short> ss = rp.shorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
-        }
-    }
-
-    private static void propertiesAsciiCharacters() {
-        System.out.println("\t\ttesting nonzeroBytes() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Character> cs = rp.asciiCharacters();
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(rp.toString(), all(c -> c != null, tcs));
-            assertTrue(rp.toString(), all(c -> c < 128, tcs));
-            testNoRemove(TINY_LIMIT, cs);
-        }
-    }
-
-    private static void propertiesCharacters() {
-        System.out.println("\t\ttesting nonzeroShorts() properties...");
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Character> cs = rp.characters();
-            assertTrue(rp.toString(), all(c -> c != null, take(TINY_LIMIT, cs)));
-            testNoRemove(TINY_LIMIT, cs);
         }
     }
 

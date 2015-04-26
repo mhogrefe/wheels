@@ -34,24 +34,6 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<Boolean> booleans();
     public abstract @NotNull Iterable<Ordering> orderings();
     public abstract @NotNull Iterable<RoundingMode> roundingModes();
-    public abstract @NotNull Iterable<Byte> rangeUp(byte a);
-    public abstract @NotNull Iterable<Short> rangeUp(short a);
-    public abstract @NotNull Iterable<Integer> rangeUp(int a);
-    public abstract @NotNull Iterable<Long> rangeUp(long a);
-    public abstract @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a);
-    public abstract @NotNull Iterable<Character> rangeUp(char a);
-    public abstract @NotNull Iterable<Byte> rangeDown(byte a);
-    public abstract @NotNull Iterable<Short> rangeDown(short a);
-    public abstract @NotNull Iterable<Integer> rangeDown(int a);
-    public abstract @NotNull Iterable<Long> rangeDown(long a);
-    public abstract @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a);
-    public abstract @NotNull Iterable<Character> rangeDown(char a);
-    public abstract @NotNull Iterable<Byte> range(byte a, byte b);
-    public abstract @NotNull Iterable<Short> range(short a, short b);
-    public abstract @NotNull Iterable<Integer> range(int a, int b);
-    public abstract @NotNull Iterable<Long> range(long a, long b);
-    public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
-    public abstract @NotNull Iterable<Character> range(char a, char b);
 
     public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
@@ -109,6 +91,25 @@ public abstract class IterableProvider {
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
     public abstract @NotNull Iterable<Character> asciiCharacters();
     public abstract @NotNull Iterable<Character> characters();
+
+    public abstract @NotNull Iterable<Byte> rangeUp(byte a);
+    public abstract @NotNull Iterable<Short> rangeUp(short a);
+    public abstract @NotNull Iterable<Integer> rangeUp(int a);
+    public abstract @NotNull Iterable<Long> rangeUp(long a);
+    public abstract @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a);
+    public abstract @NotNull Iterable<Character> rangeUp(char a);
+    public abstract @NotNull Iterable<Byte> rangeDown(byte a);
+    public abstract @NotNull Iterable<Short> rangeDown(short a);
+    public abstract @NotNull Iterable<Integer> rangeDown(int a);
+    public abstract @NotNull Iterable<Long> rangeDown(long a);
+    public abstract @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a);
+    public abstract @NotNull Iterable<Character> rangeDown(char a);
+    public abstract @NotNull Iterable<Byte> range(byte a, byte b);
+    public abstract @NotNull Iterable<Short> range(short a, short b);
+    public abstract @NotNull Iterable<Integer> range(int a, int b);
+    public abstract @NotNull Iterable<Long> range(long a, long b);
+    public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
+    public abstract @NotNull Iterable<Character> range(char a, char b);
 
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
     public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();

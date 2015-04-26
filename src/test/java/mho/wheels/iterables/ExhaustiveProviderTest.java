@@ -36,6 +36,283 @@ public class ExhaustiveProviderTest {
         simpleProviderHelper(P.orderings(), "[EQ, LT, GT]");
     }
 
+    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
+        aeqit(P.uniformSample(readIntegerList(xs)), output);
+    }
+
+    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+        aeqit(P.uniformSample(readIntegerListWithNulls(xs)), output);
+    }
+
+    @Test
+    public void testUniformSample_Iterable() {
+        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "[3, 1, 4, 1]");
+        uniformSample_Iterable_helper_1("[]", "[]");
+        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "[3, 1, null, 1]");
+    }
+
+    private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
+        aeqcs(P.uniformSample(s), output);
+    }
+
+    @Test
+    public void testUniformSample_String() {
+        uniformSample_String_helper("hello", "hello");
+        uniformSample_String_helper("", "");
+    }
+
+    @Test
+    public void testBytesIncreasing() {
+        aeq(length(P.bytesIncreasing()), 256);
+        aeqit(take(TINY_LIMIT, P.bytesIncreasing()),
+                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
+                " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
+    }
+
+    @Test
+    public void testShortsIncreasing() {
+        aeq(length(P.shortsIncreasing()), 65536);
+        aeqit(take(TINY_LIMIT, P.shortsIncreasing()),
+                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
+                " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
+    }
+
+    @Test
+    public void testIntegersIncreasing() {
+        aeqit(take(TINY_LIMIT, P.integersIncreasing()),
+                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
+                " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
+                " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
+                " -2147483633, -2147483632, -2147483631, -2147483630, -2147483629]");
+    }
+
+    @Test
+    public void testLongsIncreasing() {
+        aeqit(take(TINY_LIMIT, P.longsIncreasing()),
+                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
+                " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
+                " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
+                " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
+                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789]");
+    }
+
+    @Test
+    public void testPositiveBytes() {
+        aeq(length(P.positiveBytes()), 127);
+        aeqit(
+                take(TINY_LIMIT, P.positiveBytes()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
+        );
+    }
+
+    @Test
+    public void testPositiveShorts() {
+        aeq(length(P.positiveShorts()), 32767);
+        aeqit(
+                take(TINY_LIMIT, P.positiveShorts()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
+        );
+    }
+
+    @Test
+    public void testPositiveIntegers() {
+        aeqit(take(TINY_LIMIT, P.positiveIntegers()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveLongs() {
+        aeqit(take(TINY_LIMIT, P.positiveLongs()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testPositiveBigIntegers() {
+        aeqit(take(TINY_LIMIT, P.positiveBigIntegers()),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+    }
+
+    @Test
+    public void testNegativeBytes() {
+        aeq(length(P.negativeBytes()), 128);
+        aeqit(take(TINY_LIMIT, P.negativeBytes()),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeShorts() {
+        aeq(length(P.negativeShorts()), 32768);
+        aeqit(take(TINY_LIMIT, P.negativeShorts()),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeIntegers() {
+        aeqit(take(TINY_LIMIT, P.negativeIntegers()),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeLongs() {
+        aeqit(take(TINY_LIMIT, P.negativeLongs()),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNegativeBigIntegers() {
+        aeqit(take(TINY_LIMIT, P.negativeBigIntegers()),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+    }
+
+    @Test
+    public void testNaturalBytes() {
+        aeq(length(P.naturalBytes()), 128);
+        aeqit(take(TINY_LIMIT, P.naturalBytes()),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalShorts() {
+        aeq(length(P.naturalShorts()), 32768);
+        aeqit(take(TINY_LIMIT, P.naturalShorts()),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalIntegers() {
+        aeqit(take(TINY_LIMIT, P.naturalIntegers()),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalLongs() {
+        aeqit(take(TINY_LIMIT, P.naturalLongs()),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNaturalBigIntegers() {
+        aeqit(take(TINY_LIMIT, P.naturalBigIntegers()),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+    }
+
+    @Test
+    public void testNonzeroBytes() {
+        Iterable<Byte> bs = P.nonzeroBytes();
+        aeq(length(bs), 255);
+        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
+        aeqit(take(TINY_LIMIT, bs), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroShorts() {
+        Iterable<Short> ss = P.nonzeroShorts();
+        aeq(length(ss), 65535);
+        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
+        aeqit(take(TINY_LIMIT, ss), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroIntegers() {
+        aeqit(
+                take(TINY_LIMIT, P.nonzeroIntegers()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
+        );
+    }
+
+    @Test
+    public void testNonzeroLongs() {
+        aeqit(take(TINY_LIMIT, P.nonzeroLongs()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+    }
+
+    @Test
+    public void testNonzeroBigIntegers() {
+        aeqit(
+                take(TINY_LIMIT, P.nonzeroBigIntegers()),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
+        );
+    }
+
+    @Test
+    public void testBytes() {
+        Iterable<Byte> bs = P.bytes();
+        aeq(length(bs), 256);
+        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
+        aeqit(take(TINY_LIMIT, bs), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    @Test
+    public void testShorts() {
+        Iterable<Short> ss = P.shorts();
+        aeq(length(ss), 65536);
+        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
+        aeqit(take(TINY_LIMIT, ss), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    @Test
+    public void testIntegers() {
+        aeqit(take(TINY_LIMIT, P.integers()),
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    @Test
+    public void testLongs() {
+        aeqit(take(TINY_LIMIT, P.longs()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    @Test
+    public void testBigIntegers() {
+        aeqit(take(TINY_LIMIT, P.bigIntegers()),
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+    }
+
+    @Test
+    public void testAsciiCharactersIncreasing() {
+        aeq(length(P.asciiCharactersIncreasing()), 128);
+        aeq(charsToString(P.asciiCharactersIncreasing()),
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
+                "\177"
+        );
+    }
+
+    @Test
+    public void testAsciiCharacters() {
+        aeq(length(P.asciiCharacters()), 128);
+        aeq(charsToString(P.asciiCharacters()),
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177"
+        );
+    }
+
+    @Test
+    public void testCharactersIncreasing() {
+        aeq(length(P.charactersIncreasing()), 65536);
+        aeq(charsToString(take(256, P.charactersIncreasing())),
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
+                "\177" +
+                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
+                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
+                "\u00a0" +
+                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
+        );
+    }
+
+    @Test
+    public void testCharacters() {
+        aeq(length(P.characters()), 65536);
+        aeq(charsToString(take(256, P.characters())),
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
+                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177" +
+                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
+                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
+                "\u00a0" +
+                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
+        );
+    }
+
     @Test
     public void testRoundingModes() {
         simpleProviderHelper(
@@ -397,283 +674,6 @@ public class ExhaustiveProviderTest {
         range_char_char_helper('a', 'a', "a");
         range_char_char_helper('a', 'A', "");
         range_char_char_helper('!', '9', "!\"#$%&'()*+,-./0123456789");
-    }
-
-    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
-        aeqit(P.uniformSample(readIntegerList(xs)), output);
-    }
-
-    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
-        aeqit(P.uniformSample(readIntegerListWithNulls(xs)), output);
-    }
-
-    @Test
-    public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper_1("[3, 1, 4, 1]", "[3, 1, 4, 1]");
-        uniformSample_Iterable_helper_1("[]", "[]");
-        uniformSample_Iterable_helper_2("[3, 1, null, 1]", "[3, 1, null, 1]");
-    }
-
-    private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
-        aeqcs(P.uniformSample(s), output);
-    }
-
-    @Test
-    public void testUniformSample_String() {
-        uniformSample_String_helper("hello", "hello");
-        uniformSample_String_helper("", "");
-    }
-
-    @Test
-    public void testBytesIncreasing() {
-        aeq(length(P.bytesIncreasing()), 256);
-        aeqit(take(TINY_LIMIT, P.bytesIncreasing()),
-                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
-                " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
-    }
-
-    @Test
-    public void testShortsIncreasing() {
-        aeq(length(P.shortsIncreasing()), 65536);
-        aeqit(take(TINY_LIMIT, P.shortsIncreasing()),
-                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
-                " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
-    }
-
-    @Test
-    public void testIntegersIncreasing() {
-        aeqit(take(TINY_LIMIT, P.integersIncreasing()),
-                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
-                " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
-                " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
-                " -2147483633, -2147483632, -2147483631, -2147483630, -2147483629]");
-    }
-
-    @Test
-    public void testLongsIncreasing() {
-        aeqit(take(TINY_LIMIT, P.longsIncreasing()),
-                "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
-                " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
-                " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
-                " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
-                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789]");
-    }
-
-    @Test
-    public void testPositiveBytes() {
-        aeq(length(P.positiveBytes()), 127);
-        aeqit(
-                take(TINY_LIMIT, P.positiveBytes()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
-        );
-    }
-
-    @Test
-    public void testPositiveShorts() {
-        aeq(length(P.positiveShorts()), 32767);
-        aeqit(
-                take(TINY_LIMIT, P.positiveShorts()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
-        );
-    }
-
-    @Test
-    public void testPositiveIntegers() {
-        aeqit(take(TINY_LIMIT, P.positiveIntegers()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-    }
-
-    @Test
-    public void testPositiveLongs() {
-        aeqit(take(TINY_LIMIT, P.positiveLongs()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-    }
-
-    @Test
-    public void testPositiveBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.positiveBigIntegers()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-    }
-
-    @Test
-    public void testNegativeBytes() {
-        aeq(length(P.negativeBytes()), 128);
-        aeqit(take(TINY_LIMIT, P.negativeBytes()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-    }
-
-    @Test
-    public void testNegativeShorts() {
-        aeq(length(P.negativeShorts()), 32768);
-        aeqit(take(TINY_LIMIT, P.negativeShorts()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-    }
-
-    @Test
-    public void testNegativeIntegers() {
-        aeqit(take(TINY_LIMIT, P.negativeIntegers()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-    }
-
-    @Test
-    public void testNegativeLongs() {
-        aeqit(take(TINY_LIMIT, P.negativeLongs()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-    }
-
-    @Test
-    public void testNegativeBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.negativeBigIntegers()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-    }
-
-    @Test
-    public void testNaturalBytes() {
-        aeq(length(P.naturalBytes()), 128);
-        aeqit(take(TINY_LIMIT, P.naturalBytes()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-    }
-
-    @Test
-    public void testNaturalShorts() {
-        aeq(length(P.naturalShorts()), 32768);
-        aeqit(take(TINY_LIMIT, P.naturalShorts()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-    }
-
-    @Test
-    public void testNaturalIntegers() {
-        aeqit(take(TINY_LIMIT, P.naturalIntegers()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-    }
-
-    @Test
-    public void testNaturalLongs() {
-        aeqit(take(TINY_LIMIT, P.naturalLongs()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-    }
-
-    @Test
-    public void testNaturalBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.naturalBigIntegers()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-    }
-
-    @Test
-    public void testNonzeroBytes() {
-        Iterable<Byte> bs = P.nonzeroBytes();
-        aeq(length(bs), 255);
-        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
-        aeqit(take(TINY_LIMIT, bs), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
-    }
-
-    @Test
-    public void testNonzeroShorts() {
-        Iterable<Short> ss = P.nonzeroShorts();
-        aeq(length(ss), 65535);
-        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
-        aeqit(take(TINY_LIMIT, ss), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
-    }
-
-    @Test
-    public void testNonzeroIntegers() {
-        aeqit(
-                take(TINY_LIMIT, P.nonzeroIntegers()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
-        );
-    }
-
-    @Test
-    public void testNonzeroLongs() {
-        aeqit(take(TINY_LIMIT, P.nonzeroLongs()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
-    }
-
-    @Test
-    public void testNonzeroBigIntegers() {
-        aeqit(
-                take(TINY_LIMIT, P.nonzeroBigIntegers()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
-        );
-    }
-
-    @Test
-    public void testBytes() {
-        Iterable<Byte> bs = P.bytes();
-        aeq(length(bs), 256);
-        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
-        aeqit(take(TINY_LIMIT, bs), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
-    }
-
-    @Test
-    public void testShorts() {
-        Iterable<Short> ss = P.shorts();
-        aeq(length(ss), 65536);
-        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
-        aeqit(take(TINY_LIMIT, ss), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
-    }
-
-    @Test
-    public void testIntegers() {
-        aeqit(take(TINY_LIMIT, P.integers()),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
-    }
-
-    @Test
-    public void testLongs() {
-        aeqit(take(TINY_LIMIT, P.longs()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
-    }
-
-    @Test
-    public void testBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.bigIntegers()),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
-    }
-
-    @Test
-    public void testAsciiCharactersIncreasing() {
-        aeq(length(P.asciiCharactersIncreasing()), 128);
-        aeq(charsToString(P.asciiCharactersIncreasing()),
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177"
-        );
-    }
-
-    @Test
-    public void testAsciiCharacters() {
-        aeq(length(P.asciiCharacters()), 128);
-        aeq(charsToString(P.asciiCharacters()),
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177"
-        );
-    }
-
-    @Test
-    public void testCharactersIncreasing() {
-        aeq(length(P.charactersIncreasing()), 65536);
-        aeq(charsToString(take(256, P.charactersIncreasing())),
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177" +
-                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
-                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
-                "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-        );
-    }
-
-    @Test
-    public void testCharacters() {
-        aeq(length(P.characters()), 65536);
-        aeq(charsToString(take(256, P.characters())),
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
-                "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177" +
-                "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
-                "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
-                "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"
-        );
     }
 
     @Test

@@ -90,6 +90,392 @@ public final class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * Returns an unmodifiable version of a list. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of {@code xs}'s elements
+     * @return an unmodifiable version of {@code xs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        return new NoRemoveIterable<>(xs);
+    }
+
+    /**
+     * Turns a {@code String} into an {@code Iterable} of {@code Character}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code s}|
+     *
+     * @param s a {@code String}
+     * @return the {@code Character}s in {@code s}
+     */
+    @Override
+    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
+        return fromString(s);
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
+     *
+     * Length is 2<sup>8</sup> = 256
+     */
+    public @NotNull Iterable<Byte> bytesIncreasing() {
+        return IterableUtils.rangeUp(Byte.MIN_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
+     *
+     * Length is 2<sup>16</sup> = 65,536
+     */
+    public @NotNull Iterable<Short> shortsIncreasing() {
+        return IterableUtils.rangeUp(Short.MIN_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
+     *
+     * Length is 2<sup>32</sup> = 4,294,967,296
+     */
+    public @NotNull Iterable<Integer> integersIncreasing() {
+        return IterableUtils.rangeUp(Integer.MIN_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
+     *
+     * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
+     */
+    public @NotNull Iterable<Long> longsIncreasing() {
+        return IterableUtils.rangeUp(Long.MIN_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all positive {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>7</sup>–1 = 127
+     */
+    @Override
+    public @NotNull Iterable<Byte> positiveBytes() {
+        return IterableUtils.rangeUp((byte) 1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all positive {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>15</sup>–1 = 32,767
+     */
+    @Override
+    public @NotNull Iterable<Short> positiveShorts() {
+        return IterableUtils.rangeUp((short) 1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all positive {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–1 = 2,147,483,647
+     */
+    @Override
+    public @NotNull Iterable<Integer> positiveIntegers() {
+        return IterableUtils.rangeUp(1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all positive {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–1 = 9,223,372,036,854,775,807
+     */
+    @Override
+    public @NotNull Iterable<Long> positiveLongs() {
+        return IterableUtils.rangeUp(1L);
+    }
+
+    /**
+     * An {@code Iterable} that contains all positive {@link BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
+        return IterableUtils.rangeUp(BigInteger.ONE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all negative {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Byte> negativeBytes() {
+        return IterableUtils.rangeBy((byte) -1, (byte) -1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all negative {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>15</sup> = 32,768
+     */
+    @Override
+    public @NotNull Iterable<Short> negativeShorts() {
+        return IterableUtils.rangeBy((short) -1, (short) -1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all negative {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>31</sup> = 2,147,483,648
+     */
+    @Override
+    public @NotNull Iterable<Integer> negativeIntegers() {
+        return IterableUtils.rangeBy(-1, -1);
+    }
+
+    /**
+     * An {@code Iterable} that contains all negative {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
+     */
+    @Override
+    public @NotNull Iterable<Long> negativeLongs() {
+        return IterableUtils.rangeBy(-1L, -1L);
+    }
+
+    /**
+     * An {@code Iterable} that contains all negative {@code BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> negativeBigIntegers() {
+        return IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return IterableUtils.rangeUp((byte) 0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>15</sup> = 32,768
+     */
+    @Override
+    public @NotNull Iterable<Short> naturalShorts() {
+        return IterableUtils.rangeUp((short) 0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>31</sup> = 2,147,483,648
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return IterableUtils.rangeUp(0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
+     */
+    @Override
+    public @NotNull Iterable<Long> naturalLongs() {
+        return IterableUtils.rangeUp(0L);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        return rangeUp(BigInteger.ZERO);
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>8</sup>–1 = 127
+     */
+    @Override
+    public @NotNull Iterable<Byte> nonzeroBytes() {
+        return mux(Arrays.asList(positiveBytes(), negativeBytes()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>16</sup>–1 = 65,535
+     */
+    @Override
+    public @NotNull Iterable<Short> nonzeroShorts() {
+        return mux(Arrays.asList(positiveShorts(), negativeShorts()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>32</sup>–1 = 4,294,967,295
+     */
+    @Override
+    public @NotNull Iterable<Integer> nonzeroIntegers() {
+        return mux(Arrays.asList(positiveIntegers(), negativeIntegers()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
+     */
+    @Override
+    public @NotNull Iterable<Long> nonzeroLongs() {
+        return mux(Arrays.asList(positiveLongs(), negativeLongs()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>8</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Byte> bytes() {
+        return cons((byte) 0, nonzeroBytes());
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>16</sup> = 65,536
+     */
+    @Override
+    public @NotNull Iterable<Short> shorts() {
+        return cons((short) 0, nonzeroShorts());
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>32</sup> = 4,294,967,296
+     */
+    @Override
+    public @NotNull Iterable<Integer> integers() {
+        return cons(0, nonzeroIntegers());
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
+     */
+    @Override
+    public @NotNull Iterable<Long> longs() {
+        return cons(0L, nonzeroLongs());
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> bigIntegers() {
+        return cons(BigInteger.ZERO, nonzeroBigIntegers());
+    }
+
+    /**
+     * An {@code Iterable} that contains all ASCII {@link Character}s in increasing order. Does not support
+     * removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    public @NotNull Iterable<Character> asciiCharactersIncreasing() {
+        return range((char) 0, (char) 127);
+    }
+
+    /**
+     * An {@code Iterable} that contains all ASCII {@code Character}s in an order which places "friendly" characters
+     * first. Does not support removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Character> asciiCharacters() {
+        return concat(Arrays.asList(
+                range('a', 'z'),
+                range('A', 'Z'),
+                range('0', '9'),
+                range('!', '/'),                  // printable non-alphanumeric ASCII...
+                range(':', '@'),                  // ...
+                range('[', '`'),                  // ...
+                range('{', '~'),                  // ...
+                Collections.singleton(' '),       // ' '
+                range((char) 0, (char) 31),       // non-printable and whitespace ASCII
+                Collections.singleton((char) 127) // DEL
+        ));
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
+     *
+     * Length is 2<sup>16</sup> = 65,536
+     */
+    public @NotNull Iterable<Character> charactersIncreasing() {
+        return range(Character.MIN_VALUE, Character.MAX_VALUE);
+    }
+
+    /**
+     * An {@code Iterable} that contains all {@code Character}s in an order which places "friendly" characters
+     * first. Does not support removal.
+     *
+     * Length is 2<sup>16</sup> = 65,536
+     */
+    @Override
+    public @NotNull Iterable<Character> characters() {
+        return concat(Arrays.asList(
+                range('a', 'z'),
+                range('A', 'Z'),
+                range('0', '9'),
+                range('!', '/'),            // printable non-alphanumeric ASCII...
+                range(':', '@'),            // ...
+                range('[', '`'),            // ...
+                range('{', '~'),            // ...
+                Collections.singleton(' '), // ' '
+                range((char) 0, (char) 31), // non-printable and whitespace ASCII
+                rangeUp((char) 127)         // DEL and non-ASCII
+        ));
+    }
+
+    /**
      * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a}. Does not support
      * removal.
      *
@@ -576,392 +962,6 @@ public final class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         return IterableUtils.range(a, b);
-    }
-
-    /**
-     * Returns an unmodifiable version of a list. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result is finite.</li>
-     * </ul>
-     *
-     * Length is |{@code xs}|
-     *
-     * @param xs a {@code List}
-     * @param <T> the type of {@code xs}'s elements
-     * @return an unmodifiable version of {@code xs}
-     */
-    @Override
-    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        return new NoRemoveIterable<>(xs);
-    }
-
-    /**
-     * Turns a {@code String} into an {@code Iterable} of {@code Character}s. Does not support removal.
-     *
-     * <ul>
-     *  <li>{@code s} cannot be null.</li>
-     *  <li>The result is finite.</li>
-     * </ul>
-     *
-     * Length is |{@code s}|
-     *
-     * @param s a {@code String}
-     * @return the {@code Character}s in {@code s}
-     */
-    @Override
-    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        return fromString(s);
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>8</sup> = 256
-     */
-    public @NotNull Iterable<Byte> bytesIncreasing() {
-        return IterableUtils.rangeUp(Byte.MIN_VALUE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>16</sup> = 65,536
-     */
-    public @NotNull Iterable<Short> shortsIncreasing() {
-        return IterableUtils.rangeUp(Short.MIN_VALUE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>32</sup> = 4,294,967,296
-     */
-    public @NotNull Iterable<Integer> integersIncreasing() {
-        return IterableUtils.rangeUp(Integer.MIN_VALUE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
-     */
-    public @NotNull Iterable<Long> longsIncreasing() {
-        return IterableUtils.rangeUp(Long.MIN_VALUE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all positive {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>7</sup>–1 = 127
-     */
-    @Override
-    public @NotNull Iterable<Byte> positiveBytes() {
-        return IterableUtils.rangeUp((byte) 1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all positive {@code Short}s. Does not support removal.
-     *
-     * Length is 2<sup>15</sup>–1 = 32,767
-     */
-    @Override
-    public @NotNull Iterable<Short> positiveShorts() {
-        return IterableUtils.rangeUp((short) 1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all positive {@code Integer}s. Does not support removal.
-     *
-     * Length is 2<sup>31</sup>–1 = 2,147,483,647
-     */
-    @Override
-    public @NotNull Iterable<Integer> positiveIntegers() {
-        return IterableUtils.rangeUp(1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all positive {@code Long}s. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–1 = 9,223,372,036,854,775,807
-     */
-    @Override
-    public @NotNull Iterable<Long> positiveLongs() {
-        return IterableUtils.rangeUp(1L);
-    }
-
-    /**
-     * An {@code Iterable} that contains all positive {@link BigInteger}s. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return IterableUtils.rangeUp(BigInteger.ONE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all negative {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Byte> negativeBytes() {
-        return IterableUtils.rangeBy((byte) -1, (byte) -1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all negative {@code Short}s. Does not support removal.
-     *
-     * Length is 2<sup>15</sup> = 32,768
-     */
-    @Override
-    public @NotNull Iterable<Short> negativeShorts() {
-        return IterableUtils.rangeBy((short) -1, (short) -1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all negative {@code Integer}s. Does not support removal.
-     *
-     * Length is 2<sup>31</sup> = 2,147,483,648
-     */
-    @Override
-    public @NotNull Iterable<Integer> negativeIntegers() {
-        return IterableUtils.rangeBy(-1, -1);
-    }
-
-    /**
-     * An {@code Iterable} that contains all negative {@code Long}s. Does not support removal.
-     *
-     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
-     */
-    @Override
-    public @NotNull Iterable<Long> negativeLongs() {
-        return IterableUtils.rangeBy(-1L, -1L);
-    }
-
-    /**
-     * An {@code Iterable} that contains all negative {@code BigInteger}s. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> negativeBigIntegers() {
-        return IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Byte> naturalBytes() {
-        return IterableUtils.rangeUp((byte) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>15</sup> = 32,768
-     */
-    @Override
-    public @NotNull Iterable<Short> naturalShorts() {
-        return IterableUtils.rangeUp((short) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>31</sup> = 2,147,483,648
-     */
-    @Override
-    public @NotNull Iterable<Integer> naturalIntegers() {
-        return IterableUtils.rangeUp(0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
-     */
-    @Override
-    public @NotNull Iterable<Long> naturalLongs() {
-        return IterableUtils.rangeUp(0L);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return rangeUp(BigInteger.ZERO);
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>8</sup>–1 = 127
-     */
-    @Override
-    public @NotNull Iterable<Byte> nonzeroBytes() {
-        return mux(Arrays.asList(positiveBytes(), negativeBytes()));
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
-     *
-     * Length is 2<sup>16</sup>–1 = 65,535
-     */
-    @Override
-    public @NotNull Iterable<Short> nonzeroShorts() {
-        return mux(Arrays.asList(positiveShorts(), negativeShorts()));
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
-     *
-     * Length is 2<sup>32</sup>–1 = 4,294,967,295
-     */
-    @Override
-    public @NotNull Iterable<Integer> nonzeroIntegers() {
-        return mux(Arrays.asList(positiveIntegers(), negativeIntegers()));
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
-     */
-    @Override
-    public @NotNull Iterable<Long> nonzeroLongs() {
-        return mux(Arrays.asList(positiveLongs(), negativeLongs()));
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
-        return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>8</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Byte> bytes() {
-        return cons((byte) 0, nonzeroBytes());
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Short}s. Does not support removal.
-     *
-     * Length is 2<sup>16</sup> = 65,536
-     */
-    @Override
-    public @NotNull Iterable<Short> shorts() {
-        return cons((short) 0, nonzeroShorts());
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Integer}s. Does not support removal.
-     *
-     * Length is 2<sup>32</sup> = 4,294,967,296
-     */
-    @Override
-    public @NotNull Iterable<Integer> integers() {
-        return cons(0, nonzeroIntegers());
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Long}s. Does not support removal.
-     *
-     * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
-     */
-    @Override
-    public @NotNull Iterable<Long> longs() {
-        return cons(0L, nonzeroLongs());
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code BigInteger}s. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> bigIntegers() {
-        return cons(BigInteger.ZERO, nonzeroBigIntegers());
-    }
-
-    /**
-     * An {@code Iterable} that contains all ASCII {@link Character}s in increasing order. Does not support
-     * removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    public @NotNull Iterable<Character> asciiCharactersIncreasing() {
-        return range((char) 0, (char) 127);
-    }
-
-    /**
-     * An {@code Iterable} that contains all ASCII {@code Character}s in an order which places "friendly" characters
-     * first. Does not support removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Character> asciiCharacters() {
-        return concat(Arrays.asList(
-                range('a', 'z'),
-                range('A', 'Z'),
-                range('0', '9'),
-                range('!', '/'),                  // printable non-alphanumeric ASCII...
-                range(':', '@'),                  // ...
-                range('[', '`'),                  // ...
-                range('{', '~'),                  // ...
-                Collections.singleton(' '),       // ' '
-                range((char) 0, (char) 31),       // non-printable and whitespace ASCII
-                Collections.singleton((char) 127) // DEL
-        ));
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>16</sup> = 65,536
-     */
-    public @NotNull Iterable<Character> charactersIncreasing() {
-        return range(Character.MIN_VALUE, Character.MAX_VALUE);
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code Character}s in an order which places "friendly" characters
-     * first. Does not support removal.
-     *
-     * Length is 2<sup>16</sup> = 65,536
-     */
-    @Override
-    public @NotNull Iterable<Character> characters() {
-        return concat(Arrays.asList(
-                range('a', 'z'),
-                range('A', 'Z'),
-                range('0', '9'),
-                range('!', '/'),            // printable non-alphanumeric ASCII...
-                range(':', '@'),            // ...
-                range('[', '`'),            // ...
-                range('{', '~'),            // ...
-                Collections.singleton(' '), // ' '
-                range((char) 0, (char) 31), // non-printable and whitespace ASCII
-                rangeUp((char) 127)         // DEL and non-ASCII
-        ));
     }
 
     /**
