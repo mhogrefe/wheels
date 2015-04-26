@@ -1031,16 +1031,19 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
-     * {@code scale}, or all ones if {@code scale} is 1. Does not support removal.
+     * {@code scale}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
      */
     public @NotNull Iterable<Integer> positiveIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         //noinspection ConstantConditions
         return map(p -> p.b, filter(p -> p.a, countAdjacent(map(i -> i != 0, range(0, scale - 1)))));
     }
