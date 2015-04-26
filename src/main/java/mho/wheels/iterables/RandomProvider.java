@@ -1118,11 +1118,9 @@ public final class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        if (scale <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-            private Iterator<Integer> geos = positiveIntegersGeometric().iterator();
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
+            private @NotNull Iterator<Integer> sizes = alt().positiveIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1131,18 +1129,10 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public BigInteger next() {
-                List<Boolean> bits = new ArrayList<>();
-                bits.add(true);
-                int bitSize = geos.next();
-                for (int i = 0; i < bitSize - 1; i++) {
-                    bits.add(generator.nextBoolean());
-                }
-                return MathUtils.fromBigEndianBits(bits);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                int size = sizes.next();
+                BigInteger i = nextBigInteger(prng, size);
+                i = i.setBit(size - 1);
+                return i;
             }
         };
     }
@@ -1178,11 +1168,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        if (scale <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-            Iterator<Integer> geos = positiveIntegersGeometric().iterator();
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
+            private @NotNull Iterator<Integer> sizes = alt().naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1191,20 +1179,12 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public BigInteger next() {
-                List<Boolean> bits = new ArrayList<>();
-                int bitSize = geos.next() - 1;
-                if (bitSize != 0) {
-                    bits.add(true);
+                int size = sizes.next();
+                BigInteger i = nextBigInteger(prng, size);
+                if (size != 0) {
+                    i = i.setBit(size - 1);
                 }
-                for (int i = 0; i < bitSize - 1; i++) {
-                    bits.add(generator.nextBoolean());
-                }
-                return MathUtils.fromBigEndianBits(bits);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                return i;
             }
         };
     }
