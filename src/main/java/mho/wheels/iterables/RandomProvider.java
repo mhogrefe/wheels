@@ -1085,10 +1085,6 @@ public final class RandomProvider extends IterableProvider {
         return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(), alt().booleans());
     }
 
-    public static void main(String[] args) {
-        System.out.println(IterableUtils.toString(20, RandomProvider.EXAMPLE.withScale(10).positiveIntegersGeometric()));
-    }
-
     /**
      * An {@code Iterable} that generates all {@code Integer}s (or just 0, if {@code scale} is 0) whose absolute value
      * is chosen from a geometric distribution with absolute mean {@code scale}, and whose sign is chosen uniformly.
