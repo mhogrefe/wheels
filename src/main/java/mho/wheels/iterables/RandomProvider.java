@@ -183,14 +183,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider alt() {
-        RandomProvider alt = copy();
-        IsaacPRNG prng = new IsaacPRNG(seed);
-        List<Integer> newSeed = new ArrayList<>();
-        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
-            newSeed.add(prng.nextInt());
-        }
-        alt.seed = newSeed;
-        return alt;
+        return randomProvidersDefault().iterator().next().withScale(scale).withSecondaryScale(secondaryScale);
     }
 
     /**
