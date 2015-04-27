@@ -85,6 +85,11 @@ public class RandomProviderProperties {
             propertiesRange_long_long();
             propertiesRange_BigInteger_BigInteger();
             propertiesRange_char_char();
+            propertiesPositiveIntegersGeometric();
+            propertiesNegativeIntegersGeometric();
+            propertiesNaturalIntegersGeometric();
+            propertiesNonzeroIntegersGeometric();
+            propertiesIntegersGeometric();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -840,6 +845,70 @@ public class RandomProviderProperties {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Character.MAX_VALUE), p.a.rangeUp(p.b));
             aeqit(p.toString(), TINY_LIMIT, p.a.range('\0', p.b), p.a.rangeDown(p.b));
+        }
+    }
+
+    private static void propertiesPositiveIntegersGeometric() {
+        System.out.println("\t\ttesting positiveIntegersGeometric() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<Integer> is = rp.positiveIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i > 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNegativeIntegersGeometric() {
+        System.out.println("\t\ttesting negativeIntegersGeometric() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<Integer> is = rp.negativeIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i < 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNaturalIntegersGeometric() {
+        System.out.println("\t\ttesting naturalIntegersGeometric() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<Integer> is = rp.naturalIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i >= 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNonzeroIntegersGeometric() {
+        System.out.println("\t\ttesting nonzeroIntegersGeometric() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<Integer> is = rp.nonzeroIntegers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i != 0, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesIntegersGeometric() {
+        System.out.println("\t\ttesting integersGeometric() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<Integer> is = rp.integers();
+            Iterable<Integer> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            testNoRemove(TINY_LIMIT, is);
         }
     }
 
