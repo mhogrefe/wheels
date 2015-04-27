@@ -1200,6 +1200,13 @@ public class RandomProviderTest {
         geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, topSampleCount, sampleMean);
     }
 
+    private static void naturalIntegersGeometric_fail_helper(int scale) {
+        try {
+            P.withScale(scale).naturalIntegersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
     @Test
     public void testNaturalIntegersGeometric() {
         naturalIntegersGeometric_helper(
@@ -1244,10 +1251,8 @@ public class RandomProviderTest {
                 "{0=9946, 1=9846, 3=9594, 4=9593, 2=9541, 5=9353, 9=9285, 6=9222, 7=9184, 8=9136}",
                 99.85402799999808
         );
-        try {
-            P.withScale(0).naturalIntegersGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
+        naturalIntegersGeometric_fail_helper(0);
+        naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void nonzeroIntegersGeometric_helper(
@@ -1330,6 +1335,13 @@ public class RandomProviderTest {
         aeq(meanOfIntegers(map(Math::abs, xs)), sampleAbsMean);
     }
 
+    private static void integersGeometric_fail_helper(int scale) {
+        try {
+            P.withScale(scale).integersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
     @Test
     public void testIntegersGeometric() {
         integersGeometric_helper(
@@ -1381,9 +1393,8 @@ public class RandomProviderTest {
                 -0.03164600000000099,
                 99.85402799999808
         );
-        try {
-            P.withScale(0).integersGeometric();
-        } catch (IllegalStateException ignored) {}
+        integersGeometric_fail_helper(0);
+        integersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private void positiveBigIntegers_int_helper(int meanBitSize, @NotNull String output) {
