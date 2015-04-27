@@ -1107,7 +1107,7 @@ public final class RandomProvider extends IterableProvider {
      * a geometric distribution with mean {@code scale}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale greater than {@code a}.</li>
+     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
      *  <li>{@code a} may be any {@code int}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
@@ -1120,7 +1120,36 @@ public final class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale greater than a, which is " + a +
                     ". Invalid scale: " + scale);
         }
+        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
+                    (Integer.MAX_VALUE + a));
+        }
         return map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric());
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s less than or equal to {@code a}, chosen from a
+     * geometric distribution with mean {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
+        if (scale <= a) {
+            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
+                    ". Invalid scale: " + scale);
+        }
+        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
+                    (Integer.MAX_VALUE + a));
+        }
+        return map(i -> i + a - 1, withScale(scale - a + 1).negativeIntegersGeometric());
     }
 
     /**
