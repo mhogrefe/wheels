@@ -427,6 +427,46 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoPositiveIntegersGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveIntegersGeometric(" + rp + ") = " + its(rp.positiveIntegersGeometric()));
+        }
+    }
+
+    private static void demoNegativeIntegersGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeIntegersGeometric(" + rp + ") = " + its(rp.negativeIntegersGeometric()));
+        }
+    }
+
+    private static void demoNaturalIntegersGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("naturalIntegersGeometric(" + rp + ") = " + its(rp.naturalIntegersGeometric()));
+        }
+    }
+
+    private static void demoNonzeroIntegersGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroIntegersGeometric(" + rp + ") = " + its(rp.nonzeroIntegersGeometric()));
+        }
+    }
+
+    private static void demoIntegersGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("integersGeometric(" + rp + ") = " + its(rp.integersGeometric()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
