@@ -268,11 +268,19 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), alt().pairs(alt().naturalIntegersGeometric()))
+                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(alt().naturalIntegersGeometric()))
         );
     }
 
     public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
         return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
+        return map(
+                p -> new RandomProvider(p.a).withScale(p.b),
+                pairs(lists(IsaacPRNG.SIZE, integers()), alt().naturalIntegersGeometric())
+        );
     }
 }
