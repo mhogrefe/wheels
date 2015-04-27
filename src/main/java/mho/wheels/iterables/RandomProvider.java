@@ -1012,7 +1012,7 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
-     * {@code scale}. Does not support removal.
+     * {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
@@ -1032,7 +1032,7 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
-     * –{@code scale}. Does not support removal.
+     * –{@code scale}. The distribution is truncated at –{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
@@ -1048,10 +1048,10 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
-     * {@code scale}. Does not support removal.
+     * {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
@@ -1062,12 +1062,16 @@ public final class RandomProvider extends IterableProvider {
         if (scale < 1) {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
         }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
     /**
      * An {@code Iterable} that generates all nonzero {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. Does not support removal.
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
+     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
@@ -1083,10 +1087,11 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. Does not support removal.
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
+     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
@@ -1095,6 +1100,27 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> integersGeometric() {
         return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(), alt().booleans());
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s greater than or equal to {@code a}, chosen from
+     * a geometric distribution with mean {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale greater than {@code a}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
+        if (scale <= a) {
+            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
+                    ". Invalid scale: " + scale);
+        }
+        return map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric());
     }
 
     /**

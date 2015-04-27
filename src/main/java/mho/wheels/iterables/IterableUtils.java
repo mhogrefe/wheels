@@ -3314,7 +3314,7 @@ public final class IterableUtils {
                         T original = nextX;
                         int count = 0;
                         do {
-                            count++;
+                            if (count != Integer.MAX_VALUE) count++;
                             if (!xsi.hasNext()) {
                                 isLast = true;
                                 break;
