@@ -1063,12 +1063,11 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all nonzero {@code Integer}s (or just 1 and –1, if {@code scale} is 1) whose
-     * absolute value is chosen from a geometric distribution with absolute mean {@code scale}, and whose sign is
-     * chosen uniformly. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
@@ -1079,23 +1078,18 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Integer}s (or just 0, if {@code scale} is 0) whose absolute value
-     * is chosen from a geometric distribution with absolute mean {@code scale}, and whose sign is chosen uniformly.
-     * an absolute value of 0 and a negative sign come up, that combination is skipped; this prevents having too many
-     * zeros. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. Does not support removal.
      *
      * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite
      */
     public @NotNull Iterable<Integer> integersGeometric() {
-        //noinspection ConstantConditions
-        return map(
-                q -> q.b ? q.a : -q.a,
-                filter(p -> p.b || p.a != 0, zip(naturalIntegersGeometric(), alt().booleans()))
-        );
+        return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(), alt().booleans());
     }
 
     /**

@@ -169,7 +169,7 @@ public class RandomProviderTest {
         simpleProviderHelper(
                 P.booleans(),
                 "[true, false, false, true, false, true, false, false, false, true, true, false, true, false, true," +
-                " false, true, true, true, false]",
+                        " false, true, true, true, false]",
                 "[true=499545, false=500455]"
         );
     }
@@ -246,9 +246,9 @@ public class RandomProviderTest {
         simpleProviderHelper(
                 P.roundingModes(),
                 "[UP, DOWN, HALF_EVEN, HALF_UP, CEILING, UP, HALF_UP, HALF_UP, HALF_UP, HALF_DOWN, UP, FLOOR," +
-                " HALF_DOWN, HALF_EVEN, HALF_DOWN, DOWN, UP, HALF_EVEN, HALF_DOWN, HALF_UP]",
+                        " HALF_DOWN, HALF_EVEN, HALF_DOWN, DOWN, UP, HALF_EVEN, HALF_DOWN, HALF_UP]",
                 "[UP=125201, DOWN=124277, HALF_EVEN=125246, HALF_UP=125207, CEILING=125091, HALF_DOWN=125195," +
-                " FLOOR=124976, UNNECESSARY=124807]"
+                        " FLOOR=124976, UNNECESSARY=124807]"
         );
     }
 
@@ -387,23 +387,23 @@ public class RandomProviderTest {
     public void testShorts() {
         aeqit(take(TINY_LIMIT, P.shorts()),
                 "[22057, -11831, -26237, 11762, 949, 17087, 9528, 12773, -25859, -32605, -2305, -815, -29337, -7659," +
-                " 6131, -8843, -20744, -8939, -17743, -858]");
+                        " 6131, -8843, -20744, -8939, -17743, -858]");
     }
 
     @Test
     public void testAsciiCharacters() {
         aeqcs(P.asciiCharacters(),
                 ")I\3r5?8e}#\177Qg\25sux\u00151&OaV\\?>5?u~\34*Oy\4w?~+-Br\7)\34d\26CLERd%@c7\2\5o.\u001c2S\6z=Vz\30" +
-                "}l\nNph\32Xx^$x.\23\22\3oK10)\177u;\u001c2nEZF\17If`5f\23OSS\5\3v\5s\u000b2Y\\oKo;\1|CQ7&");
+                        "}l\nNph\32Xx^$x.\23\22\3oK10)\177u;\u001c2nEZF\17If`5f\23OSS\5\3v\5s\u000b2Y\\oKo;\1|CQ7&");
     }
 
     @Test
     public void testCharacters() {
         aeqcs(P.characters(),
                 "嘩퇉馃\u2df2ε䊿\u2538\u31e5髽肣\uf6ffﳑ赧\ue215\u17f3\udd75껸\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ䲵箿偵恾ᬜK" +
-                "㵏ꏹ缄㩷ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ" +
-                "\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆" +
-                "\ue78f㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ");
+                        "㵏ꏹ缄㩷ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ" +
+                        "\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆" +
+                        "\ue78f㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ");
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
@@ -463,7 +463,7 @@ public class RandomProviderTest {
         rangeUp_short_helper(
                 Short.MIN_VALUE,
                 "[-10711, 20937, 6531, -21006, -31819, -15681, -23240, -19995, 6909, 163, 30463, 31953, 3431, 25109," +
-                " -26637, 23925, 12024, 23829, 15025, 31910]"
+                        " -26637, 23925, 12024, 23829, 15025, 31910]"
         );
     }
 
@@ -500,9 +500,9 @@ public class RandomProviderTest {
         rangeUp_int_helper(
                 Integer.MIN_VALUE,
                 "[-1004482103, 970337778, 681591487, 136131045, -150306653, 2040790225, 1941234197, 1951980917," +
-                " 534895893, 1315765414, -658504735, -291825188, 739062078, 2008775615, -1552326530, " +
-                "-1038540502," +
-                " 1275438073, 985283191, -1965701250, -1186791891]"
+                        " 534895893, 1315765414, -658504735, -291825188, 739062078, 2008775615, -1552326530, " +
+                        "-1038540502," +
+                        " 1275438073, 985283191, -1965701250, -1186791891]"
         );
     }
 
@@ -547,10 +547,10 @@ public class RandomProviderTest {
         rangeUp_long_helper(
                 Long.MIN_VALUE,
                 "[-3001719753101261693, -5920340473037142337, -6486340264786032387, 2946691002601937," +
-                " 938051737769800691, 6726395392388302357, 4191131234584022735, -8953058930686899236," +
-                " -3259812015710032715, -307380066314523266, -7262442345795599793, 2523647485907371127," +
-                " -5933783335123481941, 9097897703523752562, 8234018459023606428, -2942296318021176509," +
-                " 5939553317435058514, 425447389768546624, -6116173926626075902, 2177406786277490478]"
+                        " 938051737769800691, 6726395392388302357, 4191131234584022735, -8953058930686899236," +
+                        " -3259812015710032715, -307380066314523266, -7262442345795599793, 2523647485907371127," +
+                        " -5933783335123481941, 9097897703523752562, 8234018459023606428, -2942296318021176509," +
+                        " 5939553317435058514, 425447389768546624, -6116173926626075902, 2177406786277490478]"
         );
     }
 
@@ -584,20 +584,20 @@ public class RandomProviderTest {
         rangeUp_char_helper(
                 Character.MAX_VALUE,
                 "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff" +
-                "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
-                "\uffff"
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff" +
+                        "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
+                        "\uffff"
         );
     }
 
@@ -627,7 +627,7 @@ public class RandomProviderTest {
         rangeDown_byte_helper(
                 Byte.MIN_VALUE,
                 "[-128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128," +
-                " -128, -128, -128, -128]"
+                        " -128, -128, -128, -128]"
         );
     }
 
@@ -660,7 +660,7 @@ public class RandomProviderTest {
         rangeDown_short_helper(
                 Short.MIN_VALUE,
                 "[-32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768," +
-                " -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768]"
+                        " -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768]"
         );
     }
 
@@ -697,8 +697,8 @@ public class RandomProviderTest {
         rangeDown_int_helper(
                 Integer.MIN_VALUE,
                 "[-2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
-                " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
-                " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648]"
+                        " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
+                        " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648]"
         );
     }
 
@@ -743,10 +743,10 @@ public class RandomProviderTest {
         rangeDown_long_helper(
                 Long.MIN_VALUE,
                 "[-9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
-                " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808]"
+                        " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
+                        " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
+                        " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808," +
+                        " -9223372036854775808, -9223372036854775808, -9223372036854775808, -9223372036854775808]"
         );
     }
 
@@ -777,9 +777,9 @@ public class RandomProviderTest {
         rangeDown_char_helper(
                 Character.MAX_VALUE,
                 "嘩퇉馃\u2df2ε䊿\u2538\u31e5髽肣\uf6ffﳑ赧\ue215\u17f3\udd75껸\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ䲵箿偵恾ᬜK㵏ꏹ缄㩷" +
-                "ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd" +
-                "\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f" +
-                "㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ"
+                        "ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd" +
+                        "\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f" +
+                        "㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ"
         );
     }
 
@@ -1049,14 +1049,14 @@ public class RandomProviderTest {
                 'a',
                 'a',
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         );
         range_char_char_helper('a', 'A', "");
         range_char_char_helper(
                 '!',
                 '9',
                 "**$369&$2(646962'0\"766+0%8,.#3(*%7$-&3%&!$8#&0/34'79-+/1)99%9/43$0,21*63/&'0*'!6'4044&$7&4,30,0\"$" +
-                "28'83&682)#,(5)75!'/*(##4,'39$8"
+                        "28'83&682)#,(5)75!'/*(##4,'39$8"
         );
     }
 
@@ -1331,69 +1331,59 @@ public class RandomProviderTest {
     }
 
     @Test
-    @Ignore
     public void testIntegersGeometric() {
         integersGeometric_helper(
-                0,
-                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
-                "{0=1000000}",
-                0.0,
-                0.0
-        );
-        integersGeometric_helper(
                 1,
-                "[-1, -1, -1, 0, -1, 0, 0, -1, 2, 0, -1, -1, -1, 1, 2, -1, -1, 0, 2, -1]",
-                "{-1=1000000}",
-                -1.000000000007918, //rounding error
-                0.0
+                "[0, -6, 0, 0, -1, 0, 0, -1, 1, 0, 0, 3, 0, -3, 0, -1, 0, 0, 0, 0]",
+                "{0=499586, 1=125303, -1=124540, -2=62938, 2=62637, -3=31272, 3=31121, -4=15702, 4=15638, 5=7833}",
+                -7.989999999999772E-4,
+                1.0012709999976894
         );
         integersGeometric_helper(
                 2,
-                "[-1, -1, -1, -3, -1, -2, -3, -1, -3, -1, -1, -4, -1, -1, -1, -1, -5, -1, -2, -1]",
-                "{-1=498731, -2=250297, -3=125336, -4=62592, -5=31500, -6=15746, -7=8002, -8=3890, -9=1922, -10=981}",
-                -2.00389299998003,
-                0.0
+                "[8, -7, 0, -7, 0, -4, 6, -3, 0, 0, -3, 5, 1, -2, 1, 0, 1, 0, 10, 1]",
+                "{0=332590, 1=111199, -1=110844, -2=74215, 2=73945, 3=49795, -3=49759, -4=33107, 4=32806, 5=21917}",
+                0.00366999999999998,
+                2.00412399998913
         );
         integersGeometric_helper(
                 3,
-                "[-3, -3, -1, -2, -4, -3, -1, -6, -2, -1, -8, -1, -1, -6, -1, -1, -1, -3, -1, -5]",
-                "{-1=333030, -2=222156, -3=148589, -4=98029, -5=66010, -6=44029, -7=29428, -8=19470, -9=13078," +
-                        " -10=8797}",
-                -3.003356999989909,
-                0.0
+                "[10, -9, -1, -8, 0, -5, 10, -1, 4, -1, 0, 5, 8, -1, 1, -1, 5, 1, 0, 1]",
+                "{0=249744, 1=93502, -1=93361, 2=70358, -2=70080, 3=53095, -3=52772, -4=39853, 4=39671, -5=29712}",
+                -0.002643999999999819,
+                3.0064019999914837
         );
         integersGeometric_helper(
                 4,
-                "[-6, -1, -2, -4, -3, -1, -8, -1, -9, -8, -2, -3, -1, -8, -6, -6, -2, -2, -4, -1]",
-                "{-1=249593, -2=187157, -3=140530, -4=105260, -5=79490, -6=59545, -7=44447, -8=33455, -9=24992," +
-                        " -10=18829}",
-                -4.007273999990233,
-                0.0
+                "[12, -2, 0, -15, -6, -5, 7, -2, 8, 0, -2, 1, 0, -9, 1, -2, 1, 5, 19, 0]",
+                "{0=200184, -1=79868, 1=79520, -2=64120, 2=63805, 3=51127, -3=50957, 4=41063, -4=40952, 5=32912}",
+                -3.800000000004667E-5,
+                4.005903999991679
         );
         integersGeometric_helper(
                 5,
-                "[-6, -1, -2, -4, -4, -8, -18, -2, -3, -1, -8, -6, -6, -2, -6, -1, -2, -6, -1, -2]",
-                "{-1=199675, -2=160080, -3=127838, -4=102046, -5=82544, -6=65842, -7=52302, -8=42109, -9=33370," +
-                        " -10=26704}",
-                -5.002148000008636,
-                0.0
+                "[18, -5, 0, -18, -6, -6, 7, -3, 11, 0, -2, 1, 0, -12, 2, -2, 1, 6, 22, 0]",
+                "{0=166872, -1=69305, 1=69252, -2=57833, 2=57586, 3=48546, -3=48128, 4=40224, -4=39977, 5=33493}",
+                0.0032600000000001014,
+                5.005902000004987
         );
         integersGeometric_helper(
                 10,
-                "[-6, -1, -2, -8, -8, -24, -8, -6, -6, -8, -9, -1, -2, -2, -4, -8, -20, -15, -7, -3]",
-                "{-1=100343, -2=89755, -3=81299, -4=72632, -5=65775, -6=58756, -7=52964, -8=47987, -9=42962," +
-                        " -10=38405}",
-                -10.002680000005894,
-                0.0
+                "[18, -5, -39, -11, -15, -3, 0, -14, 4, -1, -5, 41, 7, -2, 1, -13, 9, 10, 30, 26]",
+                "{0=91218, -1=41471, 1=41389, 2=37575, -2=37572, -3=34463, 3=34046, 4=31124, -4=30897, -5=28351}",
+                0.007937000000000064,
+                9.999247000004416
         );
         integersGeometric_helper(
                 100,
-                "[-6, -57, -6, -26, -53, -152, -184, -39, -89, -112, -17, -42, -96, -66, -22, -86, -33, -28, -24," +
-                        " -16]",
-                "{-1=10197, -3=9995, -2=9909, -4=9645, -5=9638, -6=9529, -10=9264, -7=9236, -8=9183, -11=9132}",
-                -100.00996300000024,
-                0.0
+                "[203, -15, -111, -2, -47, -69, 162, -135, 11, -9, -84, 253, 63, -75, 27, -198, 23, 445, 195, 14]",
+                "{0=9946, -1=4946, 1=4900, -3=4847, -4=4815, 2=4780, 4=4778, -2=4761, 3=4747, -9=4714}",
+                -0.03164600000000099,
+                99.85402799999808
         );
+        try {
+            P.withScale(0).integersGeometric();
+        } catch (IllegalStateException ignored) {}
     }
 
     private void positiveBigIntegers_int_helper(int meanBitSize, @NotNull String output) {
