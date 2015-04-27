@@ -53,6 +53,12 @@ public abstract class IterableProvider {
     public @NotNull Iterable<Integer> integersGeometric() {
         return integers();
     }
+    public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
+        return rangeUp(a);
+    }
+    public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
+        return rangeDown(a);
+    }
 
     public abstract @NotNull Iterable<Byte> positiveBytes();
     public abstract @NotNull Iterable<Short> positiveShorts();

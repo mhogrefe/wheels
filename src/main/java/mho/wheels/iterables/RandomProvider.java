@@ -1021,6 +1021,7 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<Integer> positiveIntegersGeometric() {
         if (scale < 2) {
             throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
@@ -1040,6 +1041,7 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<Integer> negativeIntegersGeometric() {
         return map(i -> -i, positiveIntegersGeometric());
     }
@@ -1055,6 +1057,7 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<Integer> naturalIntegersGeometric() {
         if (scale < 1) {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
@@ -1073,6 +1076,7 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
         return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(), alt().booleans());
     }
@@ -1088,6 +1092,7 @@ public final class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<Integer> integersGeometric() {
         return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(), alt().booleans());
     }
