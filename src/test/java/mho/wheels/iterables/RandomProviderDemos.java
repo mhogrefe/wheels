@@ -445,7 +445,10 @@ public class RandomProviderDemos {
 
     private static void demoNaturalIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("naturalIntegersGeometric(" + rp + ") = " + its(rp.naturalIntegersGeometric()));
         }
@@ -461,7 +464,10 @@ public class RandomProviderDemos {
 
     private static void demoIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("integersGeometric(" + rp + ") = " + its(rp.integersGeometric()));
         }

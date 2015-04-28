@@ -55,12 +55,12 @@ public final class RandomProvider extends IterableProvider {
     private @NotNull List<Integer> seed;
 
     /**
-     * A parameter that determines the size of some of the generated objects. Cannot be negative.
+     * A parameter that determines the size of some of the generated objects.
      */
     private int scale = DEFAULT_SCALE;
 
     /**
-     * Another parameter that determines the size of some of the generated objects. Cannot be negative.
+     * Another parameter that determines the size of some of the generated objects.
      */
     private int secondaryScale = DEFAULT_SECONDARY_SCALE;
 
@@ -117,7 +117,7 @@ public final class RandomProvider extends IterableProvider {
      * Returns {@code this}'s scale parameter.
      *
      * <ul>
-     *  <li>The result is non-negative.</li>
+     *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
      * @return the scale parameter of {@code this}
@@ -130,7 +130,7 @@ public final class RandomProvider extends IterableProvider {
      * Returns {@code this}'s other scale parameter.
      *
      * <ul>
-     *  <li>The result is non-negative.</li>
+     *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
      * @return the other scale parameter of {@code this}
@@ -190,7 +190,7 @@ public final class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new scale.
      *
      * <ul>
-     *  <li>{@code scale} cannot be negative.</li>
+     *  <li>{@code scale} may be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -199,9 +199,6 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withScale(int scale) {
-        if (scale < 0) {
-            throw new IllegalArgumentException("scale cannot be negative. Invalid scale: " + scale);
-        }
         RandomProvider copy = copy();
         copy.scale = scale;
         return copy;
@@ -211,7 +208,7 @@ public final class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new secondary scale.
      *
      * <ul>
-     *  <li>{@code secondaryScale} cannot be negative.</li>
+     *  <li>{@code secondaryScale} mat be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -220,10 +217,6 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
-        if (secondaryScale < 0) {
-            throw new IllegalArgumentException("secondaryScale cannot be negative. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
         RandomProvider copy = copy();
         copy.secondaryScale = secondaryScale;
         return copy;
@@ -846,9 +839,10 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> rangeDown(long a) {
+        BigInteger offset = BigInteger.ONE.shiftLeft(63);
         return map(
-                i -> i.subtract(BigInteger.ONE.shiftLeft(63)).longValueExact(),
-                randomBigIntegers(BigInteger.valueOf(a).add(BigInteger.ONE).add(BigInteger.ONE.shiftLeft(63)))
+                i -> i.subtract(offset).longValueExact(),
+                randomBigIntegers(BigInteger.valueOf(a).add(BigInteger.ONE).add(offset))
         );
     }
 
@@ -1777,7 +1771,5 @@ public final class RandomProvider extends IterableProvider {
      */
     public void validate() {
         assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
-        assertTrue(toString(), scale >= 0);
-        assertTrue(toString(), secondaryScale >= 0);
     }
 }

@@ -129,7 +129,6 @@ public class RandomProviderProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int scale = rp.getScale();
-            assertTrue(rp.toString(), scale >= 0);
             assertEquals(rp.toString(), rp.withScale(scale), rp);
         }
     }
@@ -139,7 +138,6 @@ public class RandomProviderProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int secondaryScale = rp.getSecondaryScale();
-            assertTrue(rp.toString(), secondaryScale >= 0);
             assertEquals(rp.toString(), rp.withSecondaryScale(secondaryScale), rp);
         }
     }
@@ -184,13 +182,6 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             idempotent(x -> x.withScale(rp.getScale()), rp);
         }
-
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().negativeIntegers()))) {
-            try {
-                p.a.withScale(p.b);
-                fail(p.toString());
-            } catch (IllegalArgumentException ignored) {}
-        }
     }
 
     private static void propertiesWithSecondaryScale() {
@@ -211,13 +202,6 @@ public class RandomProviderProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             idempotent(x -> x.withSecondaryScale(rp.getSecondaryScale()), rp);
-        }
-
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.alt().negativeIntegers()))) {
-            try {
-                p.a.withSecondaryScale(p.b);
-                fail(p.toString());
-            } catch (IllegalArgumentException ignored) {}
         }
     }
 
@@ -877,7 +861,10 @@ public class RandomProviderProperties {
     private static void propertiesNaturalIntegersGeometric() {
         System.out.println("\t\ttesting naturalIntegersGeometric() properties...");
 
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.naturalIntegers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -903,7 +890,10 @@ public class RandomProviderProperties {
     private static void propertiesIntegersGeometric() {
         System.out.println("\t\ttesting integersGeometric() properties...");
 
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.integers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
