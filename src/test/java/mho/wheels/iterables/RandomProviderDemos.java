@@ -473,6 +473,28 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoRangeUpGeometric() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.alt().alt().integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUpGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpGeometric(p.b)));
+        }
+    }
+
+    private static void demoRangeDownGeometric() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.alt().alt().integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDownGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownGeometric(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
