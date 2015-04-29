@@ -1161,6 +1161,9 @@ public final class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return () -> new NoRemoveIterator<BigInteger>() {
             private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
             private @NotNull Iterator<Integer> sizes = alt().positiveIntegersGeometric().iterator();
@@ -1211,6 +1214,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         return () -> new NoRemoveIterator<BigInteger>() {
             private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
             private @NotNull Iterator<Integer> sizes = alt().naturalIntegersGeometric().iterator();

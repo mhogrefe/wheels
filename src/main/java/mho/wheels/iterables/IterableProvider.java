@@ -82,9 +82,7 @@ public abstract class IterableProvider {
     public @NotNull Iterable<Long> nonzeroLongs() {
         return filter(l -> l != 0, longs());
     }
-    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
-        return filter(i -> !i.equals(BigInteger.ZERO), bigIntegers());
-    }
+    public abstract @NotNull Iterable<BigInteger> nonzeroBigIntegers();
     public abstract @NotNull Iterable<Byte> naturalBytes();
     public abstract @NotNull Iterable<Short> naturalShorts();
     public abstract @NotNull Iterable<Integer> naturalIntegers();
