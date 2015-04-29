@@ -1118,7 +1118,7 @@ public final class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
                     (Integer.MAX_VALUE + a));
         }
-        return map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric());
+        return filter(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
     }
 
     /**
