@@ -1041,8 +1041,9 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all natural {@code Integer}s chosen from a geometric distribution with mean
-     * {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) chosen from a geometric
+     * distribution with mean {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not
+     * support removal.
      *
      * <ul>
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
@@ -1149,12 +1150,12 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
-     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
-     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
+     * distribution mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
      *
      * <ul>
-     *  <li>{@code meanBitSize} must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all {@code BigInteger}s</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -1181,12 +1182,12 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a geometric
-     * distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
-     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
+     * distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
      *
      * <ul>
-     *  <li>{@code meanBitSize} must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -1198,12 +1199,12 @@ public final class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). The bit size is chosen from a
-     * geometric distribution with mean approximately {@code meanBitSize} (The ratio between the actual mean and
-     * {@code meanBitSize} decreases as {@code meanBitSize} increases). Does not support removal.
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
      *
      * <ul>
-     *  <li>{@code meanBitSize} must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
+     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
@@ -1232,45 +1233,37 @@ public final class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code BigInteger}s. The bit size is chosen from a geometric distribution
-     * with mean approximately {@code meanBitSize} (The ratio between the actual mean and {@code meanBitSize} decreases
-     * as {@code meanBitSize} increases). Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code meanBitSize} must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all {@code BigInteger}s.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        return zipWith((i, b) -> b ? i : i.negate(), positiveBigIntegers(), alt().alt().booleans());
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        if (scale <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            private final Iterator<BigInteger> it = naturalBigIntegers().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public BigInteger next() {
-                BigInteger nbi = it.next();
-                if (generator.nextBoolean()) {
-                    nbi = nbi.negate().subtract(BigInteger.ONE);
-                }
-                return nbi;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return zipWith((i, b) -> b ? i : i.negate(), naturalBigIntegers(), alt().alt().booleans());
     }
 
     /**
