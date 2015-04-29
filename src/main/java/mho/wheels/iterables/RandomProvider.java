@@ -1126,7 +1126,8 @@ public final class RandomProvider extends IterableProvider {
      * geometric distribution with mean {@code scale}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
+     *  <li>{@code this} must have a scale less than {@code a} and greater than
+     *  {@code a}–{@code Integer.MAX_VALUE}.</li>
      *  <li>{@code a} may be any {@code int}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
@@ -1135,15 +1136,15 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
-        if (scale <= a) {
-            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
-                    ". Invalid scale: " + scale);
+        if (scale >= a) {
+            throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
+                    scale);
         }
-        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
-            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
-                    (Integer.MAX_VALUE + a));
+        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+            throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
+                    (a - Integer.MAX_VALUE));
         }
-        return map(i -> i + a - 1, withScale(scale - a + 1).negativeIntegersGeometric());
+        return filter(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
     }
 
     /**
