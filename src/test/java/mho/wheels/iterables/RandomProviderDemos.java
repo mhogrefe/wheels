@@ -495,6 +495,46 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoPositiveBigIntegers() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveBigIntegers(" + rp + ") = " + its(rp.positiveBigIntegers()));
+        }
+    }
+
+    private static void demoNegativeBigIntegers() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeBigIntegers(" + rp + ") = " + its(rp.negativeBigIntegers()));
+        }
+    }
+
+    private static void demoNaturalBigIntegers() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("naturalBigIntegers(" + rp + ") = " + its(rp.naturalBigIntegers()));
+        }
+    }
+
+    private static void demoNonzeroBigIntegers() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroBigIntegers(" + rp + ") = " + its(rp.nonzeroBigIntegers()));
+        }
+    }
+
+    private static void demoBigIntegers() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("bigIntegers(" + rp + ") = " + its(rp.bigIntegers()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
