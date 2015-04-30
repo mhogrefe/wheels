@@ -107,7 +107,7 @@ public class IsaacPRNG {
             result[i++] = b;
 
             x = state[i];
-            a ^= a<<2;
+            a ^= a << 2;
             a += state[j++];
             y = state[(x & MASK) >> 2] + a + b;
             state[i] = y;
