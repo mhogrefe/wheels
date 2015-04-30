@@ -15,6 +15,7 @@ import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+// @formatter:off
 public class RandomProviderTest {
     private static final RandomProvider P = RandomProvider.EXAMPLE;
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
@@ -1964,3 +1965,4 @@ public class RandomProviderTest {
         return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 }
+// @formatter:on
