@@ -92,6 +92,11 @@ public class RandomProviderProperties {
             propertiesIntegersGeometric();
             propertiesRangeUpGeometric();
             propertiesRangeDownGeometric();
+            propertiesPositiveBigIntegers();
+            propertiesNegativeBigIntegers();
+            propertiesNaturalBigIntegers();
+            propertiesNonzeroBigIntegers();
+            propertiesBigIntegers();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -852,7 +857,7 @@ public class RandomProviderProperties {
 
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.negativeIntegers();
+            Iterable<Integer> is = rp.negativeIntegersGeometric();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             assertTrue(rp.toString(), all(i -> i != null, tis));
             assertTrue(rp.toString(), all(i -> i < 0, tis));
@@ -868,7 +873,7 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.naturalIntegers();
+            Iterable<Integer> is = rp.naturalIntegersGeometric();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             assertTrue(rp.toString(), all(i -> i != null, tis));
             assertTrue(rp.toString(), all(i -> i >= 0, tis));
@@ -881,7 +886,7 @@ public class RandomProviderProperties {
 
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.nonzeroIntegers();
+            Iterable<Integer> is = rp.nonzeroIntegersGeometric();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             assertTrue(rp.toString(), all(i -> i != null, tis));
             assertTrue(rp.toString(), all(i -> i != 0, tis));
@@ -897,7 +902,7 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.integers();
+            Iterable<Integer> is = rp.integersGeometric();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             assertTrue(rp.toString(), all(i -> i != null, tis));
             testNoRemove(TINY_LIMIT, is);
@@ -975,6 +980,76 @@ public class RandomProviderProperties {
                 p.a.rangeDownGeometric(p.b);
                 fail(p.toString());
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesPositiveBigIntegers() {
+        System.out.println("\t\ttesting positiveBigIntegers() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigInteger> is = rp.positiveBigIntegers();
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i.signum() == 1, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNegativeBigIntegers() {
+        System.out.println("\t\ttesting negativeBigIntegers() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigInteger> is = rp.negativeBigIntegers();
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i.signum() == -1, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNaturalBigIntegers() {
+        System.out.println("\t\ttesting naturalBigIntegers() properties...");
+
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigInteger> is = rp.naturalBigIntegers();
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> i.signum() != -1, tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesNonzeroBigIntegers() {
+        System.out.println("\t\ttesting nonzeroBigIntegers() properties...");
+
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigInteger> is = rp.nonzeroBigIntegers();
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            assertTrue(rp.toString(), all(i -> !i.equals(BigInteger.ZERO), tis));
+            testNoRemove(TINY_LIMIT, is);
+        }
+    }
+
+    private static void propertiesBigIntegers() {
+        System.out.println("\t\ttesting bigIntegers() properties...");
+
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigInteger> is = rp.bigIntegers();
+            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
+            assertTrue(rp.toString(), all(i -> i != null, tis));
+            testNoRemove(TINY_LIMIT, is);
         }
     }
 
