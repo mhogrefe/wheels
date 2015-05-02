@@ -236,6 +236,7 @@ public final class RandomProvider extends IterableProvider {
      * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
@@ -258,6 +259,7 @@ public final class RandomProvider extends IterableProvider {
      * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Long> longs() {
@@ -287,6 +289,8 @@ public final class RandomProvider extends IterableProvider {
      *  <li>The result is non-negative.</li>
      * </ul>
      *
+     * Alt-level 0
+     *
      * @param prng the {@code IsaacPRNG} generating a {@code BigInteger}
      * @param bits the maximum bitlength of the generated {@code BigInteger}
      * @return A random {@code BigInteger}
@@ -315,6 +319,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param bits the maximum number of bits of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Integer}s with up to {@code bits} bits
@@ -334,6 +339,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param bits the maximum number of bits of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Long}s with up to {@code bits} bits
@@ -353,6 +359,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param bits the maximum number of bits of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code BigInteger}s with up to {@code bits} bits
@@ -383,6 +390,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param n one more than the maximum value of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
@@ -404,6 +412,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param n one more than the maximum value of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Long}s less than {@code n}
@@ -425,6 +434,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param n one more than the maximum value of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code BigInteger}s less than {@code n}
@@ -445,6 +455,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is 0 if {@code xs} is empty, infinite otherwise
+     * Alt-level 0
      *
      * @param xs the source list
      * @param <T> the type of {@code xs}'s elements
@@ -464,6 +475,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is 0 if {@code s} is empty, infinite otherwise
+     * Alt-level 0
      *
      * @param s the source {@code String}
      * @return uniformly-distributed {@code Character}s from {@code s}
@@ -477,6 +489,7 @@ public final class RandomProvider extends IterableProvider {
      * An {@code Iterator} that generates all {@code Ordering}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Ordering> orderings() {
@@ -488,6 +501,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
@@ -499,6 +513,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
@@ -510,6 +525,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
@@ -521,6 +537,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
@@ -532,6 +549,7 @@ public final class RandomProvider extends IterableProvider {
      * distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
@@ -543,6 +561,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
@@ -554,6 +573,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
@@ -565,6 +585,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegers() {
@@ -576,6 +597,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
@@ -587,6 +609,7 @@ public final class RandomProvider extends IterableProvider {
      * not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
@@ -598,6 +621,7 @@ public final class RandomProvider extends IterableProvider {
      * not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
@@ -609,6 +633,7 @@ public final class RandomProvider extends IterableProvider {
      * Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
@@ -620,6 +645,7 @@ public final class RandomProvider extends IterableProvider {
      * not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
@@ -630,6 +656,7 @@ public final class RandomProvider extends IterableProvider {
      * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
@@ -640,6 +667,7 @@ public final class RandomProvider extends IterableProvider {
      * An {@code Iterable} that generates all {@code Short}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
@@ -651,6 +679,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
@@ -662,6 +691,7 @@ public final class RandomProvider extends IterableProvider {
      * removal.
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Character> characters() {
@@ -677,6 +707,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @return uniformly-distributed {@code Byte}s greater than or equal to {@code a}
@@ -695,6 +726,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @return uniformly-distributed {@code Short}s greater than or equal to {@code a}
@@ -713,6 +745,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @return uniformly-distributed {@code Integer}s greater than or equal to {@code a}
@@ -731,6 +764,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @return uniformly-distributed {@code Long}s greater than or equal to {@code a}
@@ -743,12 +777,6 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
-    //todo docs
-    @Override
-    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
-        return map(i -> i.add(a), naturalBigIntegers());
-    }
-
     /**
      * An {@code Iterable} that uniformly generates {@code Characters}s greater than or equal to {@code a}.
      *
@@ -758,6 +786,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @return uniformly-distributed {@code Character}s greater than or equal to {@code a}
@@ -776,6 +805,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Byte}s less than or equal to {@code a}
@@ -795,6 +825,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Short}s less than or equal to {@code a}
@@ -814,6 +845,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Integer}s less than or equal to {@code a}
@@ -833,6 +865,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Long}s less than or equal to {@code a}
@@ -846,12 +879,6 @@ public final class RandomProvider extends IterableProvider {
         );
     }
 
-    //todo docs
-    @Override
-    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
-        return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
-    }
-
     /**
      * An {@code Iterable} that uniformly generates {@code Character}s less than or equal to {@code a}.
      *
@@ -861,6 +888,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      *
      * @param a the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Character}s less than or equal to {@code a}
@@ -881,6 +909,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -903,6 +932,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -925,6 +955,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -947,6 +978,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -971,6 +1003,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -993,6 +1026,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
+     * Alt-level 0
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1014,6 +1048,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegersGeometric() {
@@ -1034,6 +1069,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegersGeometric() {
@@ -1051,6 +1087,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegersGeometric() {
@@ -1074,6 +1111,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 1
      */
     @Override
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
@@ -1091,6 +1129,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 1
      */
     @Override
     public @NotNull Iterable<Integer> integersGeometric() {
@@ -1108,6 +1147,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
@@ -1134,6 +1174,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 0
      */
     @Override
     public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
@@ -1159,6 +1200,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 1
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
         if (scale < 2) {
@@ -1194,6 +1236,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 1
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
@@ -1211,6 +1254,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 1
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
@@ -1249,6 +1293,7 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 2
      */
     @Override
     public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
@@ -1266,10 +1311,23 @@ public final class RandomProvider extends IterableProvider {
      * </ul>
      *
      * Length is infinite
+     * Alt-level 2
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
         return zipWith((i, b) -> b ? i : i.negate(), naturalBigIntegers(), alt().alt().booleans());
+    }
+
+    //todo docs
+    @Override
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
+        return map(i -> i.add(a), naturalBigIntegers());
+    }
+
+    //todo docs
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
     }
 
     /**
