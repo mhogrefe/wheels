@@ -13,6 +13,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.lt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -1011,7 +1012,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (Ordering.gt(a, b)) return Collections.emptyList();
+        if (gt(a, b)) return Collections.emptyList();
         return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
     }
 
@@ -1319,9 +1320,42 @@ public final class RandomProvider extends IterableProvider {
     }
 
     //todo docs
+    private @NotNull BigInteger nextRandomBigInteger(@NotNull IsaacPRNG prng, @NotNull BigInteger n) {
+        int maxBits = MathUtils.ceilingLog(BigInteger.valueOf(2), n).intValueExact();
+        BigInteger result;
+        do {
+            result = nextBigInteger(prng, maxBits);
+        } while (ge(result, n));
+        return result;
+    }
+
+    //todo docs
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
-        return map(i -> i.add(a), naturalBigIntegers());
+        int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
+        int absBitLength = a.abs().bitLength();
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
+            private @NotNull Iterator<Integer> sizes = alt().rangeUpGeometric(minBitLength).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigInteger next() {
+                int size = sizes.next();
+                if (size > absBitLength) {
+                    BigInteger i = nextBigInteger(prng, size);
+                    i = i.setBit(size - 1);
+                    return i;
+                } else if (size < minBitLength) {
+                    BigInteger i = nextBigInteger(prng, size + 1);
+                }
+                return null;
+            }
+        };
     }
 
     //todo docs
