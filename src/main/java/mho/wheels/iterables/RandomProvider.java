@@ -1329,10 +1329,34 @@ public final class RandomProvider extends IterableProvider {
         return result;
     }
 
-    //todo docs
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s greater than or equal to {@code a}. The bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen
+     * uniformly from all {@code BigInteger}s greater than or equal to {@code a} with that bit size. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
+     *  {@code this} must have a scale greater than {@code minBitLength} and less than
+     *  {@code Integer.MAX_VALUE}+{@code minBitLength}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     * Alt-level 1
+     */
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength < 1 && scale >= Integer.MAX_VALUE + minBitLength) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + minBitLength," +
+                    " which is " + (Integer.MAX_VALUE + minBitLength));
+        }
         int absBitLength = a.abs().bitLength();
         return () -> new NoRemoveIterator<BigInteger>() {
             private @NotNull IsaacPRNG prng = new IsaacPRNG(seed);
