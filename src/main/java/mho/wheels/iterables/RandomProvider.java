@@ -296,7 +296,7 @@ public final class RandomProvider extends IterableProvider {
      * @param bits the maximum bitlength of the generated {@code BigInteger}
      * @return A random {@code BigInteger}
      */
-    private static @NotNull BigInteger nextBigInteger(@NotNull IsaacPRNG prng, int bits) {
+    private static @NotNull BigInteger nextBigIntegerPow2(@NotNull IsaacPRNG prng, int bits) {
         byte[] bytes = new byte[bits / 8 + 1];
         int x = 0;
         for (int i = 0; i < bytes.length; i++) {
@@ -376,7 +376,7 @@ public final class RandomProvider extends IterableProvider {
 
             @Override
             public BigInteger next() {
-                return nextBigInteger(prng, bits);
+                return nextBigIntegerPow2(prng, bits);
             }
         };
     }
@@ -396,7 +396,7 @@ public final class RandomProvider extends IterableProvider {
      * @param n one more than the maximum value of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
      */
-    private @NotNull Iterable<Integer> randomInts(int n) {
+    private @NotNull Iterable<Integer> integersBounded(int n) {
         return filter(
                 i -> i < n,
                 randomIntsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
@@ -418,7 +418,7 @@ public final class RandomProvider extends IterableProvider {
      * @param n one more than the maximum value of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Long}s less than {@code n}
      */
-    private @NotNull Iterable<Long> randomLongs(long n) {
+    private @NotNull Iterable<Long> longsBounded(long n) {
         return filter(
                 l -> l < n,
                 randomLongsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
@@ -715,7 +715,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
-        return map(i -> (byte) (i + a), randomInts((1 << 7) - a));
+        return map(i -> (byte) (i + a), integersBounded((1 << 7) - a));
     }
 
     /**
@@ -734,7 +734,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
-        return map(i -> (short) (i + a), randomInts((1 << 15) - a));
+        return map(i -> (short) (i + a), integersBounded((1 << 15) - a));
     }
 
     /**
@@ -753,7 +753,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
-        return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
+        return map(l -> (int) (l + a), longsBounded((1L << 31) - a));
     }
 
     /**
@@ -794,7 +794,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
-        return map(i -> (char) (i + a), randomInts((1 << 16) - a));
+        return map(i -> (char) (i + a), integersBounded((1 << 16) - a));
     }
 
     /**
@@ -814,7 +814,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> rangeDown(byte a) {
         int offset = 1 << 7;
-        return map(i -> (byte) (i - offset), randomInts(a + offset + 1));
+        return map(i -> (byte) (i - offset), integersBounded(a + offset + 1));
     }
 
     /**
@@ -834,7 +834,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> rangeDown(short a) {
         int offset = 1 << 15;
-        return map(i -> (short) (i - offset), randomInts(a + offset + 1));
+        return map(i -> (short) (i - offset), integersBounded(a + offset + 1));
     }
 
     /**
@@ -854,7 +854,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> rangeDown(int a) {
         long offset = 1L << 31;
-        return map(l -> (int) (l - offset), randomLongs(a + offset + 1));
+        return map(l -> (int) (l - offset), longsBounded(a + offset + 1));
     }
 
     /**
@@ -896,7 +896,7 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> rangeDown(char a) {
-        return map(i -> (char) (int) i, randomInts(a + 1));
+        return map(i -> (char) (int) i, integersBounded(a + 1));
     }
 
     /**
@@ -919,7 +919,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return Collections.emptyList();
-        return map(i -> (byte) (i + a), randomInts((int) b - a + 1));
+        return map(i -> (byte) (i + a), integersBounded((int) b - a + 1));
     }
 
     /**
@@ -942,7 +942,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Short> range(short a, short b) {
         if (a > b) return Collections.emptyList();
-        return map(i -> (short) (i + a), randomInts((int) b - a + 1));
+        return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
     }
 
     /**
@@ -965,7 +965,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Integer> range(int a, int b) {
         if (a > b) return Collections.emptyList();
-        return map(i -> (int) (i + a), randomLongs((long) b - a + 1));
+        return map(i -> (int) (i + a), longsBounded((long) b - a + 1));
     }
 
     /**
@@ -1036,7 +1036,7 @@ public final class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Character> range(char a, char b) {
         if (a > b) return Collections.emptyList();
-        return map(i -> (char) (i + a), randomInts(b - a + 1));
+        return map(i -> (char) (i + a), integersBounded(b - a + 1));
     }
 
     /**
@@ -1219,7 +1219,7 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 int size = sizes.next();
-                BigInteger i = nextBigInteger(prng, size);
+                BigInteger i = nextBigIntegerPow2(prng, size);
                 i = i.setBit(size - 1);
                 return i;
             }
@@ -1274,7 +1274,7 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 int size = sizes.next();
-                BigInteger i = nextBigInteger(prng, size);
+                BigInteger i = nextBigIntegerPow2(prng, size);
                 if (size != 0) {
                     i = i.setBit(size - 1);
                 }
@@ -1320,11 +1320,11 @@ public final class RandomProvider extends IterableProvider {
     }
 
     //todo docs
-    private @NotNull BigInteger nextRandomBigInteger(@NotNull IsaacPRNG prng, @NotNull BigInteger n) {
+    private @NotNull static BigInteger nextBigIntegerBounded(@NotNull IsaacPRNG prng, @NotNull BigInteger n) {
         int maxBits = MathUtils.ceilingLog(BigInteger.valueOf(2), n).intValueExact();
         BigInteger result;
         do {
-            result = nextBigInteger(prng, maxBits);
+            result = nextBigIntegerPow2(prng, maxBits);
         } while (ge(result, n));
         return result;
     }
@@ -1346,14 +1346,25 @@ public final class RandomProvider extends IterableProvider {
             @Override
             public BigInteger next() {
                 int size = sizes.next();
-                if (size > absBitLength) {
-                    BigInteger i = nextBigInteger(prng, size);
-                    i = i.setBit(size - 1);
-                    return i;
-                } else if (size < minBitLength) {
-                    BigInteger i = nextBigInteger(prng, size + 1);
+                BigInteger i;
+                if (size != absBitLength) {
+                    i = nextBigIntegerPow2(prng, size);
+                    if (size != 0) {
+                        boolean mostSignificantBit = i.testBit(size - 1);
+                        if (!mostSignificantBit) {
+                            i = i.setBit(size - 1).negate();
+                        }
+                    }
+                } else {
+                    if (a.signum() != -1) {
+                        i = nextBigIntegerBounded(prng, BigInteger.ONE.shiftLeft(absBitLength).subtract(a)).add(a);
+                    } else {
+                        BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
+                        BigInteger x = nextBigIntegerBounded(prng, b.add(a.negate().subtract(b)).add(BigInteger.ONE));
+                        i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
+                    }
                 }
-                return null;
+                return i;
             }
         };
     }
@@ -1528,7 +1539,7 @@ public final class RandomProvider extends IterableProvider {
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
+            private Iterator<Integer> specialSelector = integersBounded(SPECIAL_ELEMENT_RATIO).iterator();
             boolean specialSelection = specialSelector.next() == 0;
 
             @Override
