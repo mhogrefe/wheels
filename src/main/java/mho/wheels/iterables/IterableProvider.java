@@ -21,8 +21,8 @@ import static mho.wheels.iterables.IterableUtils.map;
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.
  */
 public abstract class IterableProvider {
-    public @NotNull IterableProvider alt() {
-        return this;
+    public void reset() {
+        return;
     }
     public @NotNull IterableProvider withScale(int scale) {
         return this;
@@ -272,7 +272,7 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(alt().integersGeometric()))
+                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
         );
     }
 
@@ -284,7 +284,7 @@ public abstract class IterableProvider {
     public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), alt().integersGeometric())
+                pairs(lists(IsaacPRNG.SIZE, integers()), integersGeometric())
         );
     }
 }

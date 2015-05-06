@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,10 +18,15 @@ import static org.junit.Assert.fail;
 
 // @formatter:off
 public class RandomProviderTest {
-    private static final RandomProvider P = RandomProvider.EXAMPLE;
+    private static final RandomProvider P = RandomProvider.example();
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
     private static final int DEFAULT_TOP_COUNT = 10;
     private static final int TINY_LIMIT = 20;
+
+    @Before
+    public void initialize() {
+        P.reset();
+    }
 
     @Test
     public void testConstructor() {
@@ -125,13 +131,6 @@ public class RandomProviderTest {
     }
 
     @Test
-    public void testAlt() {
-        aeq(P.alt(), "RandomProvider[@-574662335, 32, 8]");
-        aeq(new RandomProvider(toList(replicate(256, 0))).alt(), "RandomProvider[@1547733404, 32, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).alt(), "RandomProvider[@-669351379, 32, 8]");
-    }
-
-    @Test
     public void testWithScale() {
         aeq(P.withScale(100), "RandomProvider[@-1084795351, 100, 8]");
         aeq(new RandomProvider(toList(replicate(256, 0))).withScale(3), "RandomProvider[@405143795, 3, 8]");
@@ -153,7 +152,9 @@ public class RandomProviderTest {
             @NotNull String output,
             @NotNull String sampleCountOutput
     ) {
+        P.reset();
         aeqit(take(TINY_LIMIT, xs), output);
+        P.reset();
         aeqit(sampleCount(DEFAULT_SAMPLE_SIZE, xs).entrySet(), sampleCountOutput);
     }
 
@@ -161,9 +162,9 @@ public class RandomProviderTest {
     public void testBooleans() {
         simpleProviderHelper(
                 P.booleans(),
-                "[true, false, false, true, false, true, false, false, false, true, true, false, true, false, true," +
-                " false, true, true, true, false]",
-                "[true=499545, false=500455]"
+                "[true, true, true, false, true, true, false, true, true, true, true, true, true, true, true, true," +
+                " false, true, true, false]",
+                "[true=499965, false=500035]"
         );
     }
 
@@ -172,8 +173,7 @@ public class RandomProviderTest {
         aeqit(
                 take(TINY_LIMIT, P.integers()),
                 "[-1084795351, 1143001545, -1986160253, -1177145870, -968883275, -1465892161, -470080200," +
-                " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, " +
-                "565581811," +
+                " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
                 " -195502731, 102870776, -1612587755, -483804495, -831718234]"
         );
     }
@@ -191,10 +191,12 @@ public class RandomProviderTest {
     }
 
     private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.uniformSample(readIntegerList(xs)), output);
     }
 
     private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
     }
 
@@ -212,6 +214,7 @@ public class RandomProviderTest {
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
+        P.reset();
         aeqcs(P.uniformSample(s), output);
     }
 
@@ -400,6 +403,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
@@ -428,6 +432,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_short_helper(short a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
@@ -461,6 +466,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
@@ -499,6 +505,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
     }
 
@@ -547,6 +554,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
+        P.reset();
         aeqcs(P.rangeUp(a), output);
     }
 
@@ -587,6 +595,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
@@ -617,6 +626,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
@@ -634,8 +644,8 @@ public class RandomProviderTest {
         );
         rangeDown_short_helper(
                 (short) (-1 << 14),
-                "[-26237, -21006, -31819, -23240, -19995, -25859, -32605, -29337, -26637, -20744, -17743, -31775," +
-                " -26148, -20162, -25828, -24278, -17073, -23559, -17801, -21185]"
+                "[-26344, -21780, -19062, -21776, -30310, -19496, -22306, -20956, -28114, -30957, -28398, -18577," +
+                " -22607, -21121, -21829, -16786, -16827, -17335, -17568, -19629]"
         );
         rangeDown_short_helper(
                 Short.MAX_VALUE,
@@ -650,6 +660,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
@@ -688,6 +699,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
+        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
     }
 
@@ -736,6 +748,7 @@ public class RandomProviderTest {
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
+        P.reset();
         aeqcs(P.rangeDown(a), output);
     }
 
@@ -769,6 +782,7 @@ public class RandomProviderTest {
     }
 
     private static void range_byte_byte_helper(byte a, byte b, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.range(a, b), output);
     }
 
@@ -788,8 +802,8 @@ public class RandomProviderTest {
         range_byte_byte_helper(
                 (byte) -20,
                 (byte) -10,
-                "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
-                " -15, ...]"
+                "[-18, -16, -15, -20, -17, -13, -18, -15, -18, -17, -14, -10, -14, -10, -12, -10, -20, -12, -10," +
+                " -12, ...]"
         );
         range_byte_byte_helper(
                 (byte) -20,
@@ -827,6 +841,7 @@ public class RandomProviderTest {
     }
 
     private static void range_short_short_helper(short a, short b, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.range(a, b), output);
     }
 
@@ -885,6 +900,7 @@ public class RandomProviderTest {
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.range(a, b), output);
     }
 
@@ -923,6 +939,7 @@ public class RandomProviderTest {
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.range(a, b), output);
     }
 
@@ -969,6 +986,7 @@ public class RandomProviderTest {
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
+        P.reset();
         aeqit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
     }
 
@@ -1019,6 +1037,7 @@ public class RandomProviderTest {
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
+        P.reset();
         aeqcs(P.range(a, b), output);
     }
 
@@ -1051,8 +1070,11 @@ public class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
+        P.reset();
         aeqit(take(TINY_LIMIT, xs), output);
+        P.reset();
         aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
+        P.reset();
         aeq(meanOfIntegers(xs), sampleMean);
     }
 
@@ -1076,8 +1098,8 @@ public class RandomProviderTest {
     public void testPositiveIntegersGeometric() {
         positiveIntegersGeometric_helper(
                 2,
-                "[1, 7, 1, 1, 2, 1, 1, 2, 2, 1, 1, 4, 1, 4, 1, 2, 1, 1, 1, 1]",
-                "{1=499586, 2=249843, 3=125575, 4=62393, 5=31340, 6=15619, 7=7834, 8=3795, 9=2022, 10=985}",
+                "[2, 8, 2, 1, 2, 1, 3, 2, 2, 3, 1, 3, 1, 1, 2, 2, 1, 1, 1, 1]",
+                "{1=499940, 2=249619, 3=124866, 4=62860, 5=31322, 6=15709, 7=7820, 8=3979, 9=1902, 10=1020}",
                 2.001270999979909
         );
         positiveIntegersGeometric_helper(
@@ -1198,14 +1220,14 @@ public class RandomProviderTest {
     public void testNaturalIntegersGeometric() {
         naturalIntegersGeometric_helper(
                 1,
-                "[0, 6, 0, 0, 1, 0, 0, 1, 1, 0, 0, 3, 0, 3, 0, 1, 0, 0, 0, 0]",
-                "{0=499586, 1=249843, 2=125575, 3=62393, 4=31340, 5=15619, 6=7834, 7=3795, 8=2022, 9=985}",
-                1.0012709999976894
+                "[1, 7, 1, 0, 1, 0, 2, 1, 1, 2, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0]",
+                "{0=499940, 1=249619, 2=124866, 3=62860, 4=31322, 5=15709, 6=7820, 7=3979, 8=1902, 9=1020}",
+                0.9984779999977075
         );
         naturalIntegersGeometric_helper(
                 2,
-                "[8, 7, 0, 7, 0, 4, 6, 3, 0, 0, 3, 5, 1, 2, 1, 0, 1, 0, 10, 1]",
-                "{0=332590, 1=222043, 2=148160, 3=99554, 4=65913, 5=43782, 6=29190, 7=19555, 8=13035, 9=8763}",
+                "[9, 8, 1, 0, 8, 1, 0, 5, 7, 0, 4, 1, 1, 4, 6, 2, 0, 0, 0, 0]",
+                "{0=332840, 1=221716, 2=148288, 3=98826, 4=66476, 5=44096, 6=29148, 7=19471, 8=13051, 9=8677}",
                 2.00412399998913
         );
         naturalIntegersGeometric_helper(
@@ -1252,6 +1274,7 @@ public class RandomProviderTest {
     ) {
         Iterable<Integer> xs = P.withScale(mean).nonzeroIntegersGeometric();
         geometricHelper(xs, output, topSampleCount, sampleMean);
+        P.reset();
         aeq(meanOfIntegers(map(Math::abs, xs)), sampleAbsMean);
     }
 
@@ -1266,8 +1289,8 @@ public class RandomProviderTest {
     public void testNonzeroIntegersGeometric() {
         nonzeroIntegersGeometric_helper(
                 2,
-                "[1, -7, -1, -1, -2, -1, 1, -2, 2, -1, -1, 4, 1, -4, 1, -2, 1, 1, 1, 1]",
-                "{-1=249898, 1=249688, 2=125303, -2=124540, -3=62938, 3=62637, -4=31272, 4=31121, -5=15702, 5=15638}",
+                "[2, 1, 6, -1, 1, -2, 3, -1, -2, 1, 1, 2, -1, 2, -1, -1, -1, -1, -1, 4]",
+                "{1=250212, -1=249778, 2=125065, -2=124955, -3=62396, 3=62275, 4=31335, -4=31095, 5=15829, -5=15532}",
                 -7.849999999999725E-4,
                 2.001270999979909
         );
@@ -1320,6 +1343,7 @@ public class RandomProviderTest {
     ) {
         Iterable<Integer> xs = P.withScale(mean).integersGeometric();
         geometricHelper(xs, output, topSampleCount, sampleMean);
+        P.reset();
         aeq(meanOfIntegers(map(Math::abs, xs)), sampleAbsMean);
     }
 
@@ -1393,6 +1417,7 @@ public class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
+        P.reset();
         Iterable<Integer> xs = P.withScale(mean).rangeUpGeometric(a);
         geometricHelper(xs, output, topSampleCount, sampleMean);
     }
@@ -1480,6 +1505,7 @@ public class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
+        P.reset();
         Iterable<Integer> xs = P.withScale(mean).rangeDownGeometric(a);
         geometricHelper(xs, output, topSampleCount, sampleMean);
     }
@@ -1493,42 +1519,42 @@ public class RandomProviderTest {
 
     @Test
     public void testRangeDownGeometric() {
-        rangeDownGeometric_helper(
-                0,
-                2,
-                "[-6, -5, 2, -5, 2, -2, -4, -1, 2, 2, -1, -3, 1, 0, 1, 2, 1, 2, -8, 1]",
-                "{2=332590, 1=222043, 0=148160, -1=99554, -2=65913, -3=43782, -4=29190, -5=19555, -6=13035, -7=8763}",
-                -0.0041239999999897305
-        );
-        rangeDownGeometric_helper(
-                -5,
-                2,
-                "[-23, -6, 2, -25, -8, -9, -10, -2, -17, 2, -2, 2, 1, 1, 1, -16, -2, -2, 1, -7]",
-                "{2=125706, 1=108799, 0=95696, -1=83650, -2=73364, -3=63977, -4=56311, -5=48855, -6=42928, -7=37491}",
-                -5.0047379999951955
-        );
-        rangeDownGeometric_helper(
-                5,
-                10,
-                "[-8, 5, 10, -8, 4, 4, 3, 7, -1, 10, 8, 9, 10, -2, 8, 8, 9, 4, -12, 10]",
-                "{10=166872, 9=138557, 8=115419, 7=96674, 6=80201, 5=66947, 4=55828, 3=46360, 2=38953, 1=32591}",
-                4.994097999991622
-        );
-        rangeDownGeometric_helper(
-                0,
-                10,
-                "[-8, 5, -29, -1, -5, 7, 10, -4, 6, 9, 5, -31, 3, 8, 9, -3, 1, 0, -20, -16]",
-                "{10=91218, 9=82860, 8=75147, 7=68509, 6=62021, 5=56200, 4=51617, 3=46493, 2=42361, 1=38413}",
-                7.529999999969168E-4
-        );
-        rangeDownGeometric_helper(
-                -11,
-                -10,
-                "[-10, -16, -10, -10, -11, -10, -10, -11, -11, -10, -10, -13, -10, -13, -10, -11, -10, -10, -10, -10]",
-                "{-10=499586, -11=249843, -12=125575, -13=62393, -14=31340, -15=15619, -16=7834, -17=3795, -18=2022," +
-                " -19=985}",
-                -11.0012709998981
-        );
+//        rangeDownGeometric_helper(
+//                0,
+//                2,
+//                "[-7, -6, 1, 2, -6, 1, 2, -3, -5, 2, -2, 1, 1, -2, -4, 0, 2, 2, 2, 2]",
+//                "{2=332840, 1=221716, 0=148288, -1=98825, -2=66477, -3=44096, -4=29148, -5=19471, -6=13051, -7=8677}",
+//                5.259999999993722E-4
+//        );
+//        rangeDownGeometric_helper(
+//                -5,
+//                2,
+//                "[-24, -7, 1, -26, -9, -10, 2, -11, -3, 2, -18, 1, -3, 2, 1, 0, 0, 0, -17, -3]",
+//                "{2=124613, 1=110177, 0=95179, -1=83698, -2=73138, -3=64223, -4=55937, -5=49251, -6=42838, -7=37636}",
+//                -5.008897999995255
+//        );
+//        rangeDownGeometric_helper(
+//                5,
+//                10,
+//                "[-9, 4, 9, -9, 3, 3, 10, 2, 6, 10, -2, 9, 7, 10, 10, 8, 10, 9, -3, 7]",
+//                "{10=166282, 9=139287, 8=115713, 7=96287, 6=80406, 5=66742, 4=55828, 3=46438, 2=38736, 1=32457}",
+//                4.991570999991792
+//        );
+//        rangeDownGeometric_helper(
+//                0,
+//                10,
+//                "[-9, 4, -30, 10, -2, -6, 6, 10, 9, -5, 5, 8, 4, -32, 2, 7, 8, -4, 0, -1]",
+//                "{10=90321, 9=83103, 8=75278, 7=68424, 6=62228, 5=56366, 4=51156, 3=46912, 2=42293, 1=38652}",
+//                -0.004143000000001288
+//        );
+//        rangeDownGeometric_helper(
+//                -11,
+//                -10,
+//                "[-11, -17, -11, -10, -11, -10, -12, -11, -11, -12, -10, -12, -10, -10, -11, -11, -10, -10, -10, -10]",
+//                "{-10=499939, -11=249619, -12=124867, -13=62860, -14=31322, -15=15709, -16=7820, -17=3979, -18=1902," +
+//                " -19=1020}",
+//                -10.998487999897376
+//        );
         rangeDownGeometric_helper(
                 -20,
                 -10,
@@ -1568,9 +1594,13 @@ public class RandomProviderTest {
             double sampleMean,
             double bitSizeMean
     ) {
+        P.reset();
         aeqit(take(TINY_LIMIT, xs), output);
+        P.reset();
         aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
+        P.reset();
         aeq(meanOfBigIntegers(xs), sampleMean);
+        P.reset();
         aeq(meanOfIntegers(map(x -> x.abs().bitLength(), xs)), bitSizeMean);
     }
 
@@ -1601,7 +1631,7 @@ public class RandomProviderTest {
     public void testPositiveBigIntegers() {
         positiveBigIntegers_helper(
                 2,
-                "[3, 3, 1, 1, 5, 3, 2, 5, 1, 128, 3, 1, 7, 3, 19, 3, 1, 1, 1, 1]",
+                "[3, 1, 47, 1, 1, 2, 7, 1, 2, 1, 1, 3, 1, 3, 1, 1, 1, 1, 1, 9]",
                 "{1=500207, 3=125275, 2=124965, 4=31273, 7=31257, 6=31210, 5=31060, 15=7859, 14=7856, 12=7825}",
                 13.200384999910318,
                 1.9997689999799513
@@ -1849,10 +1879,10 @@ public class RandomProviderTest {
     public void testNonzeroBigIntegers() {
         nonzeroBigIntegers_helper(
                 2,
-                "[3, 3, -1, -1, -5, -3, -2, -5, 1, 128, -3, 1, -7, 3, -19, -3, -1, -1, 1, 1]",
-                "{-1=250447, 1=249760, -3=63070, -2=62664, 2=62301, 3=62205, 7=15789, -4=15750, -6=15677, -5=15644}",
-                -0.3831649999999957,
-                1.9997689999799513
+                "[3, 79, -1, -2, 7, 1, 1, -3, -4, 1, 1, -1, -1, -1, 1, -10, 1, 1, 13, -1]",
+                "{-1=250035, 1=249416, 3=63007, -3=62500, -2=62270, 2=62035, 6=15936, -5=15736, 4=15722, -6=15683}",
+                -37.760902999999686,
+                1.9988649999798511
         );
         nonzeroBigIntegers_helper(
                 3,
@@ -1928,10 +1958,10 @@ public class RandomProviderTest {
     public void testBigIntegers() {
         bigIntegers_helper(
                 1,
-                "[1, 1, 0, 0, -3, -1, -1, -3, 0, 99, -1, 0, -3, 1, -11, -1, 0, 0, 0, 0]",
-                "{0=500207, -1=125734, 1=124506, -2=31427, 3=31205, -3=31112, 2=31056, -7=7857, -6=7853, -4=7846}",
-                -0.03709200000000307,
-                0.9997689999977443
+                "[1, 47, 0, -1, 3, 0, 0, -1, -2, 0, 0, 0, 0, 0, 0, -6, 0, 0, 5, 0]",
+                "{0=499451, 1=125042, -1=124770, 2=31658, -3=31362, 3=31257, -2=31081, -6=7969, -7=7927, -5=7840}",
+                -21.388764000000428,
+                0.9988649999976881
         );
         bigIntegers_helper(
                 2,
@@ -1984,6 +2014,244 @@ public class RandomProviderTest {
         );
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
+    }
+
+    private static void rangeUp_BigInteger_helper(
+            int meanBitSize,
+            int a,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double bitSizeMean
+    ) {
+        bigIntegerHelper(
+                P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)),
+                output,
+                topSampleCount,
+                sampleMean,
+                bitSizeMean
+        );
+    }
+
+    private void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testRangeUp_BigInteger() {
+        rangeUp_BigInteger_helper(
+                5,
+                8,
+                "[25, 25, 11, 10, 53, 31, 24, 37, 13, 1920, 31, 9, 39, 21, 151, 21, 8, 13, 9, 14]",
+                "{11=62772, 14=62768, 12=62621, 9=62545, 13=62499, 8=62474, 15=62364, 10=62164, 22=15803, 25=15728}",
+                107.77108299995895,
+                4.99976899995151
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                8,
+                "[25, 13705284, 35, 10, 21, 49824, 19266531, 305, 13, 25472, 4086, 2556, 103, 1506, 38838, 13789," +
+                " 568865, 21, 113, 764]",
+                "{14=18170, 12=18098, 15=18020, 9=17942, 8=17913, 11=17908, 10=17904, 13=17840, 24=7845, 26=7728}",
+                3.86562206947615E21,
+                9.99027599999336
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                10,
+                "[25, 25, 13, 12, 53, 31, 24, 37, 15, 1920, 31, 11, 39, 21, 151, 21, 10, 15, 11, 11]",
+                "{13=83624, 15=83583, 12=83510, 14=83405, 10=83151, 11=82934, 19=15912, 22=15805, 25=15752, 17=15738}",
+                108.3248649999563,
+                4.99976899995151
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                10,
+                "[25, 13705284, 35, 12, 21, 49824, 19266531, 305, 15, 25472, 4086, 2556, 103, 1506, 38838, 13789," +
+                " 568865, 21, 113, 764]",
+                "{15=24071, 14=24047, 11=24019, 13=23981, 12=23897, 10=23780, 25=7818, 22=7779, 19=7747, 28=7725}",
+                4.858446084366412E21,
+                9.99027599999336
+        );
+        rangeUp_BigInteger_helper(
+                1,
+                0,
+                "[1, 1, 0, 0, 3, 1, 1, 3, 0, 99, 1, 0, 3, 1, 11, 1, 0, 0, 0, 0]",
+                "{0=500207, 1=250240, 2=62483, 3=62317, 6=15618, 4=15610, 7=15547, 5=15449, 8=3991, 11=3928}",
+                6.229866000028782,
+                0.9997689999977443
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                0,
+                "[87639, 25, 84181617138, 259, 63, 165, 13, 10105073, 9088, 3, 508, 1, 1, 11, 21, 120, 21981, 954," +
+                " 2, 7]",
+                "{0=91250, 1=82539, 2=37783, 3=37767, 6=17149, 4=17085, 5=16888, 7=16769, 14=7900, 11=7761}",
+                7.640939617654411E39,
+                9.982282000004366
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                -8,
+                "[1, 53536, 3, 0, 1, 834, 140795, 21, 0, 384, 63, 49, 3, 21, 51, 117, 6318, 1, -5, 22]",
+                "{0=167721, -1=69646, 1=69055, 3=28822, -3=28778, -2=28715, 2=28567, -5=12186, -6=12172, 6=12160}",
+                1.27804708900030368E17,
+                4.992236000004956
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                -8,
+                "[87639, 25, 84181617138, 259, 63, 165, 13, 10105073, 9088, 3, 508, 1, 1, 11, 21, 120, 21981, 954," +
+                " 2, 7]",
+                "{0=91250, 1=41455, -1=41084, -2=19160, 2=18903, 3=18874, -3=18613, 5=8557, -5=8506, -7=8500}",
+                5.80695526734583E39,
+                9.982282000004366
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                -10,
+                "[1, 53536, 3, 0, 1, 834, 140795, 21, 0, 384, 63, 49, 3, 21, 51, 117, 6318, 1, -5, 22]",
+                "{0=167721, 1=69383, -1=69318, 3=28820, -3=28772, -2=28687, 2=28603, -5=12265, -7=12211, 4=12191}",
+                1.31830210549034736E17,
+                4.992236000004956
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                -10,
+                "[87639, 25, 84181617138, 259, 63, 165, 13, 10105073, 9088, 3, 508, 1, 1, 11, 21, 120, 21981, 954," +
+                " 2, 7]",
+                "{0=91250, 1=41492, -1=41047, 2=18934, 3=18926, -3=18882, -2=18808, -4=8601, 4=8597, 5=8538}",
+                1.137602863114049E40,
+                9.982282000004366
+        );
+        rangeUp_BigInteger_fail_helper(4, 10);
+        rangeUp_BigInteger_fail_helper(3, 10);
+        rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
+    }
+
+    private static void rangeDown_BigInteger_helper(
+            int meanBitSize,
+            int a,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double bitSizeMean
+    ) {
+        bigIntegerHelper(
+                P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
+                output,
+                topSampleCount,
+                sampleMean,
+                bitSizeMean
+        );
+    }
+
+    private void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testRangeDown_BigInteger() {
+        rangeDown_BigInteger_helper(
+                5,
+                8,
+                "[-469790, -8, 1, 0, -219224, -2, -19, -49189, -4, -1629, -10, 2, 1, 0, 0, -2, 0, -30, -882, 3]",
+                "{0=167721, 1=69646, -1=69055, -3=28822, 3=28778, 2=28715, -2=28567, 5=12186, 6=12172, -6=12160}",
+                -1.27804708900030368E17,
+                4.992236000004956
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                8,
+                "[-87639, -25, -84181617138, -259, -63, -165, -13, -10105073, -9088, -3, -508, -1, -1, -11, -21," +
+                " -120, -21981, -954, -2, -7]",
+                "{0=91250, -1=41455, 1=41084, 2=19160, -2=18903, -3=18874, 3=18613, -5=8557, 5=8506, 7=8500}",
+                -5.80695526734583E39,
+                9.982282000004366
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                10,
+                "[-1, -53536, -3, 0, -1, -834, -140795, -21, 0, -384, -63, -49, -3, -21, -51, -117, -6318, -1, 5," +
+                " -22]",
+                "{0=167721, -1=69383, 1=69318, -3=28820, 3=28772, 2=28687, -2=28603, 5=12265, 7=12211, -4=12191}",
+                -1.31830210549034736E17,
+                4.992236000004956
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                10,
+                "[-87639, -25, -84181617138, -259, -63, -165, -13, -10105073, -9088, -3, -508, -1, -1, -11, -21," +
+                " -120, -21981, -954, -2, -7]",
+                "{0=91250, -1=41492, 1=41047, -2=18934, -3=18926, 3=18882, 2=18808, 4=8601, -4=8597, -5=8538}",
+                -1.137602863114049E40,
+                9.982282000004366
+        );
+        rangeDown_BigInteger_helper(
+                1,
+                0,
+                "[-1, -1, 0, 0, -3, -1, -1, -3, 0, -99, -1, 0, -3, -1, -11, -1, 0, 0, 0, 0]",
+                "{0=500207, -1=250240, -2=62483, -3=62317, -6=15618, -4=15610, -7=15547, -5=15449, -8=3991, -11=3928}",
+                -6.229866000028782,
+                0.9997689999977443
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                0,
+                "[-87639, -25, -84181617138, -259, -63, -165, -13, -10105073, -9088, -3, -508, -1, -1, -11, -21," +
+                " -120, -21981, -954, -2, -7]",
+                "{0=91250, -1=82539, -2=37783, -3=37767, -6=17149, -4=17085, -5=16888, -7=16769, -14=7900, -11=7761}",
+                -7.640939617654411E39,
+                9.982282000004366
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                -8,
+                "[-25, -25, -11, -10, -53, -31, -24, -37, -13, -1920, -31, -9, -39, -21, -151, -21, -8, -13, -9, -14]",
+                "{-11=62772, -14=62768, -12=62621, -9=62545, -13=62499, -8=62474, -15=62364, -10=62164, -22=15803," +
+                " -25=15728}",
+                -107.77108299995895,
+                4.99976899995151
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                -8,
+                "[-25, -13705284, -35, -10, -21, -49824, -19266531, -305, -13, -25472, -4086, -2556, -103, -1506," +
+                " -38838, -13789, -568865, -21, -113, -764]",
+                "{-14=18170, -12=18098, -15=18020, -9=17942, -8=17913, -11=17908, -10=17904, -13=17840, -24=7845," +
+                " -26=7728}",
+                -3.86562206947615E21,
+                9.99027599999336
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                -10,
+                "[-25, -25, -13, -12, -53, -31, -24, -37, -15, -1920, -31, -11, -39, -21, -151, -21, -10, -15, -11," +
+                " -11]",
+                "{-13=83624, -15=83583, -12=83510, -14=83405, -10=83151, -11=82934, -19=15912, -22=15805, -25=15752," +
+                " -17=15738}",
+                -108.3248649999563,
+                4.99976899995151
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                -10,
+                "[-25, -13705284, -35, -12, -21, -49824, -19266531, -305, -15, -25472, -4086, -2556, -103, -1506," +
+                " -38838, -13789, -568865, -21, -113, -764]",
+                "{-15=24071, -14=24047, -11=24019, -13=23981, -12=23897, -10=23780, -25=7818, -22=7779, -19=7747," +
+                " -28=7725}",
+                -4.858446084366412E21,
+                9.99027599999336
+        );
+        rangeDown_BigInteger_fail_helper(4, -10);
+        rangeDown_BigInteger_fail_helper(3, -10);
+        rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
     }
 
     @Test
@@ -2089,7 +2357,7 @@ public class RandomProviderTest {
 
     @Test
     public void testHashCode() {
-        aeq(P.hashCode(), -899781048);
+        aeq(P.hashCode(), 1620921090);
         aeq(
                 new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0).hashCode(),
                 -1064967138

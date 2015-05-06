@@ -57,7 +57,7 @@ public class Testing {
     }
 
     public static void aeqcs(@NotNull Iterable<Character> cs, @NotNull String s) {
-        Iterable<Character> truncated = take(SMALL_LIMIT, cs);
+        List<Character> truncated = toList(take(SMALL_LIMIT, cs));
         assertEquals(nicePrint(truncated), charsToString(truncated), s);
     }
 

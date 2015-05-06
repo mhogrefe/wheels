@@ -1,6 +1,5 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -9,10 +8,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static mho.wheels.math.MathUtils.*;
-import static org.junit.Assert.assertEquals;
+import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
@@ -1362,12 +1362,151 @@ public class MathUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
-    private static void aeq(Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(a), b.toString());
+    private static void isPowerOfTwo_int_fail_helper(int n) {
+        try {
+            isPowerOfTwo(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
+    @Test
+    public void testIsPowerOfTwo_int() {
+        assertTrue(isPowerOfTwo(1));
+        assertTrue(isPowerOfTwo(2));
+        assertTrue(isPowerOfTwo(4));
+        assertTrue(isPowerOfTwo(8));
+        assertTrue(isPowerOfTwo(16));
+        assertTrue(isPowerOfTwo(1 << 30));
+        assertFalse(isPowerOfTwo(3));
+        assertFalse(isPowerOfTwo(13));
+        assertFalse(isPowerOfTwo(100));
+        isPowerOfTwo_int_fail_helper(0);
+        isPowerOfTwo_int_fail_helper(-5);
+    }
+
+    private static void isPowerOfTwo_long_fail_helper(long n) {
+        try {
+            isPowerOfTwo(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testIsPowerOfTwo_long() {
+        assertTrue(isPowerOfTwo(1L));
+        assertTrue(isPowerOfTwo(2L));
+        assertTrue(isPowerOfTwo(4L));
+        assertTrue(isPowerOfTwo(8L));
+        assertTrue(isPowerOfTwo(16L));
+        assertTrue(isPowerOfTwo(1L << 62));
+        assertFalse(isPowerOfTwo(3L));
+        assertFalse(isPowerOfTwo(13L));
+        assertFalse(isPowerOfTwo(100L));
+        isPowerOfTwo_long_fail_helper(0L);
+        isPowerOfTwo_long_fail_helper(-5L);
+    }
+
+    private static void isPowerOfTwo_BigInteger_helper(int n, boolean output) {
+        boolean isPowerOfTwo = isPowerOfTwo(BigInteger.valueOf(n));
+        if (output) {
+            assertTrue(isPowerOfTwo);
+        } else {
+            assertFalse(isPowerOfTwo);
+        }
+    }
+
+    private static void isPowerOfTwo_BigInteger_fail_helper(int n) {
+        try {
+            isPowerOfTwo(BigInteger.valueOf(n));
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testIsPowerOfTwo_BigInteger() {
+        isPowerOfTwo_BigInteger_helper(1, true);
+        isPowerOfTwo_BigInteger_helper(2, true);
+        isPowerOfTwo_BigInteger_helper(4, true);
+        isPowerOfTwo_BigInteger_helper(8, true);
+        isPowerOfTwo_BigInteger_helper(16, true);
+        isPowerOfTwo_BigInteger_helper(3, false);
+        isPowerOfTwo_BigInteger_helper(13, false);
+        isPowerOfTwo_BigInteger_helper(100, false);
+        isPowerOfTwo_BigInteger_fail_helper(0);
+        isPowerOfTwo_BigInteger_fail_helper(-5);
+    }
+
+    private static void ceilingLog2_int_fail_helper(int n) {
+        try {
+            ceilingLog2(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testCeilingLog2_int() {
+        aeq(ceilingLog2(1), 0);
+        aeq(ceilingLog2(2), 1);
+        aeq(ceilingLog2(3), 2);
+        aeq(ceilingLog2(4), 2);
+        aeq(ceilingLog2(5), 3);
+        aeq(ceilingLog2(6), 3);
+        aeq(ceilingLog2(7), 3);
+        aeq(ceilingLog2(8), 3);
+        aeq(ceilingLog2(9), 4);
+        aeq(ceilingLog2(1000), 10);
+        ceilingLog2_int_fail_helper(0);
+        ceilingLog2_int_fail_helper(-5);
+    }
+
+    private static void ceilingLog2_long_fail_helper(long n) {
+        try {
+            ceilingLog2(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testCeilingLog2_long() {
+        aeq(ceilingLog2(1L), 0);
+        aeq(ceilingLog2(2L), 1);
+        aeq(ceilingLog2(3L), 2);
+        aeq(ceilingLog2(4L), 2);
+        aeq(ceilingLog2(5L), 3);
+        aeq(ceilingLog2(6L), 3);
+        aeq(ceilingLog2(7L), 3);
+        aeq(ceilingLog2(8L), 3);
+        aeq(ceilingLog2(9L), 4);
+        aeq(ceilingLog2(1000L), 10);
+        ceilingLog2_long_fail_helper(0L);
+        ceilingLog2_long_fail_helper(-5L);
+    }
+
+    private static void ceilingLog2_BigInteger_helper(int n, int output) {
+        aeq(ceilingLog2(BigInteger.valueOf(n)), output);
+    }
+
+    @Test
+    public void testCeilingLog2_BigInteger() {
+        ceilingLog2_BigInteger_helper(1, 0);
+        ceilingLog2_BigInteger_helper(2, 1);
+        ceilingLog2_BigInteger_helper(3, 2);
+        ceilingLog2_BigInteger_helper(4, 2);
+        ceilingLog2_BigInteger_helper(5, 3);
+        ceilingLog2_BigInteger_helper(6, 3);
+        ceilingLog2_BigInteger_helper(7, 3);
+        ceilingLog2_BigInteger_helper(8, 3);
+        ceilingLog2_BigInteger_helper(9, 4);
+        ceilingLog2_BigInteger_helper(1000, 10);
+        ceilingLog2_BigInteger_fail_helper(0);
+        ceilingLog2_BigInteger_fail_helper(-5);
+    }
+
+    private static void ceilingLog2_BigInteger_fail_helper(int n) {
+        try {
+            ceilingLog2(BigInteger.valueOf(n));
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {

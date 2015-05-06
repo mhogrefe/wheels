@@ -1115,10 +1115,6 @@ public final class MathUtils {
         return reverse(IterableUtils.map(MathUtils::fromBits, IterableUtils.demux(size, bits(n))));
     }
 
-    public static boolean isAPowerOfTwo(@NotNull BigInteger n) {
-        return n.getLowestSetBit() == n.bitLength() - 1;
-    }
-
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,
@@ -1143,6 +1139,117 @@ public final class MathUtils {
         }
         //noinspection SuspiciousNameCombination
         return fastGrowingCeilingInverse(i -> base.pow(i.intValueExact()), x, BigInteger.ZERO, x); //very loose bound
+    }
+
+    /**
+     * Determines whether {@code this} is a power of 2.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either boolean.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return whether {@code n} is a power of two
+     */
+    public static boolean isPowerOfTwo(int n) {
+        if (n < 1) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return (n & (n - 1)) == 0;
+    }
+
+    /**
+     * Determines whether {@code this} is a power of 2.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either boolean.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return whether {@code n} is a power of two
+     */
+    public static boolean isPowerOfTwo(long n) {
+        if (n < 1) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return (n & (n - 1)) == 0L;
+    }
+
+    /**
+     * Determines whether {@code this} is a power of 2.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result may be either boolean.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return whether {@code n} is a power of two
+     */
+    public static boolean isPowerOfTwo(@NotNull BigInteger n) {
+        if (lt(n, BigInteger.ONE)) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        return n.getLowestSetBit() == n.bitLength() - 1;
+    }
+
+    /**
+     * Finds the largest integer p such that {@code n}≤2<sup>p</sup>.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is between 0 and 31, inclusive.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return ⌈log<sub>2</sub>({@code n})⌉
+     */
+    public static int ceilingLog2(int n) {
+        if (n < 1) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        int bitLength = 32 - Integer.numberOfLeadingZeros(n);
+        return (n & (n - 1)) == 0 ? bitLength - 1 : bitLength;
+    }
+
+    /**
+     * Finds the largest integer p such that {@code n}≤2<sup>p</sup>.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is between 0 and 63, inclusive.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return ⌈log<sub>2</sub>({@code n})⌉
+     */
+    public static int ceilingLog2(long n) {
+        if (n < 1) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        int bitLength = 64 - Long.numberOfLeadingZeros(n);
+        return (n & (n - 1)) == 0 ? bitLength - 1 : bitLength;
+    }
+
+    /**
+     * Finds the largest integer p such that {@code n}≤2<sup>p</sup>.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @param n a positive number
+     * @return ⌈log<sub>2</sub>({@code n})⌉
+     */
+    public static int ceilingLog2(@NotNull BigInteger n) {
+        if (lt(n, BigInteger.ONE)) {
+            throw new ArithmeticException("n must be positive. Invalid n: " + n);
+        }
+        int bitLength = n.bitLength();
+        return n.getLowestSetBit() == bitLength - 1 ? bitLength - 1 : bitLength;
     }
 
     public static @NotNull BigInteger ceilingInverse(

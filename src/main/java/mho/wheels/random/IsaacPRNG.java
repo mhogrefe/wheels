@@ -2,6 +2,7 @@ package mho.wheels.random;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -318,5 +319,29 @@ public class IsaacPRNG {
             count = SIZE - 1;
         }
         return result[count];
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IsaacPRNG prng = (IsaacPRNG) o;
+        return count == prng.count && a == prng.a && b == prng.b && c == prng.c &&
+                Arrays.equals(result, prng.result) && Arrays.equals(state, prng.state);
+    }
+
+    @Override
+    public int hashCode() {
+        int code = count;
+        code = 31 * code + Arrays.hashCode(result);
+        code = 31 * code + Arrays.hashCode(state);
+        code = 31 * code + a;
+        code = 31 * code + b;
+        code = 31 * code + c;
+        return code;
+    }
+
+    public @NotNull String toString() {
+        return "IsaacPRNG[@" + hashCode() + "]";
     }
 }

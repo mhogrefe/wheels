@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static mho.wheels.ordering.Ordering.*;
 
@@ -26,6 +27,21 @@ public final class IterableUtils {
      * Disallow instantiation
      */
     private IterableUtils() {}
+
+    //todo docs
+    public static @NotNull <T> Iterable<T> fromSupplier(@NotNull Supplier<T> supplier) {
+        return () -> new NoRemoveIterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public T next() {
+                return supplier.get();
+            }
+        };
+    }
 
     /**
      * Adds an {@code Iterable}'s elements to a {@link Collection}, in the order that the elements appear in the
