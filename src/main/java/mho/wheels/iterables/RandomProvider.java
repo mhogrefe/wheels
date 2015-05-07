@@ -698,7 +698,7 @@ public final class RandomProvider extends IterableProvider {
     }
 
     public long nextNaturalLong() {
-        return nextIntPow2(63);
+        return nextLongPow2(63);
     }
 
     /**
@@ -1261,6 +1261,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return fromSupplier(this::nextNonzeroIntGeometric);
     }
 
@@ -1283,7 +1286,13 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integersGeometric() {
-        return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(), booleans());
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        return fromSupplier(this::nextIntGeometric);
     }
 
     public int nextIntGeometricFromRangeUp(int a) {
@@ -1448,6 +1457,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return fromSupplier(this::nextNonzeroBigInteger);
     }
 
@@ -1470,6 +1482,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         return fromSupplier(this::nextBigInteger);
     }
 
