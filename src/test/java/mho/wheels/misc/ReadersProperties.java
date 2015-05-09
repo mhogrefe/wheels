@@ -19,7 +19,7 @@ import static mho.wheels.misc.Readers.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
-public class ReadersProperties {
+public strictfp class ReadersProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
 

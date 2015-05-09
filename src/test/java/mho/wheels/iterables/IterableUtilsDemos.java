@@ -11,7 +11,7 @@ import java.util.Random;
 import static mho.wheels.iterables.IterableUtils.*;
 
 @SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
-public class IterableUtilsDemos {
+public strictfp class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
 

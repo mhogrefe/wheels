@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
  * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
  * source of randomness is perfect (but still deterministic).
  */
-public final class RandomProvider extends IterableProvider {
+public final strictfp class RandomProvider extends IterableProvider {
     private static final List<Ordering> ORDERINGS = toList(ExhaustiveProvider.INSTANCE.orderings());
 
     private static final List<RoundingMode> ROUNDING_MODES = toList(ExhaustiveProvider.INSTANCE.roundingModes());
@@ -62,6 +62,8 @@ public final class RandomProvider extends IterableProvider {
 
     private @NotNull IsaacPRNG prng;
 
+    private long id;
+
     /**
      * A parameter that determines the size of some of the generated objects.
      */
@@ -87,6 +89,7 @@ public final class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
+        id = nextLong();
     }
 
     /**
@@ -107,6 +110,7 @@ public final class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
+        id = nextLong();
     }
 
     /**
@@ -170,11 +174,19 @@ public final class RandomProvider extends IterableProvider {
      *
      * @return A copy of {@code this}.
      */
-    private @NotNull RandomProvider copy() {
+    public @NotNull RandomProvider copy() {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
         copy.secondaryScale = secondaryScale;
         copy.prng = prng;
+        return copy;
+    }
+
+    public @NotNull RandomProvider deepCopy() {
+        RandomProvider copy = new RandomProvider(seed);
+        copy.scale = scale;
+        copy.secondaryScale = secondaryScale;
+        copy.prng = prng.copy();
         return copy;
     }
 
@@ -1212,6 +1224,9 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return fromSupplier(this::nextNegativeIntGeometric);
     }
 
@@ -1568,6 +1583,15 @@ public final class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        int minBitLength = a.signum() == 1 ? 0 : a.negate().bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
+                    " {@code Integer.MAX_VALUE}.");
+        }
         return fromSupplier(() -> nextFromRangeDown(a));
     }
 
@@ -2066,7 +2090,7 @@ public final class RandomProvider extends IterableProvider {
      * @return a {@code String} representation of {@code this}
      */
     public String toString() {
-        return "RandomProvider[@" + nextInt() + ", " + scale + ", " + secondaryScale + "]";
+        return "RandomProvider[@" + id + ", " + scale + ", " + secondaryScale + "]";
     }
 
     /**

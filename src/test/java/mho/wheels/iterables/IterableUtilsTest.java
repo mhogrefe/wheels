@@ -14,7 +14,7 @@ import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.*;
 
-public class IterableUtilsTest {
+public strictfp class IterableUtilsTest {
     //todo clean
     @Test
     public void testAddTo_Iterable_Collection() {

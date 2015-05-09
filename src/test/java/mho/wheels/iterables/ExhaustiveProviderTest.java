@@ -12,7 +12,7 @@ import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-public class ExhaustiveProviderTest {
+public strictfp class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
     private static final int TINY_LIMIT = 20;
 

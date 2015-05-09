@@ -22,7 +22,7 @@ import static mho.wheels.ordering.Ordering.*;
  * {@link mho.wheels.math.Combinatorics}).
  */
 @SuppressWarnings("ConstantConditions")
-public final class IterableUtils {
+public final strictfp class IterableUtils {
     /**
      * Disallow instantiation
      */

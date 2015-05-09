@@ -8,7 +8,7 @@ import static mho.wheels.misc.FloatingPointUtils.successor;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class FloatingPointUtilsTest {
+public strictfp class FloatingPointUtilsTest {
     private static void successor_float_helper(float x, @NotNull String output) {
         aeq(successor(x), output);
     }

@@ -24,7 +24,7 @@ import static mho.wheels.ordering.Ordering.*;
  * There is only a single instance of this class.
  */
 @SuppressWarnings("ConstantConditions")
-public final class ExhaustiveProvider extends IterableProvider {
+public final strictfp class ExhaustiveProvider extends IterableProvider {
     /**
      * The single instance of this class.
      */

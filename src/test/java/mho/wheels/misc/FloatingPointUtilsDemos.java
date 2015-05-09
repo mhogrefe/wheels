@@ -12,7 +12,7 @@ import static mho.wheels.misc.FloatingPointUtils.predecessor;
 import static mho.wheels.misc.FloatingPointUtils.successor;
 
 @SuppressWarnings("UnusedDeclaration")
-public class FloatingPointUtilsDemos {
+public strictfp class FloatingPointUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
     private static IterableProvider P;

@@ -88,10 +88,10 @@ public class MathUtilsTest {
 
     @Test
     public void testBits_int() {
-        aeq(bits(0), "[]");
-        aeq(bits(1), "[true]");
-        aeq(bits(6), "[false, true, true]");
-        aeq(bits(105), "[true, false, false, true, false, true, true]");
+        aeqit(bits(0), "[]");
+        aeqit(bits(1), "[true]");
+        aeqit(bits(6), "[false, true, true]");
+        aeqit(bits(105), "[true, false, false, true, false, true, true]");
         try {
             bits(-1);
             fail();
@@ -100,10 +100,10 @@ public class MathUtilsTest {
 
     @Test
     public void testBits_BigInteger() {
-        aeq(bits(BigInteger.ZERO), "[]");
-        aeq(bits(BigInteger.ONE), "[true]");
-        aeq(bits(BigInteger.valueOf(6)), "[false, true, true]");
-        aeq(bits(BigInteger.valueOf(105)), "[true, false, false, true, false, true, true]");
+        aeqit(bits(BigInteger.ZERO), "[]");
+        aeqit(bits(BigInteger.ONE), "[true]");
+        aeqit(bits(BigInteger.valueOf(6)), "[false, true, true]");
+        aeqit(bits(BigInteger.valueOf(105)), "[true, false, false, true, false, true, true]");
         try {
             bits(-1);
             fail();
@@ -112,16 +112,16 @@ public class MathUtilsTest {
 
     @Test
     public void testBitsPadded_int_int() {
-        aeq(bitsPadded(8, 0), "[false, false, false, false, false, false, false, false]");
-        aeq(bitsPadded(8, 1), "[true, false, false, false, false, false, false, false]");
-        aeq(bitsPadded(8, 6), "[false, true, true, false, false, false, false, false]");
-        aeq(bitsPadded(8, 105), "[true, false, false, true, false, true, true, false]");
-        aeq(bitsPadded(8, 1000), "[false, false, false, true, false, true, true, true]");
-        aeq(bitsPadded(2, 104), "[false, false]");
-        aeq(bitsPadded(2, 105), "[true, false]");
-        aeq(bitsPadded(1, 104), "[false]");
-        aeq(bitsPadded(1, 105), "[true]");
-        aeq(bitsPadded(0, 104), "[]");
+        aeqit(bitsPadded(8, 0), "[false, false, false, false, false, false, false, false]");
+        aeqit(bitsPadded(8, 1), "[true, false, false, false, false, false, false, false]");
+        aeqit(bitsPadded(8, 6), "[false, true, true, false, false, false, false, false]");
+        aeqit(bitsPadded(8, 105), "[true, false, false, true, false, true, true, false]");
+        aeqit(bitsPadded(8, 1000), "[false, false, false, true, false, true, true, true]");
+        aeqit(bitsPadded(2, 104), "[false, false]");
+        aeqit(bitsPadded(2, 105), "[true, false]");
+        aeqit(bitsPadded(1, 104), "[false]");
+        aeqit(bitsPadded(1, 105), "[true]");
+        aeqit(bitsPadded(0, 104), "[]");
         try {
             bitsPadded(8, -1);
             fail();
@@ -134,16 +134,16 @@ public class MathUtilsTest {
 
     @Test
     public void testBitsPadded_BigInteger_BigInteger() {
-        aeq(bitsPadded(8, BigInteger.ZERO), "[false, false, false, false, false, false, false, false]");
-        aeq(bitsPadded(8, BigInteger.ONE), "[true, false, false, false, false, false, false, false]");
-        aeq(bitsPadded(8, BigInteger.valueOf(6)), "[false, true, true, false, false, false, false, false]");
-        aeq(bitsPadded(8, BigInteger.valueOf(105)), "[true, false, false, true, false, true, true, false]");
-        aeq(bitsPadded(8, BigInteger.valueOf(1000)), "[false, false, false, true, false, true, true, true]");
-        aeq(bitsPadded(2, BigInteger.valueOf(104)), "[false, false]");
-        aeq(bitsPadded(2, BigInteger.valueOf(105)), "[true, false]");
-        aeq(bitsPadded(1, BigInteger.valueOf(104)), "[false]");
-        aeq(bitsPadded(1, BigInteger.valueOf(105)), "[true]");
-        aeq(bitsPadded(0, BigInteger.valueOf(104)), "[]");
+        aeqit(bitsPadded(8, BigInteger.ZERO), "[false, false, false, false, false, false, false, false]");
+        aeqit(bitsPadded(8, BigInteger.ONE), "[true, false, false, false, false, false, false, false]");
+        aeqit(bitsPadded(8, BigInteger.valueOf(6)), "[false, true, true, false, false, false, false, false]");
+        aeqit(bitsPadded(8, BigInteger.valueOf(105)), "[true, false, false, true, false, true, true, false]");
+        aeqit(bitsPadded(8, BigInteger.valueOf(1000)), "[false, false, false, true, false, true, true, true]");
+        aeqit(bitsPadded(2, BigInteger.valueOf(104)), "[false, false]");
+        aeqit(bitsPadded(2, BigInteger.valueOf(105)), "[true, false]");
+        aeqit(bitsPadded(1, BigInteger.valueOf(104)), "[false]");
+        aeqit(bitsPadded(1, BigInteger.valueOf(105)), "[true]");
+        aeqit(bitsPadded(0, BigInteger.valueOf(104)), "[]");
         try {
             bitsPadded(8, BigInteger.valueOf(-1));
             fail();
@@ -250,30 +250,30 @@ public class MathUtilsTest {
 
     @Test
     public void testDigits_int_int() {
-        aeq(digits(2, 0), "[]");
-        aeq(digits(3, 0), "[]");
-        aeq(digits(8, 0), "[]");
-        aeq(digits(10, 0), "[]");
-        aeq(digits(12, 0), "[]");
-        aeq(digits(57, 0), "[]");
-        aeq(digits(2, 1), "[1]");
-        aeq(digits(3, 1), "[1]");
-        aeq(digits(8, 1), "[1]");
-        aeq(digits(10, 1), "[1]");
-        aeq(digits(12, 1), "[1]");
-        aeq(digits(57, 1), "[1]");
-        aeq(digits(2, 10), "[0, 1, 0, 1]");
-        aeq(digits(3, 10), "[1, 0, 1]");
-        aeq(digits(8, 10), "[2, 1]");
-        aeq(digits(10, 10), "[0, 1]");
-        aeq(digits(12, 10), "[10]");
-        aeq(digits(57, 10), "[10]");
-        aeq(digits(2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeq(digits(3, 187), "[1, 2, 2, 0, 2]");
-        aeq(digits(8, 187), "[3, 7, 2]");
-        aeq(digits(10, 187), "[7, 8, 1]");
-        aeq(digits(12, 187), "[7, 3, 1]");
-        aeq(digits(57, 187), "[16, 3]");
+        aeqit(digits(2, 0), "[]");
+        aeqit(digits(3, 0), "[]");
+        aeqit(digits(8, 0), "[]");
+        aeqit(digits(10, 0), "[]");
+        aeqit(digits(12, 0), "[]");
+        aeqit(digits(57, 0), "[]");
+        aeqit(digits(2, 1), "[1]");
+        aeqit(digits(3, 1), "[1]");
+        aeqit(digits(8, 1), "[1]");
+        aeqit(digits(10, 1), "[1]");
+        aeqit(digits(12, 1), "[1]");
+        aeqit(digits(57, 1), "[1]");
+        aeqit(digits(2, 10), "[0, 1, 0, 1]");
+        aeqit(digits(3, 10), "[1, 0, 1]");
+        aeqit(digits(8, 10), "[2, 1]");
+        aeqit(digits(10, 10), "[0, 1]");
+        aeqit(digits(12, 10), "[10]");
+        aeqit(digits(57, 10), "[10]");
+        aeqit(digits(2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeqit(digits(3, 187), "[1, 2, 2, 0, 2]");
+        aeqit(digits(8, 187), "[3, 7, 2]");
+        aeqit(digits(10, 187), "[7, 8, 1]");
+        aeqit(digits(12, 187), "[7, 3, 1]");
+        aeqit(digits(57, 187), "[16, 3]");
         try {
             digits(1, 10);
             fail();
@@ -294,30 +294,30 @@ public class MathUtilsTest {
 
     @Test
     public void testDigits_BigInteger_BigInteger() {
-        aeq(digits(BigInteger.valueOf(2), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(8), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(10), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(12), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeq(digits(BigInteger.valueOf(2), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(8), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(10), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(12), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeq(digits(BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1]");
-        aeq(digits(BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1]");
-        aeq(digits(BigInteger.valueOf(8), BigInteger.valueOf(10)), "[2, 1]");
-        aeq(digits(BigInteger.valueOf(10), BigInteger.valueOf(10)), "[0, 1]");
-        aeq(digits(BigInteger.valueOf(12), BigInteger.valueOf(10)), "[10]");
-        aeq(digits(BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeq(digits(BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeq(digits(BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2]");
-        aeq(digits(BigInteger.valueOf(8), BigInteger.valueOf(187)), "[3, 7, 2]");
-        aeq(digits(BigInteger.valueOf(10), BigInteger.valueOf(187)), "[7, 8, 1]");
-        aeq(digits(BigInteger.valueOf(12), BigInteger.valueOf(187)), "[7, 3, 1]");
-        aeq(digits(BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
+        aeqit(digits(BigInteger.valueOf(2), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(3), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(8), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(10), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(12), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(57), BigInteger.ZERO), "[]");
+        aeqit(digits(BigInteger.valueOf(2), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(3), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(8), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(10), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(12), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(57), BigInteger.ONE), "[1]");
+        aeqit(digits(BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1]");
+        aeqit(digits(BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1]");
+        aeqit(digits(BigInteger.valueOf(8), BigInteger.valueOf(10)), "[2, 1]");
+        aeqit(digits(BigInteger.valueOf(10), BigInteger.valueOf(10)), "[0, 1]");
+        aeqit(digits(BigInteger.valueOf(12), BigInteger.valueOf(10)), "[10]");
+        aeqit(digits(BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
+        aeqit(digits(BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeqit(digits(BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2]");
+        aeqit(digits(BigInteger.valueOf(8), BigInteger.valueOf(187)), "[3, 7, 2]");
+        aeqit(digits(BigInteger.valueOf(10), BigInteger.valueOf(187)), "[7, 8, 1]");
+        aeqit(digits(BigInteger.valueOf(12), BigInteger.valueOf(187)), "[7, 3, 1]");
+        aeqit(digits(BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
         try {
             digits(BigInteger.ONE, BigInteger.valueOf(10));
             fail();
@@ -338,54 +338,54 @@ public class MathUtilsTest {
 
     @Test
     public void testDigitsPadded_int_int_int() {
-        aeq(digitsPadded(0, 2, 0), "[]");
-        aeq(digitsPadded(0, 3, 0), "[]");
-        aeq(digitsPadded(0, 57, 0), "[]");
-        aeq(digitsPadded(0, 2, 1), "[]");
-        aeq(digitsPadded(0, 3, 1), "[]");
-        aeq(digitsPadded(0, 57, 1), "[]");
-        aeq(digitsPadded(0, 2, 10), "[]");
-        aeq(digitsPadded(0, 3, 10), "[]");
-        aeq(digitsPadded(0, 57, 10), "[]");
-        aeq(digitsPadded(0, 2, 187), "[]");
-        aeq(digitsPadded(0, 3, 187), "[]");
-        aeq(digitsPadded(0, 57, 187), "[]");
-        aeq(digitsPadded(1, 2, 0), "[0]");
-        aeq(digitsPadded(1, 3, 0), "[0]");
-        aeq(digitsPadded(1, 57, 0), "[0]");
-        aeq(digitsPadded(1, 2, 1), "[1]");
-        aeq(digitsPadded(1, 3, 1), "[1]");
-        aeq(digitsPadded(1, 57, 1), "[1]");
-        aeq(digitsPadded(1, 2, 10), "[0]");
-        aeq(digitsPadded(1, 3, 10), "[1]");
-        aeq(digitsPadded(1, 57, 10), "[10]");
-        aeq(digitsPadded(1, 2, 187), "[1]");
-        aeq(digitsPadded(1, 3, 187), "[1]");
-        aeq(digitsPadded(1, 57, 187), "[16]");
-        aeq(digitsPadded(2, 2, 0), "[0, 0]");
-        aeq(digitsPadded(2, 3, 0), "[0, 0]");
-        aeq(digitsPadded(2, 57, 0), "[0, 0]");
-        aeq(digitsPadded(2, 2, 1), "[1, 0]");
-        aeq(digitsPadded(2, 3, 1), "[1, 0]");
-        aeq(digitsPadded(2, 57, 1), "[1, 0]");
-        aeq(digitsPadded(2, 2, 10), "[0, 1]");
-        aeq(digitsPadded(2, 3, 10), "[1, 0]");
-        aeq(digitsPadded(2, 57, 10), "[10, 0]");
-        aeq(digitsPadded(2, 2, 187), "[1, 1]");
-        aeq(digitsPadded(2, 3, 187), "[1, 2]");
-        aeq(digitsPadded(2, 57, 187), "[16, 3]");
-        aeq(digitsPadded(8, 2, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 3, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 57, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 2, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 3, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 57, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 2, 10), "[0, 1, 0, 1, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 3, 10), "[1, 0, 1, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 57, 10), "[10, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, 2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeq(digitsPadded(8, 3, 187), "[1, 2, 2, 0, 2, 0, 0, 0]");
-        aeq(digitsPadded(8, 57, 187), "[16, 3, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(0, 2, 0), "[]");
+        aeqit(digitsPadded(0, 3, 0), "[]");
+        aeqit(digitsPadded(0, 57, 0), "[]");
+        aeqit(digitsPadded(0, 2, 1), "[]");
+        aeqit(digitsPadded(0, 3, 1), "[]");
+        aeqit(digitsPadded(0, 57, 1), "[]");
+        aeqit(digitsPadded(0, 2, 10), "[]");
+        aeqit(digitsPadded(0, 3, 10), "[]");
+        aeqit(digitsPadded(0, 57, 10), "[]");
+        aeqit(digitsPadded(0, 2, 187), "[]");
+        aeqit(digitsPadded(0, 3, 187), "[]");
+        aeqit(digitsPadded(0, 57, 187), "[]");
+        aeqit(digitsPadded(1, 2, 0), "[0]");
+        aeqit(digitsPadded(1, 3, 0), "[0]");
+        aeqit(digitsPadded(1, 57, 0), "[0]");
+        aeqit(digitsPadded(1, 2, 1), "[1]");
+        aeqit(digitsPadded(1, 3, 1), "[1]");
+        aeqit(digitsPadded(1, 57, 1), "[1]");
+        aeqit(digitsPadded(1, 2, 10), "[0]");
+        aeqit(digitsPadded(1, 3, 10), "[1]");
+        aeqit(digitsPadded(1, 57, 10), "[10]");
+        aeqit(digitsPadded(1, 2, 187), "[1]");
+        aeqit(digitsPadded(1, 3, 187), "[1]");
+        aeqit(digitsPadded(1, 57, 187), "[16]");
+        aeqit(digitsPadded(2, 2, 0), "[0, 0]");
+        aeqit(digitsPadded(2, 3, 0), "[0, 0]");
+        aeqit(digitsPadded(2, 57, 0), "[0, 0]");
+        aeqit(digitsPadded(2, 2, 1), "[1, 0]");
+        aeqit(digitsPadded(2, 3, 1), "[1, 0]");
+        aeqit(digitsPadded(2, 57, 1), "[1, 0]");
+        aeqit(digitsPadded(2, 2, 10), "[0, 1]");
+        aeqit(digitsPadded(2, 3, 10), "[1, 0]");
+        aeqit(digitsPadded(2, 57, 10), "[10, 0]");
+        aeqit(digitsPadded(2, 2, 187), "[1, 1]");
+        aeqit(digitsPadded(2, 3, 187), "[1, 2]");
+        aeqit(digitsPadded(2, 57, 187), "[16, 3]");
+        aeqit(digitsPadded(8, 2, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 3, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 57, 0), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 2, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 3, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 57, 1), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 2, 10), "[0, 1, 0, 1, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 3, 10), "[1, 0, 1, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 57, 10), "[10, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, 2, 187), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeqit(digitsPadded(8, 3, 187), "[1, 2, 2, 0, 2, 0, 0, 0]");
+        aeqit(digitsPadded(8, 57, 187), "[16, 3, 0, 0, 0, 0, 0, 0]");
         try {
             digitsPadded(3, 1, 10);
             fail();
@@ -412,54 +412,54 @@ public class MathUtilsTest {
 
     @Test
     public void testDigitsPadded_BigInteger_BigInteger_BigInteger() {
-        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ONE), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ONE), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ONE), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
-        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
-        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
-        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
-        aeq(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
-        aeq(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
-        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1]");
-        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0]");
-        aeq(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
-        aeq(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2]");
-        aeq(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
-        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0, 0, 0, 0, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
-        aeq(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2, 0, 0, 0]");
-        aeq(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ZERO), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ZERO), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ZERO), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(2), BigInteger.ONE), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.ONE), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.ONE), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[]");
+        aeqit(digitsPadded(0, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ZERO), "[0]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ZERO), "[0]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ZERO), "[0]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(2), BigInteger.ONE), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.ONE), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.ONE), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1]");
+        aeqit(digitsPadded(1, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2]");
+        aeqit(digitsPadded(2, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ZERO), "[0, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(2), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.ONE), "[1, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(10)), "[0, 1, 0, 1, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(10)), "[1, 0, 1, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(10)), "[10, 0, 0, 0, 0, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(2), BigInteger.valueOf(187)), "[1, 1, 0, 1, 1, 1, 0, 1]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(3), BigInteger.valueOf(187)), "[1, 2, 2, 0, 2, 0, 0, 0]");
+        aeqit(digitsPadded(8, BigInteger.valueOf(57), BigInteger.valueOf(187)), "[16, 3, 0, 0, 0, 0, 0, 0]");
         try {
             digitsPadded(3, BigInteger.ONE, BigInteger.valueOf(10));
             fail();

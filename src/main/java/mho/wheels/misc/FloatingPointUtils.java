@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
-public final class FloatingPointUtils {
+public final strictfp class FloatingPointUtils {
     /**
      * Disallow instantiation
      */

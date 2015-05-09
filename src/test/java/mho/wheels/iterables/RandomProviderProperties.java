@@ -24,6 +24,11 @@ public class RandomProviderProperties {
     private static int LIMIT;
     private static IterableProvider P;
 
+    private static void initialize(String name) {
+        P.reset();
+        System.out.println("\t\ttesting " + name + " properties...");
+    }
+
     @Test
     public void testAllProperties() {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
@@ -104,8 +109,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesConstructor() {
-        System.out.println("\t\ttesting RandomProvider() properties...");
-
+        initialize("RandomProvider()");
         for (Void v : take(LIMIT, repeat((Void) null))) {
             RandomProvider rp = new RandomProvider();
             rp.validate();
@@ -113,8 +117,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesConstructor_List_Integer() {
-        System.out.println("\t\ttesting RandomProvider(List<Integer>) properties...");
-
+        initialize("RandomProvider(List<Integer>)");
         for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             RandomProvider rp = new RandomProvider(is);
             rp.validate();
@@ -131,8 +134,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesGetScale() {
-        System.out.println("\t\ttesting getScale() properties...");
-
+        initialize("getScale()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int scale = rp.getScale();
             assertEquals(rp.toString(), rp.withScale(scale), rp);
@@ -140,8 +142,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesGetSecondaryScale() {
-        System.out.println("\t\ttesting getSecondaryScale() properties...");
-
+        initialize("getSecondaryScale()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int secondaryScale = rp.getSecondaryScale();
             assertEquals(rp.toString(), rp.withSecondaryScale(secondaryScale), rp);
@@ -149,8 +150,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesGetSeed() {
-        System.out.println("\t\ttesting getSeed() properties...");
-
+        initialize("getSeed()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             List<Integer> seed = rp.getSeed();
             assertEquals(rp.toString(), seed.size(), IsaacPRNG.SIZE);
@@ -163,8 +163,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesWithScale() {
-        System.out.println("\t\ttesting withScale(int) properties...");
-
+        initialize("withScale(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             RandomProvider rp = p.a.withScale(p.b);
             rp.validate();
@@ -180,8 +179,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesWithSecondaryScale() {
-        System.out.println("\t\ttesting withSecondaryScale(int) properties...");
-
+        initialize("withSecondaryScale(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             RandomProvider rp = p.a.withSecondaryScale(p.b);
             rp.validate();
@@ -201,8 +199,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesBooleans() {
-        System.out.println("\t\ttesting booleans() properties...");
-
+        initialize("booleans()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Boolean> bs = rp.booleans();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, bs)));
@@ -214,8 +211,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesIntegers() {
-        System.out.println("\t\ttesting integers() properties...");
-
+        initialize("integers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.integers();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, is)));
@@ -224,8 +220,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesLongs() {
-        System.out.println("\t\ttesting longs() properties...");
-
+        initialize("longs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.longs();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, ls)));
@@ -234,8 +229,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesUniformSample_Iterable() {
-        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
-
+        initialize("uniformSample(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
                 P.lists(P.withNull(P.integers()))
@@ -249,8 +243,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesUniformSample_String() {
-        System.out.println("\t\ttesting uniformSample(String) properties...");
-
+        initialize("uniformSample(String)");
         for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.strings()))) {
             Iterable<Character> cs = p.a.uniformSample(p.b);
             testNoRemove(TINY_LIMIT, cs);
@@ -260,8 +253,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesOrderings() {
-        System.out.println("\t\ttesting orderings() properties...");
-
+        initialize("orderings()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Ordering> os = rp.orderings();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, os)));
@@ -273,8 +265,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRoundingModes() {
-        System.out.println("\t\ttesting roundingModes() properties...");
-
+        initialize("roundingModes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<RoundingMode> rms = rp.roundingModes();
             assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, rms)));
@@ -286,8 +277,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesPositiveBytes() {
-        System.out.println("\t\ttesting positiveBytes() properties...");
-
+        initialize("positiveBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.positiveBytes();
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -298,8 +288,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesPositiveShorts() {
-        System.out.println("\t\ttesting positiveShorts() properties...");
-
+        initialize("positiveShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.positiveShorts();
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -310,8 +299,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesPositiveIntegers() {
-        System.out.println("\t\ttesting positiveIntegers() properties...");
-
+        initialize("positiveIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.positiveIntegers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -322,8 +310,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesPositiveLongs() {
-        System.out.println("\t\ttesting positiveLongs() properties...");
-
+        initialize("positiveLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.positiveLongs();
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -334,8 +321,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeBytes() {
-        System.out.println("\t\ttesting negativeBytes() properties...");
-
+        initialize("negativeBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.negativeBytes();
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -346,8 +332,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeShorts() {
-        System.out.println("\t\ttesting negativeShorts() properties...");
-
+        initialize("negativeShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.negativeShorts();
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -358,8 +343,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeIntegers() {
-        System.out.println("\t\ttesting negativeIntegers() properties...");
-
+        initialize("negativeIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.negativeIntegers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -370,8 +354,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeLongs() {
-        System.out.println("\t\ttesting negativeLongs() properties...");
-
+        initialize("negativeLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.negativeLongs();
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -382,8 +365,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalBytes() {
-        System.out.println("\t\ttesting naturalBytes() properties...");
-
+        initialize("naturalBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.naturalBytes();
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -394,8 +376,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalShorts() {
-        System.out.println("\t\ttesting naturalShorts() properties...");
-
+        initialize("naturalShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.naturalShorts();
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -406,8 +387,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalIntegers() {
-        System.out.println("\t\ttesting naturalIntegers() properties...");
-
+        initialize("naturalIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.naturalIntegers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -418,8 +398,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalLongs() {
-        System.out.println("\t\ttesting naturalLongs() properties...");
-
+        initialize("naturalLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.naturalLongs();
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -430,8 +409,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroBytes() {
-        System.out.println("\t\ttesting nonzeroBytes() properties...");
-
+        initialize("nonzeroBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.nonzeroBytes();
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -442,8 +420,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroShorts() {
-        System.out.println("\t\ttesting nonzeroShorts() properties...");
-
+        initialize("nonzeroShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.nonzeroShorts();
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -454,8 +431,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroIntegers() {
-        System.out.println("\t\ttesting nonzeroIntegers() properties...");
-
+        initialize("nonzeroIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.nonzeroIntegers();
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -466,8 +442,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroLongs() {
-        System.out.println("\t\ttesting nonzeroLongs() properties...");
-
+        initialize("nonzeroLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.nonzeroLongs();
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -478,8 +453,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesBytes() {
-        System.out.println("\t\ttesting bytes() properties...");
-
+        initialize("bytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.bytes();
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -489,8 +463,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesShorts() {
-        System.out.println("\t\ttesting shorts() properties...");
-
+        initialize("shorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.shorts();
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -500,8 +473,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesAsciiCharacters() {
-        System.out.println("\t\ttesting nonzeroBytes() properties...");
-
+        initialize("asciiCharacters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.asciiCharacters();
             Iterable<Character> tcs = take(TINY_LIMIT, cs);
@@ -512,8 +484,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesCharacters() {
-        System.out.println("\t\ttesting nonzeroShorts() properties...");
-
+        initialize("characters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.characters();
             assertTrue(rp.toString(), all(c -> c != null, take(TINY_LIMIT, cs)));
@@ -522,8 +493,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUp_byte() {
-        System.out.println("\t\ttesting rangeUp(byte) properties...");
-
+        initialize("testing rangeUp(byte)");
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             Iterable<Byte> bs = p.a.rangeUp(p.b);
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -538,8 +508,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUp_short() {
-        System.out.println("\t\ttesting rangeUp(short) properties...");
-
+        initialize("rangeUp(short)");
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             Iterable<Short> ss = p.a.rangeUp(p.b);
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -554,8 +523,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUp_int() {
-        System.out.println("\t\ttesting rangeUp(int) properties...");
-
+        initialize("rangeUp(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             Iterable<Integer> is = p.a.rangeUp(p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -570,8 +538,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUp_long() {
-        System.out.println("\t\ttesting rangeUp(long) properties...");
-
+        initialize("rangeUp(long)");
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             Iterable<Long> ls = p.a.rangeUp(p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -586,8 +553,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUp_char() {
-        System.out.println("\t\ttesting rangeUp(char) properties...");
-
+        initialize("rangeUp(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
             Iterable<Character> cs = p.a.rangeUp(p.b);
@@ -603,8 +569,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDown_byte() {
-        System.out.println("\t\ttesting rangeDown(byte) properties...");
-
+        initialize("rangeDown(byte)");
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             Iterable<Byte> bs = p.a.rangeDown(p.b);
             Iterable<Byte> tbs = take(TINY_LIMIT, bs);
@@ -619,8 +584,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDown_short() {
-        System.out.println("\t\ttesting rangeDown(short) properties...");
-
+        initialize("rangeDown(short)");
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             Iterable<Short> ss = p.a.rangeDown(p.b);
             Iterable<Short> tss = take(TINY_LIMIT, ss);
@@ -635,8 +599,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDown_int() {
-        System.out.println("\t\ttesting rangeDown(int) properties...");
-
+        initialize("rangeDown(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             Iterable<Integer> is = p.a.rangeDown(p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -651,8 +614,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDown_long() {
-        System.out.println("\t\ttesting rangeDown(long) properties...");
-
+        initialize("rangeDown(long)");
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             Iterable<Long> ls = p.a.rangeDown(p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -667,8 +629,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDown_char() {
-        System.out.println("\t\ttesting rangeDown(char) properties...");
-
+        initialize("rangeDown(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
             Iterable<Character> cs = p.a.rangeDown(p.b);
@@ -684,8 +645,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRange_byte_byte() {
-        System.out.println("\t\ttesting range(byte, byte) properties...");
-
+        initialize("range(byte, byte)");
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
         for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
             Iterable<Byte> bs = p.a.range(p.b, p.c);
@@ -698,14 +658,11 @@ public class RandomProviderProperties {
 
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Byte.MAX_VALUE), p.a.rangeUp(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(Byte.MIN_VALUE, p.b), p.a.rangeDown(p.b));
         }
     }
 
     private static void propertiesRange_short_short() {
-        System.out.println("\t\ttesting range(short, short) properties...");
-
+        initialize("range(short, short)");
         Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
                 P.randomProvidersDefault(),
                 P.shorts(),
@@ -722,14 +679,11 @@ public class RandomProviderProperties {
 
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Short.MAX_VALUE), p.a.rangeUp(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(Short.MIN_VALUE, p.b), p.a.rangeDown(p.b));
         }
     }
 
     private static void propertiesRange_int_int() {
-        System.out.println("\t\ttesting range(int, int) properties...");
-
+        initialize("range(int, int)");
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
                 P.randomProvidersDefault(),
                 P.integers(),
@@ -746,14 +700,11 @@ public class RandomProviderProperties {
 
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Integer.MAX_VALUE), p.a.rangeUp(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(Integer.MIN_VALUE, p.b), p.a.rangeDown(p.b));
         }
     }
 
     private static void propertiesRange_long_long() {
-        System.out.println("\t\ttesting range(long, long) properties...");
-
+        initialize("range(long, long)");
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
         for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
             Iterable<Long> ls = p.a.range(p.b, p.c);
@@ -766,13 +717,11 @@ public class RandomProviderProperties {
 
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Long.MAX_VALUE), p.a.rangeUp(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(Long.MIN_VALUE, p.b), p.a.rangeDown(p.b));
         }
     }
 
     private static void propertiesRange_BigInteger_BigInteger() {
-        System.out.println("\t\ttesting range(BigInteger, BigInteger) properties...");
+        initialize("range(BigInteger, BigInteger)");
 
         Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -795,8 +744,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRange_char_char() {
-        System.out.println("\t\ttesting range(char, char) properties...");
-
+        initialize("range(char, char)");
         Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
                 P.randomProvidersDefault(),
                 P.characters(),
@@ -814,14 +762,11 @@ public class RandomProviderProperties {
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, Character.MAX_VALUE), p.a.rangeUp(p.b));
-            aeqit(p.toString(), TINY_LIMIT, p.a.range('\0', p.b), p.a.rangeDown(p.b));
         }
     }
 
     private static void propertiesPositiveIntegersGeometric() {
-        System.out.println("\t\ttesting positiveIntegersGeometric() properties...");
-
+        initialize("positiveIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.positiveIntegers();
@@ -833,8 +778,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeIntegersGeometric() {
-        System.out.println("\t\ttesting negativeIntegersGeometric() properties...");
-
+        initialize("negativeIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.negativeIntegersGeometric();
@@ -846,8 +790,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalIntegersGeometric() {
-        System.out.println("\t\ttesting naturalIntegersGeometric() properties...");
-
+        initialize("naturalIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
@@ -862,8 +805,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroIntegersGeometric() {
-        System.out.println("\t\ttesting nonzeroIntegersGeometric() properties...");
-
+        initialize("nonzeroIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.nonzeroIntegersGeometric();
@@ -875,8 +817,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesIntegersGeometric() {
-        System.out.println("\t\ttesting integersGeometric() properties...");
-
+        initialize("integersGeometric()");
         Iterable<RandomProvider> rps = filter(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
@@ -890,8 +831,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeUpGeometric() {
-        System.out.println("\t\ttesting rangeUpGeometric(int) properties...");
-
+        initialize("rangeUpGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filter(
                 p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
@@ -902,16 +842,6 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(i -> i != null, tis));
             testNoRemove(TINY_LIMIT, is);
             assertTrue(p.toString(), all(i -> i >= p.b, tis));
-        }
-
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 1, P.randomProvidersDefaultSecondaryScale());
-        for (RandomProvider rp : take(LIMIT, rps)) {
-            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUpGeometric(1), rp.positiveIntegersGeometric());
-        }
-
-        rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
-        for (RandomProvider rp : take(LIMIT, rps)) {
-            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUpGeometric(0), rp.naturalIntegersGeometric());
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
@@ -927,8 +857,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesRangeDownGeometric() {
-        System.out.println("\t\ttesting rangeDownGeometric(int) properties...");
-
+        initialize("rangeDownGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filter(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
@@ -939,16 +868,6 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), all(i -> i != null, tis));
             testNoRemove(TINY_LIMIT, is);
             assertTrue(p.toString(), all(i -> i <= p.b, tis));
-        }
-
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 1, P.randomProvidersDefaultSecondaryScale());
-        for (RandomProvider rp : take(LIMIT, rps)) {
-            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUpGeometric(1), rp.positiveIntegersGeometric());
-        }
-
-        rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
-        for (RandomProvider rp : take(LIMIT, rps)) {
-            aeqit(rp.toString(), TINY_LIMIT, rp.rangeUpGeometric(0), rp.naturalIntegersGeometric());
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
@@ -964,8 +883,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesPositiveBigIntegers() {
-        System.out.println("\t\ttesting positiveBigIntegers() properties...");
-
+        initialize("positiveBigIntegers()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.positiveBigIntegers();
@@ -977,8 +895,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNegativeBigIntegers() {
-        System.out.println("\t\ttesting negativeBigIntegers() properties...");
-
+        initialize("negativeBigIntegers()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.negativeBigIntegers();
@@ -990,8 +907,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNaturalBigIntegers() {
-        System.out.println("\t\ttesting naturalBigIntegers() properties...");
-
+        initialize("naturalBigIntegers()");
         Iterable<RandomProvider> rps = filter(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
@@ -1006,8 +922,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNonzeroBigIntegers() {
-        System.out.println("\t\ttesting nonzeroBigIntegers() properties...");
-
+        initialize("nonzeroBigIntegers()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.nonzeroBigIntegers();
@@ -1019,8 +934,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesBigIntegers() {
-        System.out.println("\t\ttesting bigIntegers() properties...");
-
+        initialize("bigIntegers()");
         Iterable<RandomProvider> rps = filter(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
@@ -1034,20 +948,61 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesEquals() {
-        System.out.println("\t\ttesting equals(Object) properties...");
+        initialize("equals(Object)");
+        IterableProvider P2;
+        IterableProvider P3;
+        if (P instanceof ExhaustiveProvider) {
+            P2 = ExhaustiveProvider.INSTANCE;
+            P3 = ExhaustiveProvider.INSTANCE;
+        } else {
+            P2 = ((RandomProvider) P).deepCopy();
+            P3 = ((RandomProvider) P).deepCopy();
+        }
 
-        propertiesEqualsHelper(P, P.randomProviders(), RandomProvider::equals, LIMIT);
+        Iterable<Triple<RandomProvider, RandomProvider, RandomProvider>> ts = zip3(
+                P.randomProviders(),
+                P2.randomProviders(),
+                P3.randomProviders()
+        );
+        for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
+            //noinspection ConstantConditions,ObjectEqualsNull
+            assertFalse(t.toString(), t.a.equals(null));
+            assertEquals(t.toString(), t.a, t.b);
+            assertEquals(t.toString(), t.b, t.c);
+        }
+
+        P.reset();
+        P2.reset();
+        P3.reset();
+        Iterable<Pair<RandomProvider, RandomProvider>> ps = ExhaustiveProvider.INSTANCE.pairs(
+                P.randomProviders(),
+                P2.randomProviders()
+        );
+        for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, ps)) {
+            symmetric(RandomProvider::equals, p);
+        }
+
+        P.reset();
+        P2.reset();
+        ts = ExhaustiveProvider.INSTANCE.triples(P.randomProviders(), P2.randomProviders(), P3.randomProviders());
+        for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
+            transitive(RandomProvider::equals, t);
+        }
     }
 
     private static void propertiesHashCode() {
-        System.out.println("\t\ttesting hashCode() properties...");
-
-        propertiesHashCodeHelper(P.randomProviders(), LIMIT);
+        initialize("hashCode()");
+        IterableProvider P2;
+        if (P instanceof ExhaustiveProvider) {
+            P2 = ExhaustiveProvider.INSTANCE;
+        } else {
+            P2 = ((RandomProvider) P).deepCopy();
+        }
+        propertiesHashCodeHelper(P.randomProviders(), P2.randomProviders(), LIMIT);
     }
 
     private static void propertiesToString() {
-        System.out.println("\t\ttesting toString() properties...");
-
+        initialize("toString()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             String s = rp.toString();
             assertTrue(rp.toString(), isSubsetOf(s, RANDOM_PROVIDER_CHARS));

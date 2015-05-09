@@ -15,7 +15,7 @@ import static mho.wheels.math.Combinatorics.*;
 import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.fail;
 
-public class CombinatoricsTest {
+public strictfp class CombinatoricsTest {
     private static final @NotNull ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
 
     @Test

@@ -1,5 +1,6 @@
 package mho.wheels.testing;
 
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
@@ -15,7 +16,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 import static org.junit.Assert.*;
 
-public class Testing {
+public strictfp class Testing {
     private static final int TINY_LIMIT = 20;
     private static final int SMALL_LIMIT = 128;
 
@@ -194,36 +195,33 @@ public class Testing {
     }
 
     public static <T> void propertiesEqualsHelper(
-            @NotNull IterableProvider P,
-            @NotNull Iterable<T> xs,
+            @NotNull Iterable<T> xs1,
+            @NotNull Iterable<T> xs2,
+            @NotNull Iterable<T> xs3,
             @NotNull BiPredicate<T, T> equals,
             int limit
     ) {
-        for (T x : take(limit, xs)) {
-            //noinspection EqualsWithItself
-            assertTrue(x.toString(), x.equals(x));
-            //noinspection ObjectEqualsNull
-            assertFalse(x.toString(), x.equals(null));
+        for (Triple<T, T, T> t : take(limit, zip3(xs1, xs2, xs3))) {
+            //noinspection ConstantConditions,ObjectEqualsNull
+            assertFalse(t.toString(), t.a.equals(null));
+            assertTrue(t.toString(), t.a.equals(t.b));
+            assertTrue(t.toString(), t.b.equals(t.c));
         }
 
-        for (Pair<T, T> p : take(limit, zip(xs, xs))) {
-            //noinspection ConstantConditions
-            assertTrue(p.toString(), p.a.equals(p.b));
-        }
-
-        for (Pair<T, T> p : take(limit, P.pairs(xs, xs))) {
+        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(xs1, xs2))) {
             symmetric(equals, p);
         }
 
-        Iterable<Triple<T, T, T>> ts = P.triples(xs, xs, xs);
-        for (Triple<T, T, T> t : take(limit, ts)) {
+        for (Triple<T, T, T> t : take(limit, ExhaustiveProvider.INSTANCE.triples(xs1, xs2, xs3))) {
             transitive(equals, t);
         }
     }
 
-    public static <T> void propertiesHashCodeHelper(@NotNull Iterable<T> xs, int limit) {
-        for (Pair<T, T> p : take(limit, zip(xs, xs))) {
-            assertEquals(p.toString(), xs.hashCode(), xs.hashCode());
+    public static <T> void propertiesHashCodeHelper(@NotNull Iterable<T> xs1, @NotNull Iterable<T> xs2, int limit) {
+        for (Pair<T, T> p : take(limit, zip(xs1, xs2))) {
+            //noinspection ConstantConditions
+            assertTrue(p.toString(), p.a.equals(p.b));
+            assertEquals(p.toString(), p.a.hashCode(), p.b.hashCode());
         }
     }
 

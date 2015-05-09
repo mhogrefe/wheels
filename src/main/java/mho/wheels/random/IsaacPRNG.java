@@ -3,6 +3,7 @@ package mho.wheels.random;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -83,6 +84,19 @@ public class IsaacPRNG {
 
     public static @NotNull IsaacPRNG example() {
         return new IsaacPRNG(EXAMPLE_SEED);
+    }
+
+    public @NotNull IsaacPRNG copy() {
+        IsaacPRNG copy = new IsaacPRNG(Collections.emptyList());
+        copy.a = a;
+        copy.b = b;
+        copy.c = c;
+        copy.count = count;
+        copy.state = new int[state.length];
+        System.arraycopy(state, 0, copy.state, 0, state.length);
+        copy.result = new int[result.length];
+        System.arraycopy(result, 0, copy.result, 0, result.length);
+        return copy;
     }
 
     // Generate 256 results. This is a fast (not small) implementation.

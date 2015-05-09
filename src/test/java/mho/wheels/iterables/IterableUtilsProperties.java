@@ -19,7 +19,7 @@ import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
-public class IterableUtilsProperties {
+public strictfp class IterableUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
 
