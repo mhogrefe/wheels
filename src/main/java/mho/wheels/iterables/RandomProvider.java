@@ -75,12 +75,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
-     * An id used in {@link RandomProvider#toString()} to distinguish between different {@code RandomProvider}
-     * instances.
-     */
-    private long id;
-
-    /**
      * A parameter that determines the size of some of the generated objects.
      */
     private int scale = DEFAULT_SCALE;
@@ -105,7 +99,6 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
-        id = nextLong();
     }
 
     /**
@@ -126,7 +119,6 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
-        id = nextLong();
     }
 
     /**
@@ -270,6 +262,14 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public void reset() {
         prng = new IsaacPRNG(seed);
+    }
+
+    /**
+     * Returns an id which has a good chance of being different in two instances with unequal {@code prng}s. It's used
+     * in {@link RandomProvider#toString()} to distinguish between different {@code RandomProvider} instances.
+     */
+    public long getId() {
+        return prng.getId();
     }
 
     public int nextInt() {
@@ -2131,7 +2131,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code String} representation of {@code this}
      */
     public String toString() {
-        return "RandomProvider[@" + id + ", " + scale + ", " + secondaryScale + "]";
+        return "RandomProvider[@" + getId() + ", " + scale + ", " + secondaryScale + "]";
     }
 
     /**

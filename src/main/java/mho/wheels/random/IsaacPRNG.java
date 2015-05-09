@@ -3,10 +3,7 @@ package mho.wheels.random;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -100,6 +97,21 @@ public class IsaacPRNG {
         copy.result = new int[result.length];
         System.arraycopy(result, 0, copy.result, 0, result.length);
         return copy;
+    }
+
+    public long getId() {
+        List<Integer> newSeed = new ArrayList<>();
+        for (int i : state) {
+            newSeed.add(i);
+        }
+        newSeed.set(0, a);
+        newSeed.set(0, b);
+        newSeed.set(0, c);
+        newSeed.set(0, count);
+        IsaacPRNG temp = new IsaacPRNG(newSeed);
+        int a = temp.nextInt();
+        int b = temp.nextInt();
+        return (long) a << 32 | b & 0xffffffffL;
     }
 
     // Generate 256 results. This is a fast (not small) implementation.

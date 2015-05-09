@@ -90,6 +90,23 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoReset() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            rp.nextInt();
+            RandomProvider beforeReset = rp.deepCopy();
+            rp.reset();
+            System.out.println("reset(" + beforeReset + ") = " + rp);
+        }
+    }
+
+    private static void demoGetId() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("getId(" + rp + ") = " + rp.getId());
+        }
+    }
+
     private static void demoBooleans() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
