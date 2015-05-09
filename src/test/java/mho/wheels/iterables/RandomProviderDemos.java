@@ -76,6 +76,20 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoCopy() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("copy(" + rp + ") = " + rp.copy());
+        }
+    }
+
+    private static void demoDeepCopy() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            System.out.println("deepCopy(" + rp + ") = " + rp.deepCopy());
+        }
+    }
+
     private static void demoBooleans() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {

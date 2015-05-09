@@ -146,6 +146,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Returns {@code this}'s scale parameter.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -159,6 +160,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Returns {@code this}'s other scale parameter.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
@@ -185,6 +187,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this}. The copy shares {@code prng} with the original.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -203,6 +206,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * so generating values from the copy will not affect the state of the original's {@code prng}.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -220,6 +224,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new scale.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code scale} may be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>
@@ -238,6 +243,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * A {@code RandomProvider} with the same fields as {@code this} except for a new secondary scale.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code secondaryScale} mat be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>
