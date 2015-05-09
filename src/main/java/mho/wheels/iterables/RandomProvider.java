@@ -28,14 +28,23 @@ import static org.junit.Assert.assertTrue;
  * parameters which some of the distributions depend on; the exact relationship between the parameters and the
  * distributions is specified in the distribution's documentation.
  *
+ * <p>To create an instance which shares a generator with {@code this}, use {@link RandomProvider#copy()}. To create
+ * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.
+ *
  * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
  * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
  * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
  * source of randomness is perfect (but still deterministic).
  */
 public final strictfp class RandomProvider extends IterableProvider {
+    /**
+     * A list of all {@code Ordering}s.
+     */
     private static final List<Ordering> ORDERINGS = toList(ExhaustiveProvider.INSTANCE.orderings());
 
+    /**
+     * A list of all {@code RoundingMode}s.
+     */
     private static final List<RoundingMode> ROUNDING_MODES = toList(ExhaustiveProvider.INSTANCE.roundingModes());
 
     /**
@@ -60,8 +69,15 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull List<Integer> seed;
 
+    /**
+     * A pseudorandom number generator. It changes state every time a random number is generated.
+     */
     private @NotNull IsaacPRNG prng;
 
+    /**
+     * An id used in {@link RandomProvider#toString()} to distinguish between different {@code RandomProvider}
+     * instances.
+     */
     private long id;
 
     /**
@@ -166,7 +182,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * A {@code RandomProvider} with the same fields as {@code this}.
+     * A {@code RandomProvider} with the same fields as {@code this}. The copy shares {@code prng} with the original.
      *
      * <ul>
      *  <li>The result is not null.</li>
@@ -182,6 +198,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return copy;
     }
 
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this}. The copy receives a new copy of {@code prng},
+     * so generating values from the copy will not affect the state of the original's {@code prng}.
+     *
+     * <ul>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return A copy of {@code this}.
+     */
     public @NotNull RandomProvider deepCopy() {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
@@ -2097,6 +2123,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Ensures that {@code this} is valid. Must return true for any {@code RandomProvider} used outside this class.
      */
     public void validate() {
+        prng.validate();
         assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
     }
 }

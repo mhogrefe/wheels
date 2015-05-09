@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
@@ -43,6 +46,11 @@ public strictfp class RandomProviderTest {
                 new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -256))),
                 "RandomProvider[@-7152740103772354914, 32, 8]"
         );
+    }
+
+    @Test
+    public void testExample() {
+        aeq(RandomProvider.example(), "RandomProvider[@-4659160554254839351, 32, 8]");
     }
 
     @Test
@@ -154,6 +162,22 @@ public strictfp class RandomProviderTest {
                 new RandomProvider(toList(IterableUtils.range(1, 256))).withSecondaryScale(0),
                 "RandomProvider[@377721315096188309, 32, 0]"
         );
+    }
+
+    @Test
+    public void testCopy() {
+        RandomProvider copy = P.copy();
+        assertEquals(P, copy);
+        P.nextInt();
+        assertEquals(P, copy);
+    }
+
+    @Test
+    public void testDeepCopy() {
+        RandomProvider copy = P.deepCopy();
+        assertEquals(P, copy);
+        P.nextInt();
+        assertNotEquals(P, copy);
     }
 
     private static <T> void simpleProviderHelper(

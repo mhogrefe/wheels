@@ -1,11 +1,14 @@
 package mho.wheels.random;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import static org.junit.Assert.*;
 
 // Implementation by Bob Jenkins
 public class IsaacPRNG {
@@ -357,5 +360,10 @@ public class IsaacPRNG {
 
     public @NotNull String toString() {
         return "IsaacPRNG[@" + hashCode() + "]";
+    }
+
+    public void validate() {
+        assertEquals(toString(), result.length, SIZE);
+        assertEquals(toString(), state.length, SIZE);
     }
 }
