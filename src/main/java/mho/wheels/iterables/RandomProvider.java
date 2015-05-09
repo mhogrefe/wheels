@@ -267,6 +267,11 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * Returns an id which has a good chance of being different in two instances with unequal {@code prng}s. It's used
      * in {@link RandomProvider#toString()} to distinguish between different {@code RandomProvider} instances.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code this} may be any {@code long}.</li>
+     * </ul>
      */
     public long getId() {
         return prng.getId();

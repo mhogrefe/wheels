@@ -49,6 +49,8 @@ public class RandomProviderProperties {
             propertiesCopy();
             propertiesDeepCopy();
             propertiesBooleans();
+            propertiesReset();
+            propertiesGetId();
             propertiesIntegers();
             propertiesLongs();
             propertiesUniformSample_Iterable();
@@ -217,6 +219,24 @@ public class RandomProviderProperties {
             assertEquals(rp.toString(), rp, copy);
             rp.nextInt();
             assertNotEquals(rp.toString(), rp, copy);
+        }
+    }
+
+    private static void propertiesReset() {
+        initialize("reset()");
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            RandomProvider original = rp.deepCopy();
+            rp.nextInt();
+            assertNotEquals(rp, original);
+            rp.reset();
+            assertEquals(rp, original);
+        }
+    }
+
+    private static void propertiesGetId() {
+        initialize("getId()");
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            rp.getId();
         }
     }
 
