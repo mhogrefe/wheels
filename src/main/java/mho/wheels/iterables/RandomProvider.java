@@ -258,6 +258,15 @@ public final strictfp class RandomProvider extends IterableProvider {
         return copy;
     }
 
+    /**
+     * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
+     * resetting, and generating the same types of values again will result in the same values.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     */
     @Override
     public void reset() {
         prng = new IsaacPRNG(seed);
