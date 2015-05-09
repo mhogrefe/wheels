@@ -46,6 +46,8 @@ public class RandomProviderProperties {
             propertiesGetSeed();
             propertiesWithScale();
             propertiesWithSecondaryScale();
+            propertiesCopy();
+            propertiesDeepCopy();
             propertiesBooleans();
             propertiesIntegers();
             propertiesLongs();
@@ -195,6 +197,26 @@ public class RandomProviderProperties {
 
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             idempotent(x -> x.withSecondaryScale(rp.getSecondaryScale()), rp);
+        }
+    }
+
+    private static void propertiesCopy() {
+        initialize("copy()");
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            RandomProvider copy = rp.copy();
+            assertEquals(rp.toString(), rp, copy);
+            rp.nextInt();
+            assertEquals(rp.toString(), rp, copy);
+        }
+    }
+
+    private static void propertiesDeepCopy() {
+        initialize("deepCopy()");
+        for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            RandomProvider copy = rp.deepCopy();
+            assertEquals(rp.toString(), rp, copy);
+            rp.nextInt();
+            assertNotEquals(rp.toString(), rp, copy);
         }
     }
 
