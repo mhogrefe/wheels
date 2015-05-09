@@ -67,7 +67,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * A list of numbers which determines exactly which values will be deterministically output over the life of
      * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
      */
-    private @NotNull List<Integer> seed;
+    private final @NotNull List<Integer> seed;
 
     /**
      * A pseudorandom number generator. It changes state every time a random number is generated.
@@ -277,6 +277,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return prng.getId();
     }
 
+    /**
+     * Returns a randomly-generated {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int}
+     */
     public int nextInt() {
         return prng.nextInt();
     }
@@ -291,6 +301,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextInt);
     }
 
+    /**
+     * Returns a randomly-generated {@code boolean} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return a {@code boolean}
+     */
     public boolean nextBoolean() {
         return (nextInt() & 1) != 0;
     }
@@ -305,6 +325,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBoolean);
     }
 
+    /**
+     * Returns a randomly-generated {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @return a {@code long}
+     */
     public long nextLong() {
         int a = nextInt();
         int b = nextInt();

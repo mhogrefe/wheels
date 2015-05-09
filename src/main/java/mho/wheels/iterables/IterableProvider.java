@@ -21,9 +21,7 @@ import static mho.wheels.iterables.IterableUtils.map;
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.
  */
 public abstract strictfp class IterableProvider {
-    public void reset() {
-        return;
-    }
+    public void reset() {}
     public @NotNull IterableProvider withScale(int scale) {
         return this;
     }
