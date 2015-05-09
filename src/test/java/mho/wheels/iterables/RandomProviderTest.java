@@ -180,6 +180,15 @@ public strictfp class RandomProviderTest {
         assertNotEquals(P, copy);
     }
 
+    @Test
+    public void testReset() {
+        RandomProvider original = P.deepCopy();
+        P.nextInt();
+        assertNotEquals(P, original);
+        P.reset();
+        assertEquals(P, original);
+    }
+
     private static <T> void simpleProviderHelper(
             @NotNull Iterable<T> xs,
             @NotNull String output,
