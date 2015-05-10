@@ -74,9 +74,13 @@ public class RandomProviderProperties {
             propertiesPositiveIntegers();
             propertiesNextPositiveLong();
             propertiesPositiveLongs();
+            propertiesNextNegativeByte();
             propertiesNegativeBytes();
+            propertiesNextNegativeShort();
             propertiesNegativeShorts();
+            propertiesNextNegativeInt();
             propertiesNegativeIntegers();
+            propertiesNextNegativeLong();
             propertiesNegativeLongs();
             propertiesNaturalBytes();
             propertiesNaturalShorts();
@@ -488,11 +492,26 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextNegativeByte() {
+        initialize("nextNegativeByte()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNegativeByte();
+        }
+    }
+
     private static void propertiesNegativeBytes() {
         initialize("negativeBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.negativeBytes();
             simpleTest(rp, bs, b -> b < 0);
+            supplierEquivalence(rp, bs, rp::nextNegativeByte);
+        }
+    }
+
+    private static void propertiesNextNegativeShort() {
+        initialize("nextNegativeShort()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNegativeShort();
         }
     }
 
@@ -501,6 +520,14 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.negativeShorts();
             simpleTest(rp, ss, s -> s < 0);
+            supplierEquivalence(rp, ss, rp::nextNegativeShort);
+        }
+    }
+
+    private static void propertiesNextNegativeInt() {
+        initialize("nextNegativeInt()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNegativeInt();
         }
     }
 
@@ -508,10 +535,15 @@ public class RandomProviderProperties {
         initialize("negativeIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.negativeIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i < 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i < 0);
+            supplierEquivalence(rp, is, rp::nextNegativeInt);
+        }
+    }
+
+    private static void propertiesNextNegativeLong() {
+        initialize("nextNegativeLong()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNegativeLong();
         }
     }
 
@@ -519,10 +551,8 @@ public class RandomProviderProperties {
         initialize("negativeLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.negativeLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l < 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
+            simpleTest(rp, ls, l -> l < 0);
+            supplierEquivalence(rp, ls, rp::nextNegativeLong);
         }
     }
 
