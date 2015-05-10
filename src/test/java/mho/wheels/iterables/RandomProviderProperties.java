@@ -4,13 +4,15 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -48,11 +50,12 @@ public class RandomProviderProperties {
             propertiesWithSecondaryScale();
             propertiesCopy();
             propertiesDeepCopy();
-            propertiesBooleans();
             propertiesReset();
             propertiesGetId();
+            propertiesNextInt();
             propertiesIntegers();
             propertiesLongs();
+            propertiesBooleans();
             propertiesUniformSample_Iterable();
             propertiesUniformSample_String();
             propertiesOrderings();
@@ -240,15 +243,41 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBooleans() {
-        initialize("booleans()");
+    private static <T> void supplierEquivalence(
+            @NotNull RandomProvider rp,
+            @NotNull Iterable<T> xs,
+            @NotNull Supplier<T> s
+    ) {
+        rp.reset();
+        List<T> iterableSample = toList(take(TINY_LIMIT, xs));
+        rp.reset();
+        List<T> supplierSample = toList(take(TINY_LIMIT, fromSupplier(s)));
+        aeqit(rp.toString(), iterableSample, supplierSample);
+    }
+
+    private static <T> void simpleTestWithNulls(
+            @NotNull RandomProvider rp,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        rp.reset();
+        assertTrue(rp.toString(), all(predicate, take(TINY_LIMIT, xs)));
+        rp.reset();
+        testNoRemove(TINY_LIMIT, xs);
+    }
+
+    private static <T> void simpleTest(
+            @NotNull RandomProvider rp,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        simpleTestWithNulls(rp, xs, x -> x != null && predicate.test(x));
+    }
+
+    private static void propertiesNextInt() {
+        initialize("nextInt()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            Iterable<Boolean> bs = rp.booleans();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, bs)));
-            testNoRemove(TINY_LIMIT, bs);
-            for (boolean b : ExhaustiveProvider.INSTANCE.booleans()) {
-                assertTrue(rp.toString(), elem(b, bs));
-            }
+            rp.nextInt();
         }
     }
 
@@ -256,8 +285,15 @@ public class RandomProviderProperties {
         initialize("integers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.integers();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, is)));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> true);
+            supplierEquivalence(rp, is, rp::nextInt);
+        }
+    }
+
+    private static void propertiesNextLong() {
+        initialize("nextLong()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextLong();
         }
     }
 
@@ -265,8 +301,28 @@ public class RandomProviderProperties {
         initialize("longs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.longs();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, ls)));
-            testNoRemove(TINY_LIMIT, ls);
+            simpleTest(rp, ls, l -> true);
+            supplierEquivalence(rp, ls, rp::nextLong);
+        }
+    }
+
+    private static void propertiesNextBoolean() {
+        initialize("nextBoolean()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextBoolean();
+        }
+    }
+
+    private static void propertiesBooleans() {
+        initialize("booleans()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Boolean> bs = rp.booleans();
+            simpleTest(rp, bs, b -> true);
+            supplierEquivalence(rp, bs, rp::nextBoolean);
+            for (boolean b : ExhaustiveProvider.INSTANCE.booleans()) {
+                rp.reset();
+                assertTrue(rp.toString(), elem(b, bs));
+            }
         }
     }
 
@@ -278,9 +334,10 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.uniformSample(p.b);
-            testNoRemove(TINY_LIMIT, is);
+            simpleTestWithNulls(p.a, is, p.b::contains);
+//            supplierEquivalence(p.a, is, () -> p.a.nextUniformSample(p.b));
+            p.a.reset();
             assertEquals(is.toString(), isEmpty(is), p.b.isEmpty());
-            assertTrue(is.toString(), all(p.b::contains, take(TINY_LIMIT, is)));
         }
     }
 
@@ -288,9 +345,10 @@ public class RandomProviderProperties {
         initialize("uniformSample(String)");
         for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.strings()))) {
             Iterable<Character> cs = p.a.uniformSample(p.b);
-            testNoRemove(TINY_LIMIT, cs);
+            simpleTest(p.a, cs, c -> elem(c, cs));
+//            supplierEquivalence(p.a, cs, () -> p.a.nextUniformSample(p.b));
+            p.a.reset();
             assertEquals(cs.toString(), isEmpty(cs), p.b.isEmpty());
-            assertTrue(cs.toString(), all(c -> elem(c, p.b), take(TINY_LIMIT, cs)));
         }
     }
 
@@ -298,9 +356,10 @@ public class RandomProviderProperties {
         initialize("orderings()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Ordering> os = rp.orderings();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, os)));
-            testNoRemove(TINY_LIMIT, os);
+            simpleTest(rp, os, o -> true);
+            supplierEquivalence(rp, os, rp::nextOrdering);
             for (Ordering o : ExhaustiveProvider.INSTANCE.orderings()) {
+                rp.reset();
                 assertTrue(rp.toString(), elem(o, os));
             }
         }
@@ -310,9 +369,10 @@ public class RandomProviderProperties {
         initialize("roundingModes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<RoundingMode> rms = rp.roundingModes();
-            assertTrue(rp.toString(), all(i -> i != null, take(TINY_LIMIT, rms)));
-            testNoRemove(TINY_LIMIT, rms);
+            simpleTest(rp, rms, rm -> true);
+            supplierEquivalence(rp, rms, rp::nextRoundingMode);
             for (RoundingMode rm : ExhaustiveProvider.INSTANCE.roundingModes()) {
+                rp.reset();
                 assertTrue(rp.toString(), elem(rm, rms));
             }
         }
@@ -322,10 +382,8 @@ public class RandomProviderProperties {
         initialize("positiveBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.positiveBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b > 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
+            simpleTest(rp, bs, b -> b > 0);
+            supplierEquivalence(rp, bs, rp::nextPositiveByte);
         }
     }
 
@@ -333,10 +391,8 @@ public class RandomProviderProperties {
         initialize("positiveShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.positiveShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s > 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
+            simpleTest(rp, ss, s -> s > 0);
+            supplierEquivalence(rp, ss, rp::nextPositiveShort);
         }
     }
 
@@ -344,10 +400,8 @@ public class RandomProviderProperties {
         initialize("positiveIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.positiveIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i > 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i > 0);
+            supplierEquivalence(rp, is, rp::nextPositiveInt);
         }
     }
 
@@ -355,10 +409,7 @@ public class RandomProviderProperties {
         initialize("positiveLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.positiveLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l > 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
+            simpleTest(rp, ls, l -> l > 0);
         }
     }
 
@@ -366,10 +417,7 @@ public class RandomProviderProperties {
         initialize("negativeBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.negativeBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b < 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
+            simpleTest(rp, bs, b -> b < 0);
         }
     }
 
@@ -377,10 +425,7 @@ public class RandomProviderProperties {
         initialize("negativeShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.negativeShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s < 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
+            simpleTest(rp, ss, s -> s < 0);
         }
     }
 
