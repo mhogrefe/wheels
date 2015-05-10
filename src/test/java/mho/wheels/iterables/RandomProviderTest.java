@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -258,27 +259,51 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
+    private static void nextUniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
         P.reset();
-        aeqit(TINY_LIMIT, P.uniformSample(readIntegerList(xs)), output);
+        aeq(Objects.toString(P.nextUniformSample(readIntegerListWithNulls(xs))), output);
     }
 
-    private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
+    @Test
+    public void testNextUniformSample_Iterable() {
+        nextUniformSample_Iterable_helper("[3, 1, 4, 1]", "1");
+        nextUniformSample_Iterable_helper("[3, 1, null, 1]", "1");
+        P.reset();
+        try {
+            P.nextUniformSample(Collections.emptyList());
+        } catch (ArithmeticException ignored) {}
+    }
+
+    private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
         P.reset();
         aeqit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
     }
 
     @Test
     public void testUniformSample_Iterable() {
-        uniformSample_Iterable_helper_1(
+        uniformSample_Iterable_helper(
                 "[3, 1, 4, 1]",
                 "[1, 4, 1, 1, 1, 1, 1, 1, 1, 4, 1, 3, 4, 1, 4, 4, 1, 1, 4, 1, ...]"
         );
-        uniformSample_Iterable_helper_1("[]", "[]");
-        uniformSample_Iterable_helper_2(
+        uniformSample_Iterable_helper("[]", "[]");
+        uniformSample_Iterable_helper(
                 "[3, 1, null, 1]",
                 "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, 3, null, 1, null, null, 1, 1, null, 1, ...]"
         );
+    }
+
+    private static void nextUniformSample_String_helper(@NotNull String s, char output) {
+        P.reset();
+        aeq(P.nextUniformSample(s), output);
+    }
+
+    @Test
+    public void testNextUniformSample_String() {
+        nextUniformSample_String_helper("hello", 'e');
+        P.reset();
+        try {
+            P.nextUniformSample("");
+        } catch (ArithmeticException ignored) {}
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
