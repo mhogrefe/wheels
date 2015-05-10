@@ -62,7 +62,9 @@ public class RandomProviderProperties {
             propertiesUniformSample_Iterable();
             propertiesNextUniformSample_String();
             propertiesUniformSample_String();
+            propertiesNextOrdering();
             propertiesOrderings();
+            propertiesNextRoundingMode();
             propertiesRoundingModes();
             propertiesPositiveBytes();
             propertiesPositiveShorts();
@@ -378,6 +380,13 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextOrdering() {
+        initialize("nextOrdering()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextOrdering();
+        }
+    }
+
     private static void propertiesOrderings() {
         initialize("orderings()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
@@ -388,6 +397,13 @@ public class RandomProviderProperties {
                 rp.reset();
                 assertTrue(rp.toString(), elem(o, os));
             }
+        }
+    }
+
+    private static void propertiesNextRoundingMode() {
+        initialize("nextBoolean()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextRoundingMode();
         }
     }
 
