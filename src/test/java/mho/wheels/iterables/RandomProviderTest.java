@@ -475,9 +475,23 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextNaturalByte() {
+        aeq(P.nextNaturalByte(), 41);
+        aeq(Q.nextNaturalByte(), 115);
+        aeq(R.nextNaturalByte(), 8);
+    }
+
+    @Test
     public void testNaturalBytes() {
         aeqit(take(TINY_LIMIT, P.naturalBytes()),
                 "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38]");
+    }
+
+    @Test
+    public void testNextNaturalShort() {
+        aeq(P.nextNaturalShort(), 22057);
+        aeq(Q.nextNaturalShort(), 243);
+        aeq(R.nextNaturalShort(), 28552);
     }
 
     @Test
@@ -488,11 +502,25 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextNaturalInt() {
+        aeq(P.nextNaturalInt(), 1062688297);
+        aeq(Q.nextNaturalInt(), 405143795);
+        aeq(R.nextNaturalInt(), 87945096);
+    }
+
+    @Test
     public void testNaturalIntegers() {
         aeqit(take(TINY_LIMIT, P.naturalIntegers()),
                 "[1062688297, 1143001545, 161323395, 970337778, 1178600373, 681591487, 1677403448, 136131045," +
                 " 1899010813, 1997176995, 293205759, 2040790225, 553946471, 1941234197, 565581811, 1951980917," +
                 " 102870776, 534895893, 1663679153, 1315765414]");
+    }
+
+    @Test
+    public void testNextNaturalLong() {
+        aeq(P.nextNaturalLong(), 4564211482599936457L);
+        aeq(Q.nextNaturalLong(), 1740079350508374669L);
+        aeq(R.nextNaturalLong(), 377721315096188309L);
     }
 
     @Test
