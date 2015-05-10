@@ -107,10 +107,10 @@ public class RandomProviderDemos {
         }
     }
 
-    private static void demoBooleans() {
+    private static void demoNextInt() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
-            System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
+            System.out.println("nextInt(" + rp + ") = " + rp.nextInt());
         }
     }
 
@@ -121,10 +121,31 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextLong() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextLong(" + rp + ") = " + rp.nextLong());
+        }
+    }
+
     private static void demoLongs() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("longs(" + rp + ") = " + its(rp.longs()));
+        }
+    }
+
+    private static void demoNextBoolean() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextBoolean(" + rp + ") = " + rp.nextBoolean());
+        }
+    }
+
+    private static void demoBooleans() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
         }
     }
 

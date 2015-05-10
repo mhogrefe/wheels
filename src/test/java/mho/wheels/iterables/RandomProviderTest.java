@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.misc.Readers;
+import mho.wheels.random.IsaacPRNG;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,8 +23,8 @@ import static org.junit.Assert.fail;
 // @formatter:off
 public strictfp class RandomProviderTest {
     private static final RandomProvider P = RandomProvider.example();
-    private static final RandomProvider Q = new RandomProvider(toList(replicate(256, 0)));
-    private static final RandomProvider R = new RandomProvider(toList(IterableUtils.range(1, 256)));
+    private static final RandomProvider Q = new RandomProvider(toList(replicate(IsaacPRNG.SIZE, 0)));
+    private static final RandomProvider R = new RandomProvider(toList(IterableUtils.range(1, IsaacPRNG.SIZE)));
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
     private static final int DEFAULT_TOP_COUNT = 10;
     private static final int TINY_LIMIT = 20;
@@ -206,7 +207,9 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testNextInt() {
-
+        aeq(P.nextInt(), -1084795351);
+        aeq(Q.nextInt(), 405143795);
+        aeq(R.nextInt(), 87945096);
     }
 
     @Test
@@ -220,6 +223,13 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextLong() {
+        aeq(P.nextLong(), -4659160554254839351L);
+        aeq(Q.nextLong(), 1740079350508374669L);
+        aeq(R.nextLong(), 377721315096188309L);
+    }
+
+    @Test
     public void testLongs() {
         aeqit(
                 take(TINY_LIMIT, P.longs()),
@@ -229,6 +239,13 @@ public strictfp class RandomProviderTest {
                 " -3259952746839854786, -1600663848124449857, 7874913887470575742, -6974357164754656982," +
                 " 8454731288392606713, 347198304573602423, -601743751419410562, -2127248600113938899]"
         );
+    }
+
+    @Test
+    public void testNextBoolean() {
+        aeq(P.nextBoolean(), true);
+        aeq(Q.nextBoolean(), true);
+        aeq(R.nextBoolean(), false);
     }
 
     @Test
