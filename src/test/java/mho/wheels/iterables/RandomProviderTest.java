@@ -415,6 +415,13 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextNegativeByte() {
+        aeq(P.nextNegativeByte(), -42);
+        aeq(Q.nextNegativeByte(), -116);
+        aeq(R.nextNegativeByte(), -9);
+    }
+
+    @Test
     public void testNegativeBytes() {
         aeqit(take(TINY_LIMIT, P.negativeBytes()),
                 "[-42, -74, -4, -115, -54, -64, -57, -102, -126, -36, -128, -82, -104, -22, -116, -118, -121, -22," +
@@ -422,10 +429,24 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextNegativeShort() {
+        aeq(P.nextNegativeShort(), -22058);
+        aeq(Q.nextNegativeShort(), -244);
+        aeq(R.nextNegativeShort(), -28553);
+    }
+
+    @Test
     public void testNegativeShorts() {
         aeqit(take(TINY_LIMIT, P.negativeShorts()),
                 "[-22058, -20938, -6532, -11763, -950, -17088, -9529, -12774, -6910, -164, -30464, -31954, -3432," +
                 " -25110, -6132, -23926, -12025, -23830, -15026, -31911]");
+    }
+
+    @Test
+    public void testNextNegativeInt() {
+        aeq(P.nextNegativeInt(), -1084795351);
+        aeq(Q.nextNegativeInt(), -1333080799);
+        aeq(R.nextNegativeInt(), -362359403);
     }
 
     @Test
