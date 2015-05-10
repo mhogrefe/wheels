@@ -54,8 +54,10 @@ public class RandomProviderProperties {
             propertiesGetId();
             propertiesNextInt();
             propertiesIntegers();
+            propertiesNextLong();
             propertiesLongs();
             propertiesBooleans();
+            propertiesNextBoolean();
             propertiesUniformSample_Iterable();
             propertiesUniformSample_String();
             propertiesOrderings();
