@@ -930,6 +930,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNegativeLong);
     }
 
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code byte}
+     */
     public byte nextNaturalByte() {
         return (byte) nextIntPow2(7);
     }
@@ -945,6 +955,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNaturalByte);
     }
 
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code short}
+     */
     public short nextNaturalShort() {
         return (short) nextIntPow2(15);
     }
@@ -960,6 +980,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNaturalShort);
     }
 
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code int}
+     */
     public int nextNaturalInt() {
         return nextIntPow2(31);
     }
@@ -975,6 +1005,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNaturalInt);
     }
 
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code long}
+     */
     public long nextNaturalLong() {
         return nextLongPow2(63);
     }
