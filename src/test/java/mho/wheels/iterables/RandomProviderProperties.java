@@ -66,9 +66,13 @@ public class RandomProviderProperties {
             propertiesOrderings();
             propertiesNextRoundingMode();
             propertiesRoundingModes();
+            propertiesNextPositiveByte();
             propertiesPositiveBytes();
+            propertiesNextPositiveShort();
             propertiesPositiveShorts();
+            propertiesNextPositiveInt();
             propertiesPositiveIntegers();
+            propertiesNextPositiveLong();
             propertiesPositiveLongs();
             propertiesNegativeBytes();
             propertiesNegativeShorts();
@@ -420,12 +424,26 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextPositiveByte() {
+        initialize("nextPositiveByte()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextPositiveByte();
+        }
+    }
+
     private static void propertiesPositiveBytes() {
         initialize("positiveBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.positiveBytes();
             simpleTest(rp, bs, b -> b > 0);
             supplierEquivalence(rp, bs, rp::nextPositiveByte);
+        }
+    }
+
+    private static void propertiesNextPositiveShort() {
+        initialize("nextPositiveShort()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextPositiveShort();
         }
     }
 
@@ -438,6 +456,13 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextPositiveInt() {
+        initialize("nextPositiveInt()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextPositiveInt();
+        }
+    }
+
     private static void propertiesPositiveIntegers() {
         initialize("positiveIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
@@ -447,11 +472,19 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextPositiveLong() {
+        initialize("nextPositiveLong()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextPositiveLong();
+        }
+    }
+
     private static void propertiesPositiveLongs() {
         initialize("positiveLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.positiveLongs();
             simpleTest(rp, ls, l -> l > 0);
+            supplierEquivalence(rp, ls, rp::nextPositiveLong);
         }
     }
 
