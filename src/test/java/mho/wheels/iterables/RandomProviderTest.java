@@ -322,12 +322,26 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextOrdering() {
+        aeq(P.nextOrdering(), "LT");
+        aeq(Q.nextOrdering(), "LT");
+        aeq(R.nextOrdering(), "LT");
+    }
+
+    @Test
     public void testOrderings() {
         simpleProviderHelper(
                 P.orderings(),
                 "[LT, GT, LT, LT, LT, LT, LT, GT, LT, EQ, GT, GT, GT, LT, GT, LT, GT, LT, EQ, LT]",
                 "[LT=333773, GT=333384, EQ=332843]"
         );
+    }
+
+    @Test
+    public void testNextRoundingMode() {
+        aeq(P.nextRoundingMode(), "UP");
+        aeq(Q.nextRoundingMode(), "HALF_UP");
+        aeq(R.nextRoundingMode(), "HALF_UP");
     }
 
     @Test
