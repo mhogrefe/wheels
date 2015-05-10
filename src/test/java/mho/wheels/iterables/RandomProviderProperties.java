@@ -58,7 +58,9 @@ public class RandomProviderProperties {
             propertiesLongs();
             propertiesBooleans();
             propertiesNextBoolean();
+            propertiesNextUniformSample_Iterable();
             propertiesUniformSample_Iterable();
+            propertiesNextUniformSample_String();
             propertiesUniformSample_String();
             propertiesOrderings();
             propertiesRoundingModes();
@@ -328,6 +330,17 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextUniformSample_Iterable() {
+        initialize("nextUniformSample(Iterable<T>)");
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.listsAtLeast(1, P.withNull(P.integers()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p.toString(), p.b.contains(p.a.nextUniformSample(p.b)));
+        }
+    }
+
     private static void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
@@ -337,9 +350,18 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.uniformSample(p.b);
             simpleTestWithNulls(p.a, is, p.b::contains);
-//            supplierEquivalence(p.a, is, () -> p.a.nextUniformSample(p.b));
+            if (!p.b.isEmpty()) {
+                supplierEquivalence(p.a, is, () -> p.a.nextUniformSample(p.b));
+            }
             p.a.reset();
             assertEquals(is.toString(), isEmpty(is), p.b.isEmpty());
+        }
+    }
+
+    private static void propertiesNextUniformSample_String() {
+        initialize("nextUniformSample(String)");
+        for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1)))) {
+            assertTrue(p.toString(), elem(p.a.nextUniformSample(p.b), p.b));
         }
     }
 
@@ -348,7 +370,9 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.strings()))) {
             Iterable<Character> cs = p.a.uniformSample(p.b);
             simpleTest(p.a, cs, c -> elem(c, cs));
-//            supplierEquivalence(p.a, cs, () -> p.a.nextUniformSample(p.b));
+            if (!p.b.isEmpty()) {
+                supplierEquivalence(p.a, cs, () -> p.a.nextUniformSample(p.b));
+            }
             p.a.reset();
             assertEquals(cs.toString(), isEmpty(cs), p.b.isEmpty());
         }
