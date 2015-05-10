@@ -22,6 +22,8 @@ import static org.junit.Assert.fail;
 // @formatter:off
 public strictfp class RandomProviderTest {
     private static final RandomProvider P = RandomProvider.example();
+    private static final RandomProvider Q = new RandomProvider(toList(replicate(256, 0)));
+    private static final RandomProvider R = new RandomProvider(toList(IterableUtils.range(1, 256)));
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
     private static final int DEFAULT_TOP_COUNT = 10;
     private static final int TINY_LIMIT = 20;
@@ -29,6 +31,8 @@ public strictfp class RandomProviderTest {
     @Before
     public void initialize() {
         P.reset();
+        Q.reset();
+        R.reset();
     }
 
     @Test
@@ -40,8 +44,8 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testConstructor_int() {
-        aeq(new RandomProvider(toList(replicate(256, 0))), "RandomProvider[@2476331594451070591, 32, 8]");
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))), "RandomProvider[@7136644727607569499, 32, 8]");
+        aeq(Q, "RandomProvider[@2476331594451070591, 32, 8]");
+        aeq(R, "RandomProvider[@7136644727607569499, 32, 8]");
         aeq(
                 new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -256))),
                 "RandomProvider[@-8825631725423005287, 32, 8]"
@@ -105,7 +109,7 @@ public strictfp class RandomProviderTest {
                 " -948832823, -909756549, -664108386, -1355112330, -125435854, -1502071736, -790593389]"
         );
         aeq(
-                new RandomProvider(toList(replicate(256, 0))).getSeed(),
+                Q.getSeed(),
                 "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0," +
@@ -116,7 +120,7 @@ public strictfp class RandomProviderTest {
                 " 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]"
         );
         aeq(
-                new RandomProvider(toList(IterableUtils.range(1, 256))).getSeed(),
+                R.getSeed(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27," +
                 " 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51," +
                 " 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75," +
@@ -144,24 +148,15 @@ public strictfp class RandomProviderTest {
     @Test
     public void testWithScale() {
         aeq(P.withScale(100), "RandomProvider[@2311470349995791220, 100, 8]");
-        aeq(new RandomProvider(toList(replicate(256, 0))).withScale(3), "RandomProvider[@2476331594451070591, 3, 8]");
-        aeq(
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0),
-                "RandomProvider[@7136644727607569499, 0, 8]"
-        );
+        aeq(Q.withScale(3), "RandomProvider[@2476331594451070591, 3, 8]");
+        aeq(R.withScale(0), "RandomProvider[@7136644727607569499, 0, 8]");
     }
 
     @Test
     public void testWithSecondaryScale() {
         aeq(P.withSecondaryScale(100), "RandomProvider[@2311470349995791220, 32, 100]");
-        aeq(
-                new RandomProvider(toList(replicate(256, 0))).withSecondaryScale(3),
-                "RandomProvider[@2476331594451070591, 32, 3]"
-        );
-        aeq(
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withSecondaryScale(0),
-                "RandomProvider[@7136644727607569499, 32, 0]"
-        );
+        aeq(Q.withSecondaryScale(3), "RandomProvider[@2476331594451070591, 32, 3]");
+        aeq(R.withSecondaryScale(0), "RandomProvider[@7136644727607569499, 32, 0]");
     }
 
     @Test
@@ -194,8 +189,8 @@ public strictfp class RandomProviderTest {
         aeq(P.getId(), 2311470349995791220L);
         P.nextInt();
         aeq(P.getId(), -3363466775474220013L);
-        aeq(new RandomProvider(toList(replicate(256, 0))).getId(), 2476331594451070591L);
-        aeq(new RandomProvider(toList(IterableUtils.range(1, 256))).getId(), 7136644727607569499L);
+        aeq(Q.getId(), 2476331594451070591L);
+        aeq(R.getId(), 7136644727607569499L);
     }
 
     private static <T> void simpleProviderHelper(
@@ -210,13 +205,8 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testBooleans() {
-        simpleProviderHelper(
-                P.booleans(),
-                "[true, true, true, false, true, true, false, true, true, true, true, true, true, true, true, true," +
-                " false, true, true, false]",
-                "[true=499965, false=500035]"
-        );
+    public void testNextInt() {
+
     }
 
     @Test
@@ -238,6 +228,16 @@ public strictfp class RandomProviderTest {
                 " 441826621316521237, -2077924480219546458, 404281420475794401, -3799772176394282532," +
                 " -3259952746839854786, -1600663848124449857, 7874913887470575742, -6974357164754656982," +
                 " 8454731288392606713, 347198304573602423, -601743751419410562, -2127248600113938899]"
+        );
+    }
+
+    @Test
+    public void testBooleans() {
+        simpleProviderHelper(
+                P.booleans(),
+                "[true, true, true, false, true, true, false, true, true, true, true, true, true, true, true, true," +
+                " false, true, true, false]",
+                "[true=499965, false=500035]"
         );
     }
 
@@ -2392,14 +2392,13 @@ public strictfp class RandomProviderTest {
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
                 P,
-                new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0),
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0).withSecondaryScale(10)
+                Q.withScale(3).withSecondaryScale(0),
+                R.withScale(0).withSecondaryScale(10)
         );
-        P.reset();
         List<RandomProvider> ys = Arrays.asList(
                 P,
-                new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0),
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0).withSecondaryScale(10)
+                Q.withScale(3).withSecondaryScale(0),
+                R.withScale(0).withSecondaryScale(10)
         );
         testEqualsHelper(xs, ys);
         //noinspection EqualsBetweenInconvertibleTypes
@@ -2409,27 +2408,15 @@ public strictfp class RandomProviderTest {
     @Test
     public void testHashCode() {
         aeq(P.hashCode(), 1620921090);
-        aeq(
-                new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0).hashCode(),
-                607613738
-        );
-        aeq(
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0).withSecondaryScale(10).hashCode(),
-                816647836
-        );
+        aeq(Q.withScale(3).withSecondaryScale(0).hashCode(), 607613738);
+        aeq(R.withScale(0).withSecondaryScale(10).hashCode(), 816647836);
     }
 
     @Test
     public void testToString() {
         aeq(P, "RandomProvider[@2311470349995791220, 32, 8]");
-        aeq(
-                new RandomProvider(toList(replicate(256, 0))).withScale(3).withSecondaryScale(0),
-                "RandomProvider[@2476331594451070591, 3, 0]"
-        );
-        aeq(
-                new RandomProvider(toList(IterableUtils.range(1, 256))).withScale(0).withSecondaryScale(10),
-                "RandomProvider[@7136644727607569499, 0, 10]"
-        );
+        aeq(Q.withScale(3).withSecondaryScale(0), "RandomProvider[@2476331594451070591, 3, 0]");
+        aeq(R.withScale(0).withSecondaryScale(10), "RandomProvider[@7136644727607569499, 0, 10]");
     }
 
     private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {

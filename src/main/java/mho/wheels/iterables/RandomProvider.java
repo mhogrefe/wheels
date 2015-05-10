@@ -302,30 +302,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code boolean} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be either {@code boolean}.</li>
-     * </ul>
-     *
-     * @return a {@code boolean}
-     */
-    public boolean nextBoolean() {
-        return (nextInt() & 1) != 0;
-    }
-
-    /**
-     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Boolean> booleans() {
-        return fromSupplier(this::nextBoolean);
-    }
-
-    /**
      * Returns a randomly-generated {@code long} from a uniform distribution.
      *
      * <ul>
@@ -349,6 +325,30 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Long> longs() {
         return fromSupplier(this::nextLong);
+    }
+
+    /**
+     * Returns a randomly-generated {@code boolean} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return a {@code boolean}
+     */
+    public boolean nextBoolean() {
+        return (nextInt() & 1) != 0;
+    }
+
+    /**
+     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Boolean> booleans() {
+        return fromSupplier(this::nextBoolean);
     }
 
     private int nextIntPow2(int bits) {
