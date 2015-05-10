@@ -655,6 +655,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(s::charAt, range(0, s.length() - 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code Ordering} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return an {@code Ordering}
+     */
     public @NotNull Ordering nextOrdering() {
         //noinspection ConstantConditions
         return nextUniformSample(ORDERINGS);
@@ -670,6 +680,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return uniformSample(ORDERINGS);
     }
 
+    /**
+     * Returns a randomly-generated {@code RoundingMode} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code RoundingMode}
+     */
     public @NotNull RoundingMode nextRoundingMode() {
         //noinspection ConstantConditions
         return nextUniformSample(ROUNDING_MODES);
