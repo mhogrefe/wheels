@@ -458,6 +458,13 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextNegativeLong() {
+        aeq(P.nextNegativeLong(), -4659160554254839351L);
+        aeq(Q.nextNegativeLong(), -5476473126251815900L);
+        aeq(R.nextNegativeLong(), -4625575076888178893L);
+    }
+
+    @Test
     public void testNegativeLongs() {
         aeqit(take(TINY_LIMIT, P.negativeLongs()),
                 "[-4659160554254839351, -8530493328132264462, -4161321976937299265, -2018979083213524507," +
