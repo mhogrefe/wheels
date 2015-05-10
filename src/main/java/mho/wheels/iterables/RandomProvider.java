@@ -706,6 +706,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return uniformSample(ROUNDING_MODES);
     }
 
+    /**
+     * Returns a randomly-generated positive {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code byte}
+     */
     public byte nextPositiveByte() {
         byte b;
         do {
@@ -725,6 +735,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveByte);
     }
 
+    /**
+     * Returns a randomly-generated positive {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code short}
+     */
     public short nextPositiveShort() {
         short s;
         do {
@@ -744,6 +764,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveShort);
     }
 
+    /**
+     * Returns a randomly-generated positive {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code int}
+     */
     public int nextPositiveInt() {
         int i;
         do {
@@ -763,6 +793,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveInt);
     }
 
+    /**
+     * Returns a randomly-generated positive {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code long}
+     */
     public long nextPositiveLong() {
         long l;
         do {
