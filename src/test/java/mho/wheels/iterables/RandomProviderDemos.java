@@ -190,10 +190,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextOrdering() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextOrdering(" + rp + ") = " + rp.nextOrdering());
+        }
+    }
+
     private static void demoOrderings() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("orderings(" + rp + ") = " + its(rp.orderings()));
+        }
+    }
+
+    private static void demoNextRoundingMode() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextRoundingMode(" + rp + ") = " + rp.nextRoundingMode());
         }
     }
 
