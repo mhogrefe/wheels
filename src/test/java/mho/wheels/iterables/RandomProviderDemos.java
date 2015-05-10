@@ -149,6 +149,18 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextUniformSample_Iterable() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.listsAtLeast(1, P.withNull(P.integers()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextUniformSample(" + p.a + ", " + p.b.toString() + ") = " +
+                    p.a.nextUniformSample(p.b));
+        }
+    }
+
     private static void demoUniformSample_Iterable() {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
@@ -156,8 +168,16 @@ public class RandomProviderDemos {
                 P.lists(P.withNull(P.integers()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
-            String listString = tail(init(p.b.toString()));
-            System.out.println("uniformSample(" + p.a + ", " + listString + ") = " + its(p.a.uniformSample(p.b)));
+            System.out.println("uniformSample(" + p.a + ", " + p.b.toString() + ") = " + its(p.a.uniformSample(p.b)));
+        }
+    }
+
+    private static void demoNextUniformSample_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1));
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextUniformSample(" + p.a + ", " +  nicePrint(p.b) + ") = " +
+                    nicePrint(p.a.nextUniformSample(p.b)));
         }
     }
 
