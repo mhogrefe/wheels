@@ -822,6 +822,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveLong);
     }
 
+    /**
+     * Returns a randomly-generated negative {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code byte}
+     */
     public byte nextNegativeByte() {
         return (byte) ~nextNaturalByte();
     }
@@ -837,6 +847,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNegativeByte);
     }
 
+    /**
+     * Returns a randomly-generated negative {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code short}
+     */
     public short nextNegativeShort() {
         return (short) ~nextNaturalShort();
     }
@@ -852,6 +872,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNegativeShort);
     }
 
+    /**
+     * Returns a randomly-generated negative {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code int}
+     */
     public int nextNegativeInt() {
         int i;
         do {
@@ -871,6 +901,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNegativeInt);
     }
 
+    /**
+     * Returns a randomly-generated negative {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code long}
+     */
     public long nextNegativeLong() {
         long l;
         do {
