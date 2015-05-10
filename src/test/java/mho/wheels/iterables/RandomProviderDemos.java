@@ -330,10 +330,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNaturalByte() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNaturalByte(" + rp + ") = " + rp.nextNaturalByte());
+        }
+    }
+
     private static void demoNaturalBytes() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalBytes(" + rp + ") = " + its(rp.naturalBytes()));
+        }
+    }
+
+    private static void demoNextNaturalShort() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNaturalShort(" + rp + ") = " + rp.nextNaturalShort());
         }
     }
 
@@ -344,10 +358,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNaturalInt() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNaturalInt(" + rp + ") = " + rp.nextNaturalInt());
+        }
+    }
+
     private static void demoNaturalIntegers() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalIntegers(" + rp + ") = " + its(rp.naturalIntegers()));
+        }
+    }
+
+    private static void demoNextNaturalLong() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNaturalLong(" + rp + ") = " + rp.nextNaturalLong());
         }
     }
 
