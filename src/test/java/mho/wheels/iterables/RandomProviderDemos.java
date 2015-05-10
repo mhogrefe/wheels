@@ -109,7 +109,7 @@ public class RandomProviderDemos {
 
     private static void demoNextInt() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextInt(" + rp + ") = " + rp.nextInt());
         }
     }
@@ -123,7 +123,7 @@ public class RandomProviderDemos {
 
     private static void demoNextLong() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextLong(" + rp + ") = " + rp.nextLong());
         }
     }
@@ -137,7 +137,7 @@ public class RandomProviderDemos {
 
     private static void demoNextBoolean() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextBoolean(" + rp + ") = " + rp.nextBoolean());
         }
     }
@@ -192,7 +192,7 @@ public class RandomProviderDemos {
 
     private static void demoNextOrdering() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextOrdering(" + rp + ") = " + rp.nextOrdering());
         }
     }
@@ -206,7 +206,7 @@ public class RandomProviderDemos {
 
     private static void demoNextRoundingMode() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextRoundingMode(" + rp + ") = " + rp.nextRoundingMode());
         }
     }
@@ -220,7 +220,7 @@ public class RandomProviderDemos {
 
     private static void demoNextPositiveByte() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextPositiveByte(" + rp + ") = " + rp.nextPositiveByte());
         }
     }
@@ -234,7 +234,7 @@ public class RandomProviderDemos {
 
     private static void demoNextPositiveShort() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextPositiveShort(" + rp + ") = " + rp.nextPositiveShort());
         }
     }
@@ -248,7 +248,7 @@ public class RandomProviderDemos {
 
     private static void demoNextPositiveInt() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextPositiveInt(" + rp + ") = " + rp.nextPositiveInt());
         }
     }
@@ -262,7 +262,7 @@ public class RandomProviderDemos {
 
     private static void demoNextPositiveLong() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             System.out.println("nextPositiveLong(" + rp + ") = " + rp.nextPositiveLong());
         }
     }
@@ -274,10 +274,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNegativeByte() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeByte(" + rp + ") = " + rp.nextNegativeByte());
+        }
+    }
+
     private static void demoNegativeBytes() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeBytes(" + rp + ") = " + its(rp.negativeBytes()));
+        }
+    }
+
+    private static void demoNextNegativeShort() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeShort(" + rp + ") = " + rp.nextNegativeShort());
         }
     }
 
@@ -288,10 +302,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNegativeInt() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeInt(" + rp + ") = " + rp.nextNegativeInt());
+        }
+    }
+
     private static void demoNegativeIntegers() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeIntegers(" + rp + ") = " + its(rp.negativeIntegers()));
+        }
+    }
+
+    private static void demoNextNegativeLong() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeLong(" + rp + ") = " + rp.nextNegativeLong());
         }
     }
 
