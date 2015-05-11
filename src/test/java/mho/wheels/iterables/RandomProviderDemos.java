@@ -470,10 +470,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextAsciiChar() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextAsciiChar(" + rp + ") = " + nicePrint(rp.nextAsciiChar()));
+        }
+    }
+
     private static void demoAsciiCharacters() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("asciiCharacters(" + rp + ") = " + cits(rp.asciiCharacters()));
+        }
+    }
+
+    private static void demoNextChar() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextChar(" + rp + ") = " + nicePrint(rp.nextChar()));
         }
     }
 
