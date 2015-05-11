@@ -593,9 +593,23 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextByte() {
+        aeq(P.nextByte(), 41);
+        aeq(Q.nextByte(), -13);
+        aeq(R.nextByte(), -120);
+    }
+
+    @Test
     public void testBytes() {
         aeqit(take(TINY_LIMIT, P.bytes()),
                 "[41, -55, -125, -14, -75, -65, 56, -27, -3, -93, -1, -47, 103, 21, -13, 117, -8, 21, -79, -90]");
+    }
+
+    @Test
+    public void testNextShort() {
+        aeq(P.nextShort(), 22057);
+        aeq(Q.nextShort(), 243);
+        aeq(R.nextShort(), -4216);
     }
 
     @Test
