@@ -106,10 +106,15 @@ public class RandomProviderProperties {
             propertiesAsciiCharacters();
             propertiesNextChar();
             propertiesCharacters();
+            propertiesNextFromRangeUp_byte();
             propertiesRangeUp_byte();
+            propertiesNextFromRangeUp_short();
             propertiesRangeUp_short();
+            propertiesNextFromRangeUp_int();
             propertiesRangeUp_int();
+            propertiesNextFromRangeUp_long();
             propertiesRangeUp_long();
+            propertiesNextFromRangeUp_char();
             propertiesRangeUp_char();
             propertiesRangeDown_byte();
             propertiesRangeDown_short();
@@ -777,14 +782,24 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextFromRangeUp_byte() {
+        initialize("nextFromRangeUp(byte)");
+        for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
+            byte b = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), b >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeq(rp.nextFromRangeUp(Byte.MAX_VALUE), Byte.MAX_VALUE);
+        }
+    }
+
     private static void propertiesRangeUp_byte() {
-        initialize("testing rangeUp(byte)");
+        initialize("rangeUp(byte)");
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             Iterable<Byte> bs = p.a.rangeUp(p.b);
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(p.toString(), all(b -> b != null, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-            assertTrue(p.toString(), all(b -> b >= p.b, tbs));
+            simpleTest(p.a, bs, b -> b >= p.b);
+            supplierEquivalence(p.a, bs, () -> p.a.nextFromRangeUp(p.b));
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
@@ -792,14 +807,24 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextFromRangeUp_short() {
+        initialize("nextFromRangeUp(short)");
+        for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
+            short s = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), s >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeq(rp.nextFromRangeUp(Short.MAX_VALUE), Short.MAX_VALUE);
+        }
+    }
+
     private static void propertiesRangeUp_short() {
         initialize("rangeUp(short)");
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             Iterable<Short> ss = p.a.rangeUp(p.b);
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(p.toString(), all(s -> s != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
-            assertTrue(p.toString(), all(s -> s >= p.b, tss));
+            simpleTest(p.a, ss, s -> s >= p.b);
+            supplierEquivalence(p.a, ss, () -> p.a.nextFromRangeUp(p.b));
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
@@ -807,14 +832,24 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextFromRangeUp_int() {
+        initialize("nextFromRangeUp(int)");
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
+            int i = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), i >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeq(rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
+        }
+    }
+
     private static void propertiesRangeUp_int() {
         initialize("rangeUp(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             Iterable<Integer> is = p.a.rangeUp(p.b);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i >= p.b, tis));
+            simpleTest(p.a, is, i -> i >= p.b);
+            supplierEquivalence(p.a, is, () -> p.a.nextFromRangeUp(p.b));
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
@@ -822,18 +857,40 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextFromRangeUp_long() {
+        initialize("nextFromRangeUp(long)");
+        for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
+            long l = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), l >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeq(rp.nextFromRangeUp(Long.MAX_VALUE), Long.MAX_VALUE);
+        }
+    }
+
     private static void propertiesRangeUp_long() {
         initialize("rangeUp(long)");
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             Iterable<Long> ls = p.a.rangeUp(p.b);
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(p.toString(), all(l -> l != null, tls));
-            testNoRemove(TINY_LIMIT, ls);
-            assertTrue(p.toString(), all(l -> l >= p.b, tls));
+            simpleTest(p.a, ls, l -> l >= p.b);
+            supplierEquivalence(p.a, ls, () -> p.a.nextFromRangeUp(p.b));
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             aeqit(rp.toString(), TINY_LIMIT, rp.rangeUp(Long.MAX_VALUE), repeat(Long.MAX_VALUE));
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_char() {
+        initialize("nextFromRangeUp(char)");
+        for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.characters()))) {
+            char c = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), c >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeq(rp.nextFromRangeUp(Character.MAX_VALUE), Character.MAX_VALUE);
         }
     }
 
@@ -842,10 +899,8 @@ public class RandomProviderProperties {
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
             Iterable<Character> cs = p.a.rangeUp(p.b);
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(p.toString(), all(b -> b != null, tcs));
-            testNoRemove(TINY_LIMIT, cs);
-            assertTrue(p.toString(), all(b -> b >= p.b, tcs));
+            simpleTest(p.a, cs, c -> c >= p.b);
+            supplierEquivalence(p.a, cs, () -> p.a.nextFromRangeUp(p.b));
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
