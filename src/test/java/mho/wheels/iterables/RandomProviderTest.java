@@ -649,6 +649,20 @@ public strictfp class RandomProviderTest {
                 "\ue78f㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ");
     }
 
+    private static void nextFromRangeUp_byte_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeUp((byte) a), output);
+    }
+
+    @Test
+    public void testNextFromRangeUp_byte() {
+        nextFromRangeUp_byte_helper(0, 41);
+        nextFromRangeUp_byte_helper(1 << 6, 105);
+        nextFromRangeUp_byte_helper(-1 << 6, -23);
+        nextFromRangeUp_byte_helper(Byte.MAX_VALUE, 127);
+        nextFromRangeUp_byte_helper(Byte.MIN_VALUE, -87);
+    }
+
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
         P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
@@ -676,6 +690,20 @@ public strictfp class RandomProviderTest {
                 Byte.MIN_VALUE,
                 "[-87, 73, 3, 114, 53, 63, -72, 101, 125, 35, 127, 81, -25, -107, 115, -11, 120, -107, 49, 38]"
         );
+    }
+
+    private static void nextFromRangeUp_short_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeUp((short) a), output);
+    }
+
+    @Test
+    public void testNextFromRangeUp_short() {
+        nextFromRangeUp_short_helper(0, 22057);
+        nextFromRangeUp_short_helper(1 << 14, 22057);
+        nextFromRangeUp_short_helper(-1 << 14, 5673);
+        nextFromRangeUp_short_helper(Short.MAX_VALUE, 32767);
+        nextFromRangeUp_short_helper(Short.MIN_VALUE, -10711);
     }
 
     private static void rangeUp_short_helper(short a, @NotNull String output) {
@@ -710,6 +738,20 @@ public strictfp class RandomProviderTest {
                 "[-10711, 20937, 6531, -21006, -31819, -15681, -23240, -19995, 6909, 163, 30463, 31953, 3431, 25109," +
                 " -26637, 23925, 12024, 23829, 15025, 31910]"
         );
+    }
+
+    private static void nextFromRangeUp_int_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeUp(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeUp_int() {
+        nextFromRangeUp_int_helper(0, 1143001545);
+        nextFromRangeUp_int_helper(1 << 30, 1143001545);
+        nextFromRangeUp_int_helper(-1 << 30, 69259721);
+        nextFromRangeUp_int_helper(Integer.MAX_VALUE, 2147483647);
+        nextFromRangeUp_int_helper(Integer.MIN_VALUE, -1004482103);
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
@@ -749,6 +791,20 @@ public strictfp class RandomProviderTest {
                 " 534895893, 1315765414, -658504735, -291825188, 739062078, 2008775615, -1552326530, " +
                 "-1038540502, 1275438073, 985283191, -1965701250, -1186791891]"
         );
+    }
+
+    private static void nextFromRangeUp_long_helper(long a, long output) {
+        P.reset();
+        aeq(P.nextFromRangeUp(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeUp_long() {
+        nextFromRangeUp_long_helper(0L, 2978664684788457540L);
+        nextFromRangeUp_long_helper(1L << 62, 7590350703215845444L);
+        nextFromRangeUp_long_helper(-1L << 62, 1609966265326126211L);
+        nextFromRangeUp_long_helper(Long.MAX_VALUE, 9223372036854775807L);
+        nextFromRangeUp_long_helper(Long.MIN_VALUE, -3001719753101261693L);
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
@@ -800,6 +856,19 @@ public strictfp class RandomProviderTest {
         );
     }
 
+    private static void nextFromRangeUp_char_helper(char a, char output) {
+        P.reset();
+        aeq(P.nextFromRangeUp(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeUp_char() {
+        nextFromRangeUp_char_helper('\0', '嘩');
+        nextFromRangeUp_char_helper('a', '嚊');
+        nextFromRangeUp_char_helper('Ш', '婑');
+        nextFromRangeUp_char_helper('\uffff', '\uffff');
+    }
+
     private static void rangeUp_char_helper(char a, @NotNull String output) {
         P.reset();
         aeqcs(P.rangeUp(a), output);
@@ -829,7 +898,7 @@ public strictfp class RandomProviderTest {
                 "ⱚﾁ슄众婳\uf797ꝣ銩\ueca4\uda6bﹹ뻟\u0cce耚\uf0adᓦၽ"
         );
         rangeUp_char_helper(
-                Character.MAX_VALUE,
+                '\uffff',
                 "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
                 "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
                 "\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff\uffff" +
