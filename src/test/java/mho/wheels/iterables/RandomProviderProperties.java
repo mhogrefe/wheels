@@ -102,7 +102,9 @@ public class RandomProviderProperties {
             propertiesBytes();
             propertiesNextShort();
             propertiesShorts();
+            propertiesNextAsciiChar();
             propertiesAsciiCharacters();
+            propertiesNextChar();
             propertiesCharacters();
             propertiesRangeUp_byte();
             propertiesRangeUp_short();
@@ -742,14 +744,27 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextAsciiChar() {
+        initialize("nextAsciiChar()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            char c = rp.nextAsciiChar();
+            assertTrue(rp.toString(), c < 128);
+        }
+    }
+
     private static void propertiesAsciiCharacters() {
         initialize("asciiCharacters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.asciiCharacters();
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(rp.toString(), all(c -> c != null, tcs));
-            assertTrue(rp.toString(), all(c -> c < 128, tcs));
-            testNoRemove(TINY_LIMIT, cs);
+            simpleTest(rp, cs, c -> c < 128);
+            supplierEquivalence(rp, cs, rp::nextAsciiChar);
+        }
+    }
+
+    private static void propertiesNextChar() {
+        initialize("nextChar()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            char c = rp.nextChar();
         }
     }
 
@@ -757,8 +772,8 @@ public class RandomProviderProperties {
         initialize("characters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.characters();
-            assertTrue(rp.toString(), all(c -> c != null, take(TINY_LIMIT, cs)));
-            testNoRemove(TINY_LIMIT, cs);
+            simpleTest(rp, cs, c -> true);
+            supplierEquivalence(rp, cs, rp::nextChar);
         }
     }
 
