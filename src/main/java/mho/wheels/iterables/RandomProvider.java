@@ -1200,6 +1200,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextChar);
     }
 
+    /**
+     * Returns a randomly-generated {@code byte} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @return a {@code byte} greater than or equal to {@code a}
+     */
     public byte nextFromRangeUp(byte a) {
         return (byte) (nextIntBounded((1 << 7) - a) + a);
     }
@@ -1222,6 +1232,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (byte) (i + a), integersBounded((1 << 7) - a));
     }
 
+    /**
+     * Returns a randomly-generated {@code short} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @return a {@code short} greater than or equal to {@code a}
+     */
     public short nextFromRangeUp(short a) {
         return (short) (nextIntBounded((1 << 15) - a) + a);
     }
@@ -1244,6 +1264,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (short) (i + a), integersBounded((1 << 15) - a));
     }
 
+    /**
+     * Returns a randomly-generated {@code int} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} greater than or equal to {@code a}
+     */
     public int nextFromRangeUp(int a) {
         return (int) (nextLongBounded((1L << 31) - a) + a);
     }
@@ -1266,6 +1296,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(l -> (int) (l + a), longsBounded((1L << 31) - a));
     }
 
+    /**
+     * Returns a randomly-generated {@code long} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @return a {@code long} greater than or equal to {@code a}
+     */
     public long nextFromRangeUp(long a) {
         BigInteger ba = BigInteger.valueOf(a);
         return nextBigIntegerBounded(BigInteger.ONE.shiftLeft(63).subtract(ba)).add(ba).longValueExact();
@@ -1292,6 +1332,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated {@code char} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @return a {@code char} greater than or equal to {@code a}
+     */
     public char nextFromRangeUp(char a) {
         return (char) (nextIntBounded((1 << 16) - a) + a);
     }
