@@ -442,10 +442,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextByte() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextByte(" + rp + ") = " + rp.nextByte());
+        }
+    }
+
     private static void demoBytes() {
         initialize();
         for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
             System.out.println("bytes(" + rp + ") = " + its(rp.bytes()));
+        }
+    }
+
+    private static void demoNextShort() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextShort(" + rp + ") = " + rp.nextShort());
         }
     }
 
