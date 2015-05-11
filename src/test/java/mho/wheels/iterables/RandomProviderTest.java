@@ -910,6 +910,20 @@ public strictfp class RandomProviderTest {
         );
     }
 
+    private static void nextFromRangeDown_byte_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeDown((byte) a), output);
+    }
+
+    @Test
+    public void testNextFromRangeDown_byte() {
+        nextFromRangeDown_byte_helper(0, -87);
+        nextFromRangeDown_byte_helper(1 << 6, -87);
+        nextFromRangeDown_byte_helper(-1 << 6, -87);
+        nextFromRangeDown_byte_helper(Byte.MAX_VALUE, -87);
+        nextFromRangeDown_byte_helper(Byte.MIN_VALUE, -128);
+    }
+
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
         P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
@@ -939,6 +953,20 @@ public strictfp class RandomProviderTest {
                 "[-128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128," +
                 " -128, -128, -128, -128]"
         );
+    }
+
+    private static void nextFromRangeDown_short_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeDown((short) a), output);
+    }
+
+    @Test
+    public void testNextFromRangeDown_short() {
+        nextFromRangeDown_short_helper(0, -10711);
+        nextFromRangeDown_short_helper(1 << 14, -10711);
+        nextFromRangeDown_short_helper(-1 << 14, -26237);
+        nextFromRangeDown_short_helper(Short.MAX_VALUE, -10711);
+        nextFromRangeDown_short_helper(Short.MIN_VALUE, -32768);
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
@@ -973,6 +1001,20 @@ public strictfp class RandomProviderTest {
                 "[-32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768," +
                 " -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768]"
         );
+    }
+
+    private static void nextFromRangeDown_int_helper(int a, int output) {
+        P.reset();
+        aeq(P.nextFromRangeDown(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeDown_int() {
+        nextFromRangeDown_int_helper(0, -1004482103);
+        nextFromRangeDown_int_helper(1 << 30, -1004482103);
+        nextFromRangeDown_int_helper(-1 << 30, -1177145870);
+        nextFromRangeDown_int_helper(Integer.MAX_VALUE, -1004482103);
+        nextFromRangeDown_int_helper(Integer.MIN_VALUE, -2147483648);
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
@@ -1012,6 +1054,20 @@ public strictfp class RandomProviderTest {
                 " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
                 " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648]"
         );
+    }
+
+    private static void nextFromRangeDown_long_helper(long a, long output) {
+        P.reset();
+        aeq(P.nextFromRangeDown(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeDown_long() {
+        nextFromRangeDown_long_helper(0L, -3001719753101261693L);
+        nextFromRangeDown_long_helper(1L << 62, -3001719753101261693L);
+        nextFromRangeDown_long_helper(-1L << 62, -6244707352066318268L);
+        nextFromRangeDown_long_helper(Long.MAX_VALUE, -3001719753101261693L);
+        nextFromRangeDown_long_helper(Long.MIN_VALUE, -9223372036854775808L);
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
@@ -1063,6 +1119,19 @@ public strictfp class RandomProviderTest {
         );
     }
 
+    private static void nextFromRangeDown_char_helper(char a, char output) {
+        P.reset();
+        aeq(P.nextFromRangeDown(a), output);
+    }
+
+    @Test
+    public void testNextFromRangeDown_char() {
+        nextFromRangeDown_char_helper('\0', '\0');
+        nextFromRangeDown_char_helper('a', ')');
+        nextFromRangeDown_char_helper('Ш', 'ǉ');
+        nextFromRangeDown_char_helper('\uffff', '嘩');
+    }
+
     private static void rangeDown_char_helper(char a, @NotNull String output) {
         P.reset();
         aeqcs(P.rangeDown(a), output);
@@ -1089,7 +1158,7 @@ public strictfp class RandomProviderTest {
                 "\35\u0366țǆɐʓΤǔȪĢͽ¬ü\u0300\u009bϖɕǆĖƣ,\u02d6ǌ\u02f7\3ɌÄʓϨͺɎ"
         );
         rangeDown_char_helper(
-                Character.MAX_VALUE,
+                '\uffff',
                 "嘩퇉馃\u2df2ε䊿\u2538\u31e5髽肣\uf6ffﳑ赧\ue215\u17f3\udd75껸\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ䲵箿偵恾ᬜK㵏ꏹ缄㩷" +
                 "ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd" +
                 "\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f" +
