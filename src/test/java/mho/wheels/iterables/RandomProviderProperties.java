@@ -98,7 +98,9 @@ public class RandomProviderProperties {
             propertiesNonzeroIntegers();
             propertiesNextNonzeroLong();
             propertiesNonzeroLongs();
+            propertiesNextByte();
             propertiesBytes();
+            propertiesNextShort();
             propertiesShorts();
             propertiesAsciiCharacters();
             propertiesCharacters();
@@ -439,7 +441,8 @@ public class RandomProviderProperties {
     private static void propertiesNextPositiveByte() {
         initialize("nextPositiveByte()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextPositiveByte();
+            byte b = rp.nextPositiveByte();
+            assertTrue(rp.toString(), b > 0);
         }
     }
 
@@ -455,7 +458,8 @@ public class RandomProviderProperties {
     private static void propertiesNextPositiveShort() {
         initialize("nextPositiveShort()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextPositiveShort();
+            short s = rp.nextPositiveShort();
+            assertTrue(rp.toString(), s > 0);
         }
     }
 
@@ -471,7 +475,8 @@ public class RandomProviderProperties {
     private static void propertiesNextPositiveInt() {
         initialize("nextPositiveInt()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextPositiveInt();
+            int i = rp.nextPositiveInt();
+            assertTrue(rp.toString(), i > 0);
         }
     }
 
@@ -487,7 +492,8 @@ public class RandomProviderProperties {
     private static void propertiesNextPositiveLong() {
         initialize("nextPositiveLong()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextPositiveLong();
+            long l = rp.nextPositiveLong();
+            assertTrue(rp.toString(), l > 0);
         }
     }
 
@@ -503,7 +509,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNegativeByte() {
         initialize("nextNegativeByte()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNegativeByte();
+            byte b = rp.nextNegativeByte();
+            assertTrue(rp.toString(), b < 0);
         }
     }
 
@@ -519,7 +526,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNegativeShort() {
         initialize("nextNegativeShort()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNegativeShort();
+            short s = rp.nextNegativeShort();
+            assertTrue(rp.toString(), s < 0);
         }
     }
 
@@ -535,7 +543,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNegativeInt() {
         initialize("nextNegativeInt()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNegativeInt();
+            int i = rp.nextNegativeInt();
+            assertTrue(rp.toString(), i < 0);
         }
     }
 
@@ -551,7 +560,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNegativeLong() {
         initialize("nextNegativeLong()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNegativeLong();
+            long l = rp.nextNegativeLong();
+            assertTrue(rp.toString(), l < 0);
         }
     }
 
@@ -567,7 +577,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNaturalByte() {
         initialize("nextNaturalByte()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNaturalByte();
+            byte b = rp.nextNaturalByte();
+            assertTrue(rp.toString(), b >= 0);
         }
     }
 
@@ -583,7 +594,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNaturalShort() {
         initialize("nextNaturalShort()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNaturalShort();
+            short s = rp.nextNaturalShort();
+            assertTrue(rp.toString(), s >= 0);
         }
     }
 
@@ -599,7 +611,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNaturalInt() {
         initialize("nextNaturalInt()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNaturalInt();
+            int i = rp.nextNaturalInt();
+            assertTrue(rp.toString(), i >= 0);
         }
     }
 
@@ -615,7 +628,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNaturalLong() {
         initialize("nextNaturalLong()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNaturalLong();
+            long l = rp.nextNaturalLong();
+            assertTrue(rp.toString(), l >= 0);
         }
     }
 
@@ -631,7 +645,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNonzeroByte() {
         initialize("nextNonzeroByte()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNonzeroByte();
+            byte b = rp.nextNonzeroByte();
+            assertTrue(rp.toString(), b != 0);
         }
     }
 
@@ -647,7 +662,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNonzeroShort() {
         initialize("nextNonzeroShort()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNonzeroShort();
+            short s = rp.nextNonzeroShort();
+            assertTrue(rp.toString(), s != 0);
         }
     }
 
@@ -663,7 +679,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNonzeroInt() {
         initialize("nextNonzeroInt()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNonzeroInt();
+            int i = rp.nextNonzeroInt();
+            assertTrue(rp.toString(), i != 0);
         }
     }
 
@@ -679,7 +696,8 @@ public class RandomProviderProperties {
     private static void propertiesNextNonzeroLong() {
         initialize("nextNonzeroLong()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            rp.nextNonzeroLong();
+            long l = rp.nextNonzeroLong();
+            assertTrue(rp.toString(), l != 0);
         }
     }
 
@@ -692,13 +710,26 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextByte() {
+        initialize("nextByte()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextByte();
+        }
+    }
+
     private static void propertiesBytes() {
         initialize("bytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.bytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            testNoRemove(TINY_LIMIT, bs);
+            simpleTest(rp, bs, b -> true);
+            supplierEquivalence(rp, bs, rp::nextByte);
+        }
+    }
+
+    private static void propertiesNextShort() {
+        initialize("nextShort()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextShort();
         }
     }
 
@@ -706,9 +737,8 @@ public class RandomProviderProperties {
         initialize("shorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.shorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
+            simpleTest(rp, ss, s -> true);
+            supplierEquivalence(rp, ss, rp::nextShort);
         }
     }
 
