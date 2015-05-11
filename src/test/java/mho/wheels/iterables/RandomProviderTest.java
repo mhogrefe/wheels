@@ -620,10 +620,24 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextAsciiChar() {
+        aeq(P.nextAsciiChar(), ')');
+        aeq(Q.nextAsciiChar(), 's');
+        aeq(R.nextAsciiChar(), '\b');
+    }
+
+    @Test
     public void testAsciiCharacters() {
         aeqcs(P.asciiCharacters(),
                 ")I\3r5?8e}#\177Qg\25sux\u00151&OaV\\?>5?u~\34*Oy\4w?~+-Br\7)\34d\26CLERd%@c7\2\5o.\u001c2S\6z=Vz\30" +
                 "}l\nNph\32Xx^$x.\23\22\3oK10)\177u;\u001c2nEZF\17If`5f\23OSS\5\3v\5s\u000b2Y\\oKo;\1|CQ7&");
+    }
+
+    @Test
+    public void testNextChar() {
+        aeq(P.nextChar(), '嘩');
+        aeq(Q.nextChar(), 'ó');
+        aeq(R.nextChar(), '\uef88');
     }
 
     @Test
