@@ -1229,7 +1229,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
-        return map(i -> (byte) (i + a), integersBounded((1 << 7) - a));
+        int offset = 1 << 7;
+        return map(i -> (byte) (i + a), integersBounded(offset - a));
     }
 
     /**
@@ -1261,7 +1262,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
-        return map(i -> (short) (i + a), integersBounded((1 << 15) - a));
+        int offset = 1 << 15;
+        return map(i -> (short) (i + a), integersBounded(offset - a));
     }
 
     /**
@@ -1293,7 +1295,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
-        return map(l -> (int) (l + a), longsBounded((1L << 31) - a));
+        long offset = 1L << 31;
+        return map(l -> (int) (l + a), longsBounded(offset - a));
     }
 
     /**
@@ -1326,9 +1329,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
+        BigInteger offset = BigInteger.ONE.shiftLeft(63);
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
-                bigIntegersBounded(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
+                bigIntegersBounded(offset.subtract(BigInteger.valueOf(a)))
         );
     }
 
@@ -1361,7 +1365,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
-        return map(i -> (char) (i + a), integersBounded((1 << 16) - a));
+        int offset = 1 << 16;
+        return map(i -> (char) (i + a), integersBounded(offset - a));
     }
 
     public byte nextFromRangeDown(byte a) {

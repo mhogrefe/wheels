@@ -498,10 +498,24 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_byte() {
+        initialize();
+        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
     private static void demoRangeUp_byte() {
         initialize();
         for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUp_short() {
+        initialize();
+        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
         }
     }
 
@@ -513,6 +527,13 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_int() {
+        initialize();
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
     private static void demoRangeUp_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.integers());
@@ -521,10 +542,26 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_long() {
+        initialize();
+        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
     private static void demoRangeUp_long() {
         initialize();
         for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUp_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    nicePrint(p.a.nextFromRangeUp(p.b)));
         }
     }
 
