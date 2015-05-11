@@ -1098,7 +1098,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         long l;
         do {
             l = nextLong();
-        } while (l == 0);
+        } while (l == 0L);
         return l;
     }
 
