@@ -1102,6 +1102,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return l;
     }
 
+    /**
+     * Returns a randomly-generated {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @return a {@code byte}
+     */
     public byte nextByte() {
         return (byte) nextIntPow2(8);
     }
@@ -1116,6 +1126,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextByte);
     }
 
+    /**
+     * Returns a randomly-generated {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @return a {@code short}
+     */
     public short nextShort() {
         return (short) nextIntPow2(16);
     }
