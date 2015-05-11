@@ -1040,7 +1040,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return a nonzero {@code byte}
      */
-    public long nextNonzeroByte() {
+    public byte nextNonzeroByte() {
         byte b;
         do {
             b = nextByte();
@@ -1058,7 +1058,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return a nonzero {@code short}
      */
-    public long nextNonzeroShort() {
+    public short nextNonzeroShort() {
         short s;
         do {
             s = nextShort();
@@ -1076,7 +1076,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return a nonzero {@code int}
      */
-    public long nextNonzeroInt() {
+    public int nextNonzeroInt() {
         int i;
         do {
             i = nextInt();

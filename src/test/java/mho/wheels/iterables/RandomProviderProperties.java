@@ -90,9 +90,13 @@ public class RandomProviderProperties {
             propertiesNaturalIntegers();
             propertiesNextNaturalLong();
             propertiesNaturalLongs();
+            propertiesNextNonzeroByte();
             propertiesNonzeroBytes();
+            propertiesNextNonzeroShort();
             propertiesNonzeroShorts();
+            propertiesNextNonzeroInt();
             propertiesNonzeroIntegers();
+            propertiesNextNonzeroLong();
             propertiesNonzeroLongs();
             propertiesBytes();
             propertiesShorts();
@@ -624,14 +628,26 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextNonzeroByte() {
+        initialize("nextNonzeroByte()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNonzeroByte();
+        }
+    }
+
     private static void propertiesNonzeroBytes() {
         initialize("nonzeroBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.nonzeroBytes();
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(rp.toString(), all(b -> b != null, tbs));
-            assertTrue(rp.toString(), all(b -> b != 0, tbs));
-            testNoRemove(TINY_LIMIT, bs);
+            simpleTest(rp, bs, b -> b != 0);
+            supplierEquivalence(rp, bs, rp::nextNonzeroByte);
+        }
+    }
+
+    private static void propertiesNextNonzeroShort() {
+        initialize("nextNonzeroShort()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNonzeroShort();
         }
     }
 
@@ -639,10 +655,15 @@ public class RandomProviderProperties {
         initialize("nonzeroShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.nonzeroShorts();
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(rp.toString(), all(s -> s != null, tss));
-            assertTrue(rp.toString(), all(s -> s != 0, tss));
-            testNoRemove(TINY_LIMIT, ss);
+            simpleTest(rp, ss, s -> s != 0);
+            supplierEquivalence(rp, ss, rp::nextNonzeroShort);
+        }
+    }
+
+    private static void propertiesNextNonzeroInt() {
+        initialize("nextNonzeroInt()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNonzeroInt();
         }
     }
 
@@ -650,10 +671,15 @@ public class RandomProviderProperties {
         initialize("nonzeroIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.nonzeroIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i != 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i != 0);
+            supplierEquivalence(rp, is, rp::nextNonzeroInt);
+        }
+    }
+
+    private static void propertiesNextNonzeroLong() {
+        initialize("nextNonzeroLong()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextNonzeroLong();
         }
     }
 
@@ -661,10 +687,8 @@ public class RandomProviderProperties {
         initialize("nonzeroLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.nonzeroLongs();
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(rp.toString(), all(l -> l != null, tls));
-            assertTrue(rp.toString(), all(l -> l != 0, tls));
-            testNoRemove(TINY_LIMIT, ls);
+            simpleTest(rp, ls, l -> l != 0);
+            supplierEquivalence(rp, ls, rp::nextNonzeroLong);
         }
     }
 
