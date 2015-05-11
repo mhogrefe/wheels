@@ -1150,6 +1150,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextShort);
     }
 
+    /**
+     * Returns a randomly-generated ASCII {@code char} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is an ASCII {@code char}.</li>
+     * </ul>
+     *
+     * @return an ASCII {@code char}
+     */
     public char nextAsciiChar() {
         return (char) nextIntPow2(7);
     }
@@ -1165,6 +1175,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextAsciiChar);
     }
 
+    /**
+     * Returns a randomly-generated {@code char} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @return a {@code char}
+     */
     public char nextChar() {
         return (char) nextIntPow2(16);
     }
