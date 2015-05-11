@@ -1369,6 +1369,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (char) (i + a), integersBounded(offset - a));
     }
 
+    /**
+     * Returns a randomly-generated {@code byte} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @return a {@code byte} less than or equal to {@code a}
+     */
     public byte nextFromRangeDown(byte a) {
         int offset = 1 << 7;
         return (byte) (nextIntBounded(a + offset + 1) - offset);
@@ -1393,6 +1403,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (byte) (i - offset), integersBounded(a + offset + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code short} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @return a {@code short} less than or equal to {@code a}
+     */
     public short nextFromRangeDown(short a) {
         int offset = 1 << 15;
         return (short) (nextIntBounded(a + offset + 1) - offset);
@@ -1417,6 +1437,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (short) (i - offset), integersBounded(a + offset + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code int} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} less than or equal to {@code a}
+     */
     public int nextFromRangeDown(int a) {
         long offset = 1L << 31;
         return (int) (nextLongBounded(a + offset + 1) - offset);
@@ -1441,6 +1471,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(l -> (int) (l - offset), longsBounded(a + offset + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code long} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @return a {@code long} less than or equal to {@code a}
+     */
     public long nextFromRangeDown(long a) {
         BigInteger offset = BigInteger.ONE.shiftLeft(63);
         BigInteger ba = BigInteger.valueOf(a);
@@ -1469,6 +1509,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated {@code char} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @return a {@code char} less than or equal to {@code a}
+     */
     public char nextFromRangeDown(char a) {
         return (char) nextIntBounded(a + 1);
     }
