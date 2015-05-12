@@ -2,13 +2,14 @@ package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
-import mho.wheels.testing.Testing;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -78,6 +79,17 @@ public class ExhaustiveProviderProperties {
         }
     }
 
+    private static <T> void simpleTest(
+            @NotNull String message,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        Iterable<T> txs = take(TINY_LIMIT, xs);
+        assertTrue(message, all(x -> x != null && predicate.test(x), txs));
+        testNoRemove(TINY_LIMIT, txs);
+        assertTrue(message, unique(txs));
+    }
+
     private static void propertiesRangeUp_byte() {
         System.out.println("\t\ttesting rangeUp(byte) properties...");
 
@@ -97,12 +109,8 @@ public class ExhaustiveProviderProperties {
 
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeUp(s);
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(Short.toString(s), all(t -> t != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
-            assertTrue(Short.toString(s), unique(tss));
-            assertTrue(Short.toString(s), all(t -> t >= s, tss));
-            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, tss)));
+            simpleTest(Short.toString(s), ss, t -> t >= s);
+            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
 
@@ -111,14 +119,10 @@ public class ExhaustiveProviderProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeUp(i);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(Integer.toString(i), all(j -> j != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(Integer.toString(i), unique(tis));
-            assertTrue(Integer.toString(i), all(j -> j >= i, tis));
+            simpleTest(Integer.toString(i), is, j -> j >= i);
             assertTrue(
                     Integer.toString(i),
-                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis))
+                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is)))
             );
         }
     }
@@ -128,12 +132,8 @@ public class ExhaustiveProviderProperties {
 
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeUp(l);
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(Long.toString(l), all(m -> m != null, tls));
-            testNoRemove(TINY_LIMIT, ls);
-            assertTrue(Long.toString(l), unique(tls));
-            assertTrue(Long.toString(l), all(m -> m >= l, tls));
-            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
+            simpleTest(Long.toString(l), ls, m -> m >= l);
+            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
 
@@ -142,12 +142,8 @@ public class ExhaustiveProviderProperties {
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeUp(i);
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(i.toString(), all(j -> j != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(i.toString(), unique(tis));
-            assertTrue(i.toString(), all(j -> ge(j, i), tis));
-            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, tis)));
+            simpleTest(i.toString(), is, j -> ge(j, i));
+            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -156,12 +152,8 @@ public class ExhaustiveProviderProperties {
 
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeUp(c);
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(Character.toString(c), all(d -> d != null, tcs));
-            testNoRemove(TINY_LIMIT, cs);
-            unique(tcs);
-            assertTrue(nicePrint(c), all(d -> d >= c, tcs));
-            assertTrue(nicePrint(c), increasing(tcs));
+            simpleTest(nicePrint(c), cs, d -> d >= c);
+            assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
         }
     }
 
@@ -184,12 +176,8 @@ public class ExhaustiveProviderProperties {
 
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeDown(s);
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(Short.toString(s), all(t -> t != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
-            assertTrue(Short.toString(s), unique(tss));
-            assertTrue(Short.toString(s), all(t -> t <= s, tss));
-            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, tss)));
+            simpleTest(Short.toString(s), ss, t -> t <= s);
+            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
 
@@ -198,14 +186,10 @@ public class ExhaustiveProviderProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeDown(i);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(Integer.toString(i), all(j -> j != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(Integer.toString(i), unique(tis));
-            assertTrue(Integer.toString(i), all(j -> j <= i, tis));
+            simpleTest(Integer.toString(i), is, j -> j <= i);
             assertTrue(
                     Integer.toString(i),
-                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis))
+                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is)))
             );
         }
     }
@@ -215,12 +199,8 @@ public class ExhaustiveProviderProperties {
 
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeDown(l);
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(Long.toString(l), all(m -> m != null, tls));
-            testNoRemove(TINY_LIMIT, ls);
-            assertTrue(Long.toString(l), unique(tls));
-            assertTrue(Long.toString(l), all(m -> m <= l, tls));
-            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
+            simpleTest(Long.toString(l), ls, m -> m <= l);
+            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
 
@@ -229,12 +209,8 @@ public class ExhaustiveProviderProperties {
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeDown(i);
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(i.toString(), all(j -> j != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(i.toString(), unique(tis));
-            assertTrue(i.toString(), all(j -> le(j, i), tis));
-            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, tis)));
+            simpleTest(i.toString(), is, j -> le(j, i));
+            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -243,12 +219,8 @@ public class ExhaustiveProviderProperties {
 
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeDown(c);
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(Character.toString(c), all(d -> d != null, tcs));
-            testNoRemove(TINY_LIMIT, cs);
-            assertTrue(nicePrint(c), unique(tcs));
-            assertTrue(nicePrint(c), all(d -> d <= c, tcs));
-            assertTrue(nicePrint(c), increasing(tcs));
+            simpleTest(Character.toString(c), cs, d -> d <= c);
+            assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
         }
     }
 
