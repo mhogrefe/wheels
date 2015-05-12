@@ -429,7 +429,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code bits} cannot be negative.</li>
+     *  <li>{@code bits} must be positive.</li>
      *  <li>The result cannot be negative.</li>
      * </ul>
      *
@@ -455,7 +455,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * 2<sup>{@code bits}</sup>–1, inclusive.
      *
      * <ul>
-     *  <li>{@code bits} cannot be negative.</li>
+     *  <li>{@code bits} must be positive.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code BigInteger}s.</li>
      * </ul>
      *
@@ -559,6 +559,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a non-negative {@code BigInteger} less than {@code n}
      */
     private @NotNull BigInteger nextBigIntegerBounded(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ONE)) return BigInteger.ZERO;
         int maxBits = MathUtils.ceilingLog2(n);
         BigInteger i;
         do {
@@ -582,6 +583,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code BigInteger}s less than {@code n}
      */
     private @NotNull Iterable<BigInteger> bigIntegersBounded(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ONE)) return repeat(BigInteger.ZERO);
         return filter(i -> lt(i, n), bigIntegersPow2(MathUtils.ceilingLog2(n)));
     }
 
@@ -599,7 +601,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a value from {@code xs}
      */
     public @Nullable <T> T nextUniformSample(@NotNull List<T> xs) {
-        return xs.get(nextFromRange(0, xs.size() - 1));
+        return xs.get(nextIntBounded(xs.size()));
     }
 
     /**
@@ -618,7 +620,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        return map(xs::get, range(0, xs.size() - 1));
+        return xs.isEmpty() ? Collections.emptyList() : map(xs::get, integersBounded(xs.size()));
     }
 
     /**
@@ -634,7 +636,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code char} from {@code s}
      */
     public char nextUniformSample(@NotNull String s) {
-        return s.charAt(nextFromRange(0, s.length() - 1));
+        return s.charAt(nextIntBounded(s.length()));
     }
 
     /**
@@ -652,7 +654,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        return map(s::charAt, range(0, s.length() - 1));
+        return s.isEmpty() ? Collections.emptyList() : map(s::charAt, integersBounded(s.length()));
     }
 
     /**
@@ -1113,7 +1115,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code byte}
      */
     public byte nextByte() {
-        return (byte) nextIntPow2(8);
+        return (byte) nextInt();
     }
 
     /**
@@ -1137,7 +1139,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code short}
      */
     public short nextShort() {
-        return (short) nextIntPow2(16);
+        return (short) nextInt();
     }
 
     /**
@@ -1186,7 +1188,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code char}
      */
     public char nextChar() {
-        return (char) nextIntPow2(16);
+        return (char) nextInt();
     }
 
     /**
@@ -1702,13 +1704,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public int nextPositiveIntGeometric() {
-        int i;
-        int j = 0;
-        do {
-            i = nextFromRange(0, scale - 1);
-            j++;
-        } while (i != 0);
-        return j;
+        return positiveIntegersGeometric().iterator().next();
     }
 
     /**
@@ -1727,7 +1723,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale < 2) {
             throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
         }
-        return fromSupplier(this::nextPositiveIntGeometric);
+        return () -> new NoRemoveIterator<Integer>() {
+            private @NotNull Iterator<Integer> is = integersBounded(scale).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int i;
+                int j = 0;
+                do {
+                    i = is.next();
+                    j++;
+                } while (i != 0);
+                return j;
+            }
+        };
     }
 
     public int nextNegativeIntGeometric() {
@@ -1902,9 +1916,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     public @NotNull BigInteger nextPositiveBigInteger() {
         int size = nextPositiveIntGeometric();
-        BigInteger i = nextBigIntegerPow2(size);
-        i = i.setBit(size - 1);
-        return i;
+        return nextBigIntegerPow2(size).setBit(size - 1);
     }
 
     /**
@@ -1949,11 +1961,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     public @NotNull BigInteger nextNaturalBigInteger() {
         int size = nextNaturalIntGeometric();
-        BigInteger i = nextBigIntegerPow2(size);
-        if (size != 0) {
-            i = i.setBit(size - 1);
-        }
-        return i;
+        if (size == 0) return BigInteger.ZERO;
+        return nextBigIntegerPow2(size).setBit(size - 1);
     }
 
     /**
@@ -2032,8 +2041,10 @@ public final strictfp class RandomProvider extends IterableProvider {
         int size = nextIntGeometricFromRangeUp(minBitLength);
         BigInteger i;
         if (size != absBitLength) {
-            i = nextBigIntegerPow2(size);
-            if (size != 0) {
+            if (size == 0) {
+                i = BigInteger.ZERO;
+            } else {
+                i = nextBigIntegerPow2(size);
                 boolean mostSignificantBit = i.testBit(size - 1);
                 if (!mostSignificantBit) {
                     i = i.setBit(size - 1);
