@@ -4,6 +4,7 @@ import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -1210,6 +1211,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
+     * @param a the inclusive lower bound of the generated {@code byte}
      * @return a {@code byte} greater than or equal to {@code a}
      */
     public byte nextFromRangeUp(byte a) {
@@ -1243,6 +1245,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
+     * @param a the inclusive lower bound of the generated {@code short}
      * @return a {@code short} greater than or equal to {@code a}
      */
     public short nextFromRangeUp(short a) {
@@ -1276,6 +1279,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
+     * @param a the inclusive lower bound of the generated {@code int}
      * @return an {@code int} greater than or equal to {@code a}
      */
     public int nextFromRangeUp(int a) {
@@ -1309,6 +1313,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
+     * @param a the inclusive lower bound of the generated {@code long}
      * @return a {@code long} greater than or equal to {@code a}
      */
     public long nextFromRangeUp(long a) {
@@ -1346,6 +1351,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
+     * @param a the inclusive lower bound of the generated {@code char}
      * @return a {@code char} greater than or equal to {@code a}
      */
     public char nextFromRangeUp(char a) {
@@ -1379,6 +1385,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code byte}.</li>
      * </ul>
      *
+     * @param a the inclusive upper bound of the generated {@code byte}
      * @return a {@code byte} less than or equal to {@code a}
      */
     public byte nextFromRangeDown(byte a) {
@@ -1413,6 +1420,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code short}.</li>
      * </ul>
      *
+     * @param a the inclusive upper bound of the generated {@code short}
      * @return a {@code short} less than or equal to {@code a}
      */
     public short nextFromRangeDown(short a) {
@@ -1447,6 +1455,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
+     * @param a the inclusive upper bound of the generated {@code int}
      * @return an {@code int} less than or equal to {@code a}
      */
     public int nextFromRangeDown(int a) {
@@ -1481,6 +1490,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code long}.</li>
      * </ul>
      *
+     * @param a the inclusive upper bound of the generated {@code long}
      * @return a {@code long} less than or equal to {@code a}
      */
     public long nextFromRangeDown(long a) {
@@ -1519,6 +1529,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be any {@code char}.</li>
      * </ul>
      *
+     * @param a the inclusive upper bound of the generated {@code char}
      * @return a {@code char} less than or equal to {@code a}
      */
     public char nextFromRangeDown(char a) {
@@ -1543,7 +1554,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeDown(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code byte} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code byte}
+     * @param b the inclusive upper bound of the generated {@code byte}
+     * @return a {@code byte} between {@code a} and {@code b}, inclusive
+     */
     public byte nextFromRange(byte a, byte b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         return (byte) (nextIntBounded((int) b - a + 1) + a);
     }
 
@@ -1569,7 +1598,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (byte) (i + a), integersBounded((int) b - a + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code short} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code short}
+     * @param b the inclusive upper bound of the generated {@code short}
+     * @return a {@code short} between {@code a} and {@code b}, inclusive
+     */
     public short nextFromRange(short a, short b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         return (short) (nextIntBounded((int) b - a + 1) + a);
     }
 
@@ -1595,7 +1642,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code int} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code int}
+     * @param b the inclusive upper bound of the generated {@code int}
+     * @return an {@code int} between {@code a} and {@code b}, inclusive
+     */
     public int nextFromRange(int a, int b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         return (int) (nextLongBounded((long) b - a + 1) + a);
     }
 
@@ -1621,7 +1686,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (int) (i + a), longsBounded((long) b - a + 1));
     }
 
+    /**
+     * Returns a randomly-generated {@code long} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code long}
+     * @param b the inclusive upper bound of the generated {@code long}
+     * @return a {@code long} between {@code a} and {@code b}, inclusive
+     */
     public long nextFromRange(long a, long b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         BigInteger ba = BigInteger.valueOf(a);
         BigInteger bb = BigInteger.valueOf(b);
         return nextBigIntegerBounded(bb.subtract(ba).add(BigInteger.ONE)).add(ba).longValueExact();
@@ -1651,7 +1734,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated {@code BigInteger} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}
+     * @param b the inclusive upper bound of the generated {@code BigInteger}
+     * @return a {@code BigInteger} between {@code a} and {@code b}, inclusive
+     */
     public @NotNull BigInteger nextFromRange(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         return nextBigIntegerBounded(b.subtract(a).add(BigInteger.ONE)).add(a);
     }
 
@@ -1677,7 +1778,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> i.add(a), bigIntegersBounded(b.subtract(a).add(BigInteger.ONE)));
     }
 
+    /**
+     * Returns a randomly-generated {@code char} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code char}
+     * @param b the inclusive upper bound of the generated {@code char}
+     * @return a {@code char} between {@code a} and {@code b}, inclusive
+     */
     public char nextFromRange(char a, char b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + Testing.nicePrint(a) +
+            " and b is " + Testing.nicePrint(b) + ".");
+        }
         return (char) (nextIntBounded(b - a + 1) + a);
     }
 

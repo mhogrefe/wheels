@@ -260,13 +260,13 @@ public strictfp class Testing {
 
     public static @NotNull String nicePrint(char c) {
         switch (c) {
-            case '\b' : return "\\b";
-            case '\t' : return "\\t";
-            case '\n' : return "\\n";
-            case '\f' : return "\\f";
-            case '\r' : return "\\r";
-            case '"' : return "\\\"";
-            case '\\' : return "\\\\";
+            case '\b' :   return "\\b";
+            case '\t' :   return "\\t";
+            case '\n' :   return "\\n";
+            case '\f' :   return "\\f";
+            case '\r' :   return "\\r";
+            case '"' :    return "\\\"";
+            case '\\' :   return "\\\\";
             case '\177' : return "\\177";
             default:
                 if (c < ' ') {
