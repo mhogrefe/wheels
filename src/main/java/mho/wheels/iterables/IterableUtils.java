@@ -403,7 +403,7 @@ public final strictfp class IterableUtils {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
         return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
@@ -433,7 +433,7 @@ public final strictfp class IterableUtils {
         if (Double.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
         return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
@@ -761,10 +761,10 @@ public final strictfp class IterableUtils {
     public static @NotNull Iterable<Float> range(float a, float b) {
         if (Float.isNaN(a) || Float.isNaN(b))
             throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Arrays.asList(a);
+        if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         if (Float.isInfinite(b)) {
             return rangeUp(a);
@@ -806,10 +806,10 @@ public final strictfp class IterableUtils {
     public static @NotNull Iterable<Double> range(double a, double b) {
         if (Double.isNaN(a) || Double.isNaN(b))
             throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Arrays.asList(a);
+        if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         if (Double.isInfinite(b)) {
             return rangeUp(a);
@@ -3447,7 +3447,7 @@ public final strictfp class IterableUtils {
 
             @Override
             public List<T> next() {
-                previousWindow = toList(concat(tail(previousWindow), Arrays.asList(xsi.next())));
+                previousWindow = toList(concat(tail(previousWindow), Collections.singletonList(xsi.next())));
                 return previousWindow;
             }
 

@@ -387,7 +387,7 @@ public final class Combinatorics {
         if (length < 0)
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (length == 0) {
-            return Arrays.asList(new ArrayList<>());
+            return Collections.singletonList(new ArrayList<>());
         }
         Function<T, List<T>> makeSingleton = x -> {
             List<T> list = new ArrayList<>();
@@ -427,7 +427,7 @@ public final class Combinatorics {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (eq(length, BigInteger.ZERO)) {
-            return Arrays.asList(new ArrayList<>());
+            return Collections.singletonList(new ArrayList<>());
         }
         Function<T, List<T>> makeSingleton = x -> {
             List<T> list = new ArrayList<>();
@@ -465,10 +465,10 @@ public final class Combinatorics {
         if (length < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
-            return length == 0 ? Arrays.asList("") : new ArrayList<>();
+            return length == 0 ? Collections.singletonList("") : new ArrayList<>();
         }
         if (s.length() == 1) {
-            return Arrays.asList(replicate(length, s.charAt(0)));
+            return Collections.singletonList(replicate(length, s.charAt(0)));
         }
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
         Function<BigInteger, String> f = bi -> charsToString(
@@ -502,10 +502,10 @@ public final class Combinatorics {
         if (lt(length, BigInteger.ZERO))
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
-            return length.equals(BigInteger.ZERO) ? Arrays.asList("") : new ArrayList<>();
+            return length.equals(BigInteger.ZERO) ? Collections.singletonList("") : new ArrayList<>();
         }
         if (s.length() == 1) {
-            return Arrays.asList(replicate(length, s.charAt(0)));
+            return Collections.singletonList(replicate(length, s.charAt(0)));
         }
         BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValueExact());
         Function<BigInteger, String> f = bi -> charsToString(
@@ -536,7 +536,7 @@ public final class Combinatorics {
      * @return all lists created from {@code xs}
      */
     public static @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<>());
+        if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
         return concatMap(i -> listsIncreasing(i, xs), P.naturalBigIntegers());
     }
 
@@ -559,18 +559,18 @@ public final class Combinatorics {
      * @return all {@code String}s created from {@code s}
      */
     public static @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
-        if (isEmpty(s)) return Arrays.asList("");
+        if (isEmpty(s)) return Collections.singletonList("");
         return concatMap(i -> stringsIncreasing(i, s), P.naturalBigIntegers());
     }
 
     //todo docs
     public static @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return minSize == 0 ? Arrays.asList(new ArrayList<>()) : new ArrayList<>();
+        if (isEmpty(xs)) return minSize == 0 ? Collections.singletonList(new ArrayList<>()) : new ArrayList<>();
         return concatMap(i -> listsIncreasing(i, xs), P.rangeUp(minSize));
     }
 
     public static @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
-        if (isEmpty(s)) return minSize == 0 ? Arrays.asList("") : new ArrayList<>();
+        if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : new ArrayList<>();
         return concatMap(i -> stringsIncreasing(i, s), P.naturalBigIntegers());
     }
 
@@ -1317,7 +1317,7 @@ public final class Combinatorics {
 
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
         if (size == 0) {
-            return Arrays.asList(new ArrayList<T>());
+            return Collections.singletonList(new ArrayList<T>());
         }
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi ->
@@ -1338,8 +1338,8 @@ public final class Combinatorics {
     }
 
     public static @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
-        if (xss.size() == 0) return Arrays.asList(new ArrayList<T>());
-        if (xss.size() == 1) return map(x -> Arrays.asList(x), xss.get(0));
+        if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
+        if (xss.size() == 1) return map(x -> Collections.singletonList(x), xss.get(0));
         if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsIncreasing(xss.get(0), xss.get(1)));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
@@ -1484,7 +1484,7 @@ public final class Combinatorics {
 
     public static @NotNull <T> Iterable<List<T>> orderedSubsequences(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
-            return Arrays.asList(new ArrayList<T>());
+            return Collections.singletonList(new ArrayList<T>());
         return () -> new Iterator<List<T>>() {
             private CachedIterable<T> cxs = new CachedIterable<T>(xs);
             private List<Integer> indices = new ArrayList<>();
@@ -1565,7 +1565,7 @@ public final class Combinatorics {
                             concat(
                                     (Iterable<Iterable<Integer>>) Arrays.asList(
                                             prefix,
-                                            Arrays.asList(pivot),
+                                            Collections.singletonList(pivot),
                                             sort(delete(pivot, suffix))
                                     )
                             )

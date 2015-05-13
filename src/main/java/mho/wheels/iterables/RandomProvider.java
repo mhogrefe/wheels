@@ -15,9 +15,7 @@ import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.ordering.Ordering.lt;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
@@ -2622,7 +2620,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Arrays.asList("");
+        if (isEmpty(cs)) return Collections.singletonList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
@@ -2661,7 +2659,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Arrays.asList("");
+        if (isEmpty(cs)) return Collections.singletonList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();

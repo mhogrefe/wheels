@@ -1,7 +1,6 @@
 package mho.wheels.random;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
 
 import java.util.*;
 

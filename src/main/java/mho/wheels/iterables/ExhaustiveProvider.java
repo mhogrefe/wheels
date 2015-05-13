@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
-import mho.wheels.math.MathUtils;
 import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -994,7 +992,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
-                Arrays.asList(0.0f),
+                Collections.singletonList(0.0f),
                 stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
         ));
     }
@@ -1116,7 +1114,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
-                Arrays.asList(0.0),
+                Collections.singletonList(0.0),
                 stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
         ));
     }

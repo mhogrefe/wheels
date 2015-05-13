@@ -1,7 +1,6 @@
 package mho.wheels.testing;
 
 import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
