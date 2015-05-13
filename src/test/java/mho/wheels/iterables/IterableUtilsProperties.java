@@ -128,7 +128,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertEquals(Byte.toString(b), sumByte(Arrays.asList(b)), b);
+            assertEquals(Byte.toString(b), sumByte(Collections.singletonList(b)), b);
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
@@ -168,7 +168,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertEquals(Short.toString(s), sumShort(Arrays.asList(s)), s);
+            assertEquals(Short.toString(s), sumShort(Collections.singletonList(s)), s);
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
@@ -208,7 +208,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertEquals(Integer.toString(i), sumInteger(Arrays.asList(i)), i);
+            assertEquals(Integer.toString(i), sumInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
@@ -247,7 +247,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertEquals(Long.toString(l), sumLong(Arrays.asList(l)), l);
+            assertEquals(Long.toString(l), sumLong(Collections.singletonList(l)), l);
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
@@ -289,7 +289,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeqf(Float.toString(f), sumFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), sumFloat(Collections.singletonList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
@@ -331,7 +331,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeqd(Double.toString(d), sumDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), sumDouble(Collections.singletonList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
@@ -394,7 +394,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertEquals(i.toString(), sumBigInteger(Arrays.asList(i)), i);
+            assertEquals(i.toString(), sumBigInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
@@ -446,7 +446,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertEquals(bd.toString(), sumBigDecimal(Arrays.asList(bd)), bd);
+            assertEquals(bd.toString(), sumBigDecimal(Collections.singletonList(bd)), bd);
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
@@ -486,7 +486,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertEquals(Byte.toString(b), productByte(Arrays.asList(b)), b);
+            assertEquals(Byte.toString(b), productByte(Collections.singletonList(b)), b);
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
@@ -526,7 +526,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertEquals(Short.toString(s), productShort(Arrays.asList(s)), s);
+            assertEquals(Short.toString(s), productShort(Collections.singletonList(s)), s);
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
@@ -566,7 +566,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertEquals(Integer.toString(i), productInteger(Arrays.asList(i)), i);
+            assertEquals(Integer.toString(i), productInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
@@ -606,7 +606,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertEquals(Long.toString(l), productLong(Arrays.asList(l)), l);
+            assertEquals(Long.toString(l), productLong(Collections.singletonList(l)), l);
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
@@ -649,7 +649,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeqf(Float.toString(f), productFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), productFloat(Collections.singletonList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
@@ -692,7 +692,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeqd(Double.toString(d), productDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), productDouble(Collections.singletonList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
@@ -755,7 +755,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertEquals(i.toString(), productBigInteger(Arrays.asList(i)), i);
+            assertEquals(i.toString(), productBigInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
@@ -807,7 +807,7 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertEquals(bd.toString(), productBigDecimal(Arrays.asList(bd)), bd);
+            assertEquals(bd.toString(), productBigDecimal(Collections.singletonList(bd)), bd);
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
@@ -844,11 +844,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertTrue(Byte.toString(b), isEmpty(deltaByte(Arrays.asList(b))));
+            assertTrue(Byte.toString(b), isEmpty(deltaByte(Collections.singletonList(b))));
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            aeqit(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Arrays.asList((byte) (p.b - p.a)));
+            aeqit(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Collections.singletonList((byte) (p.b - p.a)));
         }
 
         Iterable<List<Byte>> bssFail = map(
@@ -881,11 +881,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertTrue(Short.toString(s), isEmpty(deltaShort(Arrays.asList(s))));
+            assertTrue(Short.toString(s), isEmpty(deltaShort(Collections.singletonList(s))));
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            aeqit(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Arrays.asList((short) (p.b - p.a)));
+            aeqit(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Collections.singletonList((short) (p.b - p.a)));
         }
 
         Iterable<List<Short>> sssFail = map(
@@ -918,11 +918,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertTrue(Integer.toString(i), isEmpty(deltaInteger(Arrays.asList(i))));
+            assertTrue(Integer.toString(i), isEmpty(deltaInteger(Collections.singletonList(i))));
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            aeqit(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Integer>> issFail = map(
@@ -955,11 +955,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertTrue(Long.toString(l), isEmpty(deltaLong(Arrays.asList(l))));
+            assertTrue(Long.toString(l), isEmpty(deltaLong(Collections.singletonList(l))));
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            aeqit(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Long>> lssFail = map(
@@ -992,11 +992,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertTrue(i.toString(), isEmpty(deltaBigInteger(Arrays.asList(i))));
+            assertTrue(i.toString(), isEmpty(deltaBigInteger(Collections.singletonList(i))));
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            aeqit(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
+            aeqit(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b.subtract(p.a)));
         }
 
         Iterable<List<BigInteger>> issFail = map(
@@ -1029,11 +1029,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertTrue(bd.toString(), isEmpty(deltaBigDecimal(Arrays.asList(bd))));
+            assertTrue(bd.toString(), isEmpty(deltaBigDecimal(Collections.singletonList(bd))));
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            aeqit(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
+            aeqit(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b.subtract(p.a)));
         }
 
         Iterable<List<BigDecimal>> bdssFail = map(
@@ -1070,11 +1070,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            assertTrue(Float.toString(f), isEmpty(deltaFloat(Arrays.asList(f))));
+            assertTrue(Float.toString(f), isEmpty(deltaFloat(Collections.singletonList(f))));
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeqit(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -1111,11 +1111,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            assertTrue(Double.toString(d), isEmpty(deltaDouble(Arrays.asList(d))));
+            assertTrue(Double.toString(d), isEmpty(deltaDouble(Collections.singletonList(d))));
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeqit(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Double>> dssFail = map(
@@ -1148,11 +1148,11 @@ public strictfp class IterableUtilsProperties {
         }
 
         for (char c : take(LIMIT, P.characters())) {
-            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Arrays.asList(c))));
+            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Collections.singletonList(c))));
         }
 
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
-            aeqit(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Character>> cssFail = map(
