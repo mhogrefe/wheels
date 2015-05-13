@@ -321,28 +321,28 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void rangeUp_byte_helper(byte a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+    private static void rangeUp_byte_helper(int a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeUp((byte) a)), output);
     }
 
     @Test
     public void testRangeUp_byte() {
-        rangeUp_byte_helper((byte) 0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_byte_helper((byte) 5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_byte_helper((byte) -5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_byte_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        rangeUp_byte_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
+        rangeUp_byte_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
         rangeUp_byte_helper(Byte.MAX_VALUE, "[127]");
         rangeUp_byte_helper(Byte.MIN_VALUE, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
     }
 
-    private static void rangeUp_short_helper(short a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+    private static void rangeUp_short_helper(int a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeUp((short) a)), output);
     }
 
     @Test
     public void testRangeUp_short() {
-        rangeUp_short_helper((short) 0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_short_helper((short) 5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_short_helper((short) -5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_short_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        rangeUp_short_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
+        rangeUp_short_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
         rangeUp_short_helper(Short.MAX_VALUE, "[32767]");
         rangeUp_short_helper(
                 Short.MIN_VALUE,
@@ -420,22 +420,22 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_char_helper(Character.MAX_VALUE, "\uffff");
     }
 
-    private static void rangeDown_byte_helper(byte a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+    private static void rangeDown_byte_helper(int a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeDown((byte) a)), output);
     }
 
     @Test
     public void testRangeDown_byte() {
         rangeDown_byte_helper(
-                (byte) 0,
+                0,
                 "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
         );
         rangeDown_byte_helper(
-                (byte) 5,
+                5,
                 "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
         );
         rangeDown_byte_helper(
-                (byte) -5,
+                -5,
                 "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
         );
         rangeDown_byte_helper(
@@ -445,22 +445,22 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_byte_helper(Byte.MIN_VALUE, "[-128]");
     }
 
-    private static void rangeDown_short_helper(short a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+    private static void rangeDown_short_helper(int a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeDown((short) a)), output);
     }
 
     @Test
     public void testRangeDown_short() {
         rangeDown_short_helper(
-                (short) 0,
+                0,
                 "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
         );
         rangeDown_short_helper(
-                (short) 5,
+                5,
                 "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
         );
         rangeDown_short_helper(
-                (short) -5,
+                -5,
                 "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
         );
         rangeDown_short_helper(
@@ -560,48 +560,44 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
-    private static void range_byte_byte_helper(byte a, byte b, @NotNull String output) {
-        aeqit(P.range(a, b), output);
+    private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
+        aeqit(P.range((byte) a, (byte) b), output);
     }
 
     @Test
     public void testRange_byte_byte() {
-        range_byte_byte_helper((byte) 10, (byte) 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_byte_byte_helper((byte) 10, (byte) 10, "[10]");
-        range_byte_byte_helper((byte) 10, (byte) 9, "[]");
-        range_byte_byte_helper((byte) -20, (byte) -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_byte_byte_helper((byte) -20, (byte) -20, "[-20]");
-        range_byte_byte_helper((byte) -20, (byte) -21, "[]");
-        range_byte_byte_helper((byte) 0, (byte) 0, "[0]");
-        range_byte_byte_helper((byte) 0, (byte) 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_byte_byte_helper((byte) -5, (byte) 0, "[0, -1, -2, -3, -4, -5]");
-        range_byte_byte_helper((byte) -5, (byte) 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_byte_byte_helper((byte) -10, (byte) 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
-        range_byte_byte_helper((byte) 5, (byte) -10, "[]");
+        range_byte_byte_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_byte_byte_helper(10, 10, "[10]");
+        range_byte_byte_helper(10, 9, "[]");
+        range_byte_byte_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_byte_byte_helper(-20, -20, "[-20]");
+        range_byte_byte_helper(-20, -21, "[]");
+        range_byte_byte_helper(0, 0, "[0]");
+        range_byte_byte_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        range_byte_byte_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
+        range_byte_byte_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
+        range_byte_byte_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_byte_byte_helper(5, -10, "[]");
     }
 
-    private static void range_short_short_helper(short a, short b, @NotNull String output) {
-        aeqit(P.range(a, b), output);
+    private static void range_short_short_helper(int a, int b, @NotNull String output) {
+        aeqit(P.range((short) a, (short) b), output);
     }
 
     @Test
     public void testRange_short_short() {
-        range_short_short_helper((short) 10, (short) 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
-        range_short_short_helper((short) 10, (short) 10, "[10]");
-        range_short_short_helper((short) 10, (short) 9, "[]");
-        range_short_short_helper((short) -20, (short) -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
-        range_short_short_helper((short) -20, (short) -20, "[-20]");
-        range_short_short_helper((short) -20, (short) -21, "[]");
-        range_short_short_helper((short) 0, (short) 0, "[0]");
-        range_short_short_helper((short) 0, (short) 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        range_short_short_helper((short) -5, (short) 0, "[0, -1, -2, -3, -4, -5]");
-        range_short_short_helper((short) -5, (short) 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
-        range_short_short_helper(
-                (short) -10,
-                (short) 5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]"
-        );
-        range_short_short_helper((short) 5, (short) -10, "[]");
+        range_short_short_helper(10, 20, "[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        range_short_short_helper(10, 10, "[10]");
+        range_short_short_helper(10, 9, "[]");
+        range_short_short_helper(-20, -10, "[-10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        range_short_short_helper(-20, -20, "[-20]");
+        range_short_short_helper(-20, -21, "[]");
+        range_short_short_helper(0, 0, "[0]");
+        range_short_short_helper(0, 10, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        range_short_short_helper(-5, 0, "[0, -1, -2, -3, -4, -5]");
+        range_short_short_helper(-5, 10, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10]");
+        range_short_short_helper(-10, 5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10]");
+        range_short_short_helper(5, -10, "[]");
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
