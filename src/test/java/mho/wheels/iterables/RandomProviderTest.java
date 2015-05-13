@@ -46,17 +46,17 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testConstructor_int() {
-        aeq(Q, "RandomProvider[@2476331594451070591, 32, 8]");
-        aeq(R, "RandomProvider[@7136644727607569499, 32, 8]");
+        aeq(Q, "RandomProvider[@-7948823947390831374, 32, 8]");
+        aeq(R, "RandomProvider[@2449928962525148503, 32, 8]");
         aeq(
                 new RandomProvider(toList(IterableUtils.rangeBy(-1, -1, -256))),
-                "RandomProvider[@-8825631725423005287, 32, 8]"
+                "RandomProvider[@3417306423260907531, 32, 8]"
         );
     }
 
     @Test
     public void testExample() {
-        aeq(RandomProvider.example(), "RandomProvider[@2311470349995791220, 32, 8]");
+        aeq(RandomProvider.example(), "RandomProvider[@-8800290164235921060, 32, 8]");
     }
 
     @Test
@@ -149,16 +149,16 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testWithScale() {
-        aeq(P.withScale(100), "RandomProvider[@2311470349995791220, 100, 8]");
-        aeq(Q.withScale(3), "RandomProvider[@2476331594451070591, 3, 8]");
-        aeq(R.withScale(0), "RandomProvider[@7136644727607569499, 0, 8]");
+        aeq(P.withScale(100), "RandomProvider[@-8800290164235921060, 100, 8]");
+        aeq(Q.withScale(3), "RandomProvider[@-7948823947390831374, 3, 8]");
+        aeq(R.withScale(0), "RandomProvider[@2449928962525148503, 0, 8]");
     }
 
     @Test
     public void testWithSecondaryScale() {
-        aeq(P.withSecondaryScale(100), "RandomProvider[@2311470349995791220, 32, 100]");
-        aeq(Q.withSecondaryScale(3), "RandomProvider[@2476331594451070591, 32, 3]");
-        aeq(R.withSecondaryScale(0), "RandomProvider[@7136644727607569499, 32, 0]");
+        aeq(P.withSecondaryScale(100), "RandomProvider[@-8800290164235921060, 32, 100]");
+        aeq(Q.withSecondaryScale(3), "RandomProvider[@-7948823947390831374, 32, 3]");
+        aeq(R.withSecondaryScale(0), "RandomProvider[@2449928962525148503, 32, 0]");
     }
 
     @Test
@@ -188,11 +188,11 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testGetId() {
-        aeq(P.getId(), 2311470349995791220L);
+        aeq(P.getId(), -8800290164235921060L);
         P.nextInt();
-        aeq(P.getId(), -3363466775474220013L);
-        aeq(Q.getId(), 2476331594451070591L);
-        aeq(R.getId(), 7136644727607569499L);
+        aeq(P.getId(), -6220528511995005615L);
+        aeq(Q.getId(), -7948823947390831374L);
+        aeq(R.getId(), 2449928962525148503L);
     }
 
     private static <T> void simpleProviderHelper(
@@ -2748,9 +2748,9 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testToString() {
-        aeq(P, "RandomProvider[@2311470349995791220, 32, 8]");
-        aeq(Q.withScale(3).withSecondaryScale(0), "RandomProvider[@2476331594451070591, 3, 0]");
-        aeq(R.withScale(0).withSecondaryScale(10), "RandomProvider[@7136644727607569499, 0, 10]");
+        aeq(P, "RandomProvider[@-8800290164235921060, 32, 8]");
+        aeq(Q.withScale(3).withSecondaryScale(0), "RandomProvider[@-7948823947390831374, 3, 0]");
+        aeq(R.withScale(0).withSecondaryScale(10), "RandomProvider[@2449928962525148503, 0, 10]");
     }
 
     private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {

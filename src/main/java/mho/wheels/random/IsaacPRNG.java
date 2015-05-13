@@ -105,9 +105,9 @@ public class IsaacPRNG {
             newSeed.add(i);
         }
         newSeed.set(0, a);
-        newSeed.set(0, b);
-        newSeed.set(0, c);
-        newSeed.set(0, count);
+        newSeed.set(1, b);
+        newSeed.set(2, c);
+        newSeed.set(3, count);
         IsaacPRNG temp = new IsaacPRNG(newSeed);
         int a = temp.nextInt();
         int b = temp.nextInt();
@@ -371,7 +371,7 @@ public class IsaacPRNG {
     }
 
     public @NotNull String toString() {
-        return "IsaacPRNG[@" + hashCode() + "]";
+        return "IsaacPRNG[@" + getId() + "]";
     }
 
     public void validate() {

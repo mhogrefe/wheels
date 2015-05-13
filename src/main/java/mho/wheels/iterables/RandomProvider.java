@@ -482,9 +482,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a non-negative {@code int} less than {@code n}
      */
     private int nextIntBounded(int n) {
+        int maxBits = MathUtils.ceilingLog2(n);
         int i;
         do {
-            i = nextIntPow2(MathUtils.ceilingLog2(n));
+            i = nextIntPow2(maxBits);
         } while (i >= n);
         return i;
     }
@@ -521,9 +522,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a non-negative {@code long} less than {@code n}
      */
     private long nextLongBounded(long n) {
+        int maxBits = MathUtils.ceilingLog2(n);
         long l;
         do {
-            l = nextLongPow2(MathUtils.ceilingLog2(n));
+            l = nextLongPow2(maxBits);
         } while (l >= n);
         return l;
     }
