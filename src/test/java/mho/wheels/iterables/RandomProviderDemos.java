@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -648,11 +649,35 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRange_byte_byte() {
+        initialize();
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
+        for (Triple<RandomProvider, Byte, Byte> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + p.b + ", " + p.c + ") = " +
+                    p.a.nextFromRange(p.b, p.c));
+        }
+    }
+
     private static void demoRange_byte_byte() {
         initialize();
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
         for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoNextFromRange_short_short() {
+        initialize();
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
+        );
+        for (Triple<RandomProvider, Short, Short> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + p.b + ", " + p.c + ") = " +
+                    p.a.nextFromRange(p.b, p.c));
         }
     }
 
@@ -668,6 +693,18 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRange_int_int() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
+        );
+        for (Triple<RandomProvider, Integer, Integer> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + p.b + ", " + p.c + ") = " +
+                    p.a.nextFromRange(p.b, p.c));
+        }
+    }
+
     private static void demoRange_int_int() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
@@ -680,11 +717,35 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRange_long_long() {
+        initialize();
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
+        for (Triple<RandomProvider, Long, Long> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + p.b + ", " + p.c + ") = " +
+                    p.a.nextFromRange(p.b, p.c));
+        }
+    }
+
     private static void demoRange_long_long() {
         initialize();
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
         for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoNextFromRange_BigInteger_BigInteger() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filter(
+                t -> Ordering.le(t.b, t.c),
+                P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
+        );
+        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + p.b + ", " + p.c + ") = " +
+                    p.a.nextFromRange(p.b, p.c));
         }
     }
 
@@ -697,6 +758,18 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + its(p.a.range(p.b, p.c)));
+        }
+    }
+
+    private static void demoNextFromRange_char_char() {
+        initialize();
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
+        );
+        for (Triple<RandomProvider, Character, Character> p : take(SMALL_LIMIT, ts)) {
+            System.out.println("nextFromRange(" + p.a + ", " + nicePrint(p.b) + ", " + nicePrint(p.c) + ") = " +
+                    nicePrint(p.a.nextFromRange(p.b, p.c)));
         }
     }
 
