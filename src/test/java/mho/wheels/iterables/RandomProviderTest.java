@@ -1166,122 +1166,163 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void range_byte_byte_helper(byte a, byte b, @NotNull String output) {
+    private static void nextFromRange_byte_byte_helper(int a, int b, int output) {
         P.reset();
-        aeqit(TINY_LIMIT, P.range(a, b), output);
+        aeq(P.nextFromRange((byte) a, (byte) b), output);
+    }
+
+    @Test
+    public void testNextFromRange_byte_byte() {
+        nextFromRange_byte_byte_helper(10, 20, 19);
+        nextFromRange_byte_byte_helper(10, 10, 10);
+        nextFromRange_byte_byte_helper(-20, -10, -11);
+        nextFromRange_byte_byte_helper(-20, -20, -20);
+        nextFromRange_byte_byte_helper(0, 0, 0);
+        nextFromRange_byte_byte_helper(0, 10, 9);
+        nextFromRange_byte_byte_helper(-5, 0, -4);
+        nextFromRange_byte_byte_helper(-5, 10, 4);
+        nextFromRange_byte_byte_helper(-10, 5, -1);
+        P.reset();
+        try {
+            P.nextFromRange((byte) 5, (byte) -10);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
+        P.reset();
+        aeqit(TINY_LIMIT, P.range((byte) a, (byte) b), output);
     }
 
     @Test
     public void testRange_byte_byte() {
         range_byte_byte_helper(
-                (byte) 10,
-                (byte) 20,
+                10,
+                20,
                 "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
         );
         range_byte_byte_helper(
-                (byte) 10,
-                (byte) 10,
+                10,
+                10,
                 "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
         );
         range_byte_byte_helper((byte) 10, (byte) 9, "[]");
         range_byte_byte_helper(
-                (byte) -20,
-                (byte) -10,
+                -20,
+                -10,
                 "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
                 " -15, ...]"
         );
         range_byte_byte_helper(
-                (byte) -20,
-                (byte) -20,
+                -20,
+                -20,
                 "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
                 " -20, ...]"
         );
         range_byte_byte_helper((byte) -20, (byte) -21, "[]");
+        range_byte_byte_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
+        range_byte_byte_helper(0, 10, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
+        range_byte_byte_helper(-5, 0, "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]");
+        range_byte_byte_helper(-5, 10, "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]");
         range_byte_byte_helper(
-                (byte) 0,
-                (byte) 0,
-                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]"
-        );
-        range_byte_byte_helper(
-                (byte) 0,
-                (byte) 10,
-                "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]"
-        );
-        range_byte_byte_helper(
-                (byte) -5,
-                (byte) 0,
-                "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]"
-        );
-        range_byte_byte_helper(
-                (byte) -5,
-                (byte) 10,
-                "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]"
-        );
-        range_byte_byte_helper(
-                (byte) -10,
-                (byte) 5,
+                -10,
+                5,
                 "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
         );
-        range_byte_byte_helper((byte) 5, (byte) -10, "[]");
+        range_byte_byte_helper(5, -10, "[]");
     }
 
-    private static void range_short_short_helper(short a, short b, @NotNull String output) {
+    private static void nextFromRange_short_short_helper(int a, int b, int output) {
         P.reset();
-        aeqit(TINY_LIMIT, P.range(a, b), output);
+        aeq(P.nextFromRange((short) a, (short) b), output);
+    }
+
+    @Test
+    public void testNextFromRange_short_short() {
+        nextFromRange_short_short_helper(10, 20, 19);
+        nextFromRange_short_short_helper(10, 10, 10);
+        nextFromRange_short_short_helper(-20, -10, -11);
+        nextFromRange_short_short_helper(-20, -20, -20);
+        nextFromRange_short_short_helper(0, 0, 0);
+        nextFromRange_short_short_helper(0, 10, 9);
+        nextFromRange_short_short_helper(-5, 0, -4);
+        nextFromRange_short_short_helper(-5, 10, 4);
+        nextFromRange_short_short_helper(-10, 5, -1);
+        P.reset();
+        try {
+            P.nextFromRange((short) 5, (short) -10);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void range_short_short_helper(int a, int b, @NotNull String output) {
+        P.reset();
+        aeqit(TINY_LIMIT, P.range((short) a, (short) b), output);
     }
 
     @Test
     public void testRange_short_short() {
         range_short_short_helper(
-                (short) 10,
-                (short) 20,
+                10,
+                20,
                 "[19, 19, 13, 12, 15, 18, 15, 13, 11, 17, 15, 13, 15, 18, 15, 11, 16, 11, 16, 15, ...]"
         );
         range_short_short_helper(
-                (short) 10,
-                (short) 10,
+                10,
+                10,
                 "[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, ...]"
         );
         range_short_short_helper((short) 10, (short) 9, "[]");
         range_short_short_helper(
-                (short) -20,
-                (short) -10,
+                -20,
+                -10,
                 "[-11, -11, -17, -18, -15, -12, -15, -17, -19, -13, -15, -17, -15, -12, -15, -19, -14, -19, -14," +
                 " -15, ...]"
         );
         range_short_short_helper(
-                (short) -20,
-                (short) -20,
+                -20,
+                -20,
                 "[-20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20, -20," +
                 " -20, ...]"
         );
         range_short_short_helper((short) -20, (short) -21, "[]");
+        range_short_short_helper(0, 0, "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]");
+        range_short_short_helper(0, 10, "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]");
         range_short_short_helper(
-                (short) 0,
-                (short) 0,
-                "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]"
-        );
-        range_short_short_helper(
-                (short) 0,
-                (short) 10,
-                "[9, 9, 3, 2, 5, 8, 5, 3, 1, 7, 5, 3, 5, 8, 5, 1, 6, 1, 6, 5, ...]"
-        );
-        range_short_short_helper(
-                (short) -5,
-                (short) 0,
+                -5,
+                0,
                 "[-4, -4, -2, -3, 0, -5, 0, 0, -2, -4, 0, -2, 0, -5, 0, -4, -4, -1, 0, 0, ...]"
         );
+        range_short_short_helper(-5, 10, "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]");
         range_short_short_helper(
-                (byte) -5,
-                (byte) 10,
-                "[4, 4, -2, -3, 0, 10, 3, 0, 8, -2, 10, -4, 2, 0, -2, 0, 3, 0, -4, 1, ...]"
-        );
-        range_short_short_helper(
-                (short) -10,
-                (short) 5,
+                -10,
+                5,
                 "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
         );
-        range_short_short_helper((short) 5, (short) -10, "[]");
+        range_short_short_helper(5, -10, "[]");
+    }
+
+    private static void nextFromRange_int_int_helper(int a, int b, int output) {
+        P.reset();
+        aeq(P.nextFromRange(a, b), output);
+    }
+
+    @Test
+    public void testNextFromRange_int_int() {
+        nextFromRange_int_int_helper(10, 20, 19);
+        nextFromRange_int_int_helper(10, 10, 10);
+        nextFromRange_int_int_helper(-20, -10, -11);
+        nextFromRange_int_int_helper(-20, -20, -20);
+        nextFromRange_int_int_helper(0, 0, 0);
+        nextFromRange_int_int_helper(0, 10, 9);
+        nextFromRange_int_int_helper(-5, 0, -4);
+        nextFromRange_int_int_helper(-5, 10, 4);
+        nextFromRange_int_int_helper(-10, 5, -1);
+        P.reset();
+        try {
+            P.nextFromRange(5, -10);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
@@ -1321,6 +1362,29 @@ public strictfp class RandomProviderTest {
         range_int_int_helper(-5, 10, "[4, -3, 10, 0, -2, -4, 0, 0, 0, 1, -4, 7, 9, 10, 9, 5, 4, 2, 9, 8, ...]");
         range_int_int_helper(-10, 5, "[-1, -8, 5, -5, -7, -9, -5, -5, -5, -4, -9, 2, 4, 5, 4, 0, -1, -3, 4, 3, ...]");
         range_int_int_helper(5, -10, "[]");
+    }
+
+    private static void nextFromRange_long_long_helper(long a, long b, long output) {
+        P.reset();
+        aeq(P.nextFromRange(a, b), output);
+    }
+
+    @Test
+    public void testNextFromRange_long_long() {
+        nextFromRange_long_long_helper(10L, 20L, 19L);
+        nextFromRange_long_long_helper(10L, 10L, 10L);
+        nextFromRange_long_long_helper(-20L, -10L, -11L);
+        nextFromRange_long_long_helper(-20L, -20L, -20L);
+        nextFromRange_long_long_helper(0L, 0L, 0L);
+        nextFromRange_long_long_helper(0L, 10L, 9L);
+        nextFromRange_long_long_helper(-5L, 0L, -4L);
+        nextFromRange_long_long_helper(-5L, 10L, 4L);
+        nextFromRange_long_long_helper(-10L, 5L, -1L);
+        P.reset();
+        try {
+            P.nextFromRange(5L, -10L);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -1368,6 +1432,29 @@ public strictfp class RandomProviderTest {
                 "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
         );
         range_long_long_helper(5L, -10L, "[]");
+    }
+
+    private static void nextFromRange_BigInteger_BigInteger_helper(int a, int b, int output) {
+        P.reset();
+        aeq(P.nextFromRange(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+    }
+
+    @Test
+    public void testNextFromRange_BigInteger_BigInteger() {
+        nextFromRange_BigInteger_BigInteger_helper(10, 20, 19);
+        nextFromRange_BigInteger_BigInteger_helper(10, 10, 10);
+        nextFromRange_BigInteger_BigInteger_helper(-20, -10, -11);
+        nextFromRange_BigInteger_BigInteger_helper(-20, -20, -20);
+        nextFromRange_BigInteger_BigInteger_helper(0, 0, 0);
+        nextFromRange_BigInteger_BigInteger_helper(0, 10, 9);
+        nextFromRange_BigInteger_BigInteger_helper(-5, 0, -4);
+        nextFromRange_BigInteger_BigInteger_helper(-5, 10, 4);
+        nextFromRange_BigInteger_BigInteger_helper(-10, 5, -1);
+        P.reset();
+        try {
+            P.nextFromRange(BigInteger.valueOf(5), BigInteger.valueOf(-10));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -1421,6 +1508,23 @@ public strictfp class RandomProviderTest {
         range_BigInteger_BigInteger_helper(5, -10, "[]");
     }
 
+    private static void nextFromRange_char_char_helper(char a, char b, char output) {
+        P.reset();
+        aeq(P.nextFromRange(a, b), output);
+    }
+
+    @Test
+    public void testNextFromRange_char_char() {
+        nextFromRange_char_char_helper('a', 'z', 'j');
+        nextFromRange_char_char_helper('a', 'a', 'a');
+        nextFromRange_char_char_helper('!', '9', '*');
+        P.reset();
+        try {
+            P.nextFromRange('a', 'A');
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
         P.reset();
         aeqcs(P.range(a, b), output);
@@ -1440,13 +1544,13 @@ public strictfp class RandomProviderTest {
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         );
-        range_char_char_helper('a', 'A', "");
         range_char_char_helper(
                 '!',
                 '9',
                 "**$369&$2(646962'0\"766+0%8,.#3(*%7$-&3%&!$8#&0/34'79-+/1)99%9/43$0,21*63/&'0*'!6'4044&$7&4,30,0\"$" +
                 "28'83&682)#,(5)75!'/*(##4,'39$8"
         );
+        range_char_char_helper('a', 'A', "");
     }
 
     private static void geometricHelper(
