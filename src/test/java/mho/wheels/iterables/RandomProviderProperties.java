@@ -56,8 +56,8 @@ public class RandomProviderProperties {
             propertiesIntegers();
             propertiesNextLong();
             propertiesLongs();
-            propertiesBooleans();
             propertiesNextBoolean();
+            propertiesBooleans();
             propertiesNextUniformSample_Iterable();
             propertiesUniformSample_Iterable();
             propertiesNextUniformSample_String();
@@ -126,11 +126,17 @@ public class RandomProviderProperties {
             propertiesRangeDown_long();
             propertiesNextFromRangeDown_char();
             propertiesRangeDown_char();
+            propertiesNextFromRange_byte_byte();
             propertiesRange_byte_byte();
+            propertiesNextFromRange_short_short();
             propertiesRange_short_short();
+            propertiesNextFromRange_int_int();
             propertiesRange_int_int();
+            propertiesNextFromRange_long_long();
             propertiesRange_long_long();
+            propertiesNextFromRange_BigInteger_BigInteger();
             propertiesRange_BigInteger_BigInteger();
+            propertiesNextFromRange_char_char();
             propertiesRange_char_char();
             propertiesPositiveIntegersGeometric();
             propertiesNegativeIntegersGeometric();
@@ -431,7 +437,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesNextRoundingMode() {
-        initialize("nextBoolean()");
+        initialize("nextRoundingMode()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             rp.nextRoundingMode();
         }
@@ -795,7 +801,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeUp(Byte.MAX_VALUE), Byte.MAX_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Byte.MAX_VALUE), Byte.MAX_VALUE);
         }
     }
 
@@ -820,7 +826,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeUp(Short.MAX_VALUE), Short.MAX_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Short.MAX_VALUE), Short.MAX_VALUE);
         }
     }
 
@@ -845,7 +851,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
         }
     }
 
@@ -870,7 +876,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeUp(Long.MAX_VALUE), Long.MAX_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Long.MAX_VALUE), Long.MAX_VALUE);
         }
     }
 
@@ -895,7 +901,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeUp(Character.MAX_VALUE), Character.MAX_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Character.MAX_VALUE), Character.MAX_VALUE);
         }
     }
 
@@ -921,7 +927,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeDown(Byte.MIN_VALUE), Byte.MIN_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeDown(Byte.MIN_VALUE), Byte.MIN_VALUE);
         }
     }
 
@@ -946,7 +952,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeDown(Short.MIN_VALUE), Short.MIN_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeDown(Short.MIN_VALUE), Short.MIN_VALUE);
         }
     }
 
@@ -971,7 +977,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeDown(Integer.MIN_VALUE), Integer.MIN_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeDown(Integer.MIN_VALUE), Integer.MIN_VALUE);
         }
     }
 
@@ -996,7 +1002,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeDown(Long.MIN_VALUE), Long.MIN_VALUE);
+            assertEquals(rp.toString(), rp.nextFromRangeDown(Long.MIN_VALUE), Long.MIN_VALUE);
         }
     }
 
@@ -1021,7 +1027,7 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            aeq(rp.nextFromRangeDown('\0'), '\0');
+            assertEquals(rp.toString(), rp.nextFromRangeDown('\0'), '\0');
         }
     }
 
@@ -1039,20 +1045,51 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextFromRange_byte_byte() {
+        initialize("nextFromRange(byte, byte)");
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
+        );
+        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
+            byte b = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), b >= p.b);
+            assertTrue(p.toString(), b <= p.c);
+        }
+
+        for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b.byteValue());
+        }
+    }
+
     private static void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
         for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
             Iterable<Byte> bs = p.a.range(p.b, p.c);
-            Iterable<Byte> tbs = take(TINY_LIMIT, bs);
-            assertTrue(p.toString(), all(b -> b != null, tbs));
-            testNoRemove(TINY_LIMIT, bs);
-            assertTrue(p.toString(), all(b -> b >= p.b && b <= p.c, tbs));
+            simpleTest(p.a, bs, b -> b >= p.b && b <= p.c);
             assertEquals(p.toString(), p.b > p.c, isEmpty(bs));
         }
 
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+    }
+    
+    private static void propertiesNextFromRange_short_short() {
+        initialize("nextFromRange(short, short)");
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
+        );
+        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
+            short s = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), s >= p.b);
+            assertTrue(p.toString(), s <= p.c);
+        }
+
+        for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b.shortValue());
         }
     }
 
@@ -1065,15 +1102,29 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
             Iterable<Short> ss = p.a.range(p.b, p.c);
-            Iterable<Short> tss = take(TINY_LIMIT, ss);
-            assertTrue(p.toString(), all(b -> b != null, tss));
-            testNoRemove(TINY_LIMIT, ss);
-            assertTrue(p.toString(), all(b -> b >= p.b && b <= p.c, tss));
+            simpleTest(p.a, ss, s -> s >= p.b && s <= p.c);
             assertEquals(p.toString(), p.b > p.c, isEmpty(ss));
         }
 
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+    }
+    
+    private static void propertiesNextFromRange_int_int() {
+        initialize("nextFromRange(int, int)");
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
+        );
+        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
+            int i = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), i >= p.b);
+            assertTrue(p.toString(), i <= p.c);
+        }
+
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b.intValue());
         }
     }
 
@@ -1086,15 +1137,29 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
             Iterable<Integer> is = p.a.range(p.b, p.c);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(b -> b != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(b -> b >= p.b && b <= p.c, tis));
+            simpleTest(p.a, is, i -> i >= p.b && i <= p.c);
             assertEquals(p.toString(), p.b > p.c, isEmpty(is));
         }
 
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+    }
+    
+    private static void propertiesNextFromRange_long_long() {
+        initialize("nextFromRange(long, long)");
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
+        );
+        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
+            long l = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), l >= p.b);
+            assertTrue(p.toString(), l <= p.c);
+        }
+
+        for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b.longValue());
         }
     }
 
@@ -1103,15 +1168,29 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
         for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
             Iterable<Long> ls = p.a.range(p.b, p.c);
-            Iterable<Long> tls = take(TINY_LIMIT, ls);
-            assertTrue(p.toString(), all(b -> b != null, tls));
-            testNoRemove(TINY_LIMIT, ls);
-            assertTrue(p.toString(), all(b -> b >= p.b && b <= p.c, tls));
+            simpleTest(p.a, ls, l -> l >= p.b && l <= p.c);
             assertEquals(p.toString(), p.b > p.c, isEmpty(ls));
         }
 
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+    }
+    
+    private static void propertiesNextFromRange_BigInteger_BigInteger() {
+        initialize("nextFromRange(BigInteger, BigInteger)");
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filter(
+                t -> le(t.b, t.c),
+                P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
+        );
+        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
+            BigInteger i = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), ge(i, p.b));
+            assertTrue(p.toString(), le(i, p.c));
+        }
+
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigIntegers()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b);
         }
     }
 
@@ -1125,16 +1204,30 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
             Iterable<BigInteger> is = p.a.range(p.b, p.c);
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(b -> b != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(b -> ge(b, p.b) && le(b, p.c), tis));
+            simpleTest(p.a, is, i -> ge(i, p.b) && le(i, p.c));
             assertEquals(p.toString(), gt(p.b, p.c), isEmpty(is));
         }
 
         Iterable<Pair<RandomProvider, BigInteger>> ps = P.pairs(P.randomProvidersDefault(), P.bigIntegers());
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
             aeqit(p.toString(), TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+    }
+    
+    private static void propertiesNextFromRange_char_char() {
+        initialize("nextFromRange(char, char)");
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
+        );
+        for (Triple<RandomProvider, Character, Character> p : take(LIMIT, ts)) {
+            char c = p.a.nextFromRange(p.b, p.c);
+            assertTrue(p.toString(), c >= p.b);
+            assertTrue(p.toString(), c <= p.c);
+        }
+
+        for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.characters()))) {
+            assertEquals(p.toString(), p.a.nextFromRange(p.b, p.b), p.b.charValue());
         }
     }
 
@@ -1147,10 +1240,7 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Character, Character> p : take(LIMIT, ts)) {
             Iterable<Character> cs = p.a.range(p.b, p.c);
-            Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            assertTrue(p.toString(), all(b -> b != null, tcs));
-            testNoRemove(TINY_LIMIT, p.a.range(p.b, p.c));
-            assertTrue(p.toString(), all(b -> ge(b, p.b) && le(b, p.c), tcs));
+            simpleTest(p.a, cs, c -> c >= p.b && c <= p.c);
             assertEquals(p.toString(), gt(p.b, p.c), isEmpty(cs));
         }
 
