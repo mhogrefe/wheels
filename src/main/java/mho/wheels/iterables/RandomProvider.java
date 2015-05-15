@@ -1822,6 +1822,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> (char) (i + a), integersBounded(b - a + 1));
     }
 
+    /**
+     * Returns a randomly-generated positive {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code int}
+     */
     public int nextPositiveIntGeometric() {
         return positiveIntegersGeometric().iterator().next();
     }
@@ -1863,6 +1873,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns a randomly-generated negative {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code int}
+     */
     public int nextNegativeIntGeometric() {
         return -nextPositiveIntGeometric();
     }
@@ -1886,8 +1906,18 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNegativeIntGeometric);
     }
 
+    /**
+     * Returns a randomly-generated natural {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code int}
+     */
     public int nextNaturalIntGeometric() {
-        return withScale(scale + 1).nextPositiveIntGeometric() - 1;
+        return naturalIntegersGeometric().iterator().next();
     }
 
     /**
@@ -1913,6 +1943,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is nonzero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code int}
+     */
     public int nextNonzeroIntGeometric() {
         int i = nextPositiveIntGeometric();
         return nextBoolean() ? i : -i;
@@ -1938,6 +1978,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNonzeroIntGeometric);
     }
 
+    /**
+     * Returns a randomly-generated {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return a negative {@code int}
+     */
     public int nextIntGeometric() {
         int i = nextNaturalIntGeometric();
         return nextBoolean() ? i : -i;
