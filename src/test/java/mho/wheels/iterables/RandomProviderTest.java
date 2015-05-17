@@ -1560,6 +1560,31 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(sample), sampleMean);
     }
 
+    private static void nextPositiveIntGeometric_helper(int mean, int output) {
+        aeq(P.withScale(mean).nextPositiveIntGeometric(), output);
+        P.reset();
+    }
+
+    private static void nextPositiveIntGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextPositiveIntGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextPositiveIntGeometric() {
+        nextPositiveIntGeometric_helper(2, 4);
+        nextPositiveIntGeometric_helper(3, 5);
+        nextPositiveIntGeometric_helper(4, 7);
+        nextPositiveIntGeometric_helper(5, 5);
+        nextPositiveIntGeometric_helper(10, 36);
+        nextPositiveIntGeometric_helper(100, 147);
+        nextPositiveIntGeometric_fail_helper(1);
+        nextPositiveIntGeometric_fail_helper(0);
+        nextPositiveIntGeometric_fail_helper(-1);
+    }
+
     private static void positiveIntegersGeometric_helper(
             int mean,
             @NotNull String output,
@@ -1618,6 +1643,31 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_fail_helper(1);
         positiveIntegersGeometric_fail_helper(0);
         positiveIntegersGeometric_fail_helper(-1);
+    }
+
+    private static void nextNegativeIntGeometric_helper(int mean, int output) {
+        aeq(P.withScale(mean).nextNegativeIntGeometric(), output);
+        P.reset();
+    }
+
+    private static void nextNegativeIntGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNegativeIntGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNegativeIntGeometric() {
+        nextNegativeIntGeometric_helper(2, -4);
+        nextNegativeIntGeometric_helper(3, -5);
+        nextNegativeIntGeometric_helper(4, -7);
+        nextNegativeIntGeometric_helper(5, -5);
+        nextNegativeIntGeometric_helper(10, -36);
+        nextNegativeIntGeometric_helper(100, -147);
+        nextNegativeIntGeometric_fail_helper(1);
+        nextNegativeIntGeometric_fail_helper(0);
+        nextNegativeIntGeometric_fail_helper(-1);
     }
 
     private static void negativeIntegersGeometric_helper(
@@ -1685,6 +1735,31 @@ public strictfp class RandomProviderTest {
         negativeIntegersGeometric_fail_helper(-1);
     }
 
+    private static void nextNaturalIntGeometric_helper(int mean, int output) {
+        aeq(P.withScale(mean).nextNaturalIntGeometric(), output);
+        P.reset();
+    }
+
+    private static void nextNaturalIntGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNaturalIntGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNaturalIntGeometric() {
+        nextNaturalIntGeometric_helper(1, 3);
+        nextNaturalIntGeometric_helper(2, 4);
+        nextNaturalIntGeometric_helper(3, 6);
+        nextNaturalIntGeometric_helper(4, 4);
+        nextNaturalIntGeometric_helper(5, 5);
+        nextNaturalIntGeometric_helper(10, 36);
+        nextNaturalIntGeometric_helper(100, 149);
+        nextNaturalIntGeometric_fail_helper(0);
+        nextNaturalIntGeometric_fail_helper(-1);
+    }
+
     private static void naturalIntegersGeometric_helper(
             int mean,
             @NotNull String output,
@@ -1749,6 +1824,31 @@ public strictfp class RandomProviderTest {
         naturalIntegersGeometric_fail_helper(0);
         naturalIntegersGeometric_fail_helper(-1);
         naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
+    }
+
+    private static void nextNonzeroIntGeometric_helper(int mean, int output) {
+        aeq(P.withScale(mean).nextNonzeroIntGeometric(), output);
+        P.reset();
+    }
+
+    private static void nextNonzeroIntGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNonzeroIntGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNonzeroIntGeometric() {
+        nextNonzeroIntGeometric_helper(2, 4);
+        nextNonzeroIntGeometric_helper(3, 5);
+        nextNonzeroIntGeometric_helper(4, 7);
+        nextNonzeroIntGeometric_helper(5, 5);
+        nextNonzeroIntGeometric_helper(10, 36);
+        nextNonzeroIntGeometric_helper(100, 147);
+        nextNonzeroIntGeometric_fail_helper(1);
+        nextNonzeroIntGeometric_fail_helper(0);
+        nextNonzeroIntGeometric_fail_helper(-1);
     }
 
     private static void nonzeroIntegersGeometric_helper(
@@ -1818,6 +1918,31 @@ public strictfp class RandomProviderTest {
         nonzeroIntegersGeometric_fail_helper(1);
         nonzeroIntegersGeometric_fail_helper(0);
         nonzeroIntegersGeometric_fail_helper(-1);
+    }
+
+    private static void nextIntGeometric_helper(int mean, int output) {
+        aeq(P.withScale(mean).nextIntGeometric(), output);
+        P.reset();
+    }
+
+    private static void nextIntGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextIntGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextIntGeometric() {
+        nextIntGeometric_helper(1, 3);
+        nextIntGeometric_helper(2, 4);
+        nextIntGeometric_helper(3, 6);
+        nextIntGeometric_helper(4, 4);
+        nextIntGeometric_helper(5, 5);
+        nextIntGeometric_helper(10, 36);
+        nextIntGeometric_helper(100, 149);
+        nextIntGeometric_fail_helper(0);
+        nextIntGeometric_fail_helper(-1);
     }
 
     private static void integersGeometric_helper(
@@ -1963,7 +2088,8 @@ public strictfp class RandomProviderTest {
                 Integer.MAX_VALUE,
                 Integer.MAX_VALUE - 1,
                 "[2147483646, 2147483647, 2147483646, 2147483646, 2147483646, 2147483646, 2147483646, 2147483647," +
-                " 2147483647, 2147483646, 2147483647, 2147483646, 2147483646, 2147483647, 2147483646, 2147483647, 2147483646, 2147483646, 2147483647, 2147483646]",
+                " 2147483647, 2147483646, 2147483647, 2147483646, 2147483646, 2147483647, 2147483646, 2147483647," +
+                " 2147483646, 2147483646, 2147483647, 2147483646]",
                 "{2147483646=666317, 2147483647=333683}",
                 2.1474836463261979E9
         );
