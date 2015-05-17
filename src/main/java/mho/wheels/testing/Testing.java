@@ -100,9 +100,9 @@ public strictfp class Testing {
         }
     }
 
-    public static <T> Map<T, Integer> sampleCount(int sampleSize, @NotNull Iterable<T> xs) {
+    public static <T> Map<T, Integer> sampleCount(@NotNull List<T> xs) {
         Map<T, Integer> counts = new LinkedHashMap<>();
-        for (T value : take(sampleSize, xs)) {
+        for (T value : xs) {
             Integer count = counts.get(value);
             if (count == null) count = 0;
             counts.put(value, count + 1);
@@ -110,9 +110,9 @@ public strictfp class Testing {
         return counts;
     }
 
-    public static <T> Map<T, Integer> topSampleCount(int sampleSize, int topCount, @NotNull Iterable<T> xs) {
+    public static <T> Map<T, Integer> topSampleCount(int topCount, @NotNull List<T> xs) {
         SortedMap<Integer, List<T>> frequencyMap = new TreeMap<>();
-        for (Map.Entry<T, Integer> entry : sampleCount(sampleSize, xs).entrySet()) {
+        for (Map.Entry<T, Integer> entry : sampleCount(xs).entrySet()) {
             int frequency = entry.getValue();
             List<T> elements = frequencyMap.get(frequency);
             if (elements == null) {

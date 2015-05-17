@@ -200,10 +200,10 @@ public strictfp class RandomProviderTest {
             @NotNull String output,
             @NotNull String sampleCountOutput
     ) {
+        List<T> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeqit(sampleCount(sample).entrySet(), sampleCountOutput);
         P.reset();
-        aeqit(take(TINY_LIMIT, xs), output);
-        P.reset();
-        aeqit(sampleCount(DEFAULT_SAMPLE_SIZE, xs).entrySet(), sampleCountOutput);
     }
 
     @Test
@@ -260,8 +260,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextUniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
-        P.reset();
         aeq(Objects.toString(P.nextUniformSample(readIntegerListWithNulls(xs))), output);
+        P.reset();
     }
 
     @Test
@@ -275,8 +275,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
-        P.reset();
         aeqit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
+        P.reset();
     }
 
     @Test
@@ -293,14 +293,13 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextUniformSample_String_helper(@NotNull String s, char output) {
-        P.reset();
         aeq(P.nextUniformSample(s), output);
+        P.reset();
     }
 
     @Test
     public void testNextUniformSample_String() {
         nextUniformSample_String_helper("hello", 'e');
-        P.reset();
         try {
             P.nextUniformSample("");
         } catch (ArithmeticException ignored) {}
@@ -664,8 +663,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        P.reset();
     }
 
     @Test
@@ -707,8 +706,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_short_helper(short a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        P.reset();
     }
 
     @Test
@@ -741,8 +740,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeUp_int_helper(int a, int output) {
-        P.reset();
         aeq(P.nextFromRangeUp(a), output);
+        P.reset();
     }
 
     @Test
@@ -755,8 +754,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        P.reset();
     }
 
     @Test
@@ -794,8 +793,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeUp_long_helper(long a, long output) {
-        P.reset();
         aeq(P.nextFromRangeUp(a), output);
+        P.reset();
     }
 
     @Test
@@ -808,8 +807,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        P.reset();
     }
 
     @Test
@@ -857,8 +856,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeUp_char_helper(char a, char output) {
-        P.reset();
         aeq(P.nextFromRangeUp(a), output);
+        P.reset();
     }
 
     @Test
@@ -870,8 +869,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
-        P.reset();
         aeqcs(P.rangeUp(a), output);
+        P.reset();
     }
 
     @Test
@@ -911,8 +910,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeDown_byte_helper(int a, int output) {
-        P.reset();
         aeq(P.nextFromRangeDown((byte) a), output);
+        P.reset();
     }
 
     @Test
@@ -925,8 +924,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+        P.reset();
     }
 
     @Test
@@ -956,8 +955,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeDown_short_helper(int a, int output) {
-        P.reset();
         aeq(P.nextFromRangeDown((short) a), output);
+        P.reset();
     }
 
     @Test
@@ -970,8 +969,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+        P.reset();
     }
 
     @Test
@@ -1004,8 +1003,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeDown_int_helper(int a, int output) {
-        P.reset();
         aeq(P.nextFromRangeDown(a), output);
+        P.reset();
     }
 
     @Test
@@ -1018,8 +1017,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+        P.reset();
     }
 
     @Test
@@ -1057,8 +1056,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeDown_long_helper(long a, long output) {
-        P.reset();
         aeq(P.nextFromRangeDown(a), output);
+        P.reset();
     }
 
     @Test
@@ -1071,8 +1070,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
-        P.reset();
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+        P.reset();
     }
 
     @Test
@@ -1120,8 +1119,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRangeDown_char_helper(char a, char output) {
-        P.reset();
         aeq(P.nextFromRangeDown(a), output);
+        P.reset();
     }
 
     @Test
@@ -1133,8 +1132,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
-        P.reset();
         aeqcs(P.rangeDown(a), output);
+        P.reset();
     }
 
     @Test
@@ -1167,8 +1166,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_byte_byte_helper(int a, int b, int output) {
-        P.reset();
         aeq(P.nextFromRange((byte) a, (byte) b), output);
+        P.reset();
     }
 
     @Test
@@ -1182,7 +1181,6 @@ public strictfp class RandomProviderTest {
         nextFromRange_byte_byte_helper(-5, 0, -4);
         nextFromRange_byte_byte_helper(-5, 10, 4);
         nextFromRange_byte_byte_helper(-10, 5, -1);
-        P.reset();
         try {
             P.nextFromRange((byte) 5, (byte) -10);
             fail();
@@ -1190,8 +1188,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
-        P.reset();
         aeqit(TINY_LIMIT, P.range((byte) a, (byte) b), output);
+        P.reset();
     }
 
     @Test
@@ -1233,8 +1231,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_short_short_helper(int a, int b, int output) {
-        P.reset();
         aeq(P.nextFromRange((short) a, (short) b), output);
+        P.reset();
     }
 
     @Test
@@ -1248,7 +1246,6 @@ public strictfp class RandomProviderTest {
         nextFromRange_short_short_helper(-5, 0, -4);
         nextFromRange_short_short_helper(-5, 10, 4);
         nextFromRange_short_short_helper(-10, 5, -1);
-        P.reset();
         try {
             P.nextFromRange((short) 5, (short) -10);
             fail();
@@ -1256,8 +1253,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
-        P.reset();
         aeqit(TINY_LIMIT, P.range((short) a, (short) b), output);
+        P.reset();
     }
 
     @Test
@@ -1303,8 +1300,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_int_int_helper(int a, int b, int output) {
-        P.reset();
         aeq(P.nextFromRange(a, b), output);
+        P.reset();
     }
 
     @Test
@@ -1318,7 +1315,6 @@ public strictfp class RandomProviderTest {
         nextFromRange_int_int_helper(-5, 0, -4);
         nextFromRange_int_int_helper(-5, 10, 4);
         nextFromRange_int_int_helper(-10, 5, -1);
-        P.reset();
         try {
             P.nextFromRange(5, -10);
             fail();
@@ -1326,8 +1322,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
-        P.reset();
         aeqit(TINY_LIMIT, P.range(a, b), output);
+        P.reset();
     }
 
     @Test
@@ -1365,8 +1361,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_long_long_helper(long a, long b, long output) {
-        P.reset();
         aeq(P.nextFromRange(a, b), output);
+        P.reset();
     }
 
     @Test
@@ -1380,7 +1376,6 @@ public strictfp class RandomProviderTest {
         nextFromRange_long_long_helper(-5L, 0L, -4L);
         nextFromRange_long_long_helper(-5L, 10L, 4L);
         nextFromRange_long_long_helper(-10L, 5L, -1L);
-        P.reset();
         try {
             P.nextFromRange(5L, -10L);
             fail();
@@ -1435,8 +1430,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_BigInteger_BigInteger_helper(int a, int b, int output) {
-        P.reset();
         aeq(P.nextFromRange(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        P.reset();
     }
 
     @Test
@@ -1458,8 +1453,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        P.reset();
         aeqit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        P.reset();
     }
 
     @Test
@@ -1509,8 +1504,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void nextFromRange_char_char_helper(char a, char b, char output) {
-        P.reset();
         aeq(P.nextFromRange(a, b), output);
+        P.reset();
     }
 
     @Test
@@ -1526,8 +1521,8 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
-        P.reset();
         aeqcs(P.range(a, b), output);
+        P.reset();
     }
 
     @Test
@@ -1559,12 +1554,10 @@ public strictfp class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
-        P.reset();
-        aeqit(take(TINY_LIMIT, xs), output);
-        P.reset();
-        aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
-        P.reset();
-        aeq(meanOfIntegers(xs), sampleMean);
+        List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(sample), sampleMean);
     }
 
     private static void positiveIntegersGeometric_helper(
@@ -1574,6 +1567,7 @@ public strictfp class RandomProviderTest {
             double sampleMean
     ) {
         geometricHelper(P.withScale(mean).positiveIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
     }
 
     private static void positiveIntegersGeometric_fail_helper(int mean) {
@@ -1588,38 +1582,38 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_helper(
                 2,
                 "[4, 3, 10, 3, 3, 1, 2, 4, 1, 1, 3, 3, 3, 1, 3, 1, 1, 2, 2, 1]",
-                "{1=499128, 2=250900, 3=124845, 4=62517, 5=31407, 6=15634, 7=7825, 8=3926, 9=1896, 10=955}",
-                1.9991409999798677
+                "{1=499125, 2=250897, 3=124849, 4=62518, 5=31407, 6=15634, 7=7825, 8=3926, 9=1896, 10=956}",
+                2.0008359999800347
         );
         positiveIntegersGeometric_helper(
                 3,
                 "[5, 6, 6, 5, 3, 6, 1, 2, 3, 2, 4, 7, 2, 3, 1, 2, 1, 2, 1, 4]",
-                "{1=333814, 2=221150, 3=148026, 4=98991, 5=66271, 6=43744, 7=29390, 8=19567, 9=12958, 10=8571}",
-                3.0016289999898778
+                "{1=333813, 2=221150, 3=148025, 4=98992, 5=66270, 6=43747, 7=29389, 8=19567, 9=12958, 10=8571}",
+                3.002096999989928
         );
         positiveIntegersGeometric_helper(
                 4,
                 "[7, 10, 7, 7, 4, 10, 1, 3, 3, 2, 7, 8, 2, 3, 1, 2, 1, 2, 1, 8]",
-                "{1=250406, 2=187061, 3=139995, 4=105561, 5=79155, 6=58966, 7=44916, 8=33522, 9=25358, 10=18832}",
-                4.002967999990094
+                "{1=250407, 2=187060, 3=139994, 4=105560, 5=79154, 6=58963, 7=44920, 8=33524, 9=25356, 10=18834}",
+                4.0033679999901475
         );
         positiveIntegersGeometric_helper(
                 5,
                 "[5, 4, 18, 8, 3, 1, 2, 1, 2, 6, 7, 18, 6, 3, 8, 15, 1, 9, 2, 5]",
-                "{1=200196, 2=160491, 3=127708, 4=101607, 5=82008, 6=65898, 7=52158, 8=41826, 9=33412, 10=26877}",
-                4.995162000008649
+                "{1=200194, 2=160489, 3=127708, 4=101606, 5=82008, 6=65900, 7=52157, 8=41827, 9=33413, 10=26877}",
+                5.004360000008482
         );
         positiveIntegersGeometric_helper(
                 10,
                 "[36, 10, 10, 8, 32, 21, 2, 6, 1, 18, 19, 1, 11, 9, 4, 4, 1, 2, 4, 6]",
-                "{1=99756, 2=90377, 3=81079, 4=73084, 5=65514, 6=59013, 7=53321, 8=47369, 9=43229, 10=38337}",
-                9.990690000005369
+                "{1=99758, 2=90376, 3=81079, 4=73085, 5=65513, 6=59012, 7=53321, 8=47369, 9=43229, 10=38339}",
+                9.996188000005418
         );
         positiveIntegersGeometric_helper(
                 100,
                 "[147, 1, 65, 34, 32, 144, 35, 117, 27, 85, 9, 63, 11, 16, 1, 136, 35, 290, 126, 65]",
-                "{1=10010, 2=9821, 3=9818, 5=9658, 4=9642, 6=9476, 7=9452, 8=9363, 10=9178, 11=9063}",
-                99.86170699999695
+                "{1=10012, 2=9821, 3=9817, 5=9658, 4=9642, 6=9476, 7=9451, 8=9361, 10=9177, 11=9064}",
+                99.9640719999968
         );
         positiveIntegersGeometric_fail_helper(1);
         positiveIntegersGeometric_fail_helper(0);
@@ -1633,6 +1627,7 @@ public strictfp class RandomProviderTest {
             double sampleMean
     ) {
         geometricHelper(P.withScale(mean).negativeIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
     }
 
     private static void negativeIntegersGeometric_fail_helper(int mean) {
@@ -1642,53 +1637,53 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNegativeIntegersGeometric() {
-//        negativeIntegersGeometric_helper(
-//                2,
-//                "[-2, -8, -2, -1, -2, -1, -3, -2, -2, -3, -1, -3, -1, -1, -2, -2, -1, -1, -1, -1]",
-//                "{-1=499940, -2=249619, -3=124866, -4=62860, -5=31322, -6=15709, -7=7820, -8=3979, -9=1902, -10=1020}",
-//                -1.9984779999797717
-//        );
-//        negativeIntegersGeometric_helper(
-//                3,
-//                "[-10, -9, -2, -1, -9, -2, -1, -6, -8, -1, -5, -2, -2, -5, -7, -3, -1, -1, -1, -1]",
-//                "{-1=332840, -2=221716, -3=148288, -4=98826, -5=66476, -6=44096, -7=29148, -8=19471, -9=13051," +
-//                " -10=8677}",
-//                -2.9994739999900566
-//        );
-//        negativeIntegersGeometric_helper(
-//                4,
-//                "[-12, -11, -3, -1, -10, -2, -1, -7, -12, -3, -6, -3, -2, -7, -10, -3, -1, -3, -3, -1]",
-//                "{-1=249614, -2=187525, -3=140141, -4=105528, -5=79409, -6=59650, -7=44238, -8=33684, -9=25035," +
-//                " -10=18605}",
-//                -3.9988879999900515
-//        );
-//        negativeIntegersGeometric_helper(
-//                5,
-//                "[-14, -4, -2, -17, -8, -7, -1, -9, -4, -1, -10, -2, -4, -1, -1, -3, -1, -2, -11, -3]",
-//                "{-1=199697, -2=160303, -3=127808, -4=102479, -5=81596, -6=65527, -7=52365, -8=42303, -9=33510," +
-//                " -10=26945}",
-//                -5.006003000008593
-//        );
-//        negativeIntegersGeometric_helper(
-//                10,
-//                "[-19, -5, -36, -1, -13, -17, -4, -1, -2, -15, -5, -3, -5, -37, -9, -4, -2, -14, -10, -11]",
-//                "{-1=99638, -2=90219, -3=81366, -4=73133, -5=65565, -6=58852, -7=52976, -8=47799, -9=43211," +
-//                " -10=38657}",
-//                -10.003595000005705
-//        );
-//        negativeIntegersGeometric_helper(
-//                100,
-//                "[-203, -17, -113, -4, -48, -71, -163, -136, -13, -11, -86, -254, -65, -77, -29, -198, -25, -441," +
-//                " -193, -16]",
-//                "{-1=9940, -2=9939, -3=9819, -5=9622, -4=9590, -6=9561, -7=9296, -8=9269, -11=9245, -10=9202}",
-//                -99.92948300000171
-//        );
-//        negativeIntegersGeometric_fail_helper(1);
-//        negativeIntegersGeometric_fail_helper(0);
-//        negativeIntegersGeometric_fail_helper(-1);
-//    }
+    @Test
+    public void testNegativeIntegersGeometric() {
+        negativeIntegersGeometric_helper(
+                2,
+                "[-4, -2, -9, -2, -2, -2, -3, -1, -2, -2, -2, -3, -1, -1, -1, -2, -2, -2, -1, -1]",
+                "{-1=500069, -2=250062, -3=124820, -4=62751, -5=31115, -6=15623, -7=7769, -8=3913, -9=1972, -10=942}",
+                -1.9994539999798795
+        );
+        negativeIntegersGeometric_helper(
+                3,
+                "[-5, -5, -5, -4, -2, -5, -2, -2, -1, -3, -6, -1, -2, -2, -2, -4, -2, -7, -7, -1]",
+                "{-1=332909, -2=221711, -3=148628, -4=98603, -5=66130, -6=43947, -7=29393, -8=19392, -9=12986," +
+                " -10=8654}",
+                -3.0040559999897853
+        );
+        negativeIntegersGeometric_helper(
+                4,
+                "[-7, -9, -6, -6, -3, -9, -3, -2, -1, -6, -7, -1, -2, -2, -2, -8, -4, -8, -14, -5]",
+                "{-1=249778, -2=187093, -3=140627, -4=105664, -5=78463, -6=59650, -7=44726, -8=33553, -9=25145," +
+                " -10=18873}",
+                -4.00555699999019
+        );
+        negativeIntegersGeometric_helper(
+                5,
+                "[-5, -3, -17, -7, -2, -2, -2, -5, -6, -17, -5, -2, -7, -14, -9, -1, -4, -7, -14, -7]",
+                "{-1=200326, -2=159467, -3=127321, -4=102809, -5=82261, -6=65599, -7=52283, -8=42004, -9=33342," +
+                " -10=26961}",
+                -5.005213000008396
+        );
+        negativeIntegersGeometric_helper(
+                10,
+                "[-36, -9, -9, -7, -31, -20, -1, -5, -18, -18, -11, -8, -3, -3, -2, -3, -5, -11, -8, -4]",
+                "{-1=100339, -2=90055, -3=81066, -4=72764, -5=65530, -6=59229, -7=52655, -8=47976, -9=42544," +
+                " -10=38858}",
+                -9.995441000005417
+        );
+        negativeIntegersGeometric_helper(
+                100,
+                "[-147, -65, -33, -31, -143, -34, -116, -26, -84, -8, -62, -10, -15, -136, -34, -289, -125, -64," +
+                " -89, -24]",
+                "{-2=9935, -1=9911, -4=9758, -3=9734, -5=9572, -6=9536, -7=9468, -9=9249, -10=9200, -8=9118}",
+                -99.96604400000099
+        );
+        negativeIntegersGeometric_fail_helper(1);
+        negativeIntegersGeometric_fail_helper(0);
+        negativeIntegersGeometric_fail_helper(-1);
+    }
 
     private static void naturalIntegersGeometric_helper(
             int mean,
@@ -1697,6 +1692,7 @@ public strictfp class RandomProviderTest {
             double sampleMean
     ) {
         geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
     }
 
     private static void naturalIntegersGeometric_fail_helper(int mean) {
@@ -1706,54 +1702,54 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNaturalIntegersGeometric() {
-//        naturalIntegersGeometric_helper(
-//                1,
-//                "[1, 7, 1, 0, 1, 0, 2, 1, 1, 2, 0, 2, 0, 0, 1, 1, 0, 0, 0, 0]",
-//                "{0=499940, 1=249619, 2=124866, 3=62860, 4=31322, 5=15709, 6=7820, 7=3979, 8=1902, 9=1020}",
-//                0.9984779999977075
-//        );
-//        naturalIntegersGeometric_helper(
-//                2,
-//                "[9, 8, 1, 0, 8, 1, 0, 5, 7, 0, 4, 1, 1, 4, 6, 2, 0, 0, 0, 0]",
-//                "{0=332840, 1=221716, 2=148288, 3=98826, 4=66476, 5=44096, 6=29148, 7=19471, 8=13051, 9=8677}",
-//                1.9994739999891047
-//        );
-//        naturalIntegersGeometric_helper(
-//                3,
-//                "[11, 10, 2, 0, 9, 1, 0, 6, 11, 2, 5, 2, 1, 6, 9, 2, 0, 2, 2, 0]",
-//                "{0=249614, 1=187525, 2=140141, 3=105528, 4=79409, 5=59650, 6=44238, 7=33684, 8=25035, 9=18605}",
-//                2.998887999991593
-//        );
-//        naturalIntegersGeometric_helper(
-//                4,
-//                "[13, 3, 1, 16, 7, 6, 0, 8, 3, 0, 9, 1, 3, 0, 0, 2, 0, 1, 10, 2]",
-//                "{0=199697, 1=160303, 2=127808, 3=102479, 4=81596, 5=65527, 6=52365, 7=42303, 8=33510, 9=26945}",
-//                4.006002999991825
-//        );
-//        naturalIntegersGeometric_helper(
-//                5,
-//                "[19, 6, 1, 19, 7, 7, 0, 8, 4, 0, 12, 1, 3, 0, 0, 2, 0, 1, 13, 3]",
-//                "{0=166281, 1=139287, 2=115713, 3=96288, 4=80406, 5=66742, 6=55828, 7=46438, 8=38736, 9=32457}",
-//                5.008427000005021
-//        );
-//        naturalIntegersGeometric_helper(
-//                10,
-//                "[19, 6, 40, 0, 12, 16, 4, 0, 1, 15, 5, 2, 6, 42, 8, 3, 2, 14, 10, 11]",
-//                "{0=90322, 1=83103, 2=75278, 3=68424, 4=62228, 5=56366, 6=51156, 7=46912, 8=42293, 9=38652}",
-//                10.00416700000491
-//        );
-//        naturalIntegersGeometric_helper(
-//                100,
-//                "[204, 16, 112, 3, 48, 70, 163, 136, 12, 10, 85, 254, 64, 76, 28, 199, 24, 446, 196, 15]",
-//                "{0=9851, 1=9847, 2=9741, 4=9504, 5=9491, 3=9448, 6=9269, 10=9193, 7=9143, 8=9101}",
-//                99.9273790000026
-//        );
-//        naturalIntegersGeometric_fail_helper(0);
-//        naturalIntegersGeometric_fail_helper(-1);
-//        naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
-//    }
+    @Test
+    public void testNaturalIntegersGeometric() {
+        naturalIntegersGeometric_helper(
+                1,
+                "[3, 2, 9, 2, 2, 0, 1, 3, 0, 0, 2, 2, 2, 0, 2, 0, 0, 1, 1, 0]",
+                "{0=499125, 1=250897, 2=124849, 3=62518, 4=31407, 5=15634, 6=7825, 7=3926, 8=1896, 9=956}",
+                1.0008359999977228
+        );
+        naturalIntegersGeometric_helper(
+                2,
+                "[4, 5, 5, 4, 2, 5, 0, 1, 2, 1, 3, 6, 1, 2, 0, 1, 0, 1, 0, 3]",
+                "{0=333813, 1=221150, 2=148025, 3=98992, 4=66270, 5=43747, 6=29389, 7=19567, 8=12958, 9=8571}",
+                2.0020969999891216
+        );
+        naturalIntegersGeometric_helper(
+                3,
+                "[6, 9, 6, 6, 3, 9, 0, 2, 2, 1, 6, 7, 1, 2, 0, 1, 0, 1, 0, 7]",
+                "{0=250407, 1=187060, 2=139994, 3=105560, 4=79154, 5=58963, 6=44920, 7=33524, 8=25356, 9=18834}",
+                3.003367999991497
+        );
+        naturalIntegersGeometric_helper(
+                4,
+                "[4, 3, 17, 7, 2, 0, 1, 0, 1, 5, 6, 17, 5, 2, 7, 14, 0, 8, 1, 4]",
+                "{0=200194, 1=160489, 2=127708, 3=101606, 4=82008, 5=65900, 6=52157, 7=41827, 8=33413, 9=26877}",
+                4.004359999991779
+        );
+        naturalIntegersGeometric_helper(
+                5,
+                "[5, 7, 23, 9, 3, 0, 1, 0, 1, 5, 8, 22, 5, 2, 7, 18, 0, 10, 1, 5]",
+                "{0=166887, 1=139197, 2=115545, 3=96038, 4=80312, 5=66813, 6=55942, 7=46416, 8=38391, 9=32378}",
+                5.005650000005037
+        );
+        naturalIntegersGeometric_helper(
+                10,
+                "[36, 12, 10, 8, 32, 24, 1, 7, 0, 17, 20, 0, 10, 8, 3, 4, 0, 1, 3, 6]",
+                "{0=90519, 1=82798, 2=75630, 3=68355, 4=62062, 5=56573, 6=51318, 7=46453, 8=42422, 9=38243}",
+                9.996028000004106
+        );
+        naturalIntegersGeometric_helper(
+                100,
+                "[149, 0, 65, 33, 31, 144, 34, 116, 26, 84, 8, 63, 10, 15, 0, 137, 36, 289, 126, 65]",
+                "{0=9916, 2=9740, 1=9715, 4=9630, 3=9504, 5=9377, 6=9328, 7=9252, 9=9073, 8=9025}",
+                99.96387799999758
+        );
+        naturalIntegersGeometric_fail_helper(0);
+        naturalIntegersGeometric_fail_helper(-1);
+        naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
+    }
 
     private static void nonzeroIntegersGeometric_helper(
             int mean,
@@ -1762,10 +1758,10 @@ public strictfp class RandomProviderTest {
             double sampleMean,
             double sampleAbsMean
     ) {
-        Iterable<Integer> xs = P.withScale(mean).nonzeroIntegersGeometric();
+        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).nonzeroIntegersGeometric()));
         geometricHelper(xs, output, topSampleCount, sampleMean);
+        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
         P.reset();
-        aeq(meanOfIntegers(map(Math::abs, xs)), sampleAbsMean);
     }
 
     private static void nonzeroIntegersGeometric_fail_helper(int mean) {
@@ -1775,54 +1771,54 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNonzeroIntegersGeometric() {
-//        nonzeroIntegersGeometric_helper(
-//                2,
-//                "[2, 1, 6, -1, 1, -2, 3, -1, -2, 1, 1, 2, -1, 2, -1, -1, -1, -1, -1, 4]",
-//                "{1=250212, -1=249778, 2=125065, -2=124955, -3=62396, 3=62275, 4=31335, -4=31095, 5=15829, -5=15532}",
-//                0.001756999999999992,
-//                1.9991669999799087
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                3,
-//                "[10, -3, -6, 1, 1, -2, -6, -1, -1, 1, -2, 4, 4, -7, -1, -6, 4, -5, -1, 1]",
-//                "{1=166894, -1=166805, 2=110928, -2=110762, 3=74009, -3=73853, 4=49472, -4=49418, -5=33315, 5=32886}",
-//                7.709999999999913E-4,
-//                3.0031149999898528
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                4,
-//                "[12, -3, -7, 1, 1, -4, -6, -1, -1, 4, -2, 4, 7, -12, -1, -11, 5, -6, -3, 1]",
-//                "{-1=125038, 1=125033, 2=93863, -2=93650, 3=70178, -3=70172, 4=52723, -4=52605, 5=39966, -5=39890}",
-//                7.639999999999724E-4,
-//                4.001540999990154
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                5,
-//                "[14, 5, -2, -1, 17, -3, 6, -12, -4, -12, -4, -3, -2, 1, -1, -2, -1, -5, 9, 2]",
-//                "{-1=100532, 1=100120, 2=80205, -2=79693, 3=64429, -3=63784, -4=50931, 4=50715, -5=41126, 5=40940}",
-//                0.001546000000000001,
-//                4.994863000008314
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                10,
-//                "[19, 10, -31, -3, -10, -11, -9, -1, -2, -6, -12, -6, -3, 28, 8, 1, -8, -43, -22, -5]",
-//                "{-1=50574, 1=50054, 2=45215, -2=44881, 3=40452, -3=40005, 4=36884, -4=36232, -5=32756, 5=32648}",
-//                -0.006155000000001084,
-//                10.002291000006132
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                100,
-//                "[-203, -79, 56, 35, -15, 81, 143, -67, -76, 106, -5, 155, -105, -88, -51, 52, 166, 66, 400, -96]",
-//                "{1=5137, -1=5047, 2=4997, 3=4981, -4=4949, 4=4936, 5=4933, -2=4868, -3=4825, -7=4805}",
-//                -0.13892300000000637,
-//                100.18658599999718
-//        );
-//        nonzeroIntegersGeometric_fail_helper(1);
-//        nonzeroIntegersGeometric_fail_helper(0);
-//        nonzeroIntegersGeometric_fail_helper(-1);
-//    }
+    @Test
+    public void testNonzeroIntegersGeometric() {
+        nonzeroIntegersGeometric_helper(
+                2,
+                "[4, 1, 8, 1, 1, 1, -2, 3, 1, 1, -2, -2, -1, 3, -1, 2, -1, -2, -1, -1]",
+                "{1=250554, -1=249443, -2=125173, 2=124586, -3=63103, 3=62228, -4=31398, 4=31095, -5=15652, 5=15618}",
+                -0.00324499999999998,
+                1.9999089999798014
+        );
+        nonzeroIntegersGeometric_helper(
+                3,
+                "[5, 4, 4, 3, 2, -5, -1, -1, 4, -6, -3, -1, -1, 3, -2, -6, -6, -8, -2, -1]",
+                "{1=166663, -1=166530, 2=111050, -2=110588, -3=74365, 3=74298, -4=49431, 4=49320, 5=33035, -5=32667}",
+                -7.109999999999536E-4,
+                3.002494999989948
+        );
+        nonzeroIntegersGeometric_helper(
+                4,
+                "[7, 8, -5, 5, 2, -8, -2, -1, 7, -6, -3, -1, -1, 7, -3, -7, 13, 4, -10, -4]",
+                "{1=124981, -1=124610, 2=93584, -2=93352, 3=70403, -3=70322, -4=52499, 4=52349, -5=40059, 5=39837}",
+                -0.005358000000000017,
+                4.007443999990141
+        );
+        nonzeroIntegersGeometric_helper(
+                5,
+                "[5, -3, 17, -7, -1, -1, -2, 4, 6, -17, -4, 1, -7, -13, -8, -5, -6, -13, 6, -4]",
+                "{-1=100151, 1=99484, -2=79830, 2=79510, 3=64369, -3=63659, -4=51353, 4=51159, -5=41216, 5=40646}",
+                -0.006956000000000186,
+                5.009958000008598
+        );
+        nonzeroIntegersGeometric_helper(
+                10,
+                "[36, -8, 9, -7, -30, -20, 6, -18, 18, 10, 7, 2, -2, -2, -2, -4, 11, 7, 3, -7]",
+                "{-1=50348, 1=49807, -2=45114, 2=44941, -3=40613, 3=40283, -4=36388, 4=36352, 5=33144, -5=32784}",
+                0.006026000000000106,
+                9.997882000005676
+        );
+        nonzeroIntegersGeometric_helper(
+                100,
+                "[147, 64, 33, 30, 142, -33, 115, 25, 83, 7, -61, 9, -14, -136, 33, -288, 124, -64, 88, 24]",
+                "{-1=5099, 3=5046, 1=5031, -4=4916, -2=4912, 2=4874, 4=4860, -5=4822, -3=4798, 6=4752}",
+                -0.09851599999999745,
+                99.95862999999811
+        );
+        nonzeroIntegersGeometric_fail_helper(1);
+        nonzeroIntegersGeometric_fail_helper(0);
+        nonzeroIntegersGeometric_fail_helper(-1);
+    }
 
     private static void integersGeometric_helper(
             int mean,
@@ -1831,10 +1827,10 @@ public strictfp class RandomProviderTest {
             double sampleMean,
             double sampleAbsMean
     ) {
-        Iterable<Integer> xs = P.withScale(mean).integersGeometric();
+        Iterable<Integer> xs = take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).integersGeometric());
         geometricHelper(xs, output, topSampleCount, sampleMean);
+        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
         P.reset();
-        aeq(meanOfIntegers(map(Math::abs, xs)), sampleAbsMean);
     }
 
     private static void integersGeometric_fail_helper(int mean) {
@@ -1844,61 +1840,61 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testIntegersGeometric() {
-//        integersGeometric_helper(
-//                1,
-//                "[1, 0, 5, 0, 0, -1, 2, 0, -1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 3]",
-//                "{0=499990, 1=125065, -1=124955, -2=62396, 2=62275, 3=31335, -3=31095, 4=15829, -4=15532, -5=7943}",
-//                9.949999999999957E-4,
-//                0.9991669999977268
-//        );
-//        integersGeometric_helper(
-//                2,
-//                "[9, -2, -5, 0, 0, -1, -5, 0, 0, 0, -1, 3, 3, -6, 0, -5, 3, -4, 0, 0]",
-//                "{0=333699, 1=110928, -1=110762, 2=74009, -2=73853, 3=49472, -3=49418, -4=33315, 4=32886, -5=22030}",
-//                7.35000000000012E-4,
-//                2.003114999989133
-//        );
-//        integersGeometric_helper(
-//                3,
-//                "[11, -2, -6, 0, 0, -3, -5, 0, 0, 3, -1, 3, 6, -11, 0, -10, 4, -5, -2, 0]",
-//                "{0=250071, 1=93863, -1=93650, 2=70178, -2=70172, 3=52723, -3=52605, 4=39966, -4=39890, -5=29597}",
-//                7.280000000000733E-4,
-//                3.0015409999914318
-//        );
-//        integersGeometric_helper(
-//                4,
-//                "[13, 4, -1, 0, 16, -2, 5, -11, -3, -11, -3, -2, -1, 0, 0, -1, 0, -4, 8, 1]",
-//                "{0=200652, 1=80205, -1=79693, 2=64429, -2=63784, -3=50931, 3=50715, -4=41126, 4=40940, -5=32687}",
-//                0.002093999999999925,
-//                3.9948629999913425
-//        );
-//        integersGeometric_helper(
-//                5,
-//                "[19, 4, -1, 0, 19, -2, 5, -16, -3, -11, -4, -3, -1, 0, 0, -2, 0, -5, 10, 2]",
-//                "{0=167187, 1=69622, -1=69189, 2=58237, -2=57649, 3=48153, -3=48152, -4=40125, 4=40037, -5=33592}",
-//                0.0035149999999997965,
-//                4.995530000004772
-//        );
-//        integersGeometric_helper(
-//                10,
-//                "[19, 10, -34, -4, -9, -11, -8, 0, -1, -6, -12, -7, -4, 30, 7, 0, -7, -46, -25, -4]",
-//                "{0=91255, 1=41644, -1=41237, 2=37534, -2=37149, 3=34461, -3=34043, 4=31258, -4=30783, -5=28000}",
-//                -0.006076999999999771,
-//                10.003386000004411
-//        );
-//        integersGeometric_helper(
-//                100,
-//                "[-204, -78, 55, 34, -14, 83, 142, -67, -76, 107, -4, 155, -104, -88, -50, 51, 167, 66, 405, -97]",
-//                "{0=10076, 1=4956, -3=4939, 2=4920, 3=4882, 4=4876, -1=4861, -6=4760, -2=4740, 5=4716}",
-//                -0.1406840000000054,
-//                100.18935300000031
-//        );
-//        integersGeometric_fail_helper(0);
-//        integersGeometric_fail_helper(-1);
-//        integersGeometric_fail_helper(Integer.MAX_VALUE);
-//    }
+    @Test
+    public void testIntegersGeometric() {
+        integersGeometric_helper(
+                1,
+                "[3, 0, 7, 0, 0, 0, -1, 2, 0, 0, -1, -1, 0, 2, 0, 1, 0, -1, 0, 0]",
+                "{0=499997, -1=125173, 1=124586, -2=63103, 2=62228, -3=31398, 3=31095, -4=15652, 4=15618, 5=7797}",
+                -0.0026230000000000515,
+                1.0003059999977268
+        );
+        integersGeometric_helper(
+                2,
+                "[4, 3, 3, 2, 1, -4, 0, 0, 3, -5, -2, 0, 0, 2, -1, -5, -5, -7, -1, 0]",
+                "{0=333193, 1=111050, -1=110588, -2=74365, 2=74298, -3=49431, 3=49320, 4=33035, -4=32667, 5=22100}",
+                -0.0012509999999999928,
+                2.0016309999890516
+        );
+        integersGeometric_helper(
+                3,
+                "[6, 7, -4, 4, 1, -7, -1, 0, 6, -5, -2, 0, 0, 6, -2, -6, 12, 3, -9, -3]",
+                "{0=249591, 1=93584, -1=93352, 2=70403, -2=70322, -3=52499, 3=52349, -4=40059, 4=39837, -5=29751}",
+                -0.005255999999999971,
+                3.002566999991555
+        );
+        integersGeometric_helper(
+                4,
+                "[4, -2, 16, -6, 0, 0, -1, 3, 5, -16, -3, 0, -6, -12, -7, -4, -5, -12, 5, -3]",
+                "{0=199635, -1=79830, 1=79510, 2=64369, -2=63659, -3=51353, 3=51159, -4=41216, 4=40646, 5=32985}",
+                -0.006043999999999987,
+                4.001105999991566
+        );
+        integersGeometric_helper(
+                5,
+                "[5, 5, 21, -8, -1, 0, -1, 3, -7, -21, -3, 0, -6, -16, -9, -5, -6, -14, 6, -4]",
+                "{0=166265, -1=69464, 1=69145, -2=58027, 2=57911, -3=48038, 3=47784, -4=40407, 4=40086, 5=33867}",
+                -0.004018000000000179,
+                5.003640000004923
+        );
+        integersGeometric_helper(
+                10,
+                "[36, -10, 8, -7, -30, -23, 7, -17, 19, 9, 6, 1, -2, -1, -1, -4, 11, 7, 2, -8]",
+                "{0=90994, -1=41558, 1=41352, -2=37594, 2=37352, -3=34219, 3=34039, -4=31245, 4=31235, 5=28202}",
+                0.0011880000000002821,
+                9.985122000004568
+        );
+        integersGeometric_helper(
+                100,
+                "[149, 64, 32, 29, 142, -32, 114, 24, 82, 6, -61, 8, -13, -137, 34, -287, 124, -64, 88, 23]",
+                "{0=10017, 2=5010, -3=4863, -1=4855, 3=4819, 1=4807, -2=4776, -4=4749, -5=4710, 5=4689}",
+                -0.09234699999999806,
+                99.86097099999841
+        );
+        integersGeometric_fail_helper(0);
+        integersGeometric_fail_helper(-1);
+        integersGeometric_fail_helper(Integer.MAX_VALUE);
+    }
 
     private static void rangeUpGeometric_helper(
             int mean,
@@ -1907,9 +1903,8 @@ public strictfp class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
+        geometricHelper(P.withScale(mean).rangeUpGeometric(a), output, topSampleCount, sampleMean);
         P.reset();
-        Iterable<Integer> xs = P.withScale(mean).rangeUpGeometric(a);
-        geometricHelper(xs, output, topSampleCount, sampleMean);
     }
 
     private static void rangeUpGeometric_fail_helper(int mean, int a) {
@@ -1919,74 +1914,73 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testRangeUpGeometric() {
-//        rangeUpGeometric_helper(
-//                3,
-//                2,
-//                "[3, 9, 3, 2, 3, 2, 4, 3, 3, 4, 2, 4, 2, 2, 3, 3, 2, 2, 2, 2]",
-//                "{2=499939, 3=249619, 4=124867, 5=62860, 6=31322, 7=15709, 8=7820, 9=3979, 10=1902, 11=1020}",
-//                2.9984879999686456
-//        );
-//        rangeUpGeometric_helper(
-//                10,
-//                2,
-//                "[17, 6, 35, 2, 14, 15, 5, 2, 2, 15, 6, 4, 5, 34, 10, 5, 3, 14, 10, 10]",
-//                "{2=110828, 3=98984, 4=88328, 5=78206, 6=69166, 7=61576, 8=54610, 9=48676, 10=43124, 11=38389}",
-//                10.00413200001652
-//        );
-//        rangeUpGeometric_helper(
-//                11,
-//                10,
-//                "[11, 17, 11, 10, 11, 10, 12, 11, 11, 12, 10, 12, 10, 10, 11, 11, 10, 10, 10, 10]",
-//                "{10=499939, 11=249619, 12=124867, 13=62860, 14=31322, 15=15709, 16=7820, 17=3979, 18=1902, 19=1020}",
-//                10.998487999897376
-//        );
-//        rangeUpGeometric_helper(
-//                20,
-//                10,
-//                "[29, 16, 50, 10, 22, 26, 14, 10, 11, 25, 15, 12, 16, 52, 18, 13, 12, 24, 20, 21]",
-//                "{10=90321, 11=83103, 12=75278, 13=68424, 14=62228, 15=56366, 16=51156, 17=46912, 18=42293, 19=38652}",
-//                20.004143000003587
-//        );
-//        rangeUpGeometric_helper(
-//                -9,
-//                -10,
-//                "[-9, -3, -9, -10, -9, -10, -8, -9, -9, -8, -10, -8, -10, -10, -9, -9, -10, -10, -10, -10]",
-//                "{-10=499939, -9=249619, -8=124867, -7=62860, -6=31322, -5=15709, -4=7820, -3=3979, -2=1902, -1=1020}",
-//                -9.001511999952484
-//        );
-//        rangeUpGeometric_helper(
-//                0,
-//                -10,
-//                "[9, -4, 30, -10, 2, 6, -6, -10, -9, 5, -5, -8, -4, 32, -2, -7, -8, 4, 0, 1]",
-//                "{-10=90321, -9=83103, -8=75278, -7=68424, -6=62228, -5=56366, -4=51156, -3=46912, -2=42293," +
-//                " -1=38652}",
-//                0.004143000000001288
-//        );
-//        rangeUpGeometric_helper(
-//                Integer.MAX_VALUE,
-//                Integer.MAX_VALUE - 1,
-//                "[2147483647, 2147483647, 2147483646, 2147483647, 2147483646, 2147483647, 2147483647, 2147483646," +
-//                " 2147483646, 2147483646, 2147483647, 2147483647, 2147483646, 2147483646, 2147483646, 2147483646," +
-//                " 2147483646, 2147483646, 2147483646, 2147483646]",
-//                "{2147483646=667071, 2147483647=332929}",
-//                2.1474836463258882E9
-//        );
-//        rangeUpGeometric_helper(
-//                Integer.MIN_VALUE + 1,
-//                Integer.MIN_VALUE,
-//                "[-2147483647, -2147483641, -2147483647, -2147483648, -2147483647, -2147483648, -2147483646," +
-//                " -2147483647, -2147483647, -2147483646, -2147483648, -2147483646, -2147483648, -2147483648," +
-//                " -2147483647, -2147483647, -2147483648, -2147483648, -2147483648, -2147483648]",
-//                "{-2147483648=499939, -2147483647=249619, -2147483646=124867, -2147483645=62860, -2147483644=31322," +
-//                " -2147483643=15709, -2147483642=7820, -2147483641=3979, -2147483640=1902, -2147483639=1020}",
-//                -2.1474836470173213E9
-//        );
-//        rangeUpGeometric_fail_helper(5, 5);
-//        rangeUpGeometric_fail_helper(4, 5);
-//        rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
-//    }
+    @Test
+    public void testRangeUpGeometric() {
+        rangeUpGeometric_helper(
+                3,
+                2,
+                "[5, 4, 11, 4, 4, 2, 3, 5, 2, 2, 4, 4, 4, 2, 4, 2, 2, 3, 3, 2]",
+                "{2=499125, 3=250897, 4=124849, 5=62518, 6=31407, 7=15634, 8=7825, 9=3926, 10=1896, 11=956}",
+                3.000835999968773
+        );
+        rangeUpGeometric_helper(
+                10,
+                2,
+                "[33, 11, 11, 7, 31, 20, 3, 7, 2, 19, 15, 2, 12, 8, 5, 5, 2, 3, 4, 7]",
+                "{2=110949, 3=98973, 4=87810, 5=78512, 6=69401, 7=61358, 8=54691, 9=48553, 10=43415, 11=38254}",
+                9.996049000016834
+        );
+        rangeUpGeometric_helper(
+                11,
+                10,
+                "[13, 12, 19, 12, 12, 10, 11, 13, 10, 10, 12, 12, 12, 10, 12, 10, 10, 11, 11, 10]",
+                "{10=499125, 11=250897, 12=124849, 13=62518, 14=31407, 15=15634, 16=7825, 17=3926, 18=1896, 19=956}",
+                11.000835999897873
+        );
+        rangeUpGeometric_helper(
+                20,
+                10,
+                "[46, 22, 20, 18, 42, 34, 11, 17, 10, 27, 30, 10, 20, 18, 13, 14, 10, 11, 13, 16]",
+                "{10=90519, 11=82798, 12=75630, 13=68355, 14=62062, 15=56573, 16=51318, 17=46453, 18=42422, 19=38243}",
+                19.99602800000434
+        );
+        rangeUpGeometric_helper(
+                -9,
+                -10,
+                "[-7, -8, -1, -8, -8, -10, -9, -7, -10, -10, -8, -8, -8, -10, -8, -10, -10, -9, -9, -10]",
+                "{-10=499125, -9=250897, -8=124849, -7=62518, -6=31407, -5=15634, -4=7825, -3=3926, -2=1896, -1=956}",
+                -8.999163999953181
+        );
+        rangeUpGeometric_helper(
+                0,
+                -10,
+                "[26, 2, 0, -2, 22, 14, -9, -3, -10, 7, 10, -10, 0, -2, -7, -6, -10, -9, -7, -4]",
+                "{-10=90519, -9=82798, -8=75630, -7=68355, -6=62062, -5=56573, -4=51318, -3=46453, -2=42422," +
+                " -1=38243}",
+                -0.003971999999995211
+        );
+        rangeUpGeometric_helper(
+                Integer.MAX_VALUE,
+                Integer.MAX_VALUE - 1,
+                "[2147483646, 2147483647, 2147483646, 2147483646, 2147483646, 2147483646, 2147483646, 2147483647," +
+                " 2147483647, 2147483646, 2147483647, 2147483646, 2147483646, 2147483647, 2147483646, 2147483647, 2147483646, 2147483646, 2147483647, 2147483646]",
+                "{2147483646=666317, 2147483647=333683}",
+                2.1474836463261979E9
+        );
+        rangeUpGeometric_helper(
+                Integer.MIN_VALUE + 1,
+                Integer.MIN_VALUE,
+                "[-2147483645, -2147483646, -2147483639, -2147483646, -2147483646, -2147483648, -2147483647," +
+                " -2147483645, -2147483648, -2147483648, -2147483646, -2147483646, -2147483646, -2147483648," +
+                " -2147483646, -2147483648, -2147483648, -2147483647, -2147483647, -2147483648]",
+                "{-2147483648=499125, -2147483647=250897, -2147483646=124849, -2147483645=62518, -2147483644=31407," +
+                " -2147483643=15634, -2147483642=7825, -2147483641=3926, -2147483640=1896, -2147483639=956}",
+                -2.1474836470149984E9
+        );
+        rangeUpGeometric_fail_helper(5, 5);
+        rangeUpGeometric_fail_helper(4, 5);
+        rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
+    }
 
     private static void rangeDownGeometric_helper(
             int mean,
@@ -1995,9 +1989,8 @@ public strictfp class RandomProviderTest {
             @NotNull String topSampleCount,
             double sampleMean
     ) {
+        geometricHelper(P.withScale(mean).rangeDownGeometric(a), output, topSampleCount, sampleMean);
         P.reset();
-        Iterable<Integer> xs = P.withScale(mean).rangeDownGeometric(a);
-        geometricHelper(xs, output, topSampleCount, sampleMean);
     }
 
     private static void rangeDownGeometric_fail_helper(int mean, int a) {
@@ -2007,75 +2000,75 @@ public strictfp class RandomProviderTest {
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testRangeDownGeometric() {
-//        rangeDownGeometric_helper(
-//                0,
-//                2,
-//                "[-7, -6, 1, 2, -6, 1, 2, -3, -5, 2, -2, 1, 1, -2, -4, 0, 2, 2, 2, 2]",
-//                "{2=332840, 1=221716, 0=148288, -1=98825, -2=66477, -3=44096, -4=29148, -5=19471, -6=13051, -7=8677}",
-//                5.259999999993722E-4
-//        );
-//        rangeDownGeometric_helper(
-//                -5,
-//                2,
-//                "[-24, -7, 1, -26, -9, -10, 2, -11, -3, 2, -18, 1, -3, 2, 1, 0, 0, 0, -17, -3]",
-//                "{2=124613, 1=110177, 0=95179, -1=83698, -2=73138, -3=64223, -4=55937, -5=49251, -6=42838, -7=37636}",
-//                -5.008897999995255
-//        );
-//        rangeDownGeometric_helper(
-//                5,
-//                10,
-//                "[-9, 4, 9, -9, 3, 3, 10, 2, 6, 10, -2, 9, 7, 10, 10, 8, 10, 9, -3, 7]",
-//                "{10=166282, 9=139287, 8=115713, 7=96287, 6=80406, 5=66742, 4=55828, 3=46438, 2=38736, 1=32457}",
-//                4.991570999991792
-//        );
-//        rangeDownGeometric_helper(
-//                0,
-//                10,
-//                "[-9, 4, -30, 10, -2, -6, 6, 10, 9, -5, 5, 8, 4, -32, 2, 7, 8, -4, 0, -1]",
-//                "{10=90321, 9=83103, 8=75278, 7=68424, 6=62228, 5=56366, 4=51156, 3=46912, 2=42293, 1=38652}",
-//                -0.004143000000001288
-//        );
-//        rangeDownGeometric_helper(
-//                -11,
-//                -10,
-//                "[-11, -17, -11, -10, -11, -10, -12, -11, -11, -12, -10, -12, -10, -10, -11, -11, -10, -10, -10, -10]",
-//                "{-10=499939, -11=249619, -12=124867, -13=62860, -14=31322, -15=15709, -16=7820, -17=3979, -18=1902," +
-//                " -19=1020}",
-//                -10.998487999897376
-//        );
-//        rangeDownGeometric_helper(
-//                -20,
-//                -10,
-//                "[-29, -16, -50, -10, -22, -26, -14, -10, -11, -25, -15, -12, -16, -52, -18, -13, -12, -24, -20, -21]",
-//                "{-10=90321, -11=83103, -12=75278, -13=68424, -14=62228, -15=56366, -16=51156, -17=46912, -18=42293," +
-//                " -19=38652}",
-//                -20.004143000003587
-//        );
-//        rangeDownGeometric_helper(
-//                Integer.MAX_VALUE - 1,
-//                Integer.MAX_VALUE,
-//                "[2147483646, 2147483640, 2147483646, 2147483647, 2147483646, 2147483647, 2147483645, 2147483646," +
-//                " 2147483646, 2147483645, 2147483647, 2147483645, 2147483647, 2147483647, 2147483646, 2147483646," +
-//                " 2147483647, 2147483647, 2147483647, 2147483647]",
-//                "{2147483647=499939, 2147483646=249619, 2147483645=124867, 2147483644=62860, 2147483643=31322," +
-//                " 2147483642=15709, 2147483641=7820, 2147483640=3979, 2147483639=1902, 2147483638=1020}",
-//                2.1474836460161636E9
-//        );
-//        rangeDownGeometric_helper(
-//                Integer.MIN_VALUE,
-//                Integer.MIN_VALUE + 1,
-//                "[-2147483648, -2147483648, -2147483647, -2147483648, -2147483647, -2147483648, -2147483648," +
-//                " -2147483647, -2147483647, -2147483647, -2147483648, -2147483648, -2147483647, -2147483647," +
-//                " -2147483647, -2147483647, -2147483647, -2147483647, -2147483647, -2147483647]",
-//                "{-2147483647=667071, -2147483648=332929}",
-//                -2.1474836473717701E9
-//        );
-//        rangeDownGeometric_fail_helper(5, 5);
-//        rangeDownGeometric_fail_helper(6, 5);
-//        rangeDownGeometric_fail_helper(-5, Integer.MIN_VALUE);
-//    }
+    @Test
+    public void testRangeDownGeometric() {
+        rangeDownGeometric_helper(
+                0,
+                2,
+                "[-2, -3, -3, -2, 0, -3, 2, 1, 0, 1, -1, -4, 1, 0, 2, 1, 2, 1, 2, -1]",
+                "{2=333813, 1=221150, 0=148025, -1=98992, -2=66270, -3=43747, -4=29389, -5=19567, -6=12958, -7=8571}",
+                -0.0020969999999987214
+        );
+        rangeDownGeometric_helper(
+                -5,
+                2,
+                "[-4, -7, -34, -12, -2, 2, 1, 2, 0, -5, -11, -30, -4, -1, -10, -23, 1, -10, 1, -10]",
+                "{2=125138, 1=109518, 0=95496, -1=83848, -2=73359, -3=63701, -4=56011, -5=48897, -6=43099, -7=37459}",
+                -5.0074679999951055
+        );
+        rangeDownGeometric_helper(
+                5,
+                10,
+                "[5, 3, -13, 1, 7, 10, 9, 10, 9, 5, 2, -12, 5, 8, 3, -8, 10, 0, 9, 5]",
+                "{10=166887, 9=139197, 8=115545, 7=96038, 6=80312, 5=66813, 4=55942, 3=46416, 2=38391, 1=32378}",
+                4.994349999991597
+        );
+        rangeDownGeometric_helper(
+                0,
+                10,
+                "[-26, -2, 0, 2, -22, -14, 9, 3, 10, -7, -10, 10, 0, 2, 7, 6, 10, 9, 7, 4]",
+                "{10=90519, 9=82798, 8=75630, 7=68355, 6=62062, 5=56573, 4=51318, 3=46453, 2=42422, 1=38243}",
+                0.003971999999995211
+        );
+        rangeDownGeometric_helper(
+                -11,
+                -10,
+                "[-13, -12, -19, -12, -12, -10, -11, -13, -10, -10, -12, -12, -12, -10, -12, -10, -10, -11, -11, -10]",
+                "{-10=499125, -11=250897, -12=124849, -13=62518, -14=31407, -15=15634, -16=7825, -17=3926, -18=1896," +
+                " -19=956}",
+                -11.000835999897873
+        );
+        rangeDownGeometric_helper(
+                -20,
+                -10,
+                "[-46, -22, -20, -18, -42, -34, -11, -17, -10, -27, -30, -10, -20, -18, -13, -14, -10, -11, -13, -16]",
+                "{-10=90519, -11=82798, -12=75630, -13=68355, -14=62062, -15=56573, -16=51318, -17=46453, -18=42422," +
+                " -19=38243}",
+                -19.99602800000434
+        );
+        rangeDownGeometric_helper(
+                Integer.MAX_VALUE - 1,
+                Integer.MAX_VALUE,
+                "[2147483644, 2147483645, 2147483638, 2147483645, 2147483645, 2147483647, 2147483646, 2147483644," +
+                " 2147483647, 2147483647, 2147483645, 2147483645, 2147483645, 2147483647, 2147483645, 2147483647," +
+                " 2147483647, 2147483646, 2147483646, 2147483647]",
+                "{2147483647=499125, 2147483646=250897, 2147483645=124849, 2147483644=62518, 2147483643=31407," +
+                " 2147483642=15634, 2147483641=7825, 2147483640=3926, 2147483639=1896, 2147483638=956}",
+                2.147483646013541E9
+        );
+        rangeDownGeometric_helper(
+                Integer.MIN_VALUE,
+                Integer.MIN_VALUE + 1,
+                "[-2147483647, -2147483648, -2147483647, -2147483647, -2147483647, -2147483647, -2147483647," +
+                " -2147483648, -2147483648, -2147483647, -2147483648, -2147483647, -2147483647, -2147483648," +
+                " -2147483647, -2147483648, -2147483647, -2147483647, -2147483648, -2147483647]",
+                "{-2147483647=666317, -2147483648=333683}",
+                -2.147483647372161E9
+        );
+        rangeDownGeometric_fail_helper(5, 5);
+        rangeDownGeometric_fail_helper(6, 5);
+        rangeDownGeometric_fail_helper(-5, Integer.MIN_VALUE);
+    }
 
     private static void bigIntegerHelper(
             @NotNull Iterable<BigInteger> xs,
@@ -2084,17 +2077,14 @@ public strictfp class RandomProviderTest {
             double sampleMean,
             double bitSizeMean
     ) {
-        P.reset();
-        aeqit(take(TINY_LIMIT, xs), output);
-        P.reset();
-        aeq(topSampleCount(DEFAULT_SAMPLE_SIZE, DEFAULT_TOP_COUNT, xs), topSampleCount);
-        P.reset();
-        aeq(meanOfBigIntegers(xs), sampleMean);
-        P.reset();
-        aeq(meanOfIntegers(map(x -> x.abs().bitLength(), xs)), bitSizeMean);
+        List<BigInteger> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfBigIntegers(sample), sampleMean);
+        aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
     }
 
-    private void positiveBigIntegers_helper(
+    private static void positiveBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
             @NotNull String topSampleCount,
@@ -2108,71 +2098,72 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void positiveBigIntegers_fail_helper(int meanBitSize) {
+    private static void positiveBigIntegers_fail_helper(int meanBitSize) {
         try {
             P.withScale(meanBitSize).positiveBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testPositiveBigIntegers() {
-//        positiveBigIntegers_helper(
-//                2,
-//                "[3, 1, 47, 1, 1, 2, 7, 1, 2, 1, 1, 3, 1, 3, 1, 1, 1, 1, 1, 9]",
-//                "{1=499990, 3=125065, 2=124955, 6=31410, 5=31166, 7=31109, 4=30986, 15=7895, 11=7830, 9=7808}",
-//                54.64653399976356,
-//                1.9991669999799087
-//        );
-//        positiveBigIntegers_helper(
-//                3,
-//                "[850, 6, 54, 1, 1, 2, 40, 1, 1, 1, 2, 13, 15, 86, 1, 38, 9, 20, 1, 1]",
-//                "{1=333699, 3=110928, 2=110762, 5=37023, 7=36986, 6=36946, 4=36907, 12=12526, 13=12508, 15=12456}",
-//                53893.43959620475,
-//                3.003121999989852
-//        );
-//        positiveBigIntegers_helper(
-//                4,
-//                "[3922, 6, 86, 1, 1, 10, 40, 1, 1, 9, 2, 13, 111, 3647, 1, 1758, 17, 52, 4, 1]",
-//                "{1=250073, 3=93859, 2=93648, 6=35281, 5=35275, 7=34903, 4=34894, 15=13323, 12=13195, 11=13189}",
-//                1.8602743851232636E8,
-//                4.001590999990151
-//        );
-//        positiveBigIntegers_helper(
-//                5,
-//                "[9003, 29, 2, 1, 88152, 6, 35, 3136, 12, 2653, 14, 4, 2, 1, 1, 2, 1, 30, 370, 3]",
-//                "{1=200665, 3=80188, 2=79678, 5=32247, 7=32171, 4=31926, 6=31854, 14=12900, 9=12855, 10=12817}",
-//                5.391946638294092E14,
-//                4.9944610000082985
-//        );
-//        positiveBigIntegers_helper(
-//                10,
-//                "[469790, 860, 1184451838, 4, 515, 1707, 501, 1, 2, 62, 2187, 34, 6, 164983924, 228, 1, 166," +
-//                " 7073663000613, 1774, 22678]",
-//                "{1=100515, 3=45146, 2=44939, 7=20325, 5=20315, 4=20010, 6=20007, 9=9372, 11=9214, 14=9173}",
-//                2.6155516373313137E34,
-//                10.000194000005964
-//        );
-//        positiveBigIntegers_helper(
-//                100,
-//                "[7474222091329785814872640740054410525911684644179028352872359, 48462717462863011095245," +
-//                " 25866170431568200, 7, 553871950, 29221, 1869439032775210910279904," +
-//                " 4309140957379502269427663397985930682460781, 43045926355353680917, 22971436291561472210587," +
-//                " 22382654889914592249016927170013, 339229681798927478466416769469956670709422563632," +
-//                " 9832880511906474761920146323118, 14967622123686602716, 673179, 1323235453630777, 171406076," +
-//                " 992404999, 49548070921229917697270742754368810273752217529416, 2955542]",
-//                "{1=9999, 3=5013, 2=4914, 5=2540, 7=2490, 6=2465, 4=2419, 12=1247, 8=1227, 11=1222}",
-//                Double.POSITIVE_INFINITY,
-//                100.16059999999607
-//        );
-//        positiveBigIntegers_fail_helper(1);
-//        positiveBigIntegers_fail_helper(0);
-//        positiveBigIntegers_fail_helper(-1);
-//    }
+    @Test
+    public void testPositiveBigIntegers() {
+        positiveBigIntegers_helper(
+                2,
+                "[15, 1, 186, 1, 1, 1, 2, 7, 1, 1, 2, 2, 1, 7, 1, 3, 1, 2, 1, 1]",
+                "{1=499997, 2=125173, 3=124586, 6=31754, 4=31349, 5=31260, 7=30968, 13=7901, 10=7879, 12=7853}",
+                69.68070899963234,
+                1.9999089999798014
+        );
+        positiveBigIntegers_helper(
+                3,
+                "[29, 9, 13, 7, 3, 22, 1, 1, 11, 44, 6, 1, 1, 7, 2, 38, 60, 221, 2, 1]",
+                "{1=333192, 3=111051, 2=110589, 5=37242, 4=37214, 6=37151, 7=37054, 14=12429, 10=12412, 13=12392}",
+                48777.09156231954,
+                3.0024959999899483
+        );
+        positiveBigIntegers_helper(
+                4,
+                "[125, 186, 30, 31, 3, 244, 2, 1, 83, 44, 6, 1, 1, 127, 6, 102, 6998, 9, 733, 14]",
+                "{1=249582, 3=93568, 2=93356, 5=35456, 6=35308, 4=35019, 7=34942, 14=13254, 13=13233, 9=13174}",
+                2.584100755623998E8,
+                4.007541999990144
+        );
+        positiveBigIntegers_helper(
+                5,
+                "[31, 6, 128754, 74, 1, 1, 2, 15, 47, 122278, 12, 1, 90, 6750, 211, 18, 58, 5325, 49, 10]",
+                "{1=199640, 2=79850, 3=79521, 7=32202, 5=32167, 4=32056, 6=31585, 8=12906, 13=12900, 14=12847}",
+                6.642571312817901E12,
+                5.0099500000086135
+        );
+        positiveBigIntegers_helper(
+                10,
+                "[68567587586, 90, 429, 102, 777331279, 578066, 59, 149564, 211254, 797, 87, 3, 2, 2, 2, 14, 1805," +
+                " 89, 7, 76]",
+                "{1=100061, 2=45133, 3=45017, 5=20400, 4=20372, 6=20233, 7=19883, 8=9210, 15=9140, 14=9137}",
+                3.544461590419017E35,
+                9.998229000005633
+        );
+        positiveBigIntegers_helper(
+                100,
+                "[171491947975428291073106393958556356696218384, 666733922234672488, 2800561118, 426754826," +
+                " 4973382539154393382023039181388821734010791, 486317307, 31113674257148638473061092431931202," +
+                " 2603939, 7221829089434139486576085, 29, 1776109995947233569, 213, 12837," +
+                " 50470376168837087647456296575128778493542, 929861590," +
+                " 483950622288622499876991094655284908519805893350573564439890270180685476039232812074527," +
+                " 602275634430017182769551262807228622, 1177577916662216386, 134540776316088470488675072, 2467237]",
+                "{1=10072, 2=4956, 3=4911, 7=2555, 5=2447, 4=2443, 6=2409, 12=1213, 13=1210, 15=1205}",
+                Double.POSITIVE_INFINITY,
+                99.96323900000282
+        );
+        positiveBigIntegers_fail_helper(1);
+        positiveBigIntegers_fail_helper(0);
+        positiveBigIntegers_fail_helper(-1);
+    }
 
-    private void negativeBigIntegers_helper(
+    private static void negativeBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
             @NotNull String topSampleCount,
@@ -2186,75 +2177,78 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void negativeBigIntegers_fail_helper(int meanBitSize) {
+    private static void negativeBigIntegers_fail_helper(int meanBitSize) {
         try {
             P.withScale(meanBitSize).negativeBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNegativeBigIntegers() {
-//        negativeBigIntegers_helper(
-//                2,
-//                "[-3, -1, -47, -1, -1, -2, -7, -1, -2, -1, -1, -3, -1, -3, -1, -1, -1, -1, -1, -9]",
-//                "{-1=499990, -3=125065, -2=124955, -6=31410, -5=31166, -7=31109, -4=30986, -15=7895, -11=7830," +
-//                " -9=7808}",
-//                -54.64653399976356,
-//                1.9991669999799087
-//        );
-//        negativeBigIntegers_helper(
-//                3,
-//                "[-850, -6, -54, -1, -1, -2, -40, -1, -1, -1, -2, -13, -15, -86, -1, -38, -9, -20, -1, -1]",
-//                "{-1=333699, -3=110928, -2=110762, -5=37023, -7=36986, -6=36946, -4=36907, -12=12526, -13=12508," +
-//                " -15=12456}",
-//                -53893.43959620475,
-//                3.003121999989852
-//        );
-//        negativeBigIntegers_helper(
-//                4,
-//                "[-3922, -6, -86, -1, -1, -10, -40, -1, -1, -9, -2, -13, -111, -3647, -1, -1758, -17, -52, -4, -1]",
-//                "{-1=250073, -3=93859, -2=93648, -6=35281, -5=35275, -7=34903, -4=34894, -15=13323, -12=13195," +
-//                " -11=13189}",
-//                -1.8602743851232636E8,
-//                4.001590999990151
-//        );
-//        negativeBigIntegers_helper(
-//                5,
-//                "[-9003, -29, -2, -1, -88152, -6, -35, -3136, -12, -2653, -14, -4, -2, -1, -1, -2, -1, -30, -370, -3]",
-//                "{-1=200665, -3=80188, -2=79678, -5=32247, -7=32171, -4=31926, -6=31854, -14=12900, -9=12855," +
-//                " -10=12817}",
-//                -5.391946638294092E14,
-//                4.9944610000082985
-//        );
-//        negativeBigIntegers_helper(
-//                10,
-//                "[-469790, -860, -1184451838, -4, -515, -1707, -501, -1, -2, -62, -2187, -34, -6, -164983924, -228," +
-//                " -1, -166, -7073663000613, -1774, -22678]",
-//                "{-1=100515, -3=45146, -2=44939, -7=20325, -5=20315, -4=20010, -6=20007, -9=9372, -11=9214, -14=9173}",
-//                -2.6155516373313137E34,
-//                10.000194000005964
-//        );
-//        negativeBigIntegers_helper(
-//                100,
-//                "[-7474222091329785814872640740054410525911684644179028352872359, -48462717462863011095245," +
-//                " -25866170431568200, -7, -553871950, -29221, -1869439032775210910279904," +
-//                " -4309140957379502269427663397985930682460781, -43045926355353680917, -22971436291561472210587," +
-//                " -22382654889914592249016927170013, -339229681798927478466416769469956670709422563632," +
-//                " -9832880511906474761920146323118, -14967622123686602716, -673179, -1323235453630777, -171406076," +
-//                " -992404999, -49548070921229917697270742754368810273752217529416, -2955542]",
-//                "{-1=9999, -3=5013, -2=4914, -5=2540, -7=2490, -6=2465, -4=2419, -12=1247, -8=1227, -11=1222}",
-//                Double.NEGATIVE_INFINITY,
-//                100.16059999999607
-//        );
-//        negativeBigIntegers_fail_helper(1);
-//        negativeBigIntegers_fail_helper(0);
-//        negativeBigIntegers_fail_helper(-1);
-//    }
+    @Test
+    public void testNegativeBigIntegers() {
+        negativeBigIntegers_helper(
+		        2,
+		        "[-15, -1, -186, -1, -1, -1, -2, -7, -1, -1, -2, -2, -1, -7, -1, -3, -1, -2, -1, -1]",
+		        "{-1=499997, -2=125173, -3=124586, -6=31754, -4=31349, -5=31260, -7=30968, -13=7901, -10=7879," +
+                " -12=7853}",
+		        -69.68070899963234,
+		        1.9999089999798014
+        );
+        negativeBigIntegers_helper(
+        		3,
+        		"[-29, -9, -13, -7, -3, -22, -1, -1, -11, -44, -6, -1, -1, -7, -2, -38, -60, -221, -2, -1]",
+        		"{-1=333192, -3=111051, -2=110589, -5=37242, -4=37214, -6=37151, -7=37054, -14=12429, -10=12412," +
+                " -13=12392}",
+        		-48777.09156231954,
+        		3.0024959999899483
+        );
+        negativeBigIntegers_helper(
+        		4,
+        		"[-125, -186, -30, -31, -3, -244, -2, -1, -83, -44, -6, -1, -1, -127, -6, -102, -6998, -9, -733, -14]",
+        		"{-1=249582, -3=93568, -2=93356, -5=35456, -6=35308, -4=35019, -7=34942, -14=13254, -13=13233," +
+                " -9=13174}",
+        		-2.584100755623998E8,
+        		4.007541999990144
+        );
+        negativeBigIntegers_helper(
+        		5,
+        		"[-31, -6, -128754, -74, -1, -1, -2, -15, -47, -122278, -12, -1, -90, -6750, -211, -18, -58, -5325," +
+                " -49, -10]",
+        		"{-1=199640, -2=79850, -3=79521, -7=32202, -5=32167, -4=32056, -6=31585, -8=12906, -13=12900," +
+                " -14=12847}",
+        		-6.642571312817901E12,
+        		5.0099500000086135
+        );
+        negativeBigIntegers_helper(
+        		10,
+        		"[-68567587586, -90, -429, -102, -777331279, -578066, -59, -149564, -211254, -797, -87, -3, -2, -2," +
+                " -2, -14, -1805, -89, -7, -76]",
+        		"{-1=100061, -2=45133, -3=45017, -5=20400, -4=20372, -6=20233, -7=19883, -8=9210, -15=9140, -14=9137}",
+        		-3.544461590419017E35,
+        		9.998229000005633
+        );
+        negativeBigIntegers_helper(
+        		100,
+        		"[-171491947975428291073106393958556356696218384, -666733922234672488, -2800561118, -426754826," +
+                " -4973382539154393382023039181388821734010791, -486317307, -31113674257148638473061092431931202," +
+                " -2603939, -7221829089434139486576085, -29, -1776109995947233569, -213, -12837," +
+                " -50470376168837087647456296575128778493542, -929861590," +
+                " -483950622288622499876991094655284908519805893350573564439890270180685476039232812074527," +
+                " -602275634430017182769551262807228622, -1177577916662216386, -134540776316088470488675072," +
+                " -2467237]",
+        		"{-1=10072, -2=4956, -3=4911, -7=2555, -5=2447, -4=2443, -6=2409, -12=1213, -13=1210, -15=1205}",
+        		Double.NEGATIVE_INFINITY,
+        		99.96323900000282
+        );
+        negativeBigIntegers_fail_helper(1);
+        negativeBigIntegers_fail_helper(0);
+        negativeBigIntegers_fail_helper(-1);
+    }
 
-    private void naturalBigIntegers_helper(
+    private static void naturalBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
             @NotNull String topSampleCount,
@@ -2268,79 +2262,78 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void naturalBigIntegers_fail_helper(int meanBitSize) {
+    private static void naturalBigIntegers_fail_helper(int meanBitSize) {
         try {
             P.withScale(meanBitSize).naturalBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNaturalBigIntegers() {
-//        naturalBigIntegers_helper(
-//                1,
-//                "[1, 0, 31, 0, 0, 1, 3, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 5]",
-//                "{0=499990, 1=250020, 2=62396, 3=62275, 7=15725, 5=15610, 6=15552, 4=15543, 15=4012, 11=3986}",
-//                29.646820000052397,
-//                0.9991669999977268
-//        );
-//        naturalBigIntegers_helper(
-//                2,
-//                "[338, 2, 22, 0, 0, 1, 24, 0, 0, 0, 1, 5, 7, 54, 0, 22, 5, 12, 0, 0]",
-//                "{0=333699, 1=221690, 3=74009, 2=73853, 5=24813, 4=24785, 7=24659, 6=24634, 14=8418, 12=8380}",
-//                28906.65638409626,
-//                2.003113999989134
-//        );
-//        naturalBigIntegers_helper(
-//                3,
-//                "[1874, 2, 54, 0, 0, 6, 24, 0, 0, 5, 1, 5, 47, 1599, 0, 734, 9, 20, 2, 0]",
-//                "{0=250073, 1=187509, 3=70180, 2=70174, 7=26510, 4=26346, 6=26253, 5=26211, 13=10051, 12=10045}",
-//                8.772158340030755E7,
-//                3.0015929999914364
-//        );
-//        naturalBigIntegers_helper(
-//                4,
-//                "[4907, 13, 1, 0, 55384, 2, 19, 1088, 4, 1629, 6, 2, 1, 0, 0, 1, 0, 14, 242, 1]",
-//                "{0=200665, 1=159860, 3=64423, 2=63774, 6=25710, 5=25477, 7=25228, 4=25222, 14=10345, 8=10322}",
-//                2.108336919780064E14,
-//                3.9945489999913373
-//        );
-//        naturalBigIntegers_helper(
-//                5,
-//                "[469790, 13, 1, 0, 350296, 2, 19, 49189, 4, 1629, 14, 4, 1, 0, 0, 2, 0, 30, 882, 3]",
-//                "{0=167158, 1=138802, 3=58252, 2=57662, 5=24261, 6=24102, 4=24034, 7=23913, 9=10199, 12=10086}",
-//                1.5293391081642047E19,
-//                4.995412000004775
-//        );
-//        naturalBigIntegers_helper(
-//                10,
-//                "[469790, 860, 11161894480, 2563, 1707, 245, 0, 1, 62, 2187, 98, 14, 836072564, 97, 0, 116," +
-//                " 51054128111653, 1774, 38518, 14]",
-//                "{0=91220, 1=82765, 3=37698, 2=37204, 7=17244, 5=17193, 6=17121, 4=16959, 13=7907, 9=7852}",
-//                6.030744909293769E39,
-//                9.998209000004323
-//        );
-//        naturalBigIntegers_helper(
-//                100,
-//                "[20329726445401708019208337478783711346089308594441371035283367, 29573251531384430240461," +
-//                " 16858971176827208, 3, 285436494, 12837, 6705142311233727609104608," +
-//                " 1521547807563174376735698613904885494213229, 43045926355353680917, 22971436291561472210587," +
-//                " 62947474097217933096911429742045, 339229681798927478466416769469956670709422563632," +
-//                " 4762278110993557155933333501614, 9137724122699570727, 22200207024421534130668, 887194347596460," +
-//                " 24694362711025200515048602379622132673119032028174927216526184615040844, 13," +
-//                " 97989174275153552236308131833898805441012036366390825136719667690067875080310351682352837161845946" +
-//                "067076860677343772662, 13161932779676555289674991699]",
-//                "{0=9962, 1=9853, 3=4943, 2=4825, 4=2466, 5=2419, 7=2376, 6=2352, 13=1244, 8=1206}",
-//                Double.POSITIVE_INFINITY,
-//                100.11822800000165
-//        );
-//        naturalBigIntegers_fail_helper(0);
-//        naturalBigIntegers_fail_helper(-1);
-//    }
+    @Test
+    public void testNaturalBigIntegers() {
+		naturalBigIntegers_helper(
+				1,
+				"[7, 0, 186, 0, 1, 0, 2, 3, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1]",
+				"{0=499795, 1=249695, 2=63164, 3=62454, 5=15802, 4=15675, 6=15645, 7=15501, 10=3966, 15=3931}",
+				34.20643800003216,
+				1.0003699999976585
+		);
+		naturalBigIntegers_helper(
+				2,
+				"[13, 5, 5, 3, 1, 14, 0, 1, 7, 28, 2, 0, 1, 3, 1, 22, 28, 66, 1, 0]",
+				"{0=333291, 1=221695, 2=74348, 3=74172, 5=24863, 6=24759, 4=24546, 7=24312, 14=8375, 9=8338}",
+				23450.71832509025,
+				2.0029729999891197
+		);
+		naturalBigIntegers_helper(
+				3,
+				"[61, 113, 14, 15, 1, 86, 1, 0, 0, 19, 28, 2, 0, 1, 63, 2, 38, 2902, 5, 477]",
+				"{0=249213, 1=187438, 3=70231, 2=70108, 6=26549, 5=26525, 4=26321, 7=26102, 9=10081, 12=9998}",
+				1.202255417129307E8,
+				3.008166999991507
+		);
+		naturalBigIntegers_helper(
+				4,
+				"[15, 2, 63218, 42, 0, 1, 1, 7, 31, 56742, 4, 0, 58, 2654, 64, 10, 26, 3277, 17, 6]",
+				"{0=199865, 1=159280, 3=64105, 2=63742, 5=25816, 4=25771, 6=25615, 7=25403, 11=10352, 12=10309}",
+				2.9136340323703857E12,
+				4.00929699999154
+		);
+		naturalBigIntegers_helper(
+				5,
+				"[29, 17, 1570546, 170, 1, 0, 1, 7, 102, 1236390, 4, 0, 58, 56834, 339, 18, 58, 13517, 49, 10]",
+				"{0=166431, 1=138432, 2=57969, 3=57805, 4=24088, 6=24076, 5=24001, 7=23861, 12=10156, 14=10150}",
+				4.7507769343063366E17,
+				5.010013000004874
+		);
+		naturalBigIntegers_helper(
+				10,
+				"[68567587586, 393, 173, 102, 777331279, 5296658, 91, 70156, 342326, 285, 55, 1, 2, 1, 1, 14, 1805," +
+                " 89, 3, 228]",
+				"{0=91092, 1=82861, 2=37571, 3=37186, 6=17194, 7=17090, 5=17074, 4=17031, 13=7965, 12=7904}",
+				2.6618978515967548E39,
+				9.99564600000421
+		);
+		naturalBigIntegers_helper(
+				100,
+				"[617506851946040753903820759411523586815826704, 666733922234672488, 1395060011, 426754826," +
+                " 4973382539154393382023039181388821734010791, 217881851, 20729080540078983216000099773491010," +
+                " 1555363, 4803977450204881137163733, 13, 1776109995947233569, 125, 4645," +
+                " 94026519134717210970768246326395109559910, 2003603414," +
+                " 130106579005213050320828982313849454512304343148341886388712940410660985464322014051782," +
+                " 1321342898819073405067311346410901103, 1177577916662216386, 134540776316088470488675072, 1418661]",
+				"{0=9958, 1=9772, 3=4976, 2=4815, 4=2394, 6=2380, 7=2366, 5=2338, 10=1251, 9=1203}",
+				Double.POSITIVE_INFINITY,
+				99.95993899999823
+		);
+        naturalBigIntegers_fail_helper(0);
+        naturalBigIntegers_fail_helper(-1);
+    }
 
-    private void nonzeroBigIntegers_helper(
+    private static void nonzeroBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
             @NotNull String topSampleCount,
@@ -2354,72 +2347,72 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void nonzeroBigIntegers_fail_helper(int meanBitSize) {
+    private static void nonzeroBigIntegers_fail_helper(int meanBitSize) {
         try {
             P.withScale(meanBitSize).nonzeroBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testNonzeroBigIntegers() {
-//        nonzeroBigIntegers_helper(
-//                2,
-//                "[3, 79, -1, -2, 7, 1, 1, -3, -4, 1, 1, -1, -1, -1, 1, -10, 1, 1, 13, -1]",
-//                "{-1=250035, 1=249416, 3=63007, -3=62500, -2=62270, 2=62035, 6=15936, -5=15736, 4=15722, -6=15683}",
-//                -37.760902999999686,
-//                1.9988649999798511
-//        );
-//        nonzeroBigIntegers_helper(
-//                3,
-//                "[-850, 244, -3, -337, -1, -50, 111, 1, -9, -1, -1, -11, -33, -2, 1, -1, -12, -2, -2, 6]",
-//                "{-1=166944, 1=166213, 3=55582, -3=55349, 2=55102, -2=54996, -4=18792, -5=18711, 7=18653, 6=18530}",
-//                -1693122.3375589792,
-//                3.004373999989849
-//        );
-//        nonzeroBigIntegers_helper(
-//                4,
-//                "[-3922, 628, -3, -593, -1, -114, 1866, 3, -25, -2, -1, -35, -458, -2, 6, -2, -76, -2, -2, 6]",
-//                "{-1=124929, 1=124786, 3=46816, -3=46725, 2=46538, -2=46491, 7=17813, -7=17808, 4=17647, -5=17627}",
-//                -1.6537285501976652E9,
-//                4.000947999990135
-//        );
-//        nonzeroBigIntegers_helper(
-//                5,
-//                "[9003, -8, -1, -55384, -67, -38, -441, -6, 622, 1, -10, -1, -2, 1, -1, -1906, 4, -12, -7, -38]",
-//                "{-1=99894, 1=99615, -3=40143, 3=40121, 2=39864, -2=39827, 6=16178, -7=16168, -4=16084, 5=16067}",
-//                -9.634700172191952E13,
-//                4.996535000008218
-//        );
-//        nonzeroBigIntegers_helper(
-//                10,
-//                "[469790, -8, -62701502032, -4, -437219, 116, 26, -2, 62, 52, 9, 181, -1, 16466080783, -97, 166, -7," +
-//                " -1, -6268, 650]",
-//                "{-1=50324, 1=50109, -3=22697, 3=22605, 2=22568, -2=22349, 4=10301, 7=10252, -4=10192, -6=10176}",
-//                5.231567747853736E32,
-//                9.997070000005944
-//        );
-//        nonzeroBigIntegers_helper(
-//                100,
-//                "[-7474222091329785814872640740054410525911684644179028352872359, -14460," +
-//                " -4647611991422616850007212632301013, -4352265912, 12837, 638621732503242780896," +
-//                " -2143310024519363472901233232922339077187179213677, 24599182281644129301, -1125686953," +
-//                " 3445661878449440726672398129191623636626977525, 156541977132564613690956165380421293252430995760," +
-//                " -593941924706611343960195990, 61156276467143510523143200490, 760285500209465, -2013094254439084," +
-//                " -26164044723935471006011785430908281959257296841800, -10661988971116141735, 53, -43870267," +
-//                " -15773968203237]",
-//                "{1=4991, -1=4952, 3=2511, -3=2456, 2=2439, -2=2381, -7=1306, 6=1262, -6=1222, -5=1220}",
-//                Double.NaN,
-//                100.19517499999985
-//        );
-//        nonzeroBigIntegers_fail_helper(1);
-//        nonzeroBigIntegers_fail_helper(0);
-//        nonzeroBigIntegers_fail_helper(-1);
-//    }
+    @Test
+    public void testNonzeroBigIntegers() {
+		nonzeroBigIntegers_helper(
+				2,
+				"[-15, -954, -7, 10, -3, 7, 1, -1, -3, 6, -1, -1, -1, -1, 1, 1, 3, 2, 1, -1]",
+				"{1=249983, -1=249126, 2=62883, -2=62756, 3=62544, -3=62405, -5=15943, 4=15696, -7=15688, 6=15659}",
+				17.91493000000076,
+				2.001177999979952
+		);
+		nonzeroBigIntegers_helper(
+				3,
+				"[29, -9, 5, 7, 1, 14, -1, 3, -3, -28, -2, -1, 15, 1, 22, 60, 221, -2, -1, 93]",
+				"{1=166607, -1=166197, 3=55804, -3=55689, 2=55687, -2=55520, 6=18667, 5=18558, -5=18521, -6=18516}",
+				-10855.3935519995,
+				3.002819999989811
+		);
+		nonzeroBigIntegers_helper(
+				4,
+				"[125, -113, 14, 15, -1, 86, -1, -3, -11, -28, -2, -1, 173, 2, 38, 2902, 5, 477, -6, -1]",
+				"{1=125257, -1=124807, 3=46905, -2=46857, -3=46762, 2=46499, 4=17732, 5=17670, 6=17657, -6=17547}",
+				-4.1311559747530356E7,
+				4.003355999990116
+		);
+		nonzeroBigIntegers_helper(
+				5,
+				"[31, 2, -128754, -42, -1, -1, 63, 47, 56742, -4, 225, 6750, 64, 10, -58, -5325, -49, -6, 5, -4]",
+				"{1=99665, -1=99156, -3=40066, -2=39942, 3=39938, 2=39897, 4=16258, -7=16151, 7=16091, -5=16063}",
+				4.772512823858073E12,
+				5.011650000008701
+		);
+		nonzeroBigIntegers_helper(
+				10,
+				"[68567587586, -58, 173, 38, 508895823, -315922, -59, -84028, -211254, 285, 55, -3, -1, 2, -2, -14," +
+                " 781, 89, 3, 44]",
+				"{1=50418, -1=49875, 2=22690, -2=22574, -3=22381, 3=22313, -4=10176, -5=10156, 7=10152, 4=10125}",
+				-1.5676202667125113E35,
+				9.99773500000579
+		);
+		nonzeroBigIntegers_helper(
+				100,
+				"[171491947975428291073106393958556356696218384, -378503546082960744, -1395060011, 426754826," +
+                " -2185789389338065489331074397307776545763239, 486317307, 20729080540078983216000099773491010," +
+                " -2603939, -4803977450204881137163733, -13, 623188491340386593, 125, 4645," +
+                " -34735810149384773915155398812821070253774, -392990678," +
+                " 130106579005213050320828982313849454512304343148341886388712940410660985464322014051782," +
+                " -602275634430017182769551262807228622, -1177577916662216386, 57169523860752203307479808, -1418661]",
+				"{1=4979, -1=4899, 2=2554, -3=2542, 3=2523, -2=2439, 6=1256, 5=1231, -4=1230, -7=1217}",
+				Double.NaN,
+				99.97301499999901
+		);
+        nonzeroBigIntegers_fail_helper(1);
+        nonzeroBigIntegers_fail_helper(0);
+        nonzeroBigIntegers_fail_helper(-1);
+    }
 
-    private void bigIntegers_helper(
+    private static void bigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
             @NotNull String topSampleCount,
@@ -2433,76 +2426,76 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void bigIntegers_fail_helper(int meanBitSize) {
+    private static void bigIntegers_fail_helper(int meanBitSize) {
         try {
             P.withScale(meanBitSize).bigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testBigIntegers() {
-//        bigIntegers_helper(
-//                1,
-//                "[1, 47, 0, -1, 3, 0, 0, -1, -2, 0, 0, 0, 0, 0, 0, -6, 0, 0, 5, 0]",
-//                "{0=499451, 1=125042, -1=124770, 2=31658, -3=31362, 3=31257, -2=31081, -6=7969, -7=7927, -5=7840}",
-//                -21.388764000000428,
-//                0.9988649999976881
-//        );
-//        bigIntegers_helper(
-//                2,
-//                "[-338, 86, -1, -209, 0, -18, 47, 0, -5, 0, 0, -7, -17, -1, 0, 0, -4, -1, -1, 2]",
-//                "{0=333153, 1=111005, -1=110318, 2=37213, 3=37171, -3=37087, -2=37057, 7=12504, -7=12481, 5=12458}",
-//                -32114.49441799994,
-//                2.0043589999890816
-//        );
-//        bigIntegers_helper(
-//                3,
-//                "[-1874, 372, -1, -337, 0, -50, 842, 1, -9, -1, 0, -19, -202, -1, 2, -1, -44, -1, -1, 2]",
-//                "{0=250249, -1=93477, 1=93180, -3=35389, 2=35281, 3=35111, -2=34974, 5=13212, -6=13197, 7=13196}",
-//                -1.0442690302550374E9,
-//                3.0032639999915482
-//        );
-//        bigIntegers_helper(
-//                4,
-//                "[4907, -4, 0, -22872, -35, -22, -185, -2, 366, 0, -6, 0, -1, 0, 0, -882, 2, -4, -3, -22]",
-//                "{0=199644, -1=80033, 1=80021, -3=32098, -2=32080, 3=32032, 2=31913, 6=13080, -7=12916, 4=12902}",
-//                -5.565178732969937E13,
-//                3.9967439999914847
-//        );
-//        bigIntegers_helper(
-//                5,
-//                "[469790, -40, 0, -219224, -35, -38, -185, -6, 3694, 0, -6, 0, -1, 0, 0, -7026, 4, -4, -3, -38]",
-//                "{0=166834, -1=69661, 1=69236, -3=29288, 2=28811, 3=28698, -2=28552, -4=12271, 5=12239, 6=12197}",
-//                4.448863958980225E18,
-//                4.997573000004776
-//        );
-//        bigIntegers_helper(
-//                10,
-//                "[469790, -24, -303219670608, -4, -961507, 52, 10, -1, 62, 52, 5, 437, 0, 42235884559, -33, 116, -3," +
-//                " -1, -6268, 650]",
-//                "{0=91145, 1=41558, -1=41309, -3=18945, -2=18846, 3=18755, 2=18649, 5=8821, 7=8747, -5=8575}",
-//                2.7766415629000997E38,
-//                9.990744000004389
-//        );
-//        bigIntegers_helper(
-//                100,
-//                "[-20329726445401708019208337478783711346089308594441371035283367, -6268," +
-//                " -1863854008273796605649540541372381, -2204782264, 4645, 343473827323889955040," +
-//                " -2143310024519363472901233232922339077187179213677, 24599182281644129301, -588816041," +
-//                " 17718138805509039537255257823686575000454443765, 156541977132564613690956165380421293252430995760," +
-//                " -593941924706611343960195990, 61156276467143510523143200490, 478810523498809, -887194347596460," +
-//                " -49548070921229917697270742754368810273752217529416, -10661988971116141735, 21, -27093051," +
-//                " -6977875181029]",
-//                "{0=9844, 1=4871, -1=4824, 2=2464, -3=2460, -2=2395, 3=2388, -7=1251, 7=1241, 6=1201}",
-//                Double.NaN,
-//                100.28482900000226
-//        );
-//        bigIntegers_fail_helper(0);
-//        bigIntegers_fail_helper(-1);
-//    }
+    @Test
+    public void testBigIntegers() {
+		bigIntegers_helper(
+				1,
+				"[-7, -442, -3, 6, -1, 3, 0, -1, -1, 2, 0, 0, -1, 0, 0, 0, 0, 3, 1, 0]",
+				"{0=499517, -1=125039, 1=125034, -2=31642, 3=31356, -3=31242, 2=31149, 6=7940, 5=7850, 4=7816}",
+				11.312045000000163,
+				1.0011659999976752
+		);
+		bigIntegers_helper(
+				2,
+				"[13, -5, 3, 3, 0, 14, 0, 0, -7, -12, -1, 0, 0, 3, 0, 22, 28, 66, -1, 0]",
+				"{0=333329, 1=111369, -1=110761, 2=37216, -2=36972, -3=36949, 3=36775, -5=12628, 5=12461, 6=12396}",
+				-7186.845220999995,
+				2.0017199999891138
+		);
+		bigIntegers_helper(
+				3,
+				"[61, -49, 6, 7, 0, 86, 0, 0, -51, -12, -1, 0, 0, 31, 1, 22, 1878, 3, 221, -2]",
+				"{0=249591, 1=94010, -1=93698, -3=35100, 2=35041, -2=35023, 3=34983, 6=13359, -5=13276, -6=13247}",
+				-1.8190746041600898E7,
+				3.004465999991475
+		);
+		bigIntegers_helper(
+				4,
+				"[15, 1, -63218, -26, 0, 0, 1, 3, 31, 17117, -2, 90, 2654, 32, 6, -26, -3277, -17, -2, 3]",
+				"{0=199043, -1=79797, 1=79710, -3=32232, 3=32110, 2=32050, -2=32024, 4=12950, -5=12920, 6=12815}",
+				1.920666346451926E12,
+				4.011480999991471
+		);
+		bigIntegers_helper(
+				5,
+				"[29, -9, -1570546, -108, 0, 0, 1, 3, 38, 712102, -2, 90, 31326, 211, 10, -58, -13517, -49, -6, 5]",
+				"{0=165963, 1=69541, -1=69367, -2=28988, 2=28963, -3=28944, 3=28884, 4=12176, -5=12024, 6=12010}",
+				-3.1566211227467066E17,
+				5.010994000004885
+		);
+		bigIntegers_helper(
+				10,
+				"[68567587586, -137, 127, 38, 508895823, -3199506, -59, -37388, -211254, 157, 23, 1, -1, 1, -1, -6," +
+                " 781, 89, 1, 76]",
+				"{0=91283, -1=41346, 1=41138, 3=18747, -2=18736, -3=18674, 2=18630, 6=8631, 5=8621, -6=8597}",
+				2.6150409359336613E38,
+				9.997241000004482
+		);
+		bigIntegers_helper(
+				100,
+				"[617506851946040753903820759411523586815826704, -378503546082960744, -858189099, 158319370," +
+                " -2185789389338065489331074397307776545763239, 217881851, 10344486823009327958939107115050818," +
+                " -1555363, -2386125810975622787751381, -5, 623188491340386593, 61, 2597," +
+                " -50470376168837087647456296575128778493542, -929861590," +
+                " 67941174453989720051406201295496849499747324298673421708654943299016048337755342110150," +
+                " -602275634430017182769551262807228622, -1177577916662216386, 57169523860752203307479808, -894373]",
+				"{0=9785, 1=4994, -1=4978, 3=2450, 2=2415, -2=2397, -3=2386, -6=1233, -5=1225, -4=1215}",
+				Double.NaN,
+				99.96810800000098
+		);
+        bigIntegers_fail_helper(0);
+        bigIntegers_fail_helper(-1);
+    }
 
     private static void rangeUp_BigInteger_helper(
             int meanBitSize,
@@ -2519,106 +2512,107 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
         try {
             P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testRangeUp_BigInteger() {
-//        rangeUp_BigInteger_helper(
-//                5,
-//                8,
-//                "[21, 13, 331, 12, 13, 26, 43, 10, 22, 13, 13, 21, 12, 29, 8, 10, 8, 8, 8, 105]",
-//                "{9=62696, 8=62669, 13=62661, 15=62580, 12=62556, 10=62458, 11=62275, 14=62095, 26=15768, 19=15733}",
-//                436.0807689998774,
-//                4.999166999951439
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                8,
-//                "[120266492, 489, 24, 8, 425220133, 54, 939, 3948581, 697, 89563, 1646, 116, 50, 15, 8, 46, 14, 357," +
-//                " 19314, 49]",
-//                "{12=18089, 8=18054, 10=18023, 9=17964, 15=17944, 14=17902, 11=17796, 13=17784, 27=7788, 17=7787}",
-//                2.9060601210889514E24,
-//                9.995027999993223
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                10,
-//                "[21, 15, 331, 14, 15, 26, 43, 12, 22, 15, 15, 21, 14, 29, 10, 12, 10, 10, 10, 105]",
-//                "{15=83579, 14=83560, 11=83513, 10=83358, 12=83263, 13=83003, 21=15797, 26=15776, 16=15728, 19=15715}",
-//                427.4379230003693,
-//                4.999171999951396
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                10,
-//                "[120266492, 489, 24, 10, 425220133, 54, 939, 3948581, 697, 89563, 1646, 116, 50, 10, 32, 3685," +
-//                " 19314, 49, 10, 2741]",
-//                "{14=24114, 10=23949, 11=23922, 12=23916, 15=23742, 13=23741, 27=7822, 17=7740, 19=7738, 30=7725}",
-//                2.906055139587819E24,
-//                9.9939089999934
-//        );
-//        rangeUp_BigInteger_helper(
-//                1,
-//                0,
-//                "[1, 0, 31, 0, 0, 1, 3, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 5]",
-//                "{0=499990, 1=250020, 2=62396, 3=62275, 7=15725, 5=15610, 6=15552, 4=15543, 15=4012, 11=3986}",
-//                29.646820000052397,
-//                0.9991669999977268
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                0,
-//                "[469790, 860, 11161894480, 2563, 1707, 245, 0, 1, 62, 2187, 98, 14, 836072564, 97, 0, 116," +
-//                " 51054128111653, 1774, 38518, 14]",
-//                "{0=91220, 1=82765, 3=37698, 2=37204, 7=17244, 5=17193, 6=17121, 4=16959, 13=7907, 9=7852}",
-//                6.030744909293769E39,
-//                9.998209000004323
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                -8,
-//                "[469790, 8, -1, 0, 219224, 2, 19, 49189, 4, 1629, 10, -2, -1, 0, 0, 2, 0, 30, 882, -3]",
-//                "{0=166710, 1=69653, -1=69334, -3=29279, 3=29013, -2=28840, 2=28795, -5=12210, 4=12085, -6=12073}",
-//                1.5203665801285165E19,
-//                4.998150000004849
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                -8,
-//                "[469790, 860, 11161894480, 2563, 1707, 245, 0, -1, 62, 2187, 98, 14, 836072564, 97, 0, 116," +
-//                " 51054128111653, 1774, 38518, 13]",
-//                "{0=91121, 1=41469, -1=41206, -3=18959, 3=18737, 2=18714, -2=18584, -7=8711, -5=8644, 6=8606}",
-//                6.030744674454112E39,
-//                9.997504000004174
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                -10,
-//                "[469790, -10, 0, 0, 350296, 2, 19, 49189, 4, 1629, 10, -2, -1, 0, 0, 2, 0, 30, 882, -3]",
-//                "{0=166855, 1=69585, -1=69273, -3=29244, 3=29026, 2=28839, -2=28834, -5=12210, -6=12099, -7=12081}",
-//                1.5293390505087541E19,
-//                4.996572000004833
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                -10,
-//                "[469790, 860, 11161894480, 2563, 1707, 245, 0, -1, 62, 2187, 98, 14, 836072564, 97, 0, 116," +
-//                " 51054128111653, 1774, 38518, -9]",
-//                "{0=91172, 1=41440, -1=41273, -3=18984, 3=18751, 2=18724, -2=18536, -7=8710, -5=8657, 6=8592}",
-//                6.030744674401281E39,
-//                9.999709000004243
-//        );
-//        rangeUp_BigInteger_fail_helper(4, 10);
-//        rangeUp_BigInteger_fail_helper(3, 10);
-//        rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
-//    }
+    @Test
+    public void testRangeUp_BigInteger() {
+		rangeUp_BigInteger_helper(
+				5,
+				8,
+				"[127, 13, 1466, 9, 15, 15, 26, 63, 13, 15, 22, 18, 8, 47, 10, 29, 8, 30, 10, 14]",
+				"{13=62876, 11=62785, 15=62616, 14=62585, 8=62454, 9=62277, 12=62240, 10=62164, 30=15752, 16=15749}",
+				661.8043779958618,
+				4.999908999951449
+		);
+		rangeUp_BigInteger_helper(
+				10,
+				8,
+				"[410, 442, 2012672603, 27690, 58, 14, 19, 173, 9934, 182298122, 124, 30, 2657, 13767410, 8275," +
+                " 21012, 1110, 3460362, 4167, 488]",
+				"{13=18113, 12=17987, 9=17965, 10=17921, 8=17801, 14=17690, 11=17579, 15=17558, 20=7797, 23=7717}",
+				6.179888359268556E22,
+				10.009691999993237
+		);
+		rangeUp_BigInteger_helper(
+				5,
+				10,
+				"[127, 15, 1466, 11, 15, 42, 63, 15, 11, 13, 12, 10, 47, 12, 29, 10, 30, 12, 14, 13]",
+				"{15=83545, 14=83519, 10=83515, 13=83367, 11=83272, 12=83064, 16=15834, 23=15783, 22=15713, 26=15689}",
+				659.7849479950901,
+				4.999800999951615
+		);
+		rangeUp_BigInteger_helper(
+				10,
+				10,
+				"[410, 442, 2012672603, 27690, 58, 14, 13, 173, 9934, 182298122, 124, 30, 2657, 13767410, 8275," +
+                " 21012, 1110, 3460362, 4167, 488]",
+				"{14=23903, 15=23884, 10=23773, 11=23765, 12=23720, 13=23536, 20=7801, 29=7733, 21=7716, 23=7709}",
+				6.180120150120354E22,
+				10.010728999993448
+		);
+		rangeUp_BigInteger_helper(
+				1,
+				0,
+				"[7, 0, 186, 0, 1, 0, 2, 3, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1]",
+				"{0=499795, 1=249695, 2=63164, 3=62454, 5=15802, 4=15675, 6=15645, 7=15501, 10=3966, 15=3931}",
+				34.20643800003216,
+				1.0003699999976585
+		);
+		rangeUp_BigInteger_helper(
+				10,
+				0,
+				"[68567587586, 393, 173, 102, 777331279, 5296658, 91, 70156, 342326, 285, 55, 1, 2, 1, 1, 14, 1805," +
+                " 89, 3, 228]",
+				"{0=91092, 1=82861, 2=37571, 3=37186, 6=17194, 7=17090, 5=17074, 4=17031, 13=7965, 12=7904}",
+				2.6618978515967548E39,
+				9.99564600000421
+		);
+		rangeUp_BigInteger_helper(
+				5,
+				-8,
+				"[29, 17, 1570546, 170, -1, 0, -1, 7, 102, 1236390, 4, 0, 58, 56834, 339, 18, 58, 13517, 49, 10]",
+				"{0=166506, -1=69283, 1=69092, 3=29084, -2=28987, 2=28959, -3=28731, -4=12170, 6=12101, 5=12057}",
+				4.6583361387316E17,
+				5.010092000004885
+		);
+		rangeUp_BigInteger_helper(
+				10,
+				-8,
+				"[68567587586, 393, 173, 102, 777331279, 5296658, 91, 70156, 342326, 285, 55, 1, 2, -1, -1, -8, 781," +
+                " 89, 3, 228]",
+				"{0=91159, -1=41536, 1=41254, -3=18857, -2=18837, 2=18688, 3=18370, 6=8633, -7=8595, -4=8586}",
+				2.6618978515967285E39,
+				9.995757000004136
+		);
+		rangeUp_BigInteger_helper(
+				5,
+				-10,
+				"[29, 17, 1570546, 170, -1, 0, -1, 7, 102, 1236390, 4, 0, 58, 56834, 339, 18, 58, 13517, 49, 10]",
+				"{0=166474, -1=69242, 1=69072, 3=29107, -2=29007, 2=28964, -3=28739, -4=12173, 6=12080, 5=12073}",
+				4.6587110102444096E17,
+				5.010204000004878
+		);
+		rangeUp_BigInteger_helper(
+				10,
+				-10,
+				"[68567587586, 393, 173, 102, 777331279, 5296658, 91, 70156, 342326, 285, 55, 1, 2, -1, -1, -8, 781," +
+                " 89, 3, 228]",
+				"{0=91124, -1=41567, 1=41267, -2=18862, -3=18833, 2=18681, 3=18400, 6=8666, -6=8581, -4=8574}",
+				2.661897851596729E39,
+				9.995318000004161
+		);
+        rangeUp_BigInteger_fail_helper(4, 10);
+        rangeUp_BigInteger_fail_helper(3, 10);
+        rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
+    }
 
     private static void rangeDown_BigInteger_helper(
             int meanBitSize,
@@ -2635,112 +2629,115 @@ public strictfp class RandomProviderTest {
                 sampleMean,
                 bitSizeMean
         );
+        P.reset();
     }
 
-    private void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+    private static void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
         try {
             P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
-//    @Test
-//    public void testRangeDown_BigInteger() {
-//        rangeDown_BigInteger_helper(
-//                5,
-//                8,
-//                "[-469790, -8, 1, 0, -219224, -2, -19, -49189, -4, -1629, -10, 2, 1, 0, 0, -2, 0, -30, -882, 3]",
-//                "{0=166710, -1=69653, 1=69334, 3=29279, -3=29013, 2=28840, -2=28795, 5=12210, -4=12085, 6=12073}",
-//                -1.5203665801285165E19,
-//                4.998150000004849
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                8,
-//                "[-469790, -860, -11161894480, -2563, -1707, -245, 0, 1, -62, -2187, -98, -14, -836072564, -97, 0," +
-//                " -116, -51054128111653, -1774, -38518, -13]",
-//                "{0=91121, -1=41469, 1=41206, 3=18959, -3=18737, -2=18714, 2=18584, 7=8711, 5=8644, -6=8606}",
-//                -6.030744674454112E39,
-//                9.997504000004174
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                10,
-//                "[-469790, 10, 0, 0, -350296, -2, -19, -49189, -4, -1629, -10, 2, 1, 0, 0, -2, 0, -30, -882, 3]",
-//                "{0=166855, -1=69585, 1=69273, 3=29244, -3=29026, -2=28839, 2=28834, 5=12210, 6=12099, 7=12081}",
-//                -1.5293390505087541E19,
-//                4.996572000004833
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                10,
-//                "[-469790, -860, -11161894480, -2563, -1707, -245, 0, 1, -62, -2187, -98, -14, -836072564, -97, 0," +
-//                " -116, -51054128111653, -1774, -38518, 9]",
-//                "{0=91172, -1=41440, 1=41273, 3=18984, -3=18751, -2=18724, 2=18536, 7=8710, 5=8657, -6=8592}",
-//                -6.030744674401281E39,
-//                9.999709000004243
-//        );
-//        rangeDown_BigInteger_helper(
-//                1,
-//                0,
-//                "[-1, 0, -31, 0, 0, -1, -3, 0, -1, 0, 0, -1, 0, -1, 0, 0, 0, 0, 0, -5]",
-//                "{0=499990, -1=250020, -2=62396, -3=62275, -7=15725, -5=15610, -6=15552, -4=15543, -15=4012," +
-//                " -11=3986}",
-//                -29.646820000052397,
-//                0.9991669999977268
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                0,
-//                "[-469790, -860, -11161894480, -2563, -1707, -245, 0, -1, -62, -2187, -98, -14, -836072564, -97, 0," +
-//                " -116, -51054128111653, -1774, -38518, -14]",
-//                "{0=91220, -1=82765, -3=37698, -2=37204, -7=17244, -5=17193, -6=17121, -4=16959, -13=7907, -9=7852}",
-//                -6.030744909293769E39,
-//                9.998209000004323
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                -8,
-//                "[-21, -13, -331, -12, -13, -26, -43, -10, -22, -13, -13, -21, -12, -29, -8, -10, -8, -8, -8, -105]",
-//                "{-9=62696, -8=62669, -13=62661, -15=62580, -12=62556, -10=62458, -11=62275, -14=62095, -26=15768," +
-//                " -19=15733}",
-//                -436.0807689998774,
-//                4.999166999951439
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                -8,
-//                "[-120266492, -489, -24, -8, -425220133, -54, -939, -3948581, -697, -89563, -1646, -116, -50, -15," +
-//                " -8, -46, -14, -357, -19314, -49]",
-//                "{-12=18089, -8=18054, -10=18023, -9=17964, -15=17944, -14=17902, -11=17796, -13=17784, -27=7788," +
-//                " -17=7787}",
-//                -2.9060601210889514E24,
-//                9.995027999993223
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                -10,
-//                "[-21, -15, -331, -14, -15, -26, -43, -12, -22, -15, -15, -21, -14, -29, -10, -12, -10, -10, -10," +
-//                " -105]",
-//                "{-15=83579, -14=83560, -11=83513, -10=83358, -12=83263, -13=83003, -21=15797, -26=15776, -16=15728," +
-//                " -19=15715}",
-//                -427.4379230003693,
-//                4.999171999951396
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                -10,
-//                "[-120266492, -489, -24, -10, -425220133, -54, -939, -3948581, -697, -89563, -1646, -116, -50, -10," +
-//                " -32, -3685, -19314, -49, -10, -2741]",
-//                "{-14=24114, -10=23949, -11=23922, -12=23916, -15=23742, -13=23741, -27=7822, -17=7740, -19=7738," +
-//                " -30=7725}",
-//                -2.906055139587819E24,
-//                9.9939089999934
-//        );
-//        rangeDown_BigInteger_fail_helper(4, -10);
-//        rangeDown_BigInteger_fail_helper(3, -10);
-//        rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
-//    }
+    @Test
+    public void testRangeDown_BigInteger() {
+		rangeDown_BigInteger_helper(
+				5,
+				8,
+				"[-29, -17, -1570546, -170, 1, 0, 1, -7, -102, -1236390, -4, 0, -58, -56834, -339, -18, -58, -13517," +
+                " -49, -10]",
+				"{0=166506, 1=69283, -1=69092, -3=29084, 2=28987, -2=28959, 3=28731, 4=12170, -6=12101, -5=12057}",
+				-4.6583361387316E17,
+				5.010092000004885
+		);
+		rangeDown_BigInteger_helper(
+				10,
+				8,
+				"[-68567587586, -393, -173, -102, -777331279, -5296658, -91, -70156, -342326, -285, -55, -1, -2, 1," +
+                " 1, 8, -781, -89, -3, -228]",
+				"{0=91159, 1=41536, -1=41254, 3=18857, 2=18837, -2=18688, -3=18370, -6=8633, 7=8595, 4=8586}",
+				-2.6618978515967285E39,
+				9.995757000004136
+		);
+		rangeDown_BigInteger_helper(
+				5,
+				10,
+				"[-29, -17, -1570546, -170, 1, 0, 1, -7, -102, -1236390, -4, 0, -58, -56834, -339, -18, -58, -13517," +
+                " -49, -10]",
+				"{0=166474, 1=69242, -1=69072, -3=29107, 2=29007, -2=28964, 3=28739, 4=12173, -6=12080, -5=12073}",
+				-4.6587110102444096E17,
+				5.010204000004878
+		);
+		rangeDown_BigInteger_helper(
+				10,
+				10,
+				"[-68567587586, -393, -173, -102, -777331279, -5296658, -91, -70156, -342326, -285, -55, -1, -2, 1," +
+                " 1, 8, -781, -89, -3, -228]",
+				"{0=91124, 1=41567, -1=41267, 2=18862, 3=18833, -2=18681, -3=18400, -6=8666, 6=8581, 4=8574}",
+				-2.661897851596729E39,
+				9.995318000004161
+		);
+		rangeDown_BigInteger_helper(
+				1,
+				0,
+				"[-7, 0, -186, 0, -1, 0, -2, -3, 0, -1, -1, -1, 0, 0, -1, 0, 0, 0, -1, -1]",
+				"{0=499795, -1=249695, -2=63164, -3=62454, -5=15802, -4=15675, -6=15645, -7=15501, -10=3966," +
+                " -15=3931}",
+				-34.20643800003216,
+				1.0003699999976585
+		);
+		rangeDown_BigInteger_helper(
+				10,
+				0,
+				"[-68567587586, -393, -173, -102, -777331279, -5296658, -91, -70156, -342326, -285, -55, -1, -2, -1," +
+                " -1, -14, -1805, -89, -3, -228]",
+				"{0=91092, -1=82861, -2=37571, -3=37186, -6=17194, -7=17090, -5=17074, -4=17031, -13=7965, -12=7904}",
+				-2.6618978515967548E39,
+				9.99564600000421
+		);
+		rangeDown_BigInteger_helper(
+				5,
+				-8,
+				"[-127, -13, -1466, -9, -15, -15, -26, -63, -13, -15, -22, -18, -8, -47, -10, -29, -8, -30, -10, -14]",
+				"{-13=62876, -11=62785, -15=62616, -14=62585, -8=62454, -9=62277, -12=62240, -10=62164, -30=15752," +
+                " -16=15749}",
+				-661.8043779958618,
+				4.999908999951449
+		);
+		rangeDown_BigInteger_helper(
+				10,
+				-8,
+				"[-410, -442, -2012672603, -27690, -58, -14, -19, -173, -9934, -182298122, -124, -30, -2657," +
+                " -13767410, -8275, -21012, -1110, -3460362, -4167, -488]",
+				"{-13=18113, -12=17987, -9=17965, -10=17921, -8=17801, -14=17690, -11=17579, -15=17558, -20=7797," +
+                " -23=7717}",
+				-6.179888359268556E22,
+				10.009691999993237
+		);
+		rangeDown_BigInteger_helper(
+				5,
+				-10,
+				"[-127, -15, -1466, -11, -15, -42, -63, -15, -11, -13, -12, -10, -47, -12, -29, -10, -30, -12, -14," +
+                " -13]",
+				"{-15=83545, -14=83519, -10=83515, -13=83367, -11=83272, -12=83064, -16=15834, -23=15783, -22=15713," +
+                " -26=15689}",
+				-659.7849479950901,
+				4.999800999951615
+		);
+		rangeDown_BigInteger_helper(
+				10,
+				-10,
+				"[-410, -442, -2012672603, -27690, -58, -14, -13, -173, -9934, -182298122, -124, -30, -2657," +
+                " -13767410, -8275, -21012, -1110, -3460362, -4167, -488]",
+				"{-14=23903, -15=23884, -10=23773, -11=23765, -12=23720, -13=23536, -20=7801, -29=7733, -21=7716," +
+                " -23=7709}",
+				-6.180120150120354E22,
+				10.010728999993448
+		);
+        rangeDown_BigInteger_fail_helper(4, -10);
+        rangeDown_BigInteger_fail_helper(3, -10);
+        rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
+    }
 
     @Test
     @Ignore
@@ -2857,12 +2854,12 @@ public strictfp class RandomProviderTest {
         aeq(R.withScale(0).withSecondaryScale(10), "RandomProvider[@2449928962525148503, 0, 10]");
     }
 
-    private static double meanOfIntegers(@NotNull Iterable<Integer> xs) {
-        return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, take(DEFAULT_SAMPLE_SIZE, xs)));
+    private static double meanOfIntegers(@NotNull List<Integer> xs) {
+        return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
 
-    private static double meanOfBigIntegers(@NotNull Iterable<BigInteger> xs) {
-        return sumDouble(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, take(DEFAULT_SAMPLE_SIZE, xs)));
+    private static double meanOfBigIntegers(@NotNull List<BigInteger> xs) {
+        return sumDouble(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
