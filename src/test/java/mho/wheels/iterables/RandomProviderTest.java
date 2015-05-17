@@ -1758,6 +1758,7 @@ public strictfp class RandomProviderTest {
         nextNaturalIntGeometric_helper(100, 149);
         nextNaturalIntGeometric_fail_helper(0);
         nextNaturalIntGeometric_fail_helper(-1);
+        nextNaturalIntGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void naturalIntegersGeometric_helper(
@@ -1943,6 +1944,7 @@ public strictfp class RandomProviderTest {
         nextIntGeometric_helper(100, 149);
         nextIntGeometric_fail_helper(0);
         nextIntGeometric_fail_helper(-1);
+        nextIntGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void integersGeometric_helper(

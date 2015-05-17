@@ -159,6 +159,7 @@ public class RandomProviderProperties {
 
     private static void propertiesConstructor() {
         initialize("RandomProvider()");
+        //noinspection unused
         for (Void v : take(LIMIT, repeat((Void) null))) {
             RandomProvider rp = new RandomProvider();
             rp.validate();
@@ -290,10 +291,10 @@ public class RandomProviderProperties {
             @NotNull Iterable<T> xs,
             @NotNull Supplier<T> s
     ) {
-        rp.reset();
         List<T> iterableSample = toList(take(TINY_LIMIT, xs));
         rp.reset();
         List<T> supplierSample = toList(take(TINY_LIMIT, fromSupplier(s)));
+        rp.reset();
         aeqit(rp.toString(), iterableSample, supplierSample);
     }
 
@@ -780,7 +781,7 @@ public class RandomProviderProperties {
     private static void propertiesNextChar() {
         initialize("nextChar()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            char c = rp.nextChar();
+            rp.nextChar();
         }
     }
 
@@ -1254,11 +1255,15 @@ public class RandomProviderProperties {
         initialize("positiveIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.positiveIntegers();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i > 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, rp.positiveIntegersGeometric(), i -> i > 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.positiveIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1266,11 +1271,15 @@ public class RandomProviderProperties {
         initialize("negativeIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.negativeIntegersGeometric();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i < 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, rp.negativeIntegersGeometric(), i -> i < 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.negativeIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1281,11 +1290,15 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.naturalIntegersGeometric();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i >= 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, rp.naturalIntegersGeometric(), i -> i >= 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.naturalIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1293,11 +1306,15 @@ public class RandomProviderProperties {
         initialize("nonzeroIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.nonzeroIntegersGeometric();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i != 0, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, rp.nonzeroIntegersGeometric(), i -> i != 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nonzeroIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1308,10 +1325,15 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            Iterable<Integer> is = rp.integersGeometric();
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, rp.integersGeometric(), i -> true);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.integersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
