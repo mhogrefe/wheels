@@ -877,6 +877,18 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextIntGeometricFromRangeUp() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextIntGeometricFromRangeUp(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextIntGeometricFromRangeUp(p.b));
+        }
+    }
+
     private static void demoRangeUpGeometric() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = filter(
@@ -885,6 +897,18 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUpGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpGeometric(p.b)));
+        }
+    }
+
+    private static void demoNextIntGeometricFromRangeDown() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextIntGeometricFromRangeDown(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextIntGeometricFromRangeDown(p.b));
         }
     }
 
