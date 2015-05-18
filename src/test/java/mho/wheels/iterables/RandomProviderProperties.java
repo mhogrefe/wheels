@@ -149,7 +149,9 @@ public class RandomProviderProperties {
             propertiesNonzeroIntegersGeometric();
             propertiesNextIntGeometric();
             propertiesIntegersGeometric();
+            propertiesNextIntGeometricFromRangeUp();
             propertiesRangeUpGeometric();
+            propertiesNextIntGeometricFromRangeDown();
             propertiesRangeDownGeometric();
             propertiesPositiveBigIntegers();
             propertiesNegativeBigIntegers();
@@ -1495,6 +1497,33 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextIntGeometricFromRangeUp() {
+        initialize("nextIntGeometricFromRangeUp(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            int i = p.a.nextIntGeometricFromRangeUp(p.b);
+            assertTrue(p.toString(), i >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+                p -> p.a.getScale() <= p.b || p.b < 1 && p.a.getScale() >= Integer.MAX_VALUE + p.b,
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextIntGeometricFromRangeUp(p.b);
+                fail(p.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
     private static void propertiesRangeUpGeometric() {
         initialize("rangeUpGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filter(
@@ -1514,6 +1543,33 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeUpGeometric(p.b);
+                fail(p.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextIntGeometricFromRangeDown() {
+        initialize("nextIntGeometricFromRangeDown(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            int i = p.a.nextIntGeometricFromRangeDown(p.b);
+            assertTrue(p.toString(), i <= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp.toString(), rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+                p -> p.a.getScale() >= p.b || p.b > -1 && p.a.getScale() <= p.b - Integer.MAX_VALUE,
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextIntGeometricFromRangeDown(p.b);
                 fail(p.toString());
             } catch (IllegalStateException ignored) {}
         }
