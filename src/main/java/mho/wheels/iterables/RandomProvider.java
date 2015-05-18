@@ -2173,6 +2173,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
     }
 
+    /**
+     * Returns a randomly-generated positive {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code BigInteger}
+     */
     public @NotNull BigInteger nextPositiveBigInteger() {
         int size = nextPositiveIntGeometric();
         return nextBigIntegerPow2(size).setBit(size - 1);
@@ -2180,7 +2193,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
-     * distribution mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
      * {@code BigInteger}s with that bit size. Does not support removal.
      *
      * <ul>
@@ -2197,6 +2210,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveBigInteger);
     }
 
+    /**
+     * Returns a randomly-generated negative {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code BigInteger}
+     */
     public @NotNull BigInteger nextNegativeBigInteger() {
         return nextPositiveBigInteger().negate();
     }
@@ -2218,7 +2244,26 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(BigInteger::negate, positiveBigIntegers());
     }
 
+    /**
+     * Returns a randomly-generated natural {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code BigInteger}
+     */
     public @NotNull BigInteger nextNaturalBigInteger() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
         int size = nextNaturalIntGeometric();
         if (size == 0) return BigInteger.ZERO;
         return nextBigIntegerPow2(size).setBit(size - 1);
@@ -2230,7 +2275,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code BigInteger}s with that bit size. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigInteger}s.</li>
      * </ul>
      *
@@ -2241,9 +2286,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale < 1) {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
         }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
         return fromSupplier(this::nextNaturalBigInteger);
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code BigInteger}
+     */
     public @NotNull BigInteger nextNonzeroBigInteger() {
         BigInteger i = nextPositiveBigInteger();
         return nextBoolean() ? i : i.negate();
@@ -2269,6 +2330,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNonzeroBigInteger);
     }
 
+    /**
+     * Returns a randomly-generated {@code BigInteger}. The bit size is chosen from a geometric distribution with mean
+     * {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with that bit
+     * size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigInteger}
+     */
     public @NotNull BigInteger nextBigInteger() {
         BigInteger i = nextNaturalBigInteger();
         return nextBoolean() ? i : i.negate();
