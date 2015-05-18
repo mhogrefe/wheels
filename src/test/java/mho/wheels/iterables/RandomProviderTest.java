@@ -2023,6 +2023,33 @@ public strictfp class RandomProviderTest {
         integersGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
+    private static void nextIntGeometricFromRangeUp_helper(int mean, int a, int output) {
+        aeq(P.withScale(mean).nextIntGeometricFromRangeUp(a), output);
+        P.reset();
+    }
+
+    private static void nextIntGeometricFromRangeUp_fail_helper(int mean, int a) {
+        try {
+            P.withScale(mean).nextIntGeometricFromRangeUp(a);
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextIntGeometricFromRangeUp() {
+        nextIntGeometricFromRangeUp_helper(3, 2, 5);
+        nextIntGeometricFromRangeUp_helper(10, 2, 33);
+        nextIntGeometricFromRangeUp_helper(11, 10, 13);
+        nextIntGeometricFromRangeUp_helper(20, 10, 46);
+        nextIntGeometricFromRangeUp_helper(-9, -10, -7);
+        nextIntGeometricFromRangeUp_helper(0, -10, 26);
+        nextIntGeometricFromRangeUp_helper(Integer.MAX_VALUE, Integer.MAX_VALUE - 1, 2147483646);
+        nextIntGeometricFromRangeUp_helper(Integer.MIN_VALUE + 1, Integer.MIN_VALUE, -2147483645);
+        nextIntGeometricFromRangeUp_fail_helper(5, 5);
+        nextIntGeometricFromRangeUp_fail_helper(4, 5);
+        nextIntGeometricFromRangeUp_fail_helper(Integer.MAX_VALUE - 5, -10);
+    }
+
     private static void rangeUpGeometric_helper(
             int mean,
             int a,
@@ -2108,6 +2135,33 @@ public strictfp class RandomProviderTest {
         rangeUpGeometric_fail_helper(5, 5);
         rangeUpGeometric_fail_helper(4, 5);
         rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
+    }
+
+    private static void nextIntGeometricFromRangeDown_helper(int mean, int a, int output) {
+        aeq(P.withScale(mean).nextIntGeometricFromRangeDown(a), output);
+        P.reset();
+    }
+
+    private static void nextIntGeometricFromRangeDown_fail_helper(int mean, int a) {
+        try {
+            P.withScale(mean).nextIntGeometricFromRangeDown(a);
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextIntGeometricFromRangeDown() {
+        nextIntGeometricFromRangeDown_helper(0, 2, -2);
+        nextIntGeometricFromRangeDown_helper(-5, 2, -4);
+        nextIntGeometricFromRangeDown_helper(5, 10, 5);
+        nextIntGeometricFromRangeDown_helper(0, 10, -26);
+        nextIntGeometricFromRangeDown_helper(-11, -10, -13);
+        nextIntGeometricFromRangeDown_helper(-20, -10, -46);
+        nextIntGeometricFromRangeDown_helper(Integer.MAX_VALUE - 1, Integer.MAX_VALUE, 2147483644);
+        nextIntGeometricFromRangeDown_helper(Integer.MIN_VALUE, Integer.MIN_VALUE + 1, -2147483647);
+        nextIntGeometricFromRangeDown_fail_helper(5, 5);
+        nextIntGeometricFromRangeDown_fail_helper(6, 5);
+        nextIntGeometricFromRangeDown_fail_helper(-5, Integer.MIN_VALUE);
     }
 
     private static void rangeDownGeometric_helper(
