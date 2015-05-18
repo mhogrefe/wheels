@@ -16,6 +16,7 @@ import java.util.*;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
@@ -74,6 +75,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
+     * A list of {@code RandomProvider}s that were created from {@code this} using
+     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
+     * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
+     */
+    private @NotNull List<RandomProvider> dependents;
+
+    /**
      * A parameter that determines the size of some of the generated objects.
      */
     private int scale = DEFAULT_SCALE;
@@ -98,6 +106,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
+        dependents = new ArrayList<>();
     }
 
     /**
@@ -118,6 +127,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
+        dependents = new ArrayList<>();
     }
 
     /**
@@ -227,6 +237,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withScale(int scale) {
         RandomProvider copy = copy();
         copy.scale = scale;
+        dependents.add(copy);
         return copy;
     }
 
@@ -246,12 +257,16 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
         RandomProvider copy = copy();
         copy.secondaryScale = secondaryScale;
+        dependents.add(copy);
         return copy;
     }
 
     /**
      * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
-     * resetting, and generating the same types of values again will result in the same values.
+     * resetting, and generating the same types of values again will result in the same values. Any
+     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)} or
+     * {@link RandomProvider#withSecondaryScale(int)} (but not {@link RandomProvider#copy} or
+     * {@link RandomProvider#deepCopy()}) is also reset.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -261,6 +276,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public void reset() {
         prng = new IsaacPRNG(seed);
+        dependents.forEach(mho.wheels.iterables.RandomProvider::reset);
     }
 
     /**
@@ -381,7 +397,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param bits the maximum number of bits of any element in the output {@code Iterable}
      * @return uniformly-distributed positive {@code Integer}s with up to {@code bits} bits
      */
-    private @NotNull Iterable<Integer> intsPow2(int bits) {
+    private @NotNull Iterable<Integer> integersPow2(int bits) {
         int mask = (1 << bits) - 1;
         return map(i -> i & mask, integers());
     }
@@ -503,7 +519,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
      */
     private @NotNull Iterable<Integer> integersBounded(int n) {
-        return filter(i -> i < n, intsPow2(MathUtils.ceilingLog2(n)));
+        return filter(i -> i < n, integersPow2(MathUtils.ceilingLog2(n)));
     }
 
     /**
@@ -1833,7 +1849,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a positive {@code int}
      */
     public int nextPositiveIntGeometric() {
-        return positiveIntegersGeometric().iterator().next();
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        int i;
+        int j = 0;
+        do {
+            i = nextIntBounded(scale);
+            j++;
+        } while (i != 0);
+        return j;
     }
 
     /**
@@ -1917,7 +1942,19 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a natural {@code int}
      */
     public int nextNaturalIntGeometric() {
-        return naturalIntegersGeometric().iterator().next();
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        int i;
+        int j = 0;
+        do {
+            i = nextIntBounded(scale + 1);
+            j++;
+        } while (i != 0);
+        return j - 1;
     }
 
     /**
@@ -2017,11 +2054,17 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public int nextIntGeometricFromRangeUp(int a) {
-        int i;
+        int j;
         do {
-            i = withScale(scale - a + 1).nextPositiveIntGeometric() + a - 1;
-        } while (i < a);
-        return i;
+            int i;
+            j = 0;
+            do {
+                i = nextIntBounded(scale - a + 1);
+                j++;
+            } while (i != 0);
+            j += a - 1;
+        } while (j < a);
+        return j;
     }
 
     /**
@@ -2050,11 +2093,17 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public int nextIntGeometricFromRangeDown(int a) {
-        int i;
+        int j;
         do {
-            i = a - withScale(scale - a + 1).nextPositiveIntGeometric() + 1;
-        } while (i > a);
-        return i;
+            int i;
+            j = 0;
+            do {
+                i = nextIntBounded(a - scale + 1);
+                j++;
+            } while (i != 0);
+            j = a - j + 1;
+        } while (j > a);
+        return j;
     }
 
     /**
@@ -2802,5 +2851,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public void validate() {
         prng.validate();
         assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
+        assertNotNull(dependents);
     }
 }

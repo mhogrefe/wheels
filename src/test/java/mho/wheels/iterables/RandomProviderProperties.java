@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
@@ -138,10 +139,15 @@ public class RandomProviderProperties {
             propertiesRange_BigInteger_BigInteger();
             propertiesNextFromRange_char_char();
             propertiesRange_char_char();
+            propertiesNextPositiveIntGeometric();
             propertiesPositiveIntegersGeometric();
+            propertiesNextNegativeIntGeometric();
             propertiesNegativeIntegersGeometric();
+            propertiesNextNaturalIntGeometric();
             propertiesNaturalIntegersGeometric();
+            propertiesNextNonzeroIntGeometric();
             propertiesNonzeroIntegersGeometric();
+            propertiesNextIntGeometric();
             propertiesIntegersGeometric();
             propertiesRangeUpGeometric();
             propertiesRangeDownGeometric();
@@ -303,10 +309,10 @@ public class RandomProviderProperties {
             @NotNull Iterable<T> xs,
             @NotNull Predicate<T> predicate
     ) {
-        rp.reset();
         assertTrue(rp.toString(), all(predicate, take(TINY_LIMIT, xs)));
         rp.reset();
         testNoRemove(TINY_LIMIT, xs);
+        rp.reset();
     }
 
     private static <T> void simpleTest(
@@ -1066,10 +1072,14 @@ public class RandomProviderProperties {
     private static void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
-        for (Triple<RandomProvider, Byte, Byte> p : take(LIMIT, ts)) {
-            Iterable<Byte> bs = p.a.range(p.b, p.c);
-            simpleTest(p.a, bs, b -> b >= p.b && b <= p.c);
-            assertEquals(p.toString(), p.b > p.c, isEmpty(bs));
+        for (Triple<RandomProvider, Byte, Byte> t : take(LIMIT, ts)) {
+            Iterable<Byte> bs = t.a.range(t.b, t.c);
+            simpleTest(t.a, bs, b -> b >= t.b && b <= t.c);
+            assertEquals(t.toString(), t.b > t.c, isEmpty(bs));
+            t.a.reset();
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, bs, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
@@ -1083,10 +1093,10 @@ public class RandomProviderProperties {
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
         );
-        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
-            short s = p.a.nextFromRange(p.b, p.c);
-            assertTrue(p.toString(), s >= p.b);
-            assertTrue(p.toString(), s <= p.c);
+        for (Triple<RandomProvider, Short, Short> t : take(LIMIT, ts)) {
+            short s = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t.toString(), s >= t.b);
+            assertTrue(t.toString(), s <= t.c);
         }
 
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
@@ -1101,10 +1111,14 @@ public class RandomProviderProperties {
                 P.shorts(),
                 P.shorts()
         );
-        for (Triple<RandomProvider, Short, Short> p : take(LIMIT, ts)) {
-            Iterable<Short> ss = p.a.range(p.b, p.c);
-            simpleTest(p.a, ss, s -> s >= p.b && s <= p.c);
-            assertEquals(p.toString(), p.b > p.c, isEmpty(ss));
+        for (Triple<RandomProvider, Short, Short> t : take(LIMIT, ts)) {
+            Iterable<Short> ss = t.a.range(t.b, t.c);
+            simpleTest(t.a, ss, s -> s >= t.b && s <= t.c);
+            assertEquals(t.toString(), t.b > t.c, isEmpty(ss));
+            t.a.reset();
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, ss, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
@@ -1118,10 +1132,10 @@ public class RandomProviderProperties {
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
         );
-        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
-            int i = p.a.nextFromRange(p.b, p.c);
-            assertTrue(p.toString(), i >= p.b);
-            assertTrue(p.toString(), i <= p.c);
+        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
+            int i = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t.toString(), i >= t.b);
+            assertTrue(t.toString(), i <= t.c);
         }
 
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
@@ -1136,10 +1150,14 @@ public class RandomProviderProperties {
                 P.integers(),
                 P.integers()
         );
-        for (Triple<RandomProvider, Integer, Integer> p : take(LIMIT, ts)) {
-            Iterable<Integer> is = p.a.range(p.b, p.c);
-            simpleTest(p.a, is, i -> i >= p.b && i <= p.c);
-            assertEquals(p.toString(), p.b > p.c, isEmpty(is));
+        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
+            Iterable<Integer> is = t.a.range(t.b, t.c);
+            simpleTest(t.a, is, i -> i >= t.b && i <= t.c);
+            assertEquals(t.toString(), t.b > t.c, isEmpty(is));
+            t.a.reset();
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, is, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
@@ -1153,10 +1171,10 @@ public class RandomProviderProperties {
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
         );
-        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
-            long l = p.a.nextFromRange(p.b, p.c);
-            assertTrue(p.toString(), l >= p.b);
-            assertTrue(p.toString(), l <= p.c);
+        for (Triple<RandomProvider, Long, Long> t : take(LIMIT, ts)) {
+            long l = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t.toString(), l >= t.b);
+            assertTrue(t.toString(), l <= t.c);
         }
 
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
@@ -1167,10 +1185,14 @@ public class RandomProviderProperties {
     private static void propertiesRange_long_long() {
         initialize("range(long, long)");
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
-        for (Triple<RandomProvider, Long, Long> p : take(LIMIT, ts)) {
-            Iterable<Long> ls = p.a.range(p.b, p.c);
-            simpleTest(p.a, ls, l -> l >= p.b && l <= p.c);
-            assertEquals(p.toString(), p.b > p.c, isEmpty(ls));
+        for (Triple<RandomProvider, Long, Long> t : take(LIMIT, ts)) {
+            Iterable<Long> ls = t.a.range(t.b, t.c);
+            simpleTest(t.a, ls, l -> l >= t.b && l <= t.c);
+            assertEquals(t.toString(), t.b > t.c, isEmpty(ls));
+            t.a.reset();
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, ls, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
@@ -1184,10 +1206,10 @@ public class RandomProviderProperties {
                 t -> le(t.b, t.c),
                 P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
         );
-        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
-            BigInteger i = p.a.nextFromRange(p.b, p.c);
-            assertTrue(p.toString(), ge(i, p.b));
-            assertTrue(p.toString(), le(i, p.c));
+        for (Triple<RandomProvider, BigInteger, BigInteger> t : take(LIMIT, ts)) {
+            BigInteger i = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t.toString(), ge(i, t.b));
+            assertTrue(t.toString(), le(i, t.c));
         }
 
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigIntegers()))) {
@@ -1203,10 +1225,14 @@ public class RandomProviderProperties {
                 P.bigIntegers(),
                 P.bigIntegers()
         );
-        for (Triple<RandomProvider, BigInteger, BigInteger> p : take(LIMIT, ts)) {
-            Iterable<BigInteger> is = p.a.range(p.b, p.c);
-            simpleTest(p.a, is, i -> ge(i, p.b) && le(i, p.c));
-            assertEquals(p.toString(), gt(p.b, p.c), isEmpty(is));
+        for (Triple<RandomProvider, BigInteger, BigInteger> t : take(LIMIT, ts)) {
+            Iterable<BigInteger> is = t.a.range(t.b, t.c);
+            simpleTest(t.a, is, i -> ge(i, t.b) && le(i, t.c));
+            assertEquals(t.toString(), gt(t.b, t.c), isEmpty(is));
+            t.a.reset();
+            if (le(t.b, t.c)) {
+                supplierEquivalence(t.a, is, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         Iterable<Pair<RandomProvider, BigInteger>> ps = P.pairs(P.randomProvidersDefault(), P.bigIntegers());
@@ -1221,10 +1247,10 @@ public class RandomProviderProperties {
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
         );
-        for (Triple<RandomProvider, Character, Character> p : take(LIMIT, ts)) {
-            char c = p.a.nextFromRange(p.b, p.c);
-            assertTrue(p.toString(), c >= p.b);
-            assertTrue(p.toString(), c <= p.c);
+        for (Triple<RandomProvider, Character, Character> t : take(LIMIT, ts)) {
+            char c = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t.toString(), c >= t.b);
+            assertTrue(t.toString(), c <= t.c);
         }
 
         for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.characters()))) {
@@ -1239,10 +1265,14 @@ public class RandomProviderProperties {
                 P.characters(),
                 P.characters()
         );
-        for (Triple<RandomProvider, Character, Character> p : take(LIMIT, ts)) {
-            Iterable<Character> cs = p.a.range(p.b, p.c);
-            simpleTest(p.a, cs, c -> c >= p.b && c <= p.c);
-            assertEquals(p.toString(), gt(p.b, p.c), isEmpty(cs));
+        for (Triple<RandomProvider, Character, Character> t : take(LIMIT, ts)) {
+            Iterable<Character> cs = t.a.range(t.b, t.c);
+            simpleTest(t.a, cs, c -> c >= t.b && c <= t.c);
+            assertEquals(t.toString(), t.b > t.c, isEmpty(cs));
+            t.a.reset();
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, cs, () -> t.a.nextFromRange(t.b, t.c));
+            }
         }
 
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
@@ -1251,11 +1281,30 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextPositiveIntGeometric() {
+        initialize("nextPositiveIntGeometric()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            int i = rp.nextPositiveIntGeometric();
+            assertTrue(rp.toString(), i > 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextPositiveIntGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
     private static void propertiesPositiveIntegersGeometric() {
         initialize("positiveIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.positiveIntegersGeometric(), i -> i > 0);
+            Iterable<Integer> is = rp.positiveIntegersGeometric();
+            simpleTest(rp, is, i -> i > 0);
+            supplierEquivalence(rp, is, rp::nextPositiveIntGeometric);
         }
 
         Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
@@ -1267,17 +1316,63 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextNegativeIntGeometric() {
+        initialize("nextNegativeIntGeometric()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            int i = rp.nextNegativeIntGeometric();
+            assertTrue(rp.toString(), i < 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNegativeIntGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
     private static void propertiesNegativeIntegersGeometric() {
         initialize("negativeIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.negativeIntegersGeometric(), i -> i < 0);
+            Iterable<Integer> is = rp.negativeIntegersGeometric();
+            simpleTest(rp, is, i -> i < 0);
+            supplierEquivalence(rp, is, rp::nextNegativeIntGeometric);
         }
 
         Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNaturalIntGeometric() {
+        initialize("nextNaturalIntGeometric()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            int i = rp.nextNaturalIntGeometric();
+            assertTrue(rp.toString(), i >= 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNaturalIntGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).nextNaturalIntGeometric();
                 fail(rp.toString());
             } catch (IllegalStateException ignored) {}
         }
@@ -1290,7 +1385,9 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.naturalIntegersGeometric(), i -> i >= 0);
+            Iterable<Integer> is = rp.naturalIntegersGeometric();
+            simpleTest(rp, is, i -> i >= 0);
+            supplierEquivalence(rp, is, rp::nextNaturalIntGeometric);
         }
 
         Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
@@ -1300,19 +1397,71 @@ public class RandomProviderProperties {
                 fail(rp.toString());
             } catch (IllegalStateException ignored) {}
         }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).naturalIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNonzeroIntGeometric() {
+        initialize("nextNonzeroIntGeometric()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            int i = rp.nextNonzeroIntGeometric();
+            assertTrue(rp.toString(), i != 0);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNonzeroIntGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
     }
 
     private static void propertiesNonzeroIntegersGeometric() {
         initialize("nonzeroIntegersGeometric()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.nonzeroIntegersGeometric(), i -> i != 0);
+            Iterable<Integer> is = rp.nonzeroIntegersGeometric();
+            simpleTest(rp, is, i -> i != 0);
+            supplierEquivalence(rp, is, rp::nextNonzeroIntGeometric);
         }
 
         Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroIntegersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextIntGeometric() {
+        initialize("nextPositiveIntGeometric()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            rp.nextIntGeometric();
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextIntGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).nextIntGeometric();
                 fail(rp.toString());
             } catch (IllegalStateException ignored) {}
         }
@@ -1325,13 +1474,22 @@ public class RandomProviderProperties {
                 P.randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
-            simpleTest(rp, rp.integersGeometric(), i -> true);
+            Iterable<Integer> is = rp.integersGeometric();
+            simpleTest(rp, is, i -> true);
+            supplierEquivalence(rp, is, rp::nextIntGeometric);
         }
 
         Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.integersGeometric();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).integersGeometric();
                 fail(rp.toString());
             } catch (IllegalStateException ignored) {}
         }
@@ -1345,10 +1503,8 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.rangeUpGeometric(p.b);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i >= p.b, tis));
+            simpleTest(p.a, is, i -> i >= p.b);
+            supplierEquivalence(p.a, is, () -> p.a.nextIntGeometricFromRangeUp(p.b));
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
@@ -1371,10 +1527,8 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.rangeDownGeometric(p.b);
-            Iterable<Integer> tis = take(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i != null, tis));
-            testNoRemove(TINY_LIMIT, is);
-            assertTrue(p.toString(), all(i -> i <= p.b, tis));
+            simpleTest(p.a, is, i -> i <= p.b);
+            supplierEquivalence(p.a, is, () -> p.a.nextIntGeometricFromRangeDown(p.b));
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
@@ -1394,10 +1548,8 @@ public class RandomProviderProperties {
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.positiveBigIntegers();
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i.signum() == 1, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i.signum() == 1);
+            supplierEquivalence(rp, is, rp::nextPositiveBigInteger);
         }
     }
 
@@ -1406,10 +1558,8 @@ public class RandomProviderProperties {
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.negativeBigIntegers();
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i.signum() == -1, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i.signum() == -1);
+            supplierEquivalence(rp, is, rp::nextNegativeBigInteger);
         }
     }
 
@@ -1421,10 +1571,8 @@ public class RandomProviderProperties {
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.naturalBigIntegers();
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> i.signum() != -1, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> i.signum() != -1);
+            supplierEquivalence(rp, is, rp::nextNaturalBigInteger);
         }
     }
 
@@ -1433,10 +1581,8 @@ public class RandomProviderProperties {
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.nonzeroBigIntegers();
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            assertTrue(rp.toString(), all(i -> !i.equals(BigInteger.ZERO), tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> !i.equals(BigInteger.ZERO));
+            supplierEquivalence(rp, is, rp::nextNonzeroBigInteger);
         }
     }
 
@@ -1448,9 +1594,8 @@ public class RandomProviderProperties {
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.bigIntegers();
-            Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            assertTrue(rp.toString(), all(i -> i != null, tis));
-            testNoRemove(TINY_LIMIT, is);
+            simpleTest(rp, is, i -> true);
+            supplierEquivalence(rp, is, rp::nextBigInteger);
         }
     }
 
