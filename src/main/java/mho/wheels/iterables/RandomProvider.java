@@ -2053,7 +2053,27 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextIntGeometric);
     }
 
+    /**
+     * Returns a randomly-generated {@code int} greater than or equal to {@code a}, chosen from a geometric
+     * distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} greater than or equal to {@code a}
+     */
     public int nextIntGeometricFromRangeUp(int a) {
+        if (scale <= a) {
+            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
+                    ". Invalid scale: " + scale);
+        }
+        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
+                    (Integer.MAX_VALUE + a));
+        }
         int j;
         do {
             int i;
@@ -2068,8 +2088,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all natural {@code Integer}s greater than or equal to {@code a}, chosen from
-     * a geometric distribution with mean {@code scale}. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s greater than or equal to {@code a}, chosen from a
+     * geometric distribution with mean {@code scale}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
@@ -2092,7 +2112,28 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
     }
 
+    /**
+     * Returns a randomly-generated {@code int} less than or equal to {@code a}, chosen from a geometric distribution
+     * with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale less than {@code a} and greater than
+     *  {@code a}–{@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} less than or equal to {@code a}
+     */
     public int nextIntGeometricFromRangeDown(int a) {
+        if (scale >= a) {
+            throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
+                    scale);
+        }
+        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+            throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
+                    (a - Integer.MAX_VALUE));
+        }
         int j;
         do {
             int i;
@@ -2107,8 +2148,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all natural {@code Integer}s less than or equal to {@code a}, chosen from a
-     * geometric distribution with mean {@code scale}. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a}, chosen from a geometric
+     * distribution with mean {@code scale}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale less than {@code a} and greater than
