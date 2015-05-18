@@ -785,6 +785,14 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveIntGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextPositiveIntGeometric(" + rp + ") = " + rp.nextPositiveIntGeometric());
+        }
+    }
+
     private static void demoPositiveIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
@@ -793,11 +801,30 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNegativeIntGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNegativeIntGeometric(" + rp + ") = " + rp.nextNegativeIntGeometric());
+        }
+    }
+
     private static void demoNegativeIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("negativeIntegersGeometric(" + rp + ") = " + its(rp.negativeIntegersGeometric()));
+        }
+    }
+
+    private static void demoNextNaturalIntGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNaturalIntGeometric(" + rp + ") = " + rp.nextNaturalIntGeometric());
         }
     }
 
@@ -812,11 +839,30 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNonzeroIntGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNonzeroIntGeometric(" + rp + ") = " + rp.nextNonzeroIntGeometric());
+        }
+    }
+
     private static void demoNonzeroIntegersGeometric() {
         initialize();
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nonzeroIntegersGeometric(" + rp + ") = " + its(rp.nonzeroIntegersGeometric()));
+        }
+    }
+
+    private static void demoNextIntGeometric() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextIntGeometric(" + rp + ") = " + rp.nextIntGeometric());
         }
     }
 
