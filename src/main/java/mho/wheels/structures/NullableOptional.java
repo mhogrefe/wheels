@@ -10,7 +10,7 @@ public class NullableOptional<T> {
     private boolean present;
     private @Nullable T x;
 
-    public static @NotNull <T> NullableOptional<T> of(T x) {
+    public static @NotNull <T> NullableOptional<T> of(@Nullable T x) {
         NullableOptional<T> optional = new NullableOptional<>();
         optional.x = x;
         optional.present = true;
