@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
