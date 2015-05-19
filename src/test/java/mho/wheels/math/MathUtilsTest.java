@@ -1326,7 +1326,7 @@ public class MathUtilsTest {
         try {
             mux(readBigIntegerListWithNulls("[1, null, 2]"));
             fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
