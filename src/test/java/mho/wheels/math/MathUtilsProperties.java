@@ -2689,7 +2689,7 @@ public class MathUtilsProperties {
             try {
                 mux(is);
                 fail(is.toString());
-            } catch (IllegalArgumentException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
 
         isFail = filter(is -> any(i -> i.signum() == -1, is), P.lists(P.bigIntegers()));

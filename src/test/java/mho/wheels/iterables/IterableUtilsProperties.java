@@ -464,7 +464,7 @@ public strictfp class IterableUtilsProperties {
             try {
                 sumBigDecimal(bds);
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -825,7 +825,7 @@ public strictfp class IterableUtilsProperties {
             try {
                 productBigDecimal(bds);
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
     
@@ -1010,7 +1010,7 @@ public strictfp class IterableUtilsProperties {
             try {
                 toList(deltaBigInteger(ls));
                 fail(ls.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -1047,7 +1047,7 @@ public strictfp class IterableUtilsProperties {
             try {
                 toList(deltaBigDecimal(bds));
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 

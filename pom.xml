@@ -31,11 +31,26 @@
                 <configuration>
                     <includes>
                         <include>**/ExhaustiveProviderProperties.java</include>
+                        <include>**/ExhaustiveProviderTest.java</include>
                         <include>**/IterableUtilsProperties.java</include>
+                        <include>**/IterableUtilsTest.java</include>
                         <include>**/RandomProviderProperties.java</include>
+                        <include>**/RandomProviderTest.java</include>
+                        <include>**/CombinatoricsTest.java</include>
                         <include>**/MathUtilsProperties.java</include>
+                        <include>**/MathUtilsTest.java</include>
                         <include>**/BigDecimalUtilsProperties.java</include>
+                        <include>**/BigDecimalUtilsTest.java</include>
+                        <include>**/FloatingPointUtilsTest.java</include>
                         <include>**/ReadersProperties.java</include>
+                        <include>**/ReadersTest.java</include>
+                        <include>**/OrderingTest.java</include>
+                        <include>**/PairTest.java</include>
+                        <include>**/QuadrupleTest.java</include>
+                        <include>**/QuintupleTest.java</include>
+                        <include>**/SeptupleTest.java</include>
+                        <include>**/SextupleTest.java</include>
+                        <include>**/TripleTest.java</include>
                     </includes>
                 </configuration>
             </plugin>
