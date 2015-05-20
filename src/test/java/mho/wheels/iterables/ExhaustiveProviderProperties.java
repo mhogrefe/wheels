@@ -30,7 +30,7 @@ public class ExhaustiveProviderProperties {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("RandomProvider properties");
+        System.out.println("ExhaustiveProvider properties");
         for (Triple<IterableProvider, Integer, String> config : configs) {
             P = config.a;
             LIMIT = config.b;
