@@ -5,41 +5,35 @@ import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Triple;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.BigDecimalUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.eq;
+import static mho.wheels.ordering.Ordering.ne;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
 public class BigDecimalUtilsProperties {
-    private static boolean USE_RANDOM;
     private static int LIMIT;
-
     private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
 
     @Test
     public void testAllProperties() {
+        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
+        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
+        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
         System.out.println("BigDecimalUtils properties");
-        for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
-            USE_RANDOM = useRandom;
+        for (Triple<IterableProvider, Integer, String> config : configs) {
+            P = config.a;
+            LIMIT = config.b;
+            System.out.println("\ttesting " + config.c);
             propertiesSetPrecision();
             propertiesSuccessor();
             propertiesPredecessor();
@@ -48,14 +42,13 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesSetPrecision() {
-        initialize();
         System.out.println("\t\ttesting setPrecision(BigDecimal, int) properties...");
 
         Iterable<Pair<BigDecimal, Integer>> ps;
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
         } else {
-            ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
+            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, IterableUtils.filter(q -> ne(q.a, BigDecimal.ZERO), ps))) {
             BigDecimal bd = setPrecision(p.a, p.b);
@@ -70,9 +63,9 @@ public class BigDecimalUtilsProperties {
         } else {
             Iterable<BigDecimal> zeroes = map(
                     i -> new BigDecimal(BigInteger.ZERO, i),
-                    ((RandomProvider) P).integersGeometric(20)
+                    P.withScale(20).integersGeometric()
             );
-            zeroPs = P.pairs(zeroes, ((RandomProvider) P).positiveIntegersGeometric(20));
+            zeroPs = P.pairs(zeroes, P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, zeroPs)) {
             BigDecimal bd = setPrecision(p.a, p.b);
@@ -97,7 +90,6 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesSuccessor() {
-        initialize();
         System.out.println("\t\ttesting successor(BigDecimal) properties...");
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
@@ -109,7 +101,6 @@ public class BigDecimalUtilsProperties {
     }
 
     private static void propertiesPredecessor() {
-        initialize();
         System.out.println("\t\ttesting predecessor(BigDecimal) properties...");
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {

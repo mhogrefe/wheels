@@ -15,16 +15,19 @@ Progress
 | ExhaustiveProvider       | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IterableProvider         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IterableUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterable         | ✔       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterator         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| FloatUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
+| FloatingPointUtils       | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator            | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IsaacPRNG                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Pair                     | ✘       | ✘       | ✘     | ✘     | ✘          |
@@ -33,3 +36,4 @@ Progress
 | Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Triple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Testing                  | ✘       | ✘       | ✘     | ✘     | ✘          |

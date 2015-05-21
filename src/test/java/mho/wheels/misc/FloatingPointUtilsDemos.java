@@ -6,18 +6,20 @@ import mho.wheels.iterables.RandomProvider;
 
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.FloatingPointUtils.*;
+import static mho.wheels.iterables.IterableUtils.filter;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.misc.FloatingPointUtils.predecessor;
+import static mho.wheels.misc.FloatingPointUtils.successor;
 
 @SuppressWarnings("UnusedDeclaration")
-public class FloatingPointUtilsDemos {
+public strictfp class FloatingPointUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
     private static IterableProvider P;
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = RandomProvider.example();
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;

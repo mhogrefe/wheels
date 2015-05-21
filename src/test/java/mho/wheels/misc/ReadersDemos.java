@@ -6,7 +6,8 @@ import mho.wheels.iterables.RandomProvider;
 
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.fromString;
+import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.Readers.*;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -23,7 +24,7 @@ public class ReadersDemos {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = RandomProvider.example();
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
@@ -38,7 +39,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadBoolean_targeted() {
+    private static void demoReadBoolean_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -58,7 +59,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindBooleanIn_targeted() {
+    private static void demoFindBooleanIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -78,7 +79,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadOrdering_targeted() {
+    private static void demoReadOrdering_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -98,7 +99,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindOrderingIn_targeted() {
+    private static void demoFindOrderingIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -118,7 +119,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadRoundingMode_targeted() {
+    private static void demoReadRoundingMode_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -138,7 +139,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindRoundingModeIn_targeted() {
+    private static void demoFindRoundingModeIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -158,7 +159,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadBigInteger_targeted() {
+    private static void demoReadBigInteger_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -178,7 +179,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindBigIntegerIn_targeted() {
+    private static void demoFindBigIntegerIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -198,7 +199,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadByte_targeted() {
+    private static void demoReadByte_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -218,7 +219,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindByteIn_targeted() {
+    private static void demoFindByteIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -238,7 +239,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadShort_targeted() {
+    private static void demoReadShort_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -258,7 +259,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindShortIn_targeted() {
+    private static void demoFindShortIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -278,7 +279,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadInteger_targeted() {
+    private static void demoReadInteger_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -298,7 +299,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindIntegerIn_targeted() {
+    private static void demoFindIntegerIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -318,7 +319,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadLong_targeted() {
+    private static void demoReadLong_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -338,7 +339,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindLongIn_targeted() {
+    private static void demoFindLongIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -358,7 +359,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadFloat_targeted() {
+    private static void demoReadFloat_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -378,7 +379,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindFloatIn_targeted() {
+    private static void demoFindFloatIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -398,7 +399,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadDouble_targeted() {
+    private static void demoReadDouble_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -418,7 +419,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindDoubleIn_targeted() {
+    private static void demoFindDoubleIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -438,7 +439,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadBigDecimal_targeted() {
+    private static void demoReadBigDecimal_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -458,7 +459,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoFindBigDecimalIn_targeted() {
+    private static void demoFindBigDecimalIn_targeted() {
         initialize();
         Iterable<Character> cs;
         if (P instanceof ExhaustiveProvider) {
@@ -471,7 +472,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadCharacter() {
+    private static void demoReadCharacter() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readCharacter(" + s + ") = " + readCharacter(s));
@@ -485,7 +486,7 @@ public class ReadersDemos {
         }
     }
 
-    public static void demoReadString() {
+    private static void demoReadString() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
             System.out.println("readString(" + s + ") = " + readString(s));

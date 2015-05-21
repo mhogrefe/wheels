@@ -8,10 +8,8 @@ import mho.wheels.structures.Pair;
 import java.math.BigDecimal;
 import java.util.Random;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.BigDecimalUtils.predecessor;
-import static mho.wheels.misc.BigDecimalUtils.setPrecision;
-import static mho.wheels.misc.BigDecimalUtils.successor;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.misc.BigDecimalUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {
@@ -21,7 +19,7 @@ public class BigDecimalUtilsDemos {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = RandomProvider.example();
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
@@ -35,7 +33,7 @@ public class BigDecimalUtilsDemos {
         if (P instanceof ExhaustiveProvider) {
             ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
         } else {
-            ps = P.pairs(P.bigDecimals(), ((RandomProvider) P).positiveIntegersGeometric(20));
+            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
         }
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             System.out.println("setPrecision(" + p.a + ", " + p.b + ") = " + setPrecision(p.a, p.b));

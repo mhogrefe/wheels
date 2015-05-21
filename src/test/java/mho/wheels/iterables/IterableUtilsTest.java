@@ -10,9 +10,12 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.*;
 
-public class IterableUtilsTest {
+public strictfp class IterableUtilsTest {
+    //todo clean
     @Test
     public void testAddTo_Iterable_Collection() {
         Set<Integer> set = new LinkedHashSet<>();
@@ -115,6 +118,7 @@ public class IterableUtilsTest {
         assertEquals(fLinkedHashSetIterator.next(), Float.valueOf(1e30f));
     }
 
+    //todo clean
     @Test
     public void testAddTo_String_Collection() {
         ArrayList<Character> arrayList = new ArrayList<>();
@@ -173,6 +177,7 @@ public class IterableUtilsTest {
         assertTrue(linkedHashSet.isEmpty());
     }
 
+    //todo clean
     @Test
     public void testToList_Iterable() {
         Set<Integer> set = new LinkedHashSet<>();
@@ -202,6 +207,7 @@ public class IterableUtilsTest {
         assertEquals(fList.get(3), Float.valueOf(1e30f));
     }
 
+    //todo clean
     @Test
     public void testToList_String() {
         List<Character> list = toList("hello");
@@ -216,6 +222,7 @@ public class IterableUtilsTest {
         assertTrue(list.isEmpty());
     }
 
+    //todo clean
     @Test
     public void testToString_Iterable() {
         assertEquals(IterableUtils.toString(Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
@@ -228,6 +235,7 @@ public class IterableUtilsTest {
         assertEquals(IterableUtils.toString(lList), "[0.2, -5.0, null, 1.0E30]");
     }
 
+    //todo clean
     @Test
     public void testToString_int_Iterable() {
         aeq(IterableUtils.toString(10, Arrays.asList(4, 1, 5, 9, 2)), "[4, 1, 5, 9, 2]");
@@ -260,86 +268,94 @@ public class IterableUtilsTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void fromStringHelper(@NotNull String input, @NotNull String output) {
+        aeqit(fromString(input), output);
+    }
+
     @Test
     public void testFromString() {
-        aeq(fromString("hello"), "[h, e, l, l, o]");
-        aeq(fromString(""), "[]");
+        fromStringHelper("hello", "[h, e, l, l, o]");
+        fromStringHelper("", "[]");
+    }
+
+    private static void charsToStringHelper(@NotNull String input, @NotNull String output) {
+        aeq(charsToString(Readers.readListWithNulls(Readers::readCharacter).apply(input).get()), output);
     }
 
     @Test
     public void testCharsToString() {
-        aeq(charsToString(Arrays.asList('h', 'e', 'l', 'l', 'o')), "hello");
-        aeq(charsToString(new ArrayList<>()), "");
+        charsToStringHelper("[h, e, l, l, o]", "hello");
+        charsToStringHelper("[]", "");
         try {
-            charsToString(Arrays.asList('h', null, 'l', 'l', 'o'));
+            charsToStringHelper("[h, null, l, l, o]", "");
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testRangeUp_byte() {
-        aeq(take(20, rangeUp((byte) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, rangeUp((byte) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(rangeUp((byte) 0)), 1 << 7);
-        aeq(take(20, rangeUp(Byte.MIN_VALUE)),
+        aeqit(take(20, rangeUp(Byte.MIN_VALUE)),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
                 " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
         aeq(length(rangeUp(Byte.MIN_VALUE)), 1 << 8);
-        aeq(rangeUp((byte) (Byte.MAX_VALUE - 10)), "[117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127]");
-        aeq(rangeUp(Byte.MAX_VALUE), "[127]");
+        aeqit(rangeUp((byte) (Byte.MAX_VALUE - 10)), "[117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127]");
+        aeqit(rangeUp(Byte.MAX_VALUE), "[127]");
     }
 
     @Test
     public void testRangeUp_short() {
-        aeq(take(20, rangeUp((short) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, rangeUp((short) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(rangeUp((short) 0)), 1 << 15);
-        aeq(take(20, rangeUp(Short.MIN_VALUE)),
+        aeqit(take(20, rangeUp(Short.MIN_VALUE)),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
                 " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
         aeq(length(rangeUp(Short.MIN_VALUE)), 1 << 16);
-        aeq(rangeUp((short) (Short.MAX_VALUE - 10)),
+        aeqit(rangeUp((short) (Short.MAX_VALUE - 10)),
                 "[32757, 32758, 32759, 32760, 32761, 32762, 32763, 32764, 32765, 32766, 32767]");
-        aeq(rangeUp(Short.MAX_VALUE), "[32767]");
+        aeqit(rangeUp(Short.MAX_VALUE), "[32767]");
     }
 
     @Test
     public void testRangeUp_int() {
-        aeq(take(20, rangeUp(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeq(take(20, rangeUp(Integer.MIN_VALUE)),
+        aeqit(take(20, rangeUp(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, rangeUp(Integer.MIN_VALUE)),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
                 " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
                 " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629]");
-        aeq(rangeUp(Integer.MAX_VALUE - 10),
+        aeqit(rangeUp(Integer.MAX_VALUE - 10),
                 "[2147483637, 2147483638, 2147483639, 2147483640, 2147483641," +
                 " 2147483642, 2147483643, 2147483644, 2147483645, 2147483646, 2147483647]");
-        aeq(rangeUp(Integer.MAX_VALUE), "[2147483647]");
+        aeqit(rangeUp(Integer.MAX_VALUE), "[2147483647]");
     }
 
     @Test
     public void testRangeUp_long() {
-        aeq(take(20, rangeUp(0L)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeq(take(20, rangeUp(Long.MIN_VALUE)),
+        aeqit(take(20, rangeUp(0L)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(20, rangeUp(Long.MIN_VALUE)),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
                 " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
                 " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789]");
-        aeq(rangeUp(Long.MAX_VALUE - 10),
+        aeqit(rangeUp(Long.MAX_VALUE - 10),
                 "[9223372036854775797, 9223372036854775798, 9223372036854775799, 9223372036854775800," +
                 " 9223372036854775801, 9223372036854775802, 9223372036854775803, 9223372036854775804," +
                 " 9223372036854775805, 9223372036854775806, 9223372036854775807]");
-        aeq(rangeUp(Long.MAX_VALUE), "[9223372036854775807]");
+        aeqit(rangeUp(Long.MAX_VALUE), "[9223372036854775807]");
     }
 
     @Test
     public void testRangeUp_BigInteger() {
-        aeq(take(20, rangeUp(BigInteger.ZERO)),
+        aeqit(take(20, rangeUp(BigInteger.ZERO)),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeq(take(20, rangeUp(BigInteger.TEN.pow(12).negate())),
+        aeqit(take(20, rangeUp(BigInteger.TEN.pow(12).negate())),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
                 " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
                 " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
                 " -999999999982, -999999999981]");
-        aeq(take(20, rangeUp(BigInteger.TEN.pow(12))),
+        aeqit(take(20, rangeUp(BigInteger.TEN.pow(12))),
                 "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
                 " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
                 " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
@@ -348,57 +364,57 @@ public class IterableUtilsTest {
 
     @Test
     public void testRangeUp_BigDecimal() {
-        aeq(take(20, rangeUp(BigDecimal.ZERO)),
+        aeqit(take(20, rangeUp(BigDecimal.ZERO)),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeq(take(20, rangeUp(BigDecimal.TEN.pow(12).negate())),
+        aeqit(take(20, rangeUp(BigDecimal.TEN.pow(12).negate())),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
                 " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
                 " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
                 " -999999999982, -999999999981]");
-        aeq(take(20, rangeUp(BigDecimal.TEN.pow(12))),
+        aeqit(take(20, rangeUp(BigDecimal.TEN.pow(12))),
                 "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
                 " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
                 " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
                 " 1000000000018, 1000000000019]");
-        aeq(take(20, rangeUp(new BigDecimal("1.327"))),
+        aeqit(take(20, rangeUp(new BigDecimal("1.327"))),
                 "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327, 9.327, 10.327," +
                 " 11.327, 12.327, 13.327, 14.327, 15.327, 16.327, 17.327, 18.327, 19.327, 20.327]");
     }
 
     @Test
     public void testRangeUp_char() {
-        aeq(take(20, rangeUp('a')), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]");
-        aeq(take(20, rangeUp('\0')),
+        aeqit(take(20, rangeUp('a')), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]");
+        aeqit(take(20, rangeUp('\0')),
                 "[\0, \1, \2, \3, \4, \5, \6, \7, \b, \t, \n, \13, \f, \r, \16, \17, \20, \21, \22, \23]");
-        aeq(rangeUp((char) (Character.MAX_VALUE - 10)),
+        aeqit(rangeUp((char) (Character.MAX_VALUE - 10)),
                 "[\uFFF5, \uFFF6, \uFFF7, \uFFF8, \uFFF9, \uFFFA, \uFFFB, \uFFFC, \uFFFD, \uFFFE, \uFFFF]");
-        aeq(rangeUp(Character.MAX_VALUE), "[\uFFFF]");
+        aeqit(rangeUp(Character.MAX_VALUE), "[\uFFFF]");
     }
 
     @Test
     public void testRangeUp_float() {
-        aeq(take(20, rangeUp(1.0f)),
+        aeqit(take(20, rangeUp(1.0f)),
                 "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0," +
                 " 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0]");
-        aeq(take(20, rangeUp(-8.329f)),
+        aeqit(take(20, rangeUp(-8.329f)),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671," +
                 " 1.671, 2.671, 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671]");
-        aeq(take(20, rangeUp(1e8f)),
+        aeqit(take(20, rangeUp(1e8f)),
                 "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8," +
                 " 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8," +
                 " 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8]");
-        aeq(take(5, rangeUp(Float.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
-        aeq(rangeUp(Float.POSITIVE_INFINITY), "[Infinity]");
-        aeq(take(20, rangeUp(0.0f)),
+        aeqit(take(5, rangeUp(Float.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
+        aeqit(rangeUp(Float.POSITIVE_INFINITY), "[Infinity]");
+        aeqit(take(20, rangeUp(0.0f)),
                 "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(-0.0f)),
+        aeqit(take(20, rangeUp(-0.0f)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(Float.MIN_VALUE)),
+        aeqit(take(20, rangeUp(Float.MIN_VALUE)),
                 "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(Float.MAX_VALUE)),
+        aeqit(take(20, rangeUp(Float.MAX_VALUE)),
                 "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38]");
@@ -410,30 +426,30 @@ public class IterableUtilsTest {
 
     @Test
     public void testRangeUp_double() {
-        aeq(take(20, rangeUp(1.0)),
+        aeqit(take(20, rangeUp(1.0)),
                 "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0," +
                 " 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0]");
-        aeq(take(20, rangeUp(-8.329)),
+        aeqit(take(20, rangeUp(-8.329)),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671," +
                 " 1.671, 2.671, 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671]");
-        aeq(take(20, rangeUp(1e16)),
+        aeqit(take(20, rangeUp(1e16)),
                 "[1.0E16, 1.0E16, 1.0000000000000002E16, 1.0000000000000004E16, 1.0000000000000004E16," +
                 " 1.0000000000000004E16, 1.0000000000000006E16, 1.0000000000000008E16, 1.0000000000000008E16," +
                 " 1.0000000000000008E16, 1.000000000000001E16, 1.0000000000000012E16, 1.0000000000000012E16," +
                 " 1.0000000000000012E16, 1.0000000000000014E16, 1.0000000000000016E16, 1.0000000000000016E16," +
                 " 1.0000000000000016E16, 1.0000000000000018E16, 1.000000000000002E16]");
-        aeq(take(5, rangeUp(Double.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
-        aeq(rangeUp(Double.POSITIVE_INFINITY), "[Infinity]");
-        aeq(take(20, rangeUp(0.0)),
+        aeqit(take(5, rangeUp(Double.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
+        aeqit(rangeUp(Double.POSITIVE_INFINITY), "[Infinity]");
+        aeqit(take(20, rangeUp(0.0)),
                 "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(-0.0)),
+        aeqit(take(20, rangeUp(-0.0)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(Double.MIN_VALUE)),
+        aeqit(take(20, rangeUp(Double.MIN_VALUE)),
                 "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeq(take(20, rangeUp(Double.MAX_VALUE)),
+        aeqit(take(20, rangeUp(Double.MAX_VALUE)),
                 "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
@@ -447,107 +463,107 @@ public class IterableUtilsTest {
 
     @Test
     public void testRange_byte_byte() {
-        aeq(range((byte) 1, (byte) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range((byte) 1, (byte) 1), "[1]");
-        aeq(range(Byte.MIN_VALUE, (byte) (Byte.MIN_VALUE + 3)), "[-128, -127, -126, -125]");
-        aeq(range((byte) (Byte.MAX_VALUE - 3), Byte.MAX_VALUE), "[124, 125, 126, 127]");
-        aeq(range((byte) 10, (byte) 1), "[]");
+        aeqit(range((byte) 1, (byte) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range((byte) 1, (byte) 1), "[1]");
+        aeqit(range(Byte.MIN_VALUE, (byte) (Byte.MIN_VALUE + 3)), "[-128, -127, -126, -125]");
+        aeqit(range((byte) (Byte.MAX_VALUE - 3), Byte.MAX_VALUE), "[124, 125, 126, 127]");
+        aeqit(range((byte) 10, (byte) 1), "[]");
     }
 
     @Test
     public void testRange_short_short() {
-        aeq(range((short) 1, (short) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range((short) 1, (short) 1), "[1]");
-        aeq(range(Short.MIN_VALUE, (short) (Short.MIN_VALUE + 3)), "[-32768, -32767, -32766, -32765]");
-        aeq(range((short) (Short.MAX_VALUE - 3), Short.MAX_VALUE), "[32764, 32765, 32766, 32767]");
-        aeq(range((short) 10, (short) 1), "[]");
+        aeqit(range((short) 1, (short) 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range((short) 1, (short) 1), "[1]");
+        aeqit(range(Short.MIN_VALUE, (short) (Short.MIN_VALUE + 3)), "[-32768, -32767, -32766, -32765]");
+        aeqit(range((short) (Short.MAX_VALUE - 3), Short.MAX_VALUE), "[32764, 32765, 32766, 32767]");
+        aeqit(range((short) 10, (short) 1), "[]");
     }
 
     @Test
     public void testRange_int_int() {
-        aeq(range(1, 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range(1, 1), "[1]");
-        aeq(range(Integer.MIN_VALUE, Integer.MIN_VALUE + 3), "[-2147483648, -2147483647, -2147483646, -2147483645]");
-        aeq(range(Integer.MAX_VALUE - 3, Integer.MAX_VALUE), "[2147483644, 2147483645, 2147483646, 2147483647]");
-        aeq(range(10, 1), "[]");
+        aeqit(range(1, 10), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range(1, 1), "[1]");
+        aeqit(range(Integer.MIN_VALUE, Integer.MIN_VALUE + 3), "[-2147483648, -2147483647, -2147483646, -2147483645]");
+        aeqit(range(Integer.MAX_VALUE - 3, Integer.MAX_VALUE), "[2147483644, 2147483645, 2147483646, 2147483647]");
+        aeqit(range(10, 1), "[]");
     }
 
     @Test
     public void testRange_long_long() {
-        aeq(range(1L, 10L), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range(1L, 1L), "[1]");
-        aeq(range(Long.MIN_VALUE, Long.MIN_VALUE + 3),
+        aeqit(range(1L, 10L), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range(1L, 1L), "[1]");
+        aeqit(range(Long.MIN_VALUE, Long.MIN_VALUE + 3),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805]");
-        aeq(range(Long.MAX_VALUE - 3, Long.MAX_VALUE),
+        aeqit(range(Long.MAX_VALUE - 3, Long.MAX_VALUE),
                 "[9223372036854775804, 9223372036854775805, 9223372036854775806, 9223372036854775807]");
-        aeq(range(10L, 1L), "[]");
+        aeqit(range(10L, 1L), "[]");
     }
 
     @Test
     public void testRange_BigInteger_BigInteger() {
-        aeq(range(BigInteger.ONE, BigInteger.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range(BigInteger.ONE, BigInteger.ONE), "[1]");
+        aeqit(range(BigInteger.ONE, BigInteger.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range(BigInteger.ONE, BigInteger.ONE), "[1]");
         BigInteger trillion = BigInteger.TEN.pow(12);
-        aeq(range(trillion.negate(), trillion.negate().add(BigInteger.valueOf(3))),
+        aeqit(range(trillion.negate(), trillion.negate().add(BigInteger.valueOf(3))),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997]");
-        aeq(range(trillion.subtract(BigInteger.valueOf(3)), trillion),
+        aeqit(range(trillion.subtract(BigInteger.valueOf(3)), trillion),
                 "[999999999997, 999999999998, 999999999999, 1000000000000]");
-        aeq(range(BigInteger.TEN, BigInteger.ONE), "[]");
+        aeqit(range(BigInteger.TEN, BigInteger.ONE), "[]");
     }
 
     @Test
     public void testRange_BigDecimal_BigDecimal() {
-        aeq(range(BigDecimal.ONE, BigDecimal.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
-        aeq(range(BigDecimal.ONE, BigDecimal.ONE), "[1]");
+        aeqit(range(BigDecimal.ONE, BigDecimal.TEN), "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]");
+        aeqit(range(BigDecimal.ONE, BigDecimal.ONE), "[1]");
         BigDecimal trillion = BigDecimal.TEN.pow(12);
-        aeq(range(trillion.negate(), trillion.negate().add(BigDecimal.valueOf(3))),
+        aeqit(range(trillion.negate(), trillion.negate().add(BigDecimal.valueOf(3))),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997]");
-        aeq(range(trillion.subtract(BigDecimal.valueOf(3)), trillion),
+        aeqit(range(trillion.subtract(BigDecimal.valueOf(3)), trillion),
                 "[999999999997, 999999999998, 999999999999, 1000000000000]");
-        aeq(range(new BigDecimal("1.327"), new BigDecimal("8.609")),
+        aeqit(range(new BigDecimal("1.327"), new BigDecimal("8.609")),
                 "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327]");
-        aeq(range(BigDecimal.TEN, BigDecimal.ONE), "[]");
+        aeqit(range(BigDecimal.TEN, BigDecimal.ONE), "[]");
     }
 
     @Test
     public void testRange_char_char() {
-        aeq(range('a', 'z'), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]");
-        aeq(range('a', 'a'), "[a]");
-        aeq(range('\0', '\3'), "[\0, \1, \2, \3]");
-        aeq(range('\uFFFC', '\uFFFF'), "[\uFFFC, \uFFFD, \uFFFE, \uFFFF]");
-        aeq(range('z', 'a'), "[]");
+        aeqit(range('a', 'z'), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]");
+        aeqit(range('a', 'a'), "[a]");
+        aeqit(range('\0', '\3'), "[\0, \1, \2, \3]");
+        aeqit(range('\uFFFC', '\uFFFF'), "[\uFFFC, \uFFFD, \uFFFE, \uFFFF]");
+        aeqit(range('z', 'a'), "[]");
     }
 
     @Test
     public void testRange_float_float() {
-        aeq(range(1.0f, 10.0f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(1.0f, 9.9f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeq(range(1.0f, 1.0f), "[1.0]");
-        aeq(range(-8.329f, 2.05f),
+        aeqit(range(1.0f, 10.0f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(1.0f, 9.9f), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeqit(range(1.0f, 1.0f), "[1.0]");
+        aeqit(range(-8.329f, 2.05f),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
-        aeq(range(-8.329f, -8.0f), "[-8.329]");
-        aeq(range(10.0f, 1.0f), "[]");
-        aeq(range(1.0e8f, 1.00000008e8f),
+        aeqit(range(-8.329f, -8.0f), "[-8.329]");
+        aeqit(range(10.0f, 1.0f), "[]");
+        aeqit(range(1.0e8f, 1.00000008e8f),
                 "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8]");
-        aeq(range(0.0f, 10.0f), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(-0.0f, 10.0f), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(0.0f, 0.0f), "[0.0]");
-        aeq(range(-0.0f, 0.0f), "[-0.0]");
-        aeq(range(-0.0f, -0.0f), "[-0.0]");
-        aeq(range(0.0f, -0.0f), "[0.0]");
-        aeq(range(Float.MIN_VALUE, Float.MIN_VALUE), "[1.4E-45]");
-        aeq(range(Float.MIN_VALUE, 10.0f), "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeq(range(Float.MAX_VALUE, Float.MAX_VALUE), "[3.4028235E38]");
-        aeq(take(20, range(Float.MAX_VALUE, Float.POSITIVE_INFINITY)),
+        aeqit(range(0.0f, 10.0f), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(-0.0f, 10.0f), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(0.0f, 0.0f), "[0.0]");
+        aeqit(range(-0.0f, 0.0f), "[-0.0]");
+        aeqit(range(-0.0f, -0.0f), "[-0.0]");
+        aeqit(range(0.0f, -0.0f), "[0.0]");
+        aeqit(range(Float.MIN_VALUE, Float.MIN_VALUE), "[1.4E-45]");
+        aeqit(range(Float.MIN_VALUE, 10.0f), "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeqit(range(Float.MAX_VALUE, Float.MAX_VALUE), "[3.4028235E38]");
+        aeqit(take(20, range(Float.MAX_VALUE, Float.POSITIVE_INFINITY)),
                 "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38]");
-        aeq(take(20, range(Float.NEGATIVE_INFINITY, 10.0f)),
+        aeqit(take(20, range(Float.NEGATIVE_INFINITY, 10.0f)),
                 "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity]");
-        aeq(range(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY), "[-Infinity]");
-        aeq(range(Float.POSITIVE_INFINITY, Float.MAX_VALUE), "[]");
+        aeqit(range(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY), "[-Infinity]");
+        aeqit(range(Float.POSITIVE_INFINITY, Float.MAX_VALUE), "[]");
         try {
             range(Float.NaN, 10.0f);
             fail();
@@ -564,30 +580,30 @@ public class IterableUtilsTest {
 
     @Test
     public void testRange_double_double() {
-        aeq(range(1.0, 10.0), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(1.0, 9.9), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeq(range(1.0, 1.0), "[1.0]");
-        aeq(range(-8.329, 2.05),
+        aeqit(range(1.0, 10.0), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(1.0, 9.9), "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeqit(range(1.0, 1.0), "[1.0]");
+        aeqit(range(-8.329, 2.05),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671, 1.671]");
-        aeq(range(-8.329, -8.0), "[-8.329]");
-        aeq(range(10.0, 1.0), "[]");
-        aeq(range(1.0e16, 1.0000000000000002e16), "[1.0E16, 1.0E16, 1.0000000000000002E16]");
-        aeq(range(0.0, 10.0), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(-0.0, 10.0), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
-        aeq(range(0.0, 0.0), "[0.0]");
-        aeq(range(-0.0, 0.0), "[-0.0]");
-        aeq(range(-0.0, -0.0), "[-0.0]");
-        aeq(range(0.0, -0.0), "[0.0]");
-        aeq(range(Double.MIN_VALUE, Double.MIN_VALUE), "[4.9E-324]");
-        aeq(range(Double.MIN_VALUE, 10.0), "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
-        aeq(range(Double.MAX_VALUE, Double.MAX_VALUE), "[1.7976931348623157E308]");
-        aeq(take(20, range(Double.MAX_VALUE, Double.POSITIVE_INFINITY)),
+        aeqit(range(-8.329, -8.0), "[-8.329]");
+        aeqit(range(10.0, 1.0), "[]");
+        aeqit(range(1.0e16, 1.0000000000000002e16), "[1.0E16, 1.0E16, 1.0000000000000002E16]");
+        aeqit(range(0.0, 10.0), "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(-0.0, 10.0), "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]");
+        aeqit(range(0.0, 0.0), "[0.0]");
+        aeqit(range(-0.0, 0.0), "[-0.0]");
+        aeqit(range(-0.0, -0.0), "[-0.0]");
+        aeqit(range(0.0, -0.0), "[0.0]");
+        aeqit(range(Double.MIN_VALUE, Double.MIN_VALUE), "[4.9E-324]");
+        aeqit(range(Double.MIN_VALUE, 10.0), "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
+        aeqit(range(Double.MAX_VALUE, Double.MAX_VALUE), "[1.7976931348623157E308]");
+        aeqit(take(20, range(Double.MAX_VALUE, Double.POSITIVE_INFINITY)),
                 "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308]");
-        aeq(take(20, range(Double.NEGATIVE_INFINITY, 10.0)),
+        aeqit(take(20, range(Double.NEGATIVE_INFINITY, 10.0)),
                 "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity]");
@@ -609,11 +625,11 @@ public class IterableUtilsTest {
 
     @Test
     public void testCons_Iterable() {
-        aeq(cons(5, Arrays.asList(1, 2, 3, 4, 5)), "[5, 1, 2, 3, 4, 5]");
-        aeq(cons(null, Arrays.asList(1, 2, 3, 4, 5)), "[null, 1, 2, 3, 4, 5]");
-        aeq(cons(5, Arrays.asList(1, 2, null, 4, 5)), "[5, 1, 2, null, 4, 5]");
-        aeq(cons(5, new ArrayList<Integer>()), "[5]");
-        aeq(take(10, (Iterable<Integer>) cons(5, repeat(1))), "[5, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
+        aeqit(cons(5, Arrays.asList(1, 2, 3, 4, 5)), "[5, 1, 2, 3, 4, 5]");
+        aeqit(cons(null, Arrays.asList(1, 2, 3, 4, 5)), "[null, 1, 2, 3, 4, 5]");
+        aeqit(cons(5, Arrays.asList(1, 2, null, 4, 5)), "[5, 1, 2, null, 4, 5]");
+        aeqit(cons(5, new ArrayList<Integer>()), "[5]");
+        aeqit(take(10, (Iterable<Integer>) cons(5, repeat(1))), "[5, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
     }
 
     @Test
@@ -624,21 +640,21 @@ public class IterableUtilsTest {
 
     @Test
     public void testConcat_Iterable_Iterable() {
-        aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, 80, 70)), "[1, 2, 3, 90, 80, 70]");
-        aeq(concat(Arrays.asList(1, null, 3), Arrays.asList(90, 80, 70)), "[1, null, 3, 90, 80, 70]");
-        aeq(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, null, 70)), "[1, 2, 3, 90, null, 70]");
-        aeq(concat(new ArrayList<Integer>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
-        aeq(concat(Arrays.asList(1, 2, 3), new ArrayList<Integer>()), "[1, 2, 3]");
-        aeq(concat(new ArrayList<Integer>(), new ArrayList<Integer>()), "[]");
-        aeq(
+        aeqit(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, 80, 70)), "[1, 2, 3, 90, 80, 70]");
+        aeqit(concat(Arrays.asList(1, null, 3), Arrays.asList(90, 80, 70)), "[1, null, 3, 90, 80, 70]");
+        aeqit(concat(Arrays.asList(1, 2, 3), Arrays.asList(90, null, 70)), "[1, 2, 3, 90, null, 70]");
+        aeqit(concat(new ArrayList<Integer>(), Arrays.asList(90, 80, 70)), "[90, 80, 70]");
+        aeqit(concat(Arrays.asList(1, 2, 3), new ArrayList<Integer>()), "[1, 2, 3]");
+        aeqit(concat(new ArrayList<Integer>(), new ArrayList<Integer>()), "[]");
+        aeqit(
                 take(10, (Iterable<Integer>) concat(Arrays.asList(1, 2, 3), repeat(5))),
                 "[1, 2, 3, 5, 5, 5, 5, 5, 5, 5]"
         );
-        aeq(
+        aeqit(
                 take(10, (Iterable<Integer>) concat(repeat(5), Arrays.asList(1, 2, 3))),
                 "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]"
         );
-        aeq(
+        aeqit(
                 take(10, (Iterable<Integer>) concat(repeat(5), repeat(1))),
                 "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]"
         );
@@ -797,12 +813,12 @@ public class IterableUtilsTest {
 
     @Test
     public void testTail_Iterable() {
-        aeq(tail(Arrays.asList(5, 4, 3, 2, 1)), "[4, 3, 2, 1]");
-        aeq(tail(Arrays.asList(5, 4, null, 2, 1)), "[4, null, 2, 1]");
-        aeq(tail(Arrays.asList(5)), "[]");
+        aeqit(tail(Arrays.asList(5, 4, 3, 2, 1)), "[4, 3, 2, 1]");
+        aeqit(tail(Arrays.asList(5, 4, null, 2, 1)), "[4, null, 2, 1]");
+        aeqit(tail(Arrays.asList(5)), "[]");
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
-        aeq(tail(nullList), "[]");
+        aeqit(tail(nullList), "[]");
         try {
             tail(new ArrayList<Integer>());
             fail();
@@ -821,13 +837,13 @@ public class IterableUtilsTest {
 
     @Test
     public void testInit_Iterable() {
-        aeq(init(Arrays.asList(5, 4, 3, 2, 1)), "[5, 4, 3, 2]");
-        aeq(init(Arrays.asList(5, 4, null, 2, 1)), "[5, 4, null, 2]");
-        aeq(init(Arrays.asList(5)), "[]");
+        aeqit(init(Arrays.asList(5, 4, 3, 2, 1)), "[5, 4, 3, 2]");
+        aeqit(init(Arrays.asList(5, 4, null, 2, 1)), "[5, 4, null, 2]");
+        aeqit(init(Arrays.asList(5)), "[]");
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
-        aeq(init(nullList), "[]");
-        aeq(take(10, (Iterable<Integer>) init(repeat(5))), "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]");
+        aeqit(init(nullList), "[]");
+        aeqit(take(10, (Iterable<Integer>) init(repeat(5))), "[5, 5, 5, 5, 5, 5, 5, 5, 5, 5]");
         try {
             init(new ArrayList<Integer>());
             fail();
@@ -904,11 +920,11 @@ public class IterableUtilsTest {
 
     @Test
     public void testMap_Iterable() {
-        aeq(map(i -> i + 3, Arrays.asList(1, 5, 3, 1, 6)), "[4, 8, 6, 4, 9]");
-        aeq(map(i -> i == null ? -1 : i + 3, Arrays.asList(1, 5, null, 1, 6)), "[4, 8, -1, 4, 9]");
-        aeq(take(10, (Iterable<Integer>) map(i -> i + 3, repeat(5))), "[8, 8, 8, 8, 8, 8, 8, 8, 8, 8]");
-        aeq(map(s -> s + "!", Arrays.asList("BIFF", "BANG", "POW")), "[BIFF!, BANG!, POW!]");
-        aeq(map(s -> s + "!", new ArrayList<String>()), "[]");
+        aeqit(map(i -> i + 3, Arrays.asList(1, 5, 3, 1, 6)), "[4, 8, 6, 4, 9]");
+        aeqit(map(i -> i == null ? -1 : i + 3, Arrays.asList(1, 5, null, 1, 6)), "[4, 8, -1, 4, 9]");
+        aeqit(take(10, (Iterable<Integer>) map(i -> i + 3, repeat(5))), "[8, 8, 8, 8, 8, 8, 8, 8, 8, 8]");
+        aeqit(map(s -> s + "!", Arrays.asList("BIFF", "BANG", "POW")), "[BIFF!, BANG!, POW!]");
+        aeqit(map(s -> s + "!", new ArrayList<String>()), "[]");
         try {
             IterableUtils.toList((Iterable<Integer>) map(i -> i + 3, Arrays.asList(1, 5, null, 1, 6)));
             fail();
@@ -945,8 +961,8 @@ public class IterableUtilsTest {
 
     @Test
     public void testIntersperse_Iterable() {
-        aeq(intersperse(0, Arrays.asList(1, 2, 3, 4, 5)), "[1, 0, 2, 0, 3, 0, 4, 0, 5]");
-        aeq(intersperse(0, new ArrayList<Integer>()), "[]");
+        aeqit(intersperse(0, Arrays.asList(1, 2, 3, 4, 5)), "[1, 0, 2, 0, 3, 0, 4, 0, 5]");
+        aeqit(intersperse(0, new ArrayList<Integer>()), "[]");
     }
 
     @Test
@@ -958,44 +974,44 @@ public class IterableUtilsTest {
 
     @Test
     public void testIntercalate_Iterable() {
-        aeq(intercalate(Arrays.asList(0, 0, 0), Arrays.asList(
+        aeqit(intercalate(Arrays.asList(0, 0, 0), Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9))), "[1, 2, 3, 0, 0, 0, 4, 5, 6, 0, 0, 0, 7, 8, 9]");
-        aeq((Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
+        aeqit((Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9))), "[1, 2, 3, 4, 5, 6, 7, 8, 9]");
-        aeq(take(10, (Iterable<Integer>) intercalate(repeat(5), Arrays.asList(
+        aeqit(take(10, (Iterable<Integer>) intercalate(repeat(5), Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 (Iterable<Integer>) Arrays.asList(7, 8, 9)))), "[1, 2, 3, 5, 5, 5, 5, 5, 5, 5]");
-        aeq(take(10, (Iterable<Integer>) intercalate(Arrays.asList(0, 0, 0), Arrays.asList(
+        aeqit(take(10, (Iterable<Integer>) intercalate(Arrays.asList(0, 0, 0), Arrays.asList(
                 (Iterable<Integer>) repeat(1),
                 (Iterable<Integer>) repeat(2),
                 (Iterable<Integer>) repeat(3)))), "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
-        aeq(take(10, (Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
+        aeqit(take(10, (Iterable<Integer>) intercalate(new ArrayList<Integer>(), Arrays.asList(
                 (Iterable<Integer>) repeat(1),
                 (Iterable<Integer>) repeat(2),
                 (Iterable<Integer>) repeat(3)))), "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]");
-        aeq(intercalate(Arrays.asList(0, 0, 0), new ArrayList<Iterable<Integer>>()), "[]");
-        aeq((Iterable<Integer>) intercalate(new ArrayList<>(), new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(intercalate(repeat(5), new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(
+        aeqit(intercalate(Arrays.asList(0, 0, 0), new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit((Iterable<Integer>) intercalate(new ArrayList<>(), new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit(intercalate(repeat(5), new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit(
                 take(10, (Iterable<Integer>) intercalate(
                         Arrays.asList(0, 0, 0),
                         repeat((Iterable<Integer>) Arrays.asList(1, 2, 3))
                 )),
                 "[1, 2, 3, 0, 0, 0, 1, 2, 3, 0]"
         );
-        aeq(
+        aeqit(
                 (Iterable<Integer>) take(10, (Iterable<Integer>) intercalate(
                         new ArrayList<>(),
                         repeat((Iterable<Integer>) Arrays.asList(1, 2, 3))
                 )),
                 "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1]"
         );
-        aeq(
+        aeqit(
                 take(10, (Iterable<Integer>) intercalate(
                         repeat(5),
                         repeat((Iterable<Integer>) Arrays.asList(1, 2, 3))
@@ -1014,28 +1030,28 @@ public class IterableUtilsTest {
 
     @Test
     public void testTranspose() {
-        aeq(transpose(Arrays.asList(
+        aeqit(transpose(Arrays.asList(
                 Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
-        aeq(transpose(Arrays.asList(
+        aeqit(transpose(Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, -2], [-1]]");
-        aeq(transpose(Arrays.asList(
+        aeqit(transpose(Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 new ArrayList<Integer>(),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 7], [2, 8], [3, 9], [-1, -2], [-1]]");
-        aeq(transpose(Arrays.asList(
+        aeqit(transpose(Arrays.asList(
                 new ArrayList<Integer>(),
                 new ArrayList<Integer>(),
                 new ArrayList<>()
         )), "[]");
-        aeq(transpose(new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(take(10, transpose(Arrays.asList(
+        aeqit(transpose(new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit(take(10, transpose(Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6),
                 repeat(7)
@@ -1044,37 +1060,37 @@ public class IterableUtilsTest {
 
     @Test
     public void testTransposeStrings() {
-        aeq(transposeStrings(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
-        aeq(transposeStrings(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn, eh, ro, u, s, e]");
-        aeq(transposeStrings(Arrays.asList("cater", "", "pen")), "[cp, ae, tn, e, r]");
-        aeq(transposeStrings(Arrays.asList("", "", "")), "[]");
-        aeq(transposeStrings(new ArrayList<String>()), "[]");
+        aeqit(transposeStrings(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeqit(transposeStrings(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn, eh, ro, u, s, e]");
+        aeqit(transposeStrings(Arrays.asList("cater", "", "pen")), "[cp, ae, tn, e, r]");
+        aeqit(transposeStrings(Arrays.asList("", "", "")), "[]");
+        aeqit(transposeStrings(new ArrayList<String>()), "[]");
     }
 
     @Test
     public void testTransposeTruncating() {
-        aeq(transposeTruncating(Arrays.asList(
+        aeqit(transposeTruncating(Arrays.asList(
                 Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
-        aeq(transposeTruncating(Arrays.asList(
+        aeqit(transposeTruncating(Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
-        aeq(transposeTruncating(Arrays.asList(
+        aeqit(transposeTruncating(Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 new ArrayList<Integer>(),
                 Arrays.asList(7, 8, 9, -2)
         )), "[]");
-        aeq(transposeTruncating(Arrays.asList(
+        aeqit(transposeTruncating(Arrays.asList(
                 new ArrayList<Integer>(),
                 new ArrayList<Integer>(),
                 new ArrayList<>()
         )), "[]");
-        aeq(transposeTruncating(new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(transposeTruncating(Arrays.asList(
+        aeqit(transposeTruncating(new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit(transposeTruncating(Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6),
                 repeat(7)
@@ -1083,42 +1099,42 @@ public class IterableUtilsTest {
 
     @Test
     public void testTransposeStringsTruncating() {
-        aeq(transposeStringsTruncating(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
-        aeq(transposeStringsTruncating(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn]");
-        aeq(transposeStringsTruncating(Arrays.asList("cater", "", "pen")), "[]");
-        aeq(transposeStringsTruncating(Arrays.asList("", "", "")), "[]");
-        aeq(transposeStringsTruncating(new ArrayList<String>()), "[]");
+        aeqit(transposeStringsTruncating(Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeqit(transposeStringsTruncating(Arrays.asList("cater", "doghouse", "pen")), "[cdp, aoe, tgn]");
+        aeqit(transposeStringsTruncating(Arrays.asList("cater", "", "pen")), "[]");
+        aeqit(transposeStringsTruncating(Arrays.asList("", "", "")), "[]");
+        aeqit(transposeStringsTruncating(new ArrayList<String>()), "[]");
     }
 
     @Test
     public void testTransposePadded() {
-        aeq(transposePadded(0, Arrays.asList(
+        aeqit(transposePadded(0, Arrays.asList(
                 Arrays.asList(1, 2, 3),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9]]");
-        aeq(transposePadded(0, Arrays.asList(
+        aeqit(transposePadded(0, Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, 0, -2], [-1, 0, 0]]");
-        aeq(transposePadded(null, Arrays.asList(
+        aeqit(transposePadded(null, Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 Arrays.asList(4, 5, 6),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 4, 7], [2, 5, 8], [3, 6, 9], [-1, null, -2], [-1, null, null]]");
-        aeq(transposePadded(0, Arrays.asList(
+        aeqit(transposePadded(0, Arrays.asList(
                 Arrays.asList(1, 2, 3, -1, -1),
                 new ArrayList<Integer>(),
                 Arrays.asList(7, 8, 9, -2)
         )), "[[1, 0, 7], [2, 0, 8], [3, 0, 9], [-1, 0, -2], [-1, 0, 0]]");
-        aeq(transposePadded(0, Arrays.asList(
+        aeqit(transposePadded(0, Arrays.asList(
                 new ArrayList<Integer>(),
                 new ArrayList<Integer>(),
                 new ArrayList<Integer>()
         )), "[]");
-        aeq(transposePadded(0, new ArrayList<Iterable<Integer>>()), "[]");
-        aeq(take(10, transposePadded(0, Arrays.asList(
+        aeqit(transposePadded(0, new ArrayList<Iterable<Integer>>()), "[]");
+        aeqit(take(10, transposePadded(0, Arrays.asList(
                 (Iterable<Integer>) Arrays.asList(1, 2, 3),
                 (Iterable<Integer>) Arrays.asList(4, 5, 6),
                 repeat(7)
@@ -1128,29 +1144,29 @@ public class IterableUtilsTest {
 
     @Test
     public void testTransposeStringsPadded() {
-        aeq(transposeStringsPadded('_', Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
-        aeq(
+        aeqit(transposeStringsPadded('_', Arrays.asList("cat", "dog", "pen")), "[cdp, aoe, tgn]");
+        aeqit(
                 transposeStringsPadded('_', Arrays.asList("cater", "doghouse", "pen")),
                 "[cdp, aoe, tgn, eh_, ro_, _u_, _s_, _e_]"
         );
-        aeq(transposeStringsPadded('_', Arrays.asList("cater", "", "pen")), "[c_p, a_e, t_n, e__, r__]");
-        aeq(transposeStringsPadded('_', Arrays.asList("", "", "")), "[]");
-        aeq(transposeStringsPadded('_', new ArrayList<String>()), "[]");
+        aeqit(transposeStringsPadded('_', Arrays.asList("cater", "", "pen")), "[c_p, a_e, t_n, e__, r__]");
+        aeqit(transposeStringsPadded('_', Arrays.asList("", "", "")), "[]");
+        aeqit(transposeStringsPadded('_', new ArrayList<String>()), "[]");
     }
 
     @Test
     public void testUnrepeat() {
-        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]").get()), "[1, 2, 3]");
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]")), "[1, 2, 3]");
         aeq(
-                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]").get()),
+                unrepeat(readBigIntegerListWithNulls("[1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3]")),
                 "[1, null, 3]"
         );
-        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]").get()), "[1, 2, 3, 4, 5]");
-        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]").get()), "[1, 2, 3, null, 5]");
-        aeq(unrepeat(readIntegerList("[1, 1, 1]").get()), "[1]");
-        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]").get()), "[null]");
-        aeq(unrepeat(readIntegerList("[1]").get()), "[1]");
-        aeq(unrepeat(readIntegerListWithNulls("[null]").get()), "[null]");
+        aeq(unrepeat(readIntegerList("[1, 2, 3, 4, 5]")), "[1, 2, 3, 4, 5]");
+        aeq(unrepeat(readIntegerListWithNulls("[1, 2, 3, null, 5]")), "[1, 2, 3, null, 5]");
+        aeq(unrepeat(readIntegerList("[1, 1, 1]")), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null, null, null]")), "[null]");
+        aeq(unrepeat(readIntegerList("[1]")), "[1]");
+        aeq(unrepeat(readIntegerListWithNulls("[null]")), "[null]");
         aeq(unrepeat(new ArrayList<>()), "[]");
     }
 
@@ -1234,22 +1250,22 @@ public class IterableUtilsTest {
 
     @Test
     public void testSumBigInteger() {
-        aeq(sumBigInteger(readBigIntegerList("[10, 11, 12]").get()), 33);
-        aeq(sumBigInteger(readBigIntegerList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigInteger(readBigIntegerList("[10, 11, 12]")), 33);
+        aeq(sumBigInteger(readBigIntegerList("[-4, 6, -8]")), -6);
         aeq(sumBigInteger(new ArrayList<>()), 0);
         try {
-            sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            sumBigInteger(readBigIntegerListWithNulls("[10, null, 12]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testSumBigDecimal() {
-        aeq(sumBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 31.5);
-        aeq(sumBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), -6);
+        aeq(sumBigDecimal(readBigDecimalList("[10, 10.5, 11]")), 31.5);
+        aeq(sumBigDecimal(readBigDecimalList("[-4, 6, -8]")), -6);
         aeq(sumBigDecimal(new ArrayList<>()), 0);
         try {
-            sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            sumBigDecimal(readBigDecimalListWithNulls("[10, null, 11]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -1335,32 +1351,32 @@ public class IterableUtilsTest {
 
     @Test
     public void testProductBigInteger() {
-        aeq(productBigInteger(readBigIntegerList("[10, 11, 12]").get()), 1320);
-        aeq(productBigInteger(readBigIntegerList("[-4, 6, -8]").get()), 192);
+        aeq(productBigInteger(readBigIntegerList("[10, 11, 12]")), 1320);
+        aeq(productBigInteger(readBigIntegerList("[-4, 6, -8]")), 192);
         aeq(productBigInteger(new ArrayList<>()), 1);
         try {
-            productBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get());
+            productBigInteger(readBigIntegerListWithNulls("[10, null, 12]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testProductBigDecimal() {
-        aeq(productBigDecimal(readBigDecimalList("[10, 10.5, 11]").get()), 1155.0);
-        aeq(productBigDecimal(readBigDecimalList("[-4, 6, -8]").get()), 192);
+        aeq(productBigDecimal(readBigDecimalList("[10, 10.5, 11]")), 1155.0);
+        aeq(productBigDecimal(readBigDecimalList("[-4, 6, -8]")), 192);
         aeq(productBigDecimal(new ArrayList<>()), 1);
         try {
-            productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]").get());
+            productBigDecimal(readBigDecimalListWithNulls("[10, null, 11]"));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testDeltaByte() {
-        aeq(deltaByte(Arrays.asList((byte) 3, (byte) 1, (byte) 4, (byte) 1, (byte) 5, (byte) 9, (byte) 3)),
+        aeqit(deltaByte(Arrays.asList((byte) 3, (byte) 1, (byte) 4, (byte) 1, (byte) 5, (byte) 9, (byte) 3)),
                 "[-2, 3, -3, 4, 4, -6]");
-        aeq(deltaByte(Arrays.asList(Byte.MIN_VALUE, Byte.MAX_VALUE)), "[-1]");
-        aeq(deltaByte(Arrays.asList((byte) 3)), "[]");
+        aeqit(deltaByte(Arrays.asList(Byte.MIN_VALUE, Byte.MAX_VALUE)), "[-1]");
+        aeqit(deltaByte(Arrays.asList((byte) 3)), "[]");
         try {
             deltaByte(new ArrayList<>());
             fail();
@@ -1373,10 +1389,10 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaShort() {
-        aeq(deltaShort(Arrays.asList((short) 3, (short) 1, (short) 4, (short) 1, (short) 5, (short) 9, (short) 3)),
+        aeqit(deltaShort(Arrays.asList((short) 3, (short) 1, (short) 4, (short) 1, (short) 5, (short) 9, (short) 3)),
                 "[-2, 3, -3, 4, 4, -6]");
-        aeq(deltaShort(Arrays.asList(Short.MIN_VALUE, Short.MAX_VALUE)), "[-1]");
-        aeq(deltaShort(Arrays.asList((short) 3)), "[]");
+        aeqit(deltaShort(Arrays.asList(Short.MIN_VALUE, Short.MAX_VALUE)), "[-1]");
+        aeqit(deltaShort(Arrays.asList((short) 3)), "[]");
         try {
             deltaShort(new ArrayList<>());
             fail();
@@ -1389,9 +1405,9 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaInteger() {
-        aeq(deltaInteger(Arrays.asList(3, 1, 4, 1, 5, 9, 3)), "[-2, 3, -3, 4, 4, -6]");
-        aeq(deltaInteger(Arrays.asList(Integer.MIN_VALUE, Integer.MAX_VALUE)), "[-1]");
-        aeq(deltaInteger(Arrays.asList(3)), "[]");
+        aeqit(deltaInteger(Arrays.asList(3, 1, 4, 1, 5, 9, 3)), "[-2, 3, -3, 4, 4, -6]");
+        aeqit(deltaInteger(Arrays.asList(Integer.MIN_VALUE, Integer.MAX_VALUE)), "[-1]");
+        aeqit(deltaInteger(Arrays.asList(3)), "[]");
         try {
             deltaInteger(new ArrayList<>());
             fail();
@@ -1404,9 +1420,9 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaLong() {
-        aeq(deltaLong(Arrays.asList(3L, 1L, 4L, 1L, 5L, 9L, 3L)), "[-2, 3, -3, 4, 4, -6]");
-        aeq(deltaLong(Arrays.asList(Long.MIN_VALUE, Long.MAX_VALUE)), "[-1]");
-        aeq(deltaLong(Arrays.asList(3L)), "[]");
+        aeqit(deltaLong(Arrays.asList(3L, 1L, 4L, 1L, 5L, 9L, 3L)), "[-2, 3, -3, 4, 4, -6]");
+        aeqit(deltaLong(Arrays.asList(Long.MIN_VALUE, Long.MAX_VALUE)), "[-1]");
+        aeqit(deltaLong(Arrays.asList(3L)), "[]");
         try {
             deltaLong(new ArrayList<>());
             fail();
@@ -1419,38 +1435,38 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaBigInteger() {
-        aeq(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]").get()), "[-2, 3, -3, 4, 4, -6]");
-        aeq(deltaBigInteger(Arrays.asList(BigInteger.valueOf(3))), "[]");
+        aeqit(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]")), "[-2, 3, -3, 4, 4, -6]");
+        aeqit(deltaBigInteger(Arrays.asList(BigInteger.valueOf(3))), "[]");
         try {
             deltaBigInteger(new ArrayList<>());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]").get()));
+            toList(deltaBigInteger(readBigIntegerListWithNulls("[10, null, 12]")));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testDeltaBigDecimal() {
-        aeq(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]").get()), "[1.0, 1.8, -3.6]");
-        aeq(deltaBigDecimal(Arrays.asList(BigDecimal.valueOf(3))), "[]");
+        aeqit(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]")), "[1.0, 1.8, -3.6]");
+        aeqit(deltaBigDecimal(Arrays.asList(BigDecimal.valueOf(3))), "[]");
         try {
             deltaBigDecimal(new ArrayList<>());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]").get()));
+            toList(deltaBigDecimal(readBigDecimalListWithNulls("[10, null, 12]")));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testDeltaFloat() {
-        aeq(deltaFloat(Arrays.asList(3.1f, 4.1f, 5.9f, 2.3f)), "[1.0, 1.8000002, -3.6000001]");
-        aeq(deltaFloat(Arrays.asList(-Float.MAX_VALUE, Float.MAX_VALUE)), "[Infinity]");
-        aeq(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
-        aeq(deltaFloat(Arrays.asList(3.0f)), "[]");
+        aeqit(deltaFloat(Arrays.asList(3.1f, 4.1f, 5.9f, 2.3f)), "[1.0, 1.8000002, -3.6000001]");
+        aeqit(deltaFloat(Arrays.asList(-Float.MAX_VALUE, Float.MAX_VALUE)), "[Infinity]");
+        aeqit(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
+        aeqit(deltaFloat(Arrays.asList(3.0f)), "[]");
         try {
             deltaFloat(new ArrayList<>());
             fail();
@@ -1463,11 +1479,11 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaDouble() {
-        aeq(deltaDouble(Arrays.asList(3.1, 4.1, 5.9, 2.3)),
+        aeqit(deltaDouble(Arrays.asList(3.1, 4.1, 5.9, 2.3)),
                 "[0.9999999999999996, 1.8000000000000007, -3.6000000000000005]");
-        aeq(deltaDouble(Arrays.asList(-Double.MAX_VALUE, Double.MAX_VALUE)), "[Infinity]");
-        aeq(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
-        aeq(deltaDouble(Arrays.asList(3.0)), "[]");
+        aeqit(deltaDouble(Arrays.asList(-Double.MAX_VALUE, Double.MAX_VALUE)), "[Infinity]");
+        aeqit(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
+        aeqit(deltaDouble(Arrays.asList(3.0)), "[]");
         try {
             deltaDouble(new ArrayList<>());
             fail();
@@ -1480,8 +1496,8 @@ public class IterableUtilsTest {
 
     @Test
     public void testDeltaCharacter() {
-        aeq(deltaCharacter(fromString("hello")), "[-3, 7, 0, 3]");
-        aeq(deltaCharacter(Arrays.asList('a')), "[]");
+        aeqit(deltaCharacter(fromString("hello")), "[-3, 7, 0, 3]");
+        aeqit(deltaCharacter(Arrays.asList('a')), "[]");
         try {
             deltaCharacter(new ArrayList<>());
             fail();
@@ -1492,35 +1508,27 @@ public class IterableUtilsTest {
         } catch (NullPointerException ignored) {}
     }
 
-    private static void aeq(Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(a), b.toString());
+    private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readInteger).apply(s).get();
     }
 
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
+    private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<Integer>> readIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readInteger).apply(s);
+    private static @NotNull List<BigInteger> readBigIntegerList(@NotNull String s) {
+        return Readers.readList(Readers::readBigInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<Integer>> readIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readInteger, s);
+    private static @NotNull List<BigInteger> readBigIntegerListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigInteger).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerList(@NotNull String s) {
-        return Readers.readList(Readers::readBigInteger).apply(s);
+    private static @NotNull List<BigDecimal> readBigDecimalList(@NotNull String s) {
+        return Readers.readList(Readers::readBigDecimal).apply(s).get();
     }
 
-    private static @NotNull Optional<List<BigInteger>> readBigIntegerListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigInteger, s);
-    }
-
-    private static @NotNull Optional<List<BigDecimal>> readBigDecimalList(@NotNull String s) {
-        return Readers.readList(Readers::readBigDecimal).apply(s);
-    }
-
-    private static @NotNull Optional<List<BigDecimal>> readBigDecimalListWithNulls(@NotNull String s) {
-        return Readers.readListWithNulls(Readers::readBigDecimal, s);
+    private static @NotNull List<BigDecimal> readBigDecimalListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers::readBigDecimal).apply(s).get();
     }
 }

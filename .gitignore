@@ -3,3 +3,5 @@ documentation/*
 *.iml
 *.class
 *.jar
+
+target/*

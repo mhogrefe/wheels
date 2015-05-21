@@ -1,31 +1,37 @@
 package mho.wheels.misc;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import static mho.wheels.misc.FloatingPointUtils.predecessor;
 import static mho.wheels.misc.FloatingPointUtils.successor;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-public class FloatingPointUtilsTest {
+public strictfp class FloatingPointUtilsTest {
+    private static void successor_float_helper(float x, @NotNull String output) {
+        aeq(successor(x), output);
+    }
+
     @Test
     public void testSuccessor_float() {
-        aeq(successor(1.0f), "1.0000001");
-        aeq(successor(1e20f), "1.0000001E20");
-        aeq(successor(-1.0f), "-0.99999994");
-        aeq(successor(-1e20f), "-9.999999E19");
-        aeq(successor((float) Math.PI), "3.141593");
-        aeq(successor((float) Math.sqrt(2)), "1.4142137");
-        aeq(successor((float) -Math.PI), "-3.1415925");
-        aeq(successor((float) -Math.sqrt(2)), "-1.4142134");
-        aeq(successor(0.0f), "1.4E-45");
-        aeq(successor(-0.0f), "1.4E-45");
-        aeq(successor(Float.MIN_VALUE), "2.8E-45");
-        aeq(successor(Float.MIN_NORMAL), "1.1754945E-38");
-        aeq(successor(-Float.MIN_VALUE), "-0.0");
-        aeq(successor(-Float.MIN_NORMAL), "-1.1754942E-38");
-        aeq(successor(Float.MAX_VALUE), "Infinity");
-        aeq(successor(-Float.MAX_VALUE), "-3.4028233E38");
-        aeq(successor(Float.NEGATIVE_INFINITY), "-3.4028235E38");
+        successor_float_helper(1.0f, "1.0000001");
+        successor_float_helper(1e20f, "1.0000001E20");
+        successor_float_helper(-1.0f, "-0.99999994");
+        successor_float_helper(-1e20f, "-9.999999E19");
+        successor_float_helper((float) Math.PI, "3.141593");
+        successor_float_helper((float) Math.sqrt(2), "1.4142137");
+        successor_float_helper((float) -Math.PI, "-3.1415925");
+        successor_float_helper((float) -Math.sqrt(2), "-1.4142134");
+        successor_float_helper(0.0f, "1.4E-45");
+        successor_float_helper(-0.0f, "1.4E-45");
+        successor_float_helper(Float.MIN_VALUE, "2.8E-45");
+        successor_float_helper(Float.MIN_NORMAL, "1.1754945E-38");
+        successor_float_helper(-Float.MIN_VALUE, "-0.0");
+        successor_float_helper(-Float.MIN_NORMAL, "-1.1754942E-38");
+        successor_float_helper(Float.MAX_VALUE, "Infinity");
+        successor_float_helper(-Float.MAX_VALUE, "-3.4028233E38");
+        successor_float_helper(Float.NEGATIVE_INFINITY, "-3.4028235E38");
         try {
             successor(Float.POSITIVE_INFINITY);
             fail();
@@ -36,25 +42,29 @@ public class FloatingPointUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    private static void predecessor_float_helper(float x, @NotNull String output) {
+        aeq(predecessor(x), output);
+    }
+
     @Test
     public void testPredecessor_float() {
-        aeq(predecessor(1.0f), "0.99999994");
-        aeq(predecessor(1e20f), "9.999999E19");
-        aeq(predecessor(-1.0f), "-1.0000001");
-        aeq(predecessor(-1e20f), "-1.0000001E20");
-        aeq(predecessor((float) Math.PI), "3.1415925");
-        aeq(predecessor((float) Math.sqrt(2)), "1.4142134");
-        aeq(predecessor((float) -Math.PI), "-3.141593");
-        aeq(predecessor((float) -Math.sqrt(2)), "-1.4142137");
-        aeq(predecessor(0.0f), "-1.4E-45");
-        aeq(predecessor(-0.0f), "-1.4E-45");
-        aeq(predecessor(Float.MIN_VALUE), "0.0");
-        aeq(predecessor(Float.MIN_NORMAL), "1.1754942E-38");
-        aeq(predecessor(-Float.MIN_VALUE), "-2.8E-45");
-        aeq(predecessor(-Float.MIN_NORMAL), "-1.1754945E-38");
-        aeq(predecessor(Float.MAX_VALUE), "3.4028233E38");
-        aeq(predecessor(-Float.MAX_VALUE), "-Infinity");
-        aeq(predecessor(Float.POSITIVE_INFINITY), "3.4028235E38");
+        predecessor_float_helper(1.0f, "0.99999994");
+        predecessor_float_helper(1e20f, "9.999999E19");
+        predecessor_float_helper(-1.0f, "-1.0000001");
+        predecessor_float_helper(-1e20f, "-1.0000001E20");
+        predecessor_float_helper((float) Math.PI, "3.1415925");
+        predecessor_float_helper((float) Math.sqrt(2), "1.4142134");
+        predecessor_float_helper((float) -Math.PI, "-3.141593");
+        predecessor_float_helper((float) -Math.sqrt(2), "-1.4142137");
+        predecessor_float_helper(0.0f, "-1.4E-45");
+        predecessor_float_helper(-0.0f, "-1.4E-45");
+        predecessor_float_helper(Float.MIN_VALUE, "0.0");
+        predecessor_float_helper(Float.MIN_NORMAL, "1.1754942E-38");
+        predecessor_float_helper(-Float.MIN_VALUE, "-2.8E-45");
+        predecessor_float_helper(-Float.MIN_NORMAL, "-1.1754945E-38");
+        predecessor_float_helper(Float.MAX_VALUE, "3.4028233E38");
+        predecessor_float_helper(-Float.MAX_VALUE, "-Infinity");
+        predecessor_float_helper(Float.POSITIVE_INFINITY, "3.4028235E38");
         try {
             predecessor(Float.NEGATIVE_INFINITY);
             fail();
@@ -65,25 +75,29 @@ public class FloatingPointUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    private static void successor_double_helper(double x, @NotNull String output) {
+        aeq(successor(x), output);
+    }
+
     @Test
     public void testSuccessor_double() {
-        aeq(successor(1.0), "1.0000000000000002");
-        aeq(successor(1e20), "1.0000000000000002E20");
-        aeq(successor(-1.0), "-0.9999999999999999");
-        aeq(successor(-1e20), "-9.999999999999998E19");
-        aeq(successor(Math.PI), "3.1415926535897936");
-        aeq(successor(Math.sqrt(2)), "1.4142135623730954");
-        aeq(successor(-Math.PI), "-3.1415926535897927");
-        aeq(successor(-Math.sqrt(2)), "-1.414213562373095");
-        aeq(successor(0.0), "4.9E-324");
-        aeq(successor(-0.0), "4.9E-324");
-        aeq(successor(Double.MIN_VALUE), "1.0E-323");
-        aeq(successor(Double.MIN_NORMAL), "2.225073858507202E-308");
-        aeq(successor(-Double.MIN_VALUE), "-0.0");
-        aeq(successor(-Double.MIN_NORMAL), "-2.225073858507201E-308");
-        aeq(successor(Double.MAX_VALUE), "Infinity");
-        aeq(successor(-Double.MAX_VALUE), "-1.7976931348623155E308");
-        aeq(successor(Double.NEGATIVE_INFINITY), "-1.7976931348623157E308");
+        successor_double_helper(1.0, "1.0000000000000002");
+        successor_double_helper(1e20, "1.0000000000000002E20");
+        successor_double_helper(-1.0, "-0.9999999999999999");
+        successor_double_helper(-1e20, "-9.999999999999998E19");
+        successor_double_helper(Math.PI, "3.1415926535897936");
+        successor_double_helper(Math.sqrt(2), "1.4142135623730954");
+        successor_double_helper(-Math.PI, "-3.1415926535897927");
+        successor_double_helper(-Math.sqrt(2), "-1.414213562373095");
+        successor_double_helper(0.0, "4.9E-324");
+        successor_double_helper(-0.0, "4.9E-324");
+        successor_double_helper(Double.MIN_VALUE, "1.0E-323");
+        successor_double_helper(Double.MIN_NORMAL, "2.225073858507202E-308");
+        successor_double_helper(-Double.MIN_VALUE, "-0.0");
+        successor_double_helper(-Double.MIN_NORMAL, "-2.225073858507201E-308");
+        successor_double_helper(Double.MAX_VALUE, "Infinity");
+        successor_double_helper(-Double.MAX_VALUE, "-1.7976931348623155E308");
+        successor_double_helper(Double.NEGATIVE_INFINITY, "-1.7976931348623157E308");
         try {
             successor(Double.POSITIVE_INFINITY);
             fail();
@@ -94,25 +108,29 @@ public class FloatingPointUtilsTest {
         } catch (ArithmeticException ignored) {}
     }
 
+    private static void predecessor_double_helper(double x, @NotNull String output) {
+        aeq(predecessor(x), output);
+    }
+
     @Test
     public void testPredecessor_double() {
-        aeq(predecessor(1.0), "0.9999999999999999");
-        aeq(predecessor(1e20), "9.999999999999998E19");
-        aeq(predecessor(-1.0), "-1.0000000000000002");
-        aeq(predecessor(-1e20), "-1.0000000000000002E20");
-        aeq(predecessor(Math.PI), "3.1415926535897927");
-        aeq(predecessor(Math.sqrt(2)), "1.414213562373095");
-        aeq(predecessor(-Math.PI), "-3.1415926535897936");
-        aeq(predecessor(-Math.sqrt(2)), "-1.4142135623730954");
-        aeq(predecessor(0.0), "-4.9E-324");
-        aeq(predecessor(-0.0), "-4.9E-324");
-        aeq(predecessor(Double.MIN_VALUE), "0.0");
-        aeq(predecessor(Double.MIN_NORMAL), "2.225073858507201E-308");
-        aeq(predecessor(-Double.MIN_VALUE), "-1.0E-323");
-        aeq(predecessor(-Double.MIN_NORMAL), "-2.225073858507202E-308");
-        aeq(predecessor(Double.MAX_VALUE), "1.7976931348623155E308");
-        aeq(predecessor(-Double.MAX_VALUE), "-Infinity");
-        aeq(predecessor(Double.POSITIVE_INFINITY), "1.7976931348623157E308");
+        predecessor_double_helper(1.0, "0.9999999999999999");
+        predecessor_double_helper(1e20, "9.999999999999998E19");
+        predecessor_double_helper(-1.0, "-1.0000000000000002");
+        predecessor_double_helper(-1e20, "-1.0000000000000002E20");
+        predecessor_double_helper(Math.PI, "3.1415926535897927");
+        predecessor_double_helper(Math.sqrt(2), "1.414213562373095");
+        predecessor_double_helper(-Math.PI, "-3.1415926535897936");
+        predecessor_double_helper(-Math.sqrt(2), "-1.4142135623730954");
+        predecessor_double_helper(0.0, "-4.9E-324");
+        predecessor_double_helper(-0.0, "-4.9E-324");
+        predecessor_double_helper(Double.MIN_VALUE, "0.0");
+        predecessor_double_helper(Double.MIN_NORMAL, "2.225073858507201E-308");
+        predecessor_double_helper(-Double.MIN_VALUE, "-1.0E-323");
+        predecessor_double_helper(-Double.MIN_NORMAL, "-2.225073858507202E-308");
+        predecessor_double_helper(Double.MAX_VALUE, "1.7976931348623155E308");
+        predecessor_double_helper(-Double.MAX_VALUE, "-Infinity");
+        predecessor_double_helper(Double.POSITIVE_INFINITY, "1.7976931348623157E308");
         try {
             predecessor(Double.NEGATIVE_INFINITY);
             fail();

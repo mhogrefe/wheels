@@ -4,9 +4,72 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>wheels</groupId>
+    <groupId>mho.wheels</groupId>
     <artifactId>wheels</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+    </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <includes>
+                        <include>**/ExhaustiveProviderProperties.java</include>
+                        <include>**/ExhaustiveProviderTest.java</include>
+                        <include>**/IterableUtilsProperties.java</include>
+                        <include>**/IterableUtilsTest.java</include>
+                        <include>**/RandomProviderProperties.java</include>
+                        <include>**/RandomProviderTest.java</include>
+                        <include>**/CombinatoricsTest.java</include>
+                        <include>**/MathUtilsProperties.java</include>
+                        <include>**/MathUtilsTest.java</include>
+                        <include>**/BigDecimalUtilsProperties.java</include>
+                        <include>**/BigDecimalUtilsTest.java</include>
+                        <include>**/FloatingPointUtilsTest.java</include>
+                        <include>**/ReadersProperties.java</include>
+                        <include>**/ReadersTest.java</include>
+                        <include>**/OrderingTest.java</include>
+                        <include>**/PairTest.java</include>
+                        <include>**/QuadrupleTest.java</include>
+                        <include>**/QuintupleTest.java</include>
+                        <include>**/SeptupleTest.java</include>
+                        <include>**/SextupleTest.java</include>
+                        <include>**/TripleTest.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>annotations</artifactId>
+            <version>12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+    </dependencies>
 </project>
+
+
+

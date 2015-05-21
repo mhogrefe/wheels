@@ -19,7 +19,7 @@ import static mho.wheels.misc.Readers.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
-public class ReadersProperties {
+public strictfp class ReadersProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
 
@@ -27,7 +27,7 @@ public class ReadersProperties {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = RandomProvider.example();
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;

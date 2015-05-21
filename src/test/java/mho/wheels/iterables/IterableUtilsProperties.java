@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -9,18 +10,16 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.MathUtils.bigEndianDigits;
 import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
-public class IterableUtilsProperties {
+public strictfp class IterableUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;
 
@@ -28,7 +27,7 @@ public class IterableUtilsProperties {
 
     private static void initialize() {
         if (USE_RANDOM) {
-            P = new RandomProvider(new Random(0x6af477d9a7e54fcaL));
+            P = RandomProvider.example();
             LIMIT = 1000;
         } else {
             P = ExhaustiveProvider.INSTANCE;
@@ -87,6 +86,7 @@ public class IterableUtilsProperties {
 
     private static void propertiesUnrepeat() {
         initialize();
+
         System.out.println("\t\ttesting unrepeat(List<T>) properties...");
 
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
@@ -98,29 +98,16 @@ public class IterableUtilsProperties {
         for (List<Integer> is : take(LIMIT, P.listsAtLeast(1, P.withNull(P.integers())))) {
             List<Integer> unrepeated = unrepeat(is);
             assertTrue(is.toString(), MathUtils.factors(is.size()).contains(unrepeated.size()));
-            aeq(is.toString(), concat(replicate(is.size() / unrepeated.size(), unrepeated)), is);
+            aeqit(is.toString(), concat(replicate(is.size() / unrepeated.size(), unrepeated)), is);
         }
     }
 
     private static void compareImplementationsUnrepeat() {
         initialize();
-        System.out.println("\t\tcomparing unrepeat(List<T>) implementations...");
-
-        long totalTime = 0;
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            long time = System.nanoTime();
-            unrepeat_alt(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            long time = System.nanoTime();
-            unrepeat(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<List<Integer>, List<Integer>>> functions = new LinkedHashMap<>();
+        functions.put("alt", IterableUtilsProperties::unrepeat_alt);
+        functions.put("standard", IterableUtils::unrepeat);
+        compareImplementations("unrepeat(List<T>)", take(LIMIT, P.lists(P.withNull(P.integers()))), functions);
     }
 
     private static void propertiesSumByte() {
@@ -141,7 +128,7 @@ public class IterableUtilsProperties {
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertEquals(Byte.toString(b), sumByte(Arrays.asList(b)), b);
+            assertEquals(Byte.toString(b), sumByte(Collections.singletonList(b)), b);
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
@@ -181,7 +168,7 @@ public class IterableUtilsProperties {
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertEquals(Short.toString(s), sumShort(Arrays.asList(s)), s);
+            assertEquals(Short.toString(s), sumShort(Collections.singletonList(s)), s);
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
@@ -212,9 +199,7 @@ public class IterableUtilsProperties {
         }
 
         Iterable<Pair<List<Integer>, List<Integer>>> ps = filter(
-                q -> {
-                    return !q.a.equals(q.b);
-                },
+                q -> !q.a.equals(q.b),
                 P.dependentPairsLogarithmic(P.lists(P.integers()), Combinatorics::permutationsIncreasing)
         );
 
@@ -223,7 +208,7 @@ public class IterableUtilsProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertEquals(Integer.toString(i), sumInteger(Arrays.asList(i)), i);
+            assertEquals(Integer.toString(i), sumInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
@@ -262,7 +247,7 @@ public class IterableUtilsProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertEquals(Long.toString(l), sumLong(Arrays.asList(l)), l);
+            assertEquals(Long.toString(l), sumLong(Collections.singletonList(l)), l);
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
@@ -300,15 +285,15 @@ public class IterableUtilsProperties {
         ));
 
         for (List<Float> fs : take(LIMIT, fss)) {
-            aeq(fs.toString(), sumFloat(fs), Float.NaN);
+            aeqf(fs.toString(), sumFloat(fs), Float.NaN);
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeq(Float.toString(f), sumFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), sumFloat(Collections.singletonList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeq(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
+            aeqf(p.toString(), sumFloat(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -342,15 +327,15 @@ public class IterableUtilsProperties {
         ));
 
         for (List<Double> ds : take(LIMIT, dss)) {
-            aeq(ds.toString(), sumDouble(ds), Double.NaN);
+            aeqd(ds.toString(), sumDouble(ds), Double.NaN);
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeq(Double.toString(d), sumDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), sumDouble(Collections.singletonList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeq(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
+            aeqd(p.toString(), sumDouble(Arrays.asList(p.a, p.b)), p.a + p.b);
         }
 
         Iterable<List<Double>> dssFail = map(
@@ -370,7 +355,7 @@ public class IterableUtilsProperties {
 
     private static @NotNull BigInteger sumBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
         return foldl(
-                p -> p.a.add(p.b),
+                BigInteger::add,
                 BigInteger.ZERO,
                 sort(
                         (x, y) -> {
@@ -409,7 +394,7 @@ public class IterableUtilsProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertEquals(i.toString(), sumBigInteger(Arrays.asList(i)), i);
+            assertEquals(i.toString(), sumBigInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
@@ -433,23 +418,14 @@ public class IterableUtilsProperties {
 
     private static void compareImplementationsSumBigInteger() {
         initialize();
-        System.out.println("\t\tcomparing sumBigInteger(Iterable<BigInteger>) implementations...");
-
-        long totalTime = 0;
-        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
-            long time = System.nanoTime();
-            sumBigInteger_alt(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
-            long time = System.nanoTime();
-            sumBigInteger(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<List<BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", IterableUtilsProperties::sumBigInteger_alt);
+        functions.put("standard", IterableUtils::sumBigInteger);
+        compareImplementations(
+                "sumBigInteger(Iterable<BigInteger>)",
+                take(LIMIT, P.lists(P.bigIntegers())),
+                functions
+        );
     }
 
     private static void propertiesSumBigDecimal() {
@@ -470,7 +446,7 @@ public class IterableUtilsProperties {
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertEquals(bd.toString(), sumBigDecimal(Arrays.asList(bd)), bd);
+            assertEquals(bd.toString(), sumBigDecimal(Collections.singletonList(bd)), bd);
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
@@ -488,7 +464,7 @@ public class IterableUtilsProperties {
             try {
                 sumBigDecimal(bds);
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -510,7 +486,7 @@ public class IterableUtilsProperties {
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertEquals(Byte.toString(b), productByte(Arrays.asList(b)), b);
+            assertEquals(Byte.toString(b), productByte(Collections.singletonList(b)), b);
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
@@ -550,7 +526,7 @@ public class IterableUtilsProperties {
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertEquals(Short.toString(s), productShort(Arrays.asList(s)), s);
+            assertEquals(Short.toString(s), productShort(Collections.singletonList(s)), s);
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
@@ -590,7 +566,7 @@ public class IterableUtilsProperties {
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertEquals(Integer.toString(i), productInteger(Arrays.asList(i)), i);
+            assertEquals(Integer.toString(i), productInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
@@ -630,7 +606,7 @@ public class IterableUtilsProperties {
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertEquals(Long.toString(l), productLong(Arrays.asList(l)), l);
+            assertEquals(Long.toString(l), productLong(Collections.singletonList(l)), l);
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
@@ -669,15 +645,15 @@ public class IterableUtilsProperties {
         );
 
         for (List<Float> fs : take(LIMIT, fss)) {
-            aeq(fs.toString(), productFloat(fs), Float.NaN);
+            aeqf(fs.toString(), productFloat(fs), Float.NaN);
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            aeq(Float.toString(f), productFloat(Arrays.asList(f)), f);
+            aeqf(Float.toString(f), productFloat(Collections.singletonList(f)), f);
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeq(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
+            aeqf(p.toString(), productFloat(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -712,15 +688,15 @@ public class IterableUtilsProperties {
         );
 
         for (List<Double> ds : take(LIMIT, dss)) {
-            aeq(ds.toString(), productDouble(ds), Double.NaN);
+            aeqd(ds.toString(), productDouble(ds), Double.NaN);
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            aeq(Double.toString(d), productDouble(Arrays.asList(d)), d);
+            aeqd(Double.toString(d), productDouble(Collections.singletonList(d)), d);
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeq(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
+            aeqd(p.toString(), productDouble(Arrays.asList(p.a, p.b)), p.a * p.b);
         }
 
         Iterable<List<Double>> dssFail = map(
@@ -740,7 +716,7 @@ public class IterableUtilsProperties {
 
     private static @NotNull BigInteger productBigInteger_alt(@NotNull Iterable<BigInteger> xs) {
         return foldl(
-                p -> p.a.multiply(p.b),
+                BigInteger::multiply,
                 BigInteger.ONE,
                 sort(
                         (x, y) -> {
@@ -779,7 +755,7 @@ public class IterableUtilsProperties {
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertEquals(i.toString(), productBigInteger(Arrays.asList(i)), i);
+            assertEquals(i.toString(), productBigInteger(Collections.singletonList(i)), i);
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
@@ -803,23 +779,14 @@ public class IterableUtilsProperties {
 
     private static void compareImplementationsProductBigInteger() {
         initialize();
-        System.out.println("\t\tcomparing productBigInteger(Iterable<BigInteger>) implementations...");
-
-        long totalTime = 0;
-        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
-            long time = System.nanoTime();
-            productBigInteger_alt(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\talt: " + ((double) totalTime) / 1e9 + " s");
-
-        totalTime = 0;
-        for (List<BigInteger> is : take(LIMIT, P.lists(P.bigIntegers()))) {
-            long time = System.nanoTime();
-            productBigInteger(is);
-            totalTime += (System.nanoTime() - time);
-        }
-        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
+        Map<String, Function<List<BigInteger>, BigInteger>> functions = new LinkedHashMap<>();
+        functions.put("alt", IterableUtilsProperties::productBigInteger_alt);
+        functions.put("standard", IterableUtils::productBigInteger);
+        compareImplementations(
+                "productBigInteger(Iterable<BigInteger>)",
+                take(LIMIT, P.lists(P.bigIntegers())),
+                functions
+        );
     }
 
     private static void propertiesProductBigDecimal() {
@@ -840,7 +807,7 @@ public class IterableUtilsProperties {
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertEquals(bd.toString(), productBigDecimal(Arrays.asList(bd)), bd);
+            assertEquals(bd.toString(), productBigDecimal(Collections.singletonList(bd)), bd);
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
@@ -858,7 +825,7 @@ public class IterableUtilsProperties {
             try {
                 productBigDecimal(bds);
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
     
@@ -870,18 +837,18 @@ public class IterableUtilsProperties {
             Iterable<Byte> deltas = deltaByte(bs);
             aeq(bs.toString(), length(deltas), length(bs) - 1);
             Iterable<Byte> reversed = reverse(map(b -> (byte) -b, deltaByte(reverse(bs))));
-            aeq(bs.toString(), deltas, reversed);
+            aeqit(bs.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            assertTrue(Byte.toString(b), isEmpty(deltaByte(Arrays.asList(b))));
+            assertTrue(Byte.toString(b), isEmpty(deltaByte(Collections.singletonList(b))));
         }
 
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
-            aeq(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Arrays.asList((byte) (p.b - p.a)));
+            aeqit(p.toString(), deltaByte(Arrays.asList(p.a, p.b)), Collections.singletonList((byte) (p.b - p.a)));
         }
 
         Iterable<List<Byte>> bssFail = map(
@@ -907,18 +874,18 @@ public class IterableUtilsProperties {
             Iterable<Short> deltas = deltaShort(ss);
             aeq(ss.toString(), length(deltas), length(ss) - 1);
             Iterable<Short> reversed = reverse(map(s -> (short) -s, deltaShort(reverse(ss))));
-            aeq(ss.toString(), deltas, reversed);
+            aeqit(ss.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            assertTrue(Short.toString(s), isEmpty(deltaShort(Arrays.asList(s))));
+            assertTrue(Short.toString(s), isEmpty(deltaShort(Collections.singletonList(s))));
         }
 
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
-            aeq(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Arrays.asList((short) (p.b - p.a)));
+            aeqit(p.toString(), deltaShort(Arrays.asList(p.a, p.b)), Collections.singletonList((short) (p.b - p.a)));
         }
 
         Iterable<List<Short>> sssFail = map(
@@ -944,18 +911,18 @@ public class IterableUtilsProperties {
             Iterable<Integer> deltas = deltaInteger(is);
             aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaInteger(reverse(is))));
-            aeq(is.toString(), deltas, reversed);
+            aeqit(is.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            assertTrue(Integer.toString(i), isEmpty(deltaInteger(Arrays.asList(i))));
+            assertTrue(Integer.toString(i), isEmpty(deltaInteger(Collections.singletonList(i))));
         }
 
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
-            aeq(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaInteger(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Integer>> issFail = map(
@@ -981,18 +948,18 @@ public class IterableUtilsProperties {
             Iterable<Long> deltas = deltaLong(ls);
             aeq(ls.toString(), length(deltas), length(ls) - 1);
             Iterable<Long> reversed = reverse(map(l -> -l, deltaLong(reverse(ls))));
-            aeq(ls.toString(), deltas, reversed);
+            aeqit(ls.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            assertTrue(Long.toString(l), isEmpty(deltaLong(Arrays.asList(l))));
+            assertTrue(Long.toString(l), isEmpty(deltaLong(Collections.singletonList(l))));
         }
 
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
-            aeq(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaLong(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Long>> lssFail = map(
@@ -1018,18 +985,18 @@ public class IterableUtilsProperties {
             Iterable<BigInteger> deltas = deltaBigInteger(is);
             aeq(is.toString(), length(deltas), length(is) - 1);
             Iterable<BigInteger> reversed = reverse(map(BigInteger::negate, deltaBigInteger(reverse(is))));
-            aeq(is.toString(), deltas, reversed);
+            aeqit(is.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            assertTrue(i.toString(), isEmpty(deltaBigInteger(Arrays.asList(i))));
+            assertTrue(i.toString(), isEmpty(deltaBigInteger(Collections.singletonList(i))));
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
-            aeq(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
+            aeqit(p.toString(), deltaBigInteger(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b.subtract(p.a)));
         }
 
         Iterable<List<BigInteger>> issFail = map(
@@ -1043,7 +1010,7 @@ public class IterableUtilsProperties {
             try {
                 toList(deltaBigInteger(ls));
                 fail(ls.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -1055,18 +1022,18 @@ public class IterableUtilsProperties {
             Iterable<BigDecimal> deltas = deltaBigDecimal(bds);
             aeq(bds.toString(), length(deltas), length(bds) - 1);
             Iterable<BigDecimal> reversed = reverse(map(BigDecimal::negate, deltaBigDecimal(reverse(bds))));
-            aeq(bds.toString(), deltas, reversed);
+            aeqit(bds.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
-            assertTrue(bd.toString(), isEmpty(deltaBigDecimal(Arrays.asList(bd))));
+            assertTrue(bd.toString(), isEmpty(deltaBigDecimal(Collections.singletonList(bd))));
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            aeq(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Arrays.asList(p.b.subtract(p.a)));
+            aeqit(p.toString(), deltaBigDecimal(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b.subtract(p.a)));
         }
 
         Iterable<List<BigDecimal>> bdssFail = map(
@@ -1080,7 +1047,7 @@ public class IterableUtilsProperties {
             try {
                 toList(deltaBigDecimal(bds));
                 fail(bds.toString());
-            } catch (AssertionError | NullPointerException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 
@@ -1092,18 +1059,22 @@ public class IterableUtilsProperties {
             Iterable<Float> deltas = deltaFloat(fs);
             aeq(fs.toString(), length(deltas), length(fs) - 1);
             Iterable<Float> reversed = reverse(map(f -> -f, deltaFloat(reverse(fs))));
-            aeq(fs.toString(), absFloatNegativeZeros(deltas), absFloatNegativeZeros(reversed));
+            aeqit(
+                    fs.toString(),
+                    map(FloatingPointUtils::absNegativeZeros, deltas),
+                    map(FloatingPointUtils::absNegativeZeros, reversed)
+            );
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (float f : take(LIMIT, P.floats())) {
-            assertTrue(Float.toString(f), isEmpty(deltaFloat(Arrays.asList(f))));
+            assertTrue(Float.toString(f), isEmpty(deltaFloat(Collections.singletonList(f))));
         }
 
         for (Pair<Float, Float> p : take(LIMIT, P.pairs(P.floats()))) {
-            aeq(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaFloat(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Float>> fssFail = map(
@@ -1129,18 +1100,22 @@ public class IterableUtilsProperties {
             Iterable<Double> deltas = deltaDouble(ds);
             aeq(ds.toString(), length(deltas), length(ds) - 1);
             Iterable<Double> reversed = reverse(map(d -> -d, deltaDouble(reverse(ds))));
-            aeq(ds.toString(), absDoubleNegativeZeros(deltas), absDoubleNegativeZeros(reversed));
+            aeqit(
+                    ds.toString(),
+                    map(FloatingPointUtils::absNegativeZeros, deltas),
+                    map(FloatingPointUtils::absNegativeZeros, reversed)
+            );
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (double d : take(LIMIT, P.doubles())) {
-            assertTrue(Double.toString(d), isEmpty(deltaDouble(Arrays.asList(d))));
+            assertTrue(Double.toString(d), isEmpty(deltaDouble(Collections.singletonList(d))));
         }
 
         for (Pair<Double, Double> p : take(LIMIT, P.pairs(P.doubles()))) {
-            aeq(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaDouble(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Double>> dssFail = map(
@@ -1166,18 +1141,18 @@ public class IterableUtilsProperties {
             Iterable<Integer> deltas = deltaCharacter(cs);
             aeq(cs.toString(), length(deltas), length(cs) - 1);
             Iterable<Integer> reversed = reverse(map(i -> -i, deltaCharacter(reverse(cs))));
-            aeq(cs.toString(), deltas, reversed);
+            aeqit(cs.toString(), deltas, reversed);
             try {
                 deltas.iterator().remove();
             } catch (UnsupportedOperationException ignored) {}
         }
 
         for (char c : take(LIMIT, P.characters())) {
-            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Arrays.asList(c))));
+            assertTrue(Character.toString(c), isEmpty(deltaCharacter(Collections.singletonList(c))));
         }
 
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
-            aeq(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Arrays.asList(p.b - p.a));
+            aeqit(p.toString(), deltaCharacter(Arrays.asList(p.a, p.b)), Collections.singletonList(p.b - p.a));
         }
 
         Iterable<List<Character>> cssFail = map(
@@ -1193,33 +1168,5 @@ public class IterableUtilsProperties {
                 fail(cs.toString());
             } catch (NullPointerException ignored) {}
         }
-    }
-
-    private static @NotNull Iterable<Float> absFloatNegativeZeros(@NotNull Iterable<Float> fs) {
-        return map(f -> f == 0.0f ? 0.0f : f, fs);
-    }
-
-    private static @NotNull Iterable<Double> absDoubleNegativeZeros(@NotNull Iterable<Double> ds) {
-        return map(d -> d == 0.0 ? 0.0 : d, ds);
-    }
-
-    private static <T> void aeq(String message, Iterable<T> xs, Iterable<T> ys) {
-        assertTrue(message, equal(xs, ys));
-    }
-
-    private static void aeq(String message, int i, int j) {
-        assertEquals(message, i, j);
-    }
-
-    private static void aeq(String message, long i, long j) {
-        assertEquals(message, i, j);
-    }
-
-    private static void aeq(String message, float f1, float f2) {
-        assertEquals(message, Float.toString(f1), Float.toString(f2));
-    }
-
-    private static void aeq(String message, double d1, double d2) {
-        assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 }

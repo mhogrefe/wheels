@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
-public final class FloatingPointUtils {
+public final strictfp class FloatingPointUtils {
     /**
      * Disallow instantiation
      */
@@ -184,5 +184,25 @@ public final class FloatingPointUtils {
         bits |= rawMantissa.longValueExact();
         double d = Double.longBitsToDouble(bits);
         return Optional.of(sign ? d : -d);
+    }
+
+    /**
+     * If {@code f} is -0.0f, return 0.0f; otherwise, return {@code f}.
+     *
+     * @param f a {@code float}
+     * @return a {@code float} equal to {@code f} and not -0.0f
+     */
+    public static float absNegativeZeros(float f) {
+        return f == 0.0f ? 0.0f : f;
+    }
+
+    /**
+     * If {@code d} is -0.0, return 0.0; otherwise, return {@code d}.
+     *
+     * @param d a {@code double}
+     * @return a {@code double} equal to {@code d} and not -0.0
+     */
+    public static double absNegativeZeros(double d) {
+        return d == 0.0 ? 0.0 : d;
     }
 }

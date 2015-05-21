@@ -9,8 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static mho.wheels.ordering.Ordering.*;
 
@@ -20,11 +22,26 @@ import static mho.wheels.ordering.Ordering.*;
  * {@link mho.wheels.math.Combinatorics}).
  */
 @SuppressWarnings("ConstantConditions")
-public final class IterableUtils {
+public final strictfp class IterableUtils {
     /**
      * Disallow instantiation
      */
     private IterableUtils() {}
+
+    //todo docs
+    public static @NotNull <T> Iterable<T> fromSupplier(@NotNull Supplier<T> supplier) {
+        return () -> new NoRemoveIterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public T next() {
+                return supplier.get();
+            }
+        };
+    }
 
     /**
      * Adds an {@code Iterable}'s elements to a {@link Collection}, in the order that the elements appear in the
@@ -126,7 +143,7 @@ public final class IterableUtils {
      * elements, an ellipsis ({@code ...}) is added at the end of the list.
      *
      * <ul>
-     *  <li>{@code size} must be non-negative.</li>
+     *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code xs} may be any {@code Iterable}.</li>
      *  <li>The result begins with {@code '['} and ends with {@code ']'}.</li>
      * </ul>
@@ -139,15 +156,23 @@ public final class IterableUtils {
     public static @NotNull <T> String toString(int size, @NotNull Iterable<T> xs) {
         if (size < 0)
             throw new IllegalArgumentException("size cannot be negative");
-        if (size == 0) {
-            return isEmpty(xs) ? "[]" : "[...]";
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        String prefix = "";
+        Iterator<T> it = xs.iterator();
+        int i = 0;
+        while (it.hasNext() && i < size) {
+            sb.append(prefix);
+            sb.append(it.next());
+            prefix = ", ";
+            i++;
         }
-        List<T> list = toList(take(size + 1, xs));
-        String listString = toList(take(size, list)).toString();
-        if (list.size() > size) {
-            listString = init(listString) + ", ...]";
+        if (it.hasNext()) {
+            sb.append(prefix);
+            sb.append("...");
         }
-        return listString;
+        sb.append(']');
+        return sb.toString();
     }
 
     /**
@@ -163,7 +188,7 @@ public final class IterableUtils {
      * @return an {@code Iterable} containing all the {@code String}'s characters in their original order
      */
     public static @NotNull Iterable<Character> fromString(@NotNull String s) {
-        return () -> new Iterator<Character>() {
+        return () -> new NoRemoveIterator<Character>() {
             private int i = 0;
 
             @Override
@@ -174,11 +199,6 @@ public final class IterableUtils {
             @Override
             public Character next() {
                 return s.charAt(i++);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -383,7 +403,7 @@ public final class IterableUtils {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
         return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
@@ -413,7 +433,7 @@ public final class IterableUtils {
         if (Double.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
         return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
@@ -741,10 +761,10 @@ public final class IterableUtils {
     public static @NotNull Iterable<Float> range(float a, float b) {
         if (Float.isNaN(a) || Float.isNaN(b))
             throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Arrays.asList(a);
+        if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Float.NEGATIVE_INFINITY)) : Arrays.asList(Float.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         if (Float.isInfinite(b)) {
             return rangeUp(a);
@@ -786,10 +806,10 @@ public final class IterableUtils {
     public static @NotNull Iterable<Double> range(double a, double b) {
         if (Double.isNaN(a) || Double.isNaN(b))
             throw new IllegalArgumentException("cannot begin or end a range with NaN");
-        if (a == b) return Arrays.asList(a);
+        if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Arrays.asList(Double.NEGATIVE_INFINITY)) : Arrays.asList(Double.POSITIVE_INFINITY);
+            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         if (Double.isInfinite(b)) {
             return rangeUp(a);
@@ -2145,24 +2165,20 @@ public final class IterableUtils {
         );
     }
 
-    public static @Nullable <A, B> B foldl(
-            @NotNull Function<Pair<B, A>, B> f,
-            @Nullable B z,
-            @NotNull Iterable<A> xs
-    ) {
+    public static @Nullable <A, B> B foldl(@NotNull BiFunction<B, A, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
         B result = z;
         for (A x : xs) {
-            result = f.apply(new Pair<B, A>(result, x));
+            result = f.apply(result, x);
         }
         return result;
     }
 
-    public static @Nullable <A> A foldl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+    public static @Nullable <A> A foldl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         A result = null;
         boolean started = false;
         for (A x : xs) {
             if (started) {
-                result = f.apply(new Pair<A, A>(result, x));
+                result = f.apply(result, x);
             } else {
                 result = x;
                 started = true;
@@ -2171,16 +2187,14 @@ public final class IterableUtils {
         return result;
     }
 
-    public static @Nullable <A, B> B foldr(
-            @NotNull Function<Pair<A, B>, B> f,
-            @Nullable B z,
-            @NotNull Iterable<A> xs
-    ) {
-        return foldl(p -> f.apply(new Pair<>(p.b, p.a)), z, reverse(xs));
+    public static @Nullable <A, B> B foldr(@NotNull BiFunction<A, B, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
+        //noinspection unchecked
+        return foldl((x, y) -> f.apply(y, x), z, reverse(xs));
     }
 
-    public static @Nullable <A> A foldr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
-        return foldl1(p -> f.apply(new Pair<>(p.b, p.a)), reverse(xs));
+    public static @Nullable <A> A foldr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+        //noinspection unchecked
+        return foldl1((x, y) -> f.apply(y, x), reverse(xs));
     }
 
     public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<Iterable<T>> xss) {
@@ -2286,7 +2300,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static byte sumByte(@NotNull Iterable<Byte> xs) {
-        return foldl(p -> (byte) (p.a + p.b), (byte) 0, xs);
+        return foldl((x, y) -> (byte) (x + y), (byte) 0, xs);
     }
 
     /**
@@ -2302,7 +2316,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static short sumShort(@NotNull Iterable<Short> xs) {
-        return foldl(p -> (short) (p.a + p.b), (short) 0, xs);
+        return foldl((x, y) -> (short) (x + y), (short) 0, xs);
     }
 
     /**
@@ -2318,7 +2332,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static int sumInteger(@NotNull Iterable<Integer> xs) {
-        return foldl(p -> p.a + p.b, 0, xs);
+        return foldl((x, y) -> x + y, 0, xs);
     }
 
     /**
@@ -2334,7 +2348,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static long sumLong(@NotNull Iterable<Long> xs) {
-        return foldl(p -> p.a + p.b, 0L, xs);
+        return foldl((x, y) -> x + y, 0L, xs);
     }
 
     /**
@@ -2351,7 +2365,7 @@ public final class IterableUtils {
      */
     public static float sumFloat(@NotNull Iterable<Float> xs) {
         if (isEmpty(xs)) return 0.0f;
-        return foldl1(p -> p.a + p.b, xs);
+        return foldl1((x, y) -> x + y, xs);
     }
 
     /**
@@ -2368,7 +2382,7 @@ public final class IterableUtils {
      */
     public static double sumDouble(Iterable<Double> xs) {
         if (isEmpty(xs)) return 0.0;
-        return foldl1(p -> p.a + p.b, xs);
+        return foldl1((x, y) -> x + y, xs);
     }
 
     /**
@@ -2383,7 +2397,7 @@ public final class IterableUtils {
      * @return Σxs
      */
     public static @NotNull BigInteger sumBigInteger(@NotNull Iterable<BigInteger> xs) {
-        return foldl(p -> p.a.add(p.b), BigInteger.ZERO, xs);
+        return foldl(BigInteger::add, BigInteger.ZERO, xs);
     }
 
     /**
@@ -2401,7 +2415,7 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ZERO;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl1(p -> p.a.add(p.b), xs);
+        return foldl1(BigDecimal::add, xs);
     }
 
     /**
@@ -2417,7 +2431,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static byte productByte(@NotNull Iterable<Byte> xs) {
-        return foldl(p -> (byte) (p.a * p.b), (byte) 1, xs);
+        return foldl((x, y) -> (byte) (x * y), (byte) 1, xs);
     }
 
     /**
@@ -2433,7 +2447,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static short productShort(@NotNull Iterable<Short> xs) {
-        return foldl(p -> (short) (p.a * p.b), (short) 1, xs);
+        return foldl((x, y) -> (short) (x * y), (short) 1, xs);
     }
 
     /**
@@ -2449,7 +2463,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static int productInteger(@NotNull Iterable<Integer> xs) {
-        return foldl(p -> p.a * p.b, 1, xs);
+        return foldl((x, y) -> x * y, 1, xs);
     }
 
     /**
@@ -2465,7 +2479,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static long productLong(@NotNull Iterable<Long> xs) {
-        return foldl(p -> p.a * p.b, 1L, xs);
+        return foldl((x, y) -> x * y, 1L, xs);
     }
 
     /**
@@ -2481,7 +2495,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static float productFloat(@NotNull Iterable<Float> xs) {
-        return foldl(p -> p.a * p.b, 1.0f, xs);
+        return foldl((x, y) -> x * y, 1.0f, xs);
     }
 
     /**
@@ -2497,7 +2511,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static double productDouble(@NotNull Iterable<Double> xs) {
-        return foldl(p -> p.a * p.b, 1.0, xs);
+        return foldl((x, y) -> x * y, 1.0, xs);
     }
 
     /**
@@ -2512,7 +2526,7 @@ public final class IterableUtils {
      * @return Πxs
      */
     public static @NotNull BigInteger productBigInteger(Iterable<BigInteger> xs) {
-        return foldl(p -> p.a.multiply(p.b), BigInteger.ONE, xs);
+        return foldl(BigInteger::multiply, BigInteger.ONE, xs);
     }
 
     /**
@@ -2530,27 +2544,27 @@ public final class IterableUtils {
         if (isEmpty(xs)) return BigDecimal.ONE;
         if (head(xs) == null)
             throw new NullPointerException();
-        return foldl(p -> p.a.multiply(p.b), BigDecimal.ONE, xs);
+        return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
     public static @Nullable <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
-        return foldl1(p -> max(p.a, p.b), xs);
+        return foldl1((x, y) -> max(x, y), xs);
     }
 
     public static char maximum(@NotNull String s) {
-        return foldl1(p -> max(p.a, p.b), fromString(s));
+        return foldl1((x, y) -> max(x, y), fromString(s));
     }
 
     public static @Nullable <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
-        return foldl1(p -> min(p.a, p.b), xs);
+        return foldl1((x, y) -> min(x, y), xs);
     }
 
     public static char minimum(@NotNull String s) {
-        return foldl1(p -> min(p.a, p.b), fromString(s));
+        return foldl1((x, y) -> min(x, y), fromString(s));
     }
 
     public static @NotNull <A, B> Iterable<B> scanl(
-            @NotNull Function<Pair<B, A>, B> f,
+            @NotNull BiFunction<B, A, B> f,
             @Nullable B z,
             @NotNull Iterable<A> xs
     ) {
@@ -2570,7 +2584,7 @@ public final class IterableUtils {
                     firstTime = false;
                     return result;
                 } else {
-                    result = f.apply(new Pair<B, A>(result, xsi.next()));
+                    result = f.apply(result, xsi.next());
                     return result;
                 }
             }
@@ -2582,30 +2596,30 @@ public final class IterableUtils {
         };
     }
 
-    public static @NotNull <A> Iterable<A> scanl1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
+    public static @NotNull <A> Iterable<A> scanl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         return scanl(f, head(xs), tail(xs));
     }
 
     public static @NotNull <A, B> Iterable<B> scanr(
-            @NotNull Function<Pair<A, B>, B> f,
+            @NotNull BiFunction<A, B, B> f,
             @NotNull B z,
             @NotNull Iterable<A> xs
     ) {
-        return scanl(p -> f.apply(new Pair<>(p.b, p.a)), z, reverse(xs));
+        return scanl((x, y) -> f.apply(y, x), z, reverse(xs));
     }
 
-    public static @NotNull <A> Iterable<A> scanr1(@NotNull Function<Pair<A, A>, A> f, @NotNull Iterable<A> xs) {
-        return scanl1(p -> f.apply(new Pair<A, A>(p.b, p.a)), reverse(xs));
+    public static @NotNull <A> Iterable<A> scanr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+        return scanl1((x, y) -> f.apply(y, x), reverse(xs));
     }
 
     public static @NotNull <X, Y, ACC> Pair<ACC, List<Y>> mapAccumL(
-            @NotNull Function<Pair<ACC, X>, Pair<ACC, Y>> f,
+            @NotNull BiFunction<ACC, X, Pair<ACC, Y>> f,
             @Nullable ACC s,
             @NotNull Iterable<X> xs
     ) {
         List<Y> ys = new ArrayList<>();
         for (X x : xs) {
-            Pair<ACC, Y> p = f.apply(new Pair<>(s, x));
+            Pair<ACC, Y> p = f.apply(s, x);
             s = p.a;
             ys.add(p.b);
         }
@@ -2613,7 +2627,7 @@ public final class IterableUtils {
     }
 
     public static @NotNull <X, Y, ACC> Pair<ACC, List<Y>> mapAccumR(
-            @NotNull Function<Pair<ACC, X>, Pair<ACC, Y>> f,
+            @NotNull BiFunction<ACC, X, Pair<ACC, Y>> f,
             @Nullable ACC s,
             @NotNull Iterable<X> xs) {
         return mapAccumL(f, s, reverse(xs));
@@ -3316,7 +3330,7 @@ public final class IterableUtils {
                         T original = nextX;
                         int count = 0;
                         do {
-                            count++;
+                            if (count != Integer.MAX_VALUE) count++;
                             if (!xsi.hasNext()) {
                                 isLast = true;
                                 break;
@@ -3433,7 +3447,7 @@ public final class IterableUtils {
 
             @Override
             public List<T> next() {
-                previousWindow = toList(concat(tail(previousWindow), Arrays.asList(xsi.next())));
+                previousWindow = toList(concat(tail(previousWindow), Collections.singletonList(xsi.next())));
                 return previousWindow;
             }
 
@@ -3514,10 +3528,10 @@ public final class IterableUtils {
     }
 
     public static @NotNull <A, B> Iterable<B> adjacentPairsWith(
-            @NotNull Function<Pair<A, A>, B> f,
+            @NotNull BiFunction<A, A, B> f,
             @NotNull Iterable<A> xs
     ) {
-        return map(list -> f.apply(new Pair<A, A>(list.get(0), list.get(1))), windows(2, xs));
+        return map(list -> f.apply(list.get(0), list.get(1)), windows(2, xs));
     }
 
     /**
@@ -3540,7 +3554,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> (byte) (p.b - p.a), xs);
+        return adjacentPairsWith((x, y) -> (byte) (y - x), xs);
     }
 
     /**
@@ -3563,7 +3577,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> (short) (p.b - p.a), xs);
+        return adjacentPairsWith((x, y) -> (short) (y - x), xs);
     }
 
     /**
@@ -3586,7 +3600,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b - p.a, xs);
+        return adjacentPairsWith((x, y) -> y - x, xs);
     }
 
     /**
@@ -3609,7 +3623,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b - p.a, xs);
+        return adjacentPairsWith((x, y) -> y - x, xs);
     }
 
     /**
@@ -3631,7 +3645,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+        return adjacentPairsWith((x, y) -> y.subtract(x), xs);
     }
 
     /**
@@ -3653,7 +3667,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b.subtract(p.a), xs);
+        return adjacentPairsWith((x, y) -> y.subtract(x), xs);
     }
 
     /**
@@ -3676,7 +3690,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b - p.a, xs);
+        return adjacentPairsWith((x, y) -> y - x, xs);
     }
 
     /**
@@ -3699,7 +3713,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b - p.a, xs);
+        return adjacentPairsWith((x, y) -> y - x, xs);
     }
 
     /**
@@ -3721,7 +3735,7 @@ public final class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith(p -> p.b - p.a, xs);
+        return adjacentPairsWith((x, y) -> y - x, xs);
     }
 
     public static <T> boolean same(@NotNull Iterable<T> xs) {
@@ -3737,25 +3751,25 @@ public final class IterableUtils {
     }
 
     public static <T extends Comparable<T>> boolean increasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith(p -> lt(p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> lt(x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean decreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith(p -> gt(p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> gt(x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean weaklyIncreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith(p -> le(p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> le(x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean weaklyDecreasing(@NotNull Iterable<T> xs) {
-        return and(adjacentPairsWith(p -> ge(p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> ge(x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean zigzagging(@NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                q -> q,
-                adjacentPairsWith(p -> compare(p.a, p.b), xs)
+                (a, b) -> new Pair<Ordering, Ordering>(a, b),
+                adjacentPairsWith((x, y) -> compare(x, y), xs)
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
@@ -3764,28 +3778,28 @@ public final class IterableUtils {
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
-        return and(adjacentPairsWith(p -> lt(comparator, p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean decreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
-        return and(adjacentPairsWith(p -> gt(comparator, p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean weaklyIncreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
-        return and(adjacentPairsWith(p -> le(comparator, p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean weaklyDecreasing(
             @NotNull Comparator<T> comparator,
             @NotNull Iterable<T> xs
     ) {
-        return and(adjacentPairsWith(p -> ge(comparator, p.a, p.b), xs));
+        return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
     }
 
     public static <T extends Comparable<T>> boolean zigzagging(
@@ -3793,8 +3807,8 @@ public final class IterableUtils {
             @NotNull Iterable<T> xs
     ) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
-                q -> q,
-                adjacentPairsWith(p -> compare(comparator, p.a, p.b), xs)
+                (a, b) -> new Pair<Ordering, Ordering>(a, b),
+                adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
         );
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
@@ -4558,12 +4572,8 @@ public final class IterableUtils {
         };
     }
 
-    public static <A, B, O> Iterable<O> zipWith(
-            Function<Pair<A, B>, O> f,
-            Iterable<A> as,
-            Iterable<B> bs
-    ) {
-        return map(f, zip(as, bs));
+    public static <A, B, O> Iterable<O> zipWith(BiFunction<A, B, O> f, Iterable<A> as, Iterable<B> bs) {
+        return map(p -> f.apply(p.a, p.b), zip(as, bs));
     }
 
     public static <A, B, C, O> Iterable<O> zipWith3(
@@ -4622,13 +4632,13 @@ public final class IterableUtils {
     }
 
     public static <A, B, O> Iterable<O> zipWithPadded(
-            Function<Pair<A, B>, O> f,
+            BiFunction<A, B, O> f,
             A aPad,
             B bPad,
             Iterable<A> as,
             Iterable<B> bs
     ) {
-        return map(f, zipPadded(aPad, bPad, as, bs));
+        return map(p -> f.apply(p.a, p.b), zipPadded(aPad, bPad, as, bs));
     }
 
     public static <A, B, C, O> Iterable<O> zipWith3Padded(
@@ -5233,19 +5243,19 @@ public final class IterableUtils {
     }
 
     public static @Nullable <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1(p -> max(comparator, p.a, p.b), xs);
+        return foldl1((x, y) -> max(comparator, x, y), xs);
     }
 
     public static char maximum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1(p -> max(comparator, p.a, p.b), fromString(s));
+        return foldl1((x, y) -> max(comparator, x, y), fromString(s));
     }
 
     public static @Nullable <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
-        return foldl1(p -> min(comparator, p.a, p.b), xs);
+        return foldl1((x, y) -> min(comparator, x, y), xs);
     }
 
     public static char minimum(@NotNull Comparator<Character> comparator, @NotNull String s) {
-        return foldl1(p -> min(comparator, p.a, p.b), fromString(s));
+        return foldl1((x, y) -> min(comparator, x, y), fromString(s));
     }
 
     public static @NotNull <T> Iterable<List<T>> group(
@@ -5325,5 +5335,9 @@ public final class IterableUtils {
             if (!Objects.equals(x, y)) return false;
         }
         return !ysi.hasNext();
+    }
+
+    public static <T> boolean equal(int limit, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        return equal(take(limit, xs), take(limit, ys));
     }
 }

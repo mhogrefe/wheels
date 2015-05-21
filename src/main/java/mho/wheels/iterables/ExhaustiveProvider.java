@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.Combinatorics;
-import mho.wheels.math.MathUtils;
 import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
@@ -11,65 +10,72 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 /**
- * {@link Iterable}s that contain all (or some important subset) of a type's values. These are useful for exhaustive
- * testing. Nulls are not included by default, but may easily be added via
- * {@link mho.wheels.iterables.IterableUtils#cons}. The {@code Iterable}'s elements are typically in order of
- * increasing complexity, unless otherwise specified. See {@code ExhaustiveProviderTest} for examples.
+ * An {@code ExhaustiveProvider} produces {@code Iterable}s that generate some set of values in a specified order.
+ * There is only a single instance of this class.
  */
 @SuppressWarnings("ConstantConditions")
-public class ExhaustiveProvider implements IterableProvider {
+public final strictfp class ExhaustiveProvider extends IterableProvider {
+    /**
+     * The single instance of this class.
+     */
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
-    private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
-
-    protected ExhaustiveProvider() {}
 
     /**
-     * A {@link List} that contains both {@link Boolean}s.
+     * The transition between algorithms for generating lists of values. If the number of values is less than or equal
+     * to this value, we use lexicographic ordering; otherwise, Z-curve ordering.
+     */
+    private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
+
+    /**
+     * Disallow instantiation
+     */
+    private ExhaustiveProvider() {}
+
+    /**
+     * An {@link Iterable} that contains both {@link boolean}s. Does not support removal.
      *
      * Length is 2
      */
     @Override
-    public @NotNull List<Boolean> booleans() {
-        return Arrays.asList(false, true);
+    public @NotNull Iterable<Boolean> booleans() {
+        return new NoRemoveIterable<>(Arrays.asList(false, true));
     }
 
     /**
-     * A {@code List} that contains all {@link Ordering}s in increasing order.
+     * An {@code Iterable} that contains all {@link Ordering}s in increasing order. Does not support removal.
      *
      * Length is 3
-     *
-     * @return the {@code List} described above.
      */
-    public @NotNull List<Ordering> orderingsIncreasing() {
-        return Arrays.asList(LT, EQ, GT);
+    public @NotNull Iterable<Ordering> orderingsIncreasing() {
+        return new NoRemoveIterable<>(Arrays.asList(LT, EQ, GT));
     }
 
     /**
-     * A {@code List} that contains all {@code Ordering}s.
+     * An {@code Iterable} that contains all {@code Ordering}s. Does not support removal.
      *
      * Length is 3
      */
     @Override
-    public @NotNull List<Ordering> orderings() {
-        return Arrays.asList(EQ, LT, GT);
+    public @NotNull Iterable<Ordering> orderings() {
+        return new NoRemoveIterable<>(Arrays.asList(EQ, LT, GT));
     }
 
     /**
-     * A {@code List} that contains all {@link RoundingMode}s.
+     * An {@code Iterable} that contains all {@link RoundingMode}s. Does not support removal.
      *
      * Length is 8
      */
     @Override
-    public @NotNull List<RoundingMode> roundingModes() {
-        return Arrays.asList(
+    public @NotNull Iterable<RoundingMode> roundingModes() {
+        return new NoRemoveIterable<>(Arrays.asList(
                 RoundingMode.UNNECESSARY,
                 RoundingMode.UP,
                 RoundingMode.DOWN,
@@ -78,192 +84,50 @@ public class ExhaustiveProvider implements IterableProvider {
                 RoundingMode.HALF_UP,
                 RoundingMode.HALF_DOWN,
                 RoundingMode.HALF_EVEN
-        );
+        ));
     }
 
+    /**
+     * Returns an unmodifiable version of a list. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of {@code xs}'s elements
+     * @return an unmodifiable version of {@code xs}
+     */
     @Override
-    public @NotNull Iterable<Byte> rangeUp(byte a) {
-        if (a >= 0) {
-            return IterableUtils.rangeUp(a);
-        } else {
-            return mux(Arrays.asList(IterableUtils.rangeUp((byte) 0), IterableUtils.rangeBy((byte) -1, (byte) -1, a)));
-        }
+    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        return new NoRemoveIterable<>(xs);
     }
 
+    /**
+     * Turns a {@code String} into an {@code Iterable} of {@code Character}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite.</li>
+     * </ul>
+     *
+     * Length is |{@code s}|
+     *
+     * @param s a {@code String}
+     * @return the {@code Character}s in {@code s}
+     */
     @Override
-    public @NotNull Iterable<Short> rangeUp(short a) {
-        if (a >= 0) {
-            return IterableUtils.rangeUp(a);
-        } else {
-            return mux(
-                    Arrays.asList(IterableUtils.rangeUp((short) 0), IterableUtils.rangeBy((short) -1, (short) -1, a))
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeUp(int a) {
-        if (a >= 0) {
-            return IterableUtils.rangeUp(a);
-        } else {
-            return mux(Arrays.asList(IterableUtils.rangeUp(0), IterableUtils.rangeBy(-1, -1, a)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeUp(long a) {
-        if (a >= 0) {
-            return IterableUtils.rangeUp(a);
-        } else {
-            return mux(Arrays.asList(IterableUtils.rangeUp(0L), IterableUtils.rangeBy(-1L, -1L, a)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
-        if (a.signum() != -1) {
-            return IterableUtils.rangeUp(a);
-        } else {
-            return mux(
-                    Arrays.asList(
-                            IterableUtils.rangeUp(BigInteger.ZERO),
-                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
-                    )
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeUp(char a) {
-        return IterableUtils.rangeUp(a);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeDown(byte a) {
-        if (a <= 0) {
-            return IterableUtils.rangeBy(a, (byte) -1);
-        } else {
-            return mux(Arrays.asList(IterableUtils.range((byte) 0, a), IterableUtils.rangeBy((byte) -1, (byte) -1)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeDown(short a) {
-        if (a <= 0) {
-            return IterableUtils.rangeBy(a, (short) -1);
-        } else {
-            return mux(
-                    Arrays.asList(IterableUtils.range((short) 0, a), IterableUtils.rangeBy((short) -1, (short) -1))
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeDown(int a) {
-        if (a <= 0) {
-            return IterableUtils.rangeBy(a, -1);
-        } else {
-            return mux(Arrays.asList(IterableUtils.range(0, a), IterableUtils.rangeBy(-1, -1)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeDown(long a) {
-        if (a <= 0) {
-            return IterableUtils.rangeBy(a, -1L);
-        } else {
-            return mux(Arrays.asList(IterableUtils.range(0L, a), IterableUtils.rangeBy(-1L, -1L)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
-        if (a.signum() != 1) {
-            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
-        } else {
-            return mux(Arrays.asList(IterableUtils.range(BigInteger.ZERO, a), IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeDown(char a) {
-        return IterableUtils.range('\0', a);
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (byte) -1, a);
-        } else {
-            return mux(
-                    Arrays.asList(IterableUtils.range((byte) 0, b), IterableUtils.rangeBy((byte) -1, (byte) -1, a))
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Short> range(short a, short b) {
-        if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (short) -1, a);
-        } else {
-            return mux(
-                    Arrays.asList(IterableUtils.range((short) 0, b), IterableUtils.rangeBy((short) -1, (short) -1, a))
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> range(int a, int b) {
-        if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, -1, a);
-        } else {
-            return mux(Arrays.asList(IterableUtils.range(0, b), IterableUtils.rangeBy(-1, -1, a)));
-        }
-    }
-
-    public @NotNull Iterable<Long> range(long a, long b) {
-        if (a >= 0 && b >= 0) {
-            return IterableUtils.range(a, b);
-        } else if (a < 0 && b < 0) {
-            return IterableUtils.rangeBy(b, (byte) -1, a);
-        } else {
-            return mux(Arrays.asList(IterableUtils.range(0L, b), IterableUtils.rangeBy(-1L, -1L, a)));
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (a.signum() != -1 && b.signum() != -1) {
-            return IterableUtils.range(a, b);
-        } else if (a.signum() == -1 && b.signum() == -1) {
-            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
-        } else {
-            return mux(
-                    Arrays.asList(
-                            IterableUtils.range(BigInteger.ZERO, b),
-                            IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
-                    )
-            );
-        }
-    }
-
-    @Override
-    public @NotNull Iterable<Character> range(char a, char b) {
-        return IterableUtils.range(a, b);
+    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
+        return fromString(s);
     }
 
     /**
      * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Byte> bytesIncreasing() {
         return IterableUtils.rangeUp(Byte.MIN_VALUE);
@@ -273,8 +137,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Short> shortsIncreasing() {
         return IterableUtils.rangeUp(Short.MIN_VALUE);
@@ -284,8 +146,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Integer> integersIncreasing() {
         return IterableUtils.rangeUp(Integer.MIN_VALUE);
@@ -295,8 +155,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Long> longsIncreasing() {
         return IterableUtils.rangeUp(Long.MIN_VALUE);
@@ -453,13 +311,63 @@ public class ExhaustiveProvider implements IterableProvider {
     }
 
     /**
+     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>8</sup>–1 = 127
+     */
+    @Override
+    public @NotNull Iterable<Byte> nonzeroBytes() {
+        return mux(Arrays.asList(positiveBytes(), negativeBytes()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
+     *
+     * Length is 2<sup>16</sup>–1 = 65,535
+     */
+    @Override
+    public @NotNull Iterable<Short> nonzeroShorts() {
+        return mux(Arrays.asList(positiveShorts(), negativeShorts()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
+     *
+     * Length is 2<sup>32</sup>–1 = 4,294,967,295
+     */
+    @Override
+    public @NotNull Iterable<Integer> nonzeroIntegers() {
+        return mux(Arrays.asList(positiveIntegers(), negativeIntegers()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
+     *
+     * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
+     */
+    @Override
+    public @NotNull Iterable<Long> nonzeroLongs() {
+        return mux(Arrays.asList(positiveLongs(), negativeLongs()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
+    }
+
+    /**
      * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return cons((byte) 0, mux(Arrays.asList(positiveBytes(), negativeBytes())));
+        return cons((byte) 0, nonzeroBytes());
     }
 
     /**
@@ -469,7 +377,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return cons((short) 0, mux(Arrays.asList(positiveShorts(), negativeShorts())));
+        return cons((short) 0, nonzeroShorts());
     }
 
     /**
@@ -479,7 +387,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integers() {
-        return cons(0, mux(Arrays.asList(positiveIntegers(), negativeIntegers())));
+        return cons(0, nonzeroIntegers());
     }
 
     /**
@@ -489,7 +397,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return cons(0L, mux(Arrays.asList(positiveLongs(), negativeLongs())));
+        return cons(0L, nonzeroLongs());
     }
 
     /**
@@ -499,7 +407,7 @@ public class ExhaustiveProvider implements IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        return cons(BigInteger.ZERO, mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers())));
+        return cons(BigInteger.ZERO, nonzeroBigIntegers());
     }
 
     /**
@@ -507,8 +415,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> asciiCharactersIncreasing() {
         return range((char) 0, (char) 127);
@@ -519,8 +425,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
-     *
-     * @return the {@code Iterable} described above.
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
@@ -528,12 +432,13 @@ public class ExhaustiveProvider implements IterableProvider {
                 range('a', 'z'),
                 range('A', 'Z'),
                 range('0', '9'),
-                range('!', '/'),            // printable non-alphanumeric ASCII...
-                range(':', '@'),            // ...
-                range('[', '`'),            // ...
-                range('{', '~'),            // ...
-                range((char) 0, (char) 32), // non-printable and whitespace ASCII
-                Arrays.asList((char) 127)   // DEL
+                range('!', '/'),                  // printable non-alphanumeric ASCII...
+                range(':', '@'),                  // ...
+                range('[', '`'),                  // ...
+                range('{', '~'),                  // ...
+                Collections.singleton(' '),       // ' '
+                range((char) 0, (char) 31),       // non-printable and whitespace ASCII
+                Collections.singleton((char) 127) // DEL
         ));
     }
 
@@ -541,8 +446,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Character> charactersIncreasing() {
         return range(Character.MIN_VALUE, Character.MAX_VALUE);
@@ -564,9 +467,499 @@ public class ExhaustiveProvider implements IterableProvider {
                 range(':', '@'),            // ...
                 range('[', '`'),            // ...
                 range('{', '~'),            // ...
-                range((char) 0, (char) 32), // non-printable and whitespace ASCII
-                rangeUp((char) 127)           // DEL and non-ASCII
+                Collections.singleton(' '), // ' '
+                range((char) 0, (char) 31), // non-printable and whitespace ASCII
+                rangeUp((char) 127)         // DEL and non-ASCII
         ));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>7</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Byte}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
+        if (a >= 0) {
+            return IterableUtils.rangeUp(a);
+        } else {
+            return cons(
+                    (byte) 0,
+                    mux(Arrays.asList(IterableUtils.rangeUp((byte) 1), IterableUtils.rangeBy((byte) -1, (byte) -1, a)))
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>15</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Short}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeUp(short a) {
+        if (a >= 0) {
+            return IterableUtils.rangeUp(a);
+        } else {
+            return cons(
+                    (short) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.rangeUp((short) 1),
+                                    IterableUtils.rangeBy((short) -1, (short) -1, a)
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integers}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>31</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Integer}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUp(int a) {
+        if (a >= 0) {
+            return IterableUtils.rangeUp(a);
+        } else {
+            return cons(0, mux(Arrays.asList(IterableUtils.rangeUp(1), IterableUtils.rangeBy(-1, -1, a))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>63</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Long}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeUp(long a) {
+        if (a >= 0) {
+            return IterableUtils.rangeUp(a);
+        } else {
+            return cons(0L, mux(Arrays.asList(IterableUtils.rangeUp(1L), IterableUtils.rangeBy(-1L, -1L, a))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigIntegers}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BigInteger}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
+        if (a.signum() != -1) {
+            return IterableUtils.rangeUp(a);
+        } else {
+            return cons(
+                    BigInteger.ZERO,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.rangeUp(BigInteger.ONE),
+                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is 2<sup>16</sup>–{@code a}
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Character}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeUp(char a) {
+        return IterableUtils.rangeUp(a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>7</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Byte}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (byte) -1);
+        } else {
+            return cons(
+                    (byte) 0,
+                    mux(Arrays.asList(IterableUtils.range((byte) 1, a), IterableUtils.rangeBy((byte) -1, (byte) -1)))
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>15</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Short}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, (short) -1);
+        } else {
+            return cons(
+                    (short) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range((short) 1, a),
+                                    IterableUtils.rangeBy((short) -1, (short) -1)
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>31</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Integer}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1);
+        } else {
+            return cons(0, mux(Arrays.asList(IterableUtils.range(1, a), IterableUtils.rangeBy(-1, -1))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s less than or equal to {@code a}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+2<sup>63</sup>+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Long}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        if (a <= 0) {
+            return IterableUtils.rangeBy(a, -1L);
+        } else {
+            return cons(0L, mux(Arrays.asList(IterableUtils.range(1L, a), IterableUtils.rangeBy(-1L, -1L))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        if (a.signum() != 1) {
+            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
+        } else {
+            return cons(
+                    BigInteger.ZERO,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range(BigInteger.ONE, a),
+                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is {@code a}+1
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Character}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return IterableUtils.range('\0', a);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Byte}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return Collections.emptyList();
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return cons(
+                    (byte) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range((byte) 1, b),
+                                    IterableUtils.rangeBy((byte) -1, (byte) -1, a)
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Short}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Short> range(short a, short b) {
+        if (a > b) return Collections.emptyList();
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (short) -1, a);
+        } else {
+            return cons(
+                    (short) 0,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range((short) 1, b),
+                                    IterableUtils.rangeBy((short) -1, (short) -1, a)
+                            )
+                    )
+            );
+
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Integer}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Integer> range(int a, int b) {
+        if (a > b) return Collections.emptyList();
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, -1, a);
+        } else {
+            return cons(0, mux(Arrays.asList(IterableUtils.range(1, b), IterableUtils.rangeBy(-1, -1, a))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Long}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Long> range(long a, long b) {
+        if (a > b) return Collections.emptyList();
+        if (a >= 0 && b >= 0) {
+            return IterableUtils.range(a, b);
+        } else if (a < 0 && b < 0) {
+            return IterableUtils.rangeBy(b, (byte) -1, a);
+        } else {
+            return cons(0L, mux(Arrays.asList(IterableUtils.range(1L, b), IterableUtils.rangeBy(-1L, -1L, a))));
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) return Collections.emptyList();
+        if (a.signum() != -1 && b.signum() != -1) {
+            return IterableUtils.range(a, b);
+        } else if (a.signum() == -1 && b.signum() == -1) {
+            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
+        } else {
+            return cons(
+                    BigInteger.ZERO,
+                    mux(
+                            Arrays.asList(
+                                    IterableUtils.range(BigInteger.ONE, b),
+                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                            )
+                    )
+            );
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is max(0, {@code b}–{@code a}+1)
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Character}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Character> range(char a, char b) {
+        return IterableUtils.range(a, b);
     }
 
     /**
@@ -574,8 +967,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * increasing order. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> positiveOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE));
@@ -586,8 +977,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * increasing order. Negative zero is not included. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> negativeOrdinaryFloatsIncreasing() {
         return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE));
@@ -598,14 +987,12 @@ public class ExhaustiveProvider implements IterableProvider {
      * order. Negative zero is not included, but positive zero is. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
         //noinspection RedundantCast
         return concat((Iterable<Iterable<Float>>) Arrays.asList(
                 stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
-                Arrays.asList(0.0f),
+                Collections.singletonList(0.0f),
                 stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
         ));
     }
@@ -615,8 +1002,6 @@ public class ExhaustiveProvider implements IterableProvider {
      * but here it is placed between negative zero and positive zero. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
-     *
-     * @return the {@code Iterable} described above.
      */
     public @NotNull Iterable<Float> floatsIncreasing() {
         //noinspection RedundantCast
@@ -729,7 +1114,7 @@ public class ExhaustiveProvider implements IterableProvider {
         //noinspection RedundantCast
         return concat((Iterable<Iterable<Double>>) Arrays.asList(
                 stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
-                Arrays.asList(0.0),
+                Collections.singletonList(0.0),
                 stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
         ));
     }
@@ -870,6 +1255,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all pairs of elements from {@code xs} in logarithmic order
      */
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsLogarithmicOrder(xs);
     }
@@ -883,6 +1269,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
@@ -897,6 +1284,7 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all pairs of elements from {@code xs} in square-root order
      */
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         return Combinatorics.pairsSquareRootOrder(xs);
     }
@@ -910,80 +1298,12 @@ public class ExhaustiveProvider implements IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all pairs of elements from {@code as} and {@code bs} in square-root order
      */
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return Combinatorics.pairsSquareRootOrder(as, bs);
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                (BigInteger i) -> {
-                    List<BigInteger> list = MathUtils.demux(2, i);
-                    return new Pair<>(list.get(0), list.get(1));
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                MathUtils::logarithmicDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                MathUtils::squareRootDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
     }
 
     /**
@@ -1219,5 +1539,53 @@ public class ExhaustiveProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
+    }
+
+    /**
+     * Determines whether {@code this} is equal to {@code that}. This implementation is the same as in
+     * {@link java.lang.Object#equals}, but repeated here for clarity.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param that The {@code ExhaustiveProvider} to be compared with {@code this}
+     * @return {@code this}={@code that}
+     */
+    @Override
+    public boolean equals(Object that) {
+        return this == that;
+    }
+
+    /**
+     * Calculates the hash code of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>The result is 0.</li>
+     * </ul>
+     *
+     * @return {@code this}'s hash code.
+     */
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    /**
+     * Creates a {@code String} representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code ExhaustiveProvider}.</li>
+     *  <li>The result is {@code "ExhaustiveProvider"}.</li>
+     * </ul>
+     *
+     * @return a {@code String} representation of {@code this}
+     */
+    @Override
+    public String toString() {
+        return "ExhaustiveProvider";
     }
 }

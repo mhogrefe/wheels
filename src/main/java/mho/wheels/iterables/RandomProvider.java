@@ -1,9 +1,10 @@
 package mho.wheels.iterables;
 
-import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,338 +12,1874 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.fromInt;
-import static mho.wheels.ordering.Ordering.lt;
+import static mho.wheels.ordering.Ordering.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
- * <tt>Iterable</tt>s that randomly generate all (or some important subset) of a type's values.
+ * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
+ * distribution. A {@code RandomProvider} is deterministic, but not immutable: its state changes every time a random
+ * value is generated. It may be reverted to its original state with {@link RandomProvider#reset}.
+ *
+ * <p>{@code RandomProvider} uses the cryptographically-secure ISAAC pseudorandom number generator, implemented in
+ * {@link mho.wheels.random.IsaacPRNG}. The source of its randomness is a {@code int[]} seed. It contains two scale
+ * parameters which some of the distributions depend on; the exact relationship between the parameters and the
+ * distributions is specified in the distribution's documentation.
+ *
+ * <p>To create an instance which shares a generator with {@code this}, use {@link RandomProvider#copy()}. To create
+ * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.
+ *
+ * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
+ * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
+ * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
+ * source of randomness is perfect (but still deterministic).
  */
-public class RandomProvider implements IterableProvider {
-    protected static final int BIG_INTEGER_MEAN_BIT_SIZE = 64;
-    protected static final int BIG_DECIMAL_MEAN_SCALE = (int) Math.round(Math.log10(2) * BIG_INTEGER_MEAN_BIT_SIZE);
-    protected static final int MEAN_LIST_SIZE = 10;
-    protected static final int SPECIAL_ELEMENT_RATIO = 50;
+public final strictfp class RandomProvider extends IterableProvider {
+    /**
+     * A list of all {@code Ordering}s.
+     */
+    private static final List<Ordering> ORDERINGS = toList(ExhaustiveProvider.INSTANCE.orderings());
 
-    protected final @NotNull Random generator;
+    /**
+     * A list of all {@code RoundingMode}s.
+     */
+    private static final List<RoundingMode> ROUNDING_MODES = toList(ExhaustiveProvider.INSTANCE.roundingModes());
 
+    /**
+     * The default value of {@code scale}.
+     */
+    private static final int DEFAULT_SCALE = 32;
+
+    /**
+     * The default value of {@code secondaryScale}.
+     */
+    private static final int DEFAULT_SECONDARY_SCALE = 8;
+
+    /**
+     * Sometimes a "special element" (for example, null) is inserted into an {@code Iterable} with some probability.
+     * That probability is 1/{@code SPECIAL_ELEMENT_RATIO}.
+     */
+    private static final int SPECIAL_ELEMENT_RATIO = 50;
+
+    /**
+     * A list of numbers which determines exactly which values will be deterministically output over the life of
+     * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
+     */
+    private final @NotNull List<Integer> seed;
+
+    /**
+     * A pseudorandom number generator. It changes state every time a random number is generated.
+     */
+    private @NotNull IsaacPRNG prng;
+
+    /**
+     * A list of {@code RandomProvider}s that were created from {@code this} using
+     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
+     * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
+     */
+    private @NotNull List<RandomProvider> dependents;
+
+    /**
+     * A parameter that determines the size of some of the generated objects.
+     */
+    private int scale = DEFAULT_SCALE;
+
+    /**
+     * Another parameter that determines the size of some of the generated objects.
+     */
+    private int secondaryScale = DEFAULT_SECONDARY_SCALE;
+
+    /**
+     * Constructs a {@code RandomProvider} with a seed generated from the current system time.
+     *
+     * <ul>
+     *  <li>(conjecture) Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be
+     *  constructed with this constructor.</li>
+     * </ul>
+     */
     public RandomProvider() {
-        generator = new Random();
-    }
-
-    public RandomProvider(@NotNull Random generator) {
-        this.generator = generator;
+        prng = new IsaacPRNG();
+        seed = new ArrayList<>();
+        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
+            seed.add(prng.nextInt());
+        }
+        prng = new IsaacPRNG(seed);
+        dependents = new ArrayList<>();
     }
 
     /**
-     * An <tt>Iterator</tt> that generates both <tt>Boolean</tt>s from a uniform distribution. Does not support
-     * removal.
+     * Constructs a {@code RandomProvider} with a given seed.
+     *
+     * <ul>
+     *  <li>{@code seed} must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.</li>
+     *  <li>Any {@code RandomProvider} with default {@code scale} and {@code secondaryScale} may be constructed with
+     *  this constructor.</li>
+     * </ul>
+     *
+     * @param seed the source of randomness
+     */
+    public RandomProvider(@NotNull List<Integer> seed) {
+        if (seed.size() != IsaacPRNG.SIZE) {
+            throw new IllegalArgumentException("seed must have length mho.wheels.random.IsaacPRNG#SIZE, which is " +
+                    IsaacPRNG.SIZE + ". Length of invalid seed: " + seed.size());
+        }
+        this.seed = seed;
+        prng = new IsaacPRNG(seed);
+        dependents = new ArrayList<>();
+    }
+
+    /**
+     * A {@code RandomProvider} used for testing. This allows for deterministic testing without manually setting up a
+     * lengthy seed each time.
+     */
+    public static @NotNull RandomProvider example() {
+        IsaacPRNG prng = IsaacPRNG.example();
+        List<Integer> seed = new ArrayList<>();
+        for (int i = 0; i < IsaacPRNG.SIZE; i++) {
+            seed.add(prng.nextInt());
+        }
+        return new RandomProvider(seed);
+    }
+
+    /**
+     * Returns {@code this}'s scale parameter.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return the scale parameter of {@code this}
+     */
+    public int getScale() {
+        return scale;
+    }
+
+    /**
+     * Returns {@code this}'s other scale parameter.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return the other scale parameter of {@code this}
+     */
+    public int getSecondaryScale() {
+        return secondaryScale;
+    }
+
+    /**
+     * Returns {@code this}'s seed. Makes a defensive copy.
+     *
+     * <ul>
+     *  <li>The result is an array of {@link mho.wheels.random.IsaacPRNG#SIZE} {@code int}s.</li>
+     * </ul>
+     *
+     * @return the seed of {@code this}
+     */
+    public @NotNull List<Integer> getSeed() {
+        return toList(seed);
+    }
+
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this}. The copy shares {@code prng} with the original.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return A copy of {@code this}.
+     */
+    public @NotNull RandomProvider copy() {
+        RandomProvider copy = new RandomProvider(seed);
+        copy.scale = scale;
+        copy.secondaryScale = secondaryScale;
+        copy.prng = prng;
+        return copy;
+    }
+
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this}. The copy receives a new copy of {@code prng},
+     * so generating values from the copy will not affect the state of the original's {@code prng}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return A copy of {@code this}.
+     */
+    public @NotNull RandomProvider deepCopy() {
+        RandomProvider copy = new RandomProvider(seed);
+        copy.scale = scale;
+        copy.secondaryScale = secondaryScale;
+        copy.prng = prng.copy();
+        return copy;
+    }
+
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this} except for a new scale.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code scale} may be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param scale the new scale
+     * @return A copy of {@code this} with a new scale
+     */
+    @Override
+    public @NotNull RandomProvider withScale(int scale) {
+        RandomProvider copy = copy();
+        copy.scale = scale;
+        dependents.add(copy);
+        return copy;
+    }
+
+    /**
+     * A {@code RandomProvider} with the same fields as {@code this} except for a new secondary scale.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code secondaryScale} mat be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param secondaryScale the new secondary scale
+     * @return A copy of {@code this} with a new secondary scale
+     */
+    @Override
+    public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
+        RandomProvider copy = copy();
+        copy.secondaryScale = secondaryScale;
+        dependents.add(copy);
+        return copy;
+    }
+
+    /**
+     * Put the {@code prng} back in its original state. Creating a {@code RandomProvider}, generating some values,
+     * resetting, and generating the same types of values again will result in the same values. Any
+     * {@code RandomProvider}s created from {@code this} using {@link RandomProvider#withScale(int)} or
+     * {@link RandomProvider#withSecondaryScale(int)} (but not {@link RandomProvider#copy} or
+     * {@link RandomProvider#deepCopy()}) is also reset.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     */
+    @Override
+    public void reset() {
+        prng = new IsaacPRNG(seed);
+        dependents.forEach(mho.wheels.iterables.RandomProvider::reset);
+    }
+
+    /**
+     * Returns an id which has a good chance of being different in two instances with unequal {@code prng}s. It's used
+     * in {@link RandomProvider#toString()} to distinguish between different {@code RandomProvider} instances.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code this} may be any {@code long}.</li>
+     * </ul>
+     */
+    public long getId() {
+        return prng.getId();
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int}
+     */
+    public int nextInt() {
+        return prng.nextInt();
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> integers() {
+        return fromSupplier(this::nextInt);
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @return a {@code long}
+     */
+    public long nextLong() {
+        int a = nextInt();
+        int b = nextInt();
+        return (long) a << 32 | b & 0xffffffffL;
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> longs() {
+        return fromSupplier(this::nextLong);
+    }
+
+    /**
+     * Returns a randomly-generated {@code boolean} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return a {@code boolean}
+     */
+    public boolean nextBoolean() {
+        return (nextInt() & 1) != 0;
+    }
+
+    /**
+     * An {@code Iterator} that generates both {@code Boolean}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
-        return () -> new Iterator<Boolean>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Boolean next() {
-                return generator.nextBoolean();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return fromSupplier(this::nextBoolean);
     }
 
     /**
-     * An <tt>Iterator</tt> that generates all <tt>Ordering</tt>s from a uniform distribution. Does not support
-     * removal.
+     * Returns a randomly-generated {@code int} taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code bits} must be greater than 0 and less than 32.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param bits the maximum bitlength of the generated {@code int}
+     * @return an {@code int} with up to {@code bits} bits
+     */
+    private int nextIntPow2(int bits) {
+        return nextInt() & ((1 << bits) - 1);
+    }
+
+    /**
+     * An {@code Iterable} that generates a {@code Integer}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be greater than 0 and less than 32.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Integer}s with up to {@code bits} bits
+     */
+    private @NotNull Iterable<Integer> integersPow2(int bits) {
+        int mask = (1 << bits) - 1;
+        return map(i -> i & mask, integers());
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code bits} must be greater than 0 and less than 64.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param bits the maximum bitlength of the generated {@code long}
+     * @return a {@code long} with up to {@code bits} bits
+     */
+    private long nextLongPow2(int bits) {
+        return nextLong() & ((1L << bits) - 1);
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code Long}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be greater than 0 and less than 64.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Long}s with up to {@code bits} bits
+     */
+    private @NotNull Iterable<Long> longsPow2(int bits) {
+        long mask = (1L << bits) - 1;
+        return map(l -> l & mask, longs());
+    }
+
+    /**
+     * Returns a randomly-generated {@code BigInteger} taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code bits} must be positive.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param bits the maximum bitlength of the generated {@code BigInteger}
+     * @return a {@code BigInteger} with up to {@code bits} bits
+     */
+    private @NotNull BigInteger nextBigIntegerPow2(int bits) {
+        byte[] bytes = new byte[bits / 8 + 1];
+        int x = 0;
+        for (int i = 0; i < bytes.length; i++) {
+            if (i % 4 == 0) {
+                x = nextInt();
+            }
+            bytes[i] = (byte) x;
+            x >>= 8;
+        }
+        bytes[0] &= (1 << (bits % 8)) - 1;
+        return new BigInteger(bytes);
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
+     * 2<sup>{@code bits}</sup>–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code bits} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param bits the maximum number of bits of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code BigInteger}s with up to {@code bits} bits
+     */
+    private @NotNull Iterable<BigInteger> bigIntegersPow2(int bits) {
+        return fromSupplier(() -> this.nextBigIntegerPow2(bits));
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} taken from a uniform distribution between 0 and {@code n}–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param n the exclusive upper bound of the result
+     * @return a non-negative {@code int} less than {@code n}
+     */
+    private int nextIntBounded(int n) {
+        int maxBits = MathUtils.ceilingLog2(n);
+        int i;
+        do {
+            i = nextIntPow2(maxBits);
+        } while (i >= n);
+        return i;
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code Integer}s taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Integer}s less than {@code n}
+     */
+    private @NotNull Iterable<Integer> integersBounded(int n) {
+        return filter(i -> i < n, integersPow2(MathUtils.ceilingLog2(n)));
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param n the exclusive upper bound of the result
+     * @return a non-negative {@code long} less than {@code n}
+     */
+    private long nextLongBounded(long n) {
+        int maxBits = MathUtils.ceilingLog2(n);
+        long l;
+        do {
+            l = nextLongPow2(maxBits);
+        } while (l >= n);
+        return l;
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code Long}s taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code Long}s less than {@code n}
+     */
+    private @NotNull Iterable<Long> longsBounded(long n) {
+        return filter(l -> l < n, longsPow2(MathUtils.ceilingLog2(n)));
+    }
+
+    /**
+     * Returns a randomly-generated {@code BigInteger} taken from a uniform distribution between 0 and {@code n}–1,
+     * inclusive.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result cannot be negative.</li>
+     * </ul>
+     *
+     * @param n the exclusive upper bound of the result
+     * @return a non-negative {@code BigInteger} less than {@code n}
+     */
+    private @NotNull BigInteger nextBigIntegerBounded(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ONE)) return BigInteger.ZERO;
+        int maxBits = MathUtils.ceilingLog2(n);
+        BigInteger i;
+        do {
+            i = nextBigIntegerPow2(maxBits);
+        } while (ge(i, n));
+        return i;
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code BigInteger}s taken from a uniform distribution between 0 and
+     * {@code n}–1, inclusive.
+     *
+     * <ul>
+     *  <li>{@code n} must be positive.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing non-negative {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param n one more than the maximum value of any element in the output {@code Iterable}
+     * @return uniformly-distributed positive {@code BigInteger}s less than {@code n}
+     */
+    private @NotNull Iterable<BigInteger> bigIntegersBounded(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ONE)) return repeat(BigInteger.ZERO);
+        return filter(i -> lt(i, n), bigIntegersPow2(MathUtils.ceilingLog2(n)));
+    }
+
+    /**
+     * Returns a randomly-generated value taken from a given list.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be empty.</li>
+     *  <li>The result may be any value of type {@code T}, or null.</li>
+     * </ul>
+     *
+     * @param xs the source list
+     * @param <T> the type of {@code xs}'s elements
+     * @return a value from {@code xs}
+     */
+    public @Nullable <T> T nextUniformSample(@NotNull List<T> xs) {
+        return xs.get(nextIntBounded(xs.size()));
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates elements from a (possibly null-containing) list.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is non-removable and either empty or infinite.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs the source list
+     * @param <T> the type of {@code xs}'s elements
+     * @return uniformly-distributed elements of {@code xs}
+     */
+    @Override
+    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
+        return xs.isEmpty() ? Collections.emptyList() : map(xs::get, integersBounded(xs.size()));
+    }
+
+    /**
+     * Returns a randomly-generated character taken from a given {@code String}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code s} cannot be empty.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param s the source {@code String}
+     * @return a {@code char} from {@code s}
+     */
+    public char nextUniformSample(@NotNull String s) {
+        return s.charAt(nextIntBounded(s.length()));
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s from a {@code String}.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is an empty or infinite non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code s} is empty, infinite otherwise
+     *
+     * @param s the source {@code String}
+     * @return uniformly-distributed {@code Character}s from {@code s}
+     */
+    @Override
+    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
+        return s.isEmpty() ? Collections.emptyList() : map(s::charAt, integersBounded(s.length()));
+    }
+
+    /**
+     * Returns a randomly-generated {@code Ordering} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return an {@code Ordering}
+     */
+    public @NotNull Ordering nextOrdering() {
+        //noinspection ConstantConditions
+        return nextUniformSample(ORDERINGS);
+    }
+
+    /**
+     * An {@code Iterator} that generates all {@code Ordering}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Ordering> orderings() {
-        return () -> new Iterator<Ordering>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Ordering next() {
-                return fromInt(generator.nextInt(3) - 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return uniformSample(ORDERINGS);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>RoundingMode</tt>s from a uniform distribution. Does not support
+     * Returns a randomly-generated {@code RoundingMode} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code RoundingMode}
+     */
+    public @NotNull RoundingMode nextRoundingMode() {
+        //noinspection ConstantConditions
+        return nextUniformSample(ROUNDING_MODES);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code RoundingMode}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<RoundingMode> roundingModes() {
-        Function<Integer, RoundingMode> lookup = i -> {
-            switch (i) {
-                case 0:  return RoundingMode.UNNECESSARY;
-                case 1:  return RoundingMode.UP;
-                case 2:  return RoundingMode.DOWN;
-                case 3:  return RoundingMode.CEILING;
-                case 4:  return RoundingMode.FLOOR;
-                case 5:  return RoundingMode.HALF_UP;
-                case 6:  return RoundingMode.HALF_DOWN;
-                default: return RoundingMode.HALF_EVEN;
-            }
-        };
-        return map(lookup, randomIntsPow2(3));
-    }
-
-    private @NotNull Iterable<Integer> randomIntsPow2(int bits) {
-        int mask = (1 << bits) - 1;
-        return map(i -> i & mask, integers());
-    }
-
-    private @NotNull Iterable<Long> randomLongsPow2(int bits) {
-        long mask = (1L << bits) - 1;
-        return map(l -> l & mask, longs());
-    }
-
-    private @NotNull Iterable<BigInteger> randomBigIntegersPow2(int bits) {
-        return map(MathUtils::fromBits, lists(bits, booleans()));
-    }
-
-    private @NotNull Iterable<Integer> randomInts(int n) {
-        return filter(
-                i -> i < n,
-                randomIntsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
-        );
-    }
-
-    private @NotNull Iterable<Long> randomLongs(long n) {
-        return filter(
-                l -> l < n,
-                randomLongsPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), BigInteger.valueOf(n)).intValueExact())
-        );
-    }
-
-    private @NotNull Iterable<BigInteger> randomBigIntegers(@NotNull BigInteger n) {
-        return filter(
-                i -> lt(i, n),
-                randomBigIntegersPow2(MathUtils.ceilingLog(BigInteger.valueOf(2), n).intValueExact())
-        );
-    }
-
-    //2^7 - a
-    @Override
-    public @NotNull Iterable<Byte> rangeUp(byte a) {
-        return map(i -> (byte) (i + a), randomInts(128 - a));
-    }
-
-    //2^15 - a
-    @Override
-    public @NotNull Iterable<Short> rangeUp(short a) {
-        return map(i -> (short) (i + a), randomInts(32768 - a));
-    }
-
-    //2^31 - a
-    @Override
-    public @NotNull Iterable<Integer> rangeUp(int a) {
-        return map(l -> (int) (l + a), randomLongs((1L << 31) - a));
-    }
-
-    //2^63 - a
-    @Override
-    public @NotNull Iterable<Long> rangeUp(long a) {
-        return map(
-                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
-                randomBigIntegers(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
-        );
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
-        return map(i -> i.add(a), naturalBigIntegers());
-    }
-
-    //2^16 - a
-    @Override
-    public @NotNull Iterable<Character> rangeUp(char a) {
-        return map(i -> (char) (i + a), randomInts(65536 - a));
-    }
-
-    @Override
-    public @NotNull Iterable<Byte> rangeDown(byte a) {
-        return map(i -> (byte) (i - 128), randomInts(a + 129));
-    }
-
-    @Override
-    public @NotNull Iterable<Short> rangeDown(short a) {
-        return map(i -> (short) (i - 32768), randomInts(a + 32769));
-    }
-
-    @Override
-    public @NotNull Iterable<Integer> rangeDown(int a) {
-        return map(l -> (int) (l - (1L << 31)), randomLongs(a + (1L << 31) + 1));
-    }
-
-    @Override
-    public @NotNull Iterable<Long> rangeDown(long a) {
-        return map(
-                i -> i.subtract(BigInteger.ONE.shiftLeft(63)).longValueExact(),
-                randomBigIntegers(BigInteger.valueOf(a).add(BigInteger.ONE).add(BigInteger.ONE.shiftLeft(63)))
-        );
-    }
-
-    @Override
-    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
-        return map(i -> i.add(BigInteger.ONE).add(a), negativeBigIntegers());
-    }
-
-    @Override
-    public @NotNull Iterable<Character> rangeDown(char a) {
-        return range('\0', a);
-    }
-
-    //b - a + 1
-    @Override
-    public @NotNull Iterable<Byte> range(byte a, byte b) {
-        if (a > b) return new ArrayList<>();
-        return map(i -> (byte) (i + a), randomInts((int) b - a + 1));
-    }
-
-    //b - a + 1
-    @Override
-    public @NotNull Iterable<Short> range(short a, short b) {
-        if (a > b) return new ArrayList<>();
-        return map(i -> (short) (i + a), randomInts((int) b - a + 1));
-    }
-
-    //b - a + 1
-    @Override
-    public @NotNull Iterable<Integer> range(int a, int b) {
-        if (a > b) return new ArrayList<>();
-        return map(i -> (int) (i + a), randomLongs(b - a + 1));
-    }
-
-    //b - a + 1
-    public @NotNull Iterable<Long> range(long a, long b) {
-        if (a > b) return new ArrayList<>();
-        return map(
-                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
-                randomBigIntegers(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
-        );
-    }
-
-    //b - a + 1
-    @Override
-    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (Ordering.gt(a, b)) return new ArrayList<>();
-        return map(i -> i.add(a), randomBigIntegers(b.subtract(a).add(BigInteger.ONE)));
-    }
-
-    @Override
-    public @NotNull Iterable<Character> range(char a, char b) {
-        if (a > b) return new ArrayList<>();
-        return map(i -> (char) (i + a), randomInts(b - a + 1));
-    }
-
-    public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(xs::get, range(0, xs.size() - 1));
-    }
-
-    public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        if (s.isEmpty()) return new ArrayList<>();
-        return map(s::charAt, range(0, s.length() - 1));
-    }
-
-    public @NotNull <T> Iterable<T> geometricSample(int meanIndex, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> cxs = new CachedIterable<>(xs);
-        return map(
-                NullableOptional::get,
-                filter(
-                        NullableOptional::isPresent,
-                        (Iterable<NullableOptional<T>>) map(i -> cxs.get(i), naturalIntegersGeometric(meanIndex))
-                )
-        );
+        return uniformSample(ROUNDING_MODES);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Byte</tt>s from a uniform distribution. Does not support
+     * Returns a randomly-generated positive {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code byte}
+     */
+    public byte nextPositiveByte() {
+        byte b;
+        do {
+            b = nextNaturalByte();
+        } while (b == 0);
+        return b;
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Byte}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return () -> new Iterator<Byte>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (generator.nextInt(Byte.MAX_VALUE) + 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return fromSupplier(this::nextPositiveByte);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Short</tt>s from a uniform distribution. Does not support
+     * Returns a randomly-generated positive {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code short}
+     */
+    public short nextPositiveShort() {
+        short s;
+        do {
+            s = nextNaturalShort();
+        } while (s == 0);
+        return s;
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Short}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return () -> new Iterator<Short>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (generator.nextInt(Short.MAX_VALUE) + 1);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return fromSupplier(this::nextPositiveShort);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s from a uniform distribution. Does not support
+     * Returns a randomly-generated positive {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code int}
+     */
+    public int nextPositiveInt() {
+        int i;
+        do {
+            i = nextInt();
+        } while (i <= 0);
+        return i;
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Integer}s from a uniform distribution. Does not support
      * removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
-        return () -> new Iterator<Integer>() {
+        return fromSupplier(this::nextPositiveInt);
+    }
+
+    /**
+     * Returns a randomly-generated positive {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code long}
+     */
+    public long nextPositiveLong() {
+        long l;
+        do {
+            l = nextLong();
+        } while (l <= 0);
+        return l;
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution from a uniform
+     * distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> positiveLongs() {
+        return fromSupplier(this::nextPositiveLong);
+    }
+
+    /**
+     * Returns a randomly-generated negative {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code byte}
+     */
+    public byte nextNegativeByte() {
+        return (byte) ~nextNaturalByte();
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Byte}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> negativeBytes() {
+        return fromSupplier(this::nextNegativeByte);
+    }
+
+    /**
+     * Returns a randomly-generated negative {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code short}
+     */
+    public short nextNegativeShort() {
+        return (short) ~nextNaturalShort();
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Short}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> negativeShorts() {
+        return fromSupplier(this::nextNegativeShort);
+    }
+
+    /**
+     * Returns a randomly-generated negative {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code int}
+     */
+    public int nextNegativeInt() {
+        int i;
+        do {
+            i = nextInt();
+        } while (i >= 0);
+        return i;
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Integer}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> negativeIntegers() {
+        return fromSupplier(this::nextNegativeInt);
+    }
+
+    /**
+     * Returns a randomly-generated negative {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code long}
+     */
+    public long nextNegativeLong() {
+        long l;
+        do {
+            l = nextLong();
+        } while (l >= 0);
+        return l;
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Long}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> negativeLongs() {
+        return fromSupplier(this::nextNegativeLong);
+    }
+
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code byte}
+     */
+    public byte nextNaturalByte() {
+        return (byte) nextIntPow2(7);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Byte}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return fromSupplier(this::nextNaturalByte);
+    }
+
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code short}
+     */
+    public short nextNaturalShort() {
+        return (short) nextIntPow2(15);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Short}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> naturalShorts() {
+        return fromSupplier(this::nextNaturalShort);
+    }
+
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code int}
+     */
+    public int nextNaturalInt() {
+        return nextIntPow2(31);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) from a uniform distribution.
+     * Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return fromSupplier(this::nextNaturalInt);
+    }
+
+    /**
+     * Returns a randomly-generated natural (non-negative) {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code long}
+     */
+    public long nextNaturalLong() {
+        return nextLongPow2(63);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Long}s (including 0) from a uniform distribution. Does
+     * not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Long> naturalLongs() {
+        return fromSupplier(this::nextNaturalLong);
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code byte}
+     */
+    public byte nextNonzeroByte() {
+        byte b;
+        do {
+            b = nextByte();
+        } while (b == 0);
+        return b;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code short}
+     */
+    public short nextNonzeroShort() {
+        short s;
+        do {
+            s = nextShort();
+        } while (s == 0);
+        return s;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code int}
+     */
+    public int nextNonzeroInt() {
+        int i;
+        do {
+            i = nextInt();
+        } while (i == 0);
+        return i;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code long}
+     */
+    public long nextNonzeroLong() {
+        long l;
+        do {
+            l = nextLong();
+        } while (l == 0L);
+        return l;
+    }
+
+    /**
+     * Returns a randomly-generated {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @return a {@code byte}
+     */
+    public byte nextByte() {
+        return (byte) nextInt();
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Byte> bytes() {
+        return fromSupplier(this::nextByte);
+    }
+
+    /**
+     * Returns a randomly-generated {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @return a {@code short}
+     */
+    public short nextShort() {
+        return (short) nextInt();
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Short}s from a uniform distribution. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Short> shorts() {
+        return fromSupplier(this::nextShort);
+    }
+
+    /**
+     * Returns a randomly-generated ASCII {@code char} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is an ASCII {@code char}.</li>
+     * </ul>
+     *
+     * @return an ASCII {@code char}
+     */
+    public char nextAsciiChar() {
+        return (char) nextIntPow2(7);
+    }
+
+    /**
+     * An {@code Iterable} that generates all ASCII {@code Character}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Character> asciiCharacters() {
+        return fromSupplier(this::nextAsciiChar);
+    }
+
+    /**
+     * Returns a randomly-generated {@code char} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @return a {@code char}
+     */
+    public char nextChar() {
+        return (char) nextInt();
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Character}s from a uniform distribution. Does not support
+     * removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Character> characters() {
+        return fromSupplier(this::nextChar);
+    }
+
+    /**
+     * Returns a randomly-generated {@code byte} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code byte}
+     * @return a {@code byte} greater than or equal to {@code a}
+     */
+    public byte nextFromRangeUp(byte a) {
+        return (byte) (nextIntBounded((1 << 7) - a) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeUp(byte a) {
+        int offset = 1 << 7;
+        return map(i -> (byte) (i + a), integersBounded(offset - a));
+    }
+
+    /**
+     * Returns a randomly-generated {@code short} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code short}
+     * @return a {@code short} greater than or equal to {@code a}
+     */
+    public short nextFromRangeUp(short a) {
+        return (short) (nextIntBounded((1 << 15) - a) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Short}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeUp(short a) {
+        int offset = 1 << 15;
+        return map(i -> (short) (i + a), integersBounded(offset - a));
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code int}
+     * @return an {@code int} greater than or equal to {@code a}
+     */
+    public int nextFromRangeUp(int a) {
+        return (int) (nextLongBounded((1L << 31) - a) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUp(int a) {
+        long offset = 1L << 31;
+        return map(l -> (int) (l + a), longsBounded(offset - a));
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code long}
+     * @return a {@code long} greater than or equal to {@code a}
+     */
+    public long nextFromRangeUp(long a) {
+        BigInteger ba = BigInteger.valueOf(a);
+        return nextBigIntegerBounded(BigInteger.ONE.shiftLeft(63).subtract(ba)).add(ba).longValueExact();
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Long}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeUp(long a) {
+        BigInteger offset = BigInteger.ONE.shiftLeft(63);
+        return map(
+                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
+                bigIntegersBounded(offset.subtract(BigInteger.valueOf(a)))
+        );
+    }
+
+    /**
+     * Returns a randomly-generated {@code char} greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code char}
+     * @return a {@code char} greater than or equal to {@code a}
+     */
+    public char nextFromRangeUp(char a) {
+        return (char) (nextIntBounded((1 << 16) - a) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Characters}s greater than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return uniformly-distributed {@code Character}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeUp(char a) {
+        int offset = 1 << 16;
+        return map(i -> (char) (i + a), integersBounded(offset - a));
+    }
+
+    /**
+     * Returns a randomly-generated {@code byte} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code byte}
+     * @return a {@code byte} less than or equal to {@code a}
+     */
+    public byte nextFromRangeDown(byte a) {
+        int offset = 1 << 7;
+        return (byte) (nextIntBounded(a + offset + 1) - offset);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Byte> rangeDown(byte a) {
+        int offset = 1 << 7;
+        return map(i -> (byte) (i - offset), integersBounded(a + offset + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code short} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code short}
+     * @return a {@code short} less than or equal to {@code a}
+     */
+    public short nextFromRangeDown(short a) {
+        int offset = 1 << 15;
+        return (short) (nextIntBounded(a + offset + 1) - offset);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Short}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Short> rangeDown(short a) {
+        int offset = 1 << 15;
+        return map(i -> (short) (i - offset), integersBounded(a + offset + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code int}
+     * @return an {@code int} less than or equal to {@code a}
+     */
+    public int nextFromRangeDown(int a) {
+        long offset = 1L << 31;
+        return (int) (nextLongBounded(a + offset + 1) - offset);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDown(int a) {
+        long offset = 1L << 31;
+        return map(l -> (int) (l - offset), longsBounded(a + offset + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code long}
+     * @return a {@code long} less than or equal to {@code a}
+     */
+    public long nextFromRangeDown(long a) {
+        BigInteger offset = BigInteger.ONE.shiftLeft(63);
+        BigInteger ba = BigInteger.valueOf(a);
+        return nextBigIntegerBounded(ba.add(BigInteger.ONE).add(offset)).subtract(offset).longValueExact();
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Long}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Long> rangeDown(long a) {
+        BigInteger offset = BigInteger.ONE.shiftLeft(63);
+        return map(
+                i -> i.subtract(offset).longValueExact(),
+                bigIntegersBounded(BigInteger.valueOf(a).add(BigInteger.ONE).add(offset))
+        );
+    }
+
+    /**
+     * Returns a randomly-generated {@code char} less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code char}
+     * @return a {@code char} less than or equal to {@code a}
+     */
+    public char nextFromRangeDown(char a) {
+        return (char) nextIntBounded(a + 1);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s less than or equal to {@code a}.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Character}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Character> rangeDown(char a) {
+        return fromSupplier(() -> nextFromRangeDown(a));
+    }
+
+    /**
+     * Returns a randomly-generated {@code byte} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code byte}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code byte}
+     * @param b the inclusive upper bound of the generated {@code byte}
+     * @return a {@code byte} between {@code a} and {@code b}, inclusive
+     */
+    public byte nextFromRange(byte a, byte b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        return (byte) (nextIntBounded((int) b - a + 1) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Byte}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code byte}.</li>
+     *  <li>{@code b} may be any {@code byte}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Byte}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Byte> range(byte a, byte b) {
+        if (a > b) return Collections.emptyList();
+        return map(i -> (byte) (i + a), integersBounded((int) b - a + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code short} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code short}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code short}
+     * @param b the inclusive upper bound of the generated {@code short}
+     * @return a {@code short} between {@code a} and {@code b}, inclusive
+     */
+    public short nextFromRange(short a, short b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        return (short) (nextIntBounded((int) b - a + 1) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Short}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code short}.</li>
+     *  <li>{@code b} may be any {@code short}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Short}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Short> range(short a, short b) {
+        if (a > b) return Collections.emptyList();
+        return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code int}
+     * @param b the inclusive upper bound of the generated {@code int}
+     * @return an {@code int} between {@code a} and {@code b}, inclusive
+     */
+    public int nextFromRange(int a, int b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        return (int) (nextLongBounded((long) b - a + 1) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Integer}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code b} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Integer}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Integer> range(int a, int b) {
+        if (a > b) return Collections.emptyList();
+        return map(i -> (int) (i + a), longsBounded((long) b - a + 1));
+    }
+
+    /**
+     * Returns a randomly-generated {@code long} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code long}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code long}
+     * @param b the inclusive upper bound of the generated {@code long}
+     * @return a {@code long} between {@code a} and {@code b}, inclusive
+     */
+    public long nextFromRange(long a, long b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        BigInteger ba = BigInteger.valueOf(a);
+        BigInteger bb = BigInteger.valueOf(b);
+        return nextBigIntegerBounded(bb.subtract(ba).add(BigInteger.ONE)).add(ba).longValueExact();
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Long}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code long}.</li>
+     *  <li>{@code b} may be any {@code long}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Long}s between {@code a} and {@code b}, inclusive
+     */
+    public @NotNull Iterable<Long> range(long a, long b) {
+        if (a > b) return Collections.emptyList();
+        return map(
+                i -> i.add(BigInteger.valueOf(a)).longValueExact(),
+                bigIntegersBounded(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
+        );
+    }
+
+    /**
+     * Returns a randomly-generated {@code BigInteger} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}
+     * @param b the inclusive upper bound of the generated {@code BigInteger}
+     * @return a {@code BigInteger} between {@code a} and {@code b}, inclusive
+     */
+    public @NotNull BigInteger nextFromRange(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        return nextBigIntegerBounded(b.subtract(a).add(BigInteger.ONE)).add(a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code BigInteger}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
+        if (gt(a, b)) return Collections.emptyList();
+        return map(i -> i.add(a), bigIntegersBounded(b.subtract(a).add(BigInteger.ONE)));
+    }
+
+    /**
+     * Returns a randomly-generated {@code char} between {@code a} and {@code b}, inclusive.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result may be any {@code char}.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code char}
+     * @param b the inclusive upper bound of the generated {@code char}
+     * @return a {@code char} between {@code a} and {@code b}, inclusive
+     */
+    public char nextFromRange(char a, char b) {
+        if (a > b) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + Testing.nicePrint(a) +
+            " and b is " + Testing.nicePrint(b) + ".");
+        }
+        return (char) (nextIntBounded(b - a + 1) + a);
+    }
+
+    /**
+     * An {@code Iterable} that uniformly generates {@code Character}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     *
+     * <ul>
+     *  <li>{@code a} may be any {@code char}.</li>
+     *  <li>{@code b} may be any {@code char}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return uniformly-distributed {@code Character}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Character> range(char a, char b) {
+        if (a > b) return Collections.emptyList();
+        return map(i -> (char) (i + a), integersBounded(b - a + 1));
+    }
+
+    /**
+     * Returns a randomly-generated positive {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code int}
+     */
+    public int nextPositiveIntGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        int i;
+        int j = 0;
+        do {
+            i = nextIntBounded(scale);
+            j++;
+        } while (i != 0);
+        return j;
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
+     * {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> positiveIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        return () -> new NoRemoveIterator<Integer>() {
+            private @NotNull Iterator<Integer> is = integersBounded(scale).iterator();
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -350,196 +1887,355 @@ public class RandomProvider implements IterableProvider {
 
             @Override
             public Integer next() {
-                return generator.nextInt(Integer.MAX_VALUE) + 1;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all positive <tt>Long</tt>s from a uniform distribution from a uniform
-     * distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> positiveLongs() {
-        return () -> new Iterator<Long>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Long next() {
-                long next;
+                int i;
+                int j = 0;
                 do {
-                    next = Math.abs(generator.nextLong());
-                } while (next < 0);
-                return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                    i = is.next();
+                    j++;
+                } while (i != 0);
+                return j;
             }
         };
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a
-     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * Returns a randomly-generated negative {@code int} from a geometric distribution with mean {@code scale}.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The is an infinite pseudorandom sequence of all <tt>BigIntegers</tt></li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is negative.</li>
      * </ul>
      *
-     * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
+     * @return a negative {@code int}
      */
-    public @NotNull Iterable<BigInteger> positiveBigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public BigInteger next() {
-                List<Boolean> bits = new ArrayList<>();
-                bits.add(true);
-                while (true) {
-                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
-                        break;
-                    } else {
-                        bits.add(generator.nextBoolean());
-                    }
-                }
-                return MathUtils.fromBigEndianBits(bits);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+    public int nextNegativeIntGeometric() {
+        return -nextPositiveIntGeometric();
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all positive <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
+     * –{@code scale}. The distribution is truncated at –{@code Integer.MAX_VALUE}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code Integer}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
     @Override
+    public @NotNull Iterable<Integer> negativeIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        return fromSupplier(this::nextNegativeIntGeometric);
+    }
+
+    /**
+     * Returns a randomly-generated natural {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result is non-negative.</li>
+     * </ul>
+     *
+     * @return a natural {@code int}
+     */
+    public int nextNaturalIntGeometric() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        int i;
+        int j = 0;
+        do {
+            i = nextIntBounded(scale + 1);
+            j++;
+        } while (i != 0);
+        return j - 1;
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) chosen from a geometric
+     * distribution with mean {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is nonzero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code int}
+     */
+    public int nextNonzeroIntGeometric() {
+        int i = nextPositiveIntGeometric();
+        return nextBoolean() ? i : -i;
+    }
+
+    /**
+     * An {@code Iterable} that generates all nonzero {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
+     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        return fromSupplier(this::nextNonzeroIntGeometric);
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} from a geometric distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return a negative {@code int}
+     */
+    public int nextIntGeometric() {
+        int i = nextNaturalIntGeometric();
+        return nextBoolean() ? i : -i;
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
+     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> integersGeometric() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        return fromSupplier(this::nextIntGeometric);
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} greater than or equal to {@code a}, chosen from a geometric
+     * distribution with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} greater than or equal to {@code a}
+     */
+    public int nextIntGeometricFromRangeUp(int a) {
+        if (scale <= a) {
+            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
+                    ". Invalid scale: " + scale);
+        }
+        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
+                    (Integer.MAX_VALUE + a));
+        }
+        int j;
+        do {
+            int i;
+            j = 0;
+            do {
+                i = nextIntBounded(scale - a + 1);
+                j++;
+            } while (i != 0);
+            j += a - 1;
+        } while (j < a);
+        return j;
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s greater than or equal to {@code a}, chosen from a
+     * geometric distribution with mean {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
+        if (scale <= a) {
+            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
+                    ". Invalid scale: " + scale);
+        }
+        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
+            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
+                    (Integer.MAX_VALUE + a));
+        }
+        return filter(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
+    }
+
+    /**
+     * Returns a randomly-generated {@code int} less than or equal to {@code a}, chosen from a geometric distribution
+     * with mean {@code scale}.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale less than {@code a} and greater than
+     *  {@code a}–{@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return an {@code int} less than or equal to {@code a}
+     */
+    public int nextIntGeometricFromRangeDown(int a) {
+        if (scale >= a) {
+            throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
+                    scale);
+        }
+        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+            throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
+                    (a - Integer.MAX_VALUE));
+        }
+        int j;
+        do {
+            int i;
+            j = 0;
+            do {
+                i = nextIntBounded(a - scale + 1);
+                j++;
+            } while (i != 0);
+            j = a - j + 1;
+        } while (j > a);
+        return j;
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s less than or equal to {@code a}, chosen from a geometric
+     * distribution with mean {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale less than {@code a} and greater than
+     *  {@code a}–{@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
+        if (scale >= a) {
+            throw new IllegalStateException("this must have a scale less than a, which is " + a + ". Invalid scale: " +
+                    scale);
+        }
+        if (a > -1 && scale <= a - Integer.MAX_VALUE) {
+            throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
+                    (a - Integer.MAX_VALUE));
+        }
+        return filter(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
+    }
+
+    /**
+     * Returns a randomly-generated positive {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code BigInteger}
+     */
+    public @NotNull BigInteger nextPositiveBigInteger() {
+        int size = nextPositiveIntGeometric();
+        return nextBigIntegerPow2(size).setBit(size - 1);
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code BigInteger}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        return positiveBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        return fromSupplier(this::nextPositiveBigInteger);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Byte</tt>s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> negativeBytes() {
-        return () -> new Iterator<Byte>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Byte next() {
-                return (byte) (-1 - generator.nextInt(Byte.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Short</tt>s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> negativeShorts() {
-        return () -> new Iterator<Short>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Short next() {
-                return (short) (-1 - generator.nextInt(Short.MAX_VALUE + 1));
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> negativeIntegers() {
-        return filter(i -> i < 0, integers());
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all negative <tt>Long</tt>s from a uniform distribution. Does not support
-     * removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> negativeLongs() {
-        return filter(l -> l < 0, longs());
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a
-     * geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * Returns a randomly-generated negative {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
      * </ul>
      *
-     * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
+     * @return a negative {@code BigInteger}
      */
-    public @NotNull Iterable<BigInteger> negativeBigIntegers(int meanBitSize) {
-        return map(BigInteger::negate, positiveBigIntegers(meanBitSize));
+    public @NotNull BigInteger nextNegativeBigInteger() {
+        return nextPositiveBigInteger().negate();
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all negative <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code BigInteger}s. The bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigInteger}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
@@ -549,386 +2245,225 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Byte</tt>s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> naturalBytes() {
-        return map(Integer::byteValue, randomIntsPow2(7));
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Short</tt>s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> naturalShorts() {
-        return map(Integer::shortValue, randomIntsPow2(15));
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s (including 0) from a uniform distribution.
-     * Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> naturalIntegers() {
-        return randomIntsPow2(31);
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all natural <tt>Long</tt>s (including 0) from a uniform distribution. Does
-     * not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> naturalLongs() {
-        return randomLongsPow2(63);
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is
-     * chosen from a geometric distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual
-     * mean and <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * Returns a randomly-generated natural {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
+     * @return a natural {@code BigInteger}
      */
-    public @NotNull Iterable<BigInteger> naturalBigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public BigInteger next() {
-                List<Boolean> bits = new ArrayList<>();
-                while (true) {
-                    if (generator.nextDouble() < 1.0 / (meanBitSize - 1)) {
-                        break;
-                    } else {
-                        bits.add(generator.nextBoolean());
-                    }
-                }
-                return MathUtils.fromBigEndianBits(bits);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+    public @NotNull BigInteger nextNaturalBigInteger() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        int size = nextNaturalIntGeometric();
+        if (size == 0) return BigInteger.ZERO;
+        return nextBigIntegerPow2(size).setBit(size - 1);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all natural <tt>BigInteger</tt>s (including 0). The bit size is chosen from
-     * a geometric distribution with mean approximately 64. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigInteger}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return naturalBigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
+        return fromSupplier(this::nextNaturalBigInteger);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Byte</tt>s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Byte> bytes() {
-        return map(Integer::byteValue, randomIntsPow2(8));
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all <tt>Short</tt>s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Short> shorts() {
-        return map(Integer::shortValue, randomIntsPow2(16));
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all <tt>Integer</tt>s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Integer> integers() {
-        return () -> new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                return generator.nextInt();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all <tt>Long</tt>s from a uniform distribution. Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<Long> longs() {
-        return () -> new Iterator<Long>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Long next() {
-                return generator.nextLong();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately <tt>meanBitSize</tt> (The ratio between the actual mean and
-     * <tt>meanBitSize</tt> decreases as <tt>meanBitSize</tt> increases). Does not support removal.
+     * Returns a randomly-generated nonzero {@code BigInteger}. The bit size is chosen from a geometric distribution
+     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
+     * that bit size.
      *
      * <ul>
-     *  <li><tt>meanBitSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>BigIntegers</tt>.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code BigInteger}
+     */
+    public @NotNull BigInteger nextNonzeroBigInteger() {
+        BigInteger i = nextPositiveBigInteger();
+        return nextBoolean() ? i : i.negate();
+    }
+
+    /**
+     * An {@code Iterable} that generates all nonzero {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite
-     *
-     * @param meanBitSize the approximate mean bit size of the <tt>BigInteger</tt>s generated
      */
-    public @NotNull Iterable<BigInteger> bigIntegers(int meanBitSize) {
-        if (meanBitSize <= 2)
-            throw new IllegalArgumentException("meanBitSize must be greater than 2.");
-        return () -> new Iterator<BigInteger>() {
-            private final Iterator<BigInteger> it = naturalBigIntegers(meanBitSize).iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public BigInteger next() {
-                BigInteger nbi = it.next();
-                if (generator.nextBoolean()) {
-                    nbi = nbi.negate().subtract(BigInteger.ONE);
-                }
-                return nbi;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+    @Override
+    public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        return fromSupplier(this::nextNonzeroBigInteger);
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>BigInteger</tt>s. The bit size is chosen from a geometric
-     * distribution with mean approximately 64. Does not support removal.
+     * Returns a randomly-generated {@code BigInteger}. The bit size is chosen from a geometric distribution with mean
+     * {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with that bit
+     * size.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigInteger}
+     */
+    public @NotNull BigInteger nextBigInteger() {
+        BigInteger i = nextNaturalBigInteger();
+        return nextBoolean() ? i : i.negate();
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code BigInteger}s. The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s with that bit size; the sign is also chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        return bigIntegers(BIG_INTEGER_MEAN_BIT_SIZE);
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        return fromSupplier(this::nextBigInteger);
     }
 
-    /**
-     * @return An <tt>Iterable</tt> that generates all natural <tt>Integer</tt>s chosen from a geometric distribution
-     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
-     * <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 1.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all natural <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int meanSize) {
-        if (meanSize <= 1)
-            throw new IllegalArgumentException("meanSize must be greater than 1.");
-        return () -> new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                int i = 0;
-                while (generator.nextDouble() >= 1.0 / meanSize) {
-                    i++;
+    public @NotNull BigInteger nextFromRangeUp(@NotNull BigInteger a) {
+        int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
+        int absBitLength = a.abs().bitLength();
+        int size = nextIntGeometricFromRangeUp(minBitLength);
+        BigInteger i;
+        if (size != absBitLength) {
+            if (size == 0) {
+                i = BigInteger.ZERO;
+            } else {
+                i = nextBigIntegerPow2(size);
+                boolean mostSignificantBit = i.testBit(size - 1);
+                if (!mostSignificantBit) {
+                    i = i.setBit(size - 1);
+                    if (size < absBitLength && a.signum() == -1) {
+                        i = i.negate();
+                    }
                 }
-                return i;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+        } else {
+            if (a.signum() != -1) {
+                i = nextBigIntegerBounded(BigInteger.ONE.shiftLeft(absBitLength).subtract(a)).add(a);
+            } else {
+                BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
+                BigInteger x = nextBigIntegerBounded(b.add(a.negate().subtract(b)).add(BigInteger.ONE));
+                i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
             }
-        };
+        }
+        return i;
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all positive <tt>Integer</tt>s chosen from a geometric distribution
-     * with mean approximately <tt>meanSize</tt> (The ratio between the actual mean and <tt>meanSize</tt> decreases as
-     * <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all positive <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> positiveIntegersGeometric(int meanSize) {
-        if (meanSize <= 2)
-            throw new IllegalArgumentException("meanSize must be greater than 2.");
-        return () -> new Iterator<Integer>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                int i = 1;
-                while (generator.nextDouble() >= 1.0 / (meanSize - 1)) {
-                    i++;
-                }
-                return i;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all negative <tt>Integer</tt>s chosen from a geometric distribution
-     * with absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and
-     * <tt>meanSize</tt> decreases as <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 2.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all negative <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate absolute mean size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> negativeIntegersGeometric(int meanSize) {
-        return map(i -> -i, positiveIntegersGeometric(meanSize));
-    }
-
-    /**
-     * @return An <tt>Iterable</tt> that generates all <tt>Integer</tt>s chosen from a geometric distribution with
-     * absolute mean approximately <tt>meanSize</tt> (The ratio between the actual absolute mean and <tt>meanSize</tt>
-     * decreases as <tt>meanSize</tt> increases). Does not support removal.
-     *
-     * <ul>
-     *  <li><tt>meanSize</tt> must be greater than 1.</li>
-     *  <li>The result is an infinite pseudorandom sequence of all <tt>Integers</tt>.</li>
-     * </ul>
-     *
-     * Length is infinite
-     *
-     * @param meanSize the approximate mean bit size of the <tt>Integer</tt>s generated
-     */
-    public @NotNull Iterable<Integer> integersGeometric(int meanSize) {
-        if (meanSize <= 1)
-            throw new IllegalArgumentException("meanSize must be greater than 1.");
-        return () -> new Iterator<Integer>() {
-            private final Iterator<Integer> it = naturalIntegersGeometric(meanSize).iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                Integer ni = it.next();
-                if (generator.nextBoolean()) {
-                    ni = -ni - 1;
-                }
-                return ni;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    /**
-     * An <tt>Iterable</tt> that generates all ASCII <tt>Character</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all {@code BigInteger}s greater than or equal to {@code a}. The bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen
+     * uniformly from all {@code BigInteger}s greater than or equal to {@code a} with that bit size. Does not support
      * removal.
+     *
+     * <ul>
+     *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
+     *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
+     *  cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Character> asciiCharacters() {
-        return map(i -> (char) (int) i, randomIntsPow2(7));
+    public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
+        int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
+                    " {@code Integer.MAX_VALUE}.");
+        }
+        return fromSupplier(() -> nextFromRangeUp(a));
+    }
+
+    public @NotNull BigInteger nextFromRangeDown(@NotNull BigInteger a) {
+        return nextFromRangeUp(a.negate()).negate();
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Character</tt>s from a uniform distribution. Does not support
+     * An {@code Iterable} that generates all {@code BigInteger}s less than or equal to {@code a}. The bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen
+     * uniformly from all {@code BigInteger}s greater than or equal to {@code a} with that bit size. Does not support
      * removal.
+     *
+     * <ul>
+     *  <li>Let {@code minBitLength} be 0 if {@code a} is positive, and ⌊log<sub>2</sub>(–{@code a})⌋ otherwise.
+     *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
+     *  cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     * </ul>
      *
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Character> characters() {
-        return map(i -> (char) (int) i, randomIntsPow2(16));
+    public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        int minBitLength = a.signum() == 1 ? 0 : a.negate().bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
+                    " {@code Integer.MAX_VALUE}.");
+        }
+        return fromSupplier(() -> nextFromRangeDown(a));
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.
      *
      * Length is infinite.
@@ -942,8 +2477,8 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
-     * uniform distribution. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
+     * distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
      */
@@ -953,7 +2488,7 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
      * Does not support removal.
      *
      * Length is infinite.
@@ -964,13 +2499,15 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Float</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Float}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Float> floats() {
         return () -> new Iterator<Float>() {
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -996,7 +2533,7 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.
      *
      * Length is infinite.
@@ -1010,8 +2547,8 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * @return An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) negative floats from a
-     * uniform distribution. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
+     * distribution. Negative zero is not included. Does not support removal.
      *
      * Length is infinite.
      */
@@ -1021,7 +2558,7 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
+     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
      * Does not support removal.
      *
      * Length is infinite.
@@ -1032,13 +2569,15 @@ public class RandomProvider implements IterableProvider {
     }
 
     /**
-     * An <tt>Iterable</tt> that generates all <tt>Double</tt>s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Double}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
         return () -> new Iterator<Double>() {
+            private Random generator = new Random(0x6af477d9a7e54fcaL);
+
             @Override
             public boolean hasNext() {
                 return true;
@@ -1063,43 +2602,31 @@ public class RandomProvider implements IterableProvider {
         };
     }
 
-    public @NotNull Iterable<BigDecimal> positiveBigDecimals(int meanScale) {
-        return map(
-                p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(meanScale))
-        );
-    }
-
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
-        return positiveBigDecimals(BIG_DECIMAL_MEAN_SCALE);
-    }
-
-    public @NotNull Iterable<BigDecimal> negativeBigDecimals(int meanScale) {
         return map(
                 p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric(meanScale))
+                pairs(negativeBigIntegers(), integersGeometric())
         );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
-        return negativeBigDecimals(BIG_DECIMAL_MEAN_SCALE);
-    }
-
-    public @NotNull Iterable<BigDecimal> bigDecimals(int meanScale) {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric(meanScale)));
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(negativeBigIntegers(), integersGeometric())
+        );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return bigDecimals(BIG_DECIMAL_MEAN_SCALE);
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> specialSelector = randomInts(SPECIAL_ELEMENT_RATIO).iterator();
+            private Iterator<Integer> specialSelector = integersBounded(SPECIAL_ELEMENT_RATIO).iterator();
             boolean specialSelection = specialSelector.next() == 0;
 
             @Override
@@ -1137,75 +2664,6 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
-                (BigInteger i) -> {
-                    List<BigInteger> list = MathUtils.demux(2, i);
-                    return new Pair<>(list.get(0), list.get(1));
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
-                MathUtils::logarithmicDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
-                MathUtils::squareRootDemux
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
-
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                x -> geometricSample(MEAN_LIST_SIZE, f.apply(x)),
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
-
-    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
     }
@@ -1220,7 +2678,8 @@ public class RandomProvider implements IterableProvider {
     }
 
     @Override
-    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
+    public
+    @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1303,15 +2762,19 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        return transpose(demux(size, xs));
+        if (size == 0) {
+            return repeat(Collections.emptyList());
+        } else {
+            return transpose(demux(size, xs));
+        }
     }
 
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1337,10 +2800,10 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Arrays.asList(new ArrayList<T>());
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new Iterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1371,10 +2834,10 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Arrays.asList("");
+        if (isEmpty(cs)) return Collections.singletonList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1410,10 +2873,10 @@ public class RandomProvider implements IterableProvider {
 
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Arrays.asList("");
+        if (isEmpty(cs)) return Collections.singletonList("");
         return () -> new Iterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric(MEAN_LIST_SIZE).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -1440,5 +2903,69 @@ public class RandomProvider implements IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return strings(characters());
+    }
+
+    /**
+     * Determines whether {@code this} is equal to {@code that}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param that The {@code RandomProvider} to be compared with {@code this}
+     * @return {@code this}={@code that}
+     */
+
+    /**
+     * Calculates the hash code of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return {@code this}'s hash code.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RandomProvider that = (RandomProvider) o;
+        return scale == that.scale && secondaryScale == that.secondaryScale &&
+                seed.equals(that.seed) && prng.equals(that.prng);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = seed.hashCode();
+        result = 31 * result + prng.hashCode();
+        result = 31 * result + scale;
+        result = 31 * result + secondaryScale;
+        return result;
+    }
+
+    /**
+     * Creates a {@code String} representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>See tests and demos for example results.</li>
+     * </ul>
+     *
+     * @return a {@code String} representation of {@code this}
+     */
+    public String toString() {
+        return "RandomProvider[@" + getId() + ", " + scale + ", " + secondaryScale + "]";
+    }
+
+    /**
+     * Ensures that {@code this} is valid. Must return true for any {@code RandomProvider} used outside this class.
+     */
+    public void validate() {
+        prng.validate();
+        assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
+        assertNotNull(dependents);
     }
 }
