@@ -2371,8 +2371,31 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBigInteger);
     }
 
+    /**
+     * Returns a randomly-generated {@code BigInteger} greater than or equal to {@code a} The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s greater than or equal to {@code a} with that bit size.
+     *
+     * <ul>
+     *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
+     *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
+     *  cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigInteger} greater than or equal to {@code a}
+     */
     public @NotNull BigInteger nextFromRangeUp(@NotNull BigInteger a) {
         int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
+                    " {@code Integer.MAX_VALUE}.");
+        }
         int absBitLength = a.abs().bitLength();
         int size = nextIntGeometricFromRangeUp(minBitLength);
         BigInteger i;
@@ -2411,7 +2434,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
      *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
      *  cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -2431,6 +2454,21 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code BigInteger} less than or equal to {@code a} The bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * {@code BigInteger}s less than or equal to {@code a} with that bit size.
+     *
+     * <ul>
+     *  <li>Let {@code minBitLength} be 0 if {@code a} is positive, and ⌊log<sub>2</sub>(–{@code a})⌋ otherwise.
+     *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
+     *  cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigInteger} less than or equal to {@code a}
+     */
     public @NotNull BigInteger nextFromRangeDown(@NotNull BigInteger a) {
         return nextFromRangeUp(a.negate()).negate();
     }
@@ -2453,16 +2491,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
-        int minBitLength = a.signum() == 1 ? 0 : a.negate().bitLength();
-        if (scale <= minBitLength) {
-            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
-                    minBitLength + ". Invalid scale: " + scale);
-        }
-        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
-                    " {@code Integer.MAX_VALUE}.");
-        }
-        return fromSupplier(() -> nextFromRangeDown(a));
+        return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
     }
 
     /**
