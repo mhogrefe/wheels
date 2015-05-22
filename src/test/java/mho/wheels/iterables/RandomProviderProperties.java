@@ -152,10 +152,15 @@ public class RandomProviderProperties {
             propertiesRangeUpGeometric();
             propertiesNextIntGeometricFromRangeDown();
             propertiesRangeDownGeometric();
+            propertiesNextPositiveBigInteger();
             propertiesPositiveBigIntegers();
+            propertiesNextNegativeBigInteger();
             propertiesNegativeBigIntegers();
+            propertiesNextNaturalBigInteger();
             propertiesNaturalBigIntegers();
+            propertiesNextNonzeroBigInteger();
             propertiesNonzeroBigIntegers();
+            propertiesNextBigInteger();
             propertiesBigIntegers();
             propertiesEquals();
             propertiesHashCode();
@@ -1598,6 +1603,23 @@ public class RandomProviderProperties {
         }
     }
 
+    private static void propertiesNextPositiveBigInteger() {
+        initialize("nextPositiveBigInteger()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigInteger i = rp.nextPositiveBigInteger();
+            assertEquals(rp.toString(), i.signum(), 1);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextPositiveBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
     private static void propertiesPositiveBigIntegers() {
         initialize("positiveBigIntegers()");
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
@@ -1605,6 +1627,31 @@ public class RandomProviderProperties {
             Iterable<BigInteger> is = rp.positiveBigIntegers();
             simpleTest(rp, is, i -> i.signum() == 1);
             supplierEquivalence(rp, is, rp::nextPositiveBigInteger);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.positiveBigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNegativeBigInteger() {
+        initialize("nextNegativeBigInteger()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigInteger i = rp.nextNegativeBigInteger();
+            assertEquals(rp.toString(), i.signum(), -1);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNegativeBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1615,6 +1662,41 @@ public class RandomProviderProperties {
             Iterable<BigInteger> is = rp.negativeBigIntegers();
             simpleTest(rp, is, i -> i.signum() == -1);
             supplierEquivalence(rp, is, rp::nextNegativeBigInteger);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.negativeBigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNaturalBigInteger() {
+        initialize("nextNaturalBigInteger()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigInteger i = rp.nextNaturalBigInteger();
+            assertNotEquals(rp.toString(), i.signum(), -1);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNaturalBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).nextNaturalBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1629,6 +1711,38 @@ public class RandomProviderProperties {
             simpleTest(rp, is, i -> i.signum() != -1);
             supplierEquivalence(rp, is, rp::nextNaturalBigInteger);
         }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.naturalBigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).naturalBigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNonzeroBigInteger() {
+        initialize("nextNonzeroBigInteger()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigInteger i = rp.nextNonzeroBigInteger();
+            assertNotEquals(rp.toString(), i, BigInteger.ZERO);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextNonzeroBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
     }
 
     private static void propertiesNonzeroBigIntegers() {
@@ -1638,6 +1752,40 @@ public class RandomProviderProperties {
             Iterable<BigInteger> is = rp.nonzeroBigIntegers();
             simpleTest(rp, is, i -> !i.equals(BigInteger.ZERO));
             supplierEquivalence(rp, is, rp::nextNonzeroBigInteger);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nonzeroBigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextBigInteger() {
+        initialize("nextBigInteger()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            rp.nextBigInteger();
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.nextBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).nextBigInteger();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -1651,6 +1799,21 @@ public class RandomProviderProperties {
             Iterable<BigInteger> is = rp.bigIntegers();
             simpleTest(rp, is, i -> true);
             supplierEquivalence(rp, is, rp::nextBigInteger);
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.bigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            try {
+                rp.withScale(Integer.MAX_VALUE).bigIntegers();
+                fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
         }
     }
 
