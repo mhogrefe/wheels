@@ -923,11 +923,27 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextPositiveBigInteger(" + rp + ") = " + rp.nextPositiveBigInteger());
+        }
+    }
+
     private static void demoPositiveBigIntegers() {
         initialize();
         Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("positiveBigIntegers(" + rp + ") = " + its(rp.positiveBigIntegers()));
+        }
+    }
+
+    private static void demoNextNegativeBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNegativeBigInteger(" + rp + ") = " + rp.nextNegativeBigInteger());
         }
     }
 
@@ -939,11 +955,33 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNaturalBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNaturalBigInteger(" + rp + ") = " + rp.nextNaturalBigInteger());
+        }
+    }
+
     private static void demoNaturalBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("naturalBigIntegers(" + rp + ") = " + its(rp.naturalBigIntegers()));
+        }
+    }
+
+    private static void demoNextNonzeroBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNonzeroBigInteger(" + rp + ") = " + rp.nextNonzeroBigInteger());
         }
     }
 
@@ -955,9 +993,23 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextBigInteger(" + rp + ") = " + rp.nextBigInteger());
+        }
+    }
+
     private static void demoBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("bigIntegers(" + rp + ") = " + its(rp.bigIntegers()));
         }
