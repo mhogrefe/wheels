@@ -2266,6 +2266,31 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
     }
 
+    private static void nextPositiveBigInteger_helper(int mean, @NotNull String output) {
+        aeq(P.withScale(mean).nextPositiveBigInteger(), output);
+        P.reset();
+    }
+
+    private static void nextPositiveBigInteger_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextPositiveBigInteger();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextPositiveBigInteger() {
+        nextPositiveBigInteger_helper(2, "13");
+        nextPositiveBigInteger_helper(3, "21");
+        nextPositiveBigInteger_helper(4, "101");
+        nextPositiveBigInteger_helper(5, "21");
+        nextPositiveBigInteger_helper(10, "47968091191");
+        nextPositiveBigInteger_helper(100, "94790976865653102300816908025048767680216168");
+        nextPositiveBigInteger_fail_helper(1);
+        nextPositiveBigInteger_fail_helper(0);
+        nextPositiveBigInteger_fail_helper(-1);
+    }
+
     private static void positiveBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
@@ -2343,6 +2368,31 @@ public strictfp class RandomProviderTest {
         positiveBigIntegers_fail_helper(1);
         positiveBigIntegers_fail_helper(0);
         positiveBigIntegers_fail_helper(-1);
+    }
+
+    private static void nextNegativeBigInteger_helper(int mean, @NotNull String output) {
+        aeq(P.withScale(mean).nextNegativeBigInteger(), output);
+        P.reset();
+    }
+
+    private static void nextNegativeBigInteger_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNegativeBigInteger();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNegativeBigInteger() {
+        nextNegativeBigInteger_helper(2, "-13");
+        nextNegativeBigInteger_helper(3, "-21");
+        nextNegativeBigInteger_helper(4, "-101");
+        nextNegativeBigInteger_helper(5, "-21");
+        nextNegativeBigInteger_helper(10, "-47968091191");
+        nextNegativeBigInteger_helper(100, "-94790976865653102300816908025048767680216168");
+        nextNegativeBigInteger_fail_helper(1);
+        nextNegativeBigInteger_fail_helper(0);
+        nextNegativeBigInteger_fail_helper(-1);
     }
 
     private static void negativeBigIntegers_helper(
@@ -2431,6 +2481,32 @@ public strictfp class RandomProviderTest {
         negativeBigIntegers_fail_helper(-1);
     }
 
+    private static void nextNaturalBigInteger_helper(int mean, @NotNull String output) {
+        aeq(P.withScale(mean).nextNaturalBigInteger(), output);
+        P.reset();
+    }
+
+    private static void nextNaturalBigInteger_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNaturalBigInteger();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNaturalBigInteger() {
+        nextNaturalBigInteger_helper(1, "5");
+        nextNaturalBigInteger_helper(2, "13");
+        nextNaturalBigInteger_helper(3, "37");
+        nextNaturalBigInteger_helper(4, "13");
+        nextNaturalBigInteger_helper(5, "21");
+        nextNaturalBigInteger_helper(10, "47968091191");
+        nextNaturalBigInteger_helper(100, "630008861630388057697674146568609443823746152");
+        nextNaturalBigInteger_fail_helper(0);
+        nextNaturalBigInteger_fail_helper(-1);
+        nextNaturalBigInteger_fail_helper(Integer.MAX_VALUE);
+    }
+
     private static void naturalBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
@@ -2514,6 +2590,32 @@ public strictfp class RandomProviderTest {
         );
         naturalBigIntegers_fail_helper(0);
         naturalBigIntegers_fail_helper(-1);
+        naturalBigIntegers_fail_helper(Integer.MAX_VALUE);
+    }
+
+    private static void nextNonzeroBigInteger_helper(int mean, @NotNull String output) {
+        aeq(P.withScale(mean).nextNonzeroBigInteger(), output);
+        P.reset();
+    }
+
+    private static void nextNonzeroBigInteger_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextNonzeroBigInteger();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNonzeroBigInteger() {
+        nextNonzeroBigInteger_helper(2, "13");
+        nextNonzeroBigInteger_helper(3, "21");
+        nextNonzeroBigInteger_helper(4, "101");
+        nextNonzeroBigInteger_helper(5, "21");
+        nextNonzeroBigInteger_helper(10, "-47968091191");
+        nextNonzeroBigInteger_helper(100, "94790976865653102300816908025048767680216168");
+        nextNonzeroBigInteger_fail_helper(1);
+        nextNonzeroBigInteger_fail_helper(0);
+        nextNonzeroBigInteger_fail_helper(-1);
     }
 
     private static void nonzeroBigIntegers_helper(
@@ -2594,6 +2696,32 @@ public strictfp class RandomProviderTest {
         nonzeroBigIntegers_fail_helper(1);
         nonzeroBigIntegers_fail_helper(0);
         nonzeroBigIntegers_fail_helper(-1);
+    }
+
+    private static void nextBigInteger_helper(int mean, @NotNull String output) {
+        aeq(P.withScale(mean).nextBigInteger(), output);
+        P.reset();
+    }
+
+    private static void nextBigInteger_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nextBigInteger();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextBigInteger() {
+        nextBigInteger_helper(1, "5");
+        nextBigInteger_helper(2, "13");
+        nextBigInteger_helper(3, "37");
+        nextBigInteger_helper(4, "13");
+        nextBigInteger_helper(5, "21");
+        nextBigInteger_helper(10, "-47968091191");
+        nextBigInteger_helper(100, "630008861630388057697674146568609443823746152");
+        nextBigInteger_fail_helper(0);
+        nextBigInteger_fail_helper(-1);
+        nextBigInteger_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void bigIntegers_helper(
@@ -2680,6 +2808,7 @@ public strictfp class RandomProviderTest {
         );
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
+        bigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void rangeUp_BigInteger_helper(

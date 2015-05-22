@@ -2365,6 +2365,9 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale < 1) {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
         }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
         return fromSupplier(this::nextBigInteger);
     }
 
