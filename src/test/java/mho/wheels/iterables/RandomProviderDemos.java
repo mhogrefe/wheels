@@ -1015,6 +1015,62 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
