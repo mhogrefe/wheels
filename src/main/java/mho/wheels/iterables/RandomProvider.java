@@ -2491,6 +2491,15 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
+        int minBitLength = a.signum() == 1 ? 0 : a.negate().bitLength();
+        if (scale <= minBitLength) {
+            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
+                    minBitLength + ". Invalid scale: " + scale);
+        }
+        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
+                    " {@code Integer.MAX_VALUE}.");
+        }
         return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
     }
 

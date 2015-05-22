@@ -3,7 +3,6 @@ package mho.wheels.iterables;
 import mho.wheels.misc.Readers;
 import mho.wheels.random.IsaacPRNG;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -2811,6 +2810,35 @@ public strictfp class RandomProviderTest {
         bigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
+    private static void nextFromRangeUp_BigInteger_helper(int meanBitSize, int a, @NotNull String output) {
+        aeq(P.withScale(meanBitSize).nextFromRangeUp(BigInteger.valueOf(a)), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).nextFromRangeUp(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUp_BigInteger() {
+        nextFromRangeUp_BigInteger_helper(5, 8, "117");
+        nextFromRangeUp_BigInteger_helper(10, 8, "305");
+        nextFromRangeUp_BigInteger_helper(5, 10, "117");
+        nextFromRangeUp_BigInteger_helper(10, 10, "305");
+        nextFromRangeUp_BigInteger_helper(1, 0, "5");
+        nextFromRangeUp_BigInteger_helper(10, 0, "47968091191");
+        nextFromRangeUp_BigInteger_helper(5, -8, "21");
+        nextFromRangeUp_BigInteger_helper(10, -8, "47968091191");
+        nextFromRangeUp_BigInteger_helper(5, -10, "21");
+        nextFromRangeUp_BigInteger_helper(10, -10, "47968091191");
+        nextFromRangeUp_BigInteger_fail_helper(4, 10);
+        nextFromRangeUp_BigInteger_fail_helper(3, 10);
+        nextFromRangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
+    }
+
     private static void rangeUp_BigInteger_helper(
             int meanBitSize,
             int a,
@@ -2926,6 +2954,35 @@ public strictfp class RandomProviderTest {
         rangeUp_BigInteger_fail_helper(4, 10);
         rangeUp_BigInteger_fail_helper(3, 10);
         rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
+    }
+
+    private static void nextFromRangeDown_BigInteger_helper(int meanBitSize, int a, @NotNull String output) {
+        aeq(P.withScale(meanBitSize).nextFromRangeDown(BigInteger.valueOf(a)), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).nextFromRangeDown(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeDown_BigInteger() {
+        nextFromRangeDown_BigInteger_helper(5, 8, "-21");
+        nextFromRangeDown_BigInteger_helper(10, 8, "-47968091191");
+        nextFromRangeDown_BigInteger_helper(5, 10, "-21");
+        nextFromRangeDown_BigInteger_helper(10, 10, "-47968091191");
+        nextFromRangeDown_BigInteger_helper(1, 0, "-5");
+        nextFromRangeDown_BigInteger_helper(10, 0, "-47968091191");
+        nextFromRangeDown_BigInteger_helper(5, -8, "-117");
+        nextFromRangeDown_BigInteger_helper(10, -8, "-305");
+        nextFromRangeDown_BigInteger_helper(5, -10, "-117");
+        nextFromRangeDown_BigInteger_helper(10, -10, "-305");
+        nextFromRangeDown_BigInteger_fail_helper(4, -10);
+        nextFromRangeDown_BigInteger_fail_helper(3, -10);
+        nextFromRangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
     }
 
     private static void rangeDown_BigInteger_helper(
