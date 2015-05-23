@@ -162,6 +162,10 @@ public class RandomProviderProperties {
             propertiesNonzeroBigIntegers();
             propertiesNextBigInteger();
             propertiesBigIntegers();
+            propertiesNextFromRangeUp_BigInteger();
+            propertiesRangeUp_BigInteger();
+            propertiesNextFromRangeDown_BigInteger();
+            propertiesRangeDown_BigInteger();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -1512,10 +1516,6 @@ public class RandomProviderProperties {
             assertTrue(p.toString(), i >= p.b);
         }
 
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            assertEquals(rp.toString(), rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
-        }
-
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
                 p -> p.a.getScale() <= p.b || p.b < 1 && p.a.getScale() >= Integer.MAX_VALUE + p.b,
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
@@ -1561,10 +1561,6 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
             int i = p.a.nextIntGeometricFromRangeDown(p.b);
             assertTrue(p.toString(), i <= p.b);
-        }
-
-        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
-            assertEquals(rp.toString(), rp.nextFromRangeUp(Integer.MAX_VALUE), Integer.MAX_VALUE);
         }
 
         Iterable<Pair<RandomProvider, Integer>> psFail = filter(
@@ -1813,6 +1809,124 @@ public class RandomProviderProperties {
             try {
                 rp.withScale(Integer.MAX_VALUE).bigIntegers();
                 fail(rp.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_BigInteger() {
+        initialize("nextFromRangeUp(BigInteger)");
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
+            BigInteger i = p.a.nextFromRangeUp(p.b);
+            assertTrue(p.toString(), ge(i, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUp(p.b);
+                fail(p.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUp_BigInteger() {
+        initialize("rangeUp(BigInteger)");
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
+            Iterable<BigInteger> is = p.a.rangeUp(p.b);
+            simpleTest(p.a, is, i -> ge(i, p.b));
+            supplierEquivalence(p.a, is, () -> p.a.nextFromRangeUp(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUp(p.b);
+                fail(p.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeDown_BigInteger() {
+        initialize("nextFromRangeDown(BigInteger)");
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
+            BigInteger i = p.a.nextFromRangeDown(p.b);
+            assertTrue(p.toString(), le(i, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDown(p.b);
+                fail(p.toString());
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeDown_BigInteger() {
+        initialize("rangeDown(BigInteger)");
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, ps)) {
+            Iterable<BigInteger> is = p.a.rangeDown(p.b);
+            simpleTest(p.a, is, i -> le(i, p.b));
+            supplierEquivalence(p.a, is, () -> p.a.nextFromRangeDown(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDown(p.b);
+                fail(p.toString());
             } catch (IllegalStateException ignored) {}
         }
     }
