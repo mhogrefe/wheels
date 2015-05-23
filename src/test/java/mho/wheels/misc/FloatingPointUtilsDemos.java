@@ -4,8 +4,6 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 
-import java.util.Random;
-
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.FloatingPointUtils.predecessor;
@@ -24,6 +22,20 @@ public strictfp class FloatingPointUtilsDemos {
         } else {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
+        }
+    }
+
+    private static void demoIsNegativeZero_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println(f + " is " + (FloatingPointUtils.isNegativeZero(f) ? "" : "not ") + "negative zero");
+        }
+    }
+
+    private static void demoIsNegativeZero_double() {
+        initialize();
+        for (double d : take(LIMIT, P.doubles())) {
+            System.out.println(d + " is " + (FloatingPointUtils.isNegativeZero(d) ? "" : "not ") + "negative zero");
         }
     }
 
