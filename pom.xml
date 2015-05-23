@@ -41,6 +41,7 @@
                         <include>**/MathUtilsTest.java</include>
                         <include>**/BigDecimalUtilsProperties.java</include>
                         <include>**/BigDecimalUtilsTest.java</include>
+                        <include>**/FloatingPointUtilsProperties.java</include>
                         <include>**/FloatingPointUtilsTest.java</include>
                         <include>**/ReadersProperties.java</include>
                         <include>**/ReadersTest.java</include>
