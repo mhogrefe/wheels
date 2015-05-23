@@ -41,7 +41,7 @@ public strictfp class FloatingPointUtilsDemos {
 
     private static void demoSuccessor_float() {
         initialize();
-        Iterable<Float> fs = filter(f -> !Float.isNaN(f) && (!Float.isInfinite(f) || f < 0), P.floats());
+        Iterable<Float> fs = filter(f -> !Float.isNaN(f) && f != Float.POSITIVE_INFINITY, P.floats());
         for (float f : take(LIMIT, fs)) {
             System.out.println("successor(" + f + ") = " + successor(f));
         }
@@ -49,7 +49,7 @@ public strictfp class FloatingPointUtilsDemos {
 
     private static void demoPredecessor_float() {
         initialize();
-        Iterable<Float> fs = filter(f -> !Float.isNaN(f) && (!Float.isInfinite(f) || f > 0), P.floats());
+        Iterable<Float> fs = filter(f -> !Float.isNaN(f) && f != Float.NEGATIVE_INFINITY, P.floats());
         for (float f : take(LIMIT, fs)) {
             System.out.println("predecessor(" + f + ") = " + predecessor(f));
         }
@@ -57,7 +57,7 @@ public strictfp class FloatingPointUtilsDemos {
 
     private static void demoSuccessor_double() {
         initialize();
-        Iterable<Double> ds = filter(d -> !Double.isNaN(d) && (!Double.isInfinite(d) || d < 0), P.doubles());
+        Iterable<Double> ds = filter(d -> !Double.isNaN(d) && d != Double.POSITIVE_INFINITY, P.doubles());
         for (double d : take(LIMIT, ds)) {
             System.out.println("successor(" + d + ") = " + successor(d));
         }
@@ -65,7 +65,7 @@ public strictfp class FloatingPointUtilsDemos {
 
     private static void demoPredecessor_double() {
         initialize();
-        Iterable<Double> ds = filter(d -> !Double.isNaN(d) && (!Double.isInfinite(d) || d > 0), P.doubles());
+        Iterable<Double> ds = filter(d -> !Double.isNaN(d) && d != Double.NEGATIVE_INFINITY, P.doubles());
         for (double d : take(LIMIT, ds)) {
             System.out.println("predecessor(" + d + ") = " + predecessor(d));
         }
