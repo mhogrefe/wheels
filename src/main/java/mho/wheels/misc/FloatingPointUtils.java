@@ -16,6 +16,14 @@ public final strictfp class FloatingPointUtils {
      */
     private FloatingPointUtils() {}
 
+    public static boolean isNegativeZero(float f) {
+        return Float.floatToIntBits(f) == Integer.MIN_VALUE;
+    }
+
+    public static boolean isNegativeZero(double d) {
+        return Double.doubleToLongBits(d) == Long.MIN_VALUE;
+    }
+
     /**
      * Returns the next-largest {@code float} after {@code f}. The successor of {@code -Float.MIN_VALUE} is negative
      * zero. The successor of negative infinity is {@code -Float.MAX_VALUE}.

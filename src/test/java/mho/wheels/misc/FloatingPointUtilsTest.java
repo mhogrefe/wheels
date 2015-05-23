@@ -8,9 +8,32 @@ import static mho.wheels.misc.FloatingPointUtils.successor;
 import static mho.wheels.misc.FloatingPointUtils.toMantissaAndExponent;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public strictfp class FloatingPointUtilsTest {
+    @Test
+    public void testIsNegativeZero_float() {
+        assertFalse(FloatingPointUtils.isNegativeZero(0.0f));
+        assertTrue(FloatingPointUtils.isNegativeZero(-0.0f));
+        assertFalse(FloatingPointUtils.isNegativeZero(1.0f));
+        assertFalse(FloatingPointUtils.isNegativeZero(-1.0f));
+        assertFalse(FloatingPointUtils.isNegativeZero(Float.NaN));
+        assertFalse(FloatingPointUtils.isNegativeZero(Float.POSITIVE_INFINITY));
+        assertFalse(FloatingPointUtils.isNegativeZero(Float.NEGATIVE_INFINITY));
+    }
+
+    @Test
+    public void testIsNegativeZero_double() {
+        assertFalse(FloatingPointUtils.isNegativeZero(0.0));
+        assertTrue(FloatingPointUtils.isNegativeZero(-0.0));
+        assertFalse(FloatingPointUtils.isNegativeZero(1.0));
+        assertFalse(FloatingPointUtils.isNegativeZero(-1.0));
+        assertFalse(FloatingPointUtils.isNegativeZero(Double.NaN));
+        assertFalse(FloatingPointUtils.isNegativeZero(Double.POSITIVE_INFINITY));
+        assertFalse(FloatingPointUtils.isNegativeZero(Double.NEGATIVE_INFINITY));
+    }
+
     private static void successor_float_helper(float x, @NotNull String output) {
         aeq(successor(x), output);
     }
