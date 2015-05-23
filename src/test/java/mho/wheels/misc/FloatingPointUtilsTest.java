@@ -34,6 +34,28 @@ public strictfp class FloatingPointUtilsTest {
         assertFalse(FloatingPointUtils.isNegativeZero(Double.NEGATIVE_INFINITY));
     }
 
+    @Test
+    public void testIsPositiveZero_float() {
+        assertTrue(FloatingPointUtils.isPositiveZero(0.0f));
+        assertFalse(FloatingPointUtils.isPositiveZero(-0.0f));
+        assertFalse(FloatingPointUtils.isPositiveZero(1.0f));
+        assertFalse(FloatingPointUtils.isPositiveZero(-1.0f));
+        assertFalse(FloatingPointUtils.isPositiveZero(Float.NaN));
+        assertFalse(FloatingPointUtils.isPositiveZero(Float.POSITIVE_INFINITY));
+        assertFalse(FloatingPointUtils.isPositiveZero(Float.NEGATIVE_INFINITY));
+    }
+
+    @Test
+    public void testIsPositiveZero_double() {
+        assertTrue(FloatingPointUtils.isPositiveZero(0.0));
+        assertFalse(FloatingPointUtils.isPositiveZero(-0.0));
+        assertFalse(FloatingPointUtils.isPositiveZero(1.0));
+        assertFalse(FloatingPointUtils.isPositiveZero(-1.0));
+        assertFalse(FloatingPointUtils.isPositiveZero(Double.NaN));
+        assertFalse(FloatingPointUtils.isPositiveZero(Double.POSITIVE_INFINITY));
+        assertFalse(FloatingPointUtils.isPositiveZero(Double.NEGATIVE_INFINITY));
+    }
+
     private static void successor_float_helper(float x, @NotNull String output) {
         aeq(successor(x), output);
     }

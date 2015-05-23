@@ -47,6 +47,36 @@ public final strictfp class FloatingPointUtils {
     }
 
     /**
+     * Determines whether a {@code float} is positive zero.
+     *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return whether {@code f} is 0.0f
+     */
+    public static boolean isPositiveZero(float f) {
+        return Float.floatToIntBits(f) == 0;
+    }
+
+    /**
+     * Determines whether a {@code double} is positive zero.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return whether {@code d} is 0.0
+     */
+    public static boolean isPositiveZero(double d) {
+        return Double.doubleToLongBits(d) == 0;
+    }
+
+    /**
      * Returns the next-largest {@code float} after {@code f}. The successor of {@code -Float.MIN_VALUE} is negative
      * zero. The successor of negative infinity is {@code -Float.MAX_VALUE}.
      *

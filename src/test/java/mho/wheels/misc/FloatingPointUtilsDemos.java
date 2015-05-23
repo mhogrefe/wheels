@@ -39,6 +39,20 @@ public strictfp class FloatingPointUtilsDemos {
         }
     }
 
+    private static void demoIsPositiveZero_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println(f + " is " + (FloatingPointUtils.isPositiveZero(f) ? "" : "not ") + "positive zero");
+        }
+    }
+
+    private static void demoIsPositiveZero_double() {
+        initialize();
+        for (double d : take(LIMIT, P.doubles())) {
+            System.out.println(d + " is " + (FloatingPointUtils.isPositiveZero(d) ? "" : "not ") + "positive zero");
+        }
+    }
+
     private static void demoSuccessor_float() {
         initialize();
         Iterable<Float> fs = filter(f -> !Float.isNaN(f) && f != Float.POSITIVE_INFINITY, P.floats());

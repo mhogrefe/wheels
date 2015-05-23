@@ -34,6 +34,8 @@ public class FloatingPointUtilsProperties {
             System.out.println("\ttesting " + config.c);
             propertiesIsNegativeZero_float();
             propertiesIsNegativeZero_double();
+            propertiesIsPositiveZero_float();
+            propertiesIsPositiveZero_double();
         }
         System.out.println("Done");
     }
@@ -44,6 +46,7 @@ public class FloatingPointUtilsProperties {
             FloatingPointUtils.isNegativeZero(f);
         }
 
+        //todo test nonzero floats
         for (float f : take(LIMIT, P.ordinaryFloats())) {
             assertFalse(Float.toString(f), FloatingPointUtils.isNegativeZero(f));
         }
@@ -55,8 +58,27 @@ public class FloatingPointUtilsProperties {
             FloatingPointUtils.isNegativeZero(d);
         }
 
+        //todo test nonzero doubles
         for (double d : take(LIMIT, P.ordinaryDoubles())) {
             assertFalse(Double.toString(d), FloatingPointUtils.isNegativeZero(d));
         }
+    }
+
+    private static void propertiesIsPositiveZero_float() {
+        initialize("isPositiveZero(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            FloatingPointUtils.isPositiveZero(f);
+        }
+
+        //todo test nonzero floats
+    }
+
+    private static void propertiesIsPositiveZero_double() {
+        initialize("isPositiveZero(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            FloatingPointUtils.isPositiveZero(d);
+        }
+
+        //todo test nonzero doubles
     }
 }
