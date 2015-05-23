@@ -16,10 +16,32 @@ public final strictfp class FloatingPointUtils {
      */
     private FloatingPointUtils() {}
 
+    /**
+     * Determines whether a {@code float} is negative zero.
+     *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return whether {@code f} is -0.0f
+     */
     public static boolean isNegativeZero(float f) {
         return Float.floatToIntBits(f) == Integer.MIN_VALUE;
     }
 
+    /**
+     * Determines whether a {@code double} is negative zero.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return whether {@code d} is -0.0
+     */
     public static boolean isNegativeZero(double d) {
         return Double.doubleToLongBits(d) == Long.MIN_VALUE;
     }
