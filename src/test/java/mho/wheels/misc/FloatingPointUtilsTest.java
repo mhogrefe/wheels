@@ -3,15 +3,25 @@ package mho.wheels.misc;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import static mho.wheels.misc.FloatingPointUtils.predecessor;
-import static mho.wheels.misc.FloatingPointUtils.successor;
-import static mho.wheels.misc.FloatingPointUtils.toMantissaAndExponent;
+import static mho.wheels.misc.FloatingPointUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public strictfp class FloatingPointUtilsTest {
+    @Test
+    public void testConstants() {
+        aeq(SMALLEST_FLOAT, "(1, -149)");
+        aeq(LARGEST_SUBNORMAL_FLOAT, "(8388607, -149)");
+        aeq(SMALLEST_NORMAL_FLOAT, "(1, -126)");
+        aeq(LARGEST_FLOAT, "(16777215, 104)");
+        aeq(SMALLEST_DOUBLE, "(1, -1074)");
+        aeq(LARGEST_SUBNORMAL_DOUBLE, "(4503599627370495, -1074)");
+        aeq(SMALLEST_NORMAL_DOUBLE, "(1, -1022)");
+        aeq(LARGEST_DOUBLE, "(9007199254740991, 971)");
+    }
+
     @Test
     public void testIsNegativeZero_float() {
         assertFalse(FloatingPointUtils.isNegativeZero(0.0f));
