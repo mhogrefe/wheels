@@ -1,16 +1,63 @@
 package mho.wheels.misc;
 
 import mho.wheels.math.MathUtils;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
 public final strictfp class FloatingPointUtils {
+    /**
+     * The smallest positive float value, or 2<sup>–149</sup>
+     */
+    public static final @NotNull Pair<Integer, Integer> SMALLEST_FLOAT = toMantissaAndExponent(Float.MIN_VALUE).get();
+
+    /**
+     * The largest subnormal float value, or (2<sup>23</sup>–1)/2<sup>149</sup>
+     */
+    public static final @NotNull Pair<Integer, Integer> LARGEST_SUBNORMAL_FLOAT =
+            toMantissaAndExponent(FloatingPointUtils.predecessor(Float.MIN_NORMAL)).get();
+
+    /**
+     * The smallest positive normal float value, or 2<sup>–126</sup>
+     */
+    public static final @NotNull Pair<Integer, Integer> SMALLEST_NORMAL_FLOAT =
+            toMantissaAndExponent(Float.MIN_NORMAL).get();
+
+    /**
+     * The largest finite float value, or 2<sup>128</sup>–2<sup>104</sup>
+     */
+    public static final @NotNull Pair<Integer, Integer> LARGEST_FLOAT = toMantissaAndExponent(Float.MAX_VALUE).get();
+
+    /**
+     * The smallest positive double value, or 2<sup>–1074</sup>
+     */
+    public static final @NotNull Pair<Long, Integer> SMALLEST_DOUBLE = toMantissaAndExponent(Double.MIN_VALUE).get();
+
+    /**
+     * The largest subnormal double value, or (2<sup>52</sup>–1)/2<sup>1074</sup>
+     */
+    public static final @NotNull Pair<Long, Integer> LARGEST_SUBNORMAL_DOUBLE =
+            toMantissaAndExponent(FloatingPointUtils.predecessor(Double.MIN_NORMAL)).get();
+
+    /**
+     * The smallest positive normal double value, or 2<sup>–1022</sup>
+     */
+    public static final @NotNull Pair<Long, Integer> SMALLEST_NORMAL_DOUBLE =
+            toMantissaAndExponent(Double.MIN_NORMAL).get();
+
+    /**
+     * The largest finite double value, or 2<sup>1024</sup>–2<sup>971</sup>
+     */
+    public static final @NotNull Pair<Long, Integer> LARGEST_DOUBLE = toMantissaAndExponent(Double.MAX_VALUE).get();
+
     /**
      * Disallow instantiation
      */
@@ -170,7 +217,7 @@ public final strictfp class FloatingPointUtils {
             mantissa += 1 << 23;
             exponent -= 150;
         }
-        int lowestOnePosition = MathUtils.ceilingLog2(Integer.lowestOneBit(mantissa));
+        int lowestOnePosition = Integer.numberOfTrailingZeros(mantissa);
         mantissa >>= lowestOnePosition;
         exponent += lowestOnePosition;
         return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
@@ -190,11 +237,40 @@ public final strictfp class FloatingPointUtils {
             mantissa += 1L << 52;
             exponent -= 1075;
         }
-        int lowestOnePosition = MathUtils.ceilingLog2(Long.lowestOneBit(mantissa));
+        int lowestOnePosition = Long.numberOfTrailingZeros(mantissa);
         mantissa >>= lowestOnePosition;
         exponent += lowestOnePosition;
         return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
     }
+
+    public static @NotNull Ordering compareMantissaAndExponent(
+            @NotNull BigInteger m1,
+            int e1,
+            @NotNull BigInteger m2,
+            int e2
+    ) {
+        Ordering signumOrdering = Ordering.fromInt(Integer.compare(m1.signum(), m2.signum()));
+        if (signumOrdering != Ordering.EQ) return signumOrdering;
+        switch (Ordering.fromInt(Integer.compare(e1, e2))) {
+            case LT: return Ordering.compare(m1.shiftLeft(e2 - e1), m2);
+            case GT: return Ordering.compare(m1, m2.shiftLeft(e1 - e2));
+            case EQ: return Ordering.compare(m1, m2);
+        }
+        throw new IllegalStateException("unreachable");
+    }
+
+//    public static @NotNull List<Float> fromMantissaAndExponent(@NotNull BigInteger mantissa, int exponent) {
+//        List<Float> floats = new ArrayList<>();
+//        if (mantissa.equals(BigInteger.ZERO)) {
+//            floats.add(0.0f);
+//            return floats;
+//        }
+//        int lowestOnePosition = mantissa.getLowestSetBit();
+//        if (lowestOnePosition != 0) {
+//            mantissa = mantissa.shiftRight(lowestOnePosition);
+//            exponent += lowestOnePosition;
+//        }
+//    }
 
     /**
      * Constructs a {@code float} from its mantissa and exponent. The {@code float} is equal to
