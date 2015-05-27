@@ -89,11 +89,7 @@ public class ReadersTest {
         assertFalse(f.apply("").isPresent());
         assertFalse(f.apply(" ").isPresent());
         assertFalse(f.apply("null").isPresent());
-
-        try {
-            genericRead(s -> null).apply("four");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        assertFalse(genericRead(s -> null).apply("four").isPresent());
     }
 
     @Test

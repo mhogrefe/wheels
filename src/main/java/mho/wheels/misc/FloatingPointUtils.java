@@ -1,19 +1,10 @@
 package mho.wheels.misc;
 
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.math.MathUtils;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.GT;
-import static mho.wheels.ordering.Ordering.gt;
 
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
@@ -248,22 +239,6 @@ public final strictfp class FloatingPointUtils {
         return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
     }
 
-    private static @NotNull Ordering compareMantissaAndExponent(
-            @NotNull BigInteger m1,
-            int e1,
-            @NotNull BigInteger m2,
-            int e2
-    ) {
-        Ordering signumOrdering = Ordering.fromInt(Integer.compare(m1.signum(), m2.signum()));
-        if (signumOrdering != Ordering.EQ) return signumOrdering;
-        switch (Ordering.fromInt(Integer.compare(e1, e2))) {
-            case LT: return Ordering.compare(m1.shiftLeft(e2 - e1), m2);
-            case GT: return Ordering.compare(m1, m2.shiftLeft(e1 - e2));
-            case EQ: return Ordering.compare(m1, m2);
-        }
-        throw new IllegalStateException("unreachable");
-    }
-
     private static @NotNull Pair<BigInteger, Integer> shift(@NotNull BigInteger mantissa, int exponent, int bits) {
         if (mantissa.equals(BigInteger.ZERO)) {
             return new Pair<>(BigInteger.ZERO, 0);
@@ -285,61 +260,6 @@ public final strictfp class FloatingPointUtils {
         } else {
             return new Pair<>(mantissa.shiftLeft(exponent).subtract(BigInteger.ONE), 0);
         }
-    }
-
-    private static @NotNull Ordering compareHelper(
-            @NotNull BigInteger mantissa,
-            int exponent,
-            @NotNull Pair<Integer, Integer> pair
-    ) {
-        //noinspection ConstantConditions
-        return compareMantissaAndExponent(mantissa, exponent, BigInteger.valueOf(pair.a), pair.b);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    public static @NotNull List<Float> fromMantissaAndExponent(@NotNull BigInteger mantissa, int exponent) {
-        if (mantissa.signum() == -1) {
-            return reverse(map(f -> -f, fromMantissaAndExponent(mantissa.negate(), exponent)));
-        }
-        List<Float> floats = new ArrayList<>();
-        if (mantissa.equals(BigInteger.ZERO)) {
-            floats.add(0.0f);
-            return floats;
-        }
-        int adjustedExponent = mantissa.bitLength() + exponent - 1;
-        if (adjustedExponent > 127 || adjustedExponent == 127) {
-            Ordering maxOrdering = compareHelper(mantissa, exponent, LARGEST_FLOAT);
-            if (maxOrdering == GT) {
-                floats.add(Float.MAX_VALUE);
-                return floats;
-            }
-        }
-        if (adjustedExponent < -126) {
-            Pair<BigInteger, Integer> shifted = shift(mantissa, exponent, 149);
-            mantissa = shifted.a;
-            exponent = shifted.b;
-            adjustedExponent = 0;
-        } else {
-            Pair<BigInteger, Integer> shifted = shift(mantissa, exponent, -exponent);
-            shifted = subOne(shifted.a, shifted.b);
-            shifted = shift(shifted.a, shifted.b, 23);
-            mantissa = shifted.a;
-            exponent = shifted.b;
-            adjustedExponent += 127;
-        }
-//        Rational fraction;
-//        int adjustedExponent;
-//        if (exponent < -126) {
-//            fraction = shiftLeft(149);
-//            adjustedExponent = 0;
-//        } else {
-//            fraction = shiftRight(exponent).subtract(ONE).shiftLeft(23);
-//            adjustedExponent = exponent + 127;
-//        }
-//        float loFloat = Float.intBitsToFloat((adjustedExponent << 23) + fraction.floor().intValueExact());
-//        float hiFloat = fraction.denominator.equals(BigInteger.ONE) ? loFloat : FloatingPointUtils.successor(loFloat);
-//        return new Pair<>(loFloat, hiFloat);
-        return floats;
     }
 
     /**

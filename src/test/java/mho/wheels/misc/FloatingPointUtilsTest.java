@@ -294,10 +294,6 @@ public strictfp class FloatingPointUtilsTest {
         toMantissaAndExponent_double_empty_helper(Double.NaN);
     }
 
-    private static void fromMantissaAndExponent_float_helper(int mantissa, int exponent, @NotNull String output) {
-        aeq(fromMantissaAndExponent(BigInteger.valueOf(mantissa), exponent), output);
-    }
-
 //    @Test
 //    public void testFromMantissaAndExponent_float() {
 //        fromMantissaAndExponent_float_helper(0, 0, "[0.0]");
