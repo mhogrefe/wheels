@@ -3,8 +3,10 @@ package mho.wheels.misc;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 import static mho.wheels.misc.FloatingPointUtils.*;
-import static org.junit.Assert.assertEquals;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -292,7 +294,15 @@ public strictfp class FloatingPointUtilsTest {
         toMantissaAndExponent_double_empty_helper(Double.NaN);
     }
 
-    private static void aeq(Object a, Object b) {
-        assertEquals(a.toString(), b.toString());
+    private static void fromMantissaAndExponent_float_helper(int mantissa, int exponent, @NotNull String output) {
+        aeq(fromMantissaAndExponent(BigInteger.valueOf(mantissa), exponent), output);
     }
+
+//    @Test
+//    public void testFromMantissaAndExponent_float() {
+//        fromMantissaAndExponent_float_helper(0, 0, "[0.0]");
+//        fromMantissaAndExponent_float_helper(1, 0, "[1.0]");
+//        fromMantissaAndExponent_float_helper(1, -1, "[0.5]");
+//        fromMantissaAndExponent_float_helper(1, -2, "[0.25]");
+//    }
 }

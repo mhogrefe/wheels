@@ -1,5 +1,6 @@
 package mho.wheels.misc;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
@@ -9,6 +10,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.GT;
+import static mho.wheels.ordering.Ordering.gt;
 
 /**
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
@@ -243,7 +248,7 @@ public final strictfp class FloatingPointUtils {
         return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
     }
 
-    public static @NotNull Ordering compareMantissaAndExponent(
+    private static @NotNull Ordering compareMantissaAndExponent(
             @NotNull BigInteger m1,
             int e1,
             @NotNull BigInteger m2,
@@ -259,18 +264,83 @@ public final strictfp class FloatingPointUtils {
         throw new IllegalStateException("unreachable");
     }
 
-//    public static @NotNull List<Float> fromMantissaAndExponent(@NotNull BigInteger mantissa, int exponent) {
-//        List<Float> floats = new ArrayList<>();
-//        if (mantissa.equals(BigInteger.ZERO)) {
-//            floats.add(0.0f);
-//            return floats;
+    private static @NotNull Pair<BigInteger, Integer> shift(@NotNull BigInteger mantissa, int exponent, int bits) {
+        if (mantissa.equals(BigInteger.ZERO)) {
+            return new Pair<>(BigInteger.ZERO, 0);
+        }
+        int trailingZeroes = mantissa.getLowestSetBit();
+        if (trailingZeroes != 0) {
+            mantissa = mantissa.shiftRight(trailingZeroes);
+            exponent += trailingZeroes;
+        }
+        return new Pair<>(mantissa, exponent + bits);
+    }
+
+    private static @NotNull Pair<BigInteger, Integer> subOne(@NotNull BigInteger mantissa, int exponent) {
+        if (exponent <= 0) {
+            BigInteger newMantissa = mantissa.subtract(BigInteger.ONE.shiftLeft(-exponent));
+            return newMantissa.equals(BigInteger.ZERO) ?
+                    new Pair<>(BigInteger.ZERO, 0) :
+                    new Pair<>(newMantissa, exponent);
+        } else {
+            return new Pair<>(mantissa.shiftLeft(exponent).subtract(BigInteger.ONE), 0);
+        }
+    }
+
+    private static @NotNull Ordering compareHelper(
+            @NotNull BigInteger mantissa,
+            int exponent,
+            @NotNull Pair<Integer, Integer> pair
+    ) {
+        //noinspection ConstantConditions
+        return compareMantissaAndExponent(mantissa, exponent, BigInteger.valueOf(pair.a), pair.b);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static @NotNull List<Float> fromMantissaAndExponent(@NotNull BigInteger mantissa, int exponent) {
+        if (mantissa.signum() == -1) {
+            return reverse(map(f -> -f, fromMantissaAndExponent(mantissa.negate(), exponent)));
+        }
+        List<Float> floats = new ArrayList<>();
+        if (mantissa.equals(BigInteger.ZERO)) {
+            floats.add(0.0f);
+            return floats;
+        }
+        int adjustedExponent = mantissa.bitLength() + exponent - 1;
+        if (adjustedExponent > 127 || adjustedExponent == 127) {
+            Ordering maxOrdering = compareHelper(mantissa, exponent, LARGEST_FLOAT);
+            if (maxOrdering == GT) {
+                floats.add(Float.MAX_VALUE);
+                return floats;
+            }
+        }
+        if (adjustedExponent < -126) {
+            Pair<BigInteger, Integer> shifted = shift(mantissa, exponent, 149);
+            mantissa = shifted.a;
+            exponent = shifted.b;
+            adjustedExponent = 0;
+        } else {
+            Pair<BigInteger, Integer> shifted = shift(mantissa, exponent, -exponent);
+            shifted = subOne(shifted.a, shifted.b);
+            shifted = shift(shifted.a, shifted.b, 23);
+            mantissa = shifted.a;
+            exponent = shifted.b;
+            adjustedExponent += 127;
+        }
+//        Rational fraction;
+//        int adjustedExponent;
+//        if (exponent < -126) {
+//            fraction = shiftLeft(149);
+//            adjustedExponent = 0;
+//        } else {
+//            fraction = shiftRight(exponent).subtract(ONE).shiftLeft(23);
+//            adjustedExponent = exponent + 127;
 //        }
-//        int lowestOnePosition = mantissa.getLowestSetBit();
-//        if (lowestOnePosition != 0) {
-//            mantissa = mantissa.shiftRight(lowestOnePosition);
-//            exponent += lowestOnePosition;
-//        }
-//    }
+//        float loFloat = Float.intBitsToFloat((adjustedExponent << 23) + fraction.floor().intValueExact());
+//        float hiFloat = fraction.denominator.equals(BigInteger.ONE) ? loFloat : FloatingPointUtils.successor(loFloat);
+//        return new Pair<>(loFloat, hiFloat);
+        return floats;
+    }
 
     /**
      * Constructs a {@code float} from its mantissa and exponent. The {@code float} is equal to
