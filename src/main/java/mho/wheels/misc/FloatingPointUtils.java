@@ -11,50 +11,6 @@ import java.util.Optional;
  */
 public final strictfp class FloatingPointUtils {
     /**
-     * The smallest positive float value, or 2<sup>–149</sup>
-     */
-    public static final @NotNull Pair<Integer, Integer> SMALLEST_FLOAT = toMantissaAndExponent(Float.MIN_VALUE).get();
-
-    /**
-     * The largest subnormal float value, or (2<sup>23</sup>–1)/2<sup>149</sup>
-     */
-    public static final @NotNull Pair<Integer, Integer> LARGEST_SUBNORMAL_FLOAT =
-            toMantissaAndExponent(FloatingPointUtils.predecessor(Float.MIN_NORMAL)).get();
-
-    /**
-     * The smallest positive normal float value, or 2<sup>–126</sup>
-     */
-    public static final @NotNull Pair<Integer, Integer> SMALLEST_NORMAL_FLOAT =
-            toMantissaAndExponent(Float.MIN_NORMAL).get();
-
-    /**
-     * The largest finite float value, or 2<sup>128</sup>–2<sup>104</sup>
-     */
-    public static final @NotNull Pair<Integer, Integer> LARGEST_FLOAT = toMantissaAndExponent(Float.MAX_VALUE).get();
-
-    /**
-     * The smallest positive double value, or 2<sup>–1074</sup>
-     */
-    public static final @NotNull Pair<Long, Integer> SMALLEST_DOUBLE = toMantissaAndExponent(Double.MIN_VALUE).get();
-
-    /**
-     * The largest subnormal double value, or (2<sup>52</sup>–1)/2<sup>1074</sup>
-     */
-    public static final @NotNull Pair<Long, Integer> LARGEST_SUBNORMAL_DOUBLE =
-            toMantissaAndExponent(FloatingPointUtils.predecessor(Double.MIN_NORMAL)).get();
-
-    /**
-     * The smallest positive normal double value, or 2<sup>–1022</sup>
-     */
-    public static final @NotNull Pair<Long, Integer> SMALLEST_NORMAL_DOUBLE =
-            toMantissaAndExponent(Double.MIN_NORMAL).get();
-
-    /**
-     * The largest finite double value, or 2<sup>1024</sup>–2<sup>971</sup>
-     */
-    public static final @NotNull Pair<Long, Integer> LARGEST_DOUBLE = toMantissaAndExponent(Double.MAX_VALUE).get();
-
-    /**
      * Disallow instantiation
      */
     private FloatingPointUtils() {}
