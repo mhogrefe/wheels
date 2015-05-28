@@ -22,6 +22,20 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoGetMantissa() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("getMantissa(" + bf + ") = " + bf.getMantissa());
+        }
+    }
+
+    private static void demoGetExponent() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("getExponent(" + bf + ") = " + bf.getExponent());
+        }
+    }
+
     private static void demoToString() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
