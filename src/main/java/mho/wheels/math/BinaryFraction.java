@@ -87,15 +87,46 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      */
     private int exponent;
 
+    /**
+     * Private constructor; assumes arguments are valid.
+     *
+     * <ul>
+     *  <li>{@code mantissa} is odd or zero.</li>
+     *  <li>{@code exponent} may be any {@code int}.</li>
+     *  <li>If {@code mantissa} is zero, {@code exponent} must also be zero.</li>
+     *  <li>Any {@code BinaryFraction} may be constructed with this constructor.</li>
+     * </ul>
+     *
+     * @param mantissa the mantissa
+     * @param exponent the exponent
+     */
     private BinaryFraction(@NotNull BigInteger mantissa, int exponent) {
         this.mantissa = mantissa;
         this.exponent = exponent;
     }
 
+    /**
+     * Returns this {@code BinaryFraction}'s mantissa.
+     *
+     * <ul>
+     *  <li>The result is odd or zero.</li>
+     * </ul>
+     *
+     * @return the mantissa
+     */
     public @NotNull BigInteger getMantissa() {
         return mantissa;
     }
 
+    /**
+     * Returns this {@code BinaryFraction}'s exponent.
+     *
+     * <ul>
+     *  <li>The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return the exponent
+     */
     public int getExponent() {
         return exponent;
     }
