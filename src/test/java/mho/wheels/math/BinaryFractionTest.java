@@ -3,6 +3,8 @@ package mho.wheels.math;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.aeq;
 
@@ -53,5 +55,32 @@ public class BinaryFractionTest {
         getExponent_helper("-11", 0);
         getExponent_helper("-5 << 20", 20);
         getExponent_helper("-5 >> 20", -20);
+    }
+
+    private static void of_BigInteger_int_helper(int mantissa, int exponent, @NotNull String output) {
+        aeq(of(BigInteger.valueOf(mantissa), exponent), output);
+    }
+
+    @Test
+    public void testOf_BigInteger_int() {
+        of_BigInteger_int_helper(0, 0, "0");
+        of_BigInteger_int_helper(0, 1, "0");
+        of_BigInteger_int_helper(0, -3, "0");
+        of_BigInteger_int_helper(1, 0, "1");
+        of_BigInteger_int_helper(2, 0, "1 << 1");
+        of_BigInteger_int_helper(1, 1, "1 << 1");
+        of_BigInteger_int_helper(5, 20, "5 << 20");
+        of_BigInteger_int_helper(5, -20, "5 >> 20");
+        of_BigInteger_int_helper(100, 0, "25 << 2");
+        of_BigInteger_int_helper(-1, 0, "-1");
+        of_BigInteger_int_helper(-2, 0, "-1 << 1");
+        of_BigInteger_int_helper(-1, 1, "-1 << 1");
+        of_BigInteger_int_helper(-5, 20, "-5 << 20");
+        of_BigInteger_int_helper(-5, -20, "-5 >> 20");
+        of_BigInteger_int_helper(-100, 0, "-25 << 2");
+    }
+
+    private static void of_BigInteger_helper(int n, @NotNull String output) {
+        aeq(of(BigInteger.valueOf(n)), output);
     }
 }
