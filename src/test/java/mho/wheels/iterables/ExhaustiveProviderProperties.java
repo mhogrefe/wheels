@@ -25,6 +25,11 @@ public class ExhaustiveProviderProperties {
     private static int LIMIT;
     private static IterableProvider P;
 
+    private static void initialize(String name) {
+        P.reset();
+        System.out.println("\t\ttesting " + name + " properties...");
+    }
+
     @Test
     public void testAllProperties() {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
@@ -60,8 +65,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesUniformSample_Iterable() {
-        System.out.println("\t\ttesting uniformSample(Iterable<T>) properties...");
-
+        initialize("uniformSample(Iterable<T>)");
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<Integer> js = EP.uniformSample(is);
             aeqit(is.toString(), is, js);
@@ -70,8 +74,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesUniformSample_String() {
-        System.out.println("\t\ttesting uniformSample(String) properties...");
-
+        initialize("uniformSample(String)");
         for (String s : take(LIMIT, P.strings())) {
             Iterable<Character> cs = EP.uniformSample(s);
             assertEquals(s, s, charsToString(cs));
@@ -91,8 +94,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_byte() {
-        System.out.println("\t\ttesting rangeUp(byte) properties...");
-
+        initialize("rangeUp(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUp(b);
             assertTrue(Byte.toString(b), all(c -> c != null, bs));
@@ -105,8 +107,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_short() {
-        System.out.println("\t\ttesting rangeUp(short) properties...");
-
+        initialize("rangeUp(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeUp(s);
             simpleTest(Short.toString(s), ss, t -> t >= s);
@@ -115,8 +116,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_int() {
-        System.out.println("\t\ttesting rangeUp(int) properties...");
-
+        initialize("rangeUp(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeUp(i);
             simpleTest(Integer.toString(i), is, j -> j >= i);
@@ -128,8 +128,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_long() {
-        System.out.println("\t\ttesting rangeUp(long) properties...");
-
+        initialize("rangeUp(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeUp(l);
             simpleTest(Long.toString(l), ls, m -> m >= l);
@@ -138,8 +137,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_BigInteger() {
-        System.out.println("\t\ttesting rangeUp(BigInteger) properties...");
-
+        initialize("rangeUp(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeUp(i);
             simpleTest(i.toString(), is, j -> ge(j, i));
@@ -148,8 +146,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeUp_char() {
-        System.out.println("\t\ttesting rangeUp(char) properties...");
-
+        initialize("rangeUp(char)");
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeUp(c);
             simpleTest(nicePrint(c), cs, d -> d >= c);
@@ -158,8 +155,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_byte() {
-        System.out.println("\t\ttesting rangeDown(byte) properties...");
-
+        initialize("rangeDown(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDown(b);
             assertTrue(Byte.toString(b), all(c -> c != null, bs));
@@ -172,8 +168,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_short() {
-        System.out.println("\t\ttesting rangeDown(short) properties...");
-
+        initialize("rangeDown(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeDown(s);
             simpleTest(Short.toString(s), ss, t -> t <= s);
@@ -182,8 +177,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_int() {
-        System.out.println("\t\ttesting rangeDown(int) properties...");
-
+        initialize("rangeDown(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeDown(i);
             simpleTest(Integer.toString(i), is, j -> j <= i);
@@ -195,8 +189,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_long() {
-        System.out.println("\t\ttesting rangeDown(long) properties...");
-
+        initialize("rangeDown(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeDown(l);
             simpleTest(Long.toString(l), ls, m -> m <= l);
@@ -205,8 +198,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_BigInteger() {
-        System.out.println("\t\ttesting rangeDown(BigInteger) properties...");
-
+        initialize("rangeDown(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeDown(i);
             simpleTest(i.toString(), is, j -> le(j, i));
@@ -215,8 +207,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRangeDown_char() {
-        System.out.println("\t\ttesting rangeDown(char) properties...");
-
+        initialize("rangeDown(char)");
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeDown(c);
             simpleTest(Character.toString(c), cs, d -> d <= c);
@@ -225,8 +216,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_byte_byte() {
-        System.out.println("\t\ttesting range(byte, byte) properties...");
-
+        initialize("range(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
             Iterable<Byte> bs = EP.range(p.a, p.b);
             assertTrue(p.toString(), all(b -> b != null, bs));
@@ -246,8 +236,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_short_short() {
-        System.out.println("\t\ttesting range(short, short) properties...");
-
+        initialize("range(short, short)");
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
             simpleTest(p.toString(), ss, s -> s >= p.a && s <= p.b);
@@ -263,8 +252,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_int_int() {
-        System.out.println("\t\ttesting range(int, int) properties...");
-
+        initialize("range(int, int)");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             Iterable<Integer> is = EP.range(p.a, p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
@@ -281,8 +269,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_long_long() {
-        System.out.println("\t\ttesting range(long, long) properties...");
-
+        initialize("range(long, long)");
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             Iterable<Long> ls = EP.range(p.a, p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
@@ -299,8 +286,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_BigInteger_BigInteger() {
-        System.out.println("\t\ttesting range(BigInteger, BigInteger) properties...");
-
+        initialize("range(BigInteger, BigInteger)");
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
             Iterable<BigInteger> is = EP.range(p.a, p.b);
             Iterable<BigInteger> tis = take(TINY_LIMIT, is);
@@ -315,8 +301,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRange_char_char() {
-        System.out.println("\t\ttesting range(char, char) properties...");
-
+        initialize("range(char, char)");
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             Iterable<Character> cs = EP.range(p.a, p.b);
             Iterable<Character> tcs = take(TINY_LIMIT, cs);
