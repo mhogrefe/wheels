@@ -111,10 +111,35 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         ).apply(s);
     }
 
+    /**
+     * Finds the first occurrence of a {@code BinaryFraction} in a {@code String}. Returns the {@code BinaryFraction}
+     * and the index at which it was found. Returns an empty {@code Optional} if no {@code BinaryFraction} is found.
+     * Only {@code String}s which could have been emitted by {@link BinaryFraction#toString} are recognized. The
+     * longest possible {@code BinaryFraction} is parsed.
+     *
+     * <ul>
+     *  <li>{@code s} must be non-null.</li>
+     *  <li>The result is non-null. If it is non-empty, then neither of the {@code Pair}'s components is null, and the
+     *  second component is non-negative.</li>
+     * </ul>
+     *
+     * @param s the input {@code String}
+     * @return the first {@code BinaryFraction} found in {@code s}, and the index at which it was found
+     */
     public static @NotNull Optional<Pair<BinaryFraction, Integer>> findIn(@NotNull String s) {
         return Readers.genericFindIn(BinaryFraction::read, " -0123456789<>").apply(s);
     }
 
+    /**
+     * Creates a {@code String} representation of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>See tests and demos for example results.</li>
+     * </ul>
+     *
+     * @return a {@code String} representation of {@code this}
+     */
     public @NotNull String toString() {
         switch (Integer.signum(exponent)) {
             case 0:  return mantissa.toString();
