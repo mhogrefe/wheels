@@ -1756,8 +1756,7 @@ public final strictfp class IterableUtils {
 
             @Override
             public void remove() {
-                throw new UnsupportedOp
-                erationException("cannot remove from this iterator");
+                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
