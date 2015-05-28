@@ -167,7 +167,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @param n the {@code BigInteger}
      * @return the {@code BigInteger} equal to {@code n}
      */
-    public @NotNull BinaryFraction of(@NotNull BigInteger n) {
+    public static @NotNull BinaryFraction of(@NotNull BigInteger n) {
         return of(n, 0);
     }
 
@@ -183,7 +183,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @param n the {@code int}
      * @return the {@code int} equal to {@code n}
      */
-    public @NotNull BinaryFraction of(int n) {
+    public static @NotNull BinaryFraction of(int n) {
         return of(BigInteger.valueOf(n), 0);
     }
 
