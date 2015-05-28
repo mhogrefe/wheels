@@ -131,6 +131,19 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return exponent;
     }
 
+    /**
+     * Creates a {@code BinaryFraction} from a mantissa and an exponent. Reduces arguments if necessary.
+     *
+     * <ul>
+     *  <li>{@code mantissa} cannot be null.</li>
+     *  <li>{@code exponent} may be any {@code int}.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @param mantissa the mantissa
+     * @param exponent the exponent
+     * @return the {@code BinaryFraction} corresponding to {@code mantissa}×2<sup>{@code exponent}</sup>
+     */
     public static @NotNull BinaryFraction of(@NotNull BigInteger mantissa, int exponent) {
         if (mantissa.equals(BigInteger.ZERO)) {
             return new BinaryFraction(BigInteger.ZERO, 0);
@@ -143,10 +156,33 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return mantissa.equals(BigInteger.ONE) && exponent == 0 ? ONE : new BinaryFraction(mantissa, exponent);
     }
 
+    /**
+     * Creates a {@code BinaryFraction} from a {@code BigInteger}.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be null.</li>
+     *  <li>The result is an integral {@code BinaryFraction}.</li>
+     * </ul>
+     *
+     * @param n the {@code BigInteger}
+     * @return the {@code BigInteger} equal to {@code n}
+     */
     public @NotNull BinaryFraction of(@NotNull BigInteger n) {
         return of(n, 0);
     }
 
+    /**
+     * Creates a {@code BinaryFraction} from an {@code int}.
+     *
+     * <ul>
+     *  <li>{@code n} cannot be null.</li>
+     *  <li>The result is an integral {@code BinaryFraction} x satisfying
+     *  –2<sup>63</sup>≤x{@literal <}2<sup>63</sup>.</li>
+     * </ul>
+     *
+     * @param n the {@code int}
+     * @return the {@code int} equal to {@code n}
+     */
     public @NotNull BinaryFraction of(int n) {
         return of(BigInteger.valueOf(n), 0);
     }
