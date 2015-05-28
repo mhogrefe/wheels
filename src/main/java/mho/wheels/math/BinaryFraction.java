@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
@@ -33,7 +34,57 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public static final @NotNull BinaryFraction ONE = new BinaryFraction(BigInteger.ONE, 0);
 
+    /**
+     * The smallest positive float value, or 2<sup>–149</sup>
+     */
+    public static final @NotNull BinaryFraction SMALLEST_FLOAT = of(Float.MIN_VALUE).get();
+
+    /**
+     * The largest subnormal float value, or (2<sup>23</sup>–1)/2<sup>149</sup>
+     */
+    public static final @NotNull BinaryFraction LARGEST_SUBNORMAL_FLOAT =
+            of(FloatingPointUtils.predecessor(Float.MIN_NORMAL)).get();
+
+    /**
+     * The smallest positive normal float value, or 2<sup>–126</sup>
+     */
+    public static final @NotNull BinaryFraction SMALLEST_NORMAL_FLOAT = of(Float.MIN_NORMAL).get();
+
+    /**
+     * The largest finite float value, or 2<sup>128</sup>–2<sup>104</sup>
+     */
+    public static final @NotNull BinaryFraction LARGEST_FLOAT = of(Float.MAX_VALUE).get();
+
+    /**
+     * The smallest positive double value, or 2<sup>–1074</sup>
+     */
+    public static final @NotNull BinaryFraction SMALLEST_DOUBLE = of(Double.MIN_VALUE).get();
+
+    /**
+     * The largest subnormal double value, or (2<sup>52</sup>–1)/2<sup>1074</sup>
+     */
+    public static final @NotNull BinaryFraction LARGEST_SUBNORMAL_DOUBLE =
+            of(FloatingPointUtils.predecessor(Double.MIN_NORMAL)).get();
+
+    /**
+     * The smallest positive normal double value, or 2<sup>–1022</sup>
+     */
+    public static final @NotNull BinaryFraction SMALLEST_NORMAL_DOUBLE = of(Double.MIN_NORMAL).get();
+
+    /**
+     * The largest finite double value, or 2<sup>1024</sup>–2<sup>971</sup>
+     */
+    public static final @NotNull BinaryFraction LARGEST_DOUBLE = of(Double.MAX_VALUE).get();
+
+    /**
+     * If {@code this} is 0, then 0; otherwise, the unique odd integer equal to {@code this} times an integer power of
+     * 2
+     */
     private @NotNull BigInteger mantissa;
+
+    /**
+     * log<sub>2</sub>({@code this}/{@code mantissa})
+     */
     private int exponent;
 
     private BinaryFraction(@NotNull BigInteger mantissa, int exponent) {
@@ -69,7 +120,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return of(BigInteger.valueOf(n), 0);
     }
 
-    public @NotNull Optional<BinaryFraction> of(float f) {
+    public static @NotNull Optional<BinaryFraction> of(float f) {
         if (f == 0.0f) return Optional.of(ZERO);
         if (f == 1.0f) return Optional.of(ONE);
         if (Float.isInfinite(f) || Float.isNaN(f)) return Optional.empty();
@@ -87,7 +138,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
     }
 
-    public @NotNull Optional<BinaryFraction> of(double d) {
+    public static @NotNull Optional<BinaryFraction> of(double d) {
         if (d == 0.0) return Optional.of(ZERO);
         if (d == 1.0) return Optional.of(ONE);
         if (Double.isInfinite(d) || Double.isNaN(d)) return Optional.empty();
