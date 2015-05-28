@@ -76,9 +76,9 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     @Override
     public int compareTo(@NotNull BinaryFraction that) {
         if (this == that) return 0;
-        Ordering signumOrdering = Ordering.fromInt(Integer.compare(mantissa.signum(), that.mantissa.signum()));
+        Ordering signumOrdering = Ordering.compare(mantissa.signum(), that.mantissa.signum());
         if (signumOrdering != Ordering.EQ) return signumOrdering.toInt();
-        switch (Ordering.fromInt(Integer.compare(exponent, that.exponent))) {
+        switch (Ordering.compare(exponent, that.exponent)) {
             case LT: return mantissa.shiftLeft(that.exponent - exponent).compareTo(that.mantissa);
             case GT: return mantissa.compareTo(that.mantissa.shiftLeft(exponent - that.exponent));
             case EQ: return mantissa.compareTo(that.mantissa);
