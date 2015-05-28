@@ -5,6 +5,7 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
 
@@ -57,7 +58,64 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
             mantissa = mantissa.shiftRight(trailingZeroes);
             exponent += trailingZeroes;
         }
-        return new BinaryFraction(mantissa, exponent);
+        return mantissa.equals(BigInteger.ONE) && exponent == 0 ? ONE : new BinaryFraction(mantissa, exponent);
+    }
+
+    public @NotNull BinaryFraction of(@NotNull BigInteger n) {
+        return of(n, 0);
+    }
+
+    public @NotNull BinaryFraction of(int n) {
+        return of(BigInteger.valueOf(n), 0);
+    }
+
+    public @NotNull Optional<BinaryFraction> of(float f) {
+        if (f == 0.0f) return Optional.of(ZERO);
+        if (f == 1.0f) return Optional.of(ONE);
+        if (Float.isInfinite(f) || Float.isNaN(f)) return Optional.empty();
+        boolean isPositive = f > 0.0f;
+        if (!isPositive) f = -f;
+        int bits = Float.floatToIntBits(f);
+        int exponent = bits >> 23 & ((1 << 8) - 1);
+        int mantissa = bits & ((1 << 23) - 1);
+        if (exponent == 0) {
+            exponent = -149;
+        } else {
+            mantissa += 1 << 23;
+            exponent -= 150;
+        }
+        return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
+    }
+
+    public @NotNull Optional<BinaryFraction> of(double d) {
+        if (d == 0.0) return Optional.of(ZERO);
+        if (d == 1.0) return Optional.of(ONE);
+        if (Double.isInfinite(d) || Double.isNaN(d)) return Optional.empty();
+        boolean isPositive = d > 0.0f;
+        if (!isPositive) d = -d;
+        long bits = Double.doubleToLongBits(d);
+        int exponent = (int) (bits >> 52 & ((1 << 11) - 1));
+        long mantissa = bits & ((1L << 52) - 1);
+        if (exponent == 0) {
+            exponent = -1074;
+        } else {
+            mantissa += 1L << 52;
+            exponent -= 1075;
+        }
+        return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
+    }
+
+    public @NotNull BigDecimal bigDecimalValue() {
+        switch (Integer.signum(exponent)) {
+            case 0:
+                return new BigDecimal(mantissa);
+            case 1:
+                return new BigDecimal(mantissa).multiply(new BigDecimal(BigInteger.ONE.shiftLeft(exponent)));
+            case -1:
+                //noinspection BigDecimalMethodWithoutRoundingCalled
+                return new BigDecimal(mantissa).divide(new BigDecimal(BigInteger.ONE.shiftLeft(-exponent)));
+            default: throw new IllegalStateException("unreachable");
+        }
     }
 
     @Override
