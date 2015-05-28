@@ -1235,7 +1235,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return map(p -> BinaryFraction.of(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+        return cons(
+                BinaryFraction.ZERO,
+                map(
+                        p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
+                        pairsLogarithmicOrder(bigIntegers(), integers())
+                )
+        );
     }
 
     @Override

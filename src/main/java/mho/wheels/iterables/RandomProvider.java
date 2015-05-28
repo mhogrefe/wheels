@@ -2666,9 +2666,12 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return map(
-                p -> BinaryFraction.of(p.a, p.b),
-                pairsLogarithmicOrder(bigIntegers(), withScale(secondaryScale).integersGeometric())
+        return addSpecialElement(
+                BinaryFraction.ZERO,
+                map(
+                        p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
+                        pairsLogarithmicOrder(bigIntegers(), withScale(secondaryScale).integersGeometric())
+                )
         );
     }
 
