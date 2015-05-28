@@ -10,7 +10,28 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+/**
+ * <p>The {@code BinaryFraction} class uniquely represents rational numbers whose denominator is a power of 2. Every
+ * such number is either zero or an equal to an odd integer (the mantissa) times 2 raised to an integer (the exponent).
+ * Zero is considered to have a mantissa of zero (this is the only case when the mantissa is even) and an exponent of
+ * zero.
+ *
+ * <p>There is only one instance of {@code ZERO} and one instance of {@code ONE}, so these may be compared with other
+ * {@code BigInteger}s using {@code ==}.
+ *
+ * <p>This class is immutable.
+ */
 public class BinaryFraction implements Comparable<BinaryFraction> {
+    /**
+     * 0
+     */
+    public static final @NotNull BinaryFraction ZERO = new BinaryFraction(BigInteger.ZERO, 0);
+
+    /**
+     * 1
+     */
+    public static final @NotNull BinaryFraction ONE = new BinaryFraction(BigInteger.ONE, 0);
+
     private @NotNull BigInteger mantissa;
     private int exponent;
 
@@ -19,8 +40,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         this.exponent = exponent;
     }
 
-    @NotNull
-    public BigInteger getMantissa() {
+    public @NotNull BigInteger getMantissa() {
         return mantissa;
     }
 
@@ -104,7 +124,16 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         }
     }
 
+    /**
+     * Ensures that {@code this} is valid. Must return true for any {@code Rational} used outside this class.
+     */
     public void validate() {
-        assertTrue(toString(), mantissa.testBit(0));
+        if (mantissa.equals(BigInteger.ZERO)) {
+            assertEquals(toString(), exponent, 0);
+        } else {
+            assertTrue(toString(), mantissa.testBit(0));
+        }
+        if (equals(ZERO)) assertTrue(toString(), this == ZERO);
+        if (equals(ONE)) assertTrue(toString(), this == ONE);
     }
 }
