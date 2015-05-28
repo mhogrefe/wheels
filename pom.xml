@@ -36,6 +36,7 @@
                         <include>**/IterableUtilsTest.java</include>
                         <include>**/RandomProviderProperties.java</include>
                         <include>**/RandomProviderTest.java</include>
+                        <include>**/BinaryFractionProperties.java</include>
                         <include>**/BinaryFractionTest.java</include>
                         <include>**/CombinatoricsTest.java</include>
                         <include>**/MathUtilsProperties.java</include>
