@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
@@ -125,6 +126,10 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
+
+    public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        return map(p -> BinaryFraction.of(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integersGeometric()));
+    }
 
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);

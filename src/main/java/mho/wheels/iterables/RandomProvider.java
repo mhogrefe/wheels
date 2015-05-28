@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
@@ -2662,6 +2663,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
+    }
+
+    public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        return map(
+                p -> BinaryFraction.of(p.a, p.b),
+                pairsLogarithmicOrder(bigIntegers(), withScale(secondaryScale).integersGeometric())
+        );
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
