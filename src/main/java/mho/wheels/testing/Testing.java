@@ -5,6 +5,8 @@ import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
+import org.junit.ComparisonFailure;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -13,7 +15,6 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static org.junit.Assert.*;
 
 public strictfp class Testing {
     private static final int TINY_LIMIT = 20;
@@ -24,11 +25,11 @@ public strictfp class Testing {
      */
     private Testing() {}
 
-    public static void aeq(@NotNull String message, int i, int j) {
+    public static void aeq(@NotNull Object message, int i, int j) {
         assertEquals(message, i, j);
     }
 
-    public static void aeq(@NotNull String message, long i, long j) {
+    public static void aeq(@NotNull Object message, long i, long j) {
         assertEquals(message, i, j);
     }
 
@@ -40,20 +41,20 @@ public strictfp class Testing {
         assertEquals(Double.toString(d) + " != " + Double.toString(e), Double.toString(d), Double.toString(e));
     }
 
-    public static void aeqf(@NotNull String message, float f1, float f2) {
+    public static void aeqf(@NotNull Object message, float f1, float f2) {
         assertEquals(message, Float.toString(f1), Float.toString(f2));
     }
 
-    public static void aeqd(@NotNull String message, double d1, double d2) {
+    public static void aeqd(@NotNull Object message, double d1, double d2) {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 
-    public static void aeq(@NotNull String message, @NotNull BigDecimal x, @NotNull BigDecimal y) {
+    public static void aeq(@NotNull Object message, @NotNull BigDecimal x, @NotNull BigDecimal y) {
         assertEquals(message, x.stripTrailingZeros(), y.stripTrailingZeros());
     }
 
     public static void aeq(@NotNull Object a, @NotNull Object b) {
-        assertEquals(a.toString(), b.toString());
+        Assert.assertEquals(a.toString(), b.toString());
     }
 
     public static void aeqcs(@NotNull Iterable<Character> cs, @NotNull String s) {
@@ -62,24 +63,97 @@ public strictfp class Testing {
     }
 
     public static void aeqit(Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(a), b.toString());
+        Assert.assertEquals(IterableUtils.toString(a), b.toString());
     }
 
     public static void aeqit(int limit, Iterable<?> a, Object b) {
-        assertEquals(IterableUtils.toString(limit, a), b.toString());
+        Assert.assertEquals(IterableUtils.toString(limit, a), b.toString());
     }
 
-    public static <T> void aeqit(@NotNull String message, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+    public static <T> void aeqit(@NotNull Object message, @NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
         assertTrue(message, IterableUtils.equal(xs, ys));
     }
 
     public static <T> void aeqit(
-            @NotNull String message,
+            @NotNull Object message,
             int limit,
             @NotNull Iterable<T> xs,
             @NotNull Iterable<T> ys
     ) {
         assertTrue(message, IterableUtils.equal(limit, xs, ys));
+    }
+
+    public static void assertTrue(Object message, boolean condition) {
+        if (!condition) {
+            fail(message.toString());
+        }
+    }
+
+    public static void assertFalse(Object message, boolean condition) {
+        assertTrue(message, !condition);
+    }
+
+    public static void fail(Object message) {
+        if(message == null) {
+            throw new AssertionError();
+        } else {
+            throw new AssertionError(message);
+        }
+    }
+
+    public static void assertNotEquals(Object message, Object first, Object second) {
+        if(equalsRegardingNull(first, second)) {
+            failEquals(message, first);
+        }
+    }
+
+    private static void failEquals(Object message, Object actual) {
+        String formatted = "Values should be different. ";
+        if(message != null) {
+            formatted = message + ". ";
+        }
+
+        formatted = formatted + "Actual: " + actual;
+        fail(formatted);
+    }
+
+    public static void assertEquals(Object message, Object expected, Object actual) {
+        if (!equalsRegardingNull(expected, actual)) {
+            if (expected instanceof String && actual instanceof String) {
+                String cleanMessage = message == null ? "" : message.toString();
+                throw new ComparisonFailure(cleanMessage, (String) expected, (String) actual);
+            } else {
+                failNotEquals(message.toString(), expected, actual);
+            }
+        }
+    }
+
+    private static void failNotEquals(Object message, Object expected, Object actual) {
+        fail(format(message.toString(), expected, actual));
+    }
+
+    static String format(String message, Object expected, Object actual) {
+        String formatted = "";
+        if(message != null && !message.equals("")) {
+            formatted = message + " ";
+        }
+
+        String expectedString = String.valueOf(expected);
+        String actualString = String.valueOf(actual);
+        return expectedString.equals(actualString)?formatted + "expected: " + formatClassAndValue(expected, expectedString) + " but was: " + formatClassAndValue(actual, actualString):formatted + "expected:<" + expectedString + "> but was:<" + actualString + ">";
+    }
+
+    private static String formatClassAndValue(Object value, String valueString) {
+        String className = value == null?"null":value.getClass().getName();
+        return className + "<" + valueString + ">";
+    }
+
+    private static boolean equalsRegardingNull(Object expected, Object actual) {
+        return expected == null ? actual == null : isEquals(expected, actual);
+    }
+
+    private static boolean isEquals(Object expected, Object actual) {
+        return expected.equals(actual);
     }
 
     public static <A, B> void compareImplementations(
