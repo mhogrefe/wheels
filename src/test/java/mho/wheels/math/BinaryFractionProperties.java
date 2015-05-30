@@ -12,7 +12,7 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.math.BinaryFraction.*;
-import static org.junit.Assert.*;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("ConstantConditions")
 public class BinaryFractionProperties {
@@ -44,8 +44,8 @@ public class BinaryFractionProperties {
         initialize("getMantissa()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigInteger mantissa = bf.getMantissa();
-            assertEquals(bf.toString(), of(mantissa, bf.getExponent()), bf);
-            assertTrue(bf.toString(), mantissa.equals(BigInteger.ZERO) || mantissa.testBit(0));
+            assertEquals(bf, of(mantissa, bf.getExponent()), bf);
+            assertTrue(bf, mantissa.equals(BigInteger.ZERO) || mantissa.testBit(0));
         }
     }
 

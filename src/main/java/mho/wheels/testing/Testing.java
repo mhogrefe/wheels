@@ -66,7 +66,7 @@ public strictfp class Testing {
         Assert.assertEquals(IterableUtils.toString(a), b.toString());
     }
 
-    public static void aeqit(int limit, Iterable<?> a, Object b) {
+    public static void aeqitLimit(int limit, Iterable<?> a, Object b) {
         Assert.assertEquals(IterableUtils.toString(limit, a), b.toString());
     }
 
@@ -112,7 +112,6 @@ public strictfp class Testing {
         if(message != null) {
             formatted = message + ". ";
         }
-
         formatted = formatted + "Actual: " + actual;
         fail(formatted);
     }
@@ -137,15 +136,16 @@ public strictfp class Testing {
         if(message != null && !message.equals("")) {
             formatted = message + " ";
         }
-
         String expectedString = String.valueOf(expected);
         String actualString = String.valueOf(actual);
-        return expectedString.equals(actualString)?formatted + "expected: " + formatClassAndValue(expected, expectedString) + " but was: " + formatClassAndValue(actual, actualString):formatted + "expected:<" + expectedString + "> but was:<" + actualString + ">";
+        return expectedString.equals(actualString) ?
+                formatted + "expected: " + formatClassAndValue(expected, expectedString) + " but was: " +
+                        formatClassAndValue(actual, actualString) :
+                formatted + "expected:<" + expectedString + "> but was:<" + actualString + ">";
     }
 
     private static String formatClassAndValue(Object value, String valueString) {
-        String className = value == null?"null":value.getClass().getName();
-        return className + "<" + valueString + ">";
+        return (value == null ? "null" : value.getClass().getName()) + "<" + valueString + ">";
     }
 
     private static boolean equalsRegardingNull(Object expected, Object actual) {

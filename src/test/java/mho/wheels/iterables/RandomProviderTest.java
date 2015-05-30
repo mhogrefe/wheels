@@ -274,7 +274,7 @@ public strictfp class RandomProviderTest {
     }
 
     private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
-        aeqit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
+        aeqitLimit(TINY_LIMIT, P.uniformSample(readIntegerListWithNulls(xs)), output);
         P.reset();
     }
 
@@ -1187,7 +1187,7 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
-        aeqit(TINY_LIMIT, P.range((byte) a, (byte) b), output);
+        aeqitLimit(TINY_LIMIT, P.range((byte) a, (byte) b), output);
         P.reset();
     }
 
@@ -1252,7 +1252,7 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
-        aeqit(TINY_LIMIT, P.range((short) a, (short) b), output);
+        aeqitLimit(TINY_LIMIT, P.range((short) a, (short) b), output);
         P.reset();
     }
 
@@ -1321,7 +1321,7 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
-        aeqit(TINY_LIMIT, P.range(a, b), output);
+        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
         P.reset();
     }
 
@@ -1383,7 +1383,7 @@ public strictfp class RandomProviderTest {
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
         P.reset();
-        aeqit(TINY_LIMIT, P.range(a, b), output);
+        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
     }
 
     @Test
@@ -1452,7 +1452,7 @@ public strictfp class RandomProviderTest {
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        aeqit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        aeqitLimit(TINY_LIMIT, P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
         P.reset();
     }
 

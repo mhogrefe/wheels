@@ -15,8 +15,6 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 import static mho.wheels.testing.Testing.testNoRemove;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("ConstantConditions")
 public class ExhaustiveProviderProperties {
@@ -68,7 +66,7 @@ public class ExhaustiveProviderProperties {
         initialize("uniformSample(Iterable<T>)");
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<Integer> js = EP.uniformSample(is);
-            aeqit(is.toString(), is, js);
+            aeqit(is, is, js);
             testNoRemove(js);
         }
     }
@@ -83,7 +81,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static <T> void simpleTest(
-            @NotNull String message,
+            @NotNull Object message,
             @NotNull Iterable<T> xs,
             @NotNull Predicate<T> predicate
     ) {
@@ -97,12 +95,12 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeUp(b);
-            assertTrue(Byte.toString(b), all(c -> c != null, bs));
+            assertTrue(b, all(c -> c != null, bs));
             testNoRemove(bs);
-            assertEquals(Byte.toString(b), length(bs), (1 << 7) - b);
-            assertTrue(Byte.toString(b), unique(bs));
-            assertTrue(Byte.toString(b), all(c -> c >= b, bs));
-            assertTrue(Byte.toString(b), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+            assertEquals(b, length(bs), (1 << 7) - b);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c >= b, bs));
+            assertTrue(b, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
         }
     }
 
@@ -110,8 +108,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeUp(s);
-            simpleTest(Short.toString(s), ss, t -> t >= s);
-            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            simpleTest(s, ss, t -> t >= s);
+            assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
 
@@ -119,11 +117,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeUp(i);
-            simpleTest(Integer.toString(i), is, j -> j >= i);
-            assertTrue(
-                    Integer.toString(i),
-                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is)))
-            );
+            simpleTest(i, is, j -> j >= i);
+            assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -131,8 +126,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeUp(l);
-            simpleTest(Long.toString(l), ls, m -> m >= l);
-            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
+            simpleTest(l, ls, m -> m >= l);
+            assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
 
@@ -140,8 +135,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeUp(i);
-            simpleTest(i.toString(), is, j -> ge(j, i));
-            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
+            simpleTest(i, is, j -> ge(j, i));
+            assertTrue(i, weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -158,12 +153,12 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(byte)");
         for (byte b : take(LIMIT, P.bytes())) {
             Iterable<Byte> bs = EP.rangeDown(b);
-            assertTrue(Byte.toString(b), all(c -> c != null, bs));
+            assertTrue(b, all(c -> c != null, bs));
             testNoRemove(bs);
-            assertEquals(Byte.toString(b), length(bs), b + (1 << 7) + 1);
-            assertTrue(Byte.toString(b), unique(bs));
-            assertTrue(Byte.toString(b), all(c -> c <= b, bs));
-            assertTrue(Byte.toString(b), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+            assertEquals(b, length(bs), b + (1 << 7) + 1);
+            assertTrue(b, unique(bs));
+            assertTrue(b, all(c -> c <= b, bs));
+            assertTrue(b, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
         }
     }
 
@@ -171,8 +166,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(short)");
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeDown(s);
-            simpleTest(Short.toString(s), ss, t -> t <= s);
-            assertTrue(Short.toString(s), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            simpleTest(s, ss, t -> t <= s);
+            assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
 
@@ -180,11 +175,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(int)");
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeDown(i);
-            simpleTest(Integer.toString(i), is, j -> j <= i);
-            assertTrue(
-                    Integer.toString(i),
-                    weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is)))
-            );
+            simpleTest(i, is, j -> j <= i);
+            assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -192,8 +184,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(long)");
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeDown(l);
-            simpleTest(Long.toString(l), ls, m -> m <= l);
-            assertTrue(Long.toString(l), weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
+            simpleTest(l, ls, m -> m <= l);
+            assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
 
@@ -201,8 +193,8 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Iterable<BigInteger> is = EP.rangeDown(i);
-            simpleTest(i.toString(), is, j -> le(j, i));
-            assertTrue(i.toString(), weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
+            simpleTest(i, is, j -> le(j, i));
+            assertTrue(i, weaklyIncreasing(map(BigInteger::abs, take(TINY_LIMIT, is))));
         }
     }
 
@@ -210,7 +202,7 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(char)");
         for (char c : take(LIMIT, P.characters())) {
             Iterable<Character> cs = EP.rangeDown(c);
-            simpleTest(Character.toString(c), cs, d -> d <= c);
+            simpleTest(c, cs, d -> d <= c);
             assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
         }
     }
@@ -219,19 +211,19 @@ public class ExhaustiveProviderProperties {
         initialize("range(byte, byte)");
         for (Pair<Byte, Byte> p : take(LIMIT, P.pairs(P.bytes()))) {
             Iterable<Byte> bs = EP.range(p.a, p.b);
-            assertTrue(p.toString(), all(b -> b != null, bs));
+            assertTrue(p, all(b -> b != null, bs));
             testNoRemove(bs);
-            assertEquals(p.toString(), length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
-            assertTrue(p.toString(), unique(bs));
-            assertTrue(p.toString(), all(b -> b >= p.a && b <= p.b, bs));
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
-            assertEquals(p.toString(), p.a > p.b, isEmpty(bs));
+            assertEquals(p, length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
+            assertTrue(p, unique(bs));
+            assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
+            assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+            assertEquals(p, p.a > p.b, isEmpty(bs));
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
-            aeqit(Byte.toString(b), EP.range(b, b), Collections.singletonList(b));
-            aeqit(Byte.toString(b), TINY_LIMIT, EP.range(b, Byte.MAX_VALUE), EP.rangeUp(b));
-            aeqit(Byte.toString(b), TINY_LIMIT, EP.range(Byte.MIN_VALUE, b), EP.rangeDown(b));
+            aeqit(b, EP.range(b, b), Collections.singletonList(b));
+            aeqit(b, TINY_LIMIT, EP.range(b, Byte.MAX_VALUE), EP.rangeUp(b));
+            aeqit(b, TINY_LIMIT, EP.range(Byte.MIN_VALUE, b), EP.rangeDown(b));
         }
     }
 
@@ -239,15 +231,15 @@ public class ExhaustiveProviderProperties {
         initialize("range(short, short)");
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
-            simpleTest(p.toString(), ss, s -> s >= p.a && s <= p.b);
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
-            assertEquals(p.toString(), p.a > p.b, isEmpty(ss));
+            simpleTest(p, ss, s -> s >= p.a && s <= p.b);
+            assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            assertEquals(p, p.a > p.b, isEmpty(ss));
         }
 
         for (short s : take(LIMIT, P.shorts())) {
-            aeqit(Short.toString(s), EP.range(s, s), Collections.singletonList(s));
-            aeqit(Short.toString(s), TINY_LIMIT, EP.range(s, Short.MAX_VALUE), EP.rangeUp(s));
-            aeqit(Short.toString(s), TINY_LIMIT, EP.range(Short.MIN_VALUE, s), EP.rangeDown(s));
+            aeqit(s, EP.range(s, s), Collections.singletonList(s));
+            aeqit(s, TINY_LIMIT, EP.range(s, Short.MAX_VALUE), EP.rangeUp(s));
+            aeqit(s, TINY_LIMIT, EP.range(Short.MIN_VALUE, s), EP.rangeDown(s));
         }
     }
 
@@ -256,15 +248,15 @@ public class ExhaustiveProviderProperties {
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             Iterable<Integer> is = EP.range(p.a, p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
-            simpleTest(p.toString(), is, i -> i >= p.a && i <= p.b);
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
-            assertEquals(p.toString(), p.a > p.b, isEmpty(is));
+            simpleTest(p, is, i -> i >= p.a && i <= p.b);
+            assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
+            assertEquals(p, p.a > p.b, isEmpty(is));
         }
 
         for (int i : take(LIMIT, P.integers())) {
-            aeqit(Integer.toString(i), EP.range(i, i), Collections.singletonList(i));
-            aeqit(Integer.toString(i), TINY_LIMIT, EP.range(i, Integer.MAX_VALUE), EP.rangeUp(i));
-            aeqit(Integer.toString(i), TINY_LIMIT, EP.range(Integer.MIN_VALUE, i), EP.rangeDown(i));
+            aeqit(i, EP.range(i, i), Collections.singletonList(i));
+            aeqit(i, TINY_LIMIT, EP.range(i, Integer.MAX_VALUE), EP.rangeUp(i));
+            aeqit(i, TINY_LIMIT, EP.range(Integer.MIN_VALUE, i), EP.rangeDown(i));
         }
     }
 
@@ -273,15 +265,15 @@ public class ExhaustiveProviderProperties {
         for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.longs()))) {
             Iterable<Long> ls = EP.range(p.a, p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
-            simpleTest(p.toString(), ls, l -> l >= p.a && l <= p.b);
-            assertTrue(p.toString(), weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
-            assertEquals(p.toString(), p.a > p.b, isEmpty(ls));
+            simpleTest(p, ls, l -> l >= p.a && l <= p.b);
+            assertTrue(p, weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
+            assertEquals(p, p.a > p.b, isEmpty(ls));
         }
 
         for (long l : take(LIMIT, P.longs())) {
-            aeqit(Long.toString(l), EP.range(l, l), Collections.singletonList(l));
-            aeqit(Long.toString(l), TINY_LIMIT, EP.range(l, Long.MAX_VALUE), EP.rangeUp(l));
-            aeqit(Long.toString(l), TINY_LIMIT, EP.range(Long.MIN_VALUE, l), EP.rangeDown(l));
+            aeqit(l, EP.range(l, l), Collections.singletonList(l));
+            aeqit(l, TINY_LIMIT, EP.range(l, Long.MAX_VALUE), EP.rangeUp(l));
+            aeqit(l, TINY_LIMIT, EP.range(Long.MIN_VALUE, l), EP.rangeDown(l));
         }
     }
 
@@ -290,13 +282,13 @@ public class ExhaustiveProviderProperties {
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.bigIntegers()))) {
             Iterable<BigInteger> is = EP.range(p.a, p.b);
             Iterable<BigInteger> tis = take(TINY_LIMIT, is);
-            simpleTest(p.toString(), is, i -> ge(i, p.a) && le(i, p.b));
-            assertTrue(p.toString(), weaklyIncreasing(map(BigInteger::abs, tis)));
-            assertEquals(p.toString(), gt(p.a, p.b), isEmpty(is));
+            simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
+            assertTrue(p, weaklyIncreasing(map(BigInteger::abs, tis)));
+            assertEquals(p, gt(p.a, p.b), isEmpty(is));
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            aeqit(i.toString(), EP.range(i, i), Collections.singletonList(i));
+            aeqit(i, EP.range(i, i), Collections.singletonList(i));
         }
     }
 
@@ -305,9 +297,9 @@ public class ExhaustiveProviderProperties {
         for (Pair<Character, Character> p : take(LIMIT, P.pairs(P.characters()))) {
             Iterable<Character> cs = EP.range(p.a, p.b);
             Iterable<Character> tcs = take(TINY_LIMIT, cs);
-            simpleTest(p.toString(), cs, c -> c >= p.a && c <= p.b);
-            assertTrue(p.toString(), increasing(tcs));
-            assertEquals(p.toString(), p.a > p.b, isEmpty(cs));
+            simpleTest(p, cs, c -> c >= p.a && c <= p.b);
+            assertTrue(p, increasing(tcs));
+            assertEquals(p, p.a > p.b, isEmpty(cs));
         }
 
         for (char c : take(LIMIT, P.characters())) {
