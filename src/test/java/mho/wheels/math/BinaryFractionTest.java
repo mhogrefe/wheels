@@ -83,4 +83,30 @@ public class BinaryFractionTest {
     private static void of_BigInteger_helper(int n, @NotNull String output) {
         aeq(of(BigInteger.valueOf(n)), output);
     }
+
+    @Test
+    public void testOf_BigInteger() {
+        of_BigInteger_helper(0, "0");
+        of_BigInteger_helper(1, "1");
+        of_BigInteger_helper(5, "5");
+        of_BigInteger_helper(100, "25 << 2");
+        of_BigInteger_helper(-1, "-1");
+        of_BigInteger_helper(-5, "-5");
+        of_BigInteger_helper(-100, "-25 << 2");
+    }
+
+    private static void of_int_helper(int n, @NotNull String output) {
+        aeq(of(n), output);
+    }
+
+    @Test
+    public void testOf_int() {
+        of_int_helper(0, "0");
+        of_int_helper(1, "1");
+        of_int_helper(5, "5");
+        of_int_helper(100, "25 << 2");
+        of_int_helper(-1, "-1");
+        of_int_helper(-5, "-5");
+        of_int_helper(-100, "-25 << 2");
+    }
 }
