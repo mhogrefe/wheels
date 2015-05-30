@@ -8,6 +8,7 @@ import java.math.BigInteger;
 
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.fail;
 
 public class BinaryFractionTest {
     @Test
@@ -79,6 +80,10 @@ public class BinaryFractionTest {
         of_BigInteger_int_helper(-5, 20, "-5 << 20");
         of_BigInteger_int_helper(-5, -20, "-5 >> 20");
         of_BigInteger_int_helper(-100, 0, "-25 << 2");
+        try {
+            of(BigInteger.valueOf(4), Integer.MAX_VALUE);
+            Assert.fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     private static void of_BigInteger_helper(int n, @NotNull String output) {

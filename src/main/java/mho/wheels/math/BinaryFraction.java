@@ -137,6 +137,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * <ul>
      *  <li>{@code mantissa} cannot be null.</li>
      *  <li>{@code exponent} may be any {@code int}.</li>
+     *  <li>The sum of {@code exponent} and the number of trailing zero bits of {@code mantissa} must be less than
+     *  2<pow>31</pow>.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -149,6 +151,10 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
             return new BinaryFraction(BigInteger.ZERO, 0);
         }
         int trailingZeroes = mantissa.getLowestSetBit();
+        if ((long) exponent + trailingZeroes >= Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("The sum of exponent and the number of trailing zero bits of mantissa" +
+                    " must be less than 2^31. exponent is " + exponent + " and mantissa is " + mantissa + ".");
+        }
         if (trailingZeroes != 0) {
             mantissa = mantissa.shiftRight(trailingZeroes);
             exponent += trailingZeroes;
