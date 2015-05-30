@@ -2,11 +2,13 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 
 import java.math.BigInteger;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.math.BinaryFraction.*;
 
@@ -42,7 +44,11 @@ public class BinaryFractionDemos {
 
     private static void demoOf_BigInteger_int() {
         initialize();
-        for (Pair<BigInteger, Integer> p : take(LIMIT, P.pairs(P.bigIntegers(), P.integers()))) {
+        Iterable<Pair<BigInteger, Integer>> ps = filter(
+                p -> (long) p.b + p.a.getLowestSetBit() < Integer.MAX_VALUE,
+                P.pairs(P.bigIntegers(), P.integers())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             System.out.println("of(" + p.a + ", " + p.b + ") = " + of(p.a, p.b));
         }
     }
