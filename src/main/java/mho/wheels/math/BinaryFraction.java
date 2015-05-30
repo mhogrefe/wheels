@@ -165,7 +165,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * </ul>
      *
      * @param n the {@code BigInteger}
-     * @return the {@code BigInteger} equal to {@code n}
+     * @return the {@code BinaryFraction} equal to {@code n}
      */
     public static @NotNull BinaryFraction of(@NotNull BigInteger n) {
         return of(n, 0);
@@ -181,12 +181,32 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * </ul>
      *
      * @param n the {@code int}
-     * @return the {@code int} equal to {@code n}
+     * @return the {@code BinaryFraction} equal to {@code n}
      */
     public static @NotNull BinaryFraction of(int n) {
         return of(BigInteger.valueOf(n), 0);
     }
 
+    /**
+     * Creates a {@code BinaryFraction} from a {@code float}. No rounding occurs; the {@code Rational} has exactly the
+     * same value as the {@code float}. For example, {@code of(1.0f/3.0f)} yields 11184811/33554432, not 1/3. Returns
+     * empty if the {@code float} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>
+     *   The result is empty or a {@code BinaryFraction} that may be exactly represented as a {@code float}. Here are
+     *   some, but not all, of the conditions on the result:
+     *   <ul>
+     *    <li>The absolute value of {@code exponent} less than or equal to 2<sup>149</sup>.</li>
+     *    <li>The absolute value of {@code mantissa} is less than or equal to 2<sup>128</sup>–2<sup>104</sup>.</li>
+     *   </ul>
+     *  </li>
+     * </ul>
+     *
+     * @param f the {@code float}
+     * @return the {@code BinaryFraction} equal to {@code f}
+     */
     public static @NotNull Optional<BinaryFraction> of(float f) {
         if (f == 0.0f) return Optional.of(ZERO);
         if (f == 1.0f) return Optional.of(ONE);
@@ -205,6 +225,26 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
     }
 
+    /**
+     * Creates a {@code BinaryFraction} from a {@code double}. No rounding occurs; the {@code Rational} has exactly the
+     * same value as the {@code double}. For example, {@code of(1.0/3.0)} yields 6004799503160661/18014398509481984,
+     * not 1/3. Returns empty if the {@code double} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>
+     *   The result is empty or a {@code BigInteger} that may be exactly represented as a {@code double}. Here are
+     *   some, but not all, of the conditions on the result:
+     *   <ul>
+     *    <li>The absolute value of {@code exponent} less than or equal to 2<sup>1074</sup>.</li>
+     *    <li>The absolute value of {@code mantissa} is less than or equal to 2<sup>1024</sup>–2<sup>971</sup>.</li>
+     *   </ul>
+     *  </li>
+     * </ul>
+     *
+     * @param d the {@code double}
+     * @return the {@code BinaryFraction} equal to {@code d}
+     */
     public static @NotNull Optional<BinaryFraction> of(double d) {
         if (d == 0.0) return Optional.of(ZERO);
         if (d == 1.0) return Optional.of(ONE);
