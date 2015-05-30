@@ -189,8 +189,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
 
     /**
      * Creates a {@code BinaryFraction} from a {@code float}. No rounding occurs; the {@code Rational} has exactly the
-     * same value as the {@code float}. For example, {@code of(1.0f/3.0f)} yields 11184811/33554432, not 1/3. Returns
-     * empty if the {@code float} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     * same value as the {@code float}. For example, {@code of(1.0f/3.0f)} yields 11184811 >> 25. Returns empty if the
+     * {@code float} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
      *
      * <ul>
      *  <li>{@code f} may be any {@code float}.</li>
@@ -227,8 +227,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
 
     /**
      * Creates a {@code BinaryFraction} from a {@code double}. No rounding occurs; the {@code Rational} has exactly the
-     * same value as the {@code double}. For example, {@code of(1.0/3.0)} yields 6004799503160661/18014398509481984,
-     * not 1/3. Returns empty if the {@code double} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     * same value as the {@code double}. For example, {@code of(1.0/3.0)} yields 6004799503160661 >> 54. Returns empty
+     * if the {@code double} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
      *
      * <ul>
      *  <li>{@code d} may be any {@code double}.</li>

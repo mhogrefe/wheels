@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import org.jetbrains.annotations.NotNull;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -108,5 +109,99 @@ public class BinaryFractionTest {
         of_int_helper(-1, "-1");
         of_int_helper(-5, "-5");
         of_int_helper(-100, "-25 << 2");
+    }
+
+    private static void of_float_helper(float f, @NotNull String output) {
+        aeq(of(f).get(), output);
+    }
+
+    private static void of_float_empty_helper(float f) {
+        Assert.assertFalse(of(f).isPresent());
+    }
+
+    @Test
+    public void testOf_float() {
+        of_float_helper(0.0f, "0");
+        of_float_helper(1.0f, "1");
+        of_float_helper(0.5f, "1 >> 1");
+        of_float_helper(0.25f, "1 >> 2");
+        of_float_helper(1.0f / 3.0f, "11184811 >> 25");
+        of_float_helper(2.0f, "1 << 1");
+        of_float_helper(4.0f, "1 << 2");
+        of_float_helper(3.0f, "3");
+        of_float_helper(1.5f, "3 >> 1");
+        of_float_helper(1000.0f, "125 << 3");
+        of_float_helper(0.001f, "8589935 >> 33");
+        of_float_helper((float) Math.PI, "13176795 >> 22");
+        of_float_helper((float) Math.E, "2850325 >> 20");
+        of_float_helper(Float.MIN_VALUE, "1 >> 149");
+        of_float_helper(Float.MIN_NORMAL, "1 >> 126");
+        of_float_helper(Float.MAX_VALUE, "16777215 << 104");
+        of_float_helper(-0.0f, "0");
+        of_float_helper(-1.0f, "-1");
+        of_float_helper(-0.5f, "-1 >> 1");
+        of_float_helper(-0.25f, "-1 >> 2");
+        of_float_helper(-1.0f / 3.0f, "-11184811 >> 25");
+        of_float_helper(-2.0f, "-1 << 1");
+        of_float_helper(-4.0f, "-1 << 2");
+        of_float_helper(-3.0f, "-3");
+        of_float_helper(-1.5f, "-3 >> 1");
+        of_float_helper(-1000.0f, "-125 << 3");
+        of_float_helper(-0.001f, "-8589935 >> 33");
+        of_float_helper((float) -Math.PI, "-13176795 >> 22");
+        of_float_helper((float) -Math.E, "-2850325 >> 20");
+        of_float_helper(-Float.MIN_VALUE, "-1 >> 149");
+        of_float_helper(-Float.MIN_NORMAL, "-1 >> 126");
+        of_float_helper(-Float.MAX_VALUE, "-16777215 << 104");
+        of_float_empty_helper(Float.POSITIVE_INFINITY);
+        of_float_empty_helper(Float.NEGATIVE_INFINITY);
+        of_float_empty_helper(Float.NaN);
+    }
+
+    private static void of_double_helper(double d, @NotNull String output) {
+        aeq(of(d).get(), output);
+    }
+
+    private static void of_double_empty_helper(double d) {
+        Assert.assertFalse(of(d).isPresent());
+    }
+
+    @Test
+    public void testOfMantissaAndExponent_double() {
+        of_double_helper(0.0, "0");
+        of_double_helper(1.0, "1");
+        of_double_helper(0.5, "1 >> 1");
+        of_double_helper(0.25, "1 >> 2");
+        of_double_helper(1.0 / 3.0, "6004799503160661 >> 54");
+        of_double_helper(2.0, "1 << 1");
+        of_double_helper(4.0, "1 << 2");
+        of_double_helper(3.0, "3");
+        of_double_helper(1.5, "3 >> 1");
+        of_double_helper(1000.0, "125 << 3");
+        of_double_helper(0.001, "1152921504606847 >> 60");
+        of_double_helper(Math.PI, "884279719003555 >> 48");
+        of_double_helper(Math.E, "6121026514868073 >> 51");
+        of_double_helper(Double.MIN_VALUE, "1 >> 1074");
+        of_double_helper(Double.MIN_NORMAL, "1 >> 1022");
+        of_double_helper(Double.MAX_VALUE, "9007199254740991 << 971");
+        of_double_helper(-0.0, "0");
+        of_double_helper(-1.0, "-1");
+        of_double_helper(-0.5, "-1 >> 1");
+        of_double_helper(-0.25, "-1 >> 2");
+        of_double_helper(-1.0 / 3.0, "-6004799503160661 >> 54");
+        of_double_helper(-2.0, "-1 << 1");
+        of_double_helper(-4.0, "-1 << 2");
+        of_double_helper(-3.0, "-3");
+        of_double_helper(-1.5, "-3 >> 1");
+        of_double_helper(-1000.0, "-125 << 3");
+        of_double_helper(-0.001, "-1152921504606847 >> 60");
+        of_double_helper(-Math.PI, "-884279719003555 >> 48");
+        of_double_helper(-Math.E, "-6121026514868073 >> 51");
+        of_double_helper(-Double.MIN_VALUE, "-1 >> 1074");
+        of_double_helper(-Double.MIN_NORMAL, "-1 >> 1022");
+        of_double_helper(-Double.MAX_VALUE, "-9007199254740991 << 971");
+        of_double_empty_helper(Double.POSITIVE_INFINITY);
+        of_double_empty_helper(Double.NEGATIVE_INFINITY);
+        of_double_empty_helper(Double.NaN);
     }
 }
