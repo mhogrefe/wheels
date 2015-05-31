@@ -1273,48 +1273,6 @@ public final class Combinatorics {
         );
     }
 
-    public static @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f,
-            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction
-    ) {
-        CachedIterable<Pair<A, CachedIterable<B>>> pairs = new CachedIterable<>(
-                map(x -> new Pair<>(x, new CachedIterable<>(f.apply(x))), xs)
-        );
-        BiFunction<BigInteger, BigInteger, Optional<Pair<A, B>>> p2p = (x, y) -> {
-            NullableOptional<Pair<A, CachedIterable<B>>> optPair = pairs.get(x.intValueExact());
-            if (!optPair.isPresent()) return Optional.empty();
-            Pair<A, CachedIterable<B>> pair = optPair.get();
-            NullableOptional<B> optB = pair.b.get(y.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<>(pair.a, optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            NullableOptional<Pair<A, CachedIterable<B>>> optLast = pairs.getLast();
-            if (!optLast.isPresent()) return false;
-            Pair<A, CachedIterable<B>> last = optLast.get();
-            if (!Objects.equals(last.a, p.a)) return false;
-            NullableOptional<B> optLastB = last.b.getLast();
-            return optLastB.isPresent() && Objects.equals(optLastB.get(), p.b);
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                map(p -> p2p.apply(p.a, p.b), pairsByFunction(
-                                        unpairingFunction,
-                                        rangeUp(BigInteger.ZERO),
-                                        rangeUp(BigInteger.ZERO))
-                                )
-                        )
-                )
-        );
-    }
-
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
         if (size == 0) {
             return Collections.singletonList(new ArrayList<T>());
@@ -1534,61 +1492,5 @@ public final class Combinatorics {
 
     public static @NotNull Iterable<String> substrings(@NotNull String s) {
         return map(IterableUtils::charsToString, subsequences(fromString(s)));
-    }
-
-    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
-        return () -> new Iterator<List<Integer>>() {
-            private List<Integer> indices = start;
-
-            @Override
-            public boolean hasNext() {
-                return indices != null;
-            }
-
-            @Override
-            public List<Integer> next() {
-                List<Integer> oldIndices = indices;
-                if (weaklyDecreasing(indices)) {
-                    indices = null;
-                } else {
-                    int i;
-                    int previous = -1;
-                    for (i = indices.size() - 1; i >= 0; i--) {
-                        if (indices.get(i) < previous) break;
-                        previous = indices.get(i);
-                    }
-                    i++;
-                    Iterable<Integer> prefix = take(i - 1, indices);
-                    Iterable<Integer> suffix = drop(i - 1, indices);
-                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
-                    indices = toList(
-                            concat(
-                                    (Iterable<Iterable<Integer>>) Arrays.asList(
-                                            prefix,
-                                            Collections.singletonList(pivot),
-                                            sort(delete(pivot, suffix))
-                                    )
-                            )
-                    );
-                }
-                return oldIndices;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
-        List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, rangeUp(0)));
-        List<Integer> startingIndices = sort(map(indexMap::get, xs));
-        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
-    }
-
-    public static @NotNull Iterable<String> permutationsIncreasing(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutationsIncreasing(fromString(s)));
     }
 }

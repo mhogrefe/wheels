@@ -3,6 +3,7 @@ package mho.wheels.math;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.*;
 
@@ -36,6 +37,7 @@ public class BinaryFractionProperties {
             System.out.println("\ttesting " + config.c);
             propertiesGetMantissa();
             propertiesGetExponent();
+            propertiesOf_BigInteger_int();
         }
         System.out.println("Done");
     }
@@ -53,6 +55,29 @@ public class BinaryFractionProperties {
         initialize("getExponent()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             bf.getExponent();
+        }
+    }
+
+    private static void propertiesOf_BigInteger_int() {
+        initialize("of(BigInteger, int)");
+        Iterable<Pair<BigInteger, Integer>> ps = filter(
+                p -> (long) p.b + p.a.getLowestSetBit() < Integer.MAX_VALUE,
+                P.pairs(P.bigIntegers(), P.integers())
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            BinaryFraction bf = of(p.a, p.b);
+            bf.validate();
+        }
+
+        Iterable<Pair<BigInteger, Integer>> psFail = P.dependentPairs(
+                map(i -> i.shiftLeft(1), P.nonzeroBigIntegers()),
+                m -> P.range(Integer.MIN_VALUE - m.getLowestSetBit(), Integer.MAX_VALUE)
+        );
+        for (Pair<BigInteger, Integer> p : take(LIMIT, psFail)) {
+            try {
+                of(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }

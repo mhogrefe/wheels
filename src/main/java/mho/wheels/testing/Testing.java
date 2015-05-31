@@ -1,6 +1,7 @@
 package mho.wheels.testing;
 
 import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -154,6 +155,24 @@ public strictfp class Testing {
 
     private static boolean isEquals(Object expected, Object actual) {
         return expected.equals(actual);
+    }
+
+    public static void assertNotNull(Object message, Object object) {
+        assertTrue(message, object != null);
+    }
+
+    public static void assertNull(Object message, Object object) {
+        if (object != null) {
+            failNotNull(message, object);
+        }
+    }
+
+    private static void failNotNull(Object message, Object actual) {
+        String formatted = "";
+        if (message != null) {
+            formatted = message + " ";
+        }
+        fail(formatted + "expected null, but was:<" + actual + ">");
     }
 
     public static <A, B> void compareImplementations(
@@ -374,5 +393,133 @@ public strictfp class Testing {
 
     public static @NotNull String nicePrint(@NotNull String s) {
         return nicePrint(fromString(s));
+    }
+
+    public static <T> void foldProperties(
+            int limit,
+            @NotNull IterableProvider P,
+            @NotNull Iterable<T> xs,
+            @NotNull BiFunction<T, T, T> f,
+            @NotNull Function<List<T>, T> listF,
+            boolean commutativeAndAssociative
+    ) {
+        for (List<T> lxs : take(limit, P.lists(xs))) {
+            listF.apply(lxs);
+        }
+        P.reset();
+
+        testNoRemove(limit, xs);
+        P.reset();
+
+        if (commutativeAndAssociative) {
+            Iterable<Pair<List<T>, List<T>>> ps = filter(
+                    q -> !q.a.equals(q.b),
+                    P.dependentPairs(P.lists(xs), P::permutations)
+            );
+            for (Pair<List<T>, List<T>> p : take(limit, ps)) {
+                assertEquals(p, listF.apply(p.a), listF.apply(p.b));
+            }
+            P.reset();
+        }
+
+        for (T x : take(limit, xs)) {
+            assertEquals(x, listF.apply(Collections.singletonList(x)), x);
+        }
+        P.reset();
+
+        for (Pair<T, T> p : take(limit, P.pairs(xs))) {
+            assertEquals(p, listF.apply(Arrays.asList(p.a, p.b)), f.apply(p.a, p.b));
+        }
+        P.reset();
+
+        for (List<T> lxs : take(limit, P.listsWithElement(null, xs))) {
+            try {
+                listF.apply(lxs);
+                fail(lxs);
+            } catch (NullPointerException ignored) {}
+        }
+        P.reset();
+    }
+
+    public static <A, B> void deltaProperties(
+            int limit,
+            @NotNull IterableProvider P,
+            @NotNull Iterable<A> xs,
+            @NotNull Function<B, B> negate,
+            @NotNull BiFunction<A, A, B> f,
+            @NotNull Function<List<A>, Iterable<B>> deltaF
+    ) {
+        deltaPropertiesClean(limit, P, xs, negate, f, deltaF, x -> x);
+    }
+
+    public static <A, B> void deltaPropertiesClean(
+            int limit,
+            @NotNull IterableProvider P,
+            @NotNull Iterable<A> xs,
+            @NotNull Function<B, B> negate,
+            @NotNull BiFunction<A, A, B> subtract,
+            @NotNull Function<List<A>, Iterable<B>> deltaF,
+            @NotNull Function<B, B> clean
+    ) {
+        for (List<A> lxs : take(limit, P.listsAtLeast(1, xs))) {
+            Iterable<B> deltas = deltaF.apply(lxs);
+            aeq(lxs, length(deltas), length(lxs) - 1);
+            Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
+            aeqit(lxs, deltas, reversed);
+        }
+        P.reset();
+
+        testNoRemove(limit, xs);
+        P.reset();
+
+        for (A x : take(limit, xs)) {
+            assertTrue(x, isEmpty(deltaF.apply(Collections.singletonList(x))));
+        }
+        P.reset();
+
+        for (Pair<A, A> p : take(limit, P.pairs(xs))) {
+            aeqit(
+                    p,
+                    deltaF.apply(Arrays.asList(p.a, p.b)),
+                    Collections.singletonList(subtract.andThen(clean).apply(p.b, p.a))
+            );
+        }
+        P.reset();
+
+        for (List<A> lxs : take(limit, P.listsWithElement(null, xs))) {
+            try {
+                toList(deltaF.apply(lxs));
+                fail(lxs);
+            } catch (NullPointerException ignored) {}
+        }
+        P.reset();
+    }
+
+    public static <T> void findInProperties(
+            int limit,
+            @NotNull IterableProvider P,
+            @NotNull Iterable<T> xs,
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn
+    ) {
+        for (String s : take(limit, P.strings())) {
+            findIn.apply(s);
+        }
+        P.reset();
+
+        for (String s : take(limit, P.stringsWithSubstrings(map(Object::toString, xs)))) {
+            Optional<Pair<T, Integer>> op = findIn.apply(s);
+            Pair<T, Integer> p = op.get();
+            assertNotNull(s, p.a);
+            assertNotNull(s, p.b);
+            assertTrue(s, p.b >= 0 && p.b < s.length());
+            String before = take(p.b, s);
+            assertFalse(s, findIn.apply(before).isPresent());
+            String during = p.a.toString();
+            assertTrue(s, s.substring(p.b).startsWith(during));
+            String after = drop(p.b + during.length(), s);
+            assertTrue(s, after.isEmpty() || !read.apply(during + head(after)).isPresent());
+        }
+        P.reset();
     }
 }

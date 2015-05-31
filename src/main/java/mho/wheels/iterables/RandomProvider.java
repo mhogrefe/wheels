@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -2715,6 +2716,32 @@ public final strictfp class RandomProvider extends IterableProvider {
         return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private @NotNull Iterator<A> xsi = xs.iterator();
+            private @NotNull Map<A, Iterator<B>> map = new HashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Pair<A, B> next() {
+                A x = xsi.next();
+                Iterator<B> ys = map.get(x);
+                if (ys == null) {
+                    ys = f.apply(x).iterator();
+                    map.put(x, ys);
+                }
+                return new Pair<>(x, ys.next());
+            }
+        };
+    }
+
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
@@ -2955,6 +2982,25 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return strings(characters());
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+        return () -> new NoRemoveIterator<List<T>>() {
+            Random random = new Random(0x6af477d9a7e54fcaL);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> shuffled = toList(xs);
+                Collections.shuffle(shuffled, random);
+                return shuffled;
+            }
+        };
     }
 
     /**

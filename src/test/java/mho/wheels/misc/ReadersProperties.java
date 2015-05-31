@@ -4,7 +4,6 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
-import mho.wheels.structures.Pair;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -12,10 +11,10 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Random;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.misc.Readers.*;
+import static mho.wheels.testing.Testing.*;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
@@ -88,33 +87,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBooleanIn(String) properties...");
 
-        for (String s : take(LIMIT, P.strings())) {
-            findBooleanIn(s);
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss;
-        if (P instanceof ExhaustiveProvider) {
-            ss = map(
-                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.booleans())
-            );
-        } else {
-            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.booleans()));
-        }
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Boolean, Integer>> op = findBooleanIn(s);
-            Pair<Boolean, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findBooleanIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readBoolean(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn);
     }
 
     private static void propertiesReadOrdering() {
@@ -135,33 +108,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findOrderingIn(String) properties...");
 
-        for (String s : take(LIMIT, P.strings())) {
-            findOrderingIn(s);
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss;
-        if (P instanceof ExhaustiveProvider) {
-            ss = map(
-                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.orderings())
-            );
-        } else {
-            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.orderings()));
-        }
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Ordering, Integer>> op = findOrderingIn(s);
-            Pair<Ordering, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findOrderingIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readOrdering(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn);
     }
 
     private static void propertiesReadRoundingMode() {
@@ -182,33 +129,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findRoundingModeIn(String) properties...");
 
-        for (String s : take(LIMIT, P.strings())) {
-            findRoundingModeIn(s);
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss;
-        if (P instanceof ExhaustiveProvider) {
-            ss = map(
-                    p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(ps, P.roundingModes())
-            );
-        } else {
-            ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.roundingModes()));
-        }
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<RoundingMode, Integer>> op = findRoundingModeIn(s);
-            Pair<RoundingMode, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findRoundingModeIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readRoundingMode(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.roundingModes(), Readers::readRoundingMode, Readers::findRoundingModeIn);
     }
 
     private static void propertiesReadBigInteger() {
@@ -229,25 +150,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBigIntegerIn(String) properties...");
 
-        for (String s : take(LIMIT, P.strings())) {
-            findBigIntegerIn(s);
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bigIntegers()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<BigInteger, Integer>> op = findBigIntegerIn(s);
-            Pair<BigInteger, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findBigIntegerIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readBigInteger(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn);
     }
 
     private static void propertiesReadByte() {
@@ -268,25 +171,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findByteIn(String) properties...");
 
-        for (byte b : take(LIMIT, P.bytes())) {
-            findByteIn(Byte.toString(b));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bytes()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Byte, Integer>> op = findByteIn(s);
-            Pair<Byte, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findByteIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readByte(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn);
     }
 
     private static void propertiesReadShort() {
@@ -307,25 +192,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findShortIn(String) properties...");
 
-        for (short s : take(LIMIT, P.shorts())) {
-            findByteIn(Short.toString(s));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.shorts()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Short, Integer>> op = findShortIn(s);
-            Pair<Short, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findShortIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readShort(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn);
     }
 
     private static void propertiesReadInteger() {
@@ -346,25 +213,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findIntegerIn(String) properties...");
 
-        for (int i : take(LIMIT, P.integers())) {
-            findByteIn(Integer.toString(i));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.integers()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Integer, Integer>> op = findIntegerIn(s);
-            Pair<Integer, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findIntegerIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readInteger(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn);
     }
 
     private static void propertiesReadLong() {
@@ -385,25 +234,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findLongIn(String) properties...");
 
-        for (long l : take(LIMIT, P.bytes())) {
-            findByteIn(Long.toString(l));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.longs()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Long, Integer>> op = findLongIn(s);
-            Pair<Long, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findLongIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readLong(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn);
     }
 
     private static void propertiesReadFloat() {
@@ -424,25 +255,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findFloatIn(String) properties...");
 
-        for (float f : take(LIMIT, P.floats())) {
-            findFloatIn(Float.toString(f));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.floats()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Float, Integer>> op = findFloatIn(s);
-            Pair<Float, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findFloatIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readFloat(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn);
     }
 
     private static void propertiesReadDouble() {
@@ -463,25 +276,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findDoubleIn(String) properties...");
 
-        for (double d : take(LIMIT, P.doubles())) {
-            findDoubleIn(Double.toString(d));
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.doubles()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<Double, Integer>> op = findDoubleIn(s);
-            Pair<Double, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findDoubleIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readDouble(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn);
     }
 
     private static void propertiesReadBigDecimal() {
@@ -502,25 +297,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBigDecimalIn(String) properties...");
 
-        for (String s : take(LIMIT, P.strings())) {
-            findBigDecimalIn(s);
-        }
-
-        Iterable<Pair<String, Integer>> ps = P.dependentPairsLogarithmic(P.strings(), s -> range(0, s.length()));
-        Iterable<String> ss = map(p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a), P.pairs(ps, P.bigDecimals()));
-        for (String s : take(LIMIT, ss)) {
-            Optional<Pair<BigDecimal, Integer>> op = findBigDecimalIn(s);
-            Pair<BigDecimal, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findBigDecimalIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readBigDecimal(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.bigDecimals(), Readers::readBigDecimal, Readers::findBigDecimalIn);
     }
 
     private static void propertiesReadCharacter() {
@@ -541,23 +318,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findCharacterIn(String) properties...");
 
-        for (char c : take(LIMIT, P.characters())) {
-            findCharacterIn(Character.toString(c));
-        }
-
-        for (String s : take(LIMIT, filter(t -> !t.isEmpty(), P.strings()))) {
-            Optional<Pair<Character, Integer>> op = findCharacterIn(s);
-            Pair<Character, Integer> p = op.get();
-            assertNotNull(s, p.a);
-            assertNotNull(s, p.b);
-            assertTrue(s, p.b >= 0 && p.b < s.length());
-            String before = take(p.b, s);
-            assertFalse(s, findCharacterIn(before).isPresent());
-            String during = p.a.toString();
-            assertTrue(s, s.substring(p.b).startsWith(during));
-            String after = drop(p.b + during.length(), s);
-            assertTrue(s, after.isEmpty() || !readCharacter(during + head(after)).isPresent());
-        }
+        findInProperties(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn);
     }
 
     private static void propertiesReadString() {

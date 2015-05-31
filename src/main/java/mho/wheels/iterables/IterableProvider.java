@@ -7,16 +7,18 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static mho.wheels.iterables.IterableUtils.filter;
-import static mho.wheels.iterables.IterableUtils.map;
+import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.range;
 
 /**
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.
@@ -152,65 +154,10 @@ public abstract strictfp class IterableProvider {
     ) {
         return pairs(as, bs);
     }
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                (BigInteger i) -> {
-                    List<BigInteger> list = MathUtils.demux(2, i);
-                    return new Pair<>(list.get(0), list.get(1));
-                }
-        );
-    }
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsLogarithmic(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                MathUtils::logarithmicDemux
-        );
-    }
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquareRoot(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                MathUtils::squareRootDemux
-        );
-    }
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsExponential(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsSquare(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return Combinatorics.dependentPairs(
-                xs,
-                f,
-                i -> {
-                    Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(i);
-                    return new Pair<>(p.b, p.a);
-                }
-        );
-    }
+    );
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
     public abstract @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
@@ -256,6 +203,18 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
+    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
+        return map(p -> toList(insert(p.a, p.b, element)), dependentPairs(lists(xs), list -> range(0, list.size())));
+    }
+    public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
+            @NotNull Iterable<Iterable<T>> subsequences,
+            @NotNull Iterable<T> xs
+    ) {
+        return map(
+                p -> toList(concat(Arrays.asList(take(p.a.b, p.a.a), p.b, drop(p.a.b, p.a.a)))),
+                pairsSquareRootOrder(dependentPairs(lists(xs), list -> range(0, list.size())), subsequences)
+        );
+    }
 
     public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
     public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
@@ -263,6 +222,29 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<String> stringsAtLeast(int size);
     public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
     public abstract @NotNull Iterable<String> strings();
+    public @NotNull Iterable<String> stringsWithChar(char c, Iterable<Character> cs) {
+        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(cs), s -> range(0, s.length())));
+    }
+    public @NotNull Iterable<String> stringsWithChar(char c) {
+        return stringsWithChar(c, characters());
+    }
+    public @NotNull Iterable<String> stringsWithSubstrings(
+            @NotNull Iterable<String> substrings,
+            @NotNull Iterable<Character> cs
+    ) {
+        return map(
+                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
+                pairsSquareRootOrder(dependentPairs(strings(cs), s -> range(0, s.length())), substrings)
+        );
+    }
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
+        return stringsWithSubstrings(substrings, characters());
+    }
+
+    public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
+    public @NotNull Iterable<String> permutations(@NotNull String s) {
+        return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
+    }
 
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
         return map(

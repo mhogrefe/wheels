@@ -1466,6 +1466,7 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaFloat(Arrays.asList(3.1f, 4.1f, 5.9f, 2.3f)), "[1.0, 1.8000002, -3.6000001]");
         aeqit(deltaFloat(Arrays.asList(-Float.MAX_VALUE, Float.MAX_VALUE)), "[Infinity]");
         aeqit(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
+        aeqit(deltaFloat(Arrays.asList(0.0f, -0.0f)), "[0.0]");
         aeqit(deltaFloat(Arrays.asList(3.0f)), "[]");
         try {
             deltaFloat(new ArrayList<>());
@@ -1483,6 +1484,7 @@ public strictfp class IterableUtilsTest {
                 "[0.9999999999999996, 1.8000000000000007, -3.6000000000000005]");
         aeqit(deltaDouble(Arrays.asList(-Double.MAX_VALUE, Double.MAX_VALUE)), "[Infinity]");
         aeqit(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
+        aeqit(deltaDouble(Arrays.asList(0.0, -0.0)), "[0.0]");
         aeqit(deltaDouble(Arrays.asList(3.0)), "[]");
         try {
             deltaDouble(new ArrayList<>());

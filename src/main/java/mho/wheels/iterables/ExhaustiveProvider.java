@@ -10,10 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -1317,6 +1315,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return Combinatorics.pairsSquareRootOrder(as, bs);
     }
 
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
+    }
+
     /**
      * See {@link mho.wheels.math.Combinatorics#pairs(Iterable, Iterable)}
      *
@@ -1550,6 +1555,59 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
+    }
+
+    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
+        return () -> new Iterator<List<Integer>>() {
+            private List<Integer> indices = start;
+
+            @Override
+            public boolean hasNext() {
+                return indices != null;
+            }
+
+            @Override
+            public List<Integer> next() {
+                List<Integer> oldIndices = indices;
+                if (weaklyDecreasing(indices)) {
+                    indices = null;
+                } else {
+                    int i;
+                    int previous = -1;
+                    for (i = indices.size() - 1; i >= 0; i--) {
+                        if (indices.get(i) < previous) break;
+                        previous = indices.get(i);
+                    }
+                    i++;
+                    Iterable<Integer> prefix = take(i - 1, indices);
+                    Iterable<Integer> suffix = drop(i - 1, indices);
+                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
+                    indices = toList(
+                            concat(
+                                    (Iterable<Iterable<Integer>>) Arrays.asList(
+                                            prefix,
+                                            Collections.singletonList(pivot),
+                                            sort(delete(pivot, suffix))
+                                    )
+                            )
+                    );
+                }
+                return oldIndices;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+        List<T> nub = toList(nub(xs));
+        Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
+        List<Integer> startingIndices = sort(map(indexMap::get, xs));
+        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
 
     /**

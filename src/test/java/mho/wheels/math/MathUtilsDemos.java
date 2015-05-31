@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Enum.valueOf;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
 import static mho.wheels.math.MathUtils.demux;
@@ -433,39 +434,9 @@ public class MathUtilsDemos {
 
     private static void demoFromStringBase_int_String() {
         initialize();
-        Iterable<Integer> bases;
-        if (P instanceof ExhaustiveProvider) {
-            bases = P.rangeUp(2);
-        } else {
-            bases = map(i -> i + 2, P.withScale(20).naturalIntegersGeometric());
-        }
-        Iterable<Pair<Integer, String>> ps = P.dependentPairs(
-                bases,
-                b -> {
-                    String chars = "-";
-                    if (b < 36) {
-                        chars += charsToString(range('0', MathUtils.toDigit(b - 1)));
-                    } else {
-                        chars += "()0123456789";
-                    }
-                    Iterable<Character> unfiltered;
-                    if (P instanceof ExhaustiveProvider) {
-                        unfiltered = fromString(chars);
-                    } else {
-                        unfiltered = ((RandomProvider) P).uniformSample(chars);
-                    }
-                    return filter(
-                            s -> {
-                                try {
-                                    fromStringBase(b, s);
-                                    return true;
-                                } catch (IllegalArgumentException e) {
-                                    return false;
-                                }
-                            },
-                            P.strings(unfiltered)
-                    );
-                }
+        Iterable<Pair<Integer, String>> ps = map(
+                p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
+                P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
         );
         for (Pair<Integer, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
@@ -474,39 +445,9 @@ public class MathUtilsDemos {
 
     private static void demoFromStringBase_BigInteger_String() {
         initialize();
-        Iterable<BigInteger> bases;
-        if (P instanceof ExhaustiveProvider) {
-            bases = P.rangeUp(BigInteger.valueOf(2));
-        } else {
-            bases = map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric());
-        }
-        Iterable<Pair<BigInteger, String>> ps = P.dependentPairs(
-                bases,
-                b -> {
-                    String chars = "-";
-                    if (Ordering.le(b, BigInteger.valueOf(36))) {
-                        chars += charsToString(range('0', MathUtils.toDigit(b.intValueExact() - 1)));
-                    } else {
-                        chars += "()0123456789";
-                    }
-                    Iterable<Character> unfiltered;
-                    if (P instanceof ExhaustiveProvider) {
-                        unfiltered = fromString(chars);
-                    } else {
-                        unfiltered = ((RandomProvider) P).uniformSample(chars);
-                    }
-                    return filter(
-                            s -> {
-                                try {
-                                    fromStringBase(b, s);
-                                    return true;
-                                } catch (IllegalArgumentException e) {
-                                    return false;
-                                }
-                            },
-                            P.strings(unfiltered)
-                    );
-                }
+        Iterable<Pair<BigInteger, String>> ps = map(
+                p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
+                P.pairs(P.rangeUp(BigInteger.valueOf(2)), P.bigIntegers())
         );
         for (Pair<BigInteger, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));

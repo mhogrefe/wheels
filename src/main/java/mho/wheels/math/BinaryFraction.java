@@ -137,8 +137,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * <ul>
      *  <li>{@code mantissa} cannot be null.</li>
      *  <li>{@code exponent} may be any {@code int}.</li>
-     *  <li>The sum of {@code exponent} and the number of trailing zero bits of {@code mantissa} must be less than
-     *  2<pow>31</pow>.</li>
+     *  <li>If {@code mantissa} is nonzero, the sum of {@code exponent} and the number of trailing zero bits of
+     *  {@code mantissa} must be less than 2<pow>31</pow>.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -147,9 +147,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @return the {@code BinaryFraction} corresponding to {@code mantissa}×2<sup>{@code exponent}</sup>
      */
     public static @NotNull BinaryFraction of(@NotNull BigInteger mantissa, int exponent) {
-        if (mantissa.equals(BigInteger.ZERO)) {
-            return new BinaryFraction(BigInteger.ZERO, 0);
-        }
+        if (mantissa.equals(BigInteger.ZERO)) return ZERO;
         int trailingZeroes = mantissa.getLowestSetBit();
         if ((long) exponent + trailingZeroes >= Integer.MAX_VALUE) {
             throw new IllegalArgumentException("The sum of exponent and the number of trailing zero bits of mantissa" +

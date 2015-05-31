@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.MathUtils;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -3671,13 +3672,13 @@ public final strictfp class IterableUtils {
     }
 
     /**
-     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow or may occur. If {@code xs}
+     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow may occur. If {@code xs}
      * contains a single {@code Float}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
      * support removal.
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result is finite and does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls or negative zeros.</li>
      * </ul>
      *
      * Length is |{@code xs}|–1
@@ -3690,7 +3691,7 @@ public final strictfp class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith((x, y) -> y - x, xs);
+        return map(FloatingPointUtils::absNegativeZeros, adjacentPairsWith((x, y) -> y - x, xs));
     }
 
     /**
@@ -3699,8 +3700,8 @@ public final strictfp class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result is finite and does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls or negative zeros.</li>
+     *  <li>The result is finite and does not contain any nulls or negative zeros.</li>
      * </ul>
      *
      * Length is |{@code xs}|–1
@@ -3713,7 +3714,7 @@ public final strictfp class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith((x, y) -> y - x, xs);
+        return map(FloatingPointUtils::absNegativeZeros, adjacentPairsWith((x, y) -> y - x, xs));
     }
 
     /**

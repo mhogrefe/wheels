@@ -4,8 +4,6 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 
-import java.util.Random;
-
 import static mho.wheels.iterables.IterableUtils.fromString;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.Readers.*;
