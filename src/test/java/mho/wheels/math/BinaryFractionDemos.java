@@ -2,15 +2,14 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 
 import java.math.BigInteger;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.math.BinaryFraction.of;
 
 @SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class BinaryFractionDemos {

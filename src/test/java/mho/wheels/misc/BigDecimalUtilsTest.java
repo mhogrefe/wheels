@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import static mho.wheels.misc.BigDecimalUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.fail;
 
 public class BigDecimalUtilsTest {

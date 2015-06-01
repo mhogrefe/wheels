@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.take;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 @SuppressWarnings("ConstantConditions")
 public class FloatingPointUtilsProperties {

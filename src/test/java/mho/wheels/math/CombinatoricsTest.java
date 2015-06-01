@@ -12,7 +12,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.Combinatorics.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.fail;
 
 public strictfp class CombinatoricsTest {

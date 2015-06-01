@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.math.BinaryFraction.of;
 import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 

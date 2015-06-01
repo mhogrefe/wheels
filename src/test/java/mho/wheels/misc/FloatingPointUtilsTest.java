@@ -3,13 +3,10 @@ package mho.wheels.misc;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import java.math.BigInteger;
-
-import static mho.wheels.misc.FloatingPointUtils.*;
-import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static mho.wheels.misc.FloatingPointUtils.predecessor;
+import static mho.wheels.misc.FloatingPointUtils.successor;
+import static mho.wheels.testing.Testing.aeq;
+import static org.junit.Assert.*;
 
 public strictfp class FloatingPointUtilsTest {
     @Test

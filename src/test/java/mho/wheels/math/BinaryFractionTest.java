@@ -10,7 +10,6 @@ import java.util.List;
 
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.aeq;
-import static mho.wheels.testing.Testing.fail;
 import static mho.wheels.testing.Testing.testEqualsHelper;
 
 public class BinaryFractionTest {

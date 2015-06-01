@@ -9,8 +9,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public strictfp class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;

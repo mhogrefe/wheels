@@ -1,8 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.math.Combinatorics;
-import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -18,7 +16,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.range;
 
 /**
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.

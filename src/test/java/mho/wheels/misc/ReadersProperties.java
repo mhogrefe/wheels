@@ -12,10 +12,10 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.Readers.*;
-import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.*;
+import static mho.wheels.testing.Testing.propertiesFindInHelper;
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings("ConstantConditions")
 public strictfp class ReadersProperties {
