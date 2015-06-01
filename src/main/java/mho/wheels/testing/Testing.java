@@ -302,14 +302,14 @@ public strictfp class Testing {
     }
 
     public static <T> void propertiesEqualsHelper(
+            int limit,
             @NotNull Iterable<T> xs1,
             @NotNull Iterable<T> xs2,
             @NotNull Iterable<T> xs3,
-            @NotNull BiPredicate<T, T> equals,
-            int limit
+            @NotNull BiPredicate<T, T> equals
     ) {
         for (Triple<T, T, T> t : take(limit, zip3(xs1, xs2, xs3))) {
-            //noinspection ConstantConditions
+            //noinspection ConstantConditions,ObjectEqualsNull
             assertFalse(t, t.a.equals(null));
             assertTrue(t, t.a.equals(t.b));
             //noinspection ConstantConditions
@@ -325,7 +325,7 @@ public strictfp class Testing {
         }
     }
 
-    public static <T> void propertiesHashCodeHelper(@NotNull Iterable<T> xs1, @NotNull Iterable<T> xs2, int limit) {
+    public static <T> void propertiesHashCodeHelper(int limit, @NotNull Iterable<T> xs1, @NotNull Iterable<T> xs2) {
         for (Pair<T, T> p : take(limit, zip(xs1, xs2))) {
             //noinspection ConstantConditions
             assertTrue(p, p.a.equals(p.b));

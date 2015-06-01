@@ -1981,7 +1981,7 @@ public class RandomProviderProperties {
         } else {
             P2 = ((RandomProvider) P).deepCopy();
         }
-        propertiesHashCodeHelper(P.randomProviders(), P2.randomProviders(), LIMIT);
+        propertiesHashCodeHelper(LIMIT, P.randomProviders(), P2.randomProviders());
     }
 
     private static void propertiesToString() {
