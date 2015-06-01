@@ -48,6 +48,7 @@ public class BinaryFractionProperties {
             propertiesOf_float();
             propertiesOf_double();
             propertiesBigDecimalValue();
+            propertiesIsInteger();
         }
         System.out.println("Done");
     }
@@ -156,5 +157,13 @@ public class BinaryFractionProperties {
             //todo signum
             assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
         }
+    }
+
+    private static void propertiesIsInteger() {
+        initialize("isInteger()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            bf.isInteger();
+        }
+        //todo floor
     }
 }
