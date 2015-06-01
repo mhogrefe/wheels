@@ -79,6 +79,7 @@ public class BinaryFractionProperties {
             BinaryFraction bf = of(p.a, p.b);
             bf.validate();
         }
+        P.reset();
 
         Iterable<Pair<BigInteger, Integer>> psFail = P.dependentPairs(
                 map(i -> i.shiftLeft(1), P.nonzeroBigIntegers()),
@@ -99,6 +100,7 @@ public class BinaryFractionProperties {
             bf.validate();
             assertTrue(i, bf.isInteger());
         }
+        P.reset();
 
         for (BigInteger i : take(LIMIT, map(j -> j.shiftLeft(1).add(BigInteger.ONE), P.bigIntegers()))) {
             assertEquals(i.toString(), of(i).getMantissa(), i);
@@ -114,6 +116,7 @@ public class BinaryFractionProperties {
             assertTrue(i, Ordering.ge(bf, of(BigInteger.ONE.shiftLeft(31).negate())));
             assertTrue(i, Ordering.lt(bf, of(BigInteger.ONE.shiftLeft(31))));
         }
+        P.reset();
 
         for (int i : take(LIMIT, map(j -> 2 * j + 1, P.integers()))) {
             assertEquals(i, of(i).getMantissa(), BigInteger.valueOf(i));
@@ -126,6 +129,7 @@ public class BinaryFractionProperties {
             Optional<BinaryFraction> obf = of(f);
             assertEquals(f, Float.isFinite(f) && !Float.isNaN(f), obf.isPresent());
         }
+        P.reset();
 
         for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !Float.isNaN(g), P.floats()))) {
             BinaryFraction bf = of(f).get();
@@ -141,6 +145,7 @@ public class BinaryFractionProperties {
             Optional<BinaryFraction> obf = of(d);
             assertEquals(d, Double.isFinite(d) && !Double.isNaN(d), obf.isPresent());
         }
+        P.reset();
 
         for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !Double.isNaN(e), P.doubles()))) {
             BinaryFraction bf = of(d).get();

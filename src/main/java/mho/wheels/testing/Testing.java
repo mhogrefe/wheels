@@ -278,11 +278,15 @@ public strictfp class Testing {
             //noinspection ObjectEqualsNull
             assertFalse(x, x.equals(null));
         }
+
         for (int i = 0; i < xs.size(); i++) {
             for (int j = 0; j < xs.size(); j++) {
                 T x = xs.get(i);
                 T y = ys.get(j);
                 assertEquals(new Pair<>(x, y), i == j, x.equals(y));
+                if (i == j) {
+                    assertEquals(x, x.hashCode(), y.hashCode());
+                }
             }
         }
     }

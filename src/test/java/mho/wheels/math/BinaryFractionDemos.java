@@ -3,6 +3,7 @@ package mho.wheels.math;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 
 import java.math.BigInteger;
@@ -91,6 +92,35 @@ public class BinaryFractionDemos {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println(bf + " is " + (bf.isInteger() ? "" : "not ") + "an integer");
+        }
+    }
+
+    private static void demoEquals_BinaryFraction() {
+        initialize();
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            System.out.println(p.a + (p.a.equals(p.b) ? " = " : " ≠ ") + p.b);
+        }
+    }
+
+    private static void demoEquals_null() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            //noinspection ObjectEqualsNull
+            System.out.println(bf + (bf.equals(null) ? " = " : " ≠ ") + null);
+        }
+    }
+
+    private static void demoHashCode() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("hashCode(" + bf + ") = " + bf.hashCode());
+        }
+    }
+
+    private static void demoCompareTo() {
+        initialize();
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            System.out.println(p.a + " " + Ordering.compare(p.a, p.b).toChar() + " " + p.b);
         }
     }
 
