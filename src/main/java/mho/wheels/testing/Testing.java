@@ -86,7 +86,7 @@ public strictfp class Testing {
 
     public static void assertTrue(Object message, boolean condition) {
         if (!condition) {
-            fail(message.toString());
+            fail(message);
         }
     }
 
@@ -123,7 +123,7 @@ public strictfp class Testing {
                 String cleanMessage = message == null ? "" : message.toString();
                 throw new ComparisonFailure(cleanMessage, (String) expected, (String) actual);
             } else {
-                failNotEquals(message.toString(), expected, actual);
+                failNotEquals(message, expected, actual);
             }
         }
     }
@@ -227,61 +227,61 @@ public strictfp class Testing {
     }
 
     public static <T> void symmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        assertEquals(p.toString(), relation.test(p.a, p.b), relation.test(p.b, p.a));
+        assertEquals(p, relation.test(p.a, p.b), relation.test(p.b, p.a));
     }
 
     public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        assertNotEquals(p.toString(), relation.test(p.a, p.b), relation.test(p.b, p.a));
+        assertNotEquals(p, relation.test(p.a, p.b), relation.test(p.b, p.a));
     }
 
     public static <T> void transitive(@NotNull BiPredicate<T, T> relation, @NotNull Triple<T, T, T> t) {
         if (relation.test(t.a, t.b) && relation.test(t.b, t.c)) {
-            assertTrue(t.toString(), relation.test(t.a, t.c));
+            assertTrue(t, relation.test(t.a, t.c));
         }
     }
 
     public static <T> void fixedPoint(@NotNull Function<T, T> f, @NotNull T x) {
-        assertEquals(x.toString(), f.apply(x), x);
+        assertEquals(x, f.apply(x), x);
     }
 
     public static <T> void idempotent(@NotNull Function<T, T> f, @NotNull T x) {
         T y = f.apply(x);
-        assertEquals(x.toString(), f.apply(y), y);
+        assertEquals(x, f.apply(y), y);
     }
 
     public static <T> void isInvolution(@NotNull Function<T, T> f, @NotNull T x) {
-        assertEquals(x.toString(), f.apply(f.apply(x)), x);
+        assertEquals(x, f.apply(f.apply(x)), x);
     }
 
     public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @NotNull A x) {
-        assertEquals(x.toString(), g.apply(f.apply(x)), x);
+        assertEquals(x, g.apply(f.apply(x)), x);
     }
 
     public static <A, B> void commutative(@NotNull BiFunction<A, A, B> f, @NotNull Pair<A, A> p) {
-        assertEquals(p.toString(), f.apply(p.a, p.b), f.apply(p.b, p.a));
+        assertEquals(p, f.apply(p.a, p.b), f.apply(p.b, p.a));
     }
 
     public static <A, B> void anticommutative(
             @NotNull BiFunction<A, A, B> f,
             @NotNull Function<B, B> negate,
             @NotNull Pair<A, A> p) {
-        assertEquals(p.toString(), f.apply(p.a, p.b), negate.apply(f.apply(p.b, p.a)));
+        assertEquals(p, f.apply(p.a, p.b), negate.apply(f.apply(p.b, p.a)));
     }
 
     public static <T> void associative(@NotNull BiFunction<T, T, T> f, @NotNull Triple<T, T, T> t) {
-        assertEquals(t.toString(), f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
+        assertEquals(t, f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
     }
 
     public static <T> void testEqualsHelper(@NotNull List<T> xs, @NotNull List<T> ys) {
         for (T x : xs) {
             //noinspection ObjectEqualsNull
-            assertFalse(x.toString(), x.equals(null));
+            assertFalse(x, x.equals(null));
         }
         for (int i = 0; i < xs.size(); i++) {
             for (int j = 0; j < xs.size(); j++) {
                 T x = xs.get(i);
                 T y = ys.get(j);
-                assertEquals(new Pair<>(x, y).toString(), i == j, x.equals(y));
+                assertEquals(new Pair<>(x, y), i == j, x.equals(y));
             }
         }
     }
@@ -294,10 +294,11 @@ public strictfp class Testing {
             int limit
     ) {
         for (Triple<T, T, T> t : take(limit, zip3(xs1, xs2, xs3))) {
-            //noinspection ConstantConditions,ObjectEqualsNull
-            assertFalse(t.toString(), t.a.equals(null));
-            assertTrue(t.toString(), t.a.equals(t.b));
-            assertTrue(t.toString(), t.b.equals(t.c));
+            //noinspection ConstantConditions
+            assertFalse(t, t.a.equals(null));
+            assertTrue(t, t.a.equals(t.b));
+            //noinspection ConstantConditions
+            assertTrue(t, t.b.equals(t.c));
         }
 
         for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(xs1, xs2))) {
@@ -312,8 +313,9 @@ public strictfp class Testing {
     public static <T> void propertiesHashCodeHelper(@NotNull Iterable<T> xs1, @NotNull Iterable<T> xs2, int limit) {
         for (Pair<T, T> p : take(limit, zip(xs1, xs2))) {
             //noinspection ConstantConditions
-            assertTrue(p.toString(), p.a.equals(p.b));
-            assertEquals(p.toString(), p.a.hashCode(), p.b.hashCode());
+            assertTrue(p, p.a.equals(p.b));
+            //noinspection ConstantConditions
+            assertEquals(p, p.a.hashCode(), p.b.hashCode());
         }
     }
 
