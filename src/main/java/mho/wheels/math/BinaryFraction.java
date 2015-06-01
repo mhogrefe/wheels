@@ -299,6 +299,33 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
+     * Compares {@code this} to {@code that}, returning 1, –1, or 0 if the answer is "greater than", "less than", or
+     * "equal to", respectively.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code that} cannot be null.</li>
+     *  <li>The result may be –1, 0, or 1.</li>
+     * </ul>
+     *
+     * @param that The {@code BinaryFraction} to be compared with {@code this}
+     * @return {@code this} compared to {@code that}
+     */
+    @Override
+    public int compareTo(@NotNull BinaryFraction that) {
+        if (this == that) return 0;
+        Ordering signumOrdering = Ordering.compare(mantissa.signum(), that.mantissa.signum());
+        if (signumOrdering != Ordering.EQ) return signumOrdering.toInt();
+        switch (Ordering.compare(exponent, that.exponent)) {
+            case LT: return mantissa.compareTo(that.mantissa.shiftLeft(that.exponent - exponent));
+            case GT: return mantissa.shiftLeft(exponent - that.exponent).compareTo(that.mantissa);
+            case EQ:
+                return mantissa.compareTo(that.mantissa);
+        }
+        throw new IllegalStateException("unreachable");
+    }
+
+    /**
      * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
@@ -331,33 +358,6 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     @Override
     public int hashCode() {
         return 31 * mantissa.hashCode() + exponent;
-    }
-
-    /**
-     * Compares {@code this} to {@code that}, returning 1, –1, or 0 if the answer is "greater than", "less than", or
-     * "equal to", respectively.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
-     *  <li>{@code that} cannot be null.</li>
-     *  <li>The result may be –1, 0, or 1.</li>
-     * </ul>
-     *
-     * @param that The {@code BinaryFraction} to be compared with {@code this}
-     * @return {@code this} compared to {@code that}
-     */
-    @Override
-    public int compareTo(@NotNull BinaryFraction that) {
-        if (this == that) return 0;
-        Ordering signumOrdering = Ordering.compare(mantissa.signum(), that.mantissa.signum());
-        if (signumOrdering != Ordering.EQ) return signumOrdering.toInt();
-        switch (Ordering.compare(exponent, that.exponent)) {
-            case LT: return mantissa.compareTo(that.mantissa.shiftLeft(that.exponent - exponent));
-            case GT: return mantissa.shiftLeft(exponent - that.exponent).compareTo(that.mantissa);
-            case EQ:
-                return mantissa.compareTo(that.mantissa);
-        }
-        throw new IllegalStateException("unreachable");
     }
 
     public static @NotNull Optional<BinaryFraction> read(@NotNull String s) {

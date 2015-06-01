@@ -272,6 +272,11 @@ public class BinaryFractionTest {
     }
 
     @Test
+    public void testCompareTo() {
+        testCompareToHelper(readBinaryFractionList("[-5 << 20, -11, -1, -5 >> 20, 0, 5 >> 20, 1, 11, 5 << 20]"));
+    }
+
+    @Test
     public void testEquals() {
         testEqualsHelper(
                 readBinaryFractionList("[0, 1, 11, 5 << 20, 5 >> 20, -1, -11, -5 << 20, -5 >> 20]"),
@@ -294,11 +299,6 @@ public class BinaryFractionTest {
         hashCode_helper("-11", -341);
         hashCode_helper("-5 << 20", -135);
         hashCode_helper("-5 >> 20", -175);
-    }
-
-    @Test
-    public void testCompareTo() {
-        testCompareToHelper(readBinaryFractionList("[-5 << 20, -11, -1, -5 >> 20, 0, 5 >> 20, 1, 11, 5 << 20]"));
     }
 
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {

@@ -95,6 +95,13 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoCompareTo() {
+        initialize();
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            System.out.println(p.a + " " + Ordering.compare(p.a, p.b).toChar() + " " + p.b);
+        }
+    }
+
     private static void demoEquals_BinaryFraction() {
         initialize();
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
@@ -114,13 +121,6 @@ public class BinaryFractionDemos {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             System.out.println("hashCode(" + bf + ") = " + bf.hashCode());
-        }
-    }
-
-    private static void demoCompareTo() {
-        initialize();
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
-            System.out.println(p.a + " " + Ordering.compare(p.a, p.b).toChar() + " " + p.b);
         }
     }
 
