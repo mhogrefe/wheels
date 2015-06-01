@@ -297,6 +297,18 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return exponent >= 0;
     }
 
+    /**
+     * Determines whether {@code this} is equal to {@code that}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code that} may be any {@code Object}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param that The {@code Object} to be compared with {@code this}
+     * @return {@code this}={@code that}
+     */
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
@@ -305,11 +317,34 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return exponent == bf.exponent && mantissa.equals(bf.mantissa);
     }
 
+    /**
+     * Calculates the hash code of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>(conjecture) The result may be any {@code int}.</li>
+     * </ul>
+     *
+     * @return {@code this}'s hash code.
+     */
     @Override
     public int hashCode() {
         return 31 * mantissa.hashCode() + exponent;
     }
 
+    /**
+     * Compares {@code this} to {@code that}, returning 1, –1, or 0 if the answer is "greater than", "less than", or
+     * "equal to", respectively.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code that} cannot be null.</li>
+     *  <li>The result may be –1, 0, or 1.</li>
+     * </ul>
+     *
+     * @param that The {@code BinaryFraction} to be compared with {@code this}
+     * @return {@code this} compared to {@code that}
+     */
     @Override
     public int compareTo(@NotNull BinaryFraction that) {
         if (this == that) return 0;
