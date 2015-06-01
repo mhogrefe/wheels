@@ -155,46 +155,6 @@ public final strictfp class FloatingPointUtils {
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
     }
 
-    public static @NotNull Optional<Pair<Integer, Integer>> toMantissaAndExponent(float f) {
-        if (f == 0.0f) return Optional.of(new Pair<>(0, 0));
-        if (Float.isInfinite(f) || Float.isNaN(f)) return Optional.empty();
-        boolean isPositive = f > 0.0f;
-        if (!isPositive) f = -f;
-        int bits = Float.floatToIntBits(f);
-        int exponent = bits >> 23 & ((1 << 8) - 1);
-        int mantissa = bits & ((1 << 23) - 1);
-        if (exponent == 0) {
-            exponent = -149;
-        } else {
-            mantissa += 1 << 23;
-            exponent -= 150;
-        }
-        int lowestOnePosition = Integer.numberOfTrailingZeros(mantissa);
-        mantissa >>= lowestOnePosition;
-        exponent += lowestOnePosition;
-        return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
-    }
-
-    public static @NotNull Optional<Pair<Long, Integer>> toMantissaAndExponent(double d) {
-        if (d == 0.0) return Optional.of(new Pair<>(0L, 0));
-        if (Double.isInfinite(d) || Double.isNaN(d)) return Optional.empty();
-        boolean isPositive = d > 0.0;
-        if (!isPositive) d = -d;
-        long bits = Double.doubleToLongBits(d);
-        int exponent = (int) (bits >> 52 & ((1 << 11) - 1));
-        long mantissa = bits & ((1L << 52) - 1);
-        if (exponent == 0) {
-            exponent = -1074;
-        } else {
-            mantissa += 1L << 52;
-            exponent -= 1075;
-        }
-        int lowestOnePosition = Long.numberOfTrailingZeros(mantissa);
-        mantissa >>= lowestOnePosition;
-        exponent += lowestOnePosition;
-        return Optional.of(new Pair<>(isPositive ? mantissa : -mantissa, exponent));
-    }
-
     private static @NotNull Pair<BigInteger, Integer> shift(@NotNull BigInteger mantissa, int exponent, int bits) {
         if (mantissa.equals(BigInteger.ZERO)) {
             return new Pair<>(BigInteger.ZERO, 0);

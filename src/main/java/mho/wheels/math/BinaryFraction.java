@@ -181,7 +181,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * <ul>
      *  <li>{@code n} cannot be null.</li>
      *  <li>The result is an integral {@code BinaryFraction} x satisfying
-     *  –2<sup>63</sup>≤x{@literal <}2<sup>63</sup>.</li>
+     *  –2<sup>31</sup>≤x{@literal <}2<sup>31</sup>.</li>
      * </ul>
      *
      * @param n the {@code int}
@@ -202,8 +202,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      *   The result is empty or a {@code BinaryFraction} that may be exactly represented as a {@code float}. Here are
      *   some, but not all, of the conditions on the result:
      *   <ul>
-     *    <li>The absolute value of {@code exponent} less than or equal to 2<sup>149</sup>.</li>
-     *    <li>The absolute value of {@code mantissa} is less than or equal to 2<sup>128</sup>–2<sup>104</sup>.</li>
+     *    <li>The absolute value of {@code exponent} less than or equal to 149.</li>
+     *    <li>The absolute value of {@code mantissa} is less than to 2<sup>24</sup>.</li>
      *   </ul>
      *  </li>
      * </ul>
@@ -240,8 +240,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      *   The result is empty or a {@code BigInteger} that may be exactly represented as a {@code double}. Here are
      *   some, but not all, of the conditions on the result:
      *   <ul>
-     *    <li>The absolute value of {@code exponent} less than or equal to 2<sup>1074</sup>.</li>
-     *    <li>The absolute value of {@code mantissa} is less than or equal to 2<sup>1024</sup>–2<sup>971</sup>.</li>
+     *    <li>The absolute value of {@code exponent} less than or equal to 1074.</li>
+     *    <li>The absolute value of {@code mantissa} is less than to 2<sup>53</sup>.</li>
      *   </ul>
      *  </li>
      * </ul>
@@ -280,6 +280,20 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         }
     }
 
+    /**
+     * Determines whether {@code this} is integral.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @return whether this is an integer
+     */
+    public boolean isInteger() {
+        return exponent >= 0;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) return true;
@@ -299,9 +313,10 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         Ordering signumOrdering = Ordering.compare(mantissa.signum(), that.mantissa.signum());
         if (signumOrdering != Ordering.EQ) return signumOrdering.toInt();
         switch (Ordering.compare(exponent, that.exponent)) {
-            case LT: return mantissa.shiftLeft(that.exponent - exponent).compareTo(that.mantissa);
-            case GT: return mantissa.compareTo(that.mantissa.shiftLeft(exponent - that.exponent));
-            case EQ: return mantissa.compareTo(that.mantissa);
+            case LT: return mantissa.compareTo(that.mantissa.shiftLeft(that.exponent - exponent));
+            case GT: return mantissa.shiftLeft(exponent - that.exponent).compareTo(that.mantissa);
+            case EQ:
+                return mantissa.compareTo(that.mantissa);
         }
         throw new IllegalStateException("unreachable");
     }

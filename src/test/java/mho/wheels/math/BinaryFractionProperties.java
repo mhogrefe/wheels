@@ -3,6 +3,7 @@ package mho.wheels.math;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
@@ -10,9 +11,11 @@ import org.junit.Test;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("ConstantConditions")
@@ -38,6 +41,10 @@ public class BinaryFractionProperties {
             propertiesGetMantissa();
             propertiesGetExponent();
             propertiesOf_BigInteger_int();
+            propertiesOf_BigInteger();
+            propertiesOf_int();
+            propertiesOf_float();
+            propertiesOf_double();
         }
         System.out.println("Done");
     }
@@ -78,6 +85,64 @@ public class BinaryFractionProperties {
                 of(p.a, p.b);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesOf_BigInteger() {
+        initialize("of(BigInteger)");
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            BinaryFraction bf = of(i);
+            bf.validate();
+            assertTrue(i, bf.isInteger());
+        }
+
+        for (BigInteger i : take(LIMIT, map(j -> j.shiftLeft(1).add(BigInteger.ONE), P.bigIntegers()))) {
+            assertEquals(i.toString(), of(i).getMantissa(), i);
+        }
+    }
+
+    private static void propertiesOf_int() {
+        initialize("of(int)");
+        for (int i : take(LIMIT, P.integers())) {
+            BinaryFraction bf = of(i);
+            bf.validate();
+            assertTrue(i, bf.isInteger());
+            assertTrue(i, Ordering.ge(bf, of(BigInteger.ONE.shiftLeft(31).negate())));
+            assertTrue(i, Ordering.lt(bf, of(BigInteger.ONE.shiftLeft(31))));
+        }
+
+        for (int i : take(LIMIT, map(j -> 2 * j + 1, P.integers()))) {
+            assertEquals(i, of(i).getMantissa(), BigInteger.valueOf(i));
+        }
+    }
+
+    private static void propertiesOf_float() {
+        initialize("of(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            Optional<BinaryFraction> obf = of(f);
+            assertEquals(f, Float.isFinite(f) && !Float.isNaN(f), obf.isPresent());
+        }
+
+        for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !Float.isNaN(g), P.floats()))) {
+            BinaryFraction bf = of(f).get();
+            bf.validate();
+            assertTrue(f, le(bf.getExponent(), 149));
+            assertTrue(f, le(bf.getMantissa(), BigInteger.ONE.shiftLeft(24)));
+        }
+    }
+
+    private static void propertiesOf_double() {
+        initialize("of(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            Optional<BinaryFraction> obf = of(d);
+            assertEquals(d, Double.isFinite(d) && !Double.isNaN(d), obf.isPresent());
+        }
+
+        for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !Double.isNaN(e), P.doubles()))) {
+            BinaryFraction bf = of(d).get();
+            bf.validate();
+            assertTrue(d, le(bf.getExponent(), 1074));
+            assertTrue(d, le(bf.getMantissa(), BigInteger.ONE.shiftLeft(53)));
         }
     }
 }
