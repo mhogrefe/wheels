@@ -81,6 +81,20 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoBigDecimalValue() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("bigDecimalValue(" + bf + ") = " + bf.bigDecimalValue());
+        }
+    }
+
+    private static void demoIsInteger() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println(bf + " is " + (bf.isInteger() ? "" : "not ") + "an integer");
+        }
+    }
+
     private static void demoToString() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
