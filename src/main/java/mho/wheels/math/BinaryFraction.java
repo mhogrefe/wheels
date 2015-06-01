@@ -267,6 +267,17 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
     }
 
+    /**
+     * Converts {@code this} to a {@code BigDecimal} with full precision.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is a {@code BigDecimal} with minimal scale. That is, the scale is the smallest non-negative n
+     *  such that {@code this}×10<sup>n</sup> is an integer.</li>
+     * </ul>
+     *
+     * @return the {@code BigDecimal} equal to {@code this}
+     */
     public @NotNull BigDecimal bigDecimalValue() {
         switch (Integer.signum(exponent)) {
             case 0:
