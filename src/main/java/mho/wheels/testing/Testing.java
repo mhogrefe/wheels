@@ -395,7 +395,7 @@ public strictfp class Testing {
         return nicePrint(fromString(s));
     }
 
-    public static <T> void foldProperties(
+    public static <T> void propertiesFoldHelper(
             int limit,
             @NotNull IterableProvider P,
             @NotNull Iterable<T> xs,
@@ -441,7 +441,7 @@ public strictfp class Testing {
         P.reset();
     }
 
-    public static <A, B> void deltaProperties(
+    public static <A, B> void propertiesDeltaHelper(
             int limit,
             @NotNull IterableProvider P,
             @NotNull Iterable<A> xs,
@@ -495,7 +495,7 @@ public strictfp class Testing {
         P.reset();
     }
 
-    public static <T> void findInProperties(
+    public static <T> void propertiesFindInHelper(
             int limit,
             @NotNull IterableProvider P,
             @NotNull Iterable<T> xs,
