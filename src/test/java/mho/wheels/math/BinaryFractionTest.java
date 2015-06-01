@@ -1,14 +1,17 @@
 package mho.wheels.math;
 
+import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.fail;
+import static mho.wheels.testing.Testing.testEqualsHelper;
 
 public class BinaryFractionTest {
     @Test
@@ -265,5 +268,17 @@ public class BinaryFractionTest {
         isInteger_helper("-11", true);
         isInteger_helper("-5 << 20", true);
         isInteger_helper("-5 >> 20", false);
+    }
+
+    @Test
+    public void testEquals() {
+        testEqualsHelper(
+                readBinaryFractionList("[0, 1, 11, 5 << 20, 5 >> 20, -1, -11, -5 << 20, -5 >> 20]"),
+                readBinaryFractionList("[0, 1, 11, 5 << 20, 5 >> 20, -1, -11, -5 << 20, -5 >> 20]")
+        );
+    }
+
+    private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
+        return Readers.readList(BinaryFraction::read).apply(s).get();
     }
 }
