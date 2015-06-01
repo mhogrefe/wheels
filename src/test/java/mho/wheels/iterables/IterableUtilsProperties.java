@@ -17,8 +17,6 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("ConstantConditions")
 public strictfp class IterableUtilsProperties {

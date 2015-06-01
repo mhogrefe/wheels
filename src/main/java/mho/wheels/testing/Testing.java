@@ -3,6 +3,7 @@ package mho.wheels.testing;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -282,6 +283,16 @@ public strictfp class Testing {
                 T x = xs.get(i);
                 T y = ys.get(j);
                 assertEquals(new Pair<>(x, y), i == j, x.equals(y));
+            }
+        }
+    }
+
+    public static <T extends Comparable<T>> void testCompareToHelper(@NotNull List<T> xs) {
+        for (int i = 0; i < xs.size(); i++) {
+            for (int j = 0; j < xs.size(); j++) {
+                T xsi = xs.get(i);
+                T xsj = xs.get(j);
+                assertEquals(new Pair<>(xsi, xsj), Ordering.compare(i, j), Ordering.compare(xsi, xsj));
             }
         }
     }
