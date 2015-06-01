@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
 import mho.wheels.ordering.Ordering;
@@ -279,16 +280,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @return the {@code BigDecimal} equal to {@code this}
      */
     public @NotNull BigDecimal bigDecimalValue() {
-        switch (Integer.signum(exponent)) {
-            case 0:
-                return new BigDecimal(mantissa);
-            case 1:
-                return new BigDecimal(mantissa).multiply(new BigDecimal(BigInteger.ONE.shiftLeft(exponent)));
-            case -1:
-                //noinspection BigDecimalMethodWithoutRoundingCalled
-                return new BigDecimal(mantissa).divide(new BigDecimal(BigInteger.ONE.shiftLeft(-exponent)));
-            default: throw new IllegalStateException("unreachable");
-        }
+        return BigDecimalUtils.shiftLeft(new BigDecimal(mantissa), exponent);
     }
 
     /**
