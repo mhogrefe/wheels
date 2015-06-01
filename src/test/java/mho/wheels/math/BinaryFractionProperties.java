@@ -3,11 +3,13 @@ package mho.wheels.math;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ public class BinaryFractionProperties {
             propertiesOf_int();
             propertiesOf_float();
             propertiesOf_double();
+            propertiesBigDecimalValue();
         }
         System.out.println("Done");
     }
@@ -143,6 +146,15 @@ public class BinaryFractionProperties {
             bf.validate();
             assertTrue(d, le(bf.getExponent(), 1074));
             assertTrue(d, le(bf.getMantissa(), BigInteger.ONE.shiftLeft(53)));
+        }
+    }
+
+    private static void propertiesBigDecimalValue() {
+        initialize("bigDecimalValue()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            BigDecimal bd = bf.bigDecimalValue();
+            //todo signum
+            assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
         }
     }
 }

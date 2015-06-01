@@ -73,4 +73,27 @@ public class BigDecimalUtils {
     public static @NotNull BigDecimal predecessor(@NotNull BigDecimal bd) {
         return new BigDecimal(bd.unscaledValue().subtract(BigInteger.ONE), bd.scale());
     }
+
+    public static @NotNull BigDecimal shiftLeft(@NotNull BigDecimal bd, int bits) {
+        switch (Integer.signum(bits)) {
+            case 0:  return bd;
+            case 1:  return bd.multiply(BigDecimal.valueOf(2).pow(bits));
+            case -1: return shiftRight(bd, -bits);
+            default: throw new IllegalStateException("unreachable");
+        }
+    }
+
+    public static @NotNull BigDecimal shiftRight(@NotNull BigDecimal bd, int bits) {
+        switch (Integer.signum(bits)) {
+            case 0:
+                return bd;
+            case 1:
+                //noinspection BigDecimalMethodWithoutRoundingCalled
+                return bd.divide(BigDecimal.valueOf(2).pow(bits));
+            case -1:
+                return shiftLeft(bd, -bits);
+            default:
+                throw new IllegalStateException("unreachable");
+        }
+    }
 }
