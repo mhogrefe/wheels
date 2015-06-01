@@ -76,10 +76,15 @@ public class BigDecimalUtils {
 
     public static @NotNull BigDecimal shiftLeft(@NotNull BigDecimal bd, int bits) {
         switch (Integer.signum(bits)) {
-            case 0:  return bd;
-            case 1:  return bd.multiply(BigDecimal.valueOf(2).pow(bits));
-            case -1: return shiftRight(bd, -bits);
-            default: throw new IllegalStateException("unreachable");
+            case 0:
+                return bd;
+            case 1:
+                return bd.multiply(BigDecimal.valueOf(2).pow(bits));
+            case -1:
+                //noinspection BigDecimalMethodWithoutRoundingCalled
+                return bd.divide(BigDecimal.valueOf(2).pow(-bits));
+            default:
+                throw new IllegalStateException("unreachable");
         }
     }
 
@@ -91,7 +96,7 @@ public class BigDecimalUtils {
                 //noinspection BigDecimalMethodWithoutRoundingCalled
                 return bd.divide(BigDecimal.valueOf(2).pow(bits));
             case -1:
-                return shiftLeft(bd, -bits);
+                return bd.multiply(BigDecimal.valueOf(2).pow(-bits));
             default:
                 throw new IllegalStateException("unreachable");
         }
