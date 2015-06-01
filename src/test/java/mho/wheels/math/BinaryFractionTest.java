@@ -244,4 +244,26 @@ public class BinaryFractionTest {
                 "868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026" +
                 "184124858368");
     }
+
+    private static void isInteger_helper(@NotNull String input, boolean output) {
+        BinaryFraction bf = read(input).get();
+        if (output) {
+            Assert.assertTrue(bf.isInteger());
+        } else {
+            Assert.assertFalse(bf.isInteger());
+        }
+    }
+
+    @Test
+    public void testIsInteger() {
+        isInteger_helper("0", true);
+        isInteger_helper("1", true);
+        isInteger_helper("11", true);
+        isInteger_helper("5 << 20", true);
+        isInteger_helper("5 >> 20", false);
+        isInteger_helper("-1", true);
+        isInteger_helper("-11", true);
+        isInteger_helper("-5 << 20", true);
+        isInteger_helper("-5 >> 20", false);
+    }
 }
