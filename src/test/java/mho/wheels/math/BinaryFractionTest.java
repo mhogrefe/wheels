@@ -278,6 +278,23 @@ public class BinaryFractionTest {
         );
     }
 
+    private static void hashCode_helper(@NotNull String input, int hashCode) {
+        aeq(read(input).get().hashCode(), hashCode);
+    }
+
+    @Test
+    public void testHashCode() {
+        hashCode_helper("0", 0);
+        hashCode_helper("1", 31);
+        hashCode_helper("11", 341);
+        hashCode_helper("5 << 20", 175);
+        hashCode_helper("5 >> 20", 135);
+        hashCode_helper("-1", -31);
+        hashCode_helper("-11", -341);
+        hashCode_helper("-5 << 20", -135);
+        hashCode_helper("-5 >> 20", -175);
+    }
+
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
         return Readers.readList(BinaryFraction::read).apply(s).get();
     }
