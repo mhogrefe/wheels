@@ -449,10 +449,10 @@ public strictfp class Testing {
             @NotNull BiFunction<A, A, B> f,
             @NotNull Function<List<A>, Iterable<B>> deltaF
     ) {
-        deltaPropertiesClean(limit, P, xs, negate, f, deltaF, x -> x);
+        propertiesDeltaHelperClean(limit, P, xs, negate, f, deltaF, x -> x);
     }
 
-    public static <A, B> void deltaPropertiesClean(
+    public static <A, B> void propertiesDeltaHelperClean(
             int limit,
             @NotNull IterableProvider P,
             @NotNull Iterable<A> xs,

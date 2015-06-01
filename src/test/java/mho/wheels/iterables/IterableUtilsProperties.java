@@ -362,7 +362,7 @@ public strictfp class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaFloat(Iterable<Float>) properties...");
 
-        deltaPropertiesClean(
+        propertiesDeltaHelperClean(
                 LIMIT,
                 P,
                 P.floats(),
@@ -380,7 +380,7 @@ public strictfp class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaDouble(Iterable<Double>) properties...");
 
-        deltaPropertiesClean(
+        propertiesDeltaHelperClean(
                 LIMIT,
                 P,
                 P.doubles(),
