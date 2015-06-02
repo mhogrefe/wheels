@@ -17,6 +17,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 
 public strictfp class Testing {
     private static final int TINY_LIMIT = 20;
@@ -232,7 +233,8 @@ public strictfp class Testing {
     }
 
     public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        assertNotEquals(p, relation.test(p.a, p.b), relation.test(p.b, p.a));
+        //noinspection ConstantConditions
+        assertTrue(p, (relation.test(p.a, p.b) ^ relation.test(p.b, p.a)) || p.a.equals(p.b));
     }
 
     public static <T> void transitive(@NotNull BiPredicate<T, T> relation, @NotNull Triple<T, T, T> t) {
@@ -262,7 +264,7 @@ public strictfp class Testing {
         assertEquals(p, f.apply(p.a, p.b), f.apply(p.b, p.a));
     }
 
-    public static <A, B> void anticommutative(
+    public static <A, B> void antiCommutative(
             @NotNull BiFunction<A, A, B> f,
             @NotNull Function<B, B> negate,
             @NotNull Pair<A, A> p) {
@@ -296,7 +298,7 @@ public strictfp class Testing {
             for (int j = 0; j < xs.size(); j++) {
                 T xsi = xs.get(i);
                 T xsj = xs.get(j);
-                assertEquals(new Pair<>(xsi, xsj), Ordering.compare(i, j), Ordering.compare(xsi, xsj));
+                assertEquals(new Pair<>(xsi, xsj), compare(i, j), compare(xsi, xsj));
             }
         }
     }
@@ -347,6 +349,41 @@ public strictfp class Testing {
             assertTrue(p, p.a.equals(p.b));
             //noinspection ConstantConditions
             assertEquals(p, p.a.hashCode(), p.b.hashCode());
+        }
+    }
+
+    public static <T extends Comparable<T>> void propertiesCompareToHelper(
+            int limit,
+            @NotNull IterableProvider ip,
+            @NotNull Function<IterableProvider, Iterable<T>> fxs
+    ) {
+        IterableProvider iq = ip.deepCopy();
+        IterableProvider ir = ip.deepCopy();
+        for (Pair<T, T> p : take(limit, zip(fxs.apply(ip), fxs.apply(iq)))) {
+            assertTrue(p, eq(p.a, p.b));
+        }
+
+        ip.reset();
+        iq.reset();
+        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+            @SuppressWarnings("ConstantConditions")
+            int compare = p.a.compareTo(p.b);
+            assertTrue(p, compare == 0 || compare == 1 || compare == -1);
+            antiSymmetric(Ordering::le, p);
+            assertTrue(p, le(p.a, p.b) || le(p.b, p.a));
+            antiCommutative(Comparable::compareTo, c -> -c, p);
+        }
+
+        ip.reset();
+        iq.reset();
+        ir.reset();
+        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
+                fxs.apply(ip),
+                fxs.apply(iq),
+                fxs.apply(ir)
+        );
+        for (Triple<T, T, T> t : take(limit, ts)) {
+            transitive(Ordering::le, t);
         }
     }
 

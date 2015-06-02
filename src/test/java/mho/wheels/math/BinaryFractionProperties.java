@@ -51,6 +51,7 @@ public class BinaryFractionProperties {
             propertiesIsInteger();
             propertiesEquals();
             propertiesHashCode();
+            propertiesCompareTo();
         }
         System.out.println("Done");
     }
@@ -177,5 +178,10 @@ public class BinaryFractionProperties {
     private static void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, IterableProvider::binaryFractions);
+    }
+
+    private static void propertiesCompareTo() {
+        initialize("compareTo()");
+        propertiesCompareToHelper(LIMIT, P, IterableProvider::binaryFractions);
     }
 }
