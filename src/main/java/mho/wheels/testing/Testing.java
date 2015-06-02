@@ -303,12 +303,12 @@ public strictfp class Testing {
 
     public static <T> void propertiesEqualsHelper(
             int limit,
-            @NotNull Iterable<T> xs1,
-            @NotNull Iterable<T> xs2,
-            @NotNull Iterable<T> xs3,
-            @NotNull BiPredicate<T, T> equals
+            @NotNull IterableProvider ip,
+            @NotNull Function<IterableProvider, Iterable<T>> fxs
     ) {
-        for (Triple<T, T, T> t : take(limit, zip3(xs1, xs2, xs3))) {
+        IterableProvider iq = ip.deepCopy();
+        IterableProvider ir = ip.deepCopy();
+        for (Triple<T, T, T> t : take(limit, zip3(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
             //noinspection ConstantConditions,ObjectEqualsNull
             assertFalse(t, t.a.equals(null));
             assertTrue(t, t.a.equals(t.b));
@@ -316,17 +316,33 @@ public strictfp class Testing {
             assertTrue(t, t.b.equals(t.c));
         }
 
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(xs1, xs2))) {
-            symmetric(equals, p);
+        ip.reset();
+        iq.reset();
+        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+            symmetric(Object::equals, p);
         }
 
-        for (Triple<T, T, T> t : take(limit, ExhaustiveProvider.INSTANCE.triples(xs1, xs2, xs3))) {
-            transitive(equals, t);
+        ip.reset();
+        iq.reset();
+        ir.reset();
+        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
+                fxs.apply(ip),
+                fxs.apply(iq),
+                fxs.apply(ir)
+        );
+        for (Triple<T, T, T> t : take(limit, ts)) {
+            transitive(Object::equals, t);
         }
     }
 
-    public static <T> void propertiesHashCodeHelper(int limit, @NotNull Iterable<T> xs1, @NotNull Iterable<T> xs2) {
-        for (Pair<T, T> p : take(limit, zip(xs1, xs2))) {
+    public static <T> void propertiesHashCodeHelper(
+            int limit,
+            @NotNull IterableProvider ip,
+            @NotNull Function<IterableProvider,
+            Iterable<T>> fxs
+    ) {
+        IterableProvider iq = ip.deepCopy();
+        for (Pair<T, T> p : take(limit, zip(fxs.apply(ip), fxs.apply(iq)))) {
             //noinspection ConstantConditions
             assertTrue(p, p.a.equals(p.b));
             //noinspection ConstantConditions

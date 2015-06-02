@@ -49,6 +49,8 @@ public class BinaryFractionProperties {
             propertiesOf_double();
             propertiesBigDecimalValue();
             propertiesIsInteger();
+            propertiesEquals();
+            propertiesHashCode();
         }
         System.out.println("Done");
     }
@@ -168,7 +170,12 @@ public class BinaryFractionProperties {
     }
 
     private static void propertiesEquals() {
-        initialize("equal(Object)");
+        initialize("equals(Object)");
+        propertiesEqualsHelper(LIMIT, P, IterableProvider::binaryFractions);
+    }
 
+    private static void propertiesHashCode() {
+        initialize("hashCode()");
+        propertiesHashCodeHelper(LIMIT, P, IterableProvider::binaryFractions);
     }
 }

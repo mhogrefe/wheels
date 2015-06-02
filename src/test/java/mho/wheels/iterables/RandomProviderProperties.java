@@ -1924,51 +1924,12 @@ public class RandomProviderProperties {
 
     private static void propertiesEquals() {
         initialize("equals(Object)");
-        IterableProvider Q;
-        IterableProvider R;
-        if (P instanceof ExhaustiveProvider) {
-            Q = ExhaustiveProvider.INSTANCE;
-            R = ExhaustiveProvider.INSTANCE;
-        } else {
-            Q = ((RandomProvider) P).deepCopy();
-            R = ((RandomProvider) P).deepCopy();
-        }
-
-        Iterable<Triple<RandomProvider, RandomProvider, RandomProvider>> ts = zip3(
-                P.randomProviders(),
-                Q.randomProviders(),
-                R.randomProviders()
-        );
-        for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
-            //noinspection ConstantConditions,ObjectEqualsNull
-            assertFalse(t, t.a.equals(null));
-            assertEquals(t, t.a, t.b);
-            assertEquals(t, t.b, t.c);
-        }
-
-        Iterable<Pair<RandomProvider, RandomProvider>> ps = ExhaustiveProvider.INSTANCE.pairs(
-                P.randomProviders(),
-                Q.randomProviders()
-        );
-        for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, ps)) {
-            symmetric(RandomProvider::equals, p);
-        }
-
-        ts = ExhaustiveProvider.INSTANCE.triples(P.randomProviders(), Q.randomProviders(), R.randomProviders());
-        for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
-            transitive(RandomProvider::equals, t);
-        }
+        propertiesEqualsHelper(LIMIT, P, IterableProvider::randomProviders);
     }
 
     private static void propertiesHashCode() {
         initialize("hashCode()");
-        IterableProvider P2;
-        if (P instanceof ExhaustiveProvider) {
-            P2 = ExhaustiveProvider.INSTANCE;
-        } else {
-            P2 = ((RandomProvider) P).deepCopy();
-        }
-        propertiesHashCodeHelper(LIMIT, P.randomProviders(), P2.randomProviders());
+        propertiesHashCodeHelper(LIMIT, P, IterableProvider::randomProviders);
     }
 
     private static void propertiesToString() {

@@ -196,6 +196,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return A copy of {@code this}.
      */
+    @Override
     public @NotNull RandomProvider copy() {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
@@ -215,6 +216,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return A copy of {@code this}.
      */
+    @Override
     public @NotNull RandomProvider deepCopy() {
         RandomProvider copy = new RandomProvider(seed);
         copy.scale = scale;
