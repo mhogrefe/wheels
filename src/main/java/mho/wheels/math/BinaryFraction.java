@@ -298,6 +298,66 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return exponent >= 0;
     }
 
+    public @NotNull BinaryFraction add(@NotNull BinaryFraction that) {
+        if (this == ZERO) return that;
+        if (that == ZERO) return this;
+        BigInteger sumMantissa;
+        int sumExponent;
+        switch (Ordering.compare(exponent, that.exponent)) {
+            case EQ:
+                return of(mantissa.add(that.mantissa), exponent);
+            case LT:
+                sumMantissa = that.mantissa.shiftLeft(that.exponent - exponent).add(mantissa);
+                sumExponent = exponent;
+                break;
+            case GT:
+                sumMantissa = mantissa.shiftLeft(exponent - that.exponent).add(that.mantissa);
+                sumExponent = that.exponent;
+                break;
+            default: throw new IllegalStateException("unreachable");
+        }
+        return sumMantissa.equals(BigInteger.ONE) && exponent == 0 ?
+                ONE :
+                new BinaryFraction(sumMantissa, sumExponent);
+    }
+
+    public @NotNull BinaryFraction negate() {
+        if (this == ZERO) return ZERO;
+        if (mantissa.equals(BigInteger.valueOf(-1)) && exponent == 0) return ONE;
+        return new BinaryFraction(mantissa.negate(), exponent);
+    }
+
+    public @NotNull BinaryFraction abs() {
+        return signum() == -1 ? negate() : this;
+    }
+
+    public int signum() {
+        return mantissa.signum();
+    }
+
+    public @NotNull BinaryFraction subtract(@NotNull BinaryFraction that) {
+        if (this == ZERO) return that.negate();
+        if (that == ZERO) return this;
+        BigInteger differenceMantissa;
+        int differenceExponent;
+        switch (Ordering.compare(exponent, that.exponent)) {
+            case EQ:
+                return of(mantissa.subtract(that.mantissa), exponent);
+            case LT:
+                differenceMantissa = that.mantissa.shiftLeft(that.exponent - exponent).subtract(mantissa);
+                differenceExponent = exponent;
+                break;
+            case GT:
+                differenceMantissa = mantissa.shiftLeft(exponent - that.exponent).subtract(that.mantissa);
+                differenceExponent = that.exponent;
+                break;
+            default: throw new IllegalStateException("unreachable");
+        }
+        return differenceMantissa.equals(BigInteger.ONE) && exponent == 0 ?
+                ONE :
+                new BinaryFraction(differenceMantissa, differenceExponent);
+    }
+
     /**
      * Determines whether {@code this} is equal to {@code that}.
      *
@@ -352,8 +412,10 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         Ordering signumOrdering = Ordering.compare(mantissa.signum(), that.mantissa.signum());
         if (signumOrdering != Ordering.EQ) return signumOrdering.toInt();
         switch (Ordering.compare(exponent, that.exponent)) {
-            case LT: return mantissa.compareTo(that.mantissa.shiftLeft(that.exponent - exponent));
-            case GT: return mantissa.shiftLeft(exponent - that.exponent).compareTo(that.mantissa);
+            case LT:
+                return mantissa.compareTo(that.mantissa.shiftLeft(that.exponent - exponent));
+            case GT:
+                return mantissa.shiftLeft(exponent - that.exponent).compareTo(that.mantissa);
             case EQ:
                 return mantissa.compareTo(that.mantissa);
         }
