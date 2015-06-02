@@ -286,11 +286,16 @@ public class RandomProviderProperties {
     private static void propertiesReset() {
         initialize("reset()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
+            RandomProvider rpDependent = rp.withScale(10);
             RandomProvider original = rp.deepCopy();
+            RandomProvider dependent = original.withScale(10);
+            assertEquals(rp, rpDependent, dependent);
             rp.nextInt();
             assertNotEquals(rp, rp, original);
+            assertNotEquals(rp, rpDependent, dependent);
             rp.reset();
             assertEquals(rp, rp, original);
+            assertEquals(rp, rpDependent, dependent);
         }
     }
 

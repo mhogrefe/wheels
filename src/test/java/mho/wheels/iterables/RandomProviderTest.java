@@ -178,11 +178,16 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testReset() {
+        RandomProvider PDependent = P.withScale(10);
         RandomProvider original = P.deepCopy();
+        RandomProvider dependent = original.withScale(10);
+        assertEquals(PDependent, dependent);
         P.nextInt();
         assertNotEquals(P, original);
+        assertNotEquals(PDependent, dependent);
         P.reset();
         assertEquals(P, original);
+        assertEquals(PDependent, dependent);
     }
 
     @Test
