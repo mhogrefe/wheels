@@ -306,10 +306,10 @@ public class RandomProviderProperties {
             @NotNull Iterable<T> xs,
             @NotNull Supplier<T> s
     ) {
+        rp.reset();
         List<T> iterableSample = toList(take(TINY_LIMIT, xs));
         rp.reset();
         List<T> supplierSample = toList(take(TINY_LIMIT, fromSupplier(s)));
-        rp.reset();
         aeqit(rp, iterableSample, supplierSample);
     }
 
@@ -319,9 +319,7 @@ public class RandomProviderProperties {
             @NotNull Predicate<T> predicate
     ) {
         assertTrue(rp, all(predicate, take(TINY_LIMIT, xs)));
-        rp.reset();
         testNoRemove(TINY_LIMIT, xs);
-        rp.reset();
     }
 
     private static <T> void simpleTest(
@@ -378,7 +376,6 @@ public class RandomProviderProperties {
             simpleTest(rp, bs, b -> true);
             supplierEquivalence(rp, bs, rp::nextBoolean);
             for (boolean b : ExhaustiveProvider.INSTANCE.booleans()) {
-                rp.reset();
                 assertTrue(rp, elem(b, bs));
             }
         }
@@ -407,7 +404,6 @@ public class RandomProviderProperties {
             if (!p.b.isEmpty()) {
                 supplierEquivalence(p.a, is, () -> p.a.nextUniformSample(p.b));
             }
-            p.a.reset();
             assertEquals(is, isEmpty(is), p.b.isEmpty());
         }
     }
@@ -427,7 +423,6 @@ public class RandomProviderProperties {
             if (!p.b.isEmpty()) {
                 supplierEquivalence(p.a, cs, () -> p.a.nextUniformSample(p.b));
             }
-            p.a.reset();
             assertEquals(cs, isEmpty(cs), p.b.isEmpty());
         }
     }
@@ -446,7 +441,6 @@ public class RandomProviderProperties {
             simpleTest(rp, os, o -> true);
             supplierEquivalence(rp, os, rp::nextOrdering);
             for (Ordering o : ExhaustiveProvider.INSTANCE.orderings()) {
-                rp.reset();
                 assertTrue(rp, elem(o, os));
             }
         }
@@ -466,7 +460,6 @@ public class RandomProviderProperties {
             simpleTest(rp, rms, rm -> true);
             supplierEquivalence(rp, rms, rp::nextRoundingMode);
             for (RoundingMode rm : ExhaustiveProvider.INSTANCE.roundingModes()) {
-                rp.reset();
                 assertTrue(rp, elem(rm, rms));
             }
         }
@@ -1085,7 +1078,6 @@ public class RandomProviderProperties {
             Iterable<Byte> bs = t.a.range(t.b, t.c);
             simpleTest(t.a, bs, b -> b >= t.b && b <= t.c);
             assertEquals(t, t.b > t.c, isEmpty(bs));
-            t.a.reset();
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, bs, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1124,7 +1116,6 @@ public class RandomProviderProperties {
             Iterable<Short> ss = t.a.range(t.b, t.c);
             simpleTest(t.a, ss, s -> s >= t.b && s <= t.c);
             assertEquals(t, t.b > t.c, isEmpty(ss));
-            t.a.reset();
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, ss, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1163,7 +1154,6 @@ public class RandomProviderProperties {
             Iterable<Integer> is = t.a.range(t.b, t.c);
             simpleTest(t.a, is, i -> i >= t.b && i <= t.c);
             assertEquals(t, t.b > t.c, isEmpty(is));
-            t.a.reset();
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, is, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1198,7 +1188,6 @@ public class RandomProviderProperties {
             Iterable<Long> ls = t.a.range(t.b, t.c);
             simpleTest(t.a, ls, l -> l >= t.b && l <= t.c);
             assertEquals(t, t.b > t.c, isEmpty(ls));
-            t.a.reset();
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, ls, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1238,7 +1227,6 @@ public class RandomProviderProperties {
             Iterable<BigInteger> is = t.a.range(t.b, t.c);
             simpleTest(t.a, is, i -> ge(i, t.b) && le(i, t.c));
             assertEquals(t, gt(t.b, t.c), isEmpty(is));
-            t.a.reset();
             if (le(t.b, t.c)) {
                 supplierEquivalence(t.a, is, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1278,7 +1266,6 @@ public class RandomProviderProperties {
             Iterable<Character> cs = t.a.range(t.b, t.c);
             simpleTest(t.a, cs, c -> c >= t.b && c <= t.c);
             assertEquals(t, t.b > t.c, isEmpty(cs));
-            t.a.reset();
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, cs, () -> t.a.nextFromRange(t.b, t.c));
             }
@@ -1932,20 +1919,20 @@ public class RandomProviderProperties {
 
     private static void propertiesEquals() {
         initialize("equals(Object)");
-        IterableProvider P2;
-        IterableProvider P3;
+        IterableProvider Q;
+        IterableProvider R;
         if (P instanceof ExhaustiveProvider) {
-            P2 = ExhaustiveProvider.INSTANCE;
-            P3 = ExhaustiveProvider.INSTANCE;
+            Q = ExhaustiveProvider.INSTANCE;
+            R = ExhaustiveProvider.INSTANCE;
         } else {
-            P2 = ((RandomProvider) P).deepCopy();
-            P3 = ((RandomProvider) P).deepCopy();
+            Q = ((RandomProvider) P).deepCopy();
+            R = ((RandomProvider) P).deepCopy();
         }
 
         Iterable<Triple<RandomProvider, RandomProvider, RandomProvider>> ts = zip3(
                 P.randomProviders(),
-                P2.randomProviders(),
-                P3.randomProviders()
+                Q.randomProviders(),
+                R.randomProviders()
         );
         for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
             //noinspection ConstantConditions,ObjectEqualsNull
@@ -1954,20 +1941,15 @@ public class RandomProviderProperties {
             assertEquals(t, t.b, t.c);
         }
 
-        P.reset();
-        P2.reset();
-        P3.reset();
         Iterable<Pair<RandomProvider, RandomProvider>> ps = ExhaustiveProvider.INSTANCE.pairs(
                 P.randomProviders(),
-                P2.randomProviders()
+                Q.randomProviders()
         );
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, ps)) {
             symmetric(RandomProvider::equals, p);
         }
 
-        P.reset();
-        P2.reset();
-        ts = ExhaustiveProvider.INSTANCE.triples(P.randomProviders(), P2.randomProviders(), P3.randomProviders());
+        ts = ExhaustiveProvider.INSTANCE.triples(P.randomProviders(), Q.randomProviders(), R.randomProviders());
         for (Triple<RandomProvider, RandomProvider, RandomProvider> t : take(LIMIT, ts)) {
             transitive(RandomProvider::equals, t);
         }

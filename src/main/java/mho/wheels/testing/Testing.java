@@ -423,10 +423,8 @@ public strictfp class Testing {
         for (List<T> lxs : take(limit, P.lists(xs))) {
             listF.apply(lxs);
         }
-        P.reset();
 
         testNoRemove(limit, xs);
-        P.reset();
 
         if (commutativeAndAssociative) {
             Iterable<Pair<List<T>, List<T>>> ps = filter(
@@ -436,18 +434,15 @@ public strictfp class Testing {
             for (Pair<List<T>, List<T>> p : take(limit, ps)) {
                 assertEquals(p, listF.apply(p.a), listF.apply(p.b));
             }
-            P.reset();
         }
 
         for (T x : take(limit, xs)) {
             assertEquals(x, listF.apply(Collections.singletonList(x)), x);
         }
-        P.reset();
 
         for (Pair<T, T> p : take(limit, P.pairs(xs))) {
             assertEquals(p, listF.apply(Arrays.asList(p.a, p.b)), f.apply(p.a, p.b));
         }
-        P.reset();
 
         for (List<T> lxs : take(limit, P.listsWithElement(null, xs))) {
             try {
@@ -455,7 +450,6 @@ public strictfp class Testing {
                 fail(lxs);
             } catch (NullPointerException ignored) {}
         }
-        P.reset();
     }
 
     public static <A, B> void propertiesDeltaHelper(
@@ -484,15 +478,12 @@ public strictfp class Testing {
             Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
             aeqit(lxs, deltas, reversed);
         }
-        P.reset();
 
         testNoRemove(limit, xs);
-        P.reset();
 
         for (A x : take(limit, xs)) {
             assertTrue(x, isEmpty(deltaF.apply(Collections.singletonList(x))));
         }
-        P.reset();
 
         for (Pair<A, A> p : take(limit, P.pairs(xs))) {
             aeqit(
@@ -501,7 +492,6 @@ public strictfp class Testing {
                     Collections.singletonList(subtract.andThen(clean).apply(p.b, p.a))
             );
         }
-        P.reset();
 
         for (List<A> lxs : take(limit, P.listsWithElement(null, xs))) {
             try {
@@ -509,7 +499,6 @@ public strictfp class Testing {
                 fail(lxs);
             } catch (NullPointerException ignored) {}
         }
-        P.reset();
     }
 
     public static <T> void propertiesFindInHelper(
@@ -522,7 +511,6 @@ public strictfp class Testing {
         for (String s : take(limit, P.strings())) {
             findIn.apply(s);
         }
-        P.reset();
 
         for (String s : take(limit, P.stringsWithSubstrings(map(Object::toString, xs)))) {
             Optional<Pair<T, Integer>> op = findIn.apply(s);
@@ -537,6 +525,5 @@ public strictfp class Testing {
             String after = drop(p.b + during.length(), s);
             assertTrue(s, after.isEmpty() || !read.apply(during + head(after)).isPresent());
         }
-        P.reset();
     }
 }
