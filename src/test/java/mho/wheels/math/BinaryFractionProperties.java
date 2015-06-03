@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.of;
+import static mho.wheels.ordering.Ordering.compare;
 import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
@@ -157,7 +158,7 @@ public class BinaryFractionProperties {
         initialize("bigDecimalValue()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigDecimal bd = bf.bigDecimalValue();
-            //todo signum
+            assertEquals(bf, bd.signum(), bf.signum());
             assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
         }
     }
@@ -183,5 +184,9 @@ public class BinaryFractionProperties {
     private static void propertiesCompareTo() {
         initialize("compareTo()");
         propertiesCompareToHelper(LIMIT, P, IterableProvider::binaryFractions);
+
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            assertEquals(p, compare(p.a, p.b), compare(p.a.bigDecimalValue(), p.b.bigDecimalValue()));
+        }
     }
 }
