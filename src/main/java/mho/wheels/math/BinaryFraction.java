@@ -298,6 +298,18 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         return exponent >= 0;
     }
 
+    /**
+     * Returns the sum of {@code this} and {@code that}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code that} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param that the {@code BinaryFraction} added to {@code this}
+     * @return {@code this}+{@code that}
+     */
     public @NotNull BinaryFraction add(@NotNull BinaryFraction that) {
         if (this == ZERO) return that;
         if (that == ZERO) return this;
@@ -321,20 +333,62 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
                 new BinaryFraction(sumMantissa, sumExponent);
     }
 
+    /**
+     * Returns the negative of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is non-null.</li>
+     * </ul>
+     *
+     * @return –{@code this}
+     */
     public @NotNull BinaryFraction negate() {
         if (this == ZERO) return ZERO;
         if (mantissa.equals(BigInteger.valueOf(-1)) && exponent == 0) return ONE;
         return new BinaryFraction(mantissa.negate(), exponent);
     }
 
+    /**
+     * Returns the absolute value of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is a non-negative {@code BinaryFraction}.</li>
+     * </ul>
+     *
+     * @return |{@code this}|
+     */
     public @NotNull BinaryFraction abs() {
         return signum() == -1 ? negate() : this;
     }
 
+    /**
+     * Returns the sign of {@code this}: 1 if positive, –1 if negative, 0 if equal to 0.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is –1, 0, or 1.</li>
+     * </ul>
+     *
+     * @return sgn({@code this})
+     */
     public int signum() {
         return mantissa.signum();
     }
 
+    /**
+     * Returns the difference of {@code this} and {@code that}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code that} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param that the {@code BinaryFraction} subtracted from {@code this}
+     * @return {@code this}–{@code that}
+     */
     public @NotNull BinaryFraction subtract(@NotNull BinaryFraction that) {
         if (this == ZERO) return that.negate();
         if (that == ZERO) return this;
