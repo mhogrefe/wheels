@@ -422,6 +422,19 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         throw new IllegalStateException("unreachable");
     }
 
+    /**
+     * Creates an {@code BinaryFraction} from a {@code String}. Valid input takes the form of a {@code String} that
+     * could have been returned by {@link BinaryFraction#toString()}. See that method's tests and demos for examples of
+     * valid input.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result may be any {@code Optional<BinaryFraction>}.</li>
+     * </ul>
+     *
+     * @param s a string representation of a {@code BinaryFraction}.
+     * @return the wrapped {@code BinaryFraction} represented by {@code s}, or {@code empty} if {@code s} is invalid.
+     */
     public static @NotNull Optional<BinaryFraction> read(@NotNull String s) {
         return Readers.genericRead(
             t -> {
