@@ -295,8 +295,8 @@ public strictfp class Testing {
 
     public static <T extends Comparable<T>> void testCompareToHelper(@NotNull List<T> xs) {
         for (int i = 0; i < xs.size(); i++) {
+            T xsi = xs.get(i);
             for (int j = 0; j < xs.size(); j++) {
-                T xsi = xs.get(i);
                 T xsj = xs.get(j);
                 assertEquals(new Pair<>(xsi, xsj), compare(i, j), compare(xsi, xsj));
             }
