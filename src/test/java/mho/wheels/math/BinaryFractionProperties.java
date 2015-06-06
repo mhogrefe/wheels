@@ -184,7 +184,18 @@ public class BinaryFractionProperties {
 
     private static void propertiesAdd() {
         initialize("add(BinaryFraction)");
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    try {
+                        p.a.add(p.b);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::bigDecimalValue,
@@ -208,6 +219,8 @@ public class BinaryFractionProperties {
         for (Triple<BinaryFraction, BinaryFraction, BinaryFraction> t : take(LIMIT, P.triples(P.binaryFractions()))) {
             associative(BinaryFraction::add, t);
         }
+
+        //overflow and underflow not tested
     }
 
     private static void propertiesNegate() {
@@ -274,7 +287,18 @@ public class BinaryFractionProperties {
 
     private static void propertiesSubtract() {
         initialize("subtract(BinaryFraction)");
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    try {
+                        p.a.subtract(p.b);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::bigDecimalValue,
@@ -295,6 +319,8 @@ public class BinaryFractionProperties {
             assertEquals(bf.toString(), bf.subtract(ZERO), bf);
             assertTrue(bf.toString(), bf.subtract(bf) == ZERO);
         }
+
+        //overflow and underflow not tested
     }
 
     private static void compareImplementationsSubtract() {
