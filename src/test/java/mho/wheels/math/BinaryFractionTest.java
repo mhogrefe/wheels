@@ -10,9 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.math.BinaryFraction.*;
-import static mho.wheels.testing.Testing.aeq;
-import static mho.wheels.testing.Testing.testCompareToHelper;
-import static mho.wheels.testing.Testing.testEqualsHelper;
+import static mho.wheels.testing.Testing.*;
 
 public class BinaryFractionTest {
     @Test
@@ -528,6 +526,46 @@ public class BinaryFractionTest {
     @Test
     public void testCompareTo() {
         testCompareToHelper(readBinaryFractionList("[-5 << 20, -11, -1, -5 >> 20, 0, 5 >> 20, 1, 11, 5 << 20]"));
+    }
+
+    private static void read_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get(), output);
+    }
+
+    private static void read_empty_helper(@NotNull String input) {
+        Assert.assertFalse(read(input).isPresent());
+    }
+
+    @Test
+    public void testRead() {
+        read_helper("0", "0");
+        read_helper("1", "1");
+        read_helper("11", "11");
+        read_helper("5 << 20", "5 << 20");
+        read_helper("5 >> 20", "5 >> 20");
+        read_helper("-1", "-1");
+        read_helper("-11", "-11");
+        read_helper("-5 << 20", "-5 << 20");
+        read_helper("-5 >> 20", "-5 >> 20");
+        read_helper("1 << 1000000000", "1 << 1000000000");
+        read_helper("1 >> 1000000000", "1 >> 1000000000");
+        read_empty_helper("");
+        read_empty_helper("a");
+        read_empty_helper("0x10");
+        read_empty_helper("0.5");
+        read_empty_helper(" ");
+        read_empty_helper(" 1");
+        read_empty_helper("1 ");
+        read_empty_helper("1 < 2");
+        read_empty_helper("0 << 5");
+        read_empty_helper("0 >> 5");
+        read_empty_helper("1 << -5");
+        read_empty_helper("1 >> -5");
+        read_empty_helper("1 << 0");
+        read_empty_helper("1 >> 0");
+        read_empty_helper("2 << 1");
+        read_empty_helper("2 >> 1");
+        read_empty_helper("1 << 10000000000");
     }
 
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
