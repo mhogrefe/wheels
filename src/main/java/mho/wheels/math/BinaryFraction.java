@@ -310,6 +310,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
      *  <li>{@code that} cannot be null.</li>
+     *  <li>{@code this}+{@code that} must have an exponent less than 2<sup>31</sup> and greater than or equal to
+     *  –2<sup>31</sup>.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -380,6 +382,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * <ul>
      *  <li>{@code this} may be any {@code BinaryFraction}.</li>
      *  <li>{@code that} cannot be null.</li>
+     *  <li>{@code this}–{@code that} must have an exponent less than 2<sup>31</sup> and greater than or equal to
+     *  –2<sup>31</sup>.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
