@@ -511,7 +511,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
                     return of(oMantissa.get(), -oExponent.get());
                 }
                 Optional<BigInteger> oMantissa = Readers.readBigInteger(s);
-                return oMantissa.isPresent() ? new BinaryFraction(oMantissa.get(), 0) : null;
+                return oMantissa.isPresent() ? of(oMantissa.get()) : null;
             }
         ).apply(s);
     }

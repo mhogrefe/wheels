@@ -1,6 +1,5 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -560,6 +559,8 @@ public class BinaryFractionTest {
         read_empty_helper("1<<5");
         read_empty_helper("1 <<");
         read_empty_helper("<< 1");
+        read_empty_helper("2");
+        read_empty_helper("-2");
         read_empty_helper("0 << 5");
         read_empty_helper("0 >> 5");
         read_empty_helper("1 << -5");
@@ -588,7 +589,8 @@ public class BinaryFractionTest {
         findIn_helper("--3 << 25a", "(-3 << 25, 1)");
         findIn_helper("1 << 1111111111111", "(1 << 1111111111, 0)");
         findIn_helper("5 << 1 << 3", "(5 << 1, 0)");
-        findIn_helper("6 << 1 << 3", "(6, 0)");
+        findIn_helper("6 << 1 << 3", "(1 << 3, 5)");
+        findIn_helper("20", "(0, 1)");
         findIn_empty_helper("");
         findIn_empty_helper("abc");
     }
