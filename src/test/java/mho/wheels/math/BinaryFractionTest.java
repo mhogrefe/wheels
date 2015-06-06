@@ -613,6 +613,50 @@ public class BinaryFractionTest {
         multiply_fail_helper("1 >> 2147483648", "1 >> 1");
     }
 
+    private static void shiftLeft_helper(@NotNull String input, int bits, @NotNull String output) {
+        aeq(read(input).get().shiftLeft(bits), output);
+    }
+
+    private static void shiftLeft_fail_helper(@NotNull String input, int bits) {
+        try {
+            read(input).get().shiftLeft(bits);
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testShiftLeft() {
+        shiftLeft_helper("0", 0, "0");
+        shiftLeft_helper("0", 5, "0");
+        shiftLeft_helper("0", -5, "0");
+        shiftLeft_helper("1", 0, "1");
+        shiftLeft_helper("1", 5, "1 << 5");
+        shiftLeft_helper("1", -5, "1 >> 5");
+        shiftLeft_helper("11", 0, "11");
+        shiftLeft_helper("11", 5, "11 << 5");
+        shiftLeft_helper("11", -5, "11 >> 5");
+        shiftLeft_helper("5 << 20", 0, "5 << 20");
+        shiftLeft_helper("5 << 20", 5, "5 << 25");
+        shiftLeft_helper("5 << 20", -5, "5 << 15");
+        shiftLeft_helper("5 >> 20", 0, "5 >> 20");
+        shiftLeft_helper("5 >> 20", 5, "5 >> 15");
+        shiftLeft_helper("5 >> 20", -5, "5 >> 25");
+        shiftLeft_helper("-1", 0, "-1");
+        shiftLeft_helper("-1", 5, "-1 << 5");
+        shiftLeft_helper("-1", -5, "-1 >> 5");
+        shiftLeft_helper("-11", 0, "-11");
+        shiftLeft_helper("-11", 5, "-11 << 5");
+        shiftLeft_helper("-11", -5, "-11 >> 5");
+        shiftLeft_helper("-5 << 20", 0, "-5 << 20");
+        shiftLeft_helper("-5 << 20", 5, "-5 << 25");
+        shiftLeft_helper("-5 << 20", -5, "-5 << 15");
+        shiftLeft_helper("-5 >> 20", 0, "-5 >> 20");
+        shiftLeft_helper("-5 >> 20", 5, "-5 >> 15");
+        shiftLeft_helper("-5 >> 20", -5, "-5 >> 25");
+        shiftLeft_fail_helper("1 << 2147483647", 1);
+        shiftLeft_fail_helper("1 >> 2147483648", -1);
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(
