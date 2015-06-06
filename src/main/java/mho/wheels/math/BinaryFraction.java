@@ -18,7 +18,8 @@ import static org.junit.Assert.assertTrue;
  * <p>The {@code BinaryFraction} class uniquely represents rational numbers whose denominator is a power of 2. Every
  * such number is either zero or an equal to an odd integer (the mantissa) times 2 raised to an integer (the exponent).
  * Zero is considered to have a mantissa of zero (this is the only case when the mantissa is even) and an exponent of
- * zero.
+ * zero. Only {@code BinaryFraction}s with an exponent less than 2<sup>31</sup> and greater than or equal to
+ * –2<sup>31</sup> can be represented.
  *
  * <p>There is only one instance of {@code ZERO} and one instance of {@code ONE}, so these may be compared with other
  * {@code BigInteger}s using {@code ==}.
@@ -152,7 +153,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         if (mantissa.equals(BigInteger.ZERO)) return ZERO;
         int trailingZeroes = mantissa.getLowestSetBit();
         if ((long) exponent + trailingZeroes >= Integer.MAX_VALUE) {
-            throw new IllegalArgumentException("The sum of exponent and the number of trailing zero bits of mantissa" +
+            throw new ArithmeticException("The sum of exponent and the number of trailing zero bits of mantissa" +
                     " must be less than 2^31. exponent is " + exponent + " and mantissa is " + mantissa + ".");
         }
         if (trailingZeroes != 0) {
@@ -391,6 +392,54 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
             case GT:
                 return of(mantissa.shiftLeft(exponent - that.exponent).subtract(that.mantissa), that.exponent);
             default: throw new IllegalStateException("unreachable");
+        }
+    }
+
+    public @NotNull BinaryFraction multiply(@NotNull BinaryFraction that) {
+        if (this == ZERO || that == ZERO) return ZERO;
+        if (this == ONE) return that;
+        if (that == ONE) return this;
+        long productExponent = (long) exponent + that.exponent;
+        if (productExponent > Integer.MAX_VALUE) {
+            throw new ArithmeticException("");
+        }
+        BigInteger productMantissa = mantissa.multiply(that.mantissa);
+        if (productMantissa.equals(BigInteger.ONE) && productExponent == 0L) {
+            return ONE;
+        } else {
+            return new BinaryFraction(productMantissa, (int) productExponent);
+        }
+    }
+
+    public @NotNull BinaryFraction shiftLeft(int bits) {
+        if (this == ZERO || bits == 0) return this;
+        if (bits < 0) {
+            return shiftRight(-bits);
+        }
+        long shiftedExponent = (long) exponent + bits;
+        if (shiftedExponent > Integer.MAX_VALUE) {
+            throw new ArithmeticException("");
+        }
+        if (mantissa.equals(BigInteger.ONE) && shiftedExponent == 0L) {
+            return ONE;
+        } else {
+            return new BinaryFraction(mantissa, (int) shiftedExponent);
+        }
+    }
+
+    public @NotNull BinaryFraction shiftRight(int bits) {
+        if (this == ZERO || bits == 0) return this;
+        if (bits < 0) {
+            return shiftLeft(-bits);
+        }
+        long shiftedExponent = (long) exponent - bits;
+        if (shiftedExponent < Integer.MIN_VALUE) {
+            throw new ArithmeticException("");
+        }
+        if (mantissa.equals(BigInteger.ONE) && shiftedExponent == 0L) {
+            return ONE;
+        } else {
+            return new BinaryFraction(mantissa, (int) shiftedExponent);
         }
     }
 

@@ -84,7 +84,7 @@ public class BinaryFractionTest {
         try {
             of(BigInteger.valueOf(4), Integer.MAX_VALUE);
             Assert.fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (ArithmeticException ignored) {}
     }
 
     private static void of_BigInteger_helper(int n, @NotNull String output) {

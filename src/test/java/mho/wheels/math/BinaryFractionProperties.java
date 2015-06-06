@@ -103,7 +103,7 @@ public class BinaryFractionProperties {
             try {
                 of(p.a, p.b);
                 fail(p);
-            } catch (IllegalArgumentException ignored) {}
+            } catch (ArithmeticException ignored) {}
         }
     }
 
