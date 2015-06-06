@@ -100,7 +100,18 @@ public class BinaryFractionDemos {
 
     private static void demoAdd() {
         initialize();
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    try {
+                        p.a.add(p.b);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
             System.out.println("(" + p.a + ") + (" + p.b + ") = " + p.a.add(p.b));
         }
     }
@@ -128,7 +139,18 @@ public class BinaryFractionDemos {
 
     private static void demoSubtract() {
         initialize();
-        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    try {
+                        p.a.subtract(p.b);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
             System.out.println("(" + p.a + ") - (" + p.b + ") = " + p.a.subtract(p.b));
         }
     }
