@@ -557,6 +557,9 @@ public class BinaryFractionTest {
         read_empty_helper(" 1");
         read_empty_helper("1 ");
         read_empty_helper("1 < 2");
+        read_empty_helper("1<<5");
+        read_empty_helper("1 <<");
+        read_empty_helper("<< 1");
         read_empty_helper("0 << 5");
         read_empty_helper("0 >> 5");
         read_empty_helper("1 << -5");
@@ -566,6 +569,28 @@ public class BinaryFractionTest {
         read_empty_helper("2 << 1");
         read_empty_helper("2 >> 1");
         read_empty_helper("1 << 10000000000");
+    }
+
+    private static void findIn_helper(@NotNull String input, @NotNull String output) {
+        aeq(findIn(input).get(), output);
+    }
+
+    private static void findIn_empty_helper(@NotNull String input) {
+        Assert.assertFalse(findIn(input).isPresent());
+    }
+
+    @Test
+    public void testFindIn() {
+        findIn_helper("abc1 << 2xyz", "(1 << 2, 3)");
+        findIn_helper("abc1<<2xyz", "(1, 3)");
+        findIn_helper("01 >> 5 ", "(0, 0)");
+        findIn_helper("a1 >> 5 ", "(1 >> 5, 1)");
+        findIn_helper("--3 << 25a", "(-3 << 25, 1)");
+        findIn_helper("1 << 1111111111111", "(1 << 1111111111, 0)");
+        findIn_helper("5 << 1 << 3", "(5 << 1, 0)");
+        findIn_helper("6 << 1 << 3", "(6, 0)");
+        findIn_empty_helper("");
+        findIn_empty_helper("abc");
     }
 
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
