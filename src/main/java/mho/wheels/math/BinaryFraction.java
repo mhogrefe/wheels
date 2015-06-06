@@ -80,6 +80,11 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     public static final @NotNull BinaryFraction LARGEST_DOUBLE = of(Double.MAX_VALUE).get();
 
     /**
+     * The {@code String} representation of 2<sup>31</sup>
+     */
+    private static final @NotNull String NEGATIVE_MIN_INTEGER = "2147483648";
+
+    /**
      * If {@code this} is 0, then 0; otherwise, the unique odd integer equal to {@code this} times an integer power of
      * 2
      */
@@ -152,7 +157,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     public static @NotNull BinaryFraction of(@NotNull BigInteger mantissa, int exponent) {
         if (mantissa.equals(BigInteger.ZERO)) return ZERO;
         int trailingZeroes = mantissa.getLowestSetBit();
-        if ((long) exponent + trailingZeroes >= Integer.MAX_VALUE) {
+        if ((long) exponent + trailingZeroes > Integer.MAX_VALUE) {
             throw new ArithmeticException("The sum of exponent and the number of trailing zero bits of mantissa" +
                     " must be less than 2^31. exponent is " + exponent + " and mantissa is " + mantissa + ".");
         }
@@ -414,7 +419,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         if (this == ONE) return that;
         if (that == ONE) return this;
         long productExponent = (long) exponent + that.exponent;
-        if (productExponent > Integer.MAX_VALUE) {
+        if (productExponent > Integer.MAX_VALUE || productExponent < Integer.MIN_VALUE) {
             throw new ArithmeticException("");
         }
         BigInteger productMantissa = mantissa.multiply(that.mantissa);
@@ -581,9 +586,16 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
                 if (rightShiftIndex != -1) {
                     Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, rightShiftIndex));
                     if (!oMantissa.isPresent()) return null;
-                    Optional<Integer> oExponent = Readers.readInteger(s.substring(rightShiftIndex + 4));
-                    if (!oExponent.isPresent()) return null;
-                    return of(oMantissa.get(), -oExponent.get());
+                    String exponentSubstring = s.substring(rightShiftIndex + 4);
+                    int exponent;
+                    if (exponentSubstring.equals(NEGATIVE_MIN_INTEGER)) {
+                        exponent = Integer.MIN_VALUE;
+                    } else {
+                        Optional<Integer> oExponent = Readers.readInteger(exponentSubstring);
+                        if (!oExponent.isPresent()) return null;
+                        exponent = -oExponent.get();
+                    }
+                    return of(oMantissa.get(), exponent);
                 }
                 Optional<BigInteger> oMantissa = Readers.readBigInteger(s);
                 return oMantissa.isPresent() ? of(oMantissa.get()) : null;
@@ -624,7 +636,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         switch (Integer.signum(exponent)) {
             case 0:  return mantissa.toString();
             case 1:  return mantissa + " << " + exponent;
-            case -1: return mantissa + " >> " + -exponent;
+            case -1: return mantissa + " >> " + (exponent == Integer.MIN_VALUE ? NEGATIVE_MIN_INTEGER : -exponent);
             default: throw new IllegalStateException("unreachable");
         }
     }

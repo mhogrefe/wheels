@@ -81,6 +81,8 @@ public class BinaryFractionTest {
         of_BigInteger_int_helper(-5, 20, "-5 << 20");
         of_BigInteger_int_helper(-5, -20, "-5 >> 20");
         of_BigInteger_int_helper(-100, 0, "-25 << 2");
+        of_BigInteger_int_helper(1, Integer.MAX_VALUE, "1 << 2147483647");
+        of_BigInteger_int_helper(1, Integer.MIN_VALUE, "1 >> 2147483648");
         try {
             of(BigInteger.valueOf(4), Integer.MAX_VALUE);
             Assert.fail();
@@ -497,6 +499,104 @@ public class BinaryFractionTest {
         subtract_helper("-5 >> 20", "-5 >> 20", "0");
     }
 
+    private static void multiply_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+        aeq(read(x).get().multiply(read(y).get()), output);
+    }
+
+    private static void multiply_fail_helper(@NotNull String x, @NotNull String y) {
+        try {
+            read(x).get().multiply(read(y).get());
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testMultiply() {
+        multiply_helper("0", "0", "0");
+        multiply_helper("0", "1", "0");
+        multiply_helper("0", "11", "0");
+        multiply_helper("0", "5 << 20", "0");
+        multiply_helper("0", "5 >> 20", "0");
+        multiply_helper("0", "-1", "0");
+        multiply_helper("0", "-11", "0");
+        multiply_helper("0", "-5 << 20", "0");
+        multiply_helper("0", "-5 >> 20", "0");
+        multiply_helper("1", "0", "0");
+        multiply_helper("1", "1", "1");
+        multiply_helper("1", "11", "11");
+        multiply_helper("1", "5 << 20", "5 << 20");
+        multiply_helper("1", "5 >> 20", "5 >> 20");
+        multiply_helper("1", "-1", "-1");
+        multiply_helper("1", "-11", "-11");
+        multiply_helper("1", "-5 << 20", "-5 << 20");
+        multiply_helper("1", "-5 >> 20", "-5 >> 20");
+        multiply_helper("11", "0", "0");
+        multiply_helper("11", "1", "11");
+        multiply_helper("11", "11", "121");
+        multiply_helper("11", "5 << 20", "55 << 20");
+        multiply_helper("11", "5 >> 20", "55 >> 20");
+        multiply_helper("11", "-1", "-11");
+        multiply_helper("11", "-11", "-121");
+        multiply_helper("11", "-5 << 20", "-55 << 20");
+        multiply_helper("11", "-5 >> 20", "-55 >> 20");
+        multiply_helper("5 << 20", "0", "0");
+        multiply_helper("5 << 20", "1", "5 << 20");
+        multiply_helper("5 << 20", "11", "55 << 20");
+        multiply_helper("5 << 20", "5 << 20", "25 << 40");
+        multiply_helper("5 << 20", "5 >> 20", "25");
+        multiply_helper("5 << 20", "-1", "-5 << 20");
+        multiply_helper("5 << 20", "-11", "-55 << 20");
+        multiply_helper("5 << 20", "-5 << 20", "-25 << 40");
+        multiply_helper("5 << 20", "-5 >> 20", "-25");
+        multiply_helper("5 >> 20", "0", "0");
+        multiply_helper("5 >> 20", "1", "5 >> 20");
+        multiply_helper("5 >> 20", "11", "55 >> 20");
+        multiply_helper("5 >> 20", "5 << 20", "25");
+        multiply_helper("5 >> 20", "5 >> 20", "25 >> 40");
+        multiply_helper("5 >> 20", "-1", "-5 >> 20");
+        multiply_helper("5 >> 20", "-11", "-55 >> 20");
+        multiply_helper("5 >> 20", "-5 << 20", "-25");
+        multiply_helper("5 >> 20", "-5 >> 20", "-25 >> 40");
+        multiply_helper("-1", "0", "0");
+        multiply_helper("-1", "1", "-1");
+        multiply_helper("-1", "11", "-11");
+        multiply_helper("-1", "5 << 20", "-5 << 20");
+        multiply_helper("-1", "5 >> 20", "-5 >> 20");
+        multiply_helper("-1", "-1", "1");
+        multiply_helper("-1", "-11", "11");
+        multiply_helper("-1", "-5 << 20", "5 << 20");
+        multiply_helper("-1", "-5 >> 20", "5 >> 20");
+        multiply_helper("-11", "0", "0");
+        multiply_helper("-11", "1", "-11");
+        multiply_helper("-11", "11", "-121");
+        multiply_helper("-11", "5 << 20", "-55 << 20");
+        multiply_helper("-11", "5 >> 20", "-55 >> 20");
+        multiply_helper("-11", "-1", "11");
+        multiply_helper("-11", "-11", "121");
+        multiply_helper("-11", "-5 << 20", "55 << 20");
+        multiply_helper("-11", "-5 >> 20", "55 >> 20");
+        multiply_helper("-5 << 20", "0", "0");
+        multiply_helper("-5 << 20", "1", "-5 << 20");
+        multiply_helper("-5 << 20", "11", "-55 << 20");
+        multiply_helper("-5 << 20", "5 << 20", "-25 << 40");
+        multiply_helper("-5 << 20", "5 >> 20", "-25");
+        multiply_helper("-5 << 20", "-1", "5 << 20");
+        multiply_helper("-5 << 20", "-11", "55 << 20");
+        multiply_helper("-5 << 20", "-5 << 20", "25 << 40");
+        multiply_helper("-5 << 20", "-5 >> 20", "25");
+        multiply_helper("-5 >> 20", "0", "0");
+        multiply_helper("-5 >> 20", "1", "-5 >> 20");
+        multiply_helper("-5 >> 20", "11", "-55 >> 20");
+        multiply_helper("-5 >> 20", "5 << 20", "-25");
+        multiply_helper("-5 >> 20", "5 >> 20", "-25 >> 40");
+        multiply_helper("-5 >> 20", "-1", "5 >> 20");
+        multiply_helper("-5 >> 20", "-11", "55 >> 20");
+        multiply_helper("-5 >> 20", "-5 << 20", "25");
+        multiply_helper("-5 >> 20", "-5 >> 20", "25 >> 40");
+        multiply_fail_helper("1 << 2147483647", "1 << 1");
+        multiply_fail_helper("1 >> 2147483648", "1 >> 1");
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(
@@ -548,6 +648,8 @@ public class BinaryFractionTest {
         read_helper("-5 >> 20", "-5 >> 20");
         read_helper("1 << 1000000000", "1 << 1000000000");
         read_helper("1 >> 1000000000", "1 >> 1000000000");
+        read_helper("1 << 2147483647", "1 << 2147483647");
+        read_helper("1 >> 2147483648", "1 >> 2147483648");
         read_empty_helper("");
         read_empty_helper("a");
         read_empty_helper("0x10");
