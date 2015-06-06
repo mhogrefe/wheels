@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.Readers.*;
@@ -87,7 +88,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBooleanIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn);
+        propertiesFindInHelper(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn, b -> {});
     }
 
     private static void propertiesReadOrdering() {
@@ -108,7 +109,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findOrderingIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn);
+        propertiesFindInHelper(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn, o -> {});
     }
 
     private static void propertiesReadRoundingMode() {
@@ -129,7 +130,14 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findRoundingModeIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.roundingModes(), Readers::readRoundingMode, Readers::findRoundingModeIn);
+        propertiesFindInHelper(
+                LIMIT,
+                P,
+                P.roundingModes(),
+                Readers::readRoundingMode,
+                Readers::findRoundingModeIn,
+                rm -> {}
+        );
     }
 
     private static void propertiesReadBigInteger() {
@@ -150,7 +158,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBigIntegerIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn);
+        propertiesFindInHelper(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn, i -> {});
     }
 
     private static void propertiesReadByte() {
@@ -171,7 +179,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findByteIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn);
+        propertiesFindInHelper(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn, b -> {});
     }
 
     private static void propertiesReadShort() {
@@ -192,7 +200,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findShortIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn);
+        propertiesFindInHelper(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn, s -> {});
     }
 
     private static void propertiesReadInteger() {
@@ -213,7 +221,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findIntegerIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn);
+        propertiesFindInHelper(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn, i -> {});
     }
 
     private static void propertiesReadLong() {
@@ -234,7 +242,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findLongIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn);
+        propertiesFindInHelper(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn, l -> {});
     }
 
     private static void propertiesReadFloat() {
@@ -255,7 +263,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findFloatIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn);
+        propertiesFindInHelper(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn, f -> {});
     }
 
     private static void propertiesReadDouble() {
@@ -276,7 +284,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findDoubleIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn);
+        propertiesFindInHelper(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn, d -> {});
     }
 
     private static void propertiesReadBigDecimal() {
@@ -297,7 +305,14 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findBigDecimalIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.bigDecimals(), Readers::readBigDecimal, Readers::findBigDecimalIn);
+        propertiesFindInHelper(
+                LIMIT,
+                P,
+                P.bigDecimals(),
+                Readers::readBigDecimal,
+                Readers::findBigDecimalIn,
+                bd -> {}
+        );
     }
 
     private static void propertiesReadCharacter() {
@@ -318,7 +333,7 @@ public strictfp class ReadersProperties {
         initialize();
         System.out.println("\t\ttesting findCharacterIn(String) properties...");
 
-        propertiesFindInHelper(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn);
+        propertiesFindInHelper(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn, c -> {});
     }
 
     private static void propertiesReadString() {

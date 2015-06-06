@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -492,10 +493,12 @@ public strictfp class Testing {
             @NotNull Iterable<T> xs,
             @NotNull BiFunction<T, T, T> f,
             @NotNull Function<List<T>, T> listF,
+            @NotNull Consumer<T> validate,
             boolean commutativeAndAssociative
     ) {
         for (List<T> lxs : take(limit, P.lists(xs))) {
-            listF.apply(lxs);
+            T result = listF.apply(lxs);
+            validate.accept(result);
         }
 
         testNoRemove(limit, xs);
@@ -532,9 +535,10 @@ public strictfp class Testing {
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> f,
-            @NotNull Function<List<A>, Iterable<B>> deltaF
+            @NotNull Function<List<A>, Iterable<B>> deltaF,
+            @NotNull Consumer<B> validate
     ) {
-        propertiesDeltaHelperClean(limit, P, xs, negate, f, deltaF, x -> x);
+        propertiesDeltaHelperClean(limit, P, xs, negate, f, deltaF, validate, x -> x);
     }
 
     public static <A, B> void propertiesDeltaHelperClean(
@@ -544,10 +548,12 @@ public strictfp class Testing {
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
             @NotNull Function<List<A>, Iterable<B>> deltaF,
+            @NotNull Consumer<B> validate,
             @NotNull Function<B, B> clean
     ) {
         for (List<A> lxs : take(limit, P.listsAtLeast(1, xs))) {
             Iterable<B> deltas = deltaF.apply(lxs);
+            deltas.forEach(validate);
             aeq(lxs, length(deltas), length(lxs) - 1);
             Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
             aeqit(lxs, deltas, reversed);
@@ -575,12 +581,37 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void propertiesReadHelper(
+            int limit,
+            @NotNull IterableProvider P,
+            @NotNull String usedChars,
+            @NotNull Iterable<T> xs,
+            @NotNull Function<String, Optional<T>> read,
+            @NotNull Consumer<T> validate
+    ) {
+        for (String s : take(limit, P.strings())) {
+            read.apply(s);
+        }
+
+        for (T x : take(limit, xs)) {
+            Optional<T> ox = read.apply(x.toString());
+            assertEquals(x, ox.get(), x);
+        }
+
+        Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(P.uniformSample(usedChars)));
+        for (String s : take(limit, ss)) {
+            Optional<T> ox = read.apply(s);
+            validate.accept(ox.get());
+        }
+    }
+
     public static <T> void propertiesFindInHelper(
             int limit,
             @NotNull IterableProvider P,
             @NotNull Iterable<T> xs,
             @NotNull Function<String, Optional<T>> read,
-            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn
+            @NotNull Function<String, Optional<Pair<T, Integer>>> findIn,
+            @NotNull Consumer<T> validate
     ) {
         for (String s : take(limit, P.strings())) {
             findIn.apply(s);
@@ -591,13 +622,32 @@ public strictfp class Testing {
             Pair<T, Integer> p = op.get();
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
+            validate.accept(p.a);
+            //noinspection ConstantConditions
             assertTrue(s, p.b >= 0 && p.b < s.length());
             String before = take(p.b, s);
             assertFalse(s, findIn.apply(before).isPresent());
+            //noinspection ConstantConditions
             String during = p.a.toString();
             assertTrue(s, s.substring(p.b).startsWith(during));
             String after = drop(p.b + during.length(), s);
             assertTrue(s, after.isEmpty() || !read.apply(during + head(after)).isPresent());
+        }
+    }
+
+    public static <T> void propertiesToStringHelper(
+            int limit,
+            @NotNull String usedChars,
+            @NotNull Iterable<T> xs,
+            @NotNull Function<String,
+            Optional<T>> read
+    ) {
+        for (T x : take(limit, xs)) {
+            String s = x.toString();
+            assertTrue(x, isSubsetOf(s, usedChars));
+            Optional<T> ox = read.apply(s);
+            assertTrue(x, ox.isPresent());
+            assertEquals(x, ox.get(), x);
         }
     }
 }

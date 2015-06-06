@@ -25,6 +25,7 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("ConstantConditions")
 public class BinaryFractionProperties {
     private static int LIMIT;
+    private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static IterableProvider P;
 
     private static void initialize(String name) {
@@ -60,6 +61,9 @@ public class BinaryFractionProperties {
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
+            propertiesRead();
+            propertiesFindIn();
+            propertiesToString();
         }
         System.out.println("Done");
     }
@@ -324,5 +328,34 @@ public class BinaryFractionProperties {
                     p
             );
         }
+    }
+
+    private static void propertiesRead() {
+        initialize("read(String)");
+        propertiesReadHelper(
+                LIMIT,
+                P,
+                BINARY_FRACTION_CHARS,
+                P.binaryFractions(),
+                BinaryFraction::read,
+                BinaryFraction::validate
+        );
+    }
+
+    private static void propertiesFindIn() {
+        initialize("findIn(String)");
+        propertiesFindInHelper(
+                LIMIT,
+                P,
+                P.binaryFractions(),
+                BinaryFraction::read,
+                BinaryFraction::findIn,
+                BinaryFraction::validate
+        );
+    }
+
+    private static void propertiesToString() {
+        initialize("toString()");
+        propertiesToStringHelper(LIMIT, BINARY_FRACTION_CHARS, P.binaryFractions(), BinaryFraction::read);
     }
 }
