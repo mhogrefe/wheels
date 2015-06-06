@@ -490,6 +490,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @return the wrapped {@code BinaryFraction} represented by {@code s}, or {@code empty} if {@code s} is invalid.
      */
     public static @NotNull Optional<BinaryFraction> read(@NotNull String s) {
+        if (s.equals("0")) return Optional.of(ZERO);
+        if (s.equals("1")) return Optional.of(ONE);
         return Readers.genericRead(
             t -> {
                 int leftShiftIndex = s.indexOf(" << ");

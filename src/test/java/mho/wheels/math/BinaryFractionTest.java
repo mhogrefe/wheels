@@ -271,6 +271,146 @@ public class BinaryFractionTest {
         isInteger_helper("-5 >> 20", false);
     }
 
+    private static void add_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
+        aeq(read(x).get().add(read(y).get()), output);
+    }
+
+    @Test
+    public void testAdd() {
+        add_helper("0", "0", "0");
+        add_helper("0", "1", "1");
+        add_helper("0", "11", "11");
+        add_helper("0", "5 << 20", "5 << 20");
+        add_helper("0", "5 >> 20", "5 >> 20");
+        add_helper("0", "-1", "-1");
+        add_helper("0", "-11", "-11");
+        add_helper("0", "-5 << 20", "-5 << 20");
+        add_helper("0", "-5 >> 20", "-5 >> 20");
+        add_helper("1", "0", "1");
+        add_helper("1", "1", "1 << 1");
+        add_helper("1", "11", "3 << 2");
+        add_helper("1", "5 << 20", "5242881");
+        add_helper("1", "5 >> 20", "1048581 >> 20");
+        add_helper("1", "-1", "0");
+        add_helper("1", "-11", "-5 << 1");
+        add_helper("1", "-5 << 20", "-5242879");
+        add_helper("1", "-5 >> 20", "1048571 >> 20");
+        add_helper("11", "0", "11");
+        add_helper("11", "1", "3 << 2");
+        add_helper("11", "11", "11 << 1");
+        add_helper("11", "5 << 20", "5242891");
+        add_helper("11", "5 >> 20", "11534341 >> 20");
+        add_helper("11", "-1", "5 << 1");
+        add_helper("11", "-11", "0");
+        add_helper("11", "-5 << 20", "-5242869");
+        add_helper("11", "-5 >> 20", "11534331 >> 20");
+        add_helper("5 << 20", "0", "5 << 20");
+        add_helper("5 << 20", "1", "5242881");
+        add_helper("5 << 20", "11", "5242891");
+        add_helper("5 << 20", "5 << 20", "5 << 21");
+        add_helper("5 << 20", "5 >> 20", "5497558138885 >> 20");
+        add_helper("5 << 20", "-1", "5242879");
+        add_helper("5 << 20", "-11", "5242869");
+        add_helper("5 << 20", "-5 << 20", "0");
+        add_helper("5 << 20", "-5 >> 20", "5497558138875 >> 20");
+        add_helper("5 >> 20", "0", "5 >> 20");
+        add_helper("5 >> 20", "1", "1048581 >> 20");
+        add_helper("5 >> 20", "11", "11534341 >> 20");
+        add_helper("5 >> 20", "5 << 20", "5497558138885 >> 20");
+        add_helper("5 >> 20", "5 >> 20", "5 >> 19");
+        add_helper("5 >> 20", "-1", "-1048571 >> 20");
+        add_helper("5 >> 20", "-11", "-11534331 >> 20");
+        add_helper("5 >> 20", "-5 << 20", "-5497558138875 >> 20");
+        add_helper("5 >> 20", "-5 >> 20", "0");
+        add_helper("-1", "0", "-1");
+        add_helper("-1", "1", "0");
+        add_helper("-1", "11", "5 << 1");
+        add_helper("-1", "5 << 20", "5242879");
+        add_helper("-1", "5 >> 20", "-1048571 >> 20");
+        add_helper("-1", "-1", "-1 << 1");
+        add_helper("-1", "-11", "-3 << 2");
+        add_helper("-1", "-5 << 20", "-5242881");
+        add_helper("-1", "-5 >> 20", "-1048581 >> 20");
+        add_helper("-11", "0", "-11");
+        add_helper("-11", "1", "-5 << 1");
+        add_helper("-11", "11", "0");
+        add_helper("-11", "5 << 20", "5242869");
+        add_helper("-11", "5 >> 20", "-11534331 >> 20");
+        add_helper("-11", "-1", "-3 << 2");
+        add_helper("-11", "-11", "-11 << 1");
+        add_helper("-11", "-5 << 20", "-5242891");
+        add_helper("-11", "-5 >> 20", "-11534341 >> 20");
+        add_helper("-5 << 20", "0", "-5 << 20");
+        add_helper("-5 << 20", "1", "-5242879");
+        add_helper("-5 << 20", "11", "-5242869");
+        add_helper("-5 << 20", "5 << 20", "0");
+        add_helper("-5 << 20", "5 >> 20", "-5497558138875 >> 20");
+        add_helper("-5 << 20", "-1", "-5242881");
+        add_helper("-5 << 20", "-11", "-5242891");
+        add_helper("-5 << 20", "-5 << 20", "-5 << 21");
+        add_helper("-5 << 20", "-5 >> 20", "-5497558138885 >> 20");
+        add_helper("-5 >> 20", "0", "-5 >> 20");
+        add_helper("-5 >> 20", "1", "1048571 >> 20");
+        add_helper("-5 >> 20", "11", "11534331 >> 20");
+        add_helper("-5 >> 20", "5 << 20", "5497558138875 >> 20");
+        add_helper("-5 >> 20", "5 >> 20", "0");
+        add_helper("-5 >> 20", "-1", "-1048581 >> 20");
+        add_helper("-5 >> 20", "-11", "-11534341 >> 20");
+        add_helper("-5 >> 20", "-5 << 20", "-5497558138885 >> 20");
+        add_helper("-5 >> 20", "-5 >> 20", "-5 >> 19");
+    }
+
+    private static void negate_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().negate(), output);
+    }
+
+    @Test
+    public void testNegate() {
+        negate_helper("0", "0");
+        negate_helper("1", "-1");
+        negate_helper("11", "-11");
+        negate_helper("5 << 20", "-5 << 20");
+        negate_helper("5 >> 20", "-5 >> 20");
+        negate_helper("-1", "1");
+        negate_helper("-11", "11");
+        negate_helper("-5 << 20", "5 << 20");
+        negate_helper("-5 >> 20", "5 >> 20");
+    }
+
+    private static void abs_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().abs(), output);
+    }
+
+    @Test
+    public void testAbs() {
+        abs_helper("0", "0");
+        abs_helper("1", "1");
+        abs_helper("11", "11");
+        abs_helper("5 << 20", "5 << 20");
+        abs_helper("5 >> 20", "5 >> 20");
+        abs_helper("-1", "1");
+        abs_helper("-11", "11");
+        abs_helper("-5 << 20", "5 << 20");
+        abs_helper("-5 >> 20", "5 >> 20");
+    }
+
+    private static void signum_helper(@NotNull String input, int signum) {
+        aeq(read(input).get().signum(), signum);
+    }
+
+    @Test
+    public void testSignum() {
+        signum_helper("0", 0);
+        signum_helper("1", 1);
+        signum_helper("11", 1);
+        signum_helper("5 << 20", 1);
+        signum_helper("5 >> 20", 1);
+        signum_helper("-1", -1);
+        signum_helper("-11", -1);
+        signum_helper("-5 << 20", -1);
+        signum_helper("-5 >> 20", -1);
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(
