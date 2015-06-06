@@ -313,24 +313,15 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     public @NotNull BinaryFraction add(@NotNull BinaryFraction that) {
         if (this == ZERO) return that;
         if (that == ZERO) return this;
-        BigInteger sumMantissa;
-        int sumExponent;
         switch (Ordering.compare(exponent, that.exponent)) {
             case EQ:
                 return of(mantissa.add(that.mantissa), exponent);
             case LT:
-                sumMantissa = that.mantissa.shiftLeft(that.exponent - exponent).add(mantissa);
-                sumExponent = exponent;
-                break;
+                return of(that.mantissa.shiftLeft(that.exponent - exponent).add(mantissa), exponent);
             case GT:
-                sumMantissa = mantissa.shiftLeft(exponent - that.exponent).add(that.mantissa);
-                sumExponent = that.exponent;
-                break;
+                return of(mantissa.shiftLeft(exponent - that.exponent).add(that.mantissa), that.exponent);
             default: throw new IllegalStateException("unreachable");
         }
-        return sumMantissa.equals(BigInteger.ONE) && exponent == 0 ?
-                ONE :
-                new BinaryFraction(sumMantissa, sumExponent);
     }
 
     /**
@@ -392,24 +383,15 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     public @NotNull BinaryFraction subtract(@NotNull BinaryFraction that) {
         if (this == ZERO) return that.negate();
         if (that == ZERO) return this;
-        BigInteger differenceMantissa;
-        int differenceExponent;
         switch (Ordering.compare(exponent, that.exponent)) {
             case EQ:
                 return of(mantissa.subtract(that.mantissa), exponent);
             case LT:
-                differenceMantissa = that.mantissa.shiftLeft(that.exponent - exponent).subtract(mantissa);
-                differenceExponent = exponent;
-                break;
+                return of(mantissa.subtract(that.mantissa.shiftLeft(that.exponent - exponent)), exponent);
             case GT:
-                differenceMantissa = mantissa.shiftLeft(exponent - that.exponent).subtract(that.mantissa);
-                differenceExponent = that.exponent;
-                break;
+                return of(mantissa.shiftLeft(exponent - that.exponent).subtract(that.mantissa), that.exponent);
             default: throw new IllegalStateException("unreachable");
         }
-        return differenceMantissa.equals(BigInteger.ONE) && exponent == 0 ?
-                ONE :
-                new BinaryFraction(differenceMantissa, differenceExponent);
     }
 
     /**

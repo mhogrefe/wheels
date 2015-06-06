@@ -4,19 +4,20 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.misc.BigDecimalUtils;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.math.BinaryFraction.of;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.ordering.Ordering.compare;
 import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
@@ -50,6 +51,12 @@ public class BinaryFractionProperties {
             propertiesOf_double();
             propertiesBigDecimalValue();
             propertiesIsInteger();
+            propertiesAdd();
+            propertiesNegate();
+            propertiesAbs();
+            propertiesSignum();
+            propertiesSubtract();
+            compareImplementationsSubtract();
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
@@ -115,8 +122,8 @@ public class BinaryFractionProperties {
             BinaryFraction bf = of(i);
             bf.validate();
             assertTrue(i, bf.isInteger());
-            assertTrue(i, Ordering.ge(bf, of(BigInteger.ONE.shiftLeft(31).negate())));
-            assertTrue(i, Ordering.lt(bf, of(BigInteger.ONE.shiftLeft(31))));
+            assertTrue(i, ge(bf, of(BigInteger.ONE.shiftLeft(31).negate())));
+            assertTrue(i, lt(bf, of(BigInteger.ONE.shiftLeft(31))));
         }
 
         for (int i : take(LIMIT, map(j -> 2 * j + 1, P.integers()))) {
@@ -171,6 +178,128 @@ public class BinaryFractionProperties {
         //todo floor
     }
 
+    private static void propertiesAdd() {
+        initialize("add(BinaryFraction)");
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::add,
+                    (x, y) -> x.add(y).stripTrailingZeros(),
+                    p
+            );
+            BinaryFraction sum = p.a.add(p.b);
+            sum.validate();
+            commutative(BinaryFraction::add, p);
+            inverses(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            assertEquals(bf.toString(), ZERO.add(bf), bf);
+            assertEquals(bf.toString(), bf.add(ZERO), bf);
+            assertTrue(bf.toString(), bf.add(bf.negate()) == ZERO);
+        }
+
+        for (Triple<BinaryFraction, BinaryFraction, BinaryFraction> t : take(LIMIT, P.triples(P.binaryFractions()))) {
+            associative(BinaryFraction::add, t);
+        }
+    }
+
+    private static void propertiesNegate() {
+        initialize("negate()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::negate,
+                    BigDecimal::negate,
+                    bf
+            );
+            BinaryFraction negative = bf.negate();
+            negative.validate();
+            isInvolution(BinaryFraction::negate, bf);
+            assertTrue(bf.toString(), bf.add(negative) == ZERO);
+        }
+
+        //todo fix nonzero generation
+        for (BinaryFraction bf : take(LIMIT, filter(c -> c != ZERO, P.binaryFractions()))) {
+            assertNotEquals(bf.toString(), bf, bf.negate());
+        }
+    }
+
+    private static void propertiesAbs() {
+        initialize("abs()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::abs,
+                    BigDecimal::abs,
+                    bf
+            );
+            BinaryFraction abs = bf.abs();
+            abs.validate();
+            idempotent(BinaryFraction::abs, bf);
+            assertNotEquals(bf.toString(), abs.signum(), -1);
+            assertTrue(bf.toString(), ge(abs, ZERO));
+        }
+
+        //todo positive fixpoints
+    }
+
+    private static void propertiesSignum() {
+        initialize("signum()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    Function.identity(),
+                    BinaryFraction::signum,
+                    BigDecimal::signum,
+                    bf
+            );
+            int signum = bf.signum();
+            assertEquals(bf.toString(), signum, compare(bf, ZERO).toInt());
+            assertTrue(bf.toString(), signum == -1 || signum == 0 || signum == 1);
+        }
+    }
+
+    private static @NotNull BinaryFraction subtract_simplest(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        return a.add(b.negate());
+    }
+
+    private static void propertiesSubtract() {
+        initialize("subtract(BinaryFraction)");
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::subtract,
+                    (x, y) -> x.subtract(y).stripTrailingZeros(),
+                    p
+            );
+            BinaryFraction difference = p.a.subtract(p.b);
+            difference.validate();
+            assertEquals(p.toString(), difference, subtract_simplest(p.a, p.b));
+            antiCommutative(BinaryFraction::subtract, BinaryFraction::negate, p);
+            inverses(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            assertEquals(bf.toString(), ZERO.subtract(bf), bf.negate());
+            assertEquals(bf.toString(), bf.subtract(ZERO), bf);
+            assertTrue(bf.toString(), bf.subtract(bf) == ZERO);
+        }
+    }
+
+    private static void compareImplementationsSubtract() {
+        Map<String, Function<Pair<BinaryFraction, BinaryFraction>, BinaryFraction>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> subtract_simplest(p.a, p.b));
+        functions.put("standard", p -> p.a.subtract(p.b));
+        compareImplementations("subtract(BinaryFraction)", take(LIMIT, P.pairs(P.binaryFractions())), functions);
+    }
+
     private static void propertiesEquals() {
         initialize("equals(Object)");
         propertiesEqualsHelper(LIMIT, P, IterableProvider::binaryFractions);
@@ -186,7 +315,14 @@ public class BinaryFractionProperties {
         propertiesCompareToHelper(LIMIT, P, IterableProvider::binaryFractions);
 
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
-            assertEquals(p, compare(p.a, p.b), compare(p.a.bigDecimalValue(), p.b.bigDecimalValue()));
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    Function.identity(),
+                    BinaryFraction::compareTo,
+                    BigDecimal::compareTo,
+                    p
+            );
         }
     }
 }

@@ -253,11 +253,11 @@ public strictfp class Testing {
     }
 
     public static <T> void isInvolution(@NotNull Function<T, T> f, @NotNull T x) {
-        assertEquals(x, f.apply(f.apply(x)), x);
+        assertEquals(x, f.andThen(f).apply(x), x);
     }
 
     public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @NotNull A x) {
-        assertEquals(x, g.apply(f.apply(x)), x);
+        assertEquals(x, f.andThen(g).apply(x), x);
     }
 
     public static <A, B> void commutative(@NotNull BiFunction<A, A, B> f, @NotNull Pair<A, A> p) {
@@ -268,11 +268,32 @@ public strictfp class Testing {
             @NotNull BiFunction<A, A, B> f,
             @NotNull Function<B, B> negate,
             @NotNull Pair<A, A> p) {
-        assertEquals(p, f.apply(p.a, p.b), negate.apply(f.apply(p.b, p.a)));
+        assertEquals(p, f.apply(p.a, p.b), f.andThen(negate).apply(p.b, p.a));
     }
 
     public static <T> void associative(@NotNull BiFunction<T, T, T> f, @NotNull Triple<T, T, T> t) {
         assertEquals(t, f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
+    }
+
+    public static <A, B, MA, MB> void homomorphic(
+            @NotNull Function<A, MA> domainMap,
+            @NotNull Function<B, MB> rangeMap,
+            @NotNull Function<A, B> f,
+            @NotNull Function<MA, MB> mf,
+            A x
+    ) {
+        assertEquals(x, f.andThen(rangeMap).apply(x), domainMap.andThen(mf).apply(x));
+    }
+
+    public static <A, B, C, MA, MB, MC> void homomorphic(
+            @NotNull Function<A, MA> domainMapA,
+            @NotNull Function<B, MB> domainMapB,
+            @NotNull Function<C, MC> rangeMap,
+            @NotNull BiFunction<A, B, C> f,
+            @NotNull BiFunction<MA, MB, MC> mf,
+            @NotNull Pair<A, B> p
+    ) {
+        assertEquals(p, f.andThen(rangeMap).apply(p.a, p.b), mf.apply(domainMapA.apply(p.a), domainMapB.apply(p.b)));
     }
 
     public static <T> void testEqualsHelper(@NotNull List<T> xs, @NotNull List<T> ys) {
