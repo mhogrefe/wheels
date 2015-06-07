@@ -558,6 +558,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         if (any(x -> x == null, xs)) {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
+        if (any(x -> x == ZERO, xs)) return ZERO;
         return of(
                 productBigInteger(map(BinaryFraction::getMantissa, xs)),
                 sumInteger(map(BinaryFraction::getExponent, xs))
