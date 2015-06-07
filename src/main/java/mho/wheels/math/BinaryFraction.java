@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -276,6 +278,24 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
+     * Converts {@code this} to a {@code BigInteger}. Throws an {@link java.lang.ArithmeticException} if {@code this}
+     * is not integral.
+     *
+     * <ul>
+     *  <li>{@code this} must be an integer.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return the {@code BigInteger} value of {@code this}
+     */
+    public @NotNull BigInteger bigIntegerValueExact() {
+        if (exponent < 0) {
+            throw new ArithmeticException("this must be an integer. This: " + this);
+        }
+        return mantissa.shiftLeft(exponent);
+    }
+
+    /**
      * Converts {@code this} to a {@code BigDecimal} with full precision.
      *
      * <ul>
@@ -497,6 +517,29 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         } else {
             return new BinaryFraction(mantissa, (int) shiftedExponent);
         }
+    }
+
+    /**
+     * Returns the sum of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>The result may be any {@code BinaryFraction}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @return Σxs
+     */
+    public static @NotNull BinaryFraction sum(@NotNull Iterable<BinaryFraction> xs) {
+        if (any(x -> x == null, xs)) {
+            throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
+        }
+        if (isEmpty(xs)) return ZERO;
+        @SuppressWarnings("ConstantConditions") int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
+        return of(
+                sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),
+                smallestExponent
+        );
     }
 
     /**
