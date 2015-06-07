@@ -456,7 +456,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         }
         long shiftedExponent = (long) exponent + bits;
         if (shiftedExponent > Integer.MAX_VALUE) {
-            throw new ArithmeticException("");
+            throw new ArithmeticException("The sum of bits and the exponent of this must be less than 2^31 and" +
+                    " greater than or equal to -2^31. this is " + this + " and bits is " + bits + ".");
         }
         if (mantissa.equals(BigInteger.ONE) && shiftedExponent == 0L) {
             return ONE;
@@ -487,7 +488,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         }
         long shiftedExponent = (long) exponent - bits;
         if (shiftedExponent < Integer.MIN_VALUE) {
-            throw new ArithmeticException("");
+            throw new ArithmeticException("bits subtracted from the exponent of this must be less than 2^31 and" +
+                    " greater than or equal to -2^31. this is " + this + " and bits is " + bits + ".");
         }
         if (mantissa.equals(BigInteger.ONE) && shiftedExponent == 0L) {
             return ONE;
