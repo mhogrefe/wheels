@@ -424,7 +424,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         if (that == ONE) return this;
         long productExponent = (long) exponent + that.exponent;
         if (productExponent > Integer.MAX_VALUE || productExponent < Integer.MIN_VALUE) {
-            throw new ArithmeticException("");
+            throw new ArithmeticException("The sum of the exponents of this and that must be less than 2^31 and" +
+                    " greater than or equal to -2^31.");
         }
         BigInteger productMantissa = mantissa.multiply(that.mantissa);
         if (productMantissa.equals(BigInteger.ONE) && productExponent == 0L) {
