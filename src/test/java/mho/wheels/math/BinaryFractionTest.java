@@ -364,7 +364,7 @@ public class BinaryFractionTest {
         add_helper("-5 >> 20", "-11", "-11534341 >> 20");
         add_helper("-5 >> 20", "-5 << 20", "-5497558138885 >> 20");
         add_helper("-5 >> 20", "-5 >> 20", "-5 >> 19");
-        add_fail_helper("1 << 2147483647", "1");
+        add_fail_helper("1 << 2147483647", "1 << 2147483647");
     }
 
     private static void negate_helper(@NotNull String input, @NotNull String output) {
@@ -512,7 +512,7 @@ public class BinaryFractionTest {
         subtract_helper("-5 >> 20", "-11", "11534331 >> 20");
         subtract_helper("-5 >> 20", "-5 << 20", "5497558138875 >> 20");
         subtract_helper("-5 >> 20", "-5 >> 20", "0");
-        subtract_fail_helper("1 << 2147483647", "-1");
+        subtract_fail_helper("1 << 2147483647", "-1 << 2147483647");
     }
 
     private static void multiply_helper(@NotNull String x, @NotNull String y, @NotNull String output) {
