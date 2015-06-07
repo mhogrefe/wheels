@@ -587,7 +587,8 @@ public strictfp class Testing {
             @NotNull String usedChars,
             @NotNull Iterable<T> xs,
             @NotNull Function<String, Optional<T>> read,
-            @NotNull Consumer<T> validate
+            @NotNull Consumer<T> validate,
+            boolean denseInUsedCharString
     ) {
         for (String s : take(limit, P.strings())) {
             read.apply(s);
@@ -598,10 +599,12 @@ public strictfp class Testing {
             assertEquals(x, ox.get(), x);
         }
 
-        Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(P.uniformSample(usedChars)));
-        for (String s : take(limit, ss)) {
-            Optional<T> ox = read.apply(s);
-            validate.accept(ox.get());
+        if (denseInUsedCharString) {
+            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(P.uniformSample(usedChars)));
+            for (String s : take(limit, ss)) {
+                Optional<T> ox = read.apply(s);
+                validate.accept(ox.get());
+            }
         }
     }
 

@@ -58,6 +58,11 @@ public class BinaryFractionProperties {
             propertiesSignum();
             propertiesSubtract();
             compareImplementationsSubtract();
+            propertiesMultiply();
+            propertiesShiftLeft();
+            compareImplementationsShiftLeft();
+            propertiesShiftRight();
+            compareImplementationsShiftRight();
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
@@ -116,7 +121,7 @@ public class BinaryFractionProperties {
         }
 
         for (BigInteger i : take(LIMIT, map(j -> j.shiftLeft(1).add(BigInteger.ONE), P.bigIntegers()))) {
-            assertEquals(i.toString(), of(i).getMantissa(), i);
+            assertEquals(i, of(i).getMantissa(), i);
         }
     }
 
@@ -211,9 +216,9 @@ public class BinaryFractionProperties {
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            assertEquals(bf.toString(), ZERO.add(bf), bf);
-            assertEquals(bf.toString(), bf.add(ZERO), bf);
-            assertTrue(bf.toString(), bf.add(bf.negate()) == ZERO);
+            fixedPoint(ZERO::add, bf);
+            fixedPoint(e -> e.add(ZERO), bf);
+            assertTrue(bf, bf.add(bf.negate()) == ZERO);
         }
 
         for (Triple<BinaryFraction, BinaryFraction, BinaryFraction> t : take(LIMIT, P.triples(P.binaryFractions()))) {
@@ -236,12 +241,12 @@ public class BinaryFractionProperties {
             BinaryFraction negative = bf.negate();
             negative.validate();
             isInvolution(BinaryFraction::negate, bf);
-            assertTrue(bf.toString(), bf.add(negative) == ZERO);
+            assertTrue(bf, bf.add(negative) == ZERO);
         }
 
         //todo fix nonzero generation
         for (BinaryFraction bf : take(LIMIT, filter(c -> c != ZERO, P.binaryFractions()))) {
-            assertNotEquals(bf.toString(), bf, bf.negate());
+            assertNotEquals(bf, bf, bf.negate());
         }
     }
 
@@ -258,8 +263,8 @@ public class BinaryFractionProperties {
             BinaryFraction abs = bf.abs();
             abs.validate();
             idempotent(BinaryFraction::abs, bf);
-            assertNotEquals(bf.toString(), abs.signum(), -1);
-            assertTrue(bf.toString(), ge(abs, ZERO));
+            assertNotEquals(bf, abs.signum(), -1);
+            assertTrue(bf, ge(abs, ZERO));
         }
 
         //todo positive fixpoints
@@ -276,8 +281,8 @@ public class BinaryFractionProperties {
                     bf
             );
             int signum = bf.signum();
-            assertEquals(bf.toString(), signum, compare(bf, ZERO).toInt());
-            assertTrue(bf.toString(), signum == -1 || signum == 0 || signum == 1);
+            assertEquals(bf, signum, compare(bf, ZERO).toInt());
+            assertTrue(bf, signum == -1 || signum == 0 || signum == 1);
         }
     }
 
@@ -309,15 +314,15 @@ public class BinaryFractionProperties {
             );
             BinaryFraction difference = p.a.subtract(p.b);
             difference.validate();
-            assertEquals(p.toString(), difference, subtract_simplest(p.a, p.b));
+            assertEquals(p, difference, subtract_simplest(p.a, p.b));
             antiCommutative(BinaryFraction::subtract, BinaryFraction::negate, p);
             inverses(bf -> bf.add(p.b), (BinaryFraction bf) -> bf.subtract(p.b), p.a);
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            assertEquals(bf.toString(), ZERO.subtract(bf), bf.negate());
-            assertEquals(bf.toString(), bf.subtract(ZERO), bf);
-            assertTrue(bf.toString(), bf.subtract(bf) == ZERO);
+            assertEquals(bf, ZERO.subtract(bf), bf.negate());
+            fixedPoint(e -> e.subtract(ZERO), bf);
+            assertTrue(bf, bf.subtract(bf) == ZERO);
         }
 
         //overflow and underflow not tested
@@ -328,6 +333,164 @@ public class BinaryFractionProperties {
         functions.put("simplest", p -> subtract_simplest(p.a, p.b));
         functions.put("standard", p -> p.a.subtract(p.b));
         compareImplementations("subtract(BinaryFraction)", take(LIMIT, P.pairs(P.binaryFractions())), functions);
+    }
+
+    private static void propertiesMultiply() {
+        initialize("multiply(BinaryFraction)");
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    long productExponent = (long) p.a.getExponent() + p.b.getExponent();
+                    return productExponent <= Integer.MAX_VALUE && productExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    BinaryFraction::bigDecimalValue,
+                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::multiply,
+                    (x, y) -> x.multiply(y).stripTrailingZeros(),
+                    p
+            );
+            BinaryFraction product = p.a.multiply(p.b);
+            product.validate();
+            commutative(BinaryFraction::multiply, p);
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            assertTrue(bf, bf.multiply(ZERO) == ZERO);
+            assertTrue(bf, ZERO.multiply(bf) == ZERO);
+            fixedPoint(ONE::multiply, bf);
+            fixedPoint(e -> e.multiply(ONE), bf);
+        }
+
+        //overflow and underflow not tested
+    }
+
+    private static @NotNull BinaryFraction shiftLeft_simplest(@NotNull BinaryFraction bf, int bits) {
+        return bf.multiply(of(BigInteger.ONE, bits));
+    }
+
+    private static void propertiesShiftLeft() {
+        initialize("shiftLeft(int)");
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() + p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    Function.identity(),
+                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::shiftLeft,
+                    (x, bits) -> BigDecimalUtils.shiftLeft(x, bits).stripTrailingZeros(),
+                    p
+            );
+            homomorphic(
+                    BinaryFraction::negate,
+                    Function.identity(),
+                    BinaryFraction::negate,
+                    BinaryFraction::shiftLeft,
+                    BinaryFraction::shiftLeft,
+                    p
+            );
+            BinaryFraction shifted = p.a.shiftLeft(p.b);
+            shifted.validate();
+            assertEquals(p, shifted, shiftLeft_simplest(p.a, p.b));
+            assertEquals(p, shifted, p.a.shiftRight(-p.b));
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            assertEquals(bf, bf.shiftLeft(0), bf);
+        }
+
+        ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() + p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.naturalIntegersGeometric())
+        );
+        for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
+            assertEquals(p, p.a.shiftLeft(p.b), p.a.multiply(ONE.shiftLeft(p.b)));
+        }
+
+        //overflow and underflow not tested
+    }
+
+    private static void compareImplementationsShiftLeft() {
+        Map<String, Function<Pair<BinaryFraction, Integer>, BinaryFraction>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> shiftLeft_simplest(p.a, p.b));
+        functions.put("standard", p -> p.a.shiftLeft(p.b));
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() + p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        compareImplementations("shiftLeft(int)", take(LIMIT, ps), functions);
+    }
+
+    private static @NotNull BinaryFraction shiftRight_simplest(@NotNull BinaryFraction bf, int bits) {
+        return bf.multiply(of(BigInteger.ONE, -bits));
+    }
+
+    private static void propertiesShiftRight() {
+        initialize("shiftRight(int)");
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() - p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
+            homomorphic(
+                    BinaryFraction::bigDecimalValue,
+                    Function.identity(),
+                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::shiftRight,
+                    (x, bits) -> BigDecimalUtils.shiftRight(x, bits).stripTrailingZeros(),
+                    p
+            );
+            homomorphic(
+                    BinaryFraction::negate,
+                    Function.identity(),
+                    BinaryFraction::negate,
+                    BinaryFraction::shiftRight,
+                    BinaryFraction::shiftRight,
+                    p
+            );
+            BinaryFraction shifted = p.a.shiftRight(p.b);
+            shifted.validate();
+            assertEquals(p, shifted, shiftRight_simplest(p.a, p.b));
+            assertEquals(p, shifted, p.a.shiftLeft(-p.b));
+        }
+
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            assertEquals(bf, bf.shiftRight(0), bf);
+        }
+
+        //overflow and underflow not tested
+    }
+
+    private static void compareImplementationsShiftRight() {
+        Map<String, Function<Pair<BinaryFraction, Integer>, BinaryFraction>> functions = new LinkedHashMap<>();
+        functions.put("simplest", p -> shiftRight_simplest(p.a, p.b));
+        functions.put("standard", p -> p.a.shiftRight(p.b));
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() - p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        compareImplementations("shiftRight(int)", take(LIMIT, ps), functions);
     }
 
     private static void propertiesEquals() {
@@ -364,7 +527,8 @@ public class BinaryFractionProperties {
                 BINARY_FRACTION_CHARS,
                 P.binaryFractions(),
                 BinaryFraction::read,
-                BinaryFraction::validate
+                BinaryFraction::validate,
+                true
         );
     }
 
