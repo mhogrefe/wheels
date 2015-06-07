@@ -155,6 +155,48 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoMultiply() {
+        initialize();
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+                p -> {
+                    long productExponent = (long) p.a.getExponent() + p.b.getExponent();
+                    return productExponent <= Integer.MAX_VALUE && productExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions())
+        );
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, ps)) {
+            System.out.println("(" + p.a + ") * (" + p.b + ") = " + p.a.multiply(p.b));
+        }
+    }
+
+    private static void demoShiftLeft() {
+        initialize();
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() + p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
+            System.out.println("(" + p.a + ") << " + p.b + " = " + p.a.shiftLeft(p.b));
+        }
+    }
+
+    private static void demoShiftRight() {
+        initialize();
+        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+                p -> {
+                    long shiftedExponent = (long) p.a.getExponent() - p.b;
+                    return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
+                },
+                P.pairs(P.binaryFractions(), P.integersGeometric())
+        );
+        for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
+            System.out.println("(" + p.a + ") >> " + p.b + " = " + p.a.shiftRight(p.b));
+        }
+    }
+
     private static void demoEquals_BinaryFraction() {
         initialize();
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
