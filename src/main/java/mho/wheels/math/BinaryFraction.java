@@ -535,11 +535,58 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (isEmpty(xs)) return ZERO;
-        @SuppressWarnings("ConstantConditions") int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
+        @SuppressWarnings("ConstantConditions")
+        int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
         return of(
                 sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),
                 smallestExponent
         );
+    }
+
+    /**
+     * Returns the product of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     *
+     * <ul>
+     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>The result may be any {@code BinaryFraction}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @return Πxs
+     */
+    public static @NotNull BinaryFraction product(@NotNull Iterable<BinaryFraction> xs) {
+        if (any(x -> x == null, xs)) {
+            throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
+        }
+        return of(
+                productBigInteger(map(BinaryFraction::getMantissa, xs)),
+                sumInteger(map(BinaryFraction::getExponent, xs))
+        );
+    }
+
+    /**
+     * Returns the differences between successive {@code BinaryFraction}s in {@code xs}. If {@code xs} contains a
+     * single {@code BinaryFraction}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>The result is does not contain any nulls.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|–1
+     *
+     * @param xs an {@code Iterable} of {@code BinaryFraction}s.
+     * @return Δxs
+     */
+    public static @NotNull Iterable<BinaryFraction> delta(@NotNull Iterable<BinaryFraction> xs) {
+        if (isEmpty(xs)) {
+            throw new IllegalArgumentException("xs must not be empty.");
+        }
+        if (head(xs) == null) {
+            throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
+        }
+        return adjacentPairsWith((x, y) -> y.subtract(x), xs);
     }
 
     /**
