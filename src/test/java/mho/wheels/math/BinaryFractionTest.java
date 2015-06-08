@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -8,10 +9,13 @@ import org.junit.Test;
 import java.math.BigInteger;
 import java.util.List;
 
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.*;
 
 public class BinaryFractionTest {
+    private static final int TINY_LIMIT = 20;
+
     @Test
     public void testConstants() {
         aeq(ZERO, "0");
@@ -211,6 +215,30 @@ public class BinaryFractionTest {
         of_double_empty_helper(Double.POSITIVE_INFINITY);
         of_double_empty_helper(Double.NEGATIVE_INFINITY);
         of_double_empty_helper(Double.NaN);
+    }
+
+    private static void bigIntegerValueExact_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().bigIntegerValueExact(), output);
+    }
+
+    private static void bigIntegerValueExact_fail_helper(@NotNull String input) {
+        try {
+            read(input).get().bigIntegerValueExact();
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testBigIntegerValueExact() {
+        bigIntegerValueExact_helper("0", "0");
+        bigIntegerValueExact_helper("1", "1");
+        bigIntegerValueExact_helper("11", "11");
+        bigIntegerValueExact_helper("5 << 20", "5242880");
+        bigIntegerValueExact_helper("-1", "-1");
+        bigIntegerValueExact_helper("-11", "-11");
+        bigIntegerValueExact_helper("-5 << 20", "-5242880");
+        bigIntegerValueExact_fail_helper("5 >> 20");
+        bigIntegerValueExact_fail_helper("-5 >> 20");
     }
 
     private static void bigDecimalValue_helper(@NotNull String input, @NotNull String output) {
@@ -701,6 +729,81 @@ public class BinaryFractionTest {
         shiftRight_fail_helper("1 >> 2147483648", 1);
     }
 
+    private static void sum_helper(@NotNull String input, @NotNull String output) {
+        aeq(BinaryFraction.sum(readBinaryFractionList(input)), output);
+    }
+
+    private static void sum_null_helper(@NotNull String input) {
+        try {
+            sum(readBinaryFractionListWithNulls(input));
+            Assert.fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    private static void sum_arithmetic_helper(@NotNull String input) {
+        try {
+            sum(readBinaryFractionList(input));
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testSum() {
+        sum_helper("[]", "0");
+        sum_helper("[5 >> 20]", "5 >> 20");
+        sum_helper("[1, 11, 5 << 20, 5 >> 20]", "5497570721797 >> 20");
+        sum_helper("[1 << 2147483647, 1 << 2147483647, -1 << 2147483647]", "1 << 2147483647");
+        sum_helper("[-1 << 2147483647, -1 << 2147483647, 1 << 2147483647]", "-1 << 2147483647");
+        sum_null_helper("[1, 11, null, 5 >> 20]");
+        sum_arithmetic_helper("[1 << 2147483647, 1 << 2147483647]");
+        sum_arithmetic_helper("[-1 << 2147483647, -1 << 2147483647]");
+    }
+
+    private static void product_helper(@NotNull String input, @NotNull String output) {
+        aeq(BinaryFraction.product(readBinaryFractionList(input)), output);
+    }
+
+    private static void product_null_helper(@NotNull String input) {
+        try {
+            product(readBinaryFractionListWithNulls(input));
+            Assert.fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    private static void product_arithmetic_helper(@NotNull String input) {
+        try {
+            product(readBinaryFractionList(input));
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testProduct() {
+        product_helper("[]", "1");
+        product_helper("[5 >> 20]", "5 >> 20");
+        product_helper("[1, 11, 5 << 20, 5 >> 20]", "275");
+        product_helper("[1 << 2147483647, 1 << 1, 1 >> 1]", "1 << 2147483647");
+        product_helper("[1 >> 2147483648, 1 >> 1, 1 << 1]", "1 >> 2147483648");
+        product_null_helper("[1, 11, null, 5 >> 20]");
+        product_arithmetic_helper("[1 << 2147483647, 1 << 1]");
+        product_arithmetic_helper("[1 >> 2147483648, 1 >> 1]");
+    }
+
+    private static void delta_helper(@NotNull String input, @NotNull String output) {
+        aeqit(delta(readBinaryFractionList(input)), output);
+    }
+
+    @Test
+    public void testDelta() {
+        delta_helper("[5 >> 20]", "[]");
+        delta_helper("[1, 11, 5 << 20, 5 >> 20]", "[5 << 1, 5242869, -5497558138875 >> 20]");
+        aeqitLimit(TINY_LIMIT, delta(iterate(bf -> bf.shiftRight(1), ONE)),
+                "[-1 >> 1, -1 >> 2, -1 >> 3, -1 >> 4, -1 >> 5, -1 >> 6, -1 >> 7, -1 >> 8, -1 >> 9, -1 >> 10," +
+                " -1 >> 11, -1 >> 12, -1 >> 13, -1 >> 14, -1 >> 15, -1 >> 16, -1 >> 17, -1 >> 18, -1 >> 19," +
+                " -1 >> 20, ...]");
+        //todo failure
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(
@@ -803,5 +906,9 @@ public class BinaryFractionTest {
 
     private static @NotNull List<BinaryFraction> readBinaryFractionList(@NotNull String s) {
         return Readers.readList(BinaryFraction::read).apply(s).get();
+    }
+
+    private static @NotNull List<BinaryFraction> readBinaryFractionListWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(BinaryFraction::read).apply(s).get();
     }
 }

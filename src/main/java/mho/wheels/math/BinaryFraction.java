@@ -523,7 +523,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * Returns the sum of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 0 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
+     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
@@ -547,7 +548,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * Returns the product of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 1 is returned.
      *
      * <ul>
-     *  <li>{@code xs} must be finite and may not contain any nulls.</li>
+     *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
+     *  2<sup>31</sup> and greater than or equal to –2<sup>31</sup>.</li>
      *  <li>The result may be any {@code BinaryFraction}.</li>
      * </ul>
      *
@@ -561,7 +563,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
         if (any(x -> x == ZERO, xs)) return ZERO;
         return of(
                 productBigInteger(map(BinaryFraction::getMantissa, xs)),
-                sumInteger(map(BinaryFraction::getExponent, xs))
+                //BigInteger conversion protects against over- and underflow
+                sumBigInteger(map(x -> BigInteger.valueOf(x.getExponent()), xs)).intValueExact()
         );
     }
 
