@@ -95,6 +95,13 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoBigIntegerValueExact() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, map(BinaryFraction::of, P.bigIntegers()))) {
+            System.out.println("bigIntegerValueExact(" + bf + ") = " + bf.bigIntegerValueExact());
+        }
+    }
+
     private static void demoIsInteger() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
