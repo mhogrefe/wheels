@@ -574,7 +574,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must not be empty and may not contain any nulls.</li>
+     *  <li>{@code xs} must not be empty and may not contain any nulls. Subtracting adjacent values must not result in
+     *  overflow (see {@link BinaryFraction#subtract(BinaryFraction)}).</li>
      *  <li>The result is does not contain any nulls.</li>
      * </ul>
      *

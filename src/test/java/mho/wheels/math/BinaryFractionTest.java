@@ -793,6 +793,20 @@ public class BinaryFractionTest {
         aeqit(delta(readBinaryFractionList(input)), output);
     }
 
+    private static void delta_null_helper(@NotNull String input) {
+        try {
+            toList(delta(readBinaryFractionListWithNulls(input)));
+            Assert.fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    private static void delta_arithmetic_helper(@NotNull String input) {
+        try {
+            toList(delta(readBinaryFractionList(input)));
+            Assert.fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testDelta() {
         delta_helper("[5 >> 20]", "[]");
@@ -801,7 +815,9 @@ public class BinaryFractionTest {
                 "[-1 >> 1, -1 >> 2, -1 >> 3, -1 >> 4, -1 >> 5, -1 >> 6, -1 >> 7, -1 >> 8, -1 >> 9, -1 >> 10," +
                 " -1 >> 11, -1 >> 12, -1 >> 13, -1 >> 14, -1 >> 15, -1 >> 16, -1 >> 17, -1 >> 18, -1 >> 19," +
                 " -1 >> 20, ...]");
-        //todo failure
+        delta_null_helper("[1, 11, null, 5 >> 20]");
+        delta_arithmetic_helper("[-1 << 2147483647, 1 << 2147483647]");
+        delta_arithmetic_helper("[1 << 2147483647, -1 << 2147483647]");
     }
 
     @Test
