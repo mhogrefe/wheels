@@ -2,12 +2,14 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
@@ -19,6 +21,8 @@ public class BinaryFractionDemos {
     private static final boolean USE_RANDOM = false;
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static int LIMIT;
+    private static final int SMALL_LIMIT = 1000;
+    private static final int TINY_LIMIT = 20;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -194,6 +198,82 @@ public class BinaryFractionDemos {
         );
         for (Pair<BinaryFraction, Integer> p : take(LIMIT, ps)) {
             System.out.println("(" + p.a + ") >> " + p.b + " = " + p.a.shiftRight(p.b));
+        }
+    }
+
+    private static void demoSum() {
+        initialize();
+        Iterable<List<BinaryFraction>> bfss = filter(
+                xs -> {
+                    try {
+                        sum(xs);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.lists(P.binaryFractions())
+        );
+        for (List<BinaryFraction> rs : take(LIMIT, bfss)) {
+            String listString = tail(init(rs.toString()));
+            System.out.println("Σ(" + listString + ") = " + sum(rs));
+        }
+    }
+
+    private static void demoProduct() {
+        initialize();
+        Iterable<List<BinaryFraction>> bfss = filter(
+                xs -> {
+                    try {
+                        product(xs);
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.lists(P.binaryFractions())
+        );
+        for (List<BinaryFraction> rs : take(LIMIT, bfss)) {
+            String listString = tail(init(rs.toString()));
+            System.out.println("Π(" + listString + ") = " + product(rs));
+        }
+    }
+
+    private static void demoDelta_finite_Iterable() {
+        initialize();
+        Iterable<List<BinaryFraction>> bfss = filter(
+                xs -> {
+                    try {
+                        toList(delta(xs));
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                P.withScale(16).listsAtLeast(1, P.binaryFractions())
+        );
+        for (List<BinaryFraction> rs : take(SMALL_LIMIT, bfss)) {
+            String listString = tail(init(rs.toString()));
+            System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(delta(rs)));
+        }
+    }
+
+    private static void demoDelta_infinite_Iterable() {
+        initialize();
+        Iterable<Iterable<BinaryFraction>> bfss = filter(
+                xs -> {
+                    try {
+                        toList(take(TINY_LIMIT, delta(xs)));
+                        return true;
+                    } catch (ArithmeticException e) {
+                        return false;
+                    }
+                },
+                map(IterableUtils::cycle, P.listsAtLeast(1, P.binaryFractions()))
+        );
+        for (Iterable<BinaryFraction> rs : take(SMALL_LIMIT, bfss)) {
+            String listString = tail(init(IterableUtils.toString(TINY_LIMIT, rs)));
+            System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(rs)));
         }
     }
 

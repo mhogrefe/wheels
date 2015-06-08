@@ -14,8 +14,8 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
-    private static final int SMALL_LIMIT = 1000;
     private static int LIMIT;
+    private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
 
     private static void initialize() {

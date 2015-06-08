@@ -521,6 +521,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
 
     /**
      * Returns the sum of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 0 is returned.
+     * A correct result will be returned as long as the result doesn't overflow, even if intermediate sums would.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
@@ -545,7 +546,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
-     * Returns the product of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 1 is returned.
+     * Returns the product of all the {@code BinaryFraction}s in {@code xs}. If {@code xs} is empty, 1 is returned. A
+     * correct result will be returned as long as the result doesn't overflow, even if intermediate products would.
      *
      * <ul>
      *  <li>{@code xs} must be finite and may not contain any nulls. The result must have an exponent less than
