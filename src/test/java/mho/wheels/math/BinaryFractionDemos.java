@@ -241,6 +241,20 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoFloor() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("floor(" + bf + ") = " + bf.floor());
+        }
+    }
+
+    private static void demoCeiling() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("ceiling(" + bf + ") = " + bf.ceiling());
+        }
+    }
+
     private static void demoEquals_BinaryFraction() {
         initialize();
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
