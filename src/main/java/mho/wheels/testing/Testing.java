@@ -534,11 +534,11 @@ public strictfp class Testing {
             @NotNull IterableProvider P,
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
-            @NotNull BiFunction<A, A, B> f,
+            @NotNull BiFunction<A, A, B> subtract,
             @NotNull Function<Iterable<A>, Iterable<B>> deltaF,
             @NotNull Consumer<B> validate
     ) {
-        propertiesDeltaHelperClean(limit, P, xs, negate, f, deltaF, validate, x -> x);
+        propertiesDeltaHelperClean(limit, P, xs, negate, subtract, deltaF, validate, x -> x);
     }
 
     public static <A, B> void propertiesDeltaHelperClean(

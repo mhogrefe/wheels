@@ -66,6 +66,7 @@ public class BinaryFractionProperties {
             compareImplementationsShiftRight();
             propertiesSum();
             propertiesProduct();
+            propertiesDelta();
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
@@ -497,6 +498,7 @@ public class BinaryFractionProperties {
     }
 
     private static void propertiesSum() {
+        initialize("sum(Iterable<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -519,6 +521,7 @@ public class BinaryFractionProperties {
     }
 
     private static void propertiesProduct() {
+        initialize("product(Iterable<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
                 P,
@@ -535,6 +538,29 @@ public class BinaryFractionProperties {
                     x -> x.bigDecimalValue().stripTrailingZeros(),
                     BinaryFraction::product,
                     xs -> IterableUtils.productBigDecimal(xs).stripTrailingZeros(),
+                    bfs
+            );
+        }
+    }
+
+    private static void propertiesDelta() {
+        initialize("delta(Iterable<BinaryFraction>)");
+        propertiesDeltaHelper(
+                LIMIT,
+                P,
+                P.binaryFractions(),
+                BinaryFraction::negate,
+                BinaryFraction::subtract,
+                BinaryFraction::delta,
+                BinaryFraction::validate
+        );
+
+        for (List<BinaryFraction> bfs : take(LIMIT, P.listsAtLeast(1, P.binaryFractions()))) {
+            homomorphic(
+                    xs -> map(BinaryFraction::bigDecimalValue, xs),
+                    deltas -> toList(map(delta -> delta.bigDecimalValue().stripTrailingZeros(), deltas)),
+                    BinaryFraction::delta,
+                    bds -> toList(map(BigDecimal::stripTrailingZeros, IterableUtils.deltaBigDecimal(bds))),
                     bfs
             );
         }
