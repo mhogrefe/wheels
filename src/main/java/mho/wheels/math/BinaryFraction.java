@@ -621,7 +621,8 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      * @return ⌈{@code this}⌉
      */
     public @NotNull BigInteger ceiling() {
-        return isInteger() ? bigIntegerValueExact() : mantissa.shiftLeft(exponent).add(BigInteger.ONE);
+        BigInteger shifted = mantissa.shiftLeft(exponent);
+        return exponent >= 0 ? shifted : shifted.add(BigInteger.ONE);
     }
 
     /**
