@@ -234,7 +234,10 @@ public class BinaryFractionDemos {
 
     private static void demoDelta_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<BinaryFraction>> bfss = map(IterableUtils::cycle, P.listsAtLeast(1, P.binaryFractions()));
+        Iterable<Iterable<BinaryFraction>> bfss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.binaryFractions())))
+        );
         for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, bfss)) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bfs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(bfs)));
