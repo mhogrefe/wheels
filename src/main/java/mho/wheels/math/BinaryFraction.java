@@ -597,6 +597,38 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
     }
 
     /**
+     * Returns the floor of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return ⌊{@code this}⌋;
+     */
+    public @NotNull BigInteger floor() {
+        if (mantissa.signum() < 0) {
+            return isInteger() ? bigIntegerValueExact() : mantissa.shiftLeft(exponent).subtract(BigInteger.ONE);
+        } else {
+            return mantissa.shiftLeft(exponent);
+        }
+    }
+
+    /**
+     * Returns the ceiling of {@code this}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return ⌈{@code this}⌉
+     */
+    public @NotNull BigInteger ceiling() {
+        return isInteger() ? bigIntegerValueExact() : floor().add(BigInteger.ONE);
+    }
+
+    /**
      * Determines whether {@code this} is equal to {@code that}.
      *
      * <ul>
