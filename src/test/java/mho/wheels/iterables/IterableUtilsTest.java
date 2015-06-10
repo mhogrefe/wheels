@@ -12,9 +12,13 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static mho.wheels.testing.Testing.aeqit;
+import static mho.wheels.testing.Testing.aeqitLimit;
 import static org.junit.Assert.*;
 
+@SuppressWarnings("ConstantConditions")
 public strictfp class IterableUtilsTest {
+    private static final int TINY_LIMIT = 20;
+
     //todo clean
     @Test
     public void testAddTo_Iterable_Collection() {
@@ -294,9 +298,10 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_byte() {
-        aeqit(take(20, rangeUp((byte) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(TINY_LIMIT, rangeUp((byte) 0)),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(rangeUp((byte) 0)), 1 << 7);
-        aeqit(take(20, rangeUp(Byte.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Byte.MIN_VALUE)),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
                 " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
         aeq(length(rangeUp(Byte.MIN_VALUE)), 1 << 8);
@@ -306,9 +311,10 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_short() {
-        aeqit(take(20, rangeUp((short) 0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(TINY_LIMIT, rangeUp((short) 0)),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
         aeq(length(rangeUp((short) 0)), 1 << 15);
-        aeqit(take(20, rangeUp(Short.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Short.MIN_VALUE)),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
                 " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
         aeq(length(rangeUp(Short.MIN_VALUE)), 1 << 16);
@@ -319,8 +325,8 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_int() {
-        aeqit(take(20, rangeUp(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeqit(take(20, rangeUp(Integer.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(0)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(TINY_LIMIT, rangeUp(Integer.MIN_VALUE)),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
                 " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
                 " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629]");
@@ -332,8 +338,8 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_long() {
-        aeqit(take(20, rangeUp(0L)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeqit(take(20, rangeUp(Long.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(0L)), "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqit(take(TINY_LIMIT, rangeUp(Long.MIN_VALUE)),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
@@ -348,14 +354,14 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_BigInteger() {
-        aeqit(take(20, rangeUp(BigInteger.ZERO)),
+        aeqit(take(TINY_LIMIT, rangeUp(BigInteger.ZERO)),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeqit(take(20, rangeUp(BigInteger.TEN.pow(12).negate())),
+        aeqit(take(TINY_LIMIT, rangeUp(BigInteger.TEN.pow(12).negate())),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
                 " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
                 " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
                 " -999999999982, -999999999981]");
-        aeqit(take(20, rangeUp(BigInteger.TEN.pow(12))),
+        aeqit(take(TINY_LIMIT, rangeUp(BigInteger.TEN.pow(12))),
                 "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
                 " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
                 " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
@@ -364,27 +370,27 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_BigDecimal() {
-        aeqit(take(20, rangeUp(BigDecimal.ZERO)),
+        aeqit(take(TINY_LIMIT, rangeUp(BigDecimal.ZERO)),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        aeqit(take(20, rangeUp(BigDecimal.TEN.pow(12).negate())),
+        aeqit(take(TINY_LIMIT, rangeUp(BigDecimal.TEN.pow(12).negate())),
                 "[-1000000000000, -999999999999, -999999999998, -999999999997, -999999999996, -999999999995," +
                 " -999999999994, -999999999993, -999999999992, -999999999991, -999999999990, -999999999989," +
                 " -999999999988, -999999999987, -999999999986, -999999999985, -999999999984, -999999999983," +
                 " -999999999982, -999999999981]");
-        aeqit(take(20, rangeUp(BigDecimal.TEN.pow(12))),
+        aeqit(take(TINY_LIMIT, rangeUp(BigDecimal.TEN.pow(12))),
                 "[1000000000000, 1000000000001, 1000000000002, 1000000000003, 1000000000004, 1000000000005," +
                 " 1000000000006, 1000000000007, 1000000000008, 1000000000009, 1000000000010, 1000000000011," +
                 " 1000000000012, 1000000000013, 1000000000014, 1000000000015, 1000000000016, 1000000000017," +
                 " 1000000000018, 1000000000019]");
-        aeqit(take(20, rangeUp(new BigDecimal("1.327"))),
+        aeqit(take(TINY_LIMIT, rangeUp(new BigDecimal("1.327"))),
                 "[1.327, 2.327, 3.327, 4.327, 5.327, 6.327, 7.327, 8.327, 9.327, 10.327," +
                 " 11.327, 12.327, 13.327, 14.327, 15.327, 16.327, 17.327, 18.327, 19.327, 20.327]");
     }
 
     @Test
     public void testRangeUp_char() {
-        aeqit(take(20, rangeUp('a')), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]");
-        aeqit(take(20, rangeUp('\0')),
+        aeqit(take(TINY_LIMIT, rangeUp('a')), "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t]");
+        aeqit(take(TINY_LIMIT, rangeUp('\0')),
                 "[\0, \1, \2, \3, \4, \5, \6, \7, \b, \t, \n, \13, \f, \r, \16, \17, \20, \21, \22, \23]");
         aeqit(rangeUp((char) (Character.MAX_VALUE - 10)),
                 "[\uFFF5, \uFFF6, \uFFF7, \uFFF8, \uFFF9, \uFFFA, \uFFFB, \uFFFC, \uFFFD, \uFFFE, \uFFFF]");
@@ -393,28 +399,28 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_float() {
-        aeqit(take(20, rangeUp(1.0f)),
+        aeqit(take(TINY_LIMIT, rangeUp(1.0f)),
                 "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0," +
                 " 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0]");
-        aeqit(take(20, rangeUp(-8.329f)),
+        aeqit(take(TINY_LIMIT, rangeUp(-8.329f)),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671," +
                 " 1.671, 2.671, 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671]");
-        aeqit(take(20, rangeUp(1e8f)),
+        aeqit(take(TINY_LIMIT, rangeUp(1e8f)),
                 "[1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.0E8, 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000008E8," +
                 " 1.00000008E8, 1.00000008E8, 1.00000008E8, 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8," +
                 " 1.00000016E8, 1.00000016E8, 1.00000016E8, 1.00000016E8]");
         aeqit(take(5, rangeUp(Float.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
         aeqit(rangeUp(Float.POSITIVE_INFINITY), "[Infinity]");
-        aeqit(take(20, rangeUp(0.0f)),
+        aeqit(take(TINY_LIMIT, rangeUp(0.0f)),
                 "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(-0.0f)),
+        aeqit(take(TINY_LIMIT, rangeUp(-0.0f)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(Float.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Float.MIN_VALUE)),
                 "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(Float.MAX_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Float.MAX_VALUE)),
                 "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38]");
@@ -426,13 +432,13 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_double() {
-        aeqit(take(20, rangeUp(1.0)),
+        aeqit(take(TINY_LIMIT, rangeUp(1.0)),
                 "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0," +
                 " 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0]");
-        aeqit(take(20, rangeUp(-8.329)),
+        aeqit(take(TINY_LIMIT, rangeUp(-8.329)),
                 "[-8.329, -7.329, -6.329, -5.329, -4.329, -3.329, -2.329, -1.329, -0.329, 0.671," +
                 " 1.671, 2.671, 3.671, 4.671, 5.671, 6.671, 7.671, 8.671, 9.671, 10.671]");
-        aeqit(take(20, rangeUp(1e16)),
+        aeqit(take(TINY_LIMIT, rangeUp(1e16)),
                 "[1.0E16, 1.0E16, 1.0000000000000002E16, 1.0000000000000004E16, 1.0000000000000004E16," +
                 " 1.0000000000000004E16, 1.0000000000000006E16, 1.0000000000000008E16, 1.0000000000000008E16," +
                 " 1.0000000000000008E16, 1.000000000000001E16, 1.0000000000000012E16, 1.0000000000000012E16," +
@@ -440,16 +446,16 @@ public strictfp class IterableUtilsTest {
                 " 1.0000000000000016E16, 1.0000000000000018E16, 1.000000000000002E16]");
         aeqit(take(5, rangeUp(Double.NEGATIVE_INFINITY)), "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity]");
         aeqit(rangeUp(Double.POSITIVE_INFINITY), "[Infinity]");
-        aeqit(take(20, rangeUp(0.0)),
+        aeqit(take(TINY_LIMIT, rangeUp(0.0)),
                 "[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(-0.0)),
+        aeqit(take(TINY_LIMIT, rangeUp(-0.0)),
                 "[-0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(Double.MIN_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Double.MIN_VALUE)),
                 "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0," +
                 " 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0]");
-        aeqit(take(20, rangeUp(Double.MAX_VALUE)),
+        aeqit(take(TINY_LIMIT, rangeUp(Double.MAX_VALUE)),
                 "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
@@ -554,11 +560,11 @@ public strictfp class IterableUtilsTest {
         aeqit(range(Float.MIN_VALUE, Float.MIN_VALUE), "[1.4E-45]");
         aeqit(range(Float.MIN_VALUE, 10.0f), "[1.4E-45, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
         aeqit(range(Float.MAX_VALUE, Float.MAX_VALUE), "[3.4028235E38]");
-        aeqit(take(20, range(Float.MAX_VALUE, Float.POSITIVE_INFINITY)),
+        aeqit(take(TINY_LIMIT, range(Float.MAX_VALUE, Float.POSITIVE_INFINITY)),
                 "[3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38," +
                 " 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38, 3.4028235E38]");
-        aeqit(take(20, range(Float.NEGATIVE_INFINITY, 10.0f)),
+        aeqit(take(TINY_LIMIT, range(Float.NEGATIVE_INFINITY, 10.0f)),
                 "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity]");
@@ -597,13 +603,13 @@ public strictfp class IterableUtilsTest {
         aeqit(range(Double.MIN_VALUE, Double.MIN_VALUE), "[4.9E-324]");
         aeqit(range(Double.MIN_VALUE, 10.0), "[4.9E-324, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]");
         aeqit(range(Double.MAX_VALUE, Double.MAX_VALUE), "[1.7976931348623157E308]");
-        aeqit(take(20, range(Double.MAX_VALUE, Double.POSITIVE_INFINITY)),
+        aeqit(take(TINY_LIMIT, range(Double.MAX_VALUE, Double.POSITIVE_INFINITY)),
                 "[1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308," +
                 " 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308, 1.7976931348623157E308]");
-        aeqit(take(20, range(Double.NEGATIVE_INFINITY, 10.0)),
+        aeqit(take(TINY_LIMIT, range(Double.NEGATIVE_INFINITY, 10.0)),
                 "[-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity," +
                 " -Infinity, -Infinity]");
@@ -675,7 +681,7 @@ public strictfp class IterableUtilsTest {
         aeq(head(linkedHashSet), 5);
 
         linkedHashSet = new LinkedHashSet<>();
-        linkedHashSet.addAll(Arrays.asList(5));
+        linkedHashSet.addAll(Collections.singletonList(5));
         aeq(head(linkedHashSet), 5);
 
         linkedHashSet = new LinkedHashSet<>();
@@ -699,7 +705,7 @@ public strictfp class IterableUtilsTest {
     public void testHead_List() {
         aeq(head((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 5);
         assertNull(head((List<Integer>) Arrays.asList(null, 4, 3, 2, 1)));
-        aeq(head((List<Integer>) Arrays.asList(5)), 5);
+        aeq(head((List<Integer>) Collections.singletonList(5)), 5);
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertNull(head(nullList));
@@ -720,7 +726,7 @@ public strictfp class IterableUtilsTest {
         assertNull(head(sortedSet));
 
         sortedSet = new TreeSet<>();
-        sortedSet.addAll(Arrays.asList(1));
+        sortedSet.addAll(Collections.singletonList(1));
         aeq(head(sortedSet), 1);
 
         sortedSet = new TreeSet<>(Comparator.nullsFirst(Comparator.<Integer>naturalOrder()));
@@ -754,7 +760,7 @@ public strictfp class IterableUtilsTest {
         assertNull(last(linkedHashSet));
 
         linkedHashSet = new LinkedHashSet<>();
-        linkedHashSet.addAll(Arrays.asList(1));
+        linkedHashSet.addAll(Collections.singletonList(1));
         aeq(last(linkedHashSet), 1);
 
         linkedHashSet = new LinkedHashSet<>();
@@ -772,7 +778,7 @@ public strictfp class IterableUtilsTest {
     public void testLast_List() {
         aeq(last((List<Integer>) Arrays.asList(5, 4, 3, 2, 1)), 1);
         assertNull(last((List<Integer>) Arrays.asList(5, 4, 3, 2, null)));
-        aeq(last((List<Integer>) Arrays.asList(1)), 1);
+        aeq(last((List<Integer>) Collections.singletonList(1)), 1);
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertNull(last(nullList));
@@ -793,7 +799,7 @@ public strictfp class IterableUtilsTest {
         assertNull(last(sortedSet));
 
         sortedSet = new TreeSet<>();
-        sortedSet.addAll(Arrays.asList(5));
+        sortedSet.addAll(Collections.singletonList(5));
         aeq(last(sortedSet), 5);
 
         sortedSet = new TreeSet<>();
@@ -815,7 +821,7 @@ public strictfp class IterableUtilsTest {
     public void testTail_Iterable() {
         aeqit(tail(Arrays.asList(5, 4, 3, 2, 1)), "[4, 3, 2, 1]");
         aeqit(tail(Arrays.asList(5, 4, null, 2, 1)), "[4, null, 2, 1]");
-        aeqit(tail(Arrays.asList(5)), "[]");
+        aeqit(tail(Collections.singletonList(5)), "[]");
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         aeqit(tail(nullList), "[]");
@@ -839,7 +845,7 @@ public strictfp class IterableUtilsTest {
     public void testInit_Iterable() {
         aeqit(init(Arrays.asList(5, 4, 3, 2, 1)), "[5, 4, 3, 2]");
         aeqit(init(Arrays.asList(5, 4, null, 2, 1)), "[5, 4, null, 2]");
-        aeqit(init(Arrays.asList(5)), "[]");
+        aeqit(init(Collections.singletonList(5)), "[]");
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         aeqit(init(nullList), "[]");
@@ -865,14 +871,14 @@ public strictfp class IterableUtilsTest {
         assertFalse(isEmpty((Iterable<Integer>) cons(6, Arrays.asList(5, 4, 3, 2, 1))));
         assertFalse(isEmpty((Iterable<Integer>) cons(null, Arrays.asList(null, 2, 1))));
         assertFalse(isEmpty(repeat(5)));
-        assertTrue(isEmpty((Iterable<Integer>) tail(Arrays.asList(2))));
+        assertTrue(isEmpty((Iterable<Integer>) tail(Collections.singletonList(2))));
     }
 
     @Test
     public void testIsEmpty_Collection() {
         assertFalse(isEmpty(Arrays.asList(5, 4, 3, 2, 1)));
         assertFalse(isEmpty(Arrays.asList(5, 4, null, 2, 1)));
-        assertFalse(isEmpty(Arrays.asList(5)));
+        assertFalse(isEmpty(Collections.singletonList(5)));
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertFalse(isEmpty(nullList));
@@ -890,21 +896,21 @@ public strictfp class IterableUtilsTest {
     public void testLength_Iterable() {
         assertEquals(length(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
         assertEquals(length(cons(null, Arrays.asList(null, 2, 1))), 4);
-        assertEquals(length(tail(Arrays.asList(2))), 0);
+        assertEquals(length(tail(Collections.singletonList(2))), 0);
     }
 
     @Test
     public void testBigIntegerLength() {
         aeq(bigIntegerLength(cons(6, Arrays.asList(5, 4, 3, 2, 1))), 6);
         aeq(bigIntegerLength(cons(null, Arrays.asList(null, 2, 1))), 4);
-        aeq(bigIntegerLength(tail(Arrays.asList(2))), 0);
+        aeq(bigIntegerLength(tail(Collections.singletonList(2))), 0);
     }
 
     @Test
     public void testLength_Collection() {
         assertEquals(length(Arrays.asList(5, 4, 3, 2, 1)), 5);
         assertEquals(length(Arrays.asList(5, 4, null, 2, 1)), 5);
-        assertEquals(length(Arrays.asList(5)), 1);
+        assertEquals(length(Collections.singletonList(5)), 1);
         List<Integer> nullList = new ArrayList<>();
         nullList.add(null);
         assertEquals(length(nullList), 1);
@@ -1376,7 +1382,9 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaByte(Arrays.asList((byte) 3, (byte) 1, (byte) 4, (byte) 1, (byte) 5, (byte) 9, (byte) 3)),
                 "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaByte(Arrays.asList(Byte.MIN_VALUE, Byte.MAX_VALUE)), "[-1]");
-        aeqit(deltaByte(Arrays.asList((byte) 3)), "[]");
+        aeqit(deltaByte(Collections.singletonList((byte) 3)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaByte(map(i -> (byte) (i * i), rangeUp(0))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaByte(new ArrayList<>());
             fail();
@@ -1392,7 +1400,9 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaShort(Arrays.asList((short) 3, (short) 1, (short) 4, (short) 1, (short) 5, (short) 9, (short) 3)),
                 "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaShort(Arrays.asList(Short.MIN_VALUE, Short.MAX_VALUE)), "[-1]");
-        aeqit(deltaShort(Arrays.asList((short) 3)), "[]");
+        aeqit(deltaShort(Collections.singletonList((short) 3)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaShort(map(i -> (short) (i * i), rangeUp(0))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaShort(new ArrayList<>());
             fail();
@@ -1407,7 +1417,9 @@ public strictfp class IterableUtilsTest {
     public void testDeltaInteger() {
         aeqit(deltaInteger(Arrays.asList(3, 1, 4, 1, 5, 9, 3)), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaInteger(Arrays.asList(Integer.MIN_VALUE, Integer.MAX_VALUE)), "[-1]");
-        aeqit(deltaInteger(Arrays.asList(3)), "[]");
+        aeqit(deltaInteger(Collections.singletonList(3)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaInteger(map(i -> i * i, rangeUp(0))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaInteger(new ArrayList<>());
             fail();
@@ -1422,7 +1434,9 @@ public strictfp class IterableUtilsTest {
     public void testDeltaLong() {
         aeqit(deltaLong(Arrays.asList(3L, 1L, 4L, 1L, 5L, 9L, 3L)), "[-2, 3, -3, 4, 4, -6]");
         aeqit(deltaLong(Arrays.asList(Long.MIN_VALUE, Long.MAX_VALUE)), "[-1]");
-        aeqit(deltaLong(Arrays.asList(3L)), "[]");
+        aeqit(deltaLong(Collections.singletonList(3L)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaLong(map(l -> l * l, rangeUp(0L))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaLong(new ArrayList<>());
             fail();
@@ -1436,7 +1450,9 @@ public strictfp class IterableUtilsTest {
     @Test
     public void testDeltaBigInteger() {
         aeqit(deltaBigInteger(readBigIntegerList("[3, 1, 4, 1, 5, 9, 3]")), "[-2, 3, -3, 4, 4, -6]");
-        aeqit(deltaBigInteger(Arrays.asList(BigInteger.valueOf(3))), "[]");
+        aeqit(deltaBigInteger(Collections.singletonList(BigInteger.valueOf(3))), "[]");
+        aeqitLimit(TINY_LIMIT, deltaBigInteger(map(i -> i.pow(2), rangeUp(BigInteger.ZERO))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaBigInteger(new ArrayList<>());
             fail();
@@ -1450,7 +1466,9 @@ public strictfp class IterableUtilsTest {
     @Test
     public void testDeltaBigDecimal() {
         aeqit(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]")), "[1.0, 1.8, -3.6]");
-        aeqit(deltaBigDecimal(Arrays.asList(BigDecimal.valueOf(3))), "[]");
+        aeqit(deltaBigDecimal(Collections.singletonList(BigDecimal.valueOf(3))), "[]");
+        aeqitLimit(TINY_LIMIT, deltaBigDecimal(map(bd -> bd.pow(2), rangeUp(BigDecimal.ZERO))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaBigDecimal(new ArrayList<>());
             fail();
@@ -1467,7 +1485,10 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaFloat(Arrays.asList(-Float.MAX_VALUE, Float.MAX_VALUE)), "[Infinity]");
         aeqit(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
         aeqit(deltaFloat(Arrays.asList(0.0f, -0.0f)), "[0.0]");
-        aeqit(deltaFloat(Arrays.asList(3.0f)), "[]");
+        aeqit(deltaFloat(Collections.singletonList(3.0f)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaFloat(map(f -> f * f, rangeUp(0.0f))),
+                "[1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0, 33.0," +
+                " 35.0, 37.0, 39.0, ...]");
         try {
             deltaFloat(new ArrayList<>());
             fail();
@@ -1485,7 +1506,10 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaDouble(Arrays.asList(-Double.MAX_VALUE, Double.MAX_VALUE)), "[Infinity]");
         aeqit(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
         aeqit(deltaDouble(Arrays.asList(0.0, -0.0)), "[0.0]");
-        aeqit(deltaDouble(Arrays.asList(3.0)), "[]");
+        aeqit(deltaDouble(Collections.singletonList(3.0)), "[]");
+        aeqitLimit(TINY_LIMIT, deltaDouble(map(d -> d * d, rangeUp(0.0))),
+                "[1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0, 33.0," +
+                " 35.0, 37.0, 39.0, ...]");
         try {
             deltaDouble(new ArrayList<>());
             fail();
@@ -1499,7 +1523,9 @@ public strictfp class IterableUtilsTest {
     @Test
     public void testDeltaCharacter() {
         aeqit(deltaCharacter(fromString("hello")), "[-3, 7, 0, 3]");
-        aeqit(deltaCharacter(Arrays.asList('a')), "[]");
+        aeqit(deltaCharacter(Collections.singletonList('a')), "[]");
+        aeqitLimit(TINY_LIMIT, deltaCharacter(map(i -> (char) (i * i), rangeUp(0))),
+                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
         try {
             deltaCharacter(new ArrayList<>());
             fail();
