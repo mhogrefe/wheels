@@ -819,6 +819,48 @@ public class BinaryFractionTest {
         delta_arithmetic_helper("[1 << 2147483647, -1 << 2147483647]");
     }
 
+    private static void floor_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().floor(), output);
+    }
+
+    @Test
+    public void testFloor() {
+        floor_helper("0", "0");
+        floor_helper("1", "1");
+        floor_helper("11", "11");
+        floor_helper("5 << 20", "5242880");
+        floor_helper("5 >> 20", "0");
+        floor_helper("3 >> 1", "1");
+        floor_helper("5 >> 1", "2");
+        floor_helper("-1", "-1");
+        floor_helper("-11", "-11");
+        floor_helper("-5 << 20", "-5242880");
+        floor_helper("-5 >> 20", "-1");
+        floor_helper("-3 >> 1", "-2");
+        floor_helper("-5 >> 1", "-3");
+    }
+
+    private static void ceiling_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().ceiling(), output);
+    }
+
+    @Test
+    public void testCeiling() {
+        ceiling_helper("0", "0");
+        ceiling_helper("1", "1");
+        ceiling_helper("11", "11");
+        ceiling_helper("5 << 20", "5242880");
+        ceiling_helper("5 >> 20", "1");
+        ceiling_helper("3 >> 1", "2");
+        ceiling_helper("5 >> 1", "3");
+        ceiling_helper("-1", "-1");
+        ceiling_helper("-11", "-11");
+        ceiling_helper("-5 << 20", "-5242880");
+        ceiling_helper("-5 >> 20", "0");
+        ceiling_helper("-3 >> 1", "-1");
+        ceiling_helper("-5 >> 1", "-2");
+    }
+
     @Test
     public void testEquals() {
         testEqualsHelper(
