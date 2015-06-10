@@ -535,7 +535,7 @@ public strictfp class Testing {
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> f,
-            @NotNull Function<List<A>, Iterable<B>> deltaF,
+            @NotNull Function<Iterable<A>, Iterable<B>> deltaF,
             @NotNull Consumer<B> validate
     ) {
         propertiesDeltaHelperClean(limit, P, xs, negate, f, deltaF, validate, x -> x);
@@ -547,7 +547,7 @@ public strictfp class Testing {
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
-            @NotNull Function<List<A>, Iterable<B>> deltaF,
+            @NotNull Function<Iterable<A>, Iterable<B>> deltaF,
             @NotNull Consumer<B> validate,
             @NotNull Function<B, B> clean
     ) {
@@ -557,9 +557,8 @@ public strictfp class Testing {
             aeq(lxs, length(deltas), length(lxs) - 1);
             Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
             aeqit(lxs, deltas, reversed);
+            testNoRemove(TINY_LIMIT, deltas);
         }
-
-        testNoRemove(limit, xs);
 
         for (A x : take(limit, xs)) {
             assertTrue(x, isEmpty(deltaF.apply(Collections.singletonList(x))));
@@ -568,9 +567,17 @@ public strictfp class Testing {
         for (Pair<A, A> p : take(limit, P.pairs(xs))) {
             aeqit(
                     p,
-                    deltaF.apply(Arrays.asList(p.a, p.b)),
+                    deltaF.apply(Pair.toList(p)),
                     Collections.singletonList(subtract.andThen(clean).apply(p.b, p.a))
             );
+        }
+
+        for (Iterable<A> ixs : take(limit, map(IterableUtils::cycle, P.lists(xs)))) {
+            Iterable<B> deltas = deltaF.apply(ixs);
+            List<B> deltaPrefix = toList(take(TINY_LIMIT, deltas));
+            deltaPrefix.forEach(validate);
+            aeq(IterableUtils.toString(TINY_LIMIT, ixs), length(deltaPrefix), TINY_LIMIT);
+            testNoRemove(TINY_LIMIT, deltas);
         }
 
         for (List<A> lxs : take(limit, P.listsWithElement(null, xs))) {

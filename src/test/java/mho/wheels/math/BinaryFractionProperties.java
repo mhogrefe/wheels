@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.structures.Pair;
@@ -63,6 +64,8 @@ public class BinaryFractionProperties {
             compareImplementationsShiftLeft();
             propertiesShiftRight();
             compareImplementationsShiftRight();
+            propertiesSum();
+            propertiesProduct();
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
@@ -491,6 +494,50 @@ public class BinaryFractionProperties {
                 P.pairs(P.binaryFractions(), P.integersGeometric())
         );
         compareImplementations("shiftRight(int)", take(LIMIT, ps), functions);
+    }
+
+    private static void propertiesSum() {
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.binaryFractions(),
+                BinaryFraction::add,
+                BinaryFraction::sum,
+                BinaryFraction::validate,
+                true
+        );
+
+        for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
+            homomorphic(
+                    xs -> map(BinaryFraction::bigDecimalValue, xs),
+                    x -> x.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::sum,
+                    xs -> IterableUtils.sumBigDecimal(xs).stripTrailingZeros(),
+                    bfs
+            );
+        }
+    }
+
+    private static void propertiesProduct() {
+        propertiesFoldHelper(
+                LIMIT,
+                P,
+                P.binaryFractions(),
+                BinaryFraction::multiply,
+                BinaryFraction::product,
+                BinaryFraction::validate,
+                true
+        );
+
+        for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
+            homomorphic(
+                    xs -> map(BinaryFraction::bigDecimalValue, xs),
+                    x -> x.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::product,
+                    xs -> IterableUtils.productBigDecimal(xs).stripTrailingZeros(),
+                    bfs
+            );
+        }
     }
 
     private static void propertiesEquals() {
