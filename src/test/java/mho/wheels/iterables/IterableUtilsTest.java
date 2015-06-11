@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -1467,8 +1468,11 @@ public strictfp class IterableUtilsTest {
     public void testDeltaBigDecimal() {
         aeqit(deltaBigDecimal(readBigDecimalList("[3.1, 4.1, 5.9, 2.3]")), "[1.0, 1.8, -3.6]");
         aeqit(deltaBigDecimal(Collections.singletonList(BigDecimal.valueOf(3))), "[]");
-        aeqitLimit(TINY_LIMIT, deltaBigDecimal(map(bd -> bd.pow(2), rangeUp(BigDecimal.ZERO))),
-                "[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, ...]");
+        aeqitLimit(TINY_LIMIT, deltaBigDecimal(iterate(bd -> BigDecimalUtils.shiftRight(bd, 1), BigDecimal.ONE)),
+                "[-0.5, -0.25, -0.125, -0.0625, -0.03125, -0.015625, -0.0078125, -0.00390625, -0.001953125," +
+                " -0.0009765625, -0.00048828125, -0.000244140625, -0.0001220703125, -0.00006103515625," +
+                " -0.000030517578125, -0.0000152587890625, -0.00000762939453125, -0.000003814697265625," +
+                " -0.0000019073486328125, -9.5367431640625E-7, ...]");
         try {
             deltaBigDecimal(new ArrayList<>());
             fail();
@@ -1486,9 +1490,10 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaFloat(Arrays.asList(3.0f, Float.NaN)), "[NaN]");
         aeqit(deltaFloat(Arrays.asList(0.0f, -0.0f)), "[0.0]");
         aeqit(deltaFloat(Collections.singletonList(3.0f)), "[]");
-        aeqitLimit(TINY_LIMIT, deltaFloat(map(f -> f * f, rangeUp(0.0f))),
-                "[1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0, 33.0," +
-                " 35.0, 37.0, 39.0, ...]");
+        aeqitLimit(TINY_LIMIT, deltaFloat(iterate(f -> f / 2.0f, 1.0f)),
+                "[-0.5, -0.25, -0.125, -0.0625, -0.03125, -0.015625, -0.0078125, -0.00390625, -0.001953125," +
+                " -9.765625E-4, -4.8828125E-4, -2.4414062E-4, -1.2207031E-4, -6.1035156E-5, -3.0517578E-5," +
+                " -1.5258789E-5, -7.6293945E-6, -3.8146973E-6, -1.9073486E-6, -9.536743E-7, ...]");
         try {
             deltaFloat(new ArrayList<>());
             fail();
@@ -1507,9 +1512,11 @@ public strictfp class IterableUtilsTest {
         aeqit(deltaDouble(Arrays.asList(3.0, Double.NaN)), "[NaN]");
         aeqit(deltaDouble(Arrays.asList(0.0, -0.0)), "[0.0]");
         aeqit(deltaDouble(Collections.singletonList(3.0)), "[]");
-        aeqitLimit(TINY_LIMIT, deltaDouble(map(d -> d * d, rangeUp(0.0))),
-                "[1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0, 33.0," +
-                " 35.0, 37.0, 39.0, ...]");
+        aeqitLimit(TINY_LIMIT, deltaDouble(iterate(d -> d / 2.0, 1.0)),
+                "[-0.5, -0.25, -0.125, -0.0625, -0.03125, -0.015625, -0.0078125, -0.00390625, -0.001953125," +
+                " -9.765625E-4, -4.8828125E-4, -2.44140625E-4, -1.220703125E-4, -6.103515625E-5, -3.0517578125E-5," +
+                " -1.52587890625E-5, -7.62939453125E-6, -3.814697265625E-6, -1.9073486328125E-6," +
+                " -9.5367431640625E-7, ...]");
         try {
             deltaDouble(new ArrayList<>());
             fail();

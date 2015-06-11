@@ -67,6 +67,8 @@ public class BinaryFractionProperties {
             propertiesSum();
             propertiesProduct();
             propertiesDelta();
+            propertiesFloor();
+            propertiesCeiling();
             propertiesEquals();
             propertiesHashCode();
             propertiesCompareTo();
@@ -186,9 +188,12 @@ public class BinaryFractionProperties {
     private static void propertiesIsInteger() {
         initialize("isInteger()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            bf.isInteger();
+            assertEquals(bf, bf.isInteger(), of(bf.floor()).equals(bf));
         }
-        //todo floor
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            assertTrue(i, of(i).isInteger());
+        }
     }
 
     private static void propertiesAdd() {
@@ -563,6 +568,32 @@ public class BinaryFractionProperties {
                     bds -> toList(map(BigDecimal::stripTrailingZeros, IterableUtils.deltaBigDecimal(bds))),
                     bfs
             );
+        }
+    }
+
+    private static void propertiesFloor() {
+        initialize("floor()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            BigInteger floor = bf.floor();
+            assertTrue(bf, le(of(floor), bf));
+            assertTrue(bf, le(bf.subtract(of(floor)), ONE));
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            assertEquals(i, of(i).floor(), i);
+        }
+    }
+
+    private static void propertiesCeiling() {
+        initialize("ceiling()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            BigInteger ceiling = bf.ceiling();
+            assertTrue(bf, ge(of(ceiling), bf));
+            assertTrue(bf, le(of(ceiling).subtract(bf), ONE));
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            assertEquals(i, of(i).ceiling(), i);
         }
     }
 
