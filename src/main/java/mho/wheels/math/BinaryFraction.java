@@ -1,6 +1,5 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.misc.BigDecimalUtils;
 import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
@@ -13,6 +12,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.gt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -308,6 +308,98 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public @NotNull BigDecimal bigDecimalValue() {
         return BigDecimalUtils.shiftLeft(new BigDecimal(mantissa), exponent);
+    }
+
+    /**
+     * Every {@code BinaryFraction} has a <i>left-neighboring {@code float}</i>, or the largest {@code float} that is
+     * less than or equal to the {@code BinaryFraction}; this {@code float} may be -Infinity. Likewise, every
+     * {@code BinaryFraction} has a <i>right-neighboring {@code float}</i>: the smallest {@code float} greater than or
+     * equal to the {@code BinaryFraction}. This {@code float} may be Infinity. If {@code this} is exactly equal to
+     * some {@code float}, the left- and right-neighboring {@code float}s will both be equal to that {@code float} and
+     * to each other. This method returns the pair made up of the left- and right-neighboring {@code float}s. If the
+     * left-neighboring {@code float} is a zero, it is a positive zero; if the right-neighboring {@code float} is a
+     * zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
+     * positive zeroes.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is a pair of {@code float}s that are either equal, or the second is the next-largest
+     *  {@code float} after the first. Negative zero may not appear in the first slot of the pair, and positive zero
+     *  may only appear in the second slot if the first slot also contains a positive zero. Neither slot may contain a
+     *  {@code NaN}.</li>
+     * </ul>
+     *
+     * @return The pair of left- and right-neighboring {@code float}s.
+     */
+    public @NotNull Pair<Float, Float> floatRange() {
+        if (this == ZERO) return new Pair<>(0.0f, 0.0f);
+        if (mantissa.signum() == -1) {
+            Pair<Float, Float> negativeRange = negate().floatRange();
+            //noinspection ConstantConditions
+            return new Pair<>(-negativeRange.b, -negativeRange.a);
+        }
+        int floatExponent = mantissa.bitLength() + exponent - 1;
+        if (floatExponent > 127 || floatExponent == 127 && gt(this, LARGEST_FLOAT)) {
+            return new Pair<>(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
+        }
+        BinaryFraction fraction;
+        int adjustedExponent;
+        if (floatExponent < -126) {
+            fraction = shiftLeft(149);
+            adjustedExponent = 0;
+        } else {
+            fraction = shiftRight(floatExponent).subtract(ONE).shiftLeft(23);
+            adjustedExponent = floatExponent + 127;
+        }
+        float loFloat = Float.intBitsToFloat((adjustedExponent << 23) + fraction.floor().intValueExact());
+        float hiFloat = fraction.getExponent() >= 0 ? loFloat : FloatingPointUtils.successor(loFloat);
+        return new Pair<>(loFloat, hiFloat);
+    }
+
+    /**
+     * Every {@code BinaryFraction} has a <i>left-neighboring {@code double}</i>, or the largest {@code double} that is
+     * less than or equal to the {@code BinaryFraction}; this {@code double} may be -Infinity. Likewise, every
+     * {@code BinaryFraction} has a <i>right-neighboring {@code double}</i>: the smallest {@code double} greater than
+     * or equal to the {@code BinaryFraction}. This {@code double} may be Infinity. If {@code this} is exactly equal to
+     * some {@code double}, the left- and right-neighboring {@code double}s will both be equal to that {@code double}
+     * and to each other. This method returns the pair made up of the left- and right-neighboring {@code double}s. If
+     * the left-neighboring {@code double} is a zero, it is a positive zero; if the right-neighboring {@code double} is
+     * a zero, it is a negative zero. The exception is when {@code this} is equal to zero; then both neighbors are
+     * positive zeroes.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is a pair of {@code double}s that are either equal, or the second is the next-largest
+     *  {@code double} after the first. Negative zero may not appear in the first slot of the pair, and positive zero
+     *  may only appear in the second slot if the first slot also contains a positive zero. Neither slot may contain a
+     *  {@code NaN}.</li>
+     * </ul>
+     *
+     * @return The pair of left- and right-neighboring {@code double}s.
+     */
+    public @NotNull Pair<Double, Double> doubleRange() {
+        if (this == ZERO) return new Pair<>(0.0, 0.0);
+        if (mantissa.signum() == -1) {
+            Pair<Double, Double> negativeRange = negate().doubleRange();
+            //noinspection ConstantConditions
+            return new Pair<>(-negativeRange.b, -negativeRange.a);
+        }
+        int doubleExponent = mantissa.bitLength() + exponent - 1;
+        if (doubleExponent > 1023 || doubleExponent == 1023 && gt(this, LARGEST_FLOAT)) {
+            return new Pair<>(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
+        }
+        BinaryFraction fraction;
+        long adjustedExponent;
+        if (doubleExponent < -1022) {
+            fraction = shiftLeft(1074);
+            adjustedExponent = 0;
+        } else {
+            fraction = shiftRight(doubleExponent).subtract(ONE).shiftLeft(52);
+            adjustedExponent = doubleExponent + 1023;
+        }
+        double loDouble = Double.longBitsToDouble((adjustedExponent << 52) + fraction.floor().longValueExact());
+        double hiDouble = fraction.getExponent() >= 0 ? loDouble : FloatingPointUtils.successor(loDouble);
+        return new Pair<>(loDouble, hiDouble);
     }
 
     /**
