@@ -95,6 +95,20 @@ public class BinaryFractionDemos {
         }
     }
 
+    private static void demoFloatRange() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("floatRange(" + bf + ") = " + bf.floatRange());
+        }
+    }
+
+    private static void demoDoubleRange() {
+        initialize();
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            System.out.println("doubleRange(" + bf + ") = " + bf.doubleRange());
+        }
+    }
+
     private static void demoBigIntegerValueExact() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, map(BinaryFraction::of, P.bigIntegers()))) {
