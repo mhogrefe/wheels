@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
  *
  * <p>This class is immutable.
  */
-public class BinaryFraction implements Comparable<BinaryFraction> {
+public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     /**
      * 0
      */
@@ -385,7 +385,7 @@ public class BinaryFraction implements Comparable<BinaryFraction> {
             return new Pair<>(-negativeRange.b, -negativeRange.a);
         }
         int doubleExponent = mantissa.bitLength() + exponent - 1;
-        if (doubleExponent > 1023 || doubleExponent == 1023 && gt(this, LARGEST_FLOAT)) {
+        if (doubleExponent > 1023 || doubleExponent == 1023 && gt(this, LARGEST_DOUBLE)) {
             return new Pair<>(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
         }
         BinaryFraction fraction;

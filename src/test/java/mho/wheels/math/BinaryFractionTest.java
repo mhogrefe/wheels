@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -12,7 +13,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.*;
 
-public class BinaryFractionTest {
+public strictfp class BinaryFractionTest {
     private static final int TINY_LIMIT = 20;
 
     @Test
@@ -273,6 +274,129 @@ public class BinaryFractionTest {
                 "171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075" +
                 "868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026" +
                 "184124858368");
+    }
+
+    private static void floatRange_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().floatRange(), output);
+    }
+
+    @Test
+    public void testFloatRange() {
+        BinaryFraction almostOne = ONE.subtract(ONE.shiftRight(1000));
+        BinaryFraction trillion = of(new BigInteger("1000000000000"));
+        BinaryFraction pi = of((float) Math.PI).get();
+        BinaryFraction piSuccessor = of(FloatingPointUtils.successor((float) Math.PI)).get();
+        BinaryFraction piPredecessor = of(FloatingPointUtils.predecessor((float) Math.PI)).get();
+        BinaryFraction halfAbovePi = pi.add(piSuccessor).shiftRight(1);
+        BinaryFraction halfBelowPi = pi.add(piPredecessor).shiftRight(1);
+        float subnormalFloat = 1.0e-40f;
+        BinaryFraction subnormal = of(subnormalFloat).get();
+        BinaryFraction subnormalSuccessor = of(FloatingPointUtils.successor(subnormalFloat)).get();
+        BinaryFraction subnormalPredecessor = of(FloatingPointUtils.predecessor(subnormalFloat)).get();
+        BinaryFraction halfAboveSubnormal = subnormal.add(subnormalSuccessor).shiftRight(1);
+        BinaryFraction halfBelowSubnormal = subnormal.add(subnormalPredecessor).shiftRight(1);
+        BinaryFraction subnormalBoundary = LARGEST_SUBNORMAL_FLOAT.add(SMALLEST_NORMAL_FLOAT).shiftRight(1);
+        floatRange_helper("0", "(0.0, 0.0)");
+        floatRange_helper("1", "(1.0, 1.0)");
+        floatRange_helper("11", "(11.0, 11.0)");
+        floatRange_helper("5 << 20", "(5242880.0, 5242880.0)");
+        floatRange_helper("5 >> 20", "(4.7683716E-6, 4.7683716E-6)");
+        aeq(almostOne.floatRange(), "(0.99999994, 1.0)");
+        aeq(trillion.floatRange(), "(1.0E12, 1.00000006E12)");
+        aeq(pi.floatRange(), "(3.1415927, 3.1415927)");
+        aeq(halfAbovePi.floatRange(), "(3.1415927, 3.141593)");
+        aeq(halfBelowPi.floatRange(), "(3.1415925, 3.1415927)");
+        aeq(halfAboveSubnormal.floatRange(), "(1.0E-40, 1.00001E-40)");
+        aeq(halfBelowSubnormal.floatRange(), "(9.9998E-41, 1.0E-40)");
+        aeq(subnormalBoundary.floatRange(), "(1.1754942E-38, 1.17549435E-38)");
+        floatRange_helper("-1", "(-1.0, -1.0)");
+        floatRange_helper("-11", "(-11.0, -11.0)");
+        floatRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
+        floatRange_helper("-5 >> 20", "(-4.7683716E-6, -4.7683716E-6)");
+        aeq(almostOne.negate().floatRange(), "(-1.0, -0.99999994)");
+        aeq(trillion.negate().floatRange(), "(-1.00000006E12, -1.0E12)");
+        aeq(pi.negate().floatRange(), "(-3.1415927, -3.1415927)");
+        aeq(halfAbovePi.negate().floatRange(), "(-3.141593, -3.1415927)");
+        aeq(halfBelowPi.negate().floatRange(), "(-3.1415927, -3.1415925)");
+        aeq(halfAboveSubnormal.negate().floatRange(), "(-1.00001E-40, -1.0E-40)");
+        aeq(halfBelowSubnormal.negate().floatRange(), "(-1.0E-40, -9.9998E-41)");
+        aeq(subnormalBoundary.negate().floatRange(), "(-1.17549435E-38, -1.1754942E-38)");
+        BinaryFraction aboveNegativeMax = LARGEST_FLOAT.negate().add(ONE);
+        BinaryFraction belowNegativeMax = LARGEST_FLOAT.negate().subtract(ONE);
+        BinaryFraction belowMax = LARGEST_FLOAT.subtract(ONE);
+        BinaryFraction aboveMax = LARGEST_FLOAT.add(ONE);
+        BinaryFraction justAboveZero = SMALLEST_FLOAT.shiftRight(1);
+        BinaryFraction justBelowZero = SMALLEST_FLOAT.negate().shiftRight(1);
+        aeq(aboveNegativeMax.floatRange(), "(-3.4028235E38, -3.4028233E38)");
+        aeq(belowNegativeMax.floatRange(), "(-Infinity, -3.4028235E38)");
+        aeq(belowMax.floatRange(), "(3.4028233E38, 3.4028235E38)");
+        aeq(aboveMax.floatRange(), "(3.4028235E38, Infinity)");
+        aeq(justAboveZero.floatRange(), "(0.0, 1.4E-45)");
+        aeq(justBelowZero.floatRange(), "(-1.4E-45, -0.0)");
+    }
+    
+    private static void doubleRange_helper(@NotNull String input, @NotNull String output) {
+        aeq(read(input).get().doubleRange(), output);
+    }
+
+    @Test
+    public void testDoubleRange() {
+        BinaryFraction almostOne = ONE.subtract(ONE.shiftRight(1000));
+        BinaryFraction googol = of(
+                new BigInteger(
+                        "1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" +
+                        "0000000000"
+                )
+        );
+        BinaryFraction pi = of(Math.PI).get();
+        BinaryFraction piSuccessor = of(FloatingPointUtils.successor(Math.PI)).get();
+        BinaryFraction piPredecessor = of(FloatingPointUtils.predecessor(Math.PI)).get();
+        BinaryFraction halfAbovePi = pi.add(piSuccessor).shiftRight(1);
+        BinaryFraction halfBelowPi = pi.add(piPredecessor).shiftRight(1);
+        double subnormalDouble = 1.0e-310;
+        BinaryFraction subnormal = of(subnormalDouble).get();
+        BinaryFraction subnormalSuccessor = of(FloatingPointUtils.successor(subnormalDouble)).get();
+        BinaryFraction subnormalPredecessor = of(FloatingPointUtils.predecessor(subnormalDouble)).get();
+        BinaryFraction halfAboveSubnormal = subnormal.add(subnormalSuccessor).shiftRight(1);
+        BinaryFraction halfBelowSubnormal = subnormal.add(subnormalPredecessor).shiftRight(1);
+        BinaryFraction subnormalBoundary = LARGEST_SUBNORMAL_DOUBLE.add(SMALLEST_NORMAL_DOUBLE).shiftRight(1);
+        doubleRange_helper("0", "(0.0, 0.0)");
+        doubleRange_helper("1", "(1.0, 1.0)");
+        doubleRange_helper("11", "(11.0, 11.0)");
+        doubleRange_helper("5 << 20", "(5242880.0, 5242880.0)");
+        doubleRange_helper("5 >> 20", "(4.76837158203125E-6, 4.76837158203125E-6)");
+        aeq(almostOne.doubleRange(), "(0.9999999999999999, 1.0)");
+        aeq(googol.doubleRange(), "(9.999999999999998E99, 1.0E100)");
+        aeq(pi.doubleRange(), "(3.141592653589793, 3.141592653589793)");
+        aeq(halfAbovePi.doubleRange(), "(3.141592653589793, 3.1415926535897936)");
+        aeq(halfBelowPi.doubleRange(), "(3.1415926535897927, 3.141592653589793)");
+        aeq(halfAboveSubnormal.doubleRange(), "(1.0E-310, 1.00000000000005E-310)");
+        aeq(halfBelowSubnormal.doubleRange(), "(9.9999999999995E-311, 1.0E-310)");
+        aeq(subnormalBoundary.doubleRange(), "(2.225073858507201E-308, 2.2250738585072014E-308)");
+        doubleRange_helper("-1", "(-1.0, -1.0)");
+        doubleRange_helper("-11", "(-11.0, -11.0)");
+        doubleRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
+        doubleRange_helper("-5 >> 20", "(-4.76837158203125E-6, -4.76837158203125E-6)");
+        aeq(almostOne.negate().doubleRange(), "(-1.0, -0.9999999999999999)");
+        aeq(googol.negate().doubleRange(), "(-1.0E100, -9.999999999999998E99)");
+        aeq(pi.negate().doubleRange(), "(-3.141592653589793, -3.141592653589793)");
+        aeq(halfAbovePi.negate().doubleRange(), "(-3.1415926535897936, -3.141592653589793)");
+        aeq(halfBelowPi.negate().doubleRange(), "(-3.141592653589793, -3.1415926535897927)");
+        aeq(halfAboveSubnormal.negate().doubleRange(), "(-1.00000000000005E-310, -1.0E-310)");
+        aeq(halfBelowSubnormal.negate().doubleRange(), "(-1.0E-310, -9.9999999999995E-311)");
+        aeq(subnormalBoundary.negate().doubleRange(), "(-2.2250738585072014E-308, -2.225073858507201E-308)");
+        BinaryFraction aboveNegativeMax = LARGEST_DOUBLE.negate().add(ONE);
+        BinaryFraction belowNegativeMax = LARGEST_DOUBLE.negate().subtract(ONE);
+        BinaryFraction belowMax = LARGEST_DOUBLE.subtract(ONE);
+        BinaryFraction aboveMax = LARGEST_DOUBLE.add(ONE);
+        BinaryFraction justAboveZero = SMALLEST_DOUBLE.shiftRight(1);
+        BinaryFraction justBelowZero = SMALLEST_DOUBLE.negate().shiftRight(1);
+        aeq(aboveNegativeMax.doubleRange(), "(-1.7976931348623157E308, -1.7976931348623155E308)");
+        aeq(belowNegativeMax.doubleRange(), "(-Infinity, -1.7976931348623157E308)");
+        aeq(belowMax.doubleRange(), "(1.7976931348623155E308, 1.7976931348623157E308)");
+        aeq(aboveMax.doubleRange(), "(1.7976931348623157E308, Infinity)");
+        aeq(justAboveZero.doubleRange(), "(0.0, 4.9E-324)");
+        aeq(justBelowZero.doubleRange(), "(-4.9E-324, -0.0)");
     }
 
     private static void isInteger_helper(@NotNull String input, boolean output) {

@@ -24,7 +24,7 @@ import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("ConstantConditions")
-public class BinaryFractionProperties {
+public strictfp class BinaryFractionProperties {
     private static int LIMIT;
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static IterableProvider P;
