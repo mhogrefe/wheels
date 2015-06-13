@@ -42,9 +42,6 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
 
-    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
-        return naturalIntegers();
-    }
     public @NotNull Iterable<Integer> positiveIntegersGeometric() {
         return positiveIntegers();
     }
@@ -53,6 +50,9 @@ public abstract strictfp class IterableProvider {
     }
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
         return nonzeroIntegers();
+    }
+    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        return naturalIntegers();
     }
     public @NotNull Iterable<Integer> integersGeometric() {
         return integers();

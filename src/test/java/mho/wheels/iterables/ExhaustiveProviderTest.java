@@ -673,6 +673,41 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testPositiveBinaryFractions() {
+        aeqit(take(TINY_LIMIT, P.positiveBinaryFractions()),
+                "[1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
+                " 9 << 1, 19, 5 >> 1]");
+    }
+
+    @Test
+    public void testNegativeBinaryFractions() {
+        aeqit(take(TINY_LIMIT, P.negativeBinaryFractions()),
+                "[-1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1, -15," +
+                " -1 >> 2, -17, -9 << 1, -19, -5 >> 1]");
+    }
+
+    @Test
+    public void testNonzeroBinaryFractions() {
+        aeqit(take(TINY_LIMIT, P.nonzeroBinaryFractions()),
+                "[1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2, 9," +
+                " -9, 5 << 1, -5 << 1]");
+    }
+
+    @Test
+    public void testNaturalBinaryFractions() {
+        aeqit(take(TINY_LIMIT, P.naturalBinaryFractions()),
+                "[0, 1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
+                " 9 << 1, 19]");
+    }
+
+    @Test
+    public void testBinaryFractions() {
+        aeqit(take(TINY_LIMIT, P.binaryFractions()),
+                "[0, 1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2," +
+                " 9, -9, 5 << 1]");
+    }
+
+    @Test
     public void testPositiveOrdinaryFloatsIncreasing() {
         aeqit(take(TINY_LIMIT, P.positiveOrdinaryFloatsIncreasing()),
                 "[1.4E-45, 2.8E-45, 4.2E-45, 5.6E-45, 7.0E-45, 8.4E-45, 9.8E-45, 1.1E-44, 1.3E-44, 1.4E-44," +
