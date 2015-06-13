@@ -301,6 +301,8 @@ public strictfp class BinaryFractionTest {
         floatRange_helper("11", "(11.0, 11.0)");
         floatRange_helper("5 << 20", "(5242880.0, 5242880.0)");
         floatRange_helper("5 >> 20", "(4.7683716E-6, 4.7683716E-6)");
+        floatRange_helper("1 << 2147483647", "(3.4028235E38, Infinity)");
+        floatRange_helper("1 >> 2147483648", "(0.0, 1.4E-45)");
         aeq(almostOne.floatRange(), "(0.99999994, 1.0)");
         aeq(trillion.floatRange(), "(1.0E12, 1.00000006E12)");
         aeq(pi.floatRange(), "(3.1415927, 3.1415927)");
@@ -313,6 +315,8 @@ public strictfp class BinaryFractionTest {
         floatRange_helper("-11", "(-11.0, -11.0)");
         floatRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
         floatRange_helper("-5 >> 20", "(-4.7683716E-6, -4.7683716E-6)");
+        floatRange_helper("-1 << 2147483647", "(-Infinity, -3.4028235E38)");
+        floatRange_helper("-1 >> 2147483648", "(-1.4E-45, -0.0)");
         aeq(almostOne.negate().floatRange(), "(-1.0, -0.99999994)");
         aeq(trillion.negate().floatRange(), "(-1.00000006E12, -1.0E12)");
         aeq(pi.negate().floatRange(), "(-3.1415927, -3.1415927)");
@@ -365,6 +369,8 @@ public strictfp class BinaryFractionTest {
         doubleRange_helper("11", "(11.0, 11.0)");
         doubleRange_helper("5 << 20", "(5242880.0, 5242880.0)");
         doubleRange_helper("5 >> 20", "(4.76837158203125E-6, 4.76837158203125E-6)");
+        doubleRange_helper("1 << 2147483647", "(1.7976931348623157E308, Infinity)");
+        doubleRange_helper("1 >> 2147483648", "(0.0, 4.9E-324)");
         aeq(almostOne.doubleRange(), "(0.9999999999999999, 1.0)");
         aeq(googol.doubleRange(), "(9.999999999999998E99, 1.0E100)");
         aeq(pi.doubleRange(), "(3.141592653589793, 3.141592653589793)");
@@ -377,6 +383,8 @@ public strictfp class BinaryFractionTest {
         doubleRange_helper("-11", "(-11.0, -11.0)");
         doubleRange_helper("-5 << 20", "(-5242880.0, -5242880.0)");
         doubleRange_helper("-5 >> 20", "(-4.76837158203125E-6, -4.76837158203125E-6)");
+        doubleRange_helper("-1 << 2147483647", "(-Infinity, -1.7976931348623157E308)");
+        doubleRange_helper("-1 >> 2147483648", "(-4.9E-324, -0.0)");
         aeq(almostOne.negate().doubleRange(), "(-1.0, -0.9999999999999999)");
         aeq(googol.negate().doubleRange(), "(-1.0E100, -9.999999999999998E99)");
         aeq(pi.negate().doubleRange(), "(-3.141592653589793, -3.141592653589793)");

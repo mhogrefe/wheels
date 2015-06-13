@@ -18,7 +18,7 @@ Progress
 | NoRemoveIterable         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterator         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
-| BinaryFraction           | ✔       | ✔       | ✘     | ✔     | ✘          |
+| BinaryFraction           | ✔       | ✔       | ✔     | ✔     | ✘          |
 | Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils          | ✘       | ✘       | ✘     | ✘     | ✘          |
