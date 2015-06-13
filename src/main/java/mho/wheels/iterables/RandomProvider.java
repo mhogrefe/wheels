@@ -2535,8 +2535,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
         return () -> new NoRemoveIterator<BinaryFraction>() {
-            private @NotNull Iterator<BigInteger> mantissas =
-                    filter(i -> i.equals(BigInteger.ZERO) || i.testBit(0), positiveBigIntegers()).iterator();
+            private @NotNull Iterator<BigInteger> mantissas = naturalBigIntegers().iterator();
             private @NotNull Iterator<Integer> exponents = withScale(secondaryScale).integersGeometric().iterator();
 
             @Override
@@ -2546,7 +2545,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public BinaryFraction next() {
-                return BinaryFraction.of(mantissas.next(), exponents.next());
+                BigInteger mantissa = mantissas.next();
+                if (!mantissa.equals(BigInteger.ZERO)) mantissa = mantissa.setBit(0);
+                return BinaryFraction.of(mantissa, exponents.next());
             }
         };
     }

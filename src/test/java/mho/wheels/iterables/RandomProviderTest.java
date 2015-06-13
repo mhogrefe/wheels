@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.misc.Readers;
 import mho.wheels.random.IsaacPRNG;
 import org.jetbrains.annotations.NotNull;
@@ -3115,6 +3116,57 @@ public strictfp class RandomProviderTest {
         rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
     }
 
+    private static void binaryFractionHelper(
+            @NotNull Iterable<BinaryFraction> xs,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        List<BinaryFraction> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfBinaryFractions(sample), sampleMean);
+        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), mantissaBitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
+    }
+
+    private static void positiveBinaryFractions_helper(
+            int meanMantissaBitSize,
+            int meanExponentSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        binaryFractionHelper(
+                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions(),
+                output,
+                topSampleCount,
+                sampleMean,
+                mantissaBitSizeMean,
+                exponentMean
+        );
+        P.reset();
+    }
+
+    @Test
+    public void testPositiveBinaryFractions() {
+        positiveBinaryFractions_helper(
+                2,
+                1,
+                "[13 << 8, 3 >> 1, 3 >> 2, 3 << 1, 1 >> 1, 3, 1 << 1, 1 >> 1, 3, 1, 1, 1, 1 << 1, 1 >> 3, 9, 1 << 5," +
+                " 3, 5 << 2, 19, 1]",
+                "{1=333616, 1 << 1=83723, 3=83204, 1 >> 1=82928, 1 >> 2=41829, 1 << 2=41712, 5=20999, 1 << 3=20978," +
+                " 7=20900, 3 << 1=20764}",
+                108.60036753958418,
+                1.6666249999792992,
+                0.9985249999976975
+        );
+    }
+
     @Test
     @Ignore
     public void testPositiveOrdinaryFloats() {
@@ -3236,6 +3288,11 @@ public strictfp class RandomProviderTest {
 
     private static double meanOfBigIntegers(@NotNull List<BigInteger> xs) {
         return sumDouble(map(i -> i.doubleValue() / DEFAULT_SAMPLE_SIZE, xs));
+    }
+
+    private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
+        //noinspection ConstantConditions
+        return sumDouble(map(i -> i.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs));
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
