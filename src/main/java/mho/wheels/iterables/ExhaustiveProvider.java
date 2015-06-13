@@ -961,6 +961,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.range(a, b);
     }
 
+    public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
+        return map(
+                p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
+                pairsLogarithmicOrder(naturalBigIntegers(), integers())
+        );
+    }
+
+    public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
+        return map(BinaryFraction::negate, positiveBinaryFractions());
+    }
+
+    public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
+        return mux(Arrays.asList(positiveBinaryFractions(), negativeBinaryFractions()));
+    }
+
+    public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
+        return cons(BinaryFraction.ZERO, positiveBinaryFractions());
+    }
+
+    public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        return cons(BinaryFraction.ZERO, nonzeroBinaryFractions());
+    }
+
     /**
      * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
      * increasing order. Does not support removal.
@@ -1230,16 +1253,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
-    }
-
-    public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return cons(
-                BinaryFraction.ZERO,
-                map(
-                        p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
-                        pairsLogarithmicOrder(bigIntegers(), integers())
-                )
-        );
     }
 
     @Override

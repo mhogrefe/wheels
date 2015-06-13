@@ -52,7 +52,7 @@ public abstract strictfp class IterableProvider {
         return negativeIntegers();
     }
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
-        return integers();
+        return nonzeroIntegers();
     }
     public @NotNull Iterable<Integer> integersGeometric() {
         return integers();
@@ -119,6 +119,12 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
     public abstract @NotNull Iterable<Character> range(char a, char b);
 
+    public abstract @NotNull Iterable<BinaryFraction> positiveBinaryFractions();
+    public abstract @NotNull Iterable<BinaryFraction> negativeBinaryFractions();
+    public abstract @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions();
+    public abstract @NotNull Iterable<BinaryFraction> naturalBinaryFractions();
+    public abstract @NotNull Iterable<BinaryFraction> binaryFractions();
+
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
     public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();
     public abstract @NotNull Iterable<Float> ordinaryFloats();
@@ -131,10 +137,6 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
-
-    public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return map(p -> BinaryFraction.of(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integersGeometric()));
-    }
 
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);

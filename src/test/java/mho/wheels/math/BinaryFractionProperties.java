@@ -302,8 +302,7 @@ public strictfp class BinaryFractionProperties {
             assertTrue(bf, bf.add(negative) == ZERO);
         }
 
-        //todo fix nonzero generation
-        for (BinaryFraction bf : take(LIMIT, filter(c -> c != ZERO, P.binaryFractions()))) {
+        for (BinaryFraction bf : take(LIMIT, P.nonzeroBinaryFractions())) {
             assertNotEquals(bf, bf, bf.negate());
         }
     }
@@ -325,7 +324,9 @@ public strictfp class BinaryFractionProperties {
             assertTrue(bf, ge(abs, ZERO));
         }
 
-        //todo positive fixpoints
+        for (BinaryFraction bf : take(LIMIT, P.positiveBinaryFractions())) {
+            fixedPoint(BinaryFraction::abs, bf);
+        }
     }
 
     private static void propertiesSignum() {

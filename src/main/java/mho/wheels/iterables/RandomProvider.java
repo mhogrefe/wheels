@@ -2507,6 +2507,54 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
     }
 
+    public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
+        return () -> new NoRemoveIterator<BinaryFraction>() {
+            private @NotNull Iterator<BigInteger> mantissas =
+                    filter(i -> i.testBit(0), positiveBigIntegers()).iterator();
+            private @NotNull Iterator<Integer> exponents = withScale(secondaryScale).integersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BinaryFraction next() {
+                return BinaryFraction.of(mantissas.next(), exponents.next());
+            }
+        };
+    }
+
+    public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
+        return map(BinaryFraction::negate, positiveBinaryFractions());
+    }
+
+    public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
+        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
+    }
+
+    public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
+        return () -> new NoRemoveIterator<BinaryFraction>() {
+            private @NotNull Iterator<BigInteger> mantissas =
+                    filter(i -> i.equals(BigInteger.ZERO) || i.testBit(0), positiveBigIntegers()).iterator();
+            private @NotNull Iterator<Integer> exponents = withScale(secondaryScale).integersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BinaryFraction next() {
+                return BinaryFraction.of(mantissas.next(), exponents.next());
+            }
+        };
+    }
+
+    public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), naturalBinaryFractions());
+    }
+
     /**
      * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.
@@ -2666,16 +2714,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
-    }
-
-    public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return addSpecialElement(
-                BinaryFraction.ZERO,
-                map(
-                        p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
-                        pairsLogarithmicOrder(bigIntegers(), withScale(secondaryScale).integersGeometric())
-                )
-        );
     }
 
     public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
