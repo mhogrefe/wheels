@@ -5,6 +5,7 @@ import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.misc.BigDecimalUtils;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -52,6 +53,8 @@ public strictfp class BinaryFractionProperties {
             propertiesOf_float();
             propertiesOf_double();
             propertiesBigDecimalValue();
+            propertiesFloatRange();
+            propertiesDoubleRange();
             propertiesIsInteger();
             propertiesAdd();
             propertiesNegate();
@@ -182,6 +185,52 @@ public strictfp class BinaryFractionProperties {
             BigDecimal bd = bf.bigDecimalValue();
             assertEquals(bf, bd.signum(), bf.signum());
             assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
+        }
+    }
+
+    private static void propertiesFloatRange() {
+        initialize("floatRange()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            Pair<Float, Float> range = bf.floatRange();
+            assertNotNull(bf, range.a);
+            assertNotNull(bf, range.b);
+            assertTrue(bf, range.a.equals(range.b) || FloatingPointUtils.successor(range.a) == range.b);
+            assertTrue(bf, range.a == Float.NEGATIVE_INFINITY || ge(bf, of(range.a).get()));
+            assertTrue(bf, range.b == Float.POSITIVE_INFINITY || le(bf, of(range.b).get()));
+            if (bf != ZERO) {
+                assertFalse(bf, FloatingPointUtils.isNegativeZero(range.a));
+                assertFalse(bf, FloatingPointUtils.isPositiveZero(range.b));
+            }
+        }
+
+        Iterable<Float> fs = filter(g -> Float.isFinite(g) && !FloatingPointUtils.isNegativeZero(g), P.floats());
+        for (float f : take(LIMIT, fs)) {
+            Pair<Float, Float> range = of(f).get().floatRange();
+            assertEquals(f, range.a, f);
+            assertEquals(f, range.b, f);
+        }
+    }
+
+    private static void propertiesDoubleRange() {
+        initialize("doubleRange()");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            Pair<Double, Double> range = bf.doubleRange();
+            assertNotNull(bf, range.a);
+            assertNotNull(bf, range.b);
+            assertTrue(bf, range.a.equals(range.b) || FloatingPointUtils.successor(range.a) == range.b);
+            assertTrue(bf, range.a == Double.NEGATIVE_INFINITY || ge(bf, of(range.a).get()));
+            assertTrue(bf, range.b == Double.POSITIVE_INFINITY || le(bf, of(range.b).get()));
+            if (bf != ZERO) {
+                assertFalse(bf, FloatingPointUtils.isNegativeZero(range.a));
+                assertFalse(bf, FloatingPointUtils.isPositiveZero(range.b));
+            }
+        }
+
+        Iterable<Double> ds = filter(e -> Double.isFinite(e) && !FloatingPointUtils.isNegativeZero(e), P.doubles());
+        for (double d : take(LIMIT, ds)) {
+            Pair<Double, Double> range = of(d).get().doubleRange();
+            assertEquals(d, range.a, d);
+            assertEquals(d, range.b, d);
         }
     }
 
@@ -608,7 +657,7 @@ public strictfp class BinaryFractionProperties {
     }
 
     private static void propertiesCompareTo() {
-        initialize("compareTo()");
+        initialize("compareTo(BinaryFraction)");
         propertiesCompareToHelper(LIMIT, P, IterableProvider::binaryFractions);
 
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
