@@ -48,6 +48,16 @@ public class ExhaustiveProviderProperties {
         propertiesPositiveIntegers();
         propertiesPositiveLongs();
         propertiesPositiveBigIntegers();
+        propertiesNegativeBytes();
+        propertiesNegativeShorts();
+        propertiesNegativeIntegers();
+        propertiesNegativeLongs();
+        propertiesNegativeBigIntegers();
+        propertiesNonzeroBytes();
+        propertiesNonzeroShorts();
+        propertiesNonzeroIntegers();
+        propertiesNonzeroLongs();
+        propertiesNonzeroBigIntegers();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -180,6 +190,66 @@ public class ExhaustiveProviderProperties {
         initializeConstant("positiveBigIntegers()");
         biggerTest(EP, EP.positiveBigIntegers(), i -> i.signum() == 1);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveBigIntegers())));
+    }
+
+    private static void propertiesNegativeBytes() {
+        initializeConstant("negativeBytes()");
+        biggerTest(EP, EP.negativeBytes(), b -> b < 0);
+        assertTrue(EP, decreasing(EP.negativeBytes()));
+    }
+
+    private static void propertiesNegativeShorts() {
+        initializeConstant("negativeShorts()");
+        biggerTest(EP, EP.negativeShorts(), s -> s < 0);
+        assertTrue(EP, decreasing(EP.negativeShorts()));
+    }
+
+    private static void propertiesNegativeIntegers() {
+        initializeConstant("negativeIntegers()");
+        biggerTest(EP, EP.negativeIntegers(), i -> i < 0);
+        assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeIntegers())));
+    }
+
+    private static void propertiesNegativeLongs() {
+        initializeConstant("negativeLongs()");
+        biggerTest(EP, EP.negativeLongs(), l -> l < 0);
+        assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeLongs())));
+    }
+
+    private static void propertiesNegativeBigIntegers() {
+        initializeConstant("negativeBigIntegers()");
+        biggerTest(EP, EP.negativeBigIntegers(), i -> i.signum() == -1);
+        assertTrue(EP, decreasing(take(LARGE_LIMIT, EP.negativeBigIntegers())));
+    }
+
+    private static void propertiesNonzeroBytes() {
+        initializeConstant("nonzeroBytes()");
+        biggerTest(EP, EP.nonzeroBytes(), b -> b != 0);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroBytes())));
+    }
+
+    private static void propertiesNonzeroShorts() {
+        initializeConstant("nonzeroShorts()");
+        biggerTest(EP, EP.nonzeroShorts(), s -> s != 0);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroShorts())));
+    }
+
+    private static void propertiesNonzeroIntegers() {
+        initializeConstant("nonzeroIntegers()");
+        biggerTest(EP, EP.nonzeroIntegers(), i -> i != 0);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroIntegers()))));
+    }
+
+    private static void propertiesNonzeroLongs() {
+        initializeConstant("nonzeroLongs()");
+        biggerTest(EP, EP.nonzeroLongs(), l -> l != 0);
+        assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroLongs()))));
+    }
+
+    private static void propertiesNonzeroBigIntegers() {
+        initializeConstant("nonzeroBigIntegers()");
+        biggerTest(EP, EP.nonzeroBigIntegers(), i -> !i.equals(BigInteger.ZERO));
+        assertTrue(EP, weaklyIncreasing(map(BigInteger::abs, take(LARGE_LIMIT, EP.nonzeroBigIntegers()))));
     }
 
     private static void propertiesUniformSample_Iterable() {

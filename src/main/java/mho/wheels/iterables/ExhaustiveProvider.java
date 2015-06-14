@@ -260,56 +260,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Byte> naturalBytes() {
-        return IterableUtils.rangeUp((byte) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>15</sup> = 32,768
-     */
-    @Override
-    public @NotNull Iterable<Short> naturalShorts() {
-        return IterableUtils.rangeUp((short) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>31</sup> = 2,147,483,648
-     */
-    @Override
-    public @NotNull Iterable<Integer> naturalIntegers() {
-        return IterableUtils.rangeUp(0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
-     */
-    @Override
-    public @NotNull Iterable<Long> naturalLongs() {
-        return IterableUtils.rangeUp(0L);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return rangeUp(BigInteger.ZERO);
-    }
-
-    /**
      * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup>–1 = 127
@@ -357,6 +307,56 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
         return mux(Arrays.asList(positiveBigIntegers(), negativeBigIntegers()));
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return IterableUtils.rangeUp((byte) 0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>15</sup> = 32,768
+     */
+    @Override
+    public @NotNull Iterable<Short> naturalShorts() {
+        return IterableUtils.rangeUp((short) 0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>31</sup> = 2,147,483,648
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return IterableUtils.rangeUp(0);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
+     */
+    @Override
+    public @NotNull Iterable<Long> naturalLongs() {
+        return IterableUtils.rangeUp(0L);
+    }
+
+    /**
+     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        return rangeUp(BigInteger.ZERO);
     }
 
     /**
