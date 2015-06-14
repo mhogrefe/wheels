@@ -3215,6 +3215,93 @@ public strictfp class RandomProviderTest {
         positiveBinaryFractions_fail_helper(2, 0);
     }
 
+    private static void negativeBinaryFractions_helper(
+            int meanMantissaBitSize,
+            int meanExponentSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        binaryFractionHelper(
+                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions(),
+                output,
+                topSampleCount,
+                sampleMean,
+                mantissaBitSizeMean,
+                exponentMean
+        );
+        P.reset();
+    }
+
+    private static void negativeBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+        try {
+            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNegativeBinaryFractions() {
+        negativeBinaryFractions_helper(
+                2,
+                1,
+                "[-13 << 1, -477 << 1, -3 << 1, -5, -3 << 1, -3 >> 2, -1, -1 << 1, -3 >> 1, -1, -3, -1, -1, -1," +
+                " -3 << 3, -11, -1 >> 2, -3 << 5, -5, -19 << 2]",
+                "{-1=250428, -3=124339, -1 << 1=62680, -1 >> 1=62588, -3 << 1=31509, -7=31376, -1 << 2=31370," +
+                " -1 >> 2=31080, -5=31066, -3 >> 1=31049}",
+                -667.4036101180055,
+                2.0010259999798934,
+                0.9987319999976897
+        );
+        negativeBinaryFractions_helper(
+                5,
+                3,
+                "[-21 << 8, -207647 >> 5, -13, -1 >> 1, -3 << 6, -53 << 13, -345 >> 4, -7 << 11, -9881, -193," +
+                " -13 >> 4, -7, -4701, -47, -15 >> 2, -3 >> 5, -1 >> 2, -9 << 1, -3 << 4, -63 << 2]",
+                "{-1=49801, -3=40309, -1 >> 1=18795, -1 << 1=18688, -7=16065, -5=15921, -3 << 1=15045," +
+                " -3 >> 1=14935, -1 >> 2=14052, -1 << 2=13960}",
+                -5.338187744452399E14,
+                5.00820000000873,
+                3.0015849999914943
+        );
+        negativeBinaryFractions_helper(
+                32,
+                8,
+                "[-9899036265412339 >> 7, -225462717 >> 28, -165780717137 >> 5, -1 >> 17, -2883801665 >> 10," +
+                " -445551 >> 1, -15973 >> 10, -4373 >> 2, -8041 << 3, -11, -6483542254218470125815323736137 << 9," +
+                " -3 >> 6, -3239 << 3, -105164088157 >> 19, -6261899171 >> 8, -1 >> 14, -1388001050111 >> 2," +
+                " -10161243 << 29, -37 << 31, -289]",
+                "{-3=3446, -1=3367, -5=1674, -7=1641, -1 >> 1=1549, -1 << 1=1527, -3 >> 1=1494, -3 << 1=1452," +
+                " -3 >> 2=1427, -1 >> 2=1381}",
+                -7.673641014969271E126,
+                32.00852100002276,
+                7.997832000016788
+        );
+        negativeBinaryFractions_helper(
+                100,
+                10,
+                "[-94790976865653102300816908025048767680216169 >> 15, -4630900152605 >> 6, -107302373 >> 12," +
+                " -1301 >> 3, -1102076678907027178916829938622163782081261 << 1, -142361763 >> 23," +
+                " -27934853437353795793120507739 >> 2, -1121037 << 40, -13078798026233 << 4," +
+                " -2378861914519634593 >> 5, -16637 >> 2, -11780491659396320304092245748596897246965 >> 9," +
+                " -101343 >> 30," +
+                " -4281825112654693651459071466596876043334654508762035987794871586861109396215 << 12," +
+                " -87894315763404085565781671205347 << 21, -7802322497623 >> 27, -350516300835593753 >> 21," +
+                " -752585 << 4, -657125105137779066251367372137060396099924931317 >> 3," +
+                " -15713218602914447431492283897880756550610073314504466517671827791587317575567925917482809549" +
+                " >> 34]",
+                "{-1=923, -3=869, -5=475, -7=451, -1 << 1=439, -1 >> 2=419, -3 >> 1=395, -1 << 2=391, -3 << 2=376," +
+                " -3 >> 2=359}",
+                Double.NEGATIVE_INFINITY,
+                99.91674399999913,
+                10.005905000005157
+        );
+        negativeBinaryFractions_fail_helper(1, 1);
+        negativeBinaryFractions_fail_helper(2, 0);
+    }
+
     @Test
     @Ignore
     public void testPositiveOrdinaryFloats() {
