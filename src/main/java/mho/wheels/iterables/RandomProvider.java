@@ -2523,7 +2523,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
     }
 
-    public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
+    public @NotNull Iterable<BinaryFraction> nonNegativeBinaryFractions() {
         return () -> new NoRemoveIterator<BinaryFraction>() {
             private @NotNull Iterator<BigInteger> mantissas = naturalBigIntegers().iterator();
             private @NotNull Iterator<Integer> exponents = withScale(secondaryScale).integersGeometric().iterator();
@@ -2543,7 +2543,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), naturalBinaryFractions());
+        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), nonNegativeBinaryFractions());
     }
 
     /**

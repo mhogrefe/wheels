@@ -3385,6 +3385,37 @@ public strictfp class RandomProviderTest {
         nonzeroBinaryFractions_fail_helper(2, 0);
     }
 
+    private static void naturalBinaryFractions_helper(
+            int meanMantissaBitSize,
+            int meanExponentSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        binaryFractionHelper(
+                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonNegativeBinaryFractions(),
+                output,
+                topSampleCount,
+                sampleMean,
+                mantissaBitSizeMean,
+                exponentMean
+        );
+        P.reset();
+    }
+
+    private static void naturalBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+        try {
+            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonNegativeBinaryFractions();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNonnegativeBinaryFractions() {
+    }
+
     @Test
     @Ignore
     public void testPositiveOrdinaryFloats() {

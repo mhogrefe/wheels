@@ -996,7 +996,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
+    public @NotNull Iterable<BinaryFraction> nonNegativeBinaryFractions() {
         return cons(BinaryFraction.ZERO, positiveBinaryFractions());
     }
 

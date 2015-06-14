@@ -695,7 +695,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNaturalBinaryFractions() {
-        aeqit(take(TINY_LIMIT, P.naturalBinaryFractions()),
+        aeqit(take(TINY_LIMIT, P.nonNegativeBinaryFractions()),
                 "[0, 1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
                 " 9 << 1, 19]");
     }

@@ -122,7 +122,7 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BinaryFraction> positiveBinaryFractions();
     public abstract @NotNull Iterable<BinaryFraction> negativeBinaryFractions();
     public abstract @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions();
-    public abstract @NotNull Iterable<BinaryFraction> naturalBinaryFractions();
+    public abstract @NotNull Iterable<BinaryFraction> nonNegativeBinaryFractions();
     public abstract @NotNull Iterable<BinaryFraction> binaryFractions();
 
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
