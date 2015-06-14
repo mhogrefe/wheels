@@ -992,7 +992,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@link BinaryFraction}s (including 0). Does not support removal.
+     * An {@code Iterable} that contains all non-negative {@link BinaryFraction}s. Does not support removal.
      *
      * Length is infinite
      */
