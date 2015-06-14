@@ -18,9 +18,14 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("ConstantConditions")
 public class ExhaustiveProviderProperties {
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    private static final int LARGE_LIMIT = 10000;
     private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
+
+    private static void initializeConstant(String name) {
+        System.out.println("\ttesting " + name + " properties...");
+    }
 
     private static void initialize(String name) {
         P.reset();
@@ -29,10 +34,23 @@ public class ExhaustiveProviderProperties {
 
     @Test
     public void testAllProperties() {
+        System.out.println("ExhaustiveProvider properties");
+        propertiesBooleans();
+        propertiesOrderingsIncreasing();
+        propertiesOrderings();
+        propertiesRoundingModes();
+        propertiesBytesIncreasing();
+        propertiesShortsIncreasing();
+        propertiesIntegersIncreasing();
+        propertiesLongsIncreasing();
+        propertiesPositiveBytes();
+        propertiesPositiveShorts();
+        propertiesPositiveIntegers();
+        propertiesPositiveLongs();
+        propertiesPositiveBigIntegers();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("ExhaustiveProvider properties");
         for (Triple<IterableProvider, Integer, String> config : configs) {
             P = config.a;
             LIMIT = config.b;
@@ -61,6 +79,109 @@ public class ExhaustiveProviderProperties {
         System.out.println("Done");
     }
 
+    private static <T> void test_helper(
+            int limit,
+            @NotNull Object message,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        Iterable<T> txs = take(limit, xs);
+        assertTrue(message, all(x -> x != null && predicate.test(x), txs));
+        testNoRemove(limit, txs);
+        assertTrue(message, unique(txs));
+    }
+
+    private static <T> void simpleTest(
+            @NotNull Object message,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        test_helper(TINY_LIMIT, message, xs, predicate);
+    }
+
+    private static <T> void biggerTest(
+            @NotNull Object message,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        test_helper(LARGE_LIMIT, message, xs, predicate);
+    }
+
+    private static void propertiesBooleans() {
+        initializeConstant("booleans()");
+        biggerTest(EP, EP.booleans(), b -> true);
+    }
+
+    private static void propertiesOrderingsIncreasing() {
+        initializeConstant("orderingsIncreasing()");
+        biggerTest(EP, EP.orderingsIncreasing(), b -> true);
+        assertTrue(EP, increasing(EP.orderingsIncreasing()));
+    }
+
+    private static void propertiesOrderings() {
+        initializeConstant("orderings()");
+        biggerTest(EP, EP.orderings(), b -> true);
+    }
+
+    private static void propertiesRoundingModes() {
+        initializeConstant("roundingModes()");
+        biggerTest(EP, EP.roundingModes(), b -> true);
+    }
+
+    private static void propertiesBytesIncreasing() {
+        initializeConstant("bytesIncreasing()");
+        biggerTest(EP, EP.bytesIncreasing(), b -> true);
+        assertTrue(EP, increasing(EP.bytesIncreasing()));
+    }
+
+    private static void propertiesShortsIncreasing() {
+        initializeConstant("shortsIncreasing()");
+        biggerTest(EP, EP.shortsIncreasing(), b -> true);
+        assertTrue(EP, increasing(EP.shortsIncreasing()));
+    }
+
+    private static void propertiesIntegersIncreasing() {
+        initializeConstant("integersIncreasing()");
+        biggerTest(EP, EP.integersIncreasing(), b -> true);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.integersIncreasing())));
+    }
+
+    private static void propertiesLongsIncreasing() {
+        initializeConstant("longsIncreasing()");
+        biggerTest(EP, EP.longsIncreasing(), b -> true);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.longsIncreasing())));
+    }
+
+    private static void propertiesPositiveBytes() {
+        initializeConstant("positiveBytes()");
+        biggerTest(EP, EP.positiveBytes(), b -> b > 0);
+        assertTrue(EP, increasing(EP.positiveBytes()));
+    }
+
+    private static void propertiesPositiveShorts() {
+        initializeConstant("positiveShorts()");
+        biggerTest(EP, EP.positiveShorts(), s -> s > 0);
+        assertTrue(EP, increasing(EP.positiveShorts()));
+    }
+
+    private static void propertiesPositiveIntegers() {
+        initializeConstant("positiveIntegers()");
+        biggerTest(EP, EP.positiveIntegers(), i -> i > 0);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveIntegers())));
+    }
+
+    private static void propertiesPositiveLongs() {
+        initializeConstant("positiveLongs()");
+        biggerTest(EP, EP.positiveLongs(), l -> l > 0);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveLongs())));
+    }
+
+    private static void propertiesPositiveBigIntegers() {
+        initializeConstant("positiveBigIntegers()");
+        biggerTest(EP, EP.positiveBigIntegers(), i -> i.signum() == 1);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.positiveBigIntegers())));
+    }
+
     private static void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
@@ -77,17 +198,6 @@ public class ExhaustiveProviderProperties {
             assertEquals(s, s, charsToString(cs));
             testNoRemove(cs);
         }
-    }
-
-    private static <T> void simpleTest(
-            @NotNull Object message,
-            @NotNull Iterable<T> xs,
-            @NotNull Predicate<T> predicate
-    ) {
-        Iterable<T> txs = take(TINY_LIMIT, xs);
-        assertTrue(message, all(x -> x != null && predicate.test(x), txs));
-        testNoRemove(TINY_LIMIT, txs);
-        assertTrue(message, unique(txs));
     }
 
     private static void propertiesRangeUp_byte() {
