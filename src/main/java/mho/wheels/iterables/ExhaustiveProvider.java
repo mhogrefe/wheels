@@ -961,6 +961,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return IterableUtils.range(a, b);
     }
 
+    /**
+     * An {@code Iterable} that contains all positive {@link BinaryFraction}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
         return map(
                 p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
@@ -968,18 +973,38 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that contains all negative {@link BinaryFraction}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
         return map(BinaryFraction::negate, positiveBinaryFractions());
     }
 
+    /**
+     * An {@code Iterable} that contains all nonzero {@link BinaryFraction}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
         return mux(Arrays.asList(positiveBinaryFractions(), negativeBinaryFractions()));
     }
 
+    /**
+     * An {@code Iterable} that contains all natural {@link BinaryFraction}s (including 0). Does not support removal.
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BinaryFraction> naturalBinaryFractions() {
         return cons(BinaryFraction.ZERO, positiveBinaryFractions());
     }
 
+    /**
+     * An {@code Iterable} that contains all {@link BinaryFraction}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
         return cons(BinaryFraction.ZERO, nonzeroBinaryFractions());
     }
