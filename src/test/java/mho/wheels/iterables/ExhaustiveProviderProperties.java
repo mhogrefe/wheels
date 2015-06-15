@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +59,24 @@ public class ExhaustiveProviderProperties {
         propertiesNonzeroIntegers();
         propertiesNonzeroLongs();
         propertiesNonzeroBigIntegers();
+        propertiesNaturalBytes();
+        propertiesNaturalShorts();
+        propertiesNaturalIntegers();
+        propertiesNaturalLongs();
+        propertiesNaturalBigIntegers();
+        propertiesBytes();
+        propertiesShorts();
+        propertiesIntegers();
+        propertiesLongs();
+        propertiesBigIntegers();
+        propertiesAsciiCharactersIncreasing();
+        propertiesAsciiCharacters();
+        propertiesCharactersIncreasing();
+        propertiesCharacters();
+        propertiesPositiveBinaryFractions();
+        propertiesNegativeBinaryFractions();
+        propertiesNonzeroBinaryFractions();
+        propertiesBinaryFractions();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -136,6 +155,24 @@ public class ExhaustiveProviderProperties {
     private static void propertiesRoundingModes() {
         initializeConstant("roundingModes()");
         biggerTest(EP, EP.roundingModes(), b -> true);
+    }
+
+    private static void propertiesUniformSample_Iterable() {
+        initialize("uniformSample(Iterable<T>)");
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            Iterable<Integer> js = EP.uniformSample(is);
+            aeqit(is, is, js);
+            testNoRemove(js);
+        }
+    }
+
+    private static void propertiesUniformSample_String() {
+        initialize("uniformSample(String)");
+        for (String s : take(LIMIT, P.strings())) {
+            Iterable<Character> cs = EP.uniformSample(s);
+            assertEquals(s, s, charsToString(cs));
+            testNoRemove(cs);
+        }
     }
 
     private static void propertiesBytesIncreasing() {
@@ -252,22 +289,86 @@ public class ExhaustiveProviderProperties {
         assertTrue(EP, weaklyIncreasing(map(BigInteger::abs, take(LARGE_LIMIT, EP.nonzeroBigIntegers()))));
     }
 
-    private static void propertiesUniformSample_Iterable() {
-        initialize("uniformSample(Iterable<T>)");
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
-            Iterable<Integer> js = EP.uniformSample(is);
-            aeqit(is, is, js);
-            testNoRemove(js);
-        }
+    private static void propertiesNaturalBytes() {
+        initializeConstant("naturalBytes()");
+        biggerTest(EP, EP.naturalBytes(), b -> b >= 0);
+        assertTrue(EP, increasing(EP.naturalBytes()));
     }
 
-    private static void propertiesUniformSample_String() {
-        initialize("uniformSample(String)");
-        for (String s : take(LIMIT, P.strings())) {
-            Iterable<Character> cs = EP.uniformSample(s);
-            assertEquals(s, s, charsToString(cs));
-            testNoRemove(cs);
-        }
+    private static void propertiesNaturalShorts() {
+        initializeConstant("naturalShorts()");
+        biggerTest(EP, EP.naturalShorts(), s -> s >= 0);
+        assertTrue(EP, increasing(EP.naturalShorts()));
+    }
+
+    private static void propertiesNaturalIntegers() {
+        initializeConstant("naturalIntegers()");
+        biggerTest(EP, EP.naturalIntegers(), i -> i >= 0);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalIntegers())));
+    }
+
+    private static void propertiesNaturalLongs() {
+        initializeConstant("naturalLongs()");
+        biggerTest(EP, EP.naturalLongs(), l -> l >= 0);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalLongs())));
+    }
+
+    private static void propertiesNaturalBigIntegers() {
+        initializeConstant("naturalBigIntegers()");
+        biggerTest(EP, EP.naturalBigIntegers(), i -> i.signum() != -1);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.naturalBigIntegers())));
+    }
+
+    private static void propertiesBytes() {
+        initializeConstant("bytes()");
+        biggerTest(EP, EP.bytes(), b -> true);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.bytes())));
+    }
+
+    private static void propertiesShorts() {
+        initializeConstant("shorts()");
+        biggerTest(EP, EP.shorts(), s -> true);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.shorts())));
+    }
+
+    private static void propertiesIntegers() {
+        initializeConstant("integers()");
+        biggerTest(EP, EP.integers(), i -> true);
+        assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.integers()))));
+    }
+
+    private static void propertiesLongs() {
+        initializeConstant("longs()");
+        biggerTest(EP, EP.longs(), l -> true);
+        assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.longs()))));
+    }
+
+    private static void propertiesBigIntegers() {
+        initializeConstant("bigIntegers()");
+        biggerTest(EP, EP.bigIntegers(), i -> true);
+        assertTrue(EP, weaklyIncreasing(map(BigInteger::abs, take(LARGE_LIMIT, EP.bigIntegers()))));
+    }
+
+    private static void propertiesAsciiCharactersIncreasing() {
+        initializeConstant("asciiCharactersIncreasing()");
+        biggerTest(EP, EP.asciiCharactersIncreasing(), i -> i < 128);
+        assertTrue(EP, increasing(EP.asciiCharactersIncreasing()));
+    }
+
+    private static void propertiesAsciiCharacters() {
+        initializeConstant("asciiCharacters()");
+        biggerTest(EP, EP.asciiCharacters(), i -> i < 128);
+    }
+
+    private static void propertiesCharactersIncreasing() {
+        initializeConstant("charactersIncreasing()");
+        biggerTest(EP, EP.charactersIncreasing(), i -> true);
+        assertTrue(EP, increasing(take(LARGE_LIMIT, EP.charactersIncreasing())));
+    }
+
+    private static void propertiesCharacters() {
+        initializeConstant("characters()");
+        biggerTest(EP, EP.characters(), i -> true);
     }
 
     private static void propertiesRangeUp_byte() {
@@ -486,5 +587,25 @@ public class ExhaustiveProviderProperties {
             aeqit(nicePrint(c), TINY_LIMIT, EP.range(c, Character.MAX_VALUE), EP.rangeUp(c));
             aeqit(nicePrint(c), TINY_LIMIT, EP.range('\0', c), EP.rangeDown(c));
         }
+    }
+
+    private static void propertiesPositiveBinaryFractions() {
+        initializeConstant("positiveBinaryFractions()");
+        biggerTest(EP, EP.positiveBinaryFractions(), bf -> bf.signum() == 1);
+    }
+
+    private static void propertiesNegativeBinaryFractions() {
+        initializeConstant("negativeBinaryFractions()");
+        biggerTest(EP, EP.negativeBinaryFractions(), bf -> bf.signum() == -1);
+    }
+
+    private static void propertiesNonzeroBinaryFractions() {
+        initializeConstant("nonzeroBinaryFractions()");
+        biggerTest(EP, EP.nonzeroBinaryFractions(), bf -> bf != BinaryFraction.ZERO);
+    }
+
+    private static void propertiesBinaryFractions() {
+        initializeConstant("binaryFractions()");
+        biggerTest(EP, EP.binaryFractions(), bf -> true);
     }
 }
