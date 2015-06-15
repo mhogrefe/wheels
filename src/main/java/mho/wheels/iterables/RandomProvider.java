@@ -1984,6 +1984,29 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
+    //todo docs
+    public @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
+        return () -> new NoRemoveIterator<Integer>() {
+            private @NotNull Iterator<Integer> is = integersBounded(numerator + denominator).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int i;
+                int j = 0;
+                do {
+                    i = is.next();
+                    j++;
+                } while (i >= denominator);
+                return j - 1;
+            }
+        };
+    }
+
     /**
      * Returns a randomly-generated nonzero {@code int} from a geometric distribution with mean {@code scale}.
      *
@@ -2055,6 +2078,12 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
         }
         return fromSupplier(this::nextIntGeometric);
+    }
+
+    //todo docs
+    public @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
+        //noinspection ConstantConditions
+        return map(p -> p.a ? p.b : -p.b, pairs(booleans(), naturalIntegersGeometric(numerator, denominator)));
     }
 
     /**
@@ -2543,7 +2572,15 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
-        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), nonNegativeBinaryFractions());
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
+        //noinspection ConstantConditions
+        return map(
+                p -> p.a.equals(BigInteger.ZERO) ? BinaryFraction.ZERO : BinaryFraction.of(p.a.setBit(0), p.b),
+                pairs(bigIntegers(), integersGeometric(secondaryScale * (scale + 1), scale))
+        );
     }
 
     /**

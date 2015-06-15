@@ -3385,7 +3385,7 @@ public strictfp class RandomProviderTest {
         nonzeroBinaryFractions_fail_helper(2, 0);
     }
 
-    private static void naturalBinaryFractions_helper(
+    private static void binaryFractions_helper(
             int meanMantissaBitSize,
             int meanExponentSize,
             @NotNull String output,
@@ -3395,7 +3395,7 @@ public strictfp class RandomProviderTest {
             double exponentMean
     ) {
         binaryFractionHelper(
-                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonNegativeBinaryFractions(),
+                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions(),
                 output,
                 topSampleCount,
                 sampleMean,
@@ -3405,15 +3405,69 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
-    private static void naturalBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
+    private static void binaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
         try {
-            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonNegativeBinaryFractions();
+            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
     }
 
     @Test
-    public void testNonnegativeBinaryFractions() {
+    public void testBinaryFractions() {
+        binaryFractions_helper(
+                1,
+                1,
+                "[3 >> 6, 1 >> 1, -3 << 2, 3 << 1, 0, 0, -1 << 6, 0, 0, 0, -5 << 5, 0, 0, 0, 0, 0, 0, 7 >> 4," +
+                " -5 << 4, 0]",
+                "{0=499871, -1=52004, 1=41746, 3=20914, -1 << 1=17680, -1 >> 1=17548, 1 >> 1=13961, 1 << 1=13818," +
+                " -3=13014, -1 >> 2=11530}",
+                -1536.4131156148794,
+                0.9578009999985556,
+                1.001232999998014
+        );
+        binaryFractions_helper(
+                5,
+                3,
+                "[13 << 10, 731935 >> 13, 25 << 8, -1661015 << 6, -67 << 2, -3737 >> 3, -11 << 8, 0, -13 >> 14," +
+                " -45 << 1, 3, 3 << 1, -1 >> 7, 0, -3 >> 4, 0, -113, -1, 3 << 1, 0]",
+                "{0=166594, -1=21390, 1=15251, 3=12566, -3=8861, -1 >> 1=8451, -1 << 1=8311, -1 >> 2=6548," +
+                " -1 << 2=6513, 1 >> 1=5932}",
+                -1.1978958509550862E19,
+                4.952401000006271,
+                3.004690999992611
+        );
+        binaryFractions_helper(
+                32,
+                8,
+                "[469791 >> 1, 15928231849557, -8142885 << 10, -9 >> 9, -2361 >> 23, 3685 >> 1, 37997 << 2," +
+                " -15 >> 15, -30459629547907543097 >> 1, -97347 << 1, -115520513794470430625 >> 2, 4379 >> 3," +
+                " 533422527609161 << 4, -1862165, -2307 >> 5, -251 << 8, 525691937 >> 6, -13561 >> 7, -8861 >> 9," +
+                " 35807 >> 4]",
+                "{0=30088, -1=2380, 3=1590, 1=1543, -3=1149, -1 >> 1=1060, -1 << 1=1049, -1 >> 2=1004, -1 << 2=906," +
+                " -1 << 3=831}",
+                1.0016960646679139E126,
+                32.00811200002712,
+                8.00041800001604
+        );
+        binaryFractions_helper(
+                100,
+                10,
+                "[94790976865653102300816908025048767680216169 >> 5, 14696309321178621 >> 10, 3685 >> 11, 17 << 23," +
+                " -256597222505842144348851856454779 << 5, -3701827 << 6, -15462895343593858154666605135061," +
+                " 203533 >> 42, 15017245 << 1, 1 >> 1, -361249281457652385 << 22," +
+                " 34371725244293874009975536201589773 >> 4, 9166463 >> 3," +
+                " -2848947688237592406559839376972187768748965186174773843939529344176853869383547978989 << 4," +
+                " -147116069440267308989572019729851081 >> 45, -41860902223040053065371, 155727 >> 10, 27 >> 11," +
+                " 24609989311958439409331914328478960583564339 << 9," +
+                " 706325325640589936310099702184562783564948487506650806918972129922500644033138800134393 << 8]",
+                "{0=9828, -1=651, 1=447, 3=431, -3=319, -1 >> 1=309, -1 << 1=301, -1 >> 2=286, -1 << 2=276," +
+                " -1 << 3=270}",
+                Double.NEGATIVE_INFINITY,
+                99.89710399999372,
+                9.99064900000396
+        );
+        binaryFractions_fail_helper(1, 0);
+        binaryFractions_fail_helper(0, 1);
     }
 
     @Test
