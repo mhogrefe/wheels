@@ -2536,6 +2536,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
     }
 
+    @Override
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
         //noinspection ConstantConditions
         return map(
@@ -2544,33 +2545,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    @Override
     public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
         return map(BinaryFraction::negate, positiveBinaryFractions());
     }
 
+    @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
         return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
     }
 
-    public @NotNull Iterable<BinaryFraction> nonNegativeBinaryFractions() {
-        return () -> new NoRemoveIterator<BinaryFraction>() {
-            private @NotNull Iterator<BigInteger> mantissas = naturalBigIntegers().iterator();
-            private @NotNull Iterator<Integer> exponents = withScale(secondaryScale).integersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public BinaryFraction next() {
-                BigInteger mantissa = mantissas.next();
-                if (!mantissa.equals(BigInteger.ZERO)) mantissa = mantissa.setBit(0);
-                return BinaryFraction.of(mantissa, exponents.next());
-            }
-        };
-    }
-
+    @Override
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
         if (secondaryScale < 1) {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
