@@ -11,6 +11,7 @@ Progress
 
 | Class                      | Methods | JavaDoc | Tests | Demos | Properties |
 |:---------------------------|:-------:|:-------:|:-----:|:-----:|:----------:|
+| TextInput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterable             | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ExhaustiveProvider         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IterableProvider           | ✔       | ✘       | ✘     | ✘     | ✘          |
