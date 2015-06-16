@@ -9,7 +9,7 @@ public class ConsistentDoubleComparator implements Comparator<Double> {
     public static final @NotNull ConsistentDoubleComparator INSTANCE = new ConsistentDoubleComparator();
 
     @Override
-    public int compare(Double x, Double y) {
+    public int compare(@NotNull Double x, @NotNull Double y) {
         //noinspection NumberEquality
         if (x == y) return 0;
         int xType = type(x);

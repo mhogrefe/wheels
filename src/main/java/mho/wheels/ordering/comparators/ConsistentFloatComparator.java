@@ -9,7 +9,7 @@ public class ConsistentFloatComparator implements Comparator<Float> {
     public static final @NotNull ConsistentFloatComparator INSTANCE = new ConsistentFloatComparator();
 
     @Override
-    public int compare(Float x, Float y) {
+    public int compare(@NotNull Float x, @NotNull Float y) {
         //noinspection NumberEquality
         if (x == y) return 0;
         int xType = type(x);
