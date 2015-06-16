@@ -18,7 +18,7 @@ import static mho.wheels.ordering.Ordering.EQ;
  *
  * @param <T> the type of the {@code Iterable}s' values
  */
-public class LexComparator<T extends Comparable<T>> implements Comparator<Iterable<T>> {
+public final class LexComparator<T extends Comparable<T>> implements Comparator<Iterable<T>> {
     /**
      * The {@code Comparator} used to compare values of type {@code T}. It can be null, in which case the natural
      * ordering of {@code T} is used.

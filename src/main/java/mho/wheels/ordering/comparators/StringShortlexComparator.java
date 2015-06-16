@@ -14,7 +14,7 @@ import static mho.wheels.ordering.Ordering.EQ;
  * looks at their {@code Character}s in parallel, left-to-right. The first pair of {@code Character}s which aren't
  * equal determine the ordering.
  */
-public class StringShortlexComparator implements Comparator<String> {
+public final class StringShortlexComparator implements Comparator<String> {
     /**
      * The {@code Comparator} used to compare {@code Character}s. It can be null, in which case the natural ordering of
      * {@code Character}s is used.
