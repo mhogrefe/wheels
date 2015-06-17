@@ -1071,6 +1071,50 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveBinaryFraction(" + rp + ") = " + rp.nextPositiveBinaryFraction());
+        }
+    }
+
+    private static void demoPositiveBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveBinaryFractions(" + rp + ") = " + its(rp.positiveBinaryFractions()));
+        }
+    }
+
+    private static void demoNextNegativeBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeBinaryFraction(" + rp + ") = " + rp.nextNegativeBinaryFraction());
+        }
+    }
+
+    private static void demoNegativeBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeBinaryFractions(" + rp + ") = " + its(rp.negativeBinaryFractions()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
