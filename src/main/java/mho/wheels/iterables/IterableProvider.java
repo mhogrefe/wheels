@@ -21,84 +21,269 @@ import static mho.wheels.iterables.IterableUtils.*;
  * This class provides {@code Iterables} for testing. Subclasses should be immutable.
  */
 public abstract strictfp class IterableProvider {
+    /**
+     * Returns a shallow copy of {@code this}.
+     */
     public @NotNull IterableProvider copy() {
         return this;
     }
+
+    /**
+     * Returns a deep copy of {@code this}.
+     */
     public @NotNull IterableProvider deepCopy() {
         return this;
     }
+
+    /**
+     * Resets {@code this} to its original state (if {@code this} has any state).
+     */
     public void reset() {}
+
+    /**
+     * Returns a shallow copy of {@code this} with a given primary scale.
+     *
+     * @param scale the primary scale.
+     */
     public @NotNull IterableProvider withScale(int scale) {
         return this;
     }
+
+    /**
+     * Returns a shallow copy of {@code this} with a given secondary scale.
+     *
+     * @param secondaryScale the secondary scale.
+     */
     public @NotNull IterableProvider withSecondaryScale(int secondaryScale) {
         return this;
     }
 
+    /**
+     * Generates {@code Boolean}s.
+     */
     public abstract @NotNull Iterable<Boolean> booleans();
+
+    /**
+     * Generates {@link Ordering}s.
+     */
     public abstract @NotNull Iterable<Ordering> orderings();
+
+    /**
+     * Generates {@code RoundingMode}s.
+     */
     public abstract @NotNull Iterable<RoundingMode> roundingModes();
 
+    /**
+     * Generates values from a list, sampled uniformly if applicable.
+     *
+     * @param xs the source list
+     */
     public abstract @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs);
+
+    /**
+     * Generates {@code Character}s from a {@code String}, sampled uniformly if applicable.
+     *
+     * @param s the source {@code String}
+     */
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
 
-    public @NotNull Iterable<Integer> positiveIntegersGeometric() {
-        return positiveIntegers();
-    }
-    public @NotNull Iterable<Integer> negativeIntegersGeometric() {
-        return negativeIntegers();
-    }
-    public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
-        return nonzeroIntegers();
-    }
-    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
-        return naturalIntegers();
-    }
-    public @NotNull Iterable<Integer> integersGeometric() {
-        return integers();
-    }
-    public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
-        return rangeUp(a);
-    }
-    public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
-        return rangeDown(a);
-    }
-
+    /**
+     * Generates positive {@code Byte}s.
+     */
     public abstract @NotNull Iterable<Byte> positiveBytes();
+
+    /**
+     * Generates positive {@code Short}s.
+     */
     public abstract @NotNull Iterable<Short> positiveShorts();
+
+    /**
+     * Generates positive {@code Integer}s.
+     */
     public abstract @NotNull Iterable<Integer> positiveIntegers();
+
+    /**
+     * Generates positive {@code Long}s.
+     */
     public abstract @NotNull Iterable<Long> positiveLongs();
+
+    /**
+     * Generates positive {@code BigInteger}s.
+     */
     public abstract @NotNull Iterable<BigInteger> positiveBigIntegers();
+
+    /**
+     * Generates negative {@code Byte}s.
+     */
     public abstract @NotNull Iterable<Byte> negativeBytes();
+
+    /**
+     * Generates negative {@code Short}s.
+     */
     public abstract @NotNull Iterable<Short> negativeShorts();
+
+    /**
+     * Generates negative {@code Integer}s.
+     */
     public abstract @NotNull Iterable<Integer> negativeIntegers();
+
+    /**
+     * Generates negative {@code Long}s.
+     */
     public abstract @NotNull Iterable<Long> negativeLongs();
+
+    /**
+     * Generates negative {@code BigInteger}s.
+     */
     public abstract @NotNull Iterable<BigInteger> negativeBigIntegers();
+
+    /**
+     * Generates nonzero {@code Byte}s.
+     */
     public @NotNull Iterable<Byte> nonzeroBytes() {
         return filter(b -> b != 0, bytes());
     }
+
+    /**
+     * Generates nonzero {@code Short}s.
+     */
     public @NotNull Iterable<Short> nonzeroShorts() {
         return filter(s -> s != 0, shorts());
     }
+
+    /**
+     * Generates nonzero {@code Integer}s.
+     */
     public @NotNull Iterable<Integer> nonzeroIntegers() {
         return filter(i -> i != 0, integers());
     }
+
+    /**
+     * Generates nonzero {@code Long}s.
+     */
     public @NotNull Iterable<Long> nonzeroLongs() {
         return filter(l -> l != 0, longs());
     }
+
+    /**
+     * Generates nonzero {@code BigInteger}s.
+     */
     public abstract @NotNull Iterable<BigInteger> nonzeroBigIntegers();
+
+    /**
+     * Generates natural {@code Byte}s (including 0).
+     */
     public abstract @NotNull Iterable<Byte> naturalBytes();
+
+    /**
+     * Generates natural {@code Short}s (including 0).
+     */
     public abstract @NotNull Iterable<Short> naturalShorts();
+
+    /**
+     * Generates natural {@code Integer}s (including 0).
+     */
     public abstract @NotNull Iterable<Integer> naturalIntegers();
+
+    /**
+     * Generates natural {@code Long}s (including 0).
+     */
     public abstract @NotNull Iterable<Long> naturalLongs();
+
+    /**
+     * Generates natural {@code BigInteger}s (including 0).
+     */
     public abstract @NotNull Iterable<BigInteger> naturalBigIntegers();
+
+    /**
+     * Generates {@code Byte}s.
+     */
     public abstract @NotNull Iterable<Byte> bytes();
+
+    /**
+     * Generates {@code Short}s.
+     */
     public abstract @NotNull Iterable<Short> shorts();
+
+    /**
+     * Generates {@code Integer}s.
+     */
     public abstract @NotNull Iterable<Integer> integers();
+
+    /**
+     * Generates {@code Long}s.
+     */
     public abstract @NotNull Iterable<Long> longs();
+
+    /**
+     * Generates {@code BigInteger}s.
+     */
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
+
+    /**
+     * Generates ASCII {@code Character}s.
+     */
     public abstract @NotNull Iterable<Character> asciiCharacters();
+
+    /**
+     * Generates {@code Character}s.
+     */
     public abstract @NotNull Iterable<Character> characters();
+
+    /**
+     * Generates positive {@code Integer}s from a geometric distribution (if applicable).
+     */
+    public @NotNull Iterable<Integer> positiveIntegersGeometric() {
+        return positiveIntegers();
+    }
+
+    /**
+     * Generates negative {@code Integer}s from a geometric distribution (if applicable).
+     */
+    public @NotNull Iterable<Integer> negativeIntegersGeometric() {
+        return negativeIntegers();
+    }
+
+    /**
+     * Generates nonzero {@code Integer}s from a geometric distribution (if applicable).
+     */
+    public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
+        return nonzeroIntegers();
+    }
+
+    /**
+     * Generates natural {@code Integer}s (including 0) from a geometric distribution (if applicable).
+     */
+    public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        return naturalIntegers();
+    }
+
+    /**
+     * Generates {@code Integer}s from a geometric distribution (if applicable).
+     */
+    public @NotNull Iterable<Integer> integersGeometric() {
+        return integers();
+    }
+
+    /**
+     * Generates positive {@code Integer}s greater than or equal to a given value from a geometric distribution (if
+     * applicable).
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeUpGeometric(int a) {
+        return rangeUp(a);
+    }
+
+    /**
+     * Generates positive {@code Integer}s less than or equal to a given value from a geometric distribution (if
+     * applicable).
+     *
+     * @param a the inclusive upper bound of the generated {@code Integer}s
+     */
+    public @NotNull Iterable<Integer> rangeDownGeometric(int a) {
+        return rangeDown(a);
+    }
 
     public abstract @NotNull Iterable<Byte> rangeUp(byte a);
     public abstract @NotNull Iterable<Short> rangeUp(short a);

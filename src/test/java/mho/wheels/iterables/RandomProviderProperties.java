@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
@@ -165,6 +166,10 @@ public class RandomProviderProperties {
             propertiesRangeUp_BigInteger();
             propertiesNextFromRangeDown_BigInteger();
             propertiesRangeDown_BigInteger();
+            propertiesNextPositiveBinaryFraction();
+            propertiesPositiveBinaryFractions();
+            propertiesNextNegativeBinaryFraction();
+            propertiesNegativeBinaryFractions();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -1918,6 +1923,110 @@ public class RandomProviderProperties {
             try {
                 p.a.rangeDown(p.b);
                 fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextPositiveBinaryFraction() {
+        initialize("nextPositiveBinaryFraction()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BinaryFraction bf = rp.nextPositiveBinaryFraction();
+            assertEquals(rp, bf.signum(), 1);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nextPositiveBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextPositiveBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesPositiveBinaryFractions() {
+        initialize("positiveBinaryFractions()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BinaryFraction> bfs = rp.positiveBinaryFractions();
+            simpleTest(rp, bfs, bf -> bf.signum() == 1);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.positiveBinaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.positiveBinaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNegativeBinaryFraction() {
+        initialize("nextNegativeBinaryFraction()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BinaryFraction bf = rp.nextNegativeBinaryFraction();
+            assertEquals(rp, bf.signum(), -1);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nextNegativeBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextNegativeBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNegativeBinaryFractions() {
+        initialize("negativeBinaryFractions()");
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BinaryFraction> bfs = rp.negativeBinaryFractions();
+            simpleTest(rp, bfs, bf -> bf.signum() == -1);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.negativeBinaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.negativeBinaryFractions();
+                fail(rp);
             } catch (IllegalStateException ignored) {}
         }
     }

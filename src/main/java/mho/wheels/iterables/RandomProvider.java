@@ -1985,7 +1985,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     //todo docs
-    public @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
+    private @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
         return () -> new NoRemoveIterator<Integer>() {
             private @NotNull Iterator<Integer> is = integersBounded(numerator + denominator).iterator();
 
@@ -2024,8 +2024,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all nonzero {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
-     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
+     * distribution with mean {@code scale}, and whose sign is chosen uniformly. The distribution is truncated at
+     * ±{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
@@ -2059,8 +2059,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with absolute mean {@code scale}, and whose sign is chosen uniformly. The distribution is
-     * truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
+     * distribution with mean {@code scale}, and whose sign is chosen uniformly. The distribution is truncated at
+     * ±{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
@@ -2081,7 +2081,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     //todo docs
-    public @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
+    private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
         //noinspection ConstantConditions
         return map(p -> p.a ? p.b : -p.b, pairs(booleans(), naturalIntegersGeometric(numerator, denominator)));
     }
@@ -2213,7 +2213,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is positive.</li>
      * </ul>
      *
@@ -2250,7 +2249,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is negative.</li>
      * </ul>
      *
@@ -2284,7 +2282,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is non-negative.</li>
      * </ul>
      *
@@ -2332,7 +2329,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is not zero.</li>
      * </ul>
      *
@@ -2370,7 +2366,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>The result is not null.</li>
      * </ul>
      *
@@ -2536,6 +2531,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
     }
 
+    /**
+     * Returns a randomly-generated positive {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
+     * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
+     * {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code BinaryFraction}
+     */
+    public @NotNull BinaryFraction nextPositiveBinaryFraction() {
+        return BinaryFraction.of(nextPositiveBigInteger(), withScale(secondaryScale).nextIntGeometric());
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@code BinaryFraction}s. The mantissa bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd
+     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
         //noinspection ConstantConditions
@@ -2545,14 +2570,52 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated negative {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
+     * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
+     * {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code BinaryFraction}
+     */
+    public @NotNull BinaryFraction nextNegativeBinaryFraction() {
+        return nextPositiveBinaryFraction().negate();
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code BinaryFraction}s. The mantissa bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd
+     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
         return map(BinaryFraction::negate, positiveBinaryFractions());
     }
 
+    public @NotNull BinaryFraction nextNonzeroBinaryFraction() {
+        return nextBoolean() ? nextPositiveBinaryFraction() : nextPositiveBinaryFraction().negate();
+    }
+
     @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
         return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
+    }
+
+    public @NotNull BinaryFraction nextBinaryFraction() {
+        return binaryFractions().iterator().next();
     }
 
     @Override
