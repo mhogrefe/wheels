@@ -1115,6 +1115,28 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextNonzeroBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroBinaryFraction(" + rp + ") = " + rp.nextNonzeroBinaryFraction());
+        }
+    }
+
+    private static void demoNonzeroBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroBinaryFractions(" + rp + ") = " + its(rp.nonzeroBinaryFractions()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
