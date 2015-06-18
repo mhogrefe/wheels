@@ -2640,10 +2640,38 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(BinaryFraction::negate, positiveBinaryFractions());
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
+     * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
+     * {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the {@code BinaryFraction} itself
+     * is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code BinaryFraction}
+     */
     public @NotNull BinaryFraction nextNonzeroBinaryFraction() {
         return nextBoolean() ? nextPositiveBinaryFraction() : nextPositiveBinaryFraction().negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code BinaryFraction}s. The mantissa bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd
+     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the
+     * {@code BinaryFraction} itself is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code BinaryFraction}
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
         return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
