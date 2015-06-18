@@ -1984,8 +1984,30 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
-    //todo docs
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) chosen from a geometric
+     * distribution with mean {@code numerator}/{@code denominator}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code numerator} must be positive.</li>
+     *  <li>{@code denominator} must be positive.</li>
+     *  <li>The sum of {@code numerator} and {@code denominator} must be less than 2<sup>31</sup>.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     private @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
+        if (numerator < 1) {
+            throw new IllegalArgumentException("numerator must be positive. numerator: " + numerator);
+        }
+        if (denominator < 1) {
+            throw new IllegalArgumentException("denominator must be positive. denominator: " + denominator);
+        }
+        if ((long) numerator + denominator > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("The sum of numerator and denominator must be less than 2^31." +
+                    " numerator is " + numerator + " and denominator is " + denominator + ".");
+        }
         return () -> new NoRemoveIterator<Integer>() {
             private @NotNull Iterator<Integer> is = integersBounded(numerator + denominator).iterator();
 
@@ -2080,7 +2102,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextIntGeometric);
     }
 
-    //todo docs
+    /**
+     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with mean {@code numerator}/{@code denominator}, and whose sign is chosen uniformly. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code numerator} must be positive.</li>
+     *  <li>{@code denominator} must be positive.</li>
+     *  <li>The sum of {@code numerator} and {@code denominator} must be less than 2<sup>31</sup>.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
         //noinspection ConstantConditions
         return map(p -> p.a ? p.b : -p.b, pairs(booleans(), naturalIntegersGeometric(numerator, denominator)));
