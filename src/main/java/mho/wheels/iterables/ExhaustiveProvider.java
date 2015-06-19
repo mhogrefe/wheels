@@ -1005,6 +1005,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        return cons(a, map(bf -> bf.add(a), positiveBinaryFractions()));
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        return cons(a, map(a::subtract, positiveBinaryFractions()));
+    }
+
+    @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         switch (compare(a, b)) {
             case GT: return Collections.emptyList();
@@ -1033,16 +1043,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             default:
                 throw new IllegalStateException("unreachable");
         }
-    }
-
-    @Override
-    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
-        return null;
     }
 
     /**
