@@ -437,6 +437,28 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<BinaryFraction> binaryFractions();
 
+    /**
+     * Generates {@link BinaryFraction}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code BinaryFraction}s
+     * @param b the inclusive upper bound of the generated {@code BinaryFraction}s
+     */
+    public abstract @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b);
+
+    /**
+     * Generates {@code BinaryFraction}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code BinaryFraction}s
+     */
+    public abstract @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a);
+
+    /**
+     * Generates {@code BinaryFraction}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code BinaryFraction}s
+     */
+    public abstract @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a);
+
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
     public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();
     public abstract @NotNull Iterable<Float> ordinaryFloats();

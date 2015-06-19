@@ -2723,6 +2723,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    public static void main(String[] args) {
+        System.out.println(example().rangeUp(BinaryFraction.ZERO));
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        return null;
+    }
+
     /**
      * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
      * distribution. Does not support removal.

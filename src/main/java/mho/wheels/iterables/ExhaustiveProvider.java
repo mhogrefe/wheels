@@ -1004,6 +1004,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return cons(BinaryFraction.ZERO, nonzeroBinaryFractions());
     }
 
+    @Override
+    public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        return null;
+    }
+
     /**
      * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
      * increasing order. Does not support removal.
