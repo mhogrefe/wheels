@@ -3360,6 +3360,35 @@ public strictfp class RandomProviderTest {
         negativeBinaryFractions_fail_helper(2, 0);
     }
 
+    private static void nextNonzeroBinaryFraction_helper(
+            int mantissaMeanBitSize,
+            int meanExponentSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNonzeroBinaryFraction(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextNonzeroBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
+        try {
+            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNonzeroBinaryFraction();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextNonzeroBinaryFraction() {
+        nextNonzeroBinaryFraction_helper(2, 1, "5 << 1");
+        nextNonzeroBinaryFraction_helper(5, 3, "13 << 8");
+        nextNonzeroBinaryFraction_helper(32, 8, "2697718319020921 >> 6");
+        nextNonzeroBinaryFraction_helper(100, 10, "6273685808573982002218183934969005583531917 >> 12");
+        nextNonzeroBinaryFraction_fail_helper(1, 1);
+        nextNonzeroBinaryFraction_fail_helper(2, 0);
+    }
+
     private static void nonzeroBinaryFractions_helper(
             int meanMantissaBitSize,
             int meanExponentSize,
@@ -3441,6 +3470,35 @@ public strictfp class RandomProviderTest {
         );
         nonzeroBinaryFractions_fail_helper(1, 1);
         nonzeroBinaryFractions_fail_helper(2, 0);
+    }
+
+    private static void nextBinaryFraction_helper(
+            int mantissaMeanBitSize,
+            int meanExponentSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextBinaryFraction(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
+        try {
+            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextBinaryFraction();
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    @Test
+    public void testNextBinaryFraction() {
+        nextBinaryFraction_helper(2, 1, "5");
+        nextBinaryFraction_helper(5, 3, "13 << 10");
+        nextBinaryFraction_helper(32, 8, "469791 >> 1");
+        nextBinaryFraction_helper(100, 10, "94790976865653102300816908025048767680216169 >> 5");
+        nextBinaryFraction_fail_helper(1, 0);
+        nextBinaryFraction_fail_helper(0, 1);
     }
 
     private static void binaryFractions_helper(
