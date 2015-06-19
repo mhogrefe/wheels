@@ -1006,7 +1006,33 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
-        return null;
+        switch (compare(a, b)) {
+            case GT: return Collections.emptyList();
+            case EQ: return Collections.singletonList(a);
+            case LT:
+                BinaryFraction difference = b.subtract(a);
+                return map(
+                        bf -> bf.multiply(difference).add(a),
+                        concatMap(
+                                e -> {
+                                    if (e == 0) {
+                                        return Arrays.asList(BinaryFraction.ZERO, BinaryFraction.ONE);
+                                    } else {
+                                        return map(
+                                                i -> BinaryFraction.of(i.shiftLeft(1).add(BigInteger.ONE), -e),
+                                                IterableUtils.range(
+                                                        BigInteger.ZERO,
+                                                        BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE)
+                                                )
+                                        );
+                                    }
+                                },
+                                IterableUtils.rangeUp(0)
+                        )
+                );
+            default:
+                throw new IllegalStateException("unreachable");
+        }
     }
 
     @Override
