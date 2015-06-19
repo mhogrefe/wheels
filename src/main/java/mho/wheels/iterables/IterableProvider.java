@@ -285,23 +285,136 @@ public abstract strictfp class IterableProvider {
         return rangeDown(a);
     }
 
+    /**
+     * Generates {@code Byte}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     */
     public abstract @NotNull Iterable<Byte> rangeUp(byte a);
+
+    /**
+     * Generates {@code Short}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     */
     public abstract @NotNull Iterable<Short> rangeUp(short a);
+
+    /**
+     * Generates {@code Integer}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     */
     public abstract @NotNull Iterable<Integer> rangeUp(int a);
+
+    /**
+     * Generates {@code Long}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     */
     public abstract @NotNull Iterable<Long> rangeUp(long a);
+
+    /**
+     * Generates {@code BigInteger}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}s
+     */
     public abstract @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a);
+
+    /**
+     * Generates {@code Character}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     */
     public abstract @NotNull Iterable<Character> rangeUp(char a);
+
+    /**
+     * Generates {@code Byte}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code Byte}s
+     */
     public abstract @NotNull Iterable<Byte> rangeDown(byte a);
+
+    /**
+     * Generates {@code Short}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code Short}s
+     */
     public abstract @NotNull Iterable<Short> rangeDown(short a);
+
+    /**
+     * Generates {@code Integer}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code Integer}s
+     */
     public abstract @NotNull Iterable<Integer> rangeDown(int a);
+
+    /**
+     * Generates {@code Long}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code Long}s
+     */
     public abstract @NotNull Iterable<Long> rangeDown(long a);
+
+    /**
+     * Generates {@code BigInteger}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code BigInteger}s
+     */
     public abstract @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a);
+
+    /**
+     * Generates {@code Character}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code Character}s
+     */
     public abstract @NotNull Iterable<Character> rangeDown(char a);
+
+    /**
+     * Generates {@code Byte}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code Byte}s
+     * @param b the inclusive upper bound of the generated {@code Byte}s
+     */
     public abstract @NotNull Iterable<Byte> range(byte a, byte b);
+
+    /**
+     * Generates {@code Short}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code Short}s
+     * @param b the inclusive upper bound of the generated {@code Short}s
+     */
     public abstract @NotNull Iterable<Short> range(short a, short b);
+
+    /**
+     * Generates {@code Integer}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code Integer}s
+     * @param b the inclusive upper bound of the generated {@code Integer}s
+     */
     public abstract @NotNull Iterable<Integer> range(int a, int b);
+
+    /**
+     * Generates {@code Long}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code Long}s
+     * @param b the inclusive upper bound of the generated {@code Long}s
+     */
     public abstract @NotNull Iterable<Long> range(long a, long b);
+
+    /**
+     * Generates {@code BigInteger}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigInteger}s
+     * @param b the inclusive upper bound of the generated {@code BigInteger}s
+     */
     public abstract @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b);
+
+    /**
+     * Generates {@code Character}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code Character}s
+     * @param b the inclusive upper bound of the generated {@code Character}s
+     */
     public abstract @NotNull Iterable<Character> range(char a, char b);
 
     public abstract @NotNull Iterable<BinaryFraction> positiveBinaryFractions();
