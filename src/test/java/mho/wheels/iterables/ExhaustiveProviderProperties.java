@@ -592,20 +592,24 @@ public class ExhaustiveProviderProperties {
     private static void propertiesPositiveBinaryFractions() {
         initializeConstant("positiveBinaryFractions()");
         biggerTest(EP, EP.positiveBinaryFractions(), bf -> bf.signum() == 1);
+        take(TINY_LIMIT, EP.positiveBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesNegativeBinaryFractions() {
         initializeConstant("negativeBinaryFractions()");
         biggerTest(EP, EP.negativeBinaryFractions(), bf -> bf.signum() == -1);
+        take(TINY_LIMIT, EP.negativeBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesNonzeroBinaryFractions() {
         initializeConstant("nonzeroBinaryFractions()");
         biggerTest(EP, EP.nonzeroBinaryFractions(), bf -> bf != BinaryFraction.ZERO);
+        take(TINY_LIMIT, EP.nonzeroBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesBinaryFractions() {
         initializeConstant("binaryFractions()");
         biggerTest(EP, EP.binaryFractions(), bf -> true);
+        take(TINY_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
     }
 }
