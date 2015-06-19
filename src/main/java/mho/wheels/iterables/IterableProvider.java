@@ -417,9 +417,24 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<Character> range(char a, char b);
 
+    /**
+     * Generates positive {@link BinaryFraction}s.
+     */
     public abstract @NotNull Iterable<BinaryFraction> positiveBinaryFractions();
+
+    /**
+     * Generates negative {@link BinaryFraction}s.
+     */
     public abstract @NotNull Iterable<BinaryFraction> negativeBinaryFractions();
+
+    /**
+     * Generates nonzero {@link BinaryFraction}s.
+     */
     public abstract @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions();
+
+    /**
+     * Generates {@link BinaryFraction}s.
+     */
     public abstract @NotNull Iterable<BinaryFraction> binaryFractions();
 
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
