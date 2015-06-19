@@ -172,6 +172,8 @@ public class RandomProviderProperties {
             propertiesNegativeBinaryFractions();
             propertiesNextNonzeroBinaryFraction();
             propertiesNonzeroBinaryFractions();
+            propertiesNextBinaryFraction();
+            propertiesBinaryFractions();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2091,6 +2093,54 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nonzeroBinaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextBinaryFraction() {
+        initialize("nextBinaryFraction()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BinaryFraction bf = rp.nextBinaryFraction();
+            bf.validate();
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextBinaryFraction();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesBinaryFractions() {
+        initialize("binaryFractions()");
+        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders());
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BinaryFraction> bfs = rp.binaryFractions();
+            rp.reset();
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
+            simpleTest(rp, bfs, bf -> true);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 1, P.randomProviders()))) {
+            try {
+                rp.binaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.binaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
