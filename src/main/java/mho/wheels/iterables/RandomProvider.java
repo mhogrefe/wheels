@@ -2573,7 +2573,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code secondaryScale}, and its sign is chosen uniformly.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is positive.</li>
      * </ul>
      *
@@ -2590,7 +2590,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code BinaryFraction}s.</li>
      * </ul>
      *
@@ -2612,7 +2612,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code secondaryScale}, and its sign is chosen uniformly.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is negative.</li>
      * </ul>
      *
@@ -2645,10 +2645,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
      * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
      * {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the {@code BinaryFraction} itself
-     * is chosen uniformly. Does not support removal.
+     * is chosen uniformly.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is not zero.</li>
      * </ul>
      *
@@ -2666,21 +2666,50 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code BinaryFraction} itself is chosen uniformly. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a secondary scale of at least 1.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * @return a nonzero {@code BinaryFraction}
+     * Length is infinite
      */
     @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
         return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
     }
 
+    /**
+     * Returns a randomly-generated {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * distribution with mean {@code scale}. If the bit size is zero, the {@code BinaryFraction} is zero; otherwise,
+     * the mantissa is chosen uniformly from all odd {@code BigInteger}s with that bit size, thhe absolute value of the
+     * exponent is chosen from a geometric distribution with mean {@code secondaryScale}, the exponent's sign is chosen
+     * uniformly, and, finally, the sign of the {@code BinaryFraction} itself is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BinaryFraction}
+     */
     public @NotNull BinaryFraction nextBinaryFraction() {
         return binaryFractions().iterator().next();
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * distribution with mean {@code scale}. If the bit size is zero, the {@code BinaryFraction} is zero; otherwise,
+     * the mantissa is chosen uniformly from all odd {@code BigInteger}s with that bit size, thhe absolute value of the
+     * exponent is chosen from a geometric distribution with mean {@code secondaryScale}, the exponent's sign is chosen
+     * uniformly, and, finally, the sign of the {@code BinaryFraction} itself is chosen uniformly. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
         if (secondaryScale < 1) {
