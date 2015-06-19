@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -698,6 +699,50 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(take(TINY_LIMIT, P.binaryFractions()),
                 "[0, 1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2," +
                 " 9, -9, 5 << 1]");
+    }
+
+    private static void range_BinaryFraction_BinaryFraction_helper(
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeqit(take(TINY_LIMIT, P.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get())), output);
+    }
+
+    @Test
+    public void testRange_BinaryFraction_BinaryFraction() {
+        range_BinaryFraction_BinaryFraction_helper("0", "1",
+                "[0, 1, 1 >> 1, 1 >> 2, 3 >> 2, 1 >> 3, 3 >> 3, 5 >> 3, 7 >> 3, 1 >> 4, 3 >> 4, 5 >> 4, 7 >> 4," +
+                " 9 >> 4, 11 >> 4, 13 >> 4, 15 >> 4, 1 >> 5, 3 >> 5, 5 >> 5]");
+        range_BinaryFraction_BinaryFraction_helper("1", "11",
+                "[1, 11, 3 << 1, 7 >> 1, 17 >> 1, 9 >> 2, 19 >> 2, 29 >> 2, 39 >> 2, 13 >> 3, 23 >> 3, 33 >> 3," +
+                " 43 >> 3, 53 >> 3, 63 >> 3, 73 >> 3, 83 >> 3, 21 >> 4, 31 >> 4, 41 >> 4]");
+        range_BinaryFraction_BinaryFraction_helper("11", "11", "[11]");
+        range_BinaryFraction_BinaryFraction_helper("11", "1", "[]");
+        range_BinaryFraction_BinaryFraction_helper("-11", "-1",
+                "[-11, -1, -3 << 1, -17 >> 1, -7 >> 1, -39 >> 2, -29 >> 2, -19 >> 2, -9 >> 2, -83 >> 3, -73 >> 3," +
+                " -63 >> 3, -53 >> 3, -43 >> 3, -33 >> 3, -23 >> 3, -13 >> 3, -171 >> 4, -161 >> 4, -151 >> 4]");
+        range_BinaryFraction_BinaryFraction_helper("-11", "-11", "[-11]");
+        range_BinaryFraction_BinaryFraction_helper("-1", "-11", "[]");
+        range_BinaryFraction_BinaryFraction_helper("0", "0", "[0]");
+        range_BinaryFraction_BinaryFraction_helper("0", "11",
+                "[0, 11, 11 >> 1, 11 >> 2, 33 >> 2, 11 >> 3, 33 >> 3, 55 >> 3, 77 >> 3, 11 >> 4, 33 >> 4, 55 >> 4," +
+                " 77 >> 4, 99 >> 4, 121 >> 4, 143 >> 4, 165 >> 4, 11 >> 5, 33 >> 5, 55 >> 5]");
+        range_BinaryFraction_BinaryFraction_helper("-11", "-1",
+                "[-11, -1, -3 << 1, -17 >> 1, -7 >> 1, -39 >> 2, -29 >> 2, -19 >> 2, -9 >> 2, -83 >> 3, -73 >> 3," +
+                " -63 >> 3, -53 >> 3, -43 >> 3, -33 >> 3, -23 >> 3, -13 >> 3, -171 >> 4, -161 >> 4, -151 >> 4]");
+        range_BinaryFraction_BinaryFraction_helper("-1", "11",
+                "[-1, 11, 5, 1 << 1, 1 << 3, 1 >> 1, 7 >> 1, 13 >> 1, 19 >> 1, -1 >> 2, 5 >> 2, 11 >> 2, 17 >> 2," +
+                " 23 >> 2, 29 >> 2, 35 >> 2, 41 >> 2, -5 >> 3, 1 >> 3, 7 >> 3]");
+        range_BinaryFraction_BinaryFraction_helper("5 >> 20", "1",
+                "[5 >> 20, 1, 1048581 >> 21, 1048591 >> 22, 3145733 >> 22, 1048611 >> 23, 3145753 >> 23," +
+                " 5242895 >> 23, 7340037 >> 23, 1048651 >> 24, 3145793 >> 24, 5242935 >> 24, 7340077 >> 24," +
+                " 9437219 >> 24, 11534361 >> 24, 13631503 >> 24, 15728645 >> 24, 1048731 >> 25, 3145873 >> 25," +
+                " 5243015 >> 25]");
+        range_BinaryFraction_BinaryFraction_helper("1", "5 << 20",
+                "[1, 5 << 20, 5242881 >> 1, 5242883 >> 2, 15728641 >> 2, 5242887 >> 3, 15728645 >> 3, 26214403 >> 3," +
+                " 36700161 >> 3, 5242895 >> 4, 15728653 >> 4, 26214411 >> 4, 36700169 >> 4, 47185927 >> 4," +
+                " 57671685 >> 4, 68157443 >> 4, 78643201 >> 4, 5242911 >> 5, 15728669 >> 5, 26214427 >> 5]");
     }
 
     @Test
