@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
 
 import java.math.BigInteger;
@@ -164,6 +165,27 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Character, Character> p : take(SMALL_LIMIT, P.pairs(P.characters()))) {
             System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_BinaryFraction() {
+        initialize();
+        for (BinaryFraction bf : take(SMALL_LIMIT, P.binaryFractions())) {
+            System.out.println("rangeUp(" + bf + ") = " + its(EP.rangeUp(bf)));
+        }
+    }
+
+    private static void demoRangeDown_BinaryFraction() {
+        initialize();
+        for (BinaryFraction bf : take(SMALL_LIMIT, P.binaryFractions())) {
+            System.out.println("rangeDown(" + bf + ") = " + its(EP.rangeDown(bf)));
+        }
+    }
+
+    private static void demoRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        for (Pair<BinaryFraction, BinaryFraction> p : take(SMALL_LIMIT, P.pairs(P.binaryFractions()))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
 }
