@@ -16,7 +16,6 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings("ConstantConditions")
 public class ExhaustiveProviderProperties {
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int LARGE_LIMIT = 10000;

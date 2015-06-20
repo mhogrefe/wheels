@@ -592,7 +592,6 @@ public abstract strictfp class IterableProvider {
         );
     }
 
-    @SuppressWarnings("ConstantConditions")
     public @NotNull Iterable<RandomProvider> randomProviders() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
@@ -604,7 +603,6 @@ public abstract strictfp class IterableProvider {
         return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
     }
 
-    @SuppressWarnings("ConstantConditions")
     public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b),

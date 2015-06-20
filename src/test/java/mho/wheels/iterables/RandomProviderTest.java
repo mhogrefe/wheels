@@ -3710,7 +3710,6 @@ public strictfp class RandomProviderTest {
     }
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
-        //noinspection ConstantConditions
         return sumDouble(map(i -> i.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs));
     }
 

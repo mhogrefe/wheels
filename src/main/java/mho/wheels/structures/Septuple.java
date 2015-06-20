@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -83,14 +82,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param f the sixth value
      * @param g the seventh value
      */
-    public Septuple(
-            @Nullable A a,
-            @Nullable B b,
-            @Nullable C c,
-            @Nullable D d,
-            @Nullable E e,
-            @Nullable F f,
-            @Nullable G g) {
+    public Septuple(A a, B b, C c, D d, E e, F f, G g) {
         this.a = a;
         this.b = b;
         this.c = c;

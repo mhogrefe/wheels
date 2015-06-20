@@ -16,7 +16,6 @@ import static mho.wheels.ordering.Ordering.*;
 /**
  * Some mathematical utilities
  */
-@SuppressWarnings("ConstantConditions")
 public final class MathUtils {
     /**
      * The size of {@link mho.wheels.math.MathUtils#PRIME_SIEVE}. Must be greater than or equal to

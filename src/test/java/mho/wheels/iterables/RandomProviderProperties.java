@@ -19,7 +19,6 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings("ConstantConditions")
 public class RandomProviderProperties {
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
     private static final int TINY_LIMIT = 20;

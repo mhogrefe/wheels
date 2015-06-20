@@ -12,7 +12,6 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.take;
 import static org.junit.Assert.assertFalse;
 
-@SuppressWarnings("ConstantConditions")
 public class FloatingPointUtilsProperties {
     private static int LIMIT;
     private static IterableProvider P;

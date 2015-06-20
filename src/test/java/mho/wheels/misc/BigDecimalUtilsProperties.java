@@ -19,7 +19,6 @@ import static mho.wheels.ordering.Ordering.eq;
 import static mho.wheels.ordering.Ordering.ne;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("ConstantConditions")
 public class BigDecimalUtilsProperties {
     private static int LIMIT;
     private static IterableProvider P;

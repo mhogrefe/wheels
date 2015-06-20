@@ -9,7 +9,7 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
+@SuppressWarnings("UnusedDeclaration")
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;

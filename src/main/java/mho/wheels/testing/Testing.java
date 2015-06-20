@@ -234,7 +234,6 @@ public strictfp class Testing {
     }
 
     public static <T> void antiSymmetric(@NotNull BiPredicate<T, T> relation, @NotNull Pair<T, T> p) {
-        //noinspection ConstantConditions
         assertTrue(p, (relation.test(p.a, p.b) ^ relation.test(p.b, p.a)) || p.a.equals(p.b));
     }
 
@@ -388,7 +387,6 @@ public strictfp class Testing {
         ip.reset();
         iq.reset();
         for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
-            @SuppressWarnings("ConstantConditions")
             int compare = p.a.compareTo(p.b);
             assertTrue(p, compare == 0 || compare == 1 || compare == -1);
             antiSymmetric(Ordering::le, p);
@@ -637,11 +635,9 @@ public strictfp class Testing {
             assertNotNull(s, p.a);
             assertNotNull(s, p.b);
             validate.accept(p.a);
-            //noinspection ConstantConditions
             assertTrue(s, p.b >= 0 && p.b < s.length());
             String before = take(p.b, s);
             assertFalse(s, findIn.apply(before).isPresent());
-            //noinspection ConstantConditions
             String during = p.a.toString();
             assertTrue(s, s.substring(p.b).startsWith(during));
             String after = drop(p.b + during.length(), s);

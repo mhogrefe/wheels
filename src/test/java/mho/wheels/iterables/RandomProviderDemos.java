@@ -11,7 +11,7 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
+@SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;

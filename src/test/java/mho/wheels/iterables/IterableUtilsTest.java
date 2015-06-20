@@ -16,7 +16,6 @@ import static mho.wheels.testing.Testing.aeqit;
 import static mho.wheels.testing.Testing.aeqitLimit;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("ConstantConditions")
 public strictfp class IterableUtilsTest {
     private static final int TINY_LIMIT = 20;
 

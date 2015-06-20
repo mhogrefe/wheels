@@ -689,7 +689,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return an {@code Ordering}
      */
     public @NotNull Ordering nextOrdering() {
-        //noinspection ConstantConditions
         return nextUniformSample(ORDERINGS);
     }
 
@@ -714,7 +713,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code RoundingMode}
      */
     public @NotNull RoundingMode nextRoundingMode() {
-        //noinspection ConstantConditions
         return nextUniformSample(ROUNDING_MODES);
     }
 
@@ -2117,7 +2115,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
-        //noinspection ConstantConditions
         return map(p -> p.a ? p.b : -p.b, pairs(booleans(), naturalIntegersGeometric(numerator, denominator)));
     }
 
@@ -2598,7 +2595,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
-        //noinspection ConstantConditions
         return map(
                 p -> BinaryFraction.of(p.a.setBit(0), p.b),
                 pairs(positiveBigIntegers(), withScale(secondaryScale).integersGeometric())
@@ -2716,7 +2712,6 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        //noinspection ConstantConditions
         return map(
                 p -> p.a.equals(BigInteger.ZERO) ? BinaryFraction.ZERO : BinaryFraction.of(p.a.setBit(0), p.b),
                 pairs(bigIntegers(), integersGeometric(secondaryScale * (scale + 1), scale))

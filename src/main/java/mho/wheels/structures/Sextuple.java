@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -75,7 +74,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param e the fifth value
      * @param f the sixth value
      */
-    public Sextuple(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d, @Nullable E e, @Nullable F f) {
+    public Sextuple(A a, B b, C c, D d, E e, F f) {
         this.a = a;
         this.b = b;
         this.c = c;

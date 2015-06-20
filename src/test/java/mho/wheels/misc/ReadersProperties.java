@@ -18,7 +18,6 @@ import static mho.wheels.misc.Readers.*;
 import static mho.wheels.testing.Testing.propertiesFindInHelper;
 import static org.junit.Assert.assertEquals;
 
-@SuppressWarnings("ConstantConditions")
 public strictfp class ReadersProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;

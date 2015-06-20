@@ -16,7 +16,7 @@ import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.math.BinaryFraction.of;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
+@SuppressWarnings("UnusedDeclaration")
 public strictfp class BinaryFractionDemos {
     private static final boolean USE_RANDOM = false;
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";

@@ -335,7 +335,6 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         if (this == ZERO) return new Pair<>(0.0f, 0.0f);
         if (mantissa.signum() == -1) {
             Pair<Float, Float> negativeRange = negate().floatRange();
-            //noinspection ConstantConditions
             return new Pair<>(-negativeRange.b, -negativeRange.a);
         }
         long floatExponent = mantissa.bitLength() + exponent - 1;
@@ -381,7 +380,6 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         if (this == ZERO) return new Pair<>(0.0, 0.0);
         if (mantissa.signum() == -1) {
             Pair<Double, Double> negativeRange = negate().doubleRange();
-            //noinspection ConstantConditions
             return new Pair<>(-negativeRange.b, -negativeRange.a);
         }
         long doubleExponent = mantissa.bitLength() + exponent - 1;
@@ -629,7 +627,6 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
             throw new NullPointerException("xs may not contain any nulls. xs: " + xs);
         }
         if (isEmpty(xs)) return ZERO;
-        @SuppressWarnings("ConstantConditions")
         int smallestExponent = minimum(map(BinaryFraction::getExponent, xs));
         return of(
                 sumBigInteger(map(x -> x.shiftRight(smallestExponent).bigIntegerValueExact(), xs)),

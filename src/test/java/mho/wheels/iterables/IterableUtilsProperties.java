@@ -18,7 +18,6 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings("ConstantConditions")
 public strictfp class IterableUtilsProperties {
     private static boolean USE_RANDOM;
     private static int LIMIT;

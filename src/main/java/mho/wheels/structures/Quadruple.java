@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -59,7 +58,7 @@ public final class Quadruple<A, B, C, D> {
      * @param c the third value
      * @param d the fourth value
      */
-    public Quadruple(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d) {
+    public Quadruple(A a, B b, C c, D d) {
         this.a = a;
         this.b = b;
         this.c = c;

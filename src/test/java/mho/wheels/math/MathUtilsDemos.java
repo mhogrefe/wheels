@@ -17,7 +17,7 @@ import static mho.wheels.math.MathUtils.demux;
 import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.lt;
 
-@SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
+@SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static final int SMALL_LIMIT = 3000;

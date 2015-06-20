@@ -23,7 +23,6 @@ import static mho.wheels.math.MathUtils.mux;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings("ConstantConditions")
 public class MathUtilsProperties {
     private static boolean USE_RANDOM;
     private static final int TINY_LIMIT = 10;

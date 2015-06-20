@@ -20,7 +20,6 @@ import static mho.wheels.ordering.Ordering.EQ;
  * @param <A> the type of the first value
  * @param <B> the type of the second value
  */
-@SuppressWarnings("ConstantConditions")
 public final class Pair<A, B> {
     /**
      * The first component of the {@code Pair}
@@ -44,7 +43,7 @@ public final class Pair<A, B> {
      * @param a the first value
      * @param b the second value
      */
-    public Pair(@Nullable A a, @Nullable B b) {
+    public Pair(A a, B b) {
         this.a = a;
         this.b = b;
     }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 
-@SuppressWarnings({"ConstantConditions", "UnusedDeclaration"})
+@SuppressWarnings("UnusedDeclaration")
 public strictfp class IterableUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;

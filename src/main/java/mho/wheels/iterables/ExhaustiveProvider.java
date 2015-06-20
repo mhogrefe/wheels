@@ -20,7 +20,6 @@ import static mho.wheels.ordering.Ordering.*;
  * An {@code ExhaustiveProvider} produces {@code Iterable}s that generate some set of values in a specified order.
  * There is only a single instance of this class.
  */
-@SuppressWarnings("ConstantConditions")
 public final strictfp class ExhaustiveProvider extends IterableProvider {
     /**
      * The single instance of this class.

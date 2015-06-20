@@ -22,7 +22,6 @@ import static mho.wheels.ordering.Ordering.*;
  * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
  * {@link mho.wheels.math.Combinatorics}).
  */
-@SuppressWarnings("ConstantConditions")
 public final strictfp class IterableUtils {
     /**
      * Disallow instantiation

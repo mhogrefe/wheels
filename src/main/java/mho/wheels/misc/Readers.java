@@ -19,7 +19,6 @@ import static mho.wheels.iterables.IterableUtils.*;
  * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
  * exception. Instead, they return empty {@code Optional}s.
  */
-@SuppressWarnings("ConstantConditions")
 public class Readers {
     /**
      * The length of the longest {@code String} representation of any positive {@code Byte}.
