@@ -1014,6 +1014,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return cons(a, map(a::subtract, positiveBinaryFractions()));
     }
 
+    private static @NotNull Iterable<BinaryFraction> positiveBinaryFractionsLessThanOne() {
+        return concatMap(
+                e -> map(
+                        i -> BinaryFraction.of(i.shiftLeft(1).add(BigInteger.ONE), -e),
+                        IterableUtils.range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE))
+                ),
+                IterableUtils.rangeUp(1)
+        );
+    }
+
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         switch (compare(a, b)) {
@@ -1021,23 +1031,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             case EQ: return Collections.singletonList(a);
             case LT:
                 BinaryFraction difference = b.subtract(a);
-                return map(
-                        bf -> bf.multiply(difference).add(a),
+                int blockExponent = difference.getExponent();
+                BigInteger blockCount = difference.getMantissa();
+                return concat(
+                        map(
+                                i -> BinaryFraction.ONE.shiftLeft(blockExponent).multiply(BinaryFraction.of(i)).add(a),
+                                IterableUtils.range(BigInteger.ZERO, blockCount)
+                        ),
                         concatMap(
-                                e -> {
-                                    if (e == 0) {
-                                        return Arrays.asList(BinaryFraction.ZERO, BinaryFraction.ONE);
-                                    } else {
-                                        return map(
-                                                i -> BinaryFraction.of(i.shiftLeft(1).add(BigInteger.ONE), -e),
-                                                IterableUtils.range(
-                                                        BigInteger.ZERO,
-                                                        BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE)
-                                                )
-                                        );
-                                    }
-                                },
-                                IterableUtils.rangeUp(0)
+                                bf -> map(
+                                        j -> bf.add(BinaryFraction.of(j.shiftLeft(blockExponent))).add(a),
+                                        IterableUtils.range(BigInteger.ZERO, blockCount.subtract(BigInteger.ONE))
+                                ),
+                                positiveBinaryFractionsLessThanOne()
                         )
                 );
             default:
