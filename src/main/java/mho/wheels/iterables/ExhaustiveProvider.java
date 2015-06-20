@@ -1095,7 +1095,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         ),
                         concatMap(
                                 bf -> map(
-                                        j -> bf.add(BinaryFraction.of(j.shiftLeft(blockExponent))).add(a),
+                                        j -> bf.add(BinaryFraction.of(j)).shiftLeft(blockExponent).add(a),
                                         IterableUtils.range(BigInteger.ZERO, blockCount.subtract(BigInteger.ONE))
                                 ),
                                 positiveBinaryFractionsLessThanOne()
