@@ -1006,12 +1006,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
-        return cons(a, map(bf -> bf.add(a), positiveBinaryFractions()));
+        return cons(a, map(bf -> bf.shiftLeft(a.getExponent()).add(a), positiveBinaryFractions()));
     }
 
     @Override
     public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
-        return cons(a, map(a::subtract, positiveBinaryFractions()));
+        return cons(a, map(bf -> a.subtract(bf.shiftLeft(a.getExponent())), positiveBinaryFractions()));
     }
 
     private static @NotNull Iterable<BinaryFraction> positiveBinaryFractionsLessThanOne() {
