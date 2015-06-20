@@ -621,7 +621,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param <T> the type of {@code xs}'s elements
      * @return a value from {@code xs}
      */
-    public @Nullable <T> T nextUniformSample(@NotNull List<T> xs) {
+    public <T> T nextUniformSample(@NotNull List<T> xs) {
         return xs.get(nextIntBounded(xs.size()));
     }
 

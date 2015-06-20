@@ -25,12 +25,12 @@ public final class Pair<A, B> {
     /**
      * The first component of the {@code Pair}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Pair}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * Constructs a {@code Pair} from two values.
@@ -92,7 +92,7 @@ public final class Pair<A, B> {
      * @return {@code this}={@code that}
      */
     @Override
-    public boolean equals(@Nullable Object that) {
+    public boolean equals(Object that) {
         if (this == that) return true;
         if (that == null || getClass() != that.getClass()) return false;
         Pair pair = (Pair) that;

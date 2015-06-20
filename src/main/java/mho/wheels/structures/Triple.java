@@ -26,17 +26,17 @@ public final class Triple<A, B, C> {
     /**
      * The first component of the {@code Triple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Triple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Triple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * Constructs a {@code Triple} from three values.

@@ -27,27 +27,27 @@ public final class Quintuple<A, B, C, D, E> {
     /**
      * The first component of the {@code Quintuple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Quintuple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Quintuple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Quintuple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * The fifth component of the {@code Quintuple}
      */
-    public final @Nullable E e;
+    public final E e;
 
     /**
      * Constructs a {@code Quintuple} from five values.

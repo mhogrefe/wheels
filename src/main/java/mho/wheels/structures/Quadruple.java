@@ -26,22 +26,22 @@ public final class Quadruple<A, B, C, D> {
     /**
      * The first component of the {@code Quadruple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Quadruple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Quadruple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Quadruple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * Constructs a {@code Quadruple} from four values.

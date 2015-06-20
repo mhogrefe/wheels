@@ -25,7 +25,7 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
     }
 
     @Override
-    public @Nullable B apply(@Nullable A a) {
+    public B apply(@Nullable A a) {
         if (!map.containsKey(a))
             throw new IllegalArgumentException(Objects.toString(a));
         return map.get(a);
@@ -47,7 +47,7 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
+    public boolean equals(Object o) {
         return this == o || o != null && getClass() == o.getClass() && map.equals(((FiniteDomainFunction) o).map);
     }
 

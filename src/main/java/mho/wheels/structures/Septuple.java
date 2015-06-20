@@ -29,37 +29,37 @@ public final class Septuple<A, B, C, D, E, F, G> {
     /**
      * The first component of the {@code Septuple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Septuple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Septuple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Septuple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * The fifth component of the {@code Septuple}
      */
-    public final @Nullable E e;
+    public final E e;
 
     /**
      * The fifth component of the {@code Septuple}
      */
-    public final @Nullable F f;
+    public final F f;
 
     /**
      * The sixth component of the {@code Septuple}
      */
-    public final @Nullable G g;
+    public final G g;
 
     /**
      * Constructs a {@code Septuple} from seven values.

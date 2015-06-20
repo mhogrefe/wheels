@@ -27,7 +27,7 @@ public class NullableOptional<T> {
         return present;
     }
 
-    public @Nullable T get() {
+    public T get() {
         if (!present)
             throw new NoSuchElementException("no value present");
         return x;

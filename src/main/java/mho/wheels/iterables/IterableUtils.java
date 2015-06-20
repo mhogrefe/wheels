@@ -1323,7 +1323,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code Iterable}'s element type
      * @return the {@code Iterable}'s first element
      */
-    public static @Nullable <T> T head(@NotNull Iterable<T> xs) {
+    public static <T> T head(@NotNull Iterable<T> xs) {
         return xs.iterator().next();
     }
 
@@ -1340,7 +1340,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code List}'s element type
      * @return the {@code List}'s first element
      */
-    public static @Nullable <T> T head(@NotNull List<T> xs) {
+    public static <T> T head(@NotNull List<T> xs) {
         return xs.get(0);
     }
 
@@ -1357,7 +1357,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code SortedSet}'s element type
      * @return the {@code SortedSet}'s first element
      */
-    public static @Nullable <T> T head(@NotNull SortedSet<T> xs) {
+    public static <T> T head(@NotNull SortedSet<T> xs) {
         return xs.first();
     }
 
@@ -1390,7 +1390,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code Iterable}'s element type
      * @return the {@code Iterable}'s last element
      */
-    public static @Nullable <T> T last(@NotNull Iterable<T> xs) {
+    public static <T> T last(@NotNull Iterable<T> xs) {
         T previous = null;
         boolean empty = true;
         for (T x : xs) {
@@ -1415,7 +1415,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code List}'s element type
      * @return the {@code List}'s last element
      */
-    public static @Nullable <T> T last(@NotNull List<T> xs) {
+    public static <T> T last(@NotNull List<T> xs) {
         return xs.get(xs.size() - 1);
     }
 
@@ -1432,7 +1432,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code SortedSet}'s element type
      * @return the {@code SortedSet}'s last element
      */
-    public static @Nullable <T> T last(@NotNull SortedSet<T> xs) {
+    public static <T> T last(@NotNull SortedSet<T> xs) {
         return xs.last();
     }
 
@@ -2166,7 +2166,7 @@ public final strictfp class IterableUtils {
         );
     }
 
-    public static @Nullable <A, B> B foldl(@NotNull BiFunction<B, A, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
+    public static <A, B> B foldl(@NotNull BiFunction<B, A, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
         B result = z;
         for (A x : xs) {
             result = f.apply(result, x);
@@ -2174,7 +2174,7 @@ public final strictfp class IterableUtils {
         return result;
     }
 
-    public static @Nullable <A> A foldl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+    public static <A> A foldl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         A result = null;
         boolean started = false;
         for (A x : xs) {
@@ -2188,12 +2188,12 @@ public final strictfp class IterableUtils {
         return result;
     }
 
-    public static @Nullable <A, B> B foldr(@NotNull BiFunction<A, B, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
+    public static <A, B> B foldr(@NotNull BiFunction<A, B, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
         //noinspection unchecked
         return foldl((x, y) -> f.apply(y, x), z, reverse(xs));
     }
 
-    public static @Nullable <A> A foldr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+    public static <A> A foldr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         //noinspection unchecked
         return foldl1((x, y) -> f.apply(y, x), reverse(xs));
     }
@@ -2548,7 +2548,7 @@ public final strictfp class IterableUtils {
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
-    public static @Nullable <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1((x, y) -> max(x, y), xs);
     }
 
@@ -2556,7 +2556,7 @@ public final strictfp class IterableUtils {
         return foldl1((x, y) -> max(x, y), fromString(s));
     }
 
-    public static @Nullable <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1((x, y) -> min(x, y), xs);
     }
 
@@ -3969,7 +3969,7 @@ public final strictfp class IterableUtils {
         return new Pair<>(sba.toString(), sbb.toString());
     }
 
-    public static @Nullable <T> T get(@NotNull Iterable<T> xs, int i) {
+    public static <T> T get(@NotNull Iterable<T> xs, int i) {
         if (i < 0)
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3982,7 +3982,7 @@ public final strictfp class IterableUtils {
         return element;
     }
 
-    public static @Nullable <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
+    public static <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
         if (lt(i, BigInteger.ZERO))
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3995,7 +3995,7 @@ public final strictfp class IterableUtils {
         return element;
     }
 
-    public static @Nullable <T> T get(@NotNull List<T> xs, int i) {
+    public static <T> T get(@NotNull List<T> xs, int i) {
         return xs.get(i);
     }
 
@@ -5243,7 +5243,7 @@ public final strictfp class IterableUtils {
         return charsToString(list);
     }
 
-    public static @Nullable <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1((x, y) -> max(comparator, x, y), xs);
     }
 
@@ -5251,7 +5251,7 @@ public final strictfp class IterableUtils {
         return foldl1((x, y) -> max(comparator, x, y), fromString(s));
     }
 
-    public static @Nullable <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1((x, y) -> min(comparator, x, y), xs);
     }
 
