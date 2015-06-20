@@ -701,6 +701,47 @@ public strictfp class ExhaustiveProviderTest {
                 " 9, -9, 5 << 1]");
     }
 
+    private static void rangeUp_BinaryFraction(@NotNull String a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeUp(BinaryFraction.read(a).get())), output);
+    }
+
+    @Test
+    public void testRangeUp_BinaryFraction() {
+        rangeUp_BinaryFraction("0",
+                "[0, 1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
+                " 9 << 1, 19]");
+        rangeUp_BinaryFraction("1",
+                "[1, 1 << 1, 3, 1 << 2, 3 >> 1, 3 << 1, 7, 1 << 3, 5, 5 << 1, 11, 3 << 2, 5 >> 1, 7 << 1, 15," +
+                " 1 << 4, 5 >> 2, 9 << 1, 19, 5 << 2]");
+        rangeUp_BinaryFraction("11",
+                "[11, 3 << 2, 13, 7 << 1, 23 >> 1, 1 << 4, 17, 9 << 1, 15, 5 << 2, 21, 11 << 1, 25 >> 1, 3 << 3, 25," +
+                " 13 << 1, 45 >> 2, 7 << 2, 29, 15 << 1]");
+        rangeUp_BinaryFraction("5 << 20",
+                "[5 << 20, 5242881, 2621441 << 1, 5242883, 10485761 >> 1, 5242885, 2621443 << 1, 5242887," +
+                " 1310721 << 2, 5242889, 2621445 << 1, 5242891, 10485763 >> 1, 5242893, 2621447 << 1, 5242895," +
+                " 20971521 >> 2, 5242897, 2621449 << 1, 5242899]");
+        rangeUp_BinaryFraction("5 >> 20",
+                "[5 >> 20, 1048581 >> 20, 2097157 >> 20, 3145733 >> 20, 524293 >> 20, 5242885 >> 20, 6291461 >> 20," +
+                " 7340037 >> 20, 4194309 >> 20, 9437189 >> 20, 10485765 >> 20, 11534341 >> 20, 1572869 >> 20," +
+                " 13631493 >> 20, 14680069 >> 20, 15728645 >> 20, 262149 >> 20, 17825797 >> 20, 18874373 >> 20," +
+                " 19922949 >> 20]");
+        rangeUp_BinaryFraction("-1",
+                "[-1, 0, 1, 1 << 1, -1 >> 1, 1 << 2, 5, 3 << 1, 3, 1 << 3, 9, 5 << 1, 1 >> 1, 3 << 2, 13, 7 << 1," +
+                " -3 >> 2, 1 << 4, 17, 9 << 1]");
+        rangeUp_BinaryFraction("-11",
+                "[-11, -5 << 1, -9, -1 << 3, -21 >> 1, -3 << 1, -5, -1 << 2, -7, -1 << 1, -1, 0, -19 >> 1, 1 << 1," +
+                " 3, 1 << 2, -43 >> 2, 3 << 1, 7, 1 << 3]");
+        rangeUp_BinaryFraction("-5 << 20",
+                "[-5 << 20, -5242879, -2621439 << 1, -5242877, -10485759 >> 1, -5242875, -2621437 << 1, -5242873," +
+                " -1310719 << 2, -5242871, -2621435 << 1, -5242869, -10485757 >> 1, -5242867, -2621433 << 1," +
+                " -5242865, -20971519 >> 2, -5242863, -2621431 << 1, -5242861]");
+        rangeUp_BinaryFraction("-5 >> 20",
+                "[-5 >> 20, 1048571 >> 20, 2097147 >> 20, 3145723 >> 20, 524283 >> 20, 5242875 >> 20, 6291451 >> 20," +
+                " 7340027 >> 20, 4194299 >> 20, 9437179 >> 20, 10485755 >> 20, 11534331 >> 20, 1572859 >> 20," +
+                " 13631483 >> 20, 14680059 >> 20, 15728635 >> 20, 262139 >> 20, 17825787 >> 20, 18874363 >> 20," +
+                " 19922939 >> 20]");
+    }
+
     private static void range_BinaryFraction_BinaryFraction_helper(
             @NotNull String a,
             @NotNull String b,
@@ -918,7 +959,7 @@ public strictfp class ExhaustiveProviderTest {
     public void testEquals() {
         //noinspection EqualsWithItself
         assertTrue(P.equals(P));
-        //noinspection ConstantConditions
+        //noinspection ObjectEqualsNull
         assertFalse(P.equals(null));
         //noinspection EqualsBetweenInconvertibleTypes
         assertFalse(P.equals("hello"));
