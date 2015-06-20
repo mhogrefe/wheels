@@ -104,6 +104,9 @@ public class ExhaustiveProviderProperties {
             propertiesRange_long_long();
             propertiesRange_BigInteger_BigInteger();
             propertiesRange_char_char();
+            propertiesRangeUp_BinaryFraction();
+            propertiesRangeDown_BinaryFraction();
+            propertiesRange_BinaryFraction_BinaryFraction();
         }
         System.out.println("Done");
     }
@@ -611,5 +614,37 @@ public class ExhaustiveProviderProperties {
         initializeConstant("binaryFractions()");
         biggerTest(EP, EP.binaryFractions(), bf -> true);
         take(TINY_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
+    }
+
+    private static void propertiesRangeUp_BinaryFraction() {
+        initialize("rangeUp(BinaryFraction)");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            Iterable<BinaryFraction> is = EP.rangeUp(bf);
+            simpleTest(bf, is, j -> ge(j, bf));
+            take(TINY_LIMIT, EP.rangeUp(bf)).forEach(BinaryFraction::validate);
+        }
+    }
+
+    private static void propertiesRangeDown_BinaryFraction() {
+        initialize("rangeDown(BinaryFraction)");
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            Iterable<BinaryFraction> is = EP.rangeDown(bf);
+            simpleTest(bf, is, j -> le(j, bf));
+            take(TINY_LIMIT, EP.rangeDown(bf)).forEach(BinaryFraction::validate);
+        }
+    }
+
+    private static void propertiesRange_BinaryFraction_BinaryFraction() {
+        initialize("range(BinaryFraction, BinaryFraction)");
+        for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
+            Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
+            simpleTest(p, bfs, i -> ge(i, p.a) && le(i, p.b));
+            assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
+            take(TINY_LIMIT, EP.range(p.a, p.b)).forEach(BinaryFraction::validate);
+        }
+
+        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
+            aeqit(i, EP.range(i, i), Collections.singletonList(i));
+        }
     }
 }
