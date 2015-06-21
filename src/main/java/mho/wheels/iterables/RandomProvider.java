@@ -2718,10 +2718,6 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
-    public static void main(String[] args) {
-        System.out.println(example().rangeUp(BinaryFraction.ZERO));
-    }
-
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         return null;
