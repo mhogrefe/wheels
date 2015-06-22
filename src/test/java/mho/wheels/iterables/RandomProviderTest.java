@@ -23,18 +23,18 @@ import static org.junit.Assert.fail;
 
 // @formatter:off
 public strictfp class RandomProviderTest {
-    private static final RandomProvider P = RandomProvider.example();
-    private static final RandomProvider Q = new RandomProvider(toList(replicate(IsaacPRNG.SIZE, 0)));
-    private static final RandomProvider R = new RandomProvider(toList(IterableUtils.range(1, IsaacPRNG.SIZE)));
+    private static RandomProvider P;
+    private static RandomProvider Q;
+    private static RandomProvider R;
     private static final int DEFAULT_SAMPLE_SIZE = 1000000;
     private static final int DEFAULT_TOP_COUNT = 10;
     private static final int TINY_LIMIT = 20;
 
     @Before
     public void initialize() {
-        P.reset();
-        Q.reset();
-        R.reset();
+        P = RandomProvider.example();
+        Q = new RandomProvider(toList(replicate(IsaacPRNG.SIZE, 0)));
+        R = new RandomProvider(toList(IterableUtils.range(1, IsaacPRNG.SIZE)));
     }
 
     @Test
@@ -1190,6 +1190,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange((byte) 5, (byte) -10);
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
@@ -1255,6 +1258,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange((short) 5, (short) -10);
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
@@ -1324,6 +1330,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange(5, -10);
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
@@ -1385,6 +1394,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange(5L, -10L);
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -1455,6 +1467,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange(BigInteger.valueOf(5), BigInteger.valueOf(-10));
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -1523,6 +1538,9 @@ public strictfp class RandomProviderTest {
             P.nextFromRange('a', 'A');
             fail();
         } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
@@ -1575,6 +1593,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextPositiveIntGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1605,6 +1626,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).positiveIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1660,6 +1684,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNegativeIntGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1690,6 +1717,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).negativeIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1750,6 +1780,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNaturalIntGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1781,6 +1814,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).naturalIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1842,6 +1878,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNonzeroIntGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1875,6 +1914,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nonzeroIntegersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1936,6 +1978,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextIntGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -1970,6 +2015,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).integersGeometric();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2038,6 +2086,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextIntGeometricFromRangeUp(a);
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2071,6 +2122,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).rangeUpGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2152,6 +2206,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextIntGeometricFromRangeDown(a);
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2185,6 +2242,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).rangeDownGeometric(a);
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2281,6 +2341,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextPositiveBigInteger();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2318,6 +2381,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).positiveBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2385,6 +2451,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNegativeBigInteger();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2422,6 +2491,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).negativeBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2496,6 +2568,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNaturalBigInteger();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2534,6 +2609,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).naturalBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2608,6 +2686,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextNonzeroBigInteger();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2645,6 +2726,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).nonzeroBigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2713,6 +2797,9 @@ public strictfp class RandomProviderTest {
             P.withScale(mean).nextBigInteger();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2751,6 +2838,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).bigIntegers();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2826,6 +2916,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).nextFromRangeUp(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2868,6 +2961,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -2972,6 +3068,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).nextFromRangeDown(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3014,6 +3113,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3149,14 +3251,17 @@ public strictfp class RandomProviderTest {
             P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextPositiveBinaryFraction();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
     public void testNextPositiveBinaryFraction() {
         nextPositiveBinaryFraction_helper(2, 1, "13 << 1");
         nextPositiveBinaryFraction_helper(5, 3, "21 << 8");
-        nextPositiveBinaryFraction_helper(32, 8, "4949518132706169 >> 6");
-        nextPositiveBinaryFraction_helper(100, 10, "11848872108206637787602113503131095960027021 >> 12");
+        nextPositiveBinaryFraction_helper(32, 8, "9899036265412339 >> 7");
+        nextPositiveBinaryFraction_helper(100, 10, "94790976865653102300816908025048767680216169 >> 15");
         nextPositiveBinaryFraction_fail_helper(1, 1);
         nextPositiveBinaryFraction_fail_helper(2, 0);
     }
@@ -3186,6 +3291,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3261,14 +3369,17 @@ public strictfp class RandomProviderTest {
             P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNegativeBinaryFraction();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
     public void testNextNegativeBinaryFraction() {
         nextNegativeBinaryFraction_helper(2, 1, "-13 << 1");
         nextNegativeBinaryFraction_helper(5, 3, "-21 << 8");
-        nextNegativeBinaryFraction_helper(32, 8, "-4949518132706169 >> 6");
-        nextNegativeBinaryFraction_helper(100, 10, "-11848872108206637787602113503131095960027021 >> 12");
+        nextNegativeBinaryFraction_helper(32, 8, "-9899036265412339 >> 7");
+        nextNegativeBinaryFraction_helper(100, 10, "-94790976865653102300816908025048767680216169 >> 15");
         nextNegativeBinaryFraction_fail_helper(1, 1);
         nextNegativeBinaryFraction_fail_helper(2, 0);
     }
@@ -3298,6 +3409,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).negativeBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3377,14 +3491,17 @@ public strictfp class RandomProviderTest {
             P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNonzeroBinaryFraction();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
     public void testNextNonzeroBinaryFraction() {
         nextNonzeroBinaryFraction_helper(2, 1, "5 << 1");
         nextNonzeroBinaryFraction_helper(5, 3, "13 << 8");
-        nextNonzeroBinaryFraction_helper(32, 8, "2697718319020921 >> 6");
-        nextNonzeroBinaryFraction_helper(100, 10, "6273685808573982002218183934969005583531917 >> 12");
+        nextNonzeroBinaryFraction_helper(32, 8, "5395436638041843 >> 7");
+        nextNonzeroBinaryFraction_helper(100, 10, "50189486468591856017745471479752044668255337 >> 15");
         nextNonzeroBinaryFraction_fail_helper(1, 1);
         nextNonzeroBinaryFraction_fail_helper(2, 0);
     }
@@ -3414,6 +3531,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).nonzeroBinaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3489,14 +3609,17 @@ public strictfp class RandomProviderTest {
             P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextBinaryFraction();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
     public void testNextBinaryFraction() {
-        nextBinaryFraction_helper(2, 1, "5");
-        nextBinaryFraction_helper(5, 3, "13 << 10");
-        nextBinaryFraction_helper(32, 8, "469791 >> 1");
-        nextBinaryFraction_helper(100, 10, "94790976865653102300816908025048767680216169 >> 5");
+        nextBinaryFraction_helper(2, 1, "13 << 1");
+        nextBinaryFraction_helper(5, 3, "21");
+        nextBinaryFraction_helper(32, 8, "469791");
+        nextBinaryFraction_helper(100, 10, "630008861630388057697674146568609443823746153 >> 5");
         nextBinaryFraction_fail_helper(1, 0);
         nextBinaryFraction_fail_helper(0, 1);
     }
@@ -3526,6 +3649,9 @@ public strictfp class RandomProviderTest {
             P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).binaryFractions();
             fail();
         } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -3533,54 +3659,54 @@ public strictfp class RandomProviderTest {
         binaryFractions_helper(
                 1,
                 1,
-                "[3 >> 6, 1 >> 1, -3 << 2, 3 << 1, 0, 0, -1 << 6, 0, 0, 0, -5 << 5, 0, 0, 0, 0, 0, 0, 7 >> 4," +
-                " -5 << 4, 0]",
-                "{0=499871, -1=52004, 1=41746, 3=20914, -1 << 1=17680, -1 >> 1=17548, 1 >> 1=13961, 1 << 1=13818," +
-                " -3=13014, -1 >> 2=11530}",
-                -1536.4131156148794,
-                0.9578009999985556,
-                1.001232999998014
+                "[5, 221 << 3, 0, -1 << 1, 1 >> 3, 0, 0, 0, 1 >> 3, 1 << 2, 0, 0, 0, 0, 0, 0, 1 << 1, -5 << 5, 0," +
+                " 21 << 2]",
+                "{0=499925, -1=52184, 1=41175, 3=20678, -1 << 1=17498, -1 >> 1=17350, 1 >> 1=13966, 1 << 1=13884," +
+                " -3=13110, -1 >> 2=11799}",
+                -15141.716243090259,
+                0.9597509999985684,
+                1.0004139999980264
         );
         binaryFractions_helper(
                 5,
                 3,
-                "[13 << 10, 731935 >> 13, 25 << 8, -1661015 << 6, -67 << 2, -3737 >> 3, -11 << 8, 0, -13 >> 14," +
-                " -45 << 1, 3, 3 << 1, -1 >> 7, 0, -3 >> 4, 0, -113, -1, 3 << 1, 0]",
-                "{0=166594, -1=21390, 1=15251, 3=12566, -3=8861, -1 >> 1=8451, -1 << 1=8311, -1 >> 2=6548," +
-                " -1 << 2=6513, 1 >> 1=5932}",
-                -1.1978958509550862E19,
-                4.952401000006271,
-                3.004690999992611
+                "[21, 13 >> 2, 731935, -61 >> 4, 25 << 8, -1661015 >> 6, -67 << 1, -5785 >> 2, -11 >> 7, 0," +
+                " -69 >> 13, -45 >> 1, 3 >> 3, -9 >> 6, 0, 3 >> 8, 1 << 2, -113 >> 1, 0, 9]",
+                "{0=166417, -1=21308, 1=15114, 3=12621, -3=9008, -1 << 1=8453, -1 >> 1=8386, -1 << 2=6611," +
+                " -1 >> 2=6505, 1 << 1=6006}",
+                1.66610944996342963E18,
+                4.954361000006467,
+                3.007180999992695
         );
         binaryFractions_helper(
                 32,
                 8,
-                "[469791 >> 1, 15928231849557, -8142885 << 10, -9 >> 9, -2361 >> 23, 3685 >> 1, 37997 << 2," +
-                " -15 >> 15, -30459629547907543097 >> 1, -97347 << 1, -115520513794470430625 >> 2, 4379 >> 3," +
-                " 533422527609161 << 4, -1862165, -2307 >> 5, -251 << 8, 525691937 >> 6, -13561 >> 7, -8861 >> 9," +
-                " 35807 >> 4]",
-                "{0=30088, -1=2380, 3=1590, 1=1543, -3=1149, -1 >> 1=1060, -1 << 1=1049, -1 >> 2=1004, -1 << 2=906," +
-                " -1 << 3=831}",
-                1.0016960646679139E126,
-                32.00811200002712,
-                8.00041800001604
+                "[469791, 24724324871765 << 11, -1087 >> 10, -25 << 9, -2361 >> 22, 3685, 37997 << 2, -31, -5 << 9," +
+                " -30459629547907543097 << 1, -97347 >> 1, -115520513794470430625 >> 1, 4379 >> 3," +
+                " 533422527609161 >> 3, -15341255 >> 2, -1283 >> 5, -251 << 8, -3580633563 >> 5, -29945 << 6," +
+                " -8861 << 9]",
+                "{0=30182, -1=2354, 1=1612, 3=1516, -3=1196, -1 << 1=1054, -1 >> 1=1014, -1 << 2=971, -1 >> 2=923," +
+                " -1 >> 3=838}",
+                6.447723197358738E125,
+                32.013006000028064,
+                7.994682000015932
         );
         binaryFractions_helper(
                 100,
                 10,
-                "[94790976865653102300816908025048767680216169 >> 5, 14696309321178621 >> 10, 3685 >> 11, 17 << 23," +
-                " -256597222505842144348851856454779 << 5, -3701827 << 6, -15462895343593858154666605135061," +
-                " 203533 >> 42, 15017245 << 1, 1 >> 1, -361249281457652385 << 22," +
-                " 34371725244293874009975536201589773 >> 4, 9166463 >> 3," +
-                " -2848947688237592406559839376972187768748965186174773843939529344176853869383547978989 << 4," +
-                " -147116069440267308989572019729851081 >> 45, -41860902223040053065371, 155727 >> 10, 27 >> 11," +
-                " 24609989311958439409331914328478960583564339 << 9," +
+                "[630008861630388057697674146568609443823746153 >> 5, 32710707830660605, 1046826469 << 11, 17 << 23," +
+                " -256597222505842144348851856454779, -142361763 << 6, -45886509749071363790587482064085 << 9," +
+                " 9 << 41, 15017245, 3, -361249281457652385 >> 22, 34371725244293874009975536201589773 << 3," +
+                " 9166463," +
+                " -33931649963849257541271229886148490275027474611009006183968527899999322432666883949805 >> 4," +
+                " -147116069440267308989572019729851081 >> 44, -41860902223040053065371 << 4, 1121 >> 10, 27 >> 11," +
+                " 24609989311958439409331914328478960583564339 >> 8," +
                 " 706325325640589936310099702184562783564948487506650806918972129922500644033138800134393 << 8]",
-                "{0=9828, -1=651, 1=447, 3=431, -3=319, -1 >> 1=309, -1 << 1=301, -1 >> 2=286, -1 << 2=276," +
-                " -1 << 3=270}",
+                "{0=9913, -1=648, 3=434, 1=423, -3=335, -1 >> 1=320, -1 << 1=291, -1 << 2=268, -1 >> 3=259," +
+                " -1 >> 2=257}",
                 Double.NEGATIVE_INFINITY,
-                99.89710399999372,
-                9.99064900000396
+                99.8870699999952,
+                9.98571900000396
         );
         binaryFractions_fail_helper(1, 0);
         binaryFractions_fail_helper(0, 1);

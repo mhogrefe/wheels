@@ -1970,6 +1970,7 @@ public class RandomProviderProperties {
             rp.reset();
             take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf.signum() == 1);
+            supplierEquivalence(rp, bfs, rp::nextPositiveBinaryFraction);
         }
 
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
@@ -2025,6 +2026,7 @@ public class RandomProviderProperties {
             rp.reset();
             take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf.signum() == -1);
+            supplierEquivalence(rp, bfs, rp::nextNegativeBinaryFraction);
         }
 
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
@@ -2080,6 +2082,7 @@ public class RandomProviderProperties {
             rp.reset();
             take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> bf != BinaryFraction.ZERO);
+            supplierEquivalence(rp, bfs, rp::nextNonzeroBinaryFraction);
         }
 
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
@@ -2128,6 +2131,7 @@ public class RandomProviderProperties {
             rp.reset();
             take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             simpleTest(rp, bfs, bf -> true);
+            supplierEquivalence(rp, bfs, rp::nextBinaryFraction);
         }
 
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 1, P.randomProviders()))) {

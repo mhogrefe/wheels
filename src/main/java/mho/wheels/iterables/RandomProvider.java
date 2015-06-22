@@ -5,7 +5,6 @@ import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
-import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,8 +16,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static mho.wheels.testing.Testing.*;
 
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
@@ -77,11 +75,12 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
-     * A list of {@code RandomProvider}s that were created from {@code this} using
-     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
+     * A map containing {@code RandomProvider}s that were created from {@code this} using
+     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. The key is a pair
+     * consisting of {@code scale} and {@code secondaryScale}, respectively. Whenever {@code this}
      * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
      */
-    private @NotNull List<RandomProvider> dependents;
+    private @NotNull Map<Pair<Integer, Integer>, RandomProvider> dependents;
 
     /**
      * A parameter that determines the size of some of the generated objects.
@@ -108,7 +107,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
+        dependents = new HashMap<>();
     }
 
     /**
@@ -129,7 +128,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
-        dependents = new ArrayList<>();
+        dependents = new HashMap<>();
     }
 
     /**
@@ -239,9 +238,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withScale(int scale) {
-        RandomProvider copy = copy();
-        copy.scale = scale;
-        dependents.add(copy);
+        Pair<Integer, Integer> key = new Pair<>(scale, secondaryScale);
+        RandomProvider copy = dependents.get(key);
+        if (copy == null) {
+            copy = copy();
+            copy.scale = scale;
+            dependents.put(key, copy);
+        }
         return copy;
     }
 
@@ -259,9 +262,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
-        RandomProvider copy = copy();
-        copy.secondaryScale = secondaryScale;
-        dependents.add(copy);
+        Pair<Integer, Integer> key = new Pair<>(scale, secondaryScale);
+        RandomProvider copy = dependents.get(key);
+        if (copy == null) {
+            copy = copy();
+            copy.secondaryScale = secondaryScale;
+            dependents.put(key, copy);
+        }
         return copy;
     }
 
@@ -280,7 +287,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public void reset() {
         prng = new IsaacPRNG(seed);
-        dependents.forEach(mho.wheels.iterables.RandomProvider::reset);
+        dependents.values().forEach(mho.wheels.iterables.RandomProvider::reset);
     }
 
     /**
@@ -1812,8 +1819,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public char nextFromRange(char a, char b) {
         if (a > b) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + Testing.nicePrint(a) +
-            " and b is " + Testing.nicePrint(b) + ".");
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + nicePrint(a) +
+            " and b is " + nicePrint(b) + ".");
         }
         return (char) (nextIntBounded(b - a + 1) + a);
     }
@@ -1983,48 +1990,37 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) chosen from a geometric
-     * distribution with mean {@code numerator}/{@code denominator}. Does not support removal.
+     * Returns a randomly-generated natural {@code int} from a geometric distribution with mean
+     * {@code numerator}/{@code denominator}.
      *
      * <ul>
      *  <li>{@code numerator} must be positive.</li>
      *  <li>{@code denominator} must be positive.</li>
      *  <li>The sum of {@code numerator} and {@code denominator} must be less than 2<sup>31</sup>.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
+     *  <li>The result is non-negative.</li>
      * </ul>
      *
-     * Length is infinite
+     * @return a natural {@code int}
      */
-    private @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
+    private int nextNaturalIntGeometric(int numerator, int denominator) {
         if (numerator < 1) {
             throw new IllegalArgumentException("numerator must be positive. numerator: " + numerator);
         }
         if (denominator < 1) {
             throw new IllegalArgumentException("denominator must be positive. denominator: " + denominator);
         }
-        if ((long) numerator + denominator > Integer.MAX_VALUE) {
+        long sum = (long) numerator + denominator;
+        if (sum > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("The sum of numerator and denominator must be less than 2^31." +
                     " numerator is " + numerator + " and denominator is " + denominator + ".");
         }
-        return () -> new NoRemoveIterator<Integer>() {
-            private @NotNull Iterator<Integer> is = integersBounded(numerator + denominator).iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Integer next() {
-                int i;
-                int j = 0;
-                do {
-                    i = is.next();
-                    j++;
-                } while (i >= denominator);
-                return j - 1;
-            }
-        };
+        int i;
+        int j = 0;
+        do {
+            i = nextIntBounded((int) sum);
+            j++;
+        } while (i >= denominator);
+        return j - 1;
     }
 
     /**
@@ -2101,9 +2097,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
-     * distribution with mean {@code numerator}/{@code denominator}, and whose sign is chosen uniformly. Does not
-     * support removal.
+     * Returns a randomly-generated {@code int} whose absolute value is chosen from a geometric distribution with mean
+     * {@code numerator}/{@code denominator}, and whose sign is chosen uniformly.
      *
      * <ul>
      *  <li>{@code numerator} must be positive.</li>
@@ -2112,10 +2107,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
-     * Length is infinite
+     * @return a negative {@code int}
      */
-    private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
-        return map(p -> p.a ? p.b : -p.b, pairs(booleans(), naturalIntegersGeometric(numerator, denominator)));
+    private int nextIntGeometric(int numerator, int denominator) {
+        int absolute = nextNaturalIntGeometric(numerator, denominator);
+        return nextBoolean() ? absolute : -absolute;
     }
 
     /**
@@ -2577,7 +2573,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a positive {@code BinaryFraction}
      */
     public @NotNull BinaryFraction nextPositiveBinaryFraction() {
-        return BinaryFraction.of(nextPositiveBigInteger(), withScale(secondaryScale).nextIntGeometric());
+        return BinaryFraction.of(nextPositiveBigInteger().setBit(0), withScale(secondaryScale).nextIntGeometric());
     }
 
     /**
@@ -2595,10 +2591,14 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
-        return map(
-                p -> BinaryFraction.of(p.a.setBit(0), p.b),
-                pairs(positiveBigIntegers(), withScale(secondaryScale).integersGeometric())
-        );
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
+        return fromSupplier(this::nextPositiveBinaryFraction);
     }
 
     /**
@@ -2688,7 +2688,20 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code BinaryFraction}
      */
     public @NotNull BinaryFraction nextBinaryFraction() {
-        return binaryFractions().iterator().next();
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
+        BigInteger mantissa = nextBigInteger();
+        if (mantissa.equals(BigInteger.ZERO)) {
+            return BinaryFraction.ZERO;
+        } else {
+            int exponent = nextIntGeometric(secondaryScale * (scale + 1), scale);
+            return BinaryFraction.of(mantissa.setBit(0), exponent);
+        }
     }
 
     /**
@@ -2708,14 +2721,14 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         if (secondaryScale < 1) {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        return map(
-                p -> p.a.equals(BigInteger.ZERO) ? BinaryFraction.ZERO : BinaryFraction.of(p.a.setBit(0), p.b),
-                pairs(bigIntegers(), integersGeometric(secondaryScale * (scale + 1), scale))
-        );
+        return fromSupplier(this::nextBinaryFraction);
     }
 
     @Override
@@ -3281,7 +3294,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public void validate() {
         prng.validate();
-        assertEquals(toString(), seed.size(), IsaacPRNG.SIZE);
-        assertNotNull(dependents);
+        assertEquals(this, seed.size(), IsaacPRNG.SIZE);
+        for (Map.Entry<Pair<Integer, Integer>, RandomProvider> entry : dependents.entrySet()) {
+            Pair<Integer, Integer> key = entry.getKey();
+            RandomProvider value = entry.getValue();
+            assertNotNull(this, key);
+            assertNotNull(this, key.a);
+            assertNotNull(this, key.b);
+            assertNotNull(this, value);
+            assertTrue(this, prng == value.prng);
+            value.validate();
+        }
     }
 }
