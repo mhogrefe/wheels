@@ -18,7 +18,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.*;
 
 /**
- * This class provides {@code Iterables} for testing. Subclasses should be immutable.
+ * This class provides {@code Iterables} for testing.
  */
 public abstract strictfp class IterableProvider {
     /**
