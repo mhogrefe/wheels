@@ -2732,6 +2732,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        if (a.equals(b)) return a;
         if (gt(a, b)) {
             throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
                     ".");
@@ -2755,12 +2756,13 @@ public final strictfp class RandomProvider extends IterableProvider {
                     BinaryFraction.of(
                             nextFromRange(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE))
                     )
-            ).shiftLeft(difference.getExponent());
+            ).shiftLeft(difference.getExponent()).add(a);
         }
     }
 
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        if (gt(a, b)) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
     }
 

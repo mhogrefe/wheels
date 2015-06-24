@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
@@ -9,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -740,7 +742,7 @@ public class RandomProviderDemos {
     private static void demoNextFromRange_BigInteger_BigInteger() {
         initialize();
         Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filter(
-                t -> Ordering.le(t.b, t.c),
+                t -> le(t.b, t.c),
                 P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
         );
         for (Triple<RandomProvider, BigInteger, BigInteger> p : take(SMALL_LIMIT, ts)) {
@@ -1150,6 +1152,34 @@ public class RandomProviderDemos {
         Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders());
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("binaryFractions(" + rp + ") = " + its(rp.binaryFractions()));
+        }
+    }
+
+    private static void demoNextFromRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filter(
+                t -> lt(t.b, t.c),
+                P.triples(
+                        filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
+                filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.binaryFractions(),
+                P.binaryFractions()
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
         }
     }
 

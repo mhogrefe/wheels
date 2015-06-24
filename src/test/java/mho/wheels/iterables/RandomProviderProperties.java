@@ -173,6 +173,8 @@ public class RandomProviderProperties {
             propertiesNonzeroBinaryFractions();
             propertiesNextBinaryFraction();
             propertiesBinaryFractions();
+            propertiesNextFromRange_BinaryFraction_BinaryFraction();
+            propertiesRange_BinaryFraction_BinaryFraction();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2142,6 +2144,60 @@ public class RandomProviderProperties {
         }
 
         for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.binaryFractions();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRange_BinaryFraction_BinaryFraction() {
+        initialize("nextFromRange(BinaryFraction, BinaryFraction)");
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filter(
+                t -> lt(t.b, t.c),
+                P.triples(
+                        filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
+            BinaryFraction bf = t.a.nextFromRange(t.b, t.c);
+            bf.validate();
+            assertTrue(t, ge(bf, t.b));
+            assertTrue(t, le(bf, t.c));
+        }
+
+        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigIntegers()))) {
+            assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
+        }
+    }
+
+    private static void propertiesRange_BinaryFraction_BinaryFraction() {
+        initialize("range(BinaryFraction, BinaryFraction)");
+
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
+                filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.binaryFractions(),
+                P.binaryFractions()
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
+            Iterable<BinaryFraction> bfs = t.a.range(t.b, t.c);
+            simpleTest(t.a, bfs, bf -> ge(bf, t.b) && le(bf, t.c));
+            assertEquals(t, gt(t.b, t.c), isEmpty(bfs));
+            if (le(t.b, t.c)) {
+                supplierEquivalence(t.a, bfs, () -> t.a.nextFromRange(t.b, t.c));
+            }
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
+        }
+
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(P.randomProvidersDefault(), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+        }
+
+        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.binaryFractions();
                 fail(rp);
