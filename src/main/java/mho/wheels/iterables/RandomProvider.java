@@ -2731,9 +2731,37 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBinaryFraction);
     }
 
+    public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
+        BinaryFraction difference = b.subtract(a);
+        int division = nextNaturalIntGeometric();
+        if (division == 0) {
+            return BinaryFraction.of(
+                    nextFromRange(BigInteger.ZERO, difference.getMantissa()),
+                    difference.getExponent()
+            ).add(a);
+        } else {
+            BinaryFraction fraction = BinaryFraction.of(
+                    nextFromRange(
+                            BigInteger.ZERO,
+                            BigInteger.ONE.shiftLeft(division - 1).subtract(BigInteger.ONE)
+                    ).shiftLeft(1).add(BigInteger.ONE),
+                    -division
+            );
+            return fraction.add(
+                    BinaryFraction.of(
+                            nextFromRange(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE))
+                    )
+            ).shiftLeft(difference.getExponent());
+        }
+    }
+
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
-        return null;
+        return fromSupplier(() -> nextFromRange(a, b));
     }
 
     @Override
