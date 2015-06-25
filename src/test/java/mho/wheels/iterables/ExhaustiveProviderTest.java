@@ -800,9 +800,6 @@ public strictfp class ExhaustiveProviderTest {
         range_BinaryFraction_BinaryFraction_helper("0", "11",
                 "[0, 1, 1 << 1, 3, 1 << 2, 5, 3 << 1, 7, 1 << 3, 9, 5 << 1, 11, 1 >> 1, 3 >> 1, 5 >> 1, 7 >> 1," +
                 " 9 >> 1, 11 >> 1, 13 >> 1, 15 >> 1]");
-        range_BinaryFraction_BinaryFraction_helper("-11", "-1",
-                "[-11, -9, -7, -5, -3, -1, -5 << 1, -1 << 3, -3 << 1, -1 << 2, -1 << 1, -21 >> 1, -17 >> 1," +
-                " -13 >> 1, -9 >> 1, -5 >> 1, -19 >> 1, -15 >> 1, -11 >> 1, -7 >> 1]");
         range_BinaryFraction_BinaryFraction_helper("-1", "11",
                 "[-1, 3, 7, 11, 1, 5, 9, 0, 1 << 2, 1 << 3, 1 << 1, 3 << 1, 5 << 1, -1 >> 1, 7 >> 1, 15 >> 1," +
                 " 1 >> 1, 9 >> 1, 17 >> 1, 3 >> 1]");

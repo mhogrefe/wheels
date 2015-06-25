@@ -3712,6 +3712,72 @@ public strictfp class RandomProviderTest {
         binaryFractions_fail_helper(0, 1);
     }
 
+    private static void nextFromRange_BinaryFraction_BinaryFraction_helper(
+            int meanDivisionSize,
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(meanDivisionSize)
+                        .nextFromRange(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRange_BinaryFraction_BinaryFraction_fail_helper(
+            int meanDivisionSize,
+            @NotNull String a,
+            @NotNull String b
+    ) {
+        try {
+            P.withScale(meanDivisionSize).nextFromRange(BinaryFraction.read(a).get(), BinaryFraction.read(b).get());
+            fail();
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRange_BinaryFraction_BinaryFraction() {
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "1", "3 >> 3");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "1", "1180057081 >> 31");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "1", "415293 >> 19");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "1", "11", "7 >> 2");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "1", "11", "6548766201 >> 30");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "1", "11", "1726013 >> 18");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "11", "11", "11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "11", "11", "11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "11", "11", "11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-11", "-1", "-41 >> 2");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-11", "-1", "-6336135687 >> 30");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-11", "-1", "-1419715 >> 18");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-11", "-11", "-11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-11", "-11", "-11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-11", "-11", "-11");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "0", "0");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "0", "0");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "0", "0");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "11", "67 >> 3");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "11", "16212442617 >> 31");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "11", "4085309 >> 19");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-1", "11", "1 >> 1");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-1", "11", "4938153465 >> 29");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-1", "11", "1332797 >> 17");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "5 >> 20", "1", "8000811 >> 23");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "5 >> 20", "1", "1120933957221881 >> 51");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "5 >> 20", "1", "273665644093 >> 39");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "1", "5 << 20", "33166603 >> 3");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "1", "5 << 20", "7876324808343033 >> 31");
+        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "1", "5 << 20", "1922930988605 >> 19");
+        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(0, "0", "1");
+        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(-1, "0", "1");
+        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(1, "11", "1");
+        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(1, "-1", "-11");
+    }
+
     @Test
     @Ignore
     public void testPositiveOrdinaryFloats() {
