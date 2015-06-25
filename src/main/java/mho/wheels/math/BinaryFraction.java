@@ -13,8 +13,7 @@ import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.gt;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static mho.wheels.testing.Testing.*;
 
 /**
  * <p>The {@code BinaryFraction} class uniquely represents rational numbers whose denominator is a power of 2. Every
@@ -482,6 +481,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      *
      * @return sgn({@code this})
      */
+    @SuppressWarnings("JavaDoc")
     public int signum() {
         return mantissa.signum();
     }
@@ -868,11 +868,11 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public void validate() {
         if (mantissa.equals(BigInteger.ZERO)) {
-            assertEquals(toString(), exponent, 0);
+            assertEquals(this, exponent, 0);
         } else {
-            assertTrue(toString(), mantissa.testBit(0));
+            assertTrue(this, mantissa.testBit(0));
         }
-        if (equals(ZERO)) assertTrue(toString(), this == ZERO);
-        if (equals(ONE)) assertTrue(toString(), this == ONE);
+        if (equals(ZERO)) assertTrue(this, this == ZERO);
+        if (equals(ONE)) assertTrue(this, this == ONE);
     }
 }
