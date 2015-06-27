@@ -2822,14 +2822,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
+    public @NotNull BinaryFraction nextFromRangeUp(@NotNull BinaryFraction a) {
+        return nextBinaryFraction().abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent());
+    }
+
     @Override
     public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUp(a));
+    }
+
+    public @NotNull BinaryFraction nextFromRangeDown(@NotNull BinaryFraction a) {
+        return nextFromRangeUp(a.negate()).negate();
     }
 
     @Override
     public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
-        return null;
+        return map(BinaryFraction::negate, rangeUp(a.negate()));
     }
 
     /**
