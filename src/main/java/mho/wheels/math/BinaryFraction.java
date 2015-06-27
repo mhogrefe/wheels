@@ -23,7 +23,7 @@ import static mho.wheels.testing.Testing.*;
  * –2<sup>31</sup> can be represented.</p>
  *
  * <p>There is only one instance of {@code ZERO} and one instance of {@code ONE}, so these may be compared with other
- * {@code BigInteger}s using {@code ==}.</p>
+ * {@code BinaryFraction}s using {@code ==}.</p>
  *
  * <p>This class is immutable.</p>
  */
@@ -147,7 +147,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      *  <li>{@code mantissa} cannot be null.</li>
      *  <li>{@code exponent} may be any {@code int}.</li>
      *  <li>If {@code mantissa} is nonzero, the sum of {@code exponent} and the number of trailing zero bits of
-     *  {@code mantissa} must be less than 2<pow>31</pow>.</li>
+     *  {@code mantissa} must be less than 2<sup>31</sup>.</li>
      *  <li>The result is non-null.</li>
      * </ul>
      *
@@ -202,8 +202,8 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
 
     /**
      * Creates a {@code BinaryFraction} from a {@code float}. No rounding occurs; the {@code Rational} has exactly the
-     * same value as the {@code float}. For example, {@code of(1.0f/3.0f)} yields 11184811 >> 25. Returns empty if the
-     * {@code float} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     * same value as the {@code float}. For example, {@code of(1.0f/3.0f)} yields 11184811 {@literal >>} 25. Returns
+     * empty if the {@code float} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
      *
      * <ul>
      *  <li>{@code f} may be any {@code float}.</li>
@@ -240,8 +240,8 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
 
     /**
      * Creates a {@code BinaryFraction} from a {@code double}. No rounding occurs; the {@code Rational} has exactly the
-     * same value as the {@code double}. For example, {@code of(1.0/3.0)} yields 6004799503160661 >> 54. Returns empty
-     * if the {@code double} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
+     * same value as the {@code double}. For example, {@code of(1.0/3.0)} yields 6004799503160661 {@literal >>} 54.
+     * Returns empty if the {@code double} is {@code Infinity}, {@code -Infinity}, or {@code NaN}.
      *
      * <ul>
      *  <li>{@code d} may be any {@code double}.</li>
