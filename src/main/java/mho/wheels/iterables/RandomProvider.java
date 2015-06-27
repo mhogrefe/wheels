@@ -21,20 +21,20 @@ import static mho.wheels.testing.Testing.*;
 /**
  * <p>A {@code RandomProvider} produces {@code Iterable}s that randomly generate some set of values with a specified
  * distribution. A {@code RandomProvider} is deterministic, but not immutable: its state changes every time a random
- * value is generated. It may be reverted to its original state with {@link RandomProvider#reset}.
+ * value is generated. It may be reverted to its original state with {@link RandomProvider#reset}.</p>
  *
  * <p>{@code RandomProvider} uses the cryptographically-secure ISAAC pseudorandom number generator, implemented in
  * {@link mho.wheels.random.IsaacPRNG}. The source of its randomness is a {@code int[]} seed. It contains two scale
  * parameters which some of the distributions depend on; the exact relationship between the parameters and the
- * distributions is specified in the distribution's documentation.
+ * distributions is specified in the distribution's documentation.</p>
  *
  * <p>To create an instance which shares a generator with {@code this}, use {@link RandomProvider#copy()}. To create
- * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.
+ * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.</p>
  *
  * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
  * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
  * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
- * source of randomness is perfect (but still deterministic).
+ * source of randomness is perfect (but still deterministic).</p>
  */
 public final strictfp class RandomProvider extends IterableProvider {
     /**

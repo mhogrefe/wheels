@@ -20,12 +20,12 @@ import static mho.wheels.testing.Testing.*;
  * such number is either zero or an equal to an odd integer (the mantissa) times 2 raised to an integer (the exponent).
  * Zero is considered to have a mantissa of zero (this is the only case when the mantissa is even) and an exponent of
  * zero. Only {@code BinaryFraction}s with an exponent less than 2<sup>31</sup> and greater than or equal to
- * –2<sup>31</sup> can be represented.
+ * –2<sup>31</sup> can be represented.</p>
  *
  * <p>There is only one instance of {@code ZERO} and one instance of {@code ONE}, so these may be compared with other
- * {@code BigInteger}s using {@code ==}.
+ * {@code BigInteger}s using {@code ==}.</p>
  *
- * <p>This class is immutable.
+ * <p>This class is immutable.</p>
  */
 public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     /**
