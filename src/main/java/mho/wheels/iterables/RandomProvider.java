@@ -2731,6 +2731,24 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBinaryFraction);
     }
 
+    public @NotNull BinaryFraction nextFromRangeUp(@NotNull BinaryFraction a) {
+        return nextBinaryFraction().abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent());
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        return fromSupplier(() -> nextFromRangeUp(a));
+    }
+
+    public @NotNull BinaryFraction nextFromRangeDown(@NotNull BinaryFraction a) {
+        return nextFromRangeUp(a.negate()).negate();
+    }
+
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        return map(BinaryFraction::negate, rangeUp(a.negate()));
+    }
+
     /**
      * <p>Returns a {@code BinaryFraction} between {@code a} and {@code b}, inclusive.</p>
      *
@@ -2820,24 +2838,6 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         if (gt(a, b)) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
-    }
-
-    public @NotNull BinaryFraction nextFromRangeUp(@NotNull BinaryFraction a) {
-        return nextBinaryFraction().abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent());
-    }
-
-    @Override
-    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
-        return fromSupplier(() -> nextFromRangeUp(a));
-    }
-
-    public @NotNull BinaryFraction nextFromRangeDown(@NotNull BinaryFraction a) {
-        return nextFromRangeUp(a.negate()).negate();
-    }
-
-    @Override
-    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
-        return map(BinaryFraction::negate, rangeUp(a.negate()));
     }
 
     /**

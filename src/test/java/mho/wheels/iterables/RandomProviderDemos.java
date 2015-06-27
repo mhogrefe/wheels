@@ -1155,12 +1155,59 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
     private static void demoNextFromRange_BinaryFraction_BinaryFraction() {
         initialize();
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filter(
                 t -> lt(t.b, t.c),
                 P.triples(
-                        filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filter(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryScale()
+                        ),
                         P.binaryFractions(),
                         P.binaryFractions()
                 )
@@ -1174,7 +1221,10 @@ public class RandomProviderDemos {
     private static void demoRange_BinaryFraction_BinaryFraction() {
         initialize();
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
-                filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filter(
+                        x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                        P.randomProvidersDefaultSecondaryScale()
+                ),
                 P.binaryFractions(),
                 P.binaryFractions()
         );
