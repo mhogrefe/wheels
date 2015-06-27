@@ -2705,7 +2705,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
+     * An {@code Iterable} that generates all {@code BinaryFraction}s. The mantissa bit size is chosen from a geometric
      * distribution with mean {@code scale}. If the bit size is zero, the {@code BinaryFraction} is zero; otherwise,
      * the mantissa is chosen uniformly from all odd {@code BigInteger}s with that bit size, thhe absolute value of the
      * exponent is chosen from a geometric distribution with mean {@code secondaryScale}, the exponent's sign is chosen
@@ -2731,6 +2731,31 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBinaryFraction);
     }
 
+    /**
+     * <p>Returns a {@code BinaryFraction} between {@code a} and {@code b}, inclusive.</p>
+     *
+     * <p>Every interval with {@code BinaryFraction} bounds may be broken up into equal blocks whose length is a power
+     * of 2. Consider the subdivision with the largest possible block size. We can call points that lie on the
+     * boundaries between blocks, along with the lower and upper bounds of the interval, <i>division-0</i> points.
+     * Let points within the interval that are halfway between division-0 points be called <i>division-1</i> points;
+     * points halfway between division-0 or division-1 points <i>division-2</i> points; and so on. The
+     * {@code BinaryFraction}s returned by this method have divisions chosen from a geometric distribution with mean
+     * {@code scale}. The distribution of {@code BinaryFraction}s is approximately uniform.</p>
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code b} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return approximately uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         if (a.equals(b)) return a;
         if (gt(a, b)) {
@@ -2760,6 +2785,31 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * <p>An {@code Iterable} that generates {@code BinaryFraction}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.</p>
+     *
+     * <p>Every interval with {@code BinaryFraction} bounds may be broken up into equal blocks whose length is a power
+     * of 2. Consider the subdivision with the largest possible block size. We can call points that lie on the
+     * boundaries between blocks, along with the lower and upper bounds of the interval, <i>division-0</i> points.
+     * Let points within the interval that are halfway between division-0 points be called <i>division-1</i> points;
+     * points halfway between division-0 or division-1 points <i>division-2</i> points; and so on. The
+     * {@code BinaryFraction}s returned by this method have divisions chosen from a geometric distribution with mean
+     * {@code scale}. The distribution of {@code BinaryFraction}s is approximately uniform.</p>
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
+     *  <li>{@code a} may be any {@code BinaryFraction}.</li>
+     *  <li>{@code b} may be any {@code BinaryFraction}.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return approximately uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         if (scale < 1) {
