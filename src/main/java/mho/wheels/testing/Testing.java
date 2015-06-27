@@ -210,7 +210,7 @@ public strictfp class Testing {
         SortedMap<Integer, List<T>> frequencyMap = new TreeMap<>();
         for (Map.Entry<T, Integer> entry : sampleCount(xs).entrySet()) {
             int frequency = entry.getValue();
-            List<T> elements = frequencyMap.get(frequency);
+            List<T> elements = frequencyMap.get(-frequency);
             if (elements == null) {
                 elements = new ArrayList<>();
                 frequencyMap.put(-frequency, elements);
