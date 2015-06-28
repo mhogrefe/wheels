@@ -57,6 +57,13 @@ public strictfp class FloatingPointUtilsTest {
         aeq(successor(x), output);
     }
 
+    private static void successor_float_fail_helper(float f) {
+        try {
+            successor(f);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testSuccessor_float() {
         successor_float_helper(1.0f, "1.0000001");
@@ -76,18 +83,19 @@ public strictfp class FloatingPointUtilsTest {
         successor_float_helper(Float.MAX_VALUE, "Infinity");
         successor_float_helper(-Float.MAX_VALUE, "-3.4028233E38");
         successor_float_helper(Float.NEGATIVE_INFINITY, "-3.4028235E38");
-        try {
-            successor(Float.POSITIVE_INFINITY);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            successor(Float.NaN);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        successor_float_fail_helper(Float.POSITIVE_INFINITY);
+        successor_float_fail_helper(Float.NaN);
     }
 
     private static void predecessor_float_helper(float x, @NotNull String output) {
         aeq(predecessor(x), output);
+    }
+
+    private static void predecessor_float_fail_helper(float f) {
+        try {
+            predecessor(f);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -109,18 +117,19 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_float_helper(Float.MAX_VALUE, "3.4028233E38");
         predecessor_float_helper(-Float.MAX_VALUE, "-Infinity");
         predecessor_float_helper(Float.POSITIVE_INFINITY, "3.4028235E38");
-        try {
-            predecessor(Float.NEGATIVE_INFINITY);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            predecessor(Float.NaN);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        predecessor_float_fail_helper(Float.NEGATIVE_INFINITY);
+        predecessor_float_fail_helper(Float.NaN);
     }
 
     private static void successor_double_helper(double x, @NotNull String output) {
         aeq(successor(x), output);
+    }
+
+    private static void successor_double_fail_helper(double d) {
+        try {
+            successor(d);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -142,18 +151,19 @@ public strictfp class FloatingPointUtilsTest {
         successor_double_helper(Double.MAX_VALUE, "Infinity");
         successor_double_helper(-Double.MAX_VALUE, "-1.7976931348623155E308");
         successor_double_helper(Double.NEGATIVE_INFINITY, "-1.7976931348623157E308");
-        try {
-            successor(Double.POSITIVE_INFINITY);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            successor(Double.NaN);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        successor_double_fail_helper(Double.POSITIVE_INFINITY);
+        successor_double_fail_helper(Double.NaN);
     }
 
     private static void predecessor_double_helper(double x, @NotNull String output) {
         aeq(predecessor(x), output);
+    }
+
+    private static void predecessor_double_fail_helper(double d) {
+        try {
+            predecessor(d);
+            fail();
+        } catch (ArithmeticException ignored) {}
     }
 
     @Test
@@ -175,13 +185,7 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_double_helper(Double.MAX_VALUE, "1.7976931348623155E308");
         predecessor_double_helper(-Double.MAX_VALUE, "-Infinity");
         predecessor_double_helper(Double.POSITIVE_INFINITY, "1.7976931348623157E308");
-        try {
-            predecessor(Double.NEGATIVE_INFINITY);
-            fail();
-        } catch (ArithmeticException ignored) {}
-        try {
-            predecessor(Double.NaN);
-            fail();
-        } catch (ArithmeticException ignored) {}
+        predecessor_double_fail_helper(Double.NEGATIVE_INFINITY);
+        predecessor_double_fail_helper(Double.NaN);
     }
 }
