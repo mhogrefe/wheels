@@ -204,6 +204,21 @@ public final strictfp class FloatingPointUtils {
         return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Double>empty();
     }
 
+    /**
+     * Extracts a {@code float}'s mantissa and exponent: an odd {@code Integer} <i>m</i> and an {@code Integer}
+     * <i>e</i> such that the {@code float} is exactly equal to <i>m</i>×2<sup><i>e</i></sup>. Zero is treated
+     * specially–its mantissa and exponent are both zero. Positive and negative zeros are treated identically;
+     * {@code NaN} and infinities yield an empty result.
+     *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result is either empty or a pair of {@code Integer}s, neither null, that form the mantissa and exponent
+     *  of some {@code float} according to the definition above.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return the {@code float}'s mantissa and exponent
+     */
     public static @NotNull Optional<Pair<Integer, Integer>> toMantissaAndExponent(float f) {
         Optional<BinaryFraction> obf = BinaryFraction.of(f);
         if (!obf.isPresent()) return Optional.empty();
@@ -211,6 +226,21 @@ public final strictfp class FloatingPointUtils {
         return Optional.of(new Pair<>(bf.getMantissa().intValueExact(), bf.getExponent()));
     }
 
+    /**
+     * Extracts a {@code double}'s mantissa and exponent: an odd {@code Long} <i>m</i> and an {@code Integer} <i>e</i>
+     * such that the {@code double} is exactly equal to <i>m</i>×2<sup><i>e</i></sup>. Zero is treated specially–its
+     * mantissa and exponent are both zero. Positive and negative zeros are treated identically; {@code NaN} and
+     * infinities yield an empty result.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result is either empty or a pair of a {@code Long} and an {@code Integer}, neither null, that form the
+     *  mantissa and exponent of some {@code double} according to the definition above.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return the {@code double}'s mantissa and exponent
+     */
     public static @NotNull Optional<Pair<Long, Integer>> toMantissaAndExponent(double d) {
         Optional<BinaryFraction> obf = BinaryFraction.of(d);
         if (!obf.isPresent()) return Optional.empty();
