@@ -2775,6 +2775,12 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return approximately uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
      */
     public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (scale == Integer.MAX_VALUE) {
+            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
+        }
         if (a.equals(b)) return a;
         if (gt(a, b)) {
             throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +

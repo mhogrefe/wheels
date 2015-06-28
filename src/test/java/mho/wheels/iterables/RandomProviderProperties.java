@@ -2154,9 +2154,12 @@ public class RandomProviderProperties {
     private static void propertiesNextFromRange_BinaryFraction_BinaryFraction() {
         initialize("nextFromRange(BinaryFraction, BinaryFraction)");
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filter(
-                t -> lt(t.b, t.c),
+                t -> le(t.b, t.c),
                 P.triples(
-                        filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filter(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryScale()
+                        ),
                         P.binaryFractions(),
                         P.binaryFractions()
                 )
@@ -2171,13 +2174,60 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, BigInteger> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigIntegers()))) {
             assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
         }
+
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = filter(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filter(
+                t -> le(t.b, t.c),
+                P.triples(P.randomProvidersDefault(), P.binaryFractions(), P.binaryFractions())
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.withScale(Integer.MAX_VALUE).nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filter(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filter(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private static void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
 
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
-                filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filter(
+                        x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                        P.randomProvidersDefaultSecondaryScale()
+                ),
                 P.binaryFractions(),
                 P.binaryFractions()
         );
@@ -2196,11 +2246,23 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
-        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = P.triples(
+                filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                P.binaryFractions(),
+                P.binaryFractions()
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
             try {
-                rp.binaryFractions();
-                fail(rp);
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = P.triples(P.randomProvidersDefault(), P.binaryFractions(), P.binaryFractions());
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.withScale(Integer.MAX_VALUE).range(t.b, t.c);
+                fail(t);
             } catch (IllegalStateException ignored) {}
         }
     }
