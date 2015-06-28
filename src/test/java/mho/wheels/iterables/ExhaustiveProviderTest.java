@@ -701,73 +701,73 @@ public strictfp class ExhaustiveProviderTest {
                 " 9, -9, 5 << 1]");
     }
 
-    private static void rangeUp_BinaryFraction(@NotNull String a, @NotNull String output) {
+    private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
         aeqit(take(TINY_LIMIT, P.rangeUp(BinaryFraction.read(a).get())), output);
     }
 
     @Test
     public void testRangeUp_BinaryFraction() {
-        rangeUp_BinaryFraction("0",
+        rangeUp_BinaryFraction_helper("0",
                 "[0, 1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
                 " 9 << 1, 19]");
-        rangeUp_BinaryFraction("1",
+        rangeUp_BinaryFraction_helper("1",
                 "[1, 1 << 1, 3, 1 << 2, 3 >> 1, 3 << 1, 7, 1 << 3, 5, 5 << 1, 11, 3 << 2, 5 >> 1, 7 << 1, 15," +
                 " 1 << 4, 5 >> 2, 9 << 1, 19, 5 << 2]");
-        rangeUp_BinaryFraction("11",
+        rangeUp_BinaryFraction_helper("11",
                 "[11, 3 << 2, 13, 7 << 1, 23 >> 1, 1 << 4, 17, 9 << 1, 15, 5 << 2, 21, 11 << 1, 25 >> 1, 3 << 3, 25," +
                 " 13 << 1, 45 >> 2, 7 << 2, 29, 15 << 1]");
-        rangeUp_BinaryFraction("5 << 20",
+        rangeUp_BinaryFraction_helper("5 << 20",
                 "[5 << 20, 3 << 21, 7 << 20, 1 << 23, 11 << 19, 5 << 21, 11 << 20, 3 << 22, 9 << 20, 7 << 21," +
                 " 15 << 20, 1 << 24, 13 << 19, 9 << 21, 19 << 20, 5 << 22, 21 << 18, 11 << 21, 23 << 20, 3 << 23]");
-        rangeUp_BinaryFraction("5 >> 20",
+        rangeUp_BinaryFraction_helper("5 >> 20",
                 "[5 >> 20, 3 >> 19, 7 >> 20, 1 >> 17, 11 >> 21, 5 >> 19, 11 >> 20, 3 >> 18, 9 >> 20, 7 >> 19," +
                 " 15 >> 20, 1 >> 16, 13 >> 21, 9 >> 19, 19 >> 20, 5 >> 18, 21 >> 22, 11 >> 19, 23 >> 20, 3 >> 17]");
-        rangeUp_BinaryFraction("-1",
+        rangeUp_BinaryFraction_helper("-1",
                 "[-1, 0, 1, 1 << 1, -1 >> 1, 1 << 2, 5, 3 << 1, 3, 1 << 3, 9, 5 << 1, 1 >> 1, 3 << 2, 13, 7 << 1," +
                 " -3 >> 2, 1 << 4, 17, 9 << 1]");
-        rangeUp_BinaryFraction("-11",
+        rangeUp_BinaryFraction_helper("-11",
                 "[-11, -5 << 1, -9, -1 << 3, -21 >> 1, -3 << 1, -5, -1 << 2, -7, -1 << 1, -1, 0, -19 >> 1, 1 << 1," +
                 " 3, 1 << 2, -43 >> 2, 3 << 1, 7, 1 << 3]");
-        rangeUp_BinaryFraction("-5 << 20",
+        rangeUp_BinaryFraction_helper("-5 << 20",
                 "[-5 << 20, -1 << 22, -3 << 20, -1 << 21, -9 << 19, 0, 1 << 20, 1 << 21, -1 << 20, 1 << 22, 5 << 20," +
                 " 3 << 21, -7 << 19, 1 << 23, 9 << 20, 5 << 21, -19 << 18, 3 << 22, 13 << 20, 7 << 21]");
-        rangeUp_BinaryFraction("-5 >> 20",
+        rangeUp_BinaryFraction_helper("-5 >> 20",
                 "[-5 >> 20, -1 >> 18, -3 >> 20, -1 >> 19, -9 >> 21, 0, 1 >> 20, 1 >> 19, -1 >> 20, 1 >> 18, 5 >> 20," +
                 " 3 >> 19, -7 >> 21, 1 >> 17, 9 >> 20, 5 >> 19, -19 >> 22, 3 >> 18, 13 >> 20, 7 >> 19]");
     }
 
-    private static void rangeDown_BinaryFraction(@NotNull String a, @NotNull String output) {
+    private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
         aeqit(take(TINY_LIMIT, P.rangeDown(BinaryFraction.read(a).get())), output);
     }
 
     @Test
     public void testRangeDown_BinaryFraction() {
-        rangeDown_BinaryFraction("0",
+        rangeDown_BinaryFraction_helper("0",
                 "[0, -1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1," +
                 " -15, -1 >> 2, -17, -9 << 1, -19]");
-        rangeDown_BinaryFraction("1",
+        rangeDown_BinaryFraction_helper("1",
                 "[1, 0, -1, -1 << 1, 1 >> 1, -1 << 2, -5, -3 << 1, -3, -1 << 3, -9, -5 << 1, -1 >> 1, -3 << 2, -13," +
                 " -7 << 1, 3 >> 2, -1 << 4, -17, -9 << 1]");
-        rangeDown_BinaryFraction("11",
+        rangeDown_BinaryFraction_helper("11",
                 "[11, 5 << 1, 9, 1 << 3, 21 >> 1, 3 << 1, 5, 1 << 2, 7, 1 << 1, 1, 0, 19 >> 1, -1 << 1, -3, -1 << 2," +
                 " 43 >> 2, -3 << 1, -7, -1 << 3]");
-        rangeDown_BinaryFraction("5 << 20",
+        rangeDown_BinaryFraction_helper("5 << 20",
                 "[5 << 20, 1 << 22, 3 << 20, 1 << 21, 9 << 19, 0, -1 << 20, -1 << 21, 1 << 20, -1 << 22, -5 << 20," +
                 " -3 << 21, 7 << 19, -1 << 23, -9 << 20, -5 << 21, 19 << 18, -3 << 22, -13 << 20, -7 << 21]");
-        rangeDown_BinaryFraction("5 >> 20",
+        rangeDown_BinaryFraction_helper("5 >> 20",
                 "[5 >> 20, 1 >> 18, 3 >> 20, 1 >> 19, 9 >> 21, 0, -1 >> 20, -1 >> 19, 1 >> 20, -1 >> 18, -5 >> 20," +
                 " -3 >> 19, 7 >> 21, -1 >> 17, -9 >> 20, -5 >> 19, 19 >> 22, -3 >> 18, -13 >> 20, -7 >> 19]");
-        rangeDown_BinaryFraction("-1",
+        rangeDown_BinaryFraction_helper("-1",
                 "[-1, -1 << 1, -3, -1 << 2, -3 >> 1, -3 << 1, -7, -1 << 3, -5, -5 << 1, -11, -3 << 2, -5 >> 1," +
                 " -7 << 1, -15, -1 << 4, -5 >> 2, -9 << 1, -19, -5 << 2]");
-        rangeDown_BinaryFraction("-11",
+        rangeDown_BinaryFraction_helper("-11",
                 "[-11, -3 << 2, -13, -7 << 1, -23 >> 1, -1 << 4, -17, -9 << 1, -15, -5 << 2, -21, -11 << 1," +
                 " -25 >> 1, -3 << 3, -25, -13 << 1, -45 >> 2, -7 << 2, -29, -15 << 1]");
-        rangeDown_BinaryFraction("-5 << 20",
+        rangeDown_BinaryFraction_helper("-5 << 20",
                 "[-5 << 20, -3 << 21, -7 << 20, -1 << 23, -11 << 19, -5 << 21, -11 << 20, -3 << 22, -9 << 20," +
                 " -7 << 21, -15 << 20, -1 << 24, -13 << 19, -9 << 21, -19 << 20, -5 << 22, -21 << 18, -11 << 21," +
                 " -23 << 20, -3 << 23]");
-        rangeDown_BinaryFraction("-5 >> 20",
+        rangeDown_BinaryFraction_helper("-5 >> 20",
                 "[-5 >> 20, -3 >> 19, -7 >> 20, -1 >> 17, -11 >> 21, -5 >> 19, -11 >> 20, -3 >> 18, -9 >> 20," +
                 " -7 >> 19, -15 >> 20, -1 >> 16, -13 >> 21, -9 >> 19, -19 >> 20, -5 >> 18, -21 >> 22, -11 >> 19," +
                 " -23 >> 20, -3 >> 17]");
