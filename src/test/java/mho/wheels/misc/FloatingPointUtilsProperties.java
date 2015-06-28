@@ -7,10 +7,13 @@ import mho.wheels.structures.Triple;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.function.Function;
 
+import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
-import static org.junit.Assert.assertFalse;
+import static mho.wheels.testing.Testing.*;
 
 public class FloatingPointUtilsProperties {
     private static int LIMIT;
@@ -35,6 +38,10 @@ public class FloatingPointUtilsProperties {
             propertiesIsNegativeZero_double();
             propertiesIsPositiveZero_float();
             propertiesIsPositiveZero_double();
+            propertiesSuccessor_float();
+            propertiesPredecessor_float();
+            propertiesSuccessor_double();
+            propertiesPredecessor_double();
         }
         System.out.println("Done");
     }
@@ -47,7 +54,7 @@ public class FloatingPointUtilsProperties {
 
         //todo test nonzero floats
         for (float f : take(LIMIT, P.ordinaryFloats())) {
-            assertFalse(Float.toString(f), FloatingPointUtils.isNegativeZero(f));
+            assertFalse(f, FloatingPointUtils.isNegativeZero(f));
         }
     }
 
@@ -59,7 +66,7 @@ public class FloatingPointUtilsProperties {
 
         //todo test nonzero doubles
         for (double d : take(LIMIT, P.ordinaryDoubles())) {
-            assertFalse(Double.toString(d), FloatingPointUtils.isNegativeZero(d));
+            assertFalse(d, FloatingPointUtils.isNegativeZero(d));
         }
     }
 
@@ -79,5 +86,53 @@ public class FloatingPointUtilsProperties {
         }
 
         //todo test nonzero doubles
+    }
+
+    private static void propertiesSuccessor_float() {
+        initialize("successor(float)");
+        Iterable<Float> fs = filter(
+                f -> !Float.isNaN(f) && f != Float.POSITIVE_INFINITY && !FloatingPointUtils.isNegativeZero(f),
+                P.floats()
+        );
+        for (float f : take(LIMIT, fs)) {
+            //noinspection RedundantCast
+            inverses((Function<Float, Float>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, f);
+        }
+    }
+
+    private static void propertiesPredecessor_float() {
+        initialize("predecessor(float)");
+        Iterable<Float> fs = filter(
+                f -> !Float.isNaN(f) && f != Float.NEGATIVE_INFINITY && !FloatingPointUtils.isPositiveZero(f),
+                P.floats()
+        );
+        for (float f : take(LIMIT, fs)) {
+            //noinspection RedundantCast
+            inverses((Function<Float, Float>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, f);
+        }
+    }
+
+    private static void propertiesSuccessor_double() {
+        initialize("successor(double)");
+        Iterable<Double> ds = filter(
+                d -> !Double.isNaN(d) && d != Double.POSITIVE_INFINITY && !FloatingPointUtils.isNegativeZero(d),
+                P.doubles()
+        );
+        for (double d : take(LIMIT, ds)) {
+            //noinspection RedundantCast
+            inverses((Function<Double, Double>) FloatingPointUtils::successor, FloatingPointUtils::predecessor, d);
+        }
+    }
+
+    private static void propertiesPredecessor_double() {
+        initialize("predecessor(double)");
+        Iterable<Double> ds = filter(
+                d -> !Double.isNaN(d) && d != Double.NEGATIVE_INFINITY && !FloatingPointUtils.isPositiveZero(d),
+                P.doubles()
+        );
+        for (double d : take(LIMIT, ds)) {
+            //noinspection RedundantCast
+            inverses((Function<Double, Double>) FloatingPointUtils::predecessor, FloatingPointUtils::successor, d);
+        }
     }
 }
