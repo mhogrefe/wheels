@@ -3712,6 +3712,95 @@ public strictfp class RandomProviderTest {
         binaryFractions_fail_helper(0, 1);
     }
 
+    private static void nextFromRangeUp_BinaryFraction_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(BinaryFraction.read(a).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeUp_BinaryFraction_fail_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a
+    ) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(BinaryFraction.read(a).get());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeUp_BinaryFraction() {
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "0", "5");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "0", "21");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "0", "469791");
+        nextFromRangeUp_BinaryFraction_helper(100, 10, "0", "630008861630388057697674146568609443823746153 >> 5");
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "1", "3 << 1");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "1", "11 << 1");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "1", "14681 << 5");
+        nextFromRangeUp_BinaryFraction_helper(100, 10, "1", "630008861630388057697674146568609443823746185 >> 5");
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "11", "1 << 4");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "11", "1 << 5");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "11", "234901 << 1");
+        nextFromRangeUp_BinaryFraction_helper(100, 10, "11", "630008861630388057697674146568609443823746505 >> 5");
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "5 << 20", "5 << 21");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "5 << 20", "13 << 21");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "5 << 20", "117449 << 22");
+        nextFromRangeUp_BinaryFraction_helper(
+                100,
+                10,
+                "5 << 20",
+                "630008861630388057697674146568609443823746313 << 15"
+        );
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "5 >> 20", "5 >> 19");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "5 >> 20", "13 >> 19");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "5 >> 20", "117449 >> 18");
+        nextFromRangeUp_BinaryFraction_helper(
+                100,
+                10,
+                "5 >> 20",
+                "630008861630388057697674146568609443823746313 >> 25"
+        );
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "-1", "1 << 2");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "-1", "5 << 2");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "-1", "234895 << 1");
+        nextFromRangeUp_BinaryFraction_helper(100, 10, "-1", "630008861630388057697674146568609443823746121 >> 5");
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "-11", "-3 << 1");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "-11", "5 << 1");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "-11", "117445 << 2");
+        nextFromRangeUp_BinaryFraction_helper(100, 10, "-11", "630008861630388057697674146568609443823745801 >> 5");
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "-5 << 20", "0");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "-5 << 20", "1 << 24");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "-5 << 20", "234893 << 21");
+        nextFromRangeUp_BinaryFraction_helper(
+                100,
+                10,
+                "-5 << 20",
+                "630008861630388057697674146568609443823745993 << 15"
+        );
+        nextFromRangeUp_BinaryFraction_helper(1, 1, "-5 >> 20", "0");
+        nextFromRangeUp_BinaryFraction_helper(5, 3, "-5 >> 20", "1 >> 16");
+        nextFromRangeUp_BinaryFraction_helper(32, 8, "-5 >> 20", "234893 >> 19");
+        nextFromRangeUp_BinaryFraction_helper(
+                100,
+                10,
+                "-5 >> 20",
+                "630008861630388057697674146568609443823745993 >> 25"
+        );
+        nextFromRangeUp_BinaryFraction_fail_helper(1, 0, "0");
+        nextFromRangeUp_BinaryFraction_fail_helper(0, 1, "0");
+    }
+
     private static void nextFromRange_BinaryFraction_BinaryFraction_helper(
             int meanDivisionSize,
             @NotNull String a,
