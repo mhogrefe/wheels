@@ -2428,8 +2428,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code BigInteger} greater than or equal to {@code a} The bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
+     * Returns a randomly-generated {@code BigInteger} greater than or equal to {@code a}. The bit size is chosen from
+     * a geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
      * {@code BigInteger}s greater than or equal to {@code a} with that bit size.
      *
      * <ul>
@@ -2490,7 +2490,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
      *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
      *  cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code a} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} cannot be null.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -2511,7 +2511,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code BigInteger} less than or equal to {@code a} The bit size is chosen from a
+     * Returns a randomly-generated {@code BigInteger} less than or equal to {@code a}. The bit size is chosen from a
      * geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
      * {@code BigInteger}s less than or equal to {@code a} with that bit size.
      *
@@ -2539,7 +2539,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>Let {@code minBitLength} be 0 if {@code a} is positive, and ⌊log<sub>2</sub>(–{@code a})⌋ otherwise.
      *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
      *  cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code a} may be any {@code int}.</li>
+     *  <li>{@code a} cannot be null.</li>
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -2731,10 +2731,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextBinaryFraction);
     }
 
+    /**
+     * Returns a randomly-generated {@code BinaryFraction} greater than or equal to {@code a}. A higher {@code scale}
+     * corresponds to a higher mantissa bit size and a higher {@code secondaryScale} corresponds to a higher exponent
+     * bit size, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BinaryFraction} greater than or equal to {@code a}
+     */
     public @NotNull BinaryFraction nextFromRangeUp(@NotNull BinaryFraction a) {
         return nextBinaryFraction().abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent());
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}s greater than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher mantissa bit size and a higher {@code secondaryScale} corresponds to a
+     * higher exponent bit size, but the exact relationship is not simple to describe. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
         if (scale < 1) {
@@ -2747,10 +2773,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code BinaryFraction} less than or equal to {@code a}. A higher {@code scale}
+     * corresponds to a higher mantissa bit size and a higher {@code secondaryScale} corresponds to a higher exponent
+     * bit size, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BinaryFraction} less than or equal to {@code a}
+     */
     public @NotNull BinaryFraction nextFromRangeDown(@NotNull BinaryFraction a) {
         return nextFromRangeUp(a.negate()).negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}s less than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher mantissa bit size and a higher {@code secondaryScale} corresponds to a
+     * higher exponent bit size, but the exact relationship is not simple to describe. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
         if (scale < 1) {
