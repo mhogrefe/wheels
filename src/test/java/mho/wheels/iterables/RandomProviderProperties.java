@@ -173,6 +173,10 @@ public class RandomProviderProperties {
             propertiesNonzeroBinaryFractions();
             propertiesNextBinaryFraction();
             propertiesBinaryFractions();
+            propertiesNextFromRangeUp_BinaryFraction();
+            propertiesRangeUp_BinaryFraction();
+            propertiesNextFromRangeDown_BinaryFraction();
+            propertiesRangeDown_BinaryFraction();
             propertiesNextFromRange_BinaryFraction_BinaryFraction();
             propertiesRange_BinaryFraction_BinaryFraction();
             propertiesEquals();
@@ -2147,6 +2151,132 @@ public class RandomProviderProperties {
             try {
                 rp.binaryFractions();
                 fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_BinaryFraction() {
+        initialize("nextFromRangeUp(BinaryFraction)");
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            BinaryFraction bf = p.a.nextFromRangeUp(p.b);
+            assertTrue(p, ge(bf, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
+                filter(x -> x.getScale() < 1,
+                P.randomProviders()), P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUp_BinaryFraction() {
+        initialize("rangeUp(BinaryFraction)");
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            Iterable<BinaryFraction> bfs = p.a.rangeUp(p.b);
+            simpleTest(p.a, bfs, i -> ge(i, p.b));
+            supplierEquivalence(p.a, bfs, () -> p.a.nextFromRangeUp(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
+                filter(x -> x.getScale() < 1, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeDown_BinaryFraction() {
+        initialize("nextFromRangeDown(BinaryFraction)");
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            BinaryFraction bf = p.a.nextFromRangeDown(p.b);
+            assertTrue(p, le(bf, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
+                filter(x -> x.getScale() < 1,
+                P.randomProviders()), P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeDown_BinaryFraction() {
+        initialize("rangeDown(BinaryFraction)");
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            Iterable<BinaryFraction> bfs = p.a.rangeDown(p.b);
+            simpleTest(p.a, bfs, i -> le(i, p.b));
+            supplierEquivalence(p.a, bfs, () -> p.a.nextFromRangeDown(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
+                filter(x -> x.getScale() < 1, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDown(p.b);
+                fail(p);
             } catch (IllegalStateException ignored) {}
         }
     }

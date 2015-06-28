@@ -2737,6 +2737,13 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
@@ -2746,6 +2753,13 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
         return map(BinaryFraction::negate, rangeUp(a.negate()));
     }
 
