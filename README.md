@@ -24,7 +24,7 @@ Progress
 | Combinatorics              | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
-| FloatingPointUtils         | ✘       | ✘       | ✘     | ✘     | ✘          |
+| FloatingPointUtils         | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Readers                    | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ConsistentDoubleComparator | ✘       | ✘       | ✘     | ✘     | ✘          |
 | ConsistentFloatComparator  | ✘       | ✘       | ✘     | ✘     | ✘          |

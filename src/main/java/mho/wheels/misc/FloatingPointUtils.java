@@ -204,6 +204,20 @@ public final strictfp class FloatingPointUtils {
         return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Double>empty();
     }
 
+    public static @NotNull Optional<Pair<Integer, Integer>> toMantissaAndExponent(float f) {
+        Optional<BinaryFraction> obf = BinaryFraction.of(f);
+        if (!obf.isPresent()) return Optional.empty();
+        BinaryFraction bf = obf.get();
+        return Optional.of(new Pair<>(bf.getMantissa().intValueExact(), bf.getExponent()));
+    }
+
+    public static @NotNull Optional<Pair<Long, Integer>> toMantissaAndExponent(double d) {
+        Optional<BinaryFraction> obf = BinaryFraction.of(d);
+        if (!obf.isPresent()) return Optional.empty();
+        BinaryFraction bf = obf.get();
+        return Optional.of(new Pair<>(bf.getMantissa().longValueExact(), bf.getExponent()));
+    }
+
     /**
      * If {@code f} is -0.0f, return 0.0f; otherwise, return {@code f}.
      *
