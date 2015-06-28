@@ -1187,7 +1187,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        map(p -> FloatingPointUtils.floatFromME(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
+                        map(p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
                 )
         );
     }
@@ -1309,7 +1309,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 Optional::get,
                 filter(
                         Optional::isPresent,
-                        map(p -> FloatingPointUtils.doubleFromME(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
+                        map(p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
                 )
         );
     }

@@ -1,5 +1,6 @@
 package mho.wheels.misc;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -155,119 +156,52 @@ public final strictfp class FloatingPointUtils {
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
     }
 
-    private static @NotNull Pair<BigInteger, Integer> shift(@NotNull BigInteger mantissa, int exponent, int bits) {
-        if (mantissa.equals(BigInteger.ZERO)) {
-            return new Pair<>(BigInteger.ZERO, 0);
-        }
-        int trailingZeroes = mantissa.getLowestSetBit();
-        if (trailingZeroes != 0) {
-            mantissa = mantissa.shiftRight(trailingZeroes);
-            exponent += trailingZeroes;
-        }
-        return new Pair<>(mantissa, exponent + bits);
-    }
-
-    private static @NotNull Pair<BigInteger, Integer> subOne(@NotNull BigInteger mantissa, int exponent) {
-        if (exponent <= 0) {
-            BigInteger newMantissa = mantissa.subtract(BigInteger.ONE.shiftLeft(-exponent));
-            return newMantissa.equals(BigInteger.ZERO) ?
-                    new Pair<>(BigInteger.ZERO, 0) :
-                    new Pair<>(newMantissa, exponent);
-        } else {
-            return new Pair<>(mantissa.shiftLeft(exponent).subtract(BigInteger.ONE), 0);
-        }
-    }
-
     /**
-     * Constructs a {@code float} from its mantissa and exponent. The {@code float} is equal to
+     * Constructs a {@code Float} from its mantissa and exponent. The {@code Float} is equal to
      * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
-     * {@code float}, an empty {@code Optional} is returned.
+     * {@code Float}, an empty {@code Optional} is returned.
      *
      * <ul>
      *  <li>{@code mantissa} may be any {@code int}.</li>
      *  <li>{@code exponent} may be any {@code int}.</li>
-     *  <li>The result is not {@code NaN}, negative zero, or infinite.</li>
+     *  <li>The result is not {@code NaN}, negative zero, or infinite. May be empty.</li>
      * </ul>
      *
-     * @param mantissa a {@code float}'s mantissa
-     * @param exponent a {@code float}'s exponent
-     * @return The {@code float} with the given expoent and mantissa
+     * @param mantissa a {@code Float}'s mantissa
+     * @param exponent a {@code Float}'s exponent
+     * @return the {@code Float} with the given mantissa and exponent
      */
-    public static @NotNull Optional<Float> floatFromME(int mantissa, int exponent) {
-        if ((mantissa & 1) == 0) {
+    public static @NotNull Optional<Float> floatFromMantissaAndExponent(int mantissa, int exponent) {
+        BinaryFraction bf = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent);
+        if (!bf.getMantissa().equals(BigInteger.valueOf(mantissa)) || bf.getExponent() != exponent) {
             return Optional.empty();
         }
-        boolean sign = mantissa > 0;
-        BigInteger bigMantissa = BigInteger.valueOf(mantissa);
-        int bitLength = bigMantissa.bitLength();
-        int rawExp = bitLength + exponent - 1;
-        if (rawExp < -149) {
-            return Optional.empty();
-        }
-        BigInteger rawMantissa;
-        if (rawExp < -126) {
-            int padding = exponent + 149;
-            if (padding < 0) return Optional.empty();
-            rawMantissa = bigMantissa.shiftLeft(padding);
-            rawExp = 0;
-        } else {
-            int padding = 24 - bitLength;
-            if (padding < 0) return Optional.empty();
-            rawMantissa = bigMantissa.clearBit(bitLength - 1).shiftLeft(padding);
-            if (rawExp < -126 || rawExp > 127) return Optional.empty();
-            rawExp += 127;
-        }
-        int bits = rawExp;
-        bits <<= 23;
-        bits |= rawMantissa.intValueExact();
-        float f = Float.intBitsToFloat(bits);
-        return Optional.of(sign ? f : -f);
+        Pair<Float, Float> range = bf.floatRange();
+        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Float>empty();
     }
 
     /**
-     * Constructs a {@code double} from its mantissa and exponent. The {@code double} is equal to
+     * Constructs a {@code Double} from its mantissa and exponent. The {@code Double} is equal to
      * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
-     * {@code double}, an empty {@code Optional} is returned.
+     * {@code Double}, an empty {@code Optional} is returned.
      *
      * <ul>
      *  <li>{@code mantissa} may be any {@code long}.</li>
      *  <li>{@code exponent} may be any {@code int}.</li>
-     *  <li>The result is not {@code NaN}, negative zero, or infinite.</li>
+     *  <li>The result is not {@code NaN}, negative zero, or infinite. May be empty.</li>
      * </ul>
      *
-     * @param mantissa a {@code double}'s mantissa
-     * @param exponent a {@code double}'s exponent
-     * @return The {@code float} with the given expoent and mantissa
+     * @param mantissa a {@code Double}'s mantissa
+     * @param exponent a {@code Double}'s exponent
+     * @return the {@code Double} with the given mantissa and exponent
      */
-    public static @NotNull Optional<Double> doubleFromME(long mantissa, int exponent) {
-        if ((mantissa & 1) == 0) {
+    public static @NotNull Optional<Double> doubleFromMantissaAndExponent(long mantissa, int exponent) {
+        BinaryFraction bf = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent);
+        if (!bf.getMantissa().equals(BigInteger.valueOf(mantissa)) || bf.getExponent() != exponent) {
             return Optional.empty();
         }
-        boolean sign = mantissa > 0;
-        BigInteger bigMantissa = BigInteger.valueOf(mantissa);
-        int bitLength = bigMantissa.bitLength();
-        int rawExp = bitLength + exponent - 1;
-        if (rawExp < -1074) {
-            return Optional.empty();
-        }
-        BigInteger rawMantissa;
-        if (rawExp < -1022) {
-            int padding = exponent + 1074;
-            if (padding < 0) return Optional.empty();
-            rawMantissa = bigMantissa.shiftLeft(padding);
-            rawExp = 0;
-        } else {
-            int padding = 53 - bitLength;
-            if (padding < 0) return Optional.empty();
-            rawMantissa = bigMantissa.clearBit(bitLength - 1).shiftLeft(padding);
-            if (rawExp < -1022 || rawExp > 1023) return Optional.empty();
-            rawExp += 1023;
-        }
-        long bits = rawExp;
-        bits <<= 52;
-        bits |= rawMantissa.longValueExact();
-        double d = Double.longBitsToDouble(bits);
-        return Optional.of(sign ? d : -d);
+        Pair<Double, Double> range = bf.doubleRange();
+        return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Double>empty();
     }
 
     /**
