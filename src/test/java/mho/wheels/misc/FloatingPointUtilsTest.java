@@ -3,9 +3,7 @@ package mho.wheels.misc;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import static mho.wheels.misc.FloatingPointUtils.absNegativeZeros;
-import static mho.wheels.misc.FloatingPointUtils.predecessor;
-import static mho.wheels.misc.FloatingPointUtils.successor;
+import static mho.wheels.misc.FloatingPointUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.*;
 
@@ -188,6 +186,68 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_double_helper(Double.POSITIVE_INFINITY, "1.7976931348623157E308");
         predecessor_double_fail_helper(Double.NEGATIVE_INFINITY);
         predecessor_double_fail_helper(Double.NaN);
+    }
+
+    private static void toMantissaAndExponent_float_helper(float x, @NotNull String output) {
+        aeq(toMantissaAndExponent(x).get(), output);
+    }
+
+    private static void toMantissaAndExponent_float_empty_helper(float x) {
+        assertFalse(toMantissaAndExponent(x).isPresent());
+    }
+
+    @Test
+    public void testToMantissaAndExponent_float() {
+        toMantissaAndExponent_float_helper(1.0f, "(1, 0)");
+        toMantissaAndExponent_float_helper(1e20f, "(2842171, 45)");
+        toMantissaAndExponent_float_helper(-1.0f, "(-1, 0)");
+        toMantissaAndExponent_float_helper(-1e20f, "(-2842171, 45)");
+        toMantissaAndExponent_float_helper((float) Math.PI, "(13176795, -22)");
+        toMantissaAndExponent_float_helper((float) Math.sqrt(2), "(11863283, -23)");
+        toMantissaAndExponent_float_helper((float) -Math.PI, "(-13176795, -22)");
+        toMantissaAndExponent_float_helper((float) -Math.sqrt(2), "(-11863283, -23)");
+        toMantissaAndExponent_float_helper(0.0f, "(0, 0)");
+        toMantissaAndExponent_float_helper(-0.0f, "(0, 0)");
+        toMantissaAndExponent_float_helper(Float.MIN_VALUE, "(1, -149)");
+        toMantissaAndExponent_float_helper(Float.MIN_NORMAL, "(1, -126)");
+        toMantissaAndExponent_float_helper(-Float.MIN_VALUE, "(-1, -149)");
+        toMantissaAndExponent_float_helper(-Float.MIN_NORMAL, "(-1, -126)");
+        toMantissaAndExponent_float_helper(Float.MAX_VALUE, "(16777215, 104)");
+        toMantissaAndExponent_float_helper(-Float.MAX_VALUE, "(-16777215, 104)");
+        toMantissaAndExponent_float_empty_helper(Float.POSITIVE_INFINITY);
+        toMantissaAndExponent_float_empty_helper(Float.NEGATIVE_INFINITY);
+        toMantissaAndExponent_float_empty_helper(Float.NaN);
+    }
+
+    private static void toMantissaAndExponent_double_helper(double x, @NotNull String output) {
+        aeq(toMantissaAndExponent(x).get(), output);
+    }
+
+    private static void toMantissaAndExponent_double_empty_helper(double x) {
+        assertFalse(toMantissaAndExponent(x).isPresent());
+    }
+
+    @Test
+    public void testToMantissaAndExponent_double() {
+        toMantissaAndExponent_double_helper(1.0, "(1, 0)");
+        toMantissaAndExponent_double_helper(1e20, "(95367431640625, 20)");
+        toMantissaAndExponent_double_helper(-1.0, "(-1, 0)");
+        toMantissaAndExponent_double_helper(-1e20, "(-95367431640625, 20)");
+        toMantissaAndExponent_double_helper(Math.PI, "(884279719003555, -48)");
+        toMantissaAndExponent_double_helper(Math.sqrt(2), "(6369051672525773, -52)");
+        toMantissaAndExponent_double_helper(-Math.PI, "(-884279719003555, -48)");
+        toMantissaAndExponent_double_helper(-Math.sqrt(2), "(-6369051672525773, -52)");
+        toMantissaAndExponent_double_helper(0.0, "(0, 0)");
+        toMantissaAndExponent_double_helper(-0.0, "(0, 0)");
+        toMantissaAndExponent_double_helper(Double.MIN_VALUE, "(1, -1074)");
+        toMantissaAndExponent_double_helper(Double.MIN_NORMAL, "(1, -1022)");
+        toMantissaAndExponent_double_helper(-Double.MIN_VALUE, "(-1, -1074)");
+        toMantissaAndExponent_double_helper(-Double.MIN_NORMAL, "(-1, -1022)");
+        toMantissaAndExponent_double_helper(Double.MAX_VALUE, "(9007199254740991, 971)");
+        toMantissaAndExponent_double_helper(-Double.MAX_VALUE, "(-9007199254740991, 971)");
+        toMantissaAndExponent_double_empty_helper(Double.POSITIVE_INFINITY);
+        toMantissaAndExponent_double_empty_helper(Double.NEGATIVE_INFINITY);
+        toMantissaAndExponent_double_empty_helper(Double.NaN);
     }
 
     private static void absNegativeZeros_helper(float x, float y) {
