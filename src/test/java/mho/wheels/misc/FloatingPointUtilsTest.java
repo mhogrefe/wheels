@@ -3,6 +3,7 @@ package mho.wheels.misc;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import static mho.wheels.misc.FloatingPointUtils.absNegativeZeros;
 import static mho.wheels.misc.FloatingPointUtils.predecessor;
 import static mho.wheels.misc.FloatingPointUtils.successor;
 import static mho.wheels.testing.Testing.aeq;
@@ -187,5 +188,35 @@ public strictfp class FloatingPointUtilsTest {
         predecessor_double_helper(Double.POSITIVE_INFINITY, "1.7976931348623157E308");
         predecessor_double_fail_helper(Double.NEGATIVE_INFINITY);
         predecessor_double_fail_helper(Double.NaN);
+    }
+
+    private static void absNegativeZeros_helper(float x, float y) {
+        aeq(absNegativeZeros(x), y);
+    }
+
+    @Test
+    public void testAbsNegativeZeros_float_helper() {
+        absNegativeZeros_helper(1.0f, 1.0f);
+        absNegativeZeros_helper(-1.0f, -1.0f);
+        absNegativeZeros_helper(0.0f, 0.0f);
+        absNegativeZeros_helper(-0.0f, 0.0f);
+        absNegativeZeros_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+        absNegativeZeros_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        absNegativeZeros_helper(Float.NaN, Float.NaN);
+    }
+
+    private static void absNegativeZeros_helper(double x, double y) {
+        aeq(absNegativeZeros(x), y);
+    }
+
+    @Test
+    public void testAbsNegativeZeros_double_helper() {
+        absNegativeZeros_helper(1.0, 1.0);
+        absNegativeZeros_helper(-1.0, -1.0);
+        absNegativeZeros_helper(0.0, 0.0);
+        absNegativeZeros_helper(-0.0, 0.0);
+        absNegativeZeros_helper(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        absNegativeZeros_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        absNegativeZeros_helper(Double.NaN, Double.NaN);
     }
 }
