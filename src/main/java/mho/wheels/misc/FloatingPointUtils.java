@@ -251,6 +251,11 @@ public final strictfp class FloatingPointUtils {
     /**
      * If {@code f} is -0.0f, return 0.0f; otherwise, return {@code f}.
      *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result is not negative zero.</li>
+     * </ul>
+     *
      * @param f a {@code float}
      * @return a {@code float} equal to {@code f} and not -0.0f
      */
@@ -260,6 +265,11 @@ public final strictfp class FloatingPointUtils {
 
     /**
      * If {@code d} is -0.0, return 0.0; otherwise, return {@code d}.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result is not negative zero.</li>
+     * </ul>
      *
      * @param d a {@code double}
      * @return a {@code double} equal to {@code d} and not -0.0
