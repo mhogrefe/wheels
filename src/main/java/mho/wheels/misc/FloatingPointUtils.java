@@ -159,7 +159,7 @@ public final strictfp class FloatingPointUtils {
     /**
      * Constructs a {@code Float} from its mantissa and exponent. The {@code Float} is equal to
      * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
-     * {@code Float}, an empty {@code Optional} is returned.
+     * {@code Float} (in particular, the mantissa must be zero or odd), an empty {@code Optional} is returned.
      *
      * <ul>
      *  <li>{@code mantissa} may be any {@code int}.</li>
@@ -183,7 +183,7 @@ public final strictfp class FloatingPointUtils {
     /**
      * Constructs a {@code Double} from its mantissa and exponent. The {@code Double} is equal to
      * {@code mantissa}×2<sup>{@code exponent}</sup>. If the given mantissa and exponent do not form a valid
-     * {@code Double}, an empty {@code Optional} is returned.
+     * {@code Double} (in particular, the mantissa must be zero or odd), an empty {@code Optional} is returned.
      *
      * <ul>
      *  <li>{@code mantissa} may be any {@code long}.</li>
