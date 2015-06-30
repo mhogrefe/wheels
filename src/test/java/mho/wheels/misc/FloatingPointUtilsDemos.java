@@ -114,4 +114,18 @@ public strictfp class FloatingPointUtilsDemos {
             System.out.println("toMantissaAndExponent(" + d + ") = " + toMantissaAndExponent(d));
         }
     }
+
+    private static void demoAbsNegativeZeros_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println("absNegativeZeros(" + f + ") = " + absNegativeZeros(f));
+        }
+    }
+
+    private static void demoAbsNegativeZeros_double() {
+        initialize();
+        for (double d : take(LIMIT, P.doubles())) {
+            System.out.println("absNegativeZeros(" + d + ") = " + absNegativeZeros(d));
+        }
+    }
 }
