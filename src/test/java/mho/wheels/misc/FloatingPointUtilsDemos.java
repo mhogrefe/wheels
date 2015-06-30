@@ -100,4 +100,18 @@ public strictfp class FloatingPointUtilsDemos {
                     doubleFromMantissaAndExponent(p.a, p.b));
         }
     }
+
+    private static void demoToMantissaAndExponent_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println("toMantissaAndExponent(" + f + ") = " + toMantissaAndExponent(f));
+        }
+    }
+
+    private static void demoToMantissaAndExponent_double() {
+        initialize();
+        for (double d : take(LIMIT, P.doubles())) {
+            System.out.println("toMantissaAndExponent(" + d + ") = " + toMantissaAndExponent(d));
+        }
+    }
 }
