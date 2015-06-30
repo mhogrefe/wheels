@@ -208,6 +208,35 @@ public strictfp class BinaryFractionProperties {
             assertEquals(f, range.a, f);
             assertEquals(f, range.b, f);
         }
+
+        Pair<Float, Float> range = new Pair<>(0.0f, Float.MIN_VALUE);
+        Iterable<BinaryFraction> bfs = filter(
+                e -> e.signum() == 1 && lt(e, SMALLEST_FLOAT),
+                P.range(ZERO, SMALLEST_FLOAT)
+        );
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.floatRange(), range);
+        }
+
+        range = new Pair<>(-Float.MIN_VALUE, -0.0f);
+        bfs = filter(
+                e -> e.signum() == -1 && gt(e, SMALLEST_FLOAT.negate()),
+                P.range(SMALLEST_FLOAT.negate(), ZERO)
+        );
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.floatRange(), range);
+        }
+
+        range = new Pair<>(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
+        for (BinaryFraction bf : take(LIMIT, filter(e -> gt(e, LARGEST_FLOAT), P.rangeUp(LARGEST_FLOAT)))) {
+            assertEquals(bf, bf.floatRange(), range);
+        }
+
+        range = new Pair<>(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE);
+        bfs = filter(e -> lt(e, LARGEST_FLOAT.negate()), P.rangeDown(LARGEST_FLOAT.negate()));
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.floatRange(), range);
+        }
     }
 
     private static void propertiesDoubleRange() {
@@ -230,6 +259,35 @@ public strictfp class BinaryFractionProperties {
             Pair<Double, Double> range = of(d).get().doubleRange();
             assertEquals(d, range.a, d);
             assertEquals(d, range.b, d);
+        }
+
+        Pair<Double, Double> range = new Pair<>(0.0, Double.MIN_VALUE);
+        Iterable<BinaryFraction> bfs = filter(
+                e -> e.signum() == 1 && lt(e, SMALLEST_DOUBLE),
+                P.range(ZERO, SMALLEST_DOUBLE)
+        );
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.doubleRange(), range);
+        }
+
+        range = new Pair<>(-Double.MIN_VALUE, -0.0);
+        bfs = filter(
+                e -> e.signum() == -1 && gt(e, SMALLEST_DOUBLE.negate()),
+                P.range(SMALLEST_DOUBLE.negate(), ZERO)
+        );
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.doubleRange(), range);
+        }
+
+        range = new Pair<>(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
+        for (BinaryFraction bf : take(LIMIT, filter(e -> gt(e, LARGEST_DOUBLE), P.rangeUp(LARGEST_DOUBLE)))) {
+            assertEquals(bf, bf.doubleRange(), range);
+        }
+
+        range = new Pair<>(Double.NEGATIVE_INFINITY, -Double.MAX_VALUE);
+        bfs = filter(e -> lt(e, LARGEST_DOUBLE.negate()), P.rangeDown(LARGEST_DOUBLE.negate()));
+        for (BinaryFraction bf : take(LIMIT, bfs)) {
+            assertEquals(bf, bf.doubleRange(), range);
         }
     }
 
