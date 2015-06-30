@@ -3,11 +3,11 @@ package mho.wheels.misc;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.structures.Pair;
 
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.misc.FloatingPointUtils.predecessor;
-import static mho.wheels.misc.FloatingPointUtils.successor;
+import static mho.wheels.misc.FloatingPointUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class FloatingPointUtilsDemos {
@@ -82,6 +82,22 @@ public strictfp class FloatingPointUtilsDemos {
         Iterable<Double> ds = filter(d -> !Double.isNaN(d) && d != Double.NEGATIVE_INFINITY, P.doubles());
         for (double d : take(LIMIT, ds)) {
             System.out.println("predecessor(" + d + ") = " + predecessor(d));
+        }
+    }
+
+    private static void demoFloatFromMantissaAndExponent() {
+        initialize();
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
+            System.out.println("floatFromMantissaAndExponent(" + p.a + ", " + p.b + ") = " +
+                    floatFromMantissaAndExponent(p.a, p.b));
+        }
+    }
+
+    private static void demoDoubleFromMantissaAndExponent() {
+        initialize();
+        for (Pair<Long, Integer> p : take(LIMIT, P.pairs(P.longs(), P.integers()))) {
+            System.out.println("doubleFromMantissaAndExponent(" + p.a + ", " + p.b + ") = " +
+                    doubleFromMantissaAndExponent(p.a, p.b));
         }
     }
 }
