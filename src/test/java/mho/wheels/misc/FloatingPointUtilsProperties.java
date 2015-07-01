@@ -47,6 +47,8 @@ public class FloatingPointUtilsProperties {
             propertiesDoubleFromMantissaAndExponent();
             propertiesToMantissaAndExponent_float();
             propertiesToMantissaAndExponent_double();
+            propertiesAbsNegativeZeros_float();
+            propertiesAbsNegativeZeros_double();
         }
         System.out.println("Done");
     }
@@ -228,6 +230,28 @@ public class FloatingPointUtilsProperties {
                         d
                 );
             }
+        }
+    }
+
+    private static void propertiesAbsNegativeZeros_float() {
+        initialize("absNegativeZeros(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            assertFalse(f, isNegativeZero(absNegativeZeros(f)));
+        }
+
+        for (float f : take(LIMIT, filter(g -> !isNegativeZero(g), P.floats()))) {
+            assertEquals(f, f, absNegativeZeros(f));
+        }
+    }
+
+    private static void propertiesAbsNegativeZeros_double() {
+        initialize("absNegativeZeros(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            assertFalse(d, isNegativeZero(absNegativeZeros(d)));
+        }
+
+        for (double d : take(LIMIT, filter(e -> !isNegativeZero(e), P.doubles()))) {
+            assertEquals(d, d, absNegativeZeros(d));
         }
     }
 }
