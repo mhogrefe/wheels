@@ -45,6 +45,8 @@ public class FloatingPointUtilsProperties {
             propertiesPredecessor_double();
             propertiesFloatFromMantissaAndExponent();
             propertiesDoubleFromMantissaAndExponent();
+            propertiesToMantissaAndExponent_float();
+            propertiesToMantissaAndExponent_double();
         }
         System.out.println("Done");
     }
@@ -151,15 +153,15 @@ public class FloatingPointUtilsProperties {
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             float f = floatFromMantissaAndExponent(p.a, p.b).get();
+            assertFalse(p, Float.isNaN(f));
+            assertFalse(p, Float.isInfinite(f));
+            assertFalse(p, isNegativeZero(f));
+            assertTrue(p, p.a == 0 || (p.a & 1) == 1);
             inverses(
                     q -> floatFromMantissaAndExponent(q.a, q.b).get(),
                     (Float g) -> toMantissaAndExponent(g).get(),
                     p
             );
-            assertFalse(p, Float.isNaN(f));
-            assertFalse(p, Float.isInfinite(f));
-            assertFalse(p, isNegativeZero(f));
-            assertTrue(p, p.a == 0 || (p.a & 1) == 1);
         }
     }
 
@@ -175,15 +177,57 @@ public class FloatingPointUtilsProperties {
         );
         for (Pair<Long, Integer> p : take(LIMIT, ps)) {
             double d = doubleFromMantissaAndExponent(p.a, p.b).get();
+            assertFalse(p, Double.isNaN(d));
+            assertFalse(p, Double.isInfinite(d));
+            assertFalse(p, isNegativeZero(d));
+            assertTrue(p, p.a == 0L || (p.a & 1) == 1);
             inverses(
                     q -> doubleFromMantissaAndExponent(q.a, q.b).get(),
                     (Double e) -> toMantissaAndExponent(e).get(),
                     p
             );
-            assertFalse(p, Double.isNaN(d));
-            assertFalse(p, Double.isInfinite(d));
-            assertFalse(p, isNegativeZero(d));
-            assertTrue(p, p.a == 0L || (p.a & 1) == 1);
+        }
+    }
+
+    private static void propertiesToMantissaAndExponent_float() {
+        initialize("toMantissaAndExponent(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            toMantissaAndExponent(f);
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && Float.isFinite(g), P.floats()))) {
+            Pair<Integer, Integer> p = toMantissaAndExponent(f).get();
+            assertNotNull(f, p.a);
+            assertNotNull(f, p.b);
+            assertTrue(f, p.a == 0 || (p.a & 1) == 1);
+            if (!isNegativeZero(f)) {
+                inverses(
+                        (Float g) -> toMantissaAndExponent(g).get(),
+                        q -> floatFromMantissaAndExponent(q.a, q.b).get(),
+                        f
+                );
+            }
+        }
+    }
+
+    private static void propertiesToMantissaAndExponent_double() {
+        initialize("toMantissaAndExponent(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            toMantissaAndExponent(d);
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && Double.isFinite(e), P.doubles()))) {
+            Pair<Long, Integer> p = toMantissaAndExponent(d).get();
+            assertNotNull(d, p.a);
+            assertNotNull(d, p.b);
+            assertTrue(d, p.a == 0L || (p.a & 1) == 1);
+            if (!isNegativeZero(d)) {
+                inverses(
+                        (Double e) -> toMantissaAndExponent(e).get(),
+                        q -> doubleFromMantissaAndExponent(q.a, q.b).get(),
+                        d
+                );
+            }
         }
     }
 }
