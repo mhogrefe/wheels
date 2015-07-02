@@ -406,7 +406,7 @@ public final strictfp class IterableUtils {
             return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
-        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -436,7 +436,7 @@ public final strictfp class IterableUtils {
             return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
-        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
+        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)) : ds;
     }
 
     /**
@@ -773,7 +773,7 @@ public final strictfp class IterableUtils {
                 BigDecimal::floatValue,
                 range(new BigDecimal(Float.toString(a)), new BigDecimal(Float.toString(b)))
         );
-        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -818,7 +818,7 @@ public final strictfp class IterableUtils {
                 BigDecimal::doubleValue,
                 range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
         );
-        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)): ds;
+        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)): ds;
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
