@@ -223,7 +223,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     public static @NotNull Optional<BinaryFraction> of(float f) {
         if (f == 0.0f) return Optional.of(ZERO);
         if (f == 1.0f) return Optional.of(ONE);
-        if (Float.isInfinite(f) || Float.isNaN(f)) return Optional.empty();
+        if (!Float.isFinite(f)) return Optional.empty();
         boolean isPositive = f > 0.0f;
         if (!isPositive) f = -f;
         int bits = Float.floatToIntBits(f);
@@ -261,7 +261,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
     public static @NotNull Optional<BinaryFraction> of(double d) {
         if (d == 0.0) return Optional.of(ZERO);
         if (d == 1.0) return Optional.of(ONE);
-        if (Double.isInfinite(d) || Double.isNaN(d)) return Optional.empty();
+        if (!Double.isFinite(d)) return Optional.empty();
         boolean isPositive = d > 0.0f;
         if (!isPositive) d = -d;
         long bits = Double.doubleToLongBits(d);

@@ -152,10 +152,10 @@ public strictfp class BinaryFractionProperties {
         initialize("of(float)");
         for (float f : take(LIMIT, P.floats())) {
             Optional<BinaryFraction> obf = of(f);
-            assertEquals(f, Float.isFinite(f) && !Float.isNaN(f), obf.isPresent());
+            assertEquals(f, Float.isFinite(f), obf.isPresent());
         }
 
-        for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !Float.isNaN(g), P.floats()))) {
+        for (float f : take(LIMIT, filter(Float::isFinite, P.floats()))) {
             BinaryFraction bf = of(f).get();
             bf.validate();
             assertTrue(f, le(bf.getExponent(), 149));
@@ -167,10 +167,10 @@ public strictfp class BinaryFractionProperties {
         initialize("of(double)");
         for (double d : take(LIMIT, P.doubles())) {
             Optional<BinaryFraction> obf = of(d);
-            assertEquals(d, Double.isFinite(d) && !Double.isNaN(d), obf.isPresent());
+            assertEquals(d, Double.isFinite(d), obf.isPresent());
         }
 
-        for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !Double.isNaN(e), P.doubles()))) {
+        for (double d : take(LIMIT, filter(Double::isFinite, P.doubles()))) {
             BinaryFraction bf = of(d).get();
             bf.validate();
             assertTrue(d, le(bf.getExponent(), 1074));

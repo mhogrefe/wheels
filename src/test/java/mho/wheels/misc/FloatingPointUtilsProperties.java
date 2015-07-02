@@ -197,7 +197,7 @@ public class FloatingPointUtilsProperties {
             toMantissaAndExponent(f);
         }
 
-        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && Float.isFinite(g), P.floats()))) {
+        for (float f : take(LIMIT, filter(Float::isFinite, P.floats()))) {
             Pair<Integer, Integer> p = toMantissaAndExponent(f).get();
             assertNotNull(f, p.a);
             assertNotNull(f, p.b);
@@ -218,7 +218,7 @@ public class FloatingPointUtilsProperties {
             toMantissaAndExponent(d);
         }
 
-        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && Double.isFinite(e), P.doubles()))) {
+        for (double d : take(LIMIT, filter(Double::isFinite, P.doubles()))) {
             Pair<Long, Integer> p = toMantissaAndExponent(d).get();
             assertNotNull(d, p.a);
             assertNotNull(d, p.b);
