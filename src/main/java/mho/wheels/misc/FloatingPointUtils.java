@@ -172,11 +172,14 @@ public final strictfp class FloatingPointUtils {
      * @return the {@code Float} with the given mantissa and exponent
      */
     public static @NotNull Optional<Float> floatFromMantissaAndExponent(int mantissa, int exponent) {
-        BinaryFraction bf = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent);
-        if (!bf.getMantissa().equals(BigInteger.valueOf(mantissa)) || bf.getExponent() != exponent) {
+        if (mantissa == 0) {
+            if (exponent != 0) {
+                return Optional.empty();
+            }
+        } else if ((mantissa & 1) == 0) {
             return Optional.empty();
         }
-        Pair<Float, Float> range = bf.floatRange();
+        Pair<Float, Float> range = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent).floatRange();
         return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Float>empty();
     }
 
@@ -196,11 +199,14 @@ public final strictfp class FloatingPointUtils {
      * @return the {@code Double} with the given mantissa and exponent
      */
     public static @NotNull Optional<Double> doubleFromMantissaAndExponent(long mantissa, int exponent) {
-        BinaryFraction bf = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent);
-        if (!bf.getMantissa().equals(BigInteger.valueOf(mantissa)) || bf.getExponent() != exponent) {
+        if (mantissa == 0) {
+            if (exponent != 0) {
+                return Optional.empty();
+            }
+        } else if ((mantissa & 1) == 0) {
             return Optional.empty();
         }
-        Pair<Double, Double> range = bf.doubleRange();
+        Pair<Double, Double> range = BinaryFraction.of(BigInteger.valueOf(mantissa), exponent).doubleRange();
         return range.a.equals(range.b) ? Optional.of(range.a) : Optional.<Double>empty();
     }
 
