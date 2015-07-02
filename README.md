@@ -26,8 +26,6 @@ Progress
 | BigDecimalUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Readers                    | ✔       | ✘       | ✘     | ✘     | ✘          |
-| ConsistentDoubleComparator | ✘       | ✘       | ✘     | ✘     | ✘          |
-| ConsistentFloatComparator  | ✘       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator              | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ShortlexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator   | ✔       | ✔       | ✘     | ✘     | ✘          |
