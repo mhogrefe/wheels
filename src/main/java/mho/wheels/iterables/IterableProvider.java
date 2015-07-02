@@ -459,13 +459,88 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b);
 
+    /**
+     * Generates positive {@code float}s, excluding {@code Infinity} and {@code NaN}.
+     */
     public abstract @NotNull Iterable<Float> positiveOrdinaryFloats();
-    public abstract @NotNull Iterable<Float> negativeOrdinaryFloats();
+
+    /**
+     * Generates negative {@code float}s, excluding negative zero, {@code -Infinity}, and {@code NaN}.
+     */
+    public @NotNull Iterable<Float> negativeOrdinaryFloats() {
+        return map(f -> -f, positiveOrdinaryFloats());
+    }
+
+    /**
+     * Generates nonzero {@code float}s, excluding {@code Infinity}, {@code -Infinity}, and {@code NaN}.
+     */
+    public abstract @NotNull Iterable<Float> nonzeroOrdinaryFloats();
+
+    /**
+     * Generates {@code float}s excluding negative zero, {@code Infinity}, {@code -Infinity}, and {@code NaN}.
+     */
     public abstract @NotNull Iterable<Float> ordinaryFloats();
+
+    /**
+     * Generates positive {@code float}s.
+     */
+    public abstract @NotNull Iterable<Float> positiveFloats();
+
+    /**
+     * Generates negative {@code float}s.
+     */
+    public abstract @NotNull Iterable<Float> negativeFloats();
+
+    /**
+     * Generates nonzero {@code float}s.
+     */
+    public abstract @NotNull Iterable<Float> nonzeroFloats();
+
+    /**
+     * Generates {@code float}s.
+     */
     public abstract @NotNull Iterable<Float> floats();
+
+    /**
+     * Generates positive {@code double}s, excluding {@code Infinity} and {@code NaN}.
+     */
     public abstract @NotNull Iterable<Double> positiveOrdinaryDoubles();
-    public abstract @NotNull Iterable<Double> negativeOrdinaryDoubles();
+
+    /**
+     * Generates negative {@code double}s, excluding negative zero, {@code -Infinity}, and {@code NaN}.
+     */
+    public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
+        return map(d -> -d, positiveOrdinaryDoubles());
+    }
+
+    /**
+     * Generates nonzero {@code double}s, excluding {@code Infinity}, {@code -Infinity}, and {@code NaN}.
+     */
+    public abstract @NotNull Iterable<Double> nonzeroOrdinaryDoubles();
+
+    /**
+     * Generates {@code double}s excluding negative zero, {@code Infinity}, {@code -Infinity}, and {@code NaN}.
+     */
     public abstract @NotNull Iterable<Double> ordinaryDoubles();
+
+    /**
+     * Generates positive {@code double}s.
+     */
+    public abstract @NotNull Iterable<Double> positiveDoubles();
+
+    /**
+     * Generates negative {@code double}s.
+     */
+    public abstract @NotNull Iterable<Double> negativeDoubles();
+
+    /**
+     * Generates nonzero {@code double}s.
+     */
+    public abstract @NotNull Iterable<Double> nonzeroDoubles();
+
+    /**
+     * Generates {@code double}s.
+     */
     public abstract @NotNull Iterable<Double> doubles();
 
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();

@@ -1183,24 +1183,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> positiveOrdinaryFloats() {
-        return map(
-                Optional::get,
-                filter(
-                        Optional::isPresent,
-                        map(p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
-                )
+        return optionalMap(
+                p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b),
+                pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
         );
     }
 
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s.
-     * Negative zero is not included. Does not support removal.
-     *
-     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     */
     @Override
-    public @NotNull Iterable<Float> negativeOrdinaryFloats() {
-        return map(f -> -f, positiveOrdinaryFloats());
+    public @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
+        return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
     }
 
     /**
@@ -1211,7 +1202,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> ordinaryFloats() {
-        return cons(0.0f, mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats())));
+        return cons(0.0f, nonzeroOrdinaryFloats());
+    }
+
+    @Override
+    public @NotNull Iterable<Float> positiveFloats() {
+        return cons(Float.POSITIVE_INFINITY, positiveOrdinaryFloats());
+    }
+
+    @Override
+    public @NotNull Iterable<Float> negativeFloats() {
+        return cons(Float.NEGATIVE_INFINITY, negativeOrdinaryFloats());
+    }
+
+    @Override
+    public @NotNull Iterable<Float> nonzeroFloats() {
+        return concat(
+                Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY),
+                nonzeroOrdinaryFloats()
+        );
     }
 
     /**
@@ -1223,7 +1232,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull Iterable<Float> floats() {
         return concat(
                 Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
-                tail(ordinaryFloats())
+                nonzeroOrdinaryFloats()
         );
     }
 
@@ -1305,24 +1314,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
-        return map(
-                Optional::get,
-                filter(
-                        Optional::isPresent,
-                        map(p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
-                )
+        return optionalMap(
+                p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b),
+                pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
         );
     }
 
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code double}s in
-     * increasing order. Negative zero is not included. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
-     */
     @Override
-    public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
-        return map(d -> -d, positiveOrdinaryDoubles());
+    public @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
+        return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
     }
 
     /**
@@ -1333,7 +1333,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> ordinaryDoubles() {
-        return cons(0.0, mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles())));
+        return cons(0.0, nonzeroOrdinaryDoubles());
+    }
+
+    @Override
+    public @NotNull Iterable<Double> positiveDoubles() {
+        return cons(Double.POSITIVE_INFINITY, positiveOrdinaryDoubles());
+    }
+
+    @Override
+    public @NotNull Iterable<Double> negativeDoubles() {
+        return cons(Double.NEGATIVE_INFINITY, negativeOrdinaryDoubles());
+    }
+
+    @Override
+    public @NotNull Iterable<Double> nonzeroDoubles() {
+        return concat(
+                Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY),
+                nonzeroOrdinaryDoubles()
+        );
     }
 
     /**
@@ -1345,7 +1363,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull Iterable<Double> doubles() {
         return concat(
                 Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
-                tail(ordinaryDoubles())
+                nonzeroOrdinaryDoubles()
         );
     }
 

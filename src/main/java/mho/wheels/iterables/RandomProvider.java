@@ -2926,15 +2926,9 @@ public final strictfp class RandomProvider extends IterableProvider {
         ));
     }
 
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
-     * distribution. Negative zero is not included. Does not support removal.
-     *
-     * Length is infinite.
-     */
     @Override
-    public @NotNull Iterable<Float> negativeOrdinaryFloats() {
-        return map(f -> -f, positiveOrdinaryFloats());
+    public @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
+        return null;
     }
 
     /**
@@ -2946,6 +2940,21 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> ordinaryFloats() {
         return filter(f -> Float.isFinite(f) && !Float.isNaN(f) && !f.equals(-0.0f), floats());
+    }
+
+    @Override
+    public @NotNull Iterable<Float> positiveFloats() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> negativeFloats() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> nonzeroFloats() {
+        return null;
     }
 
     /**
@@ -2996,15 +3005,9 @@ public final strictfp class RandomProvider extends IterableProvider {
         ));
     }
 
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) negative floats from a uniform
-     * distribution. Negative zero is not included. Does not support removal.
-     *
-     * Length is infinite.
-     */
     @Override
-    public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
-        return map(d -> -d, positiveOrdinaryDoubles());
+    public @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
+        return null;
     }
 
     /**
@@ -3016,6 +3019,21 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> ordinaryDoubles() {
         return filter(d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0), doubles());
+    }
+
+    @Override
+    public @NotNull Iterable<Double> positiveDoubles() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> negativeDoubles() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> nonzeroDoubles() {
+        return null;
     }
 
     /**

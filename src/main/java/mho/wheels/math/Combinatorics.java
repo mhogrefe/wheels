@@ -1295,7 +1295,7 @@ public final class Combinatorics {
 
     public static @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
         if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
-        if (xss.size() == 1) return map(x -> Collections.singletonList(x), xss.get(0));
+        if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
         if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsIncreasing(xss.get(0), xss.get(1)));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
@@ -1404,7 +1404,7 @@ public final class Combinatorics {
             int size = sizeIndex.b.intValueExact() + 1;
             return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
         };
-        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
+        return optionalMap(f::apply, P.naturalBigIntegers());
     }
 
     public static @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
@@ -1427,7 +1427,7 @@ public final class Combinatorics {
             int size = sizeIndex.b.intValueExact() + minSize;
             return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
         };
-        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
+        return optionalMap(f::apply, P.naturalBigIntegers());
     }
 
     public static @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
