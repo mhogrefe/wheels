@@ -76,6 +76,14 @@ public class ExhaustiveProviderProperties {
         propertiesNegativeBinaryFractions();
         propertiesNonzeroBinaryFractions();
         propertiesBinaryFractions();
+        propertiesPositiveFloats();
+        propertiesNegativeFloats();
+        propertiesNonzeroFloats();
+        propertiesFloats();
+        propertiesPositiveDoubles();
+        propertiesNegativeDoubles();
+        propertiesNonzeroDoubles();
+        propertiesDoubles();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -264,24 +272,28 @@ public class ExhaustiveProviderProperties {
     private static void propertiesNonzeroBytes() {
         initializeConstant("nonzeroBytes()");
         biggerTest(EP, EP.nonzeroBytes(), b -> b != 0);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroBytes())));
     }
 
     private static void propertiesNonzeroShorts() {
         initializeConstant("nonzeroShorts()");
         biggerTest(EP, EP.nonzeroShorts(), s -> s != 0);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroShorts())));
     }
 
     private static void propertiesNonzeroIntegers() {
         initializeConstant("nonzeroIntegers()");
         biggerTest(EP, EP.nonzeroIntegers(), i -> i != 0);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroIntegers()))));
     }
 
     private static void propertiesNonzeroLongs() {
         initializeConstant("nonzeroLongs()");
         biggerTest(EP, EP.nonzeroLongs(), l -> l != 0);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.nonzeroLongs()))));
     }
 
@@ -324,24 +336,28 @@ public class ExhaustiveProviderProperties {
     private static void propertiesBytes() {
         initializeConstant("bytes()");
         biggerTest(EP, EP.bytes(), b -> true);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.bytes())));
     }
 
     private static void propertiesShorts() {
         initializeConstant("shorts()");
         biggerTest(EP, EP.shorts(), s -> true);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.shorts())));
     }
 
     private static void propertiesIntegers() {
         initializeConstant("integers()");
         biggerTest(EP, EP.integers(), i -> true);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(LARGE_LIMIT, EP.integers()))));
     }
 
     private static void propertiesLongs() {
         initializeConstant("longs()");
         biggerTest(EP, EP.longs(), l -> true);
+        //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(LARGE_LIMIT, EP.longs()))));
     }
 
@@ -382,6 +398,7 @@ public class ExhaustiveProviderProperties {
             assertEquals(b, length(bs), (1 << 7) - b);
             assertTrue(b, unique(bs));
             assertTrue(b, all(c -> c >= b, bs));
+            //noinspection RedundantCast
             assertTrue(b, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
         }
     }
@@ -391,6 +408,7 @@ public class ExhaustiveProviderProperties {
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeUp(s);
             simpleTest(s, ss, t -> t >= s);
+            //noinspection RedundantCast
             assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
@@ -400,6 +418,7 @@ public class ExhaustiveProviderProperties {
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeUp(i);
             simpleTest(i, is, j -> j >= i);
+            //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
         }
     }
@@ -409,6 +428,7 @@ public class ExhaustiveProviderProperties {
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeUp(l);
             simpleTest(l, ls, m -> m >= l);
+            //noinspection RedundantCast
             assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
@@ -440,6 +460,7 @@ public class ExhaustiveProviderProperties {
             assertEquals(b, length(bs), b + (1 << 7) + 1);
             assertTrue(b, unique(bs));
             assertTrue(b, all(c -> c <= b, bs));
+            //noinspection RedundantCast
             assertTrue(b, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
         }
     }
@@ -449,6 +470,7 @@ public class ExhaustiveProviderProperties {
         for (short s : take(LIMIT, P.shorts())) {
             Iterable<Short> ss = EP.rangeDown(s);
             simpleTest(s, ss, t -> t <= s);
+            //noinspection RedundantCast
             assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
         }
     }
@@ -458,6 +480,7 @@ public class ExhaustiveProviderProperties {
         for (int i : take(LIMIT, P.integers())) {
             Iterable<Integer> is = EP.rangeDown(i);
             simpleTest(i, is, j -> j <= i);
+            //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
         }
     }
@@ -467,6 +490,7 @@ public class ExhaustiveProviderProperties {
         for (long l : take(LIMIT, P.longs())) {
             Iterable<Long> ls = EP.rangeDown(l);
             simpleTest(l, ls, m -> m <= l);
+            //noinspection RedundantCast
             assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
         }
     }
@@ -498,6 +522,7 @@ public class ExhaustiveProviderProperties {
             assertEquals(p, length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
             assertTrue(p, unique(bs));
             assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
+            //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
             assertEquals(p, p.a > p.b, isEmpty(bs));
         }
@@ -514,6 +539,7 @@ public class ExhaustiveProviderProperties {
         for (Pair<Short, Short> p : take(LIMIT, P.pairs(P.shorts()))) {
             Iterable<Short> ss = EP.range(p.a, p.b);
             simpleTest(p, ss, s -> s >= p.a && s <= p.b);
+            //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
             assertEquals(p, p.a > p.b, isEmpty(ss));
         }
@@ -531,6 +557,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Integer> is = EP.range(p.a, p.b);
             Iterable<Integer> tis = take(TINY_LIMIT, is);
             simpleTest(p, is, i -> i >= p.a && i <= p.b);
+            //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
             assertEquals(p, p.a > p.b, isEmpty(is));
         }
@@ -548,6 +575,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Long> ls = EP.range(p.a, p.b);
             Iterable<Long> tls = take(TINY_LIMIT, ls);
             simpleTest(p, ls, l -> l >= p.a && l <= p.b);
+            //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
             assertEquals(p, p.a > p.b, isEmpty(ls));
         }
@@ -645,5 +673,45 @@ public class ExhaustiveProviderProperties {
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             aeqit(i, EP.range(i, i), Collections.singletonList(i));
         }
+    }
+
+    private static void propertiesPositiveFloats() {
+        initializeConstant("positiveFloats()");
+        biggerTest(EP, EP.positiveFloats(), f -> f > 0);
+    }
+
+    private static void propertiesNegativeFloats() {
+        initializeConstant("negativeFloats()");
+        biggerTest(EP, EP.negativeFloats(), f -> f < 0);
+    }
+
+    private static void propertiesNonzeroFloats() {
+        initializeConstant("nonzeroFloats()");
+        biggerTest(EP, EP.nonzeroFloats(), f -> f != 0);
+    }
+
+    private static void propertiesFloats() {
+        initializeConstant("floats()");
+        biggerTest(EP, EP.floats(), f -> true);
+    }
+
+    private static void propertiesPositiveDoubles() {
+        initializeConstant("positiveDoubles()");
+        biggerTest(EP, EP.positiveDoubles(), d -> d > 0);
+    }
+
+    private static void propertiesNegativeDoubles() {
+        initializeConstant("negativeDoubles()");
+        biggerTest(EP, EP.negativeDoubles(), d -> d < 0);
+    }
+
+    private static void propertiesNonzeroDoubles() {
+        initializeConstant("nonzeroDoubles()");
+        biggerTest(EP, EP.nonzeroDoubles(), d -> d != 0);
+    }
+
+    private static void propertiesDoubles() {
+        initializeConstant("doubles()");
+        biggerTest(EP, EP.doubles(), d -> true);
     }
 }
