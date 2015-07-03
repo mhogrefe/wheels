@@ -2913,34 +2913,47 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextPositiveFloat() {
-        return 0.0f;
+        while (true) {
+            float f = nextFloat();
+            if (f > 0) return f;
+        }
     }
 
     @Override
     public @NotNull Iterable<Float> positiveFloats() {
-        return null;
+        return filter(f -> f > 0, floats());
     }
 
     public float nextNegativeFloat() {
-        return 0.0f;
+        while (true) {
+            float f = nextFloat();
+            if (f < 0) return f;
+        }
     }
 
     @Override
     public @NotNull Iterable<Float> negativeFloats() {
-        return null;
+        return filter(f -> f < 0, floats());
     }
 
     public float nextNonzeroFloat() {
-        return 0.0f;
+        while (true) {
+            float f = nextFloat();
+            if (f != 0) return f;
+        }
     }
 
     @Override
     public @NotNull Iterable<Float> nonzeroFloats() {
-        return null;
+        return filter(f -> f != 0, floats());
     }
 
     public float nextFloat() {
-        return 0.0f;
+        while (true) {
+            int floatBits = nextInt();
+            float f = Float.intBitsToFloat(floatBits);
+            if (!Float.isNaN(f) || floatBits == 0x7fc00000) return f;
+        }
     }
 
     /**
@@ -2950,62 +2963,51 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> floats() {
-        return () -> new Iterator<Float>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Float next() {
-                float next;
-                boolean problematicNaN;
-                do {
-                    int floatBits = generator.nextInt();
-                    next = Float.intBitsToFloat(floatBits);
-                    problematicNaN = Float.isNaN(next) && floatBits != 0x7fc00000;
-                } while (problematicNaN);
-                return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return fromSupplier(this::nextFloat);
     }
 
     public double nextPositiveDouble() {
-        return 0.0;
+        while (true) {
+            double d = nextDouble();
+            if (d > 0) return d;
+        }
     }
 
     @Override
     public @NotNull Iterable<Double> positiveDoubles() {
-        return null;
+        return filter(d -> d > 0, doubles());
     }
 
     public double nextNegativeDouble() {
-        return 0.0;
+        while (true) {
+            double d = nextDouble();
+            if (d < 0) return d;
+        }
     }
 
     @Override
     public @NotNull Iterable<Double> negativeDoubles() {
-        return null;
+        return filter(d -> d < 0, doubles());
     }
 
     public double nextNonzeroDouble() {
-        return 0.0;
+        while (true) {
+            double d = nextDouble();
+            if (d != 0) return d;
+        }
     }
 
     @Override
     public @NotNull Iterable<Double> nonzeroDoubles() {
-        return null;
+        return filter(d -> d != 0, doubles());
     }
 
     public double nextDouble() {
-        return 0.0;
+        while (true) {
+            long longBits = nextLong();
+            double d = Double.longBitsToDouble(longBits);
+            if (!Double.isNaN(d) || longBits == 0x7ff8000000000000L) return d;
+        }
     }
 
     /**
@@ -3015,31 +3017,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
-        return () -> new Iterator<Double>() {
-            private Random generator = new Random(0x6af477d9a7e54fcaL);
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Double next() {
-                double next;
-                boolean problematicNaN;
-                do {
-                    long doubleBits = generator.nextLong();
-                    next = Double.longBitsToDouble(doubleBits);
-                    problematicNaN = Double.isNaN(next) && doubleBits != 0x7ff8000000000000L;
-                } while (problematicNaN);
-                return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
+        return fromSupplier(this::nextDouble);
     }
 
     @Override
