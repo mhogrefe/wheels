@@ -81,7 +81,7 @@ public final strictfp class FloatingPointUtils {
      * zero. The successor of negative infinity is {@code -Float.MAX_VALUE}.
      *
      * <ul>
-     *  <li>{@code f} may not be {@code NaN} or {@code +Infinity}.</li>
+     *  <li>{@code f} may not be {@code NaN} or {@code Infinity}.</li>
      *  <li>The result may be any {@code float} other than 0.0, {@code NaN}, or {@code -Infinity}.</li>
      * </ul>
      *
@@ -89,8 +89,9 @@ public final strictfp class FloatingPointUtils {
      * @return min{g|g{@literal >}{@code f}}
      */
     public static float successor(float f) {
-        if (Float.isNaN(f) || f > 0 && Float.isInfinite(f))
-            throw new ArithmeticException(f + " does not have a successor");
+        if (Float.isNaN(f) || f > 0 && Float.isInfinite(f)) {
+            throw new ArithmeticException(f + " may not be NaN or Infinity.");
+        }
         if (f == 0.0f) return Float.MIN_VALUE;
         int floatBits = Float.floatToIntBits(f);
         return Float.intBitsToFloat(f > 0 ? floatBits + 1 : floatBits - 1);
@@ -109,8 +110,9 @@ public final strictfp class FloatingPointUtils {
      * @return max{g|g{@literal <}{@code f}}
      */
     public static float predecessor(float f) {
-        if (Float.isNaN(f) || f < 0 && Float.isInfinite(f))
-            throw new ArithmeticException(f + " does not have a predecessor");
+        if (Float.isNaN(f) || f < 0 && Float.isInfinite(f)) {
+            throw new ArithmeticException(f + " may not be NaN or -Infinity.");
+        }
         if (f == 0.0f) return -Float.MIN_VALUE;
         int floatBits = Float.floatToIntBits(f);
         return Float.intBitsToFloat(f > 0 ? floatBits - 1 : floatBits + 1);
@@ -121,7 +123,7 @@ public final strictfp class FloatingPointUtils {
      * zero. The successor of negative infinity is {@code -Double.MAX_VALUE}.
      *
      * <ul>
-     *  <li>{@code d} may not be {@code NaN} or {@code +Infinity}.</li>
+     *  <li>{@code d} may not be {@code NaN} or {@code Infinity}.</li>
      *  <li>The result may be any {@code double} other than 0.0, {@code NaN} or {@code -Infinity}.</li>
      * </ul>
      *
@@ -129,8 +131,9 @@ public final strictfp class FloatingPointUtils {
      * @return min{e|e{@literal >}{@code d}}
      */
     public static double successor(double d) {
-        if (Double.isNaN(d) || d > 0 && Double.isInfinite(d))
-            throw new ArithmeticException(d + " does not have a successor");
+        if (Double.isNaN(d) || d > 0 && Double.isInfinite(d)) {
+            throw new ArithmeticException(d + " may not be NaN or Infinity.");
+        }
         if (d == 0.0) return Double.MIN_VALUE;
         long doubleBits = Double.doubleToLongBits(d);
         return Double.longBitsToDouble(d > 0 ? doubleBits + 1 : doubleBits - 1);
@@ -149,8 +152,9 @@ public final strictfp class FloatingPointUtils {
      * @return max{e|e{@literal <}{@code d}}
      */
     public static double predecessor(double d) {
-        if (Double.isNaN(d) || d < 0 && Double.isInfinite(d))
-            throw new ArithmeticException(d + " does not have a predecessor");
+        if (Double.isNaN(d) || d < 0 && Double.isInfinite(d)) {
+            throw new ArithmeticException(d + " may not be NaN or -Infinity.");
+        }
         if (d == 0.0) return -Double.MIN_VALUE;
         long doubleBits = Double.doubleToLongBits(d);
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
