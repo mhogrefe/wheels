@@ -1106,56 +1106,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
-     * increasing order. Does not support removal.
-     *
-     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     */
-    public @NotNull Iterable<Float> positiveOrdinaryFloatsIncreasing() {
-        return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE));
-    }
-
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s in
-     * increasing order. Negative zero is not included. Does not support removal.
-     *
-     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
-     */
-    public @NotNull Iterable<Float> negativeOrdinaryFloatsIncreasing() {
-        return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE));
-    }
-
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code float}s in increasing
-     * order. Negative zero is not included, but positive zero is. Does not support removal.
-     *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
-     */
-    public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
-                Collections.singletonList(0.0f),
-                stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
-        ));
-    }
-
-    /**
-     * An {@code Iterable} that contains all {@code float}s in increasing order. {@code NaN} is traditionally unordered,
-     * but here it is placed between negative zero and positive zero. Does not support removal.
-     *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
-     */
-    public @NotNull Iterable<Float> floatsIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, Float.NEGATIVE_INFINITY)),
-                Arrays.asList(-0.0f, Float.NaN, 0.0f),
-                stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
-        ));
-    }
-
-    /**
      * An {@code Iterable} that contains all possible positive {@code float} mantissas. A {@code float}'s mantissa is
      * the unique odd integer that, when multiplied by a power of 2, equals the {@code float}. Does not support
      * removal.
@@ -1181,28 +1131,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
-    @Override
-    public @NotNull Iterable<Float> positiveOrdinaryFloats() {
+    private @NotNull Iterable<Float> positiveOrdinaryFloats() {
         return optionalMap(
                 p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b),
                 pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
         );
     }
 
-    @Override
-    public @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
-        return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
+    private @NotNull Iterable<Float> negativeOrdinaryFloats() {
+        return map(f -> -f, positiveOrdinaryFloats());
     }
 
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) floats. Negative zero is not
-     * included, but positive zero is. Does not support removal.
-     *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>–1 = 4,278,190,079
-     */
-    @Override
-    public @NotNull Iterable<Float> ordinaryFloats() {
-        return cons(0.0f, nonzeroOrdinaryFloats());
+    private  @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
+        return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
     }
 
     @Override
@@ -1237,56 +1178,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive
-     * {@link double}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
-     */
-    public @NotNull Iterable<Double> positiveOrdinaryDoublesIncreasing() {
-        return stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative
-     * {@code double}s in increasing order. Negative zero is not included. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
-     */
-    public @NotNull Iterable<Double> negativeOrdinaryDoublesIncreasing() {
-        return stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in
-     * increasing order. Negative zero is not included, but positive zero is. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
-     */
-    public @NotNull Iterable<Double> ordinaryDoublesIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
-                Collections.singletonList(0.0),
-                stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
-        ));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all {@code double}s in increasing order. {@code NaN} is traditionally
-     * unordered, but here it is placed between negative zero and positive zero. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
-     */
-    public @NotNull Iterable<Double> doublesIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, Double.NEGATIVE_INFINITY)),
-                Arrays.asList(-0.0, Double.NaN, 0.0),
-                stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
-        ));
-    }
-
-    /**
      * An {@code Iterable} that contains all possible positive {@code double} mantissas. A {@code double}'s mantissa is
      * the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
      * removal.
@@ -1312,28 +1203,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    @Override
-    public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
+    private  @NotNull Iterable<Double> positiveOrdinaryDoubles() {
         return optionalMap(
                 p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b),
                 pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
         );
     }
 
-    @Override
-    public @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
-        return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
+    private @NotNull Iterable<Double> negativeOrdinaryDoubles() {
+        return map(d -> -d, positiveOrdinaryDoubles());
     }
 
-    /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in increasing
-     * order. Negative zero is not included, but positive zero is. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
-     */
-    @Override
-    public @NotNull Iterable<Double> ordinaryDoubles() {
-        return cons(0.0, nonzeroOrdinaryDoubles());
+    private  @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
+        return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
     }
 
     @Override

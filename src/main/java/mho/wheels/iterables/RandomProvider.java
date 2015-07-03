@@ -2912,34 +2912,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
-     * distribution. Does not support removal.
-     *
-     * Length is infinite.
-     */
-    @Override
-    public @NotNull Iterable<Float> positiveOrdinaryFloats() {
-        return map(Math::abs, filter(
-                f -> Float.isFinite(f) && !Float.isNaN(f) && !f.equals(-0.0f) && !f.equals(0.0f),
-                floats()
-        ));
-    }
-
-    @Override
-    public @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
-        return null;
-    }
-
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
-     * Does not support removal.
-     *
-     * Length is infinite.
-     */
-    @Override
-    public @NotNull Iterable<Float> ordinaryFloats() {
-        return filter(f -> Float.isFinite(f) && !Float.isNaN(f) && !f.equals(-0.0f), floats());
+    public float nextPositiveFloat() {
+        return 0.0f;
     }
 
     @Override
@@ -2947,14 +2921,26 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
+    public float nextNegativeFloat() {
+        return 0.0f;
+    }
+
     @Override
     public @NotNull Iterable<Float> negativeFloats() {
         return null;
     }
 
+    public float nextNonzeroFloat() {
+        return 0.0f;
+    }
+
     @Override
     public @NotNull Iterable<Float> nonzeroFloats() {
         return null;
+    }
+
+    public float nextFloat() {
+        return 0.0f;
     }
 
     /**
@@ -2991,34 +2977,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) positive floats from a uniform
-     * distribution. Does not support removal.
-     *
-     * Length is infinite.
-     */
-    @Override
-    public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
-        return map(Math::abs, filter(
-                d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0) && !d.equals(0.0),
-                doubles()
-        ));
-    }
-
-    @Override
-    public @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
-        return null;
-    }
-
-    /**
-     * An {@code Iterable} that generates all ordinary (neither NaN nor infinite) floats from a uniform distribution.
-     * Does not support removal.
-     *
-     * Length is infinite.
-     */
-    @Override
-    public @NotNull Iterable<Double> ordinaryDoubles() {
-        return filter(d -> Double.isFinite(d) && !Double.isNaN(d) && !d.equals(-0.0), doubles());
+    public double nextPositiveDouble() {
+        return 0.0;
     }
 
     @Override
@@ -3026,14 +2986,26 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
+    public double nextNegativeDouble() {
+        return 0.0;
+    }
+
     @Override
     public @NotNull Iterable<Double> negativeDoubles() {
         return null;
     }
 
+    public double nextNonzeroDouble() {
+        return 0.0;
+    }
+
     @Override
     public @NotNull Iterable<Double> nonzeroDoubles() {
         return null;
+    }
+
+    public double nextDouble() {
+        return 0.0;
     }
 
     /**

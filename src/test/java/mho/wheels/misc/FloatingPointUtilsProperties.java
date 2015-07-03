@@ -60,9 +60,6 @@ public class FloatingPointUtilsProperties {
         }
 
         //todo test nonzero floats
-        for (float f : take(LIMIT, P.ordinaryFloats())) {
-            assertFalse(f, isNegativeZero(f));
-        }
     }
 
     private static void propertiesIsNegativeZero_double() {
@@ -72,9 +69,6 @@ public class FloatingPointUtilsProperties {
         }
 
         //todo test nonzero doubles
-        for (double d : take(LIMIT, P.ordinaryDoubles())) {
-            assertFalse(d, isNegativeZero(d));
-        }
     }
 
     private static void propertiesIsPositiveZero_float() {
