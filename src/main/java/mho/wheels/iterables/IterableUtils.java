@@ -403,7 +403,9 @@ public final strictfp class IterableUtils {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
         return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
@@ -433,7 +435,9 @@ public final strictfp class IterableUtils {
         if (Double.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
         return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)) : ds;
@@ -764,7 +768,9 @@ public final strictfp class IterableUtils {
         if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         if (Float.isInfinite(b)) {
             return rangeUp(a);
@@ -809,7 +815,9 @@ public final strictfp class IterableUtils {
         if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         if (Double.isInfinite(b)) {
             return rangeUp(a);
