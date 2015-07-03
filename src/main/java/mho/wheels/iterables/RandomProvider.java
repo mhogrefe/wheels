@@ -840,8 +840,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution from a uniform
-     * distribution. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution. Does not support
+     * removal.
      *
      * Length is infinite
      */
@@ -2930,6 +2930,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all positive {@code Float}s from a uniform distribution among {@code Float}s,
+     * including {@code Infinity} but not positive zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> positiveFloats() {
         return filter(f -> f > 0, floats());
@@ -2953,6 +2959,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all negative {@code Float}s from a uniform distribution among {@code Float}s,
+     * including {@code -Infinity} but not negative zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> negativeFloats() {
         return filter(f -> f < 0, floats());
@@ -2976,6 +2988,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code Float}s from a uniform distribution among {@code Float}s,
+     * including {@code Infinity} and {@code -Infinity}. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> nonzeroFloats() {
         return filter(f -> f != 0, floats());
@@ -3001,7 +3019,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Float}s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Float}s from a uniform distribution among {@code Float}s,
+     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is infinite
      */
@@ -3028,6 +3047,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all positive {@code Double}s from a uniform distribution among
+     * {@code Double}s, including {@code Infinity} but not positive zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> positiveDoubles() {
         return filter(d -> d > 0, doubles());
@@ -3051,6 +3076,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all negative {@code Double}s from a uniform distribution among
+     * {@code Double}s, including {@code -Infinity} but not negative zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> negativeDoubles() {
         return filter(d -> d < 0, doubles());
@@ -3074,6 +3105,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code Double}s from a uniform distribution among
+     * {@code Double}s, including {@code Infinity} and {@code -Infinity}. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> nonzeroDoubles() {
         return filter(d -> d != 0, doubles());
@@ -3099,7 +3136,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code Double}s from a uniform distribution. Does not support removal.
+     * An {@code Iterable} that generates all {@code Double}s from a uniform distribution among {@code Double}s,
+     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is infinite
      */
