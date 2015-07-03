@@ -2912,6 +2912,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
+    /**
+     * Returns a randomly-generated positive {@code float} from a uniform distribution among {@code float}s, including
+     * {@code Infinity} but not positive zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code float}
+     */
     public float nextPositiveFloat() {
         while (true) {
             float f = nextFloat();
@@ -2924,6 +2935,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(f -> f > 0, floats());
     }
 
+    /**
+     * Returns a randomly-generated negative {@code float} from a uniform distribution among {@code float}s, including
+     * {@code -Infinity} but not negative zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code float}
+     */
     public float nextNegativeFloat() {
         while (true) {
             float f = nextFloat();
@@ -2936,6 +2958,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(f -> f < 0, floats());
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code float} from a uniform distribution among {@code float}s, including
+     * {@code Infinity} and {@code -Infinity}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code float}
+     */
     public float nextNonzeroFloat() {
         while (true) {
             float f = nextFloat();
@@ -2948,11 +2981,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(f -> f != 0, floats());
     }
 
+    /**
+     * Returns a randomly-generated {@code float} from a uniform distribution among {@code float}s, including
+     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code float}.</li>
+     * </ul>
+     *
+     * @return a {@code float}
+     */
     public float nextFloat() {
         while (true) {
             int floatBits = nextInt();
             float f = Float.intBitsToFloat(floatBits);
-            if (!Float.isNaN(f) || floatBits == 0x7fc00000) return f;
+            if (!Float.isNaN(f) || floatBits == 0x7fc00000) return f; //only generate the canonical NaN
         }
     }
 
@@ -2966,6 +3010,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextFloat);
     }
 
+    /**
+     * Returns a randomly-generated positive {@code double} from a uniform distribution among {@code double}s,
+     * including {@code Infinity} but not positive zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code double}
+     */
     public double nextPositiveDouble() {
         while (true) {
             double d = nextDouble();
@@ -2978,6 +3033,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(d -> d > 0, doubles());
     }
 
+    /**
+     * Returns a randomly-generated negative {@code double} from a uniform distribution among {@code double}s,
+     * including {@code -Infinity} but not negative zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code double}
+     */
     public double nextNegativeDouble() {
         while (true) {
             double d = nextDouble();
@@ -2990,6 +3056,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(d -> d < 0, doubles());
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code double} from a uniform distribution among {@code double}s, including
+     * {@code Infinity} and {@code -Infinity}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code double}
+     */
     public double nextNonzeroDouble() {
         while (true) {
             double d = nextDouble();
@@ -3002,11 +3079,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return filter(d -> d != 0, doubles());
     }
 
+    /**
+     * Returns a randomly-generated {@code double} from a uniform distribution among {@code double}s, including
+     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result may be any {@code double}.</li>
+     * </ul>
+     *
+     * @return a {@code double}
+     */
     public double nextDouble() {
         while (true) {
             long longBits = nextLong();
             double d = Double.longBitsToDouble(longBits);
-            if (!Double.isNaN(d) || longBits == 0x7ff8000000000000L) return d;
+            if (!Double.isNaN(d) || longBits == 0x7ff8000000000000L) return d; //only generate the canonical NaN
         }
     }
 
