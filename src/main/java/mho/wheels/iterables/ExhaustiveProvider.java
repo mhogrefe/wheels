@@ -38,7 +38,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private ExhaustiveProvider() {}
 
     /**
-     * An {@link Iterable} that contains both {@link boolean}s. Does not support removal.
+     * An {@link Iterable} that generates both {@link boolean}s. Does not support removal.
      *
      * Length is 2
      */
@@ -48,7 +48,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Ordering}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Ordering}s in increasing order. Does not support removal.
      *
      * Length is 3
      */
@@ -57,7 +57,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Ordering}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Ordering}s. Does not support removal.
      *
      * Length is 3
      */
@@ -67,7 +67,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link RoundingMode}s. Does not support removal.
+     * An {@code Iterable} that generates all {@link RoundingMode}s. Does not support removal.
      *
      * Length is 8
      */
@@ -123,7 +123,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Byte}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
      */
@@ -132,7 +132,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Short}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -141,7 +141,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Integer}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -150,7 +150,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Long}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -159,7 +159,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup>–1 = 127
      */
@@ -169,7 +169,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>15</sup>–1 = 32,767
      */
@@ -179,7 +179,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>31</sup>–1 = 2,147,483,647
      */
@@ -189,7 +189,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>63</sup>–1 = 9,223,372,036,854,775,807
      */
@@ -199,7 +199,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@link BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@link BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -209,7 +209,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -219,7 +219,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -229,7 +229,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -239,7 +239,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -249,7 +249,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -259,7 +259,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup>–1 = 127
      */
@@ -269,7 +269,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>16</sup>–1 = 65,535
      */
@@ -279,7 +279,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>32</sup>–1 = 4,294,967,295
      */
@@ -289,7 +289,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
      */
@@ -299,7 +299,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -309,7 +309,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -319,7 +319,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Short}s (including 0). Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -329,7 +329,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0). Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -339,7 +339,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Long}s (including 0). Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -349,7 +349,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
+     * An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). Does not support removal.
      *
      * Length is infinite
      */
@@ -359,7 +359,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
@@ -369,7 +369,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -379,7 +379,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -389,7 +389,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -399,7 +399,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -409,7 +409,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ASCII {@link Character}s in increasing order. Does not support
+     * An {@code Iterable} that generates all ASCII {@link Character}s in increasing order. Does not support
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
@@ -419,7 +419,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ASCII {@code Character}s in an order which places "friendly" characters
+     * An {@code Iterable} that generates all ASCII {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
@@ -441,7 +441,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@code Character}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -450,7 +450,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Character}s in an order which places "friendly" characters
+     * An {@code Iterable} that generates all {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
@@ -961,7 +961,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@link BinaryFraction}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@link BinaryFraction}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -974,7 +974,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@link BinaryFraction}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@link BinaryFraction}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -984,7 +984,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@link BinaryFraction}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@link BinaryFraction}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -994,7 +994,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link BinaryFraction}s. Does not support removal.
+     * An {@code Iterable} that generates all {@link BinaryFraction}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -1106,7 +1106,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all possible positive {@code float} mantissas. A {@code float}'s mantissa is
+     * An {@code Iterable} that generates all possible positive {@code float} mantissas. A {@code float}'s mantissa is
      * the unique odd integer that, when multiplied by a power of 2, equals the {@code float}. Does not support
      * removal.
      *
@@ -1115,7 +1115,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(1, 2, 1 << 24);
 
     /**
-     * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
+     * An {@code Iterable} that generates all possible float exponents. A positive float's exponent is the base-2
      * logarithm of the float divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>8</sup>+23–2 = 277
@@ -1126,36 +1126,63 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code float}s. Does
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code float}s. Does
      * not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
-    private @NotNull Iterable<Float> positiveOrdinaryFloats() {
+    private static @NotNull Iterable<Float> positiveOrdinaryFloats() {
         return optionalMap(
                 p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b),
-                pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
+                INSTANCE.pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
         );
     }
 
-    private @NotNull Iterable<Float> negativeOrdinaryFloats() {
+    /**
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
+     * {@code float}s. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
+     */
+    private static @NotNull Iterable<Float> negativeOrdinaryFloats() {
         return map(f -> -f, positiveOrdinaryFloats());
     }
 
-    private  @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
+    /**
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code float}s. Does
+     * not support removal.
+     *
+     * Length is 2<sup>32</sup>–2<sup>24</sup>–2 = 4,278,190,078
+     */
+    private static @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
         return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
     }
 
+    /**
+     * An {@code Iterable} that generates all positive {@code float}s. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
+     */
     @Override
     public @NotNull Iterable<Float> positiveFloats() {
         return cons(Float.POSITIVE_INFINITY, positiveOrdinaryFloats());
     }
 
+    /**
+     * An {@code Iterable} that generates all negative {@code float}s. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
+     */
     @Override
     public @NotNull Iterable<Float> negativeFloats() {
         return cons(Float.NEGATIVE_INFINITY, negativeOrdinaryFloats());
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code float}s. Does not support removal.
+     *
+     * Length is 2<sup>32</sup>–2<sup>24</sup>+1 = 4,278,190,081
+     */
     @Override
     public @NotNull Iterable<Float> nonzeroFloats() {
         return concat(
@@ -1165,7 +1192,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code float}s. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -1178,8 +1205,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all possible positive {@code double} mantissas. A {@code double}'s mantissa is
-     * the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
+     * An {@code Iterable} that generates all possible positive {@code double} mantissas. A {@code double}'s mantissa
+     * is the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
      * removal.
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
@@ -1187,8 +1214,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(1L, 2, 1L << 53);
 
     /**
-     * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
-     * the base-2 logarithm of the {@code double} divided by its mantissa. Does not support removal.
+     * An {@code Iterable} that generates all possible {@code double} exponents. A positive {@code double}'s exponent
+     * is the base-2 logarithm of the {@code double} divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>11</sup>+52–2 = 2,098
      */
@@ -1198,36 +1225,63 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code double}s. Does
-     * not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code double}s.
+     * Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    private  @NotNull Iterable<Double> positiveOrdinaryDoubles() {
+    private static @NotNull Iterable<Double> positiveOrdinaryDoubles() {
         return optionalMap(
                 p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b),
-                pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
+                INSTANCE.pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
         );
     }
 
-    private @NotNull Iterable<Double> negativeOrdinaryDoubles() {
+    /**
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
+     * {@code double}s. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
+     */
+    private static @NotNull Iterable<Double> negativeOrdinaryDoubles() {
         return map(d -> -d, positiveOrdinaryDoubles());
     }
 
-    private  @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
+    /**
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code double}s. Does
+     * not support removal.
+     *
+     * Length is 2<sup>64</sup>–2<sup>53</sup>–2 = 18,437,736,874,454,810,622
+     */
+    private static @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
         return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
     }
 
+    /**
+     * An {@code Iterable} that generates all positive {@code double}s. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
+     */
     @Override
     public @NotNull Iterable<Double> positiveDoubles() {
         return cons(Double.POSITIVE_INFINITY, positiveOrdinaryDoubles());
     }
 
+    /**
+     * An {@code Iterable} that generates all negative {@code double}s. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
+     */
     @Override
     public @NotNull Iterable<Double> negativeDoubles() {
         return cons(Double.NEGATIVE_INFINITY, negativeOrdinaryDoubles());
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code double}s. Does not support removal.
+     *
+     * Length is 2<sup>64</sup>–2<sup>53</sup>+1 = 18,437,736,874,454,810,625
+     */
     @Override
     public @NotNull Iterable<Double> nonzeroDoubles() {
         return concat(
@@ -1237,7 +1291,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code double}s. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
@@ -1250,7 +1304,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@link BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@link BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -1259,7 +1313,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -1268,7 +1322,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
