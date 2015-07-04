@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -1230,6 +1229,118 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(SMALL_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextPositiveFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveFloat(" + rp + ") = " + rp.nextPositiveFloat());
+        }
+    }
+
+    private static void demoPositiveFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveFloats(" + rp + ") = " + its(rp.positiveFloats()));
+        }
+    }
+
+    private static void demoNextNegativeFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeFloat(" + rp + ") = " + rp.nextNegativeFloat());
+        }
+    }
+
+    private static void demoNegativeFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeFloats(" + rp + ") = " + its(rp.negativeFloats()));
+        }
+    }
+
+    private static void demoNextNonzeroFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroFloat(" + rp + ") = " + rp.nextNonzeroFloat());
+        }
+    }
+
+    private static void demoNonzeroFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroFloats(" + rp + ") = " + its(rp.nonzeroFloats()));
+        }
+    }
+
+    private static void demoNextFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextFloat(" + rp + ") = " + rp.nextFloat());
+        }
+    }
+
+    private static void demoFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("floats(" + rp + ") = " + its(rp.floats()));
+        }
+    }
+
+    private static void demoNextPositiveDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveDouble(" + rp + ") = " + rp.nextPositiveDouble());
+        }
+    }
+
+    private static void demoPositiveDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveDoubles(" + rp + ") = " + its(rp.positiveDoubles()));
+        }
+    }
+
+    private static void demoNextNegativeDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeDouble(" + rp + ") = " + rp.nextNegativeDouble());
+        }
+    }
+
+    private static void demoNegativeDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeDoubles(" + rp + ") = " + its(rp.negativeDoubles()));
+        }
+    }
+
+    private static void demoNextNonzeroDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroDouble(" + rp + ") = " + rp.nextNonzeroDouble());
+        }
+    }
+
+    private static void demoNonzeroDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroDoubles(" + rp + ") = " + its(rp.nonzeroDoubles()));
+        }
+    }
+
+    private static void demoNextDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextDouble(" + rp + ") = " + rp.nextDouble());
+        }
+    }
+
+    private static void demoDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("doubles(" + rp + ") = " + its(rp.doubles()));
         }
     }
 
