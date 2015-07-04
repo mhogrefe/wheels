@@ -64,6 +64,16 @@ public final strictfp class RandomProvider extends IterableProvider {
     private static final int SPECIAL_ELEMENT_RATIO = 50;
 
     /**
+     * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}
+     */
+    private static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE);
+
+    /**
+     * {@link Double#MAX_VALUE} divided by {@link Double#MIN_VALUE}
+     */
+    private static final @NotNull BigInteger SCALED_UP_MAX_DOUBLE = scaleUp(Double.MAX_VALUE);
+
+    /**
      * A list of numbers which determines exactly which values will be deterministically output over the life of
      * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
      */
@@ -3144,6 +3154,20 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> doubles() {
         return fromSupplier(this::nextDouble);
+    }
+
+    private static @NotNull BigInteger scaleUp(float f) {
+        return BinaryFraction.of(f).get().shiftLeft(149).bigIntegerValueExact();
+    }
+
+    private static @NotNull BigInteger scaleUp(double d) {
+        return BinaryFraction.of(d).get().shiftLeft(1074).bigIntegerValueExact();
+    }
+
+    public float nextPositiveFloatUniform() {
+        BigInteger scaled = nextFromRange(BigInteger.ZERO, SCALED_UP_MAX_FLOAT);
+        Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
+        return nextBoolean() ? range.a : range.b;
     }
 
     @Override
