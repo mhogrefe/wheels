@@ -179,6 +179,22 @@ public class RandomProviderProperties {
             propertiesRangeDown_BinaryFraction();
             propertiesNextFromRange_BinaryFraction_BinaryFraction();
             propertiesRange_BinaryFraction_BinaryFraction();
+            propertiesNextPositiveFloat();
+            propertiesPositiveFloats();
+            propertiesNextNegativeFloat();
+            propertiesNegativeFloats();
+            propertiesNextNonzeroFloat();
+            propertiesNonzeroFloats();
+            propertiesNextFloat();
+            propertiesFloats();
+            propertiesNextPositiveDouble();
+            propertiesPositiveDoubles();
+            propertiesNextNegativeDouble();
+            propertiesNegativeDoubles();
+            propertiesNextNonzeroDouble();
+            propertiesNonzeroDoubles();
+            propertiesNextDouble();
+            propertiesDoubles();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2394,6 +2410,140 @@ public class RandomProviderProperties {
                 t.a.withScale(Integer.MAX_VALUE).range(t.b, t.c);
                 fail(t);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextPositiveFloat() {
+        initialize("nextPositiveFloat()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextPositiveFloat();
+            assertTrue(rp, f > 0);
+        }
+    }
+
+    private static void propertiesPositiveFloats() {
+        initialize("positiveFloats()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.positiveFloats();
+            simpleTest(rp, fs, f -> f > 0);
+            supplierEquivalence(rp, fs, rp::nextPositiveFloat);
+        }
+    }
+
+    private static void propertiesNextNegativeFloat() {
+        initialize("nextNegativeFloat()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextNegativeFloat();
+            assertTrue(rp, f < 0);
+        }
+    }
+
+    private static void propertiesNegativeFloats() {
+        initialize("negativeFloats()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.negativeFloats();
+            simpleTest(rp, fs, f -> f < 0);
+            supplierEquivalence(rp, fs, rp::nextNegativeFloat);
+        }
+    }
+
+    private static void propertiesNextNonzeroFloat() {
+        initialize("nextNonzeroFloat()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextNonzeroFloat();
+            assertTrue(rp, f != 0);
+        }
+    }
+
+    private static void propertiesNonzeroFloats() {
+        initialize("nonzeroFloats()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.nonzeroFloats();
+            simpleTest(rp, fs, f -> f != 0);
+            supplierEquivalence(rp, fs, rp::nextNonzeroFloat);
+        }
+    }
+
+    private static void propertiesNextFloat() {
+        initialize("nextFloat()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextFloat();
+        }
+    }
+
+    private static void propertiesFloats() {
+        initialize("floats()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.floats();
+            simpleTest(rp, fs, f -> true);
+            supplierEquivalence(rp, fs, rp::nextFloat);
+        }
+    }
+
+    private static void propertiesNextPositiveDouble() {
+        initialize("nextPositiveDouble()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextPositiveDouble();
+            assertTrue(rp, d > 0);
+        }
+    }
+
+    private static void propertiesPositiveDoubles() {
+        initialize("positiveDoubles()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.positiveDoubles();
+            simpleTest(rp, ds, d -> d > 0);
+            supplierEquivalence(rp, ds, rp::nextPositiveDouble);
+        }
+    }
+
+    private static void propertiesNextNegativeDouble() {
+        initialize("nextNegativeDouble()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextNegativeDouble();
+            assertTrue(rp, d < 0);
+        }
+    }
+
+    private static void propertiesNegativeDoubles() {
+        initialize("negativeDoubles()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.negativeDoubles();
+            simpleTest(rp, ds, d -> d < 0);
+            supplierEquivalence(rp, ds, rp::nextNegativeDouble);
+        }
+    }
+
+    private static void propertiesNextNonzeroDouble() {
+        initialize("nextNonzeroDouble()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextNonzeroDouble();
+            assertTrue(rp, d != 0);
+        }
+    }
+
+    private static void propertiesNonzeroDoubles() {
+        initialize("nonzeroDoubles()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.nonzeroDoubles();
+            simpleTest(rp, ds, d -> d != 0);
+            supplierEquivalence(rp, ds, rp::nextNonzeroDouble);
+        }
+    }
+
+    private static void propertiesNextDouble() {
+        initialize("nextDouble()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            rp.nextDouble();
+        }
+    }
+
+    private static void propertiesDoubles() {
+        initialize("doubles()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.doubles();
+            simpleTest(rp, ds, d -> true);
+            supplierEquivalence(rp, ds, rp::nextDouble);
         }
     }
 
