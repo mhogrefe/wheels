@@ -502,34 +502,66 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<Double> doubles();
 
+    /**
+     * Generates positive {@code Float}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Float> positiveFloatsUniform() {
         return positiveFloats();
     }
 
+    /**
+     * Generates negative {@code Float}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Float> negativeFloatsUniform() {
         return negativeFloats();
     }
 
+    /**
+     * Generates nonzero {@code Float}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Float> nonzeroFloatsUniform() {
         return nonzeroFloats();
     }
 
+    /**
+     * Generates {@code Float}s selected from a distribution which approximates a uniform distribution over the reals
+     * (if applicable).
+     */
     public @NotNull Iterable<Float> floatsUniform() {
         return floats();
     }
 
+    /**
+     * Generates positive {@code Double}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Double> positiveDoublesUniform() {
         return positiveDoubles();
     }
 
+    /**
+     * Generates negative {@code Double}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Double> negativeDoublesUniform() {
         return negativeDoubles();
     }
 
+    /**
+     * Generates nonzero {@code Double}s selected from a distribution which approximates a uniform distribution over
+     * the reals (if applicable).
+     */
     public @NotNull Iterable<Double> nonzeroDoublesUniform() {
         return nonzeroDoubles();
     }
 
+    /**
+     * Generates {@code Double}s selected from a distribution which approximates a uniform distribution over the reals
+     * (if applicable).
+     */
     public @NotNull Iterable<Double> doublesUniform() {
         return doubles();
     }
