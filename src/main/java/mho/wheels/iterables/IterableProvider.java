@@ -460,44 +460,79 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b);
 
     /**
-     * Generates positive {@code float}s.
+     * Generates positive {@code Float}s, including {@code Infinity} but not positive zero.
      */
     public abstract @NotNull Iterable<Float> positiveFloats();
 
     /**
-     * Generates negative {@code float}s.
+     * Generates negative {@code Float}s, including {@code -Infinity} but not negative zero.
      */
     public abstract @NotNull Iterable<Float> negativeFloats();
 
     /**
-     * Generates nonzero {@code float}s.
+     * Generates nonzero {@code Float}s, including {@code NaN}, positive and negative zeros, {@code Infinity}, and
+     * {@code -Infinity}.
      */
     public abstract @NotNull Iterable<Float> nonzeroFloats();
 
     /**
-     * Generates {@code float}s.
+     * Generates {@code Float}s.
      */
     public abstract @NotNull Iterable<Float> floats();
 
     /**
-     * Generates positive {@code double}s.
+     * Generates positive {@code Double}s, including {@code Infinity} but not positive zero.
      */
     public abstract @NotNull Iterable<Double> positiveDoubles();
 
     /**
-     * Generates negative {@code double}s.
+     * Generates negative {@code Double}s, including {@code -Infinity} but not negative zero.
      */
     public abstract @NotNull Iterable<Double> negativeDoubles();
 
     /**
-     * Generates nonzero {@code double}s.
+     * Generates nonzero {@code Double}s, including {@code NaN}, positive and negative zeros, {@code Infinity}, and
+     * {@code -Infinity}.
      */
     public abstract @NotNull Iterable<Double> nonzeroDoubles();
 
     /**
-     * Generates {@code double}s.
+     * Generates {@code Double}s, including {@code NaN}, positive and negative zeros, {@code Infinity}, and
+     * {@code -Infinity}.
      */
     public abstract @NotNull Iterable<Double> doubles();
+
+    public @NotNull Iterable<Float> positiveFloatsUniform() {
+        return positiveFloats();
+    }
+
+    public @NotNull Iterable<Float> negativeFloatsUniform() {
+        return negativeFloats();
+    }
+
+    public @NotNull Iterable<Float> nonzeroFloatsUniform() {
+        return nonzeroFloats();
+    }
+
+    public @NotNull Iterable<Float> floatsUniform() {
+        return floats();
+    }
+
+    public @NotNull Iterable<Double> positiveDoublesUniform() {
+        return positiveDoubles();
+    }
+
+    public @NotNull Iterable<Double> negativeDoublesUniform() {
+        return negativeDoubles();
+    }
+
+    public @NotNull Iterable<Double> nonzeroDoublesUniform() {
+        return nonzeroDoubles();
+    }
+
+    public @NotNull Iterable<Double> doublesUniform() {
+        return doubles();
+    }
 
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();

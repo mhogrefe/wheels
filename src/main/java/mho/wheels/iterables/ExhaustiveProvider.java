@@ -1126,7 +1126,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code float}s. Does
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code Float}s. Does
      * not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
@@ -1140,7 +1140,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
-     * {@code float}s. Does not support removal.
+     * {@code Float}s. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
@@ -1149,7 +1149,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code float}s. Does
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code Float}s. Does
      * not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>–2 = 4,278,190,078
@@ -1159,7 +1159,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all positive {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Float}s, including {@code Infinity} but not positive
+     * zero. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
      */
@@ -1169,7 +1170,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all negative {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Float}s, including {@code -Infinity} but not negative
+     * zero. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
      */
@@ -1179,7 +1181,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all nonzero {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Float}s, including {@code NaN}, {@code Infinity}, and
+     * {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+1 = 4,278,190,081
      */
@@ -1192,7 +1195,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Float}s, including {@code NaN}, positive and negative zeros,
+     * {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -1225,7 +1229,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     );
 
     /**
-     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code double}s.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code Double}s.
      * Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
@@ -1239,7 +1243,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
-     * {@code double}s. Does not support removal.
+     * {@code Double}s. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
@@ -1248,7 +1252,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code double}s. Does
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code Double}s. Does
      * not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>–2 = 18,437,736,874,454,810,622
@@ -1258,7 +1262,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all positive {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Double}s, including {@code Infinity} but not positive
+     * zero. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
      */
@@ -1268,7 +1273,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all negative {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Double}s, including {@code -Infinity} but not negative
+     * zero. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
      */
@@ -1278,7 +1284,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all nonzero {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Double}s, including {@code NaN}, {@code Infinity}, and
+     * {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>+1 = 18,437,736,874,454,810,625
      */
@@ -1291,7 +1298,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Double}s, including {@code NaN}, positive and negative zeros,
+     * {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
