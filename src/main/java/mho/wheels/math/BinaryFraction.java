@@ -337,17 +337,17 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
             return new Pair<>(-negativeRange.b, -negativeRange.a);
         }
         long floatExponent = mantissa.bitLength() + exponent - 1;
-        if (floatExponent > 127 || floatExponent == 127 && gt(this, LARGEST_FLOAT)) {
+        if (floatExponent > Float.MAX_EXPONENT || floatExponent == Float.MAX_EXPONENT && gt(this, LARGEST_FLOAT)) {
             return new Pair<>(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
         }
         BinaryFraction fraction;
         int adjustedExponent;
-        if (floatExponent < -126) {
+        if (floatExponent < Float.MIN_EXPONENT) {
             fraction = shiftLeft(149);
             adjustedExponent = 0;
         } else {
             fraction = shiftRight((int) floatExponent).subtract(ONE).shiftLeft(23);
-            adjustedExponent = ((int) floatExponent) + 127;
+            adjustedExponent = ((int) floatExponent) + Float.MAX_EXPONENT;
         }
         float loFloat = Float.intBitsToFloat((adjustedExponent << 23) + fraction.floor().intValueExact());
         float hiFloat = fraction.getExponent() >= 0 ? loFloat : FloatingPointUtils.successor(loFloat);
@@ -382,17 +382,18 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
             return new Pair<>(-negativeRange.b, -negativeRange.a);
         }
         long doubleExponent = mantissa.bitLength() + exponent - 1;
-        if (doubleExponent > 1023 || doubleExponent == 1023 && gt(this, LARGEST_DOUBLE)) {
+        if (doubleExponent > Double.MAX_EXPONENT ||
+                doubleExponent == Double.MAX_EXPONENT && gt(this, LARGEST_DOUBLE)) {
             return new Pair<>(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
         }
         BinaryFraction fraction;
         long adjustedExponent;
-        if (doubleExponent < -1022) {
+        if (doubleExponent < Double.MIN_EXPONENT) {
             fraction = shiftLeft(1074);
             adjustedExponent = 0;
         } else {
             fraction = shiftRight((int) doubleExponent).subtract(ONE).shiftLeft(52);
-            adjustedExponent = doubleExponent + 1023;
+            adjustedExponent = doubleExponent + Double.MAX_EXPONENT;
         }
         double loDouble = Double.longBitsToDouble((adjustedExponent << 52) + fraction.floor().longValueExact());
         double hiDouble = fraction.getExponent() >= 0 ? loDouble : FloatingPointUtils.successor(loDouble);
