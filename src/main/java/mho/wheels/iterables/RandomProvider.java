@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.MathUtils;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -3165,9 +3166,85 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextPositiveFloatUniform() {
-        BigInteger scaled = nextFromRange(BigInteger.ZERO, SCALED_UP_MAX_FLOAT);
+        BigInteger scaled = nextFromRange(BigInteger.ONE, SCALED_UP_MAX_FLOAT);
         Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
         return nextBoolean() ? range.a : range.b;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> positiveFloatsUniform() {
+        return fromSupplier(this::nextPositiveFloatUniform);
+    }
+
+    public float nextNegativeFloatUniform() {
+        return -nextPositiveFloatUniform();
+    }
+
+    @Override
+    public @NotNull Iterable<Float> negativeFloatsUniform() {
+        return map(f -> -f, positiveFloatsUniform());
+    }
+
+    public float nextNonzeroFloatUniform() {
+        float f = nextPositiveFloatUniform();
+        return nextBoolean() ? f : -f;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> nonzeroFloatsUniform() {
+        return fromSupplier(this::nextNonzeroFloatUniform);
+    }
+
+    public float nextFloatUniform() {
+        BigInteger scaled = nextFromRange(SCALED_UP_MAX_FLOAT.negate(), SCALED_UP_MAX_FLOAT);
+        Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
+    }
+
+    @Override
+    public @NotNull Iterable<Float> floatsUniform() {
+        return fromSupplier(this::nextFloatUniform);
+    }
+
+    public double nextPositiveDoubleUniform() {
+        BigInteger scaled = nextFromRange(BigInteger.ONE, SCALED_UP_MAX_DOUBLE);
+        Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
+        return nextBoolean() ? range.a : range.b;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> positiveDoublesUniform() {
+        return fromSupplier(this::nextPositiveDoubleUniform);
+    }
+
+    public double nextNegativeDoubleUniform() {
+        return -nextPositiveDoubleUniform();
+    }
+
+    @Override
+    public @NotNull Iterable<Double> negativeDoublesUniform() {
+        return map(d -> -d, positiveDoublesUniform());
+    }
+
+    public double nextNonzeroDoubleUniform() {
+        double d = nextPositiveDoubleUniform();
+        return nextBoolean() ? d : -d;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> nonzeroDoublesUniform() {
+        return fromSupplier(this::nextNonzeroDoubleUniform);
+    }
+
+    public double nextDoubleUniform() {
+        BigInteger scaled = nextFromRange(SCALED_UP_MAX_DOUBLE.negate(), SCALED_UP_MAX_DOUBLE);
+        Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
+    }
+
+    @Override
+    public @NotNull Iterable<Double> doublesUniform() {
+        return fromSupplier(this::nextDoubleUniform);
     }
 
     @Override
