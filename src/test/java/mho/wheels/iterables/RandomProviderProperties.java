@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
@@ -195,6 +196,22 @@ public class RandomProviderProperties {
             propertiesNonzeroDoubles();
             propertiesNextDouble();
             propertiesDoubles();
+            propertiesNextPositiveFloatUniform();
+            propertiesPositiveFloatsUniform();
+            propertiesNextNegativeFloatUniform();
+            propertiesNegativeFloatsUniform();
+            propertiesNextNonzeroFloatUniform();
+            propertiesNonzeroFloatsUniform();
+            propertiesNextFloatUniform();
+            propertiesFloatsUniform();
+            propertiesNextPositiveDoubleUniform();
+            propertiesPositiveDoublesUniform();
+            propertiesNextNegativeDoubleUniform();
+            propertiesNegativeDoublesUniform();
+            propertiesNextNonzeroDoubleUniform();
+            propertiesNonzeroDoublesUniform();
+            propertiesNextDoubleUniform();
+            propertiesDoublesUniform();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2544,6 +2561,142 @@ public class RandomProviderProperties {
             Iterable<Double> ds = rp.doubles();
             simpleTest(rp, ds, d -> true);
             supplierEquivalence(rp, ds, rp::nextDouble);
+        }
+    }
+
+    private static void propertiesNextPositiveFloatUniform() {
+        initialize("nextPositiveFloatUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextPositiveFloatUniform();
+            assertTrue(rp, f > 0 && Float.isFinite(f));
+        }
+    }
+
+    private static void propertiesPositiveFloatsUniform() {
+        initialize("positiveFloatsUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.positiveFloatsUniform();
+            simpleTest(rp, fs, f -> f > 0 && Float.isFinite(f));
+            supplierEquivalence(rp, fs, rp::nextPositiveFloatUniform);
+        }
+    }
+
+    private static void propertiesNextNegativeFloatUniform() {
+        initialize("nextNegativeFloatUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextNegativeFloatUniform();
+            assertTrue(rp, f < 0 && Float.isFinite(f));
+        }
+    }
+
+    private static void propertiesNegativeFloatsUniform() {
+        initialize("negativeFloatsUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.negativeFloatsUniform();
+            simpleTest(rp, fs, f -> f < 0 && Float.isFinite(f));
+            supplierEquivalence(rp, fs, rp::nextNegativeFloatUniform);
+        }
+    }
+
+    private static void propertiesNextNonzeroFloatUniform() {
+        initialize("nextNonzeroFloatUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextNonzeroFloatUniform();
+            assertTrue(rp, f != 0 && Float.isFinite(f));
+        }
+    }
+
+    private static void propertiesNonzeroFloatsUniform() {
+        initialize("nonzeroFloatsUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.nonzeroFloatsUniform();
+            simpleTest(rp, fs, f -> f != 0 && Float.isFinite(f));
+            supplierEquivalence(rp, fs, rp::nextNonzeroFloatUniform);
+        }
+    }
+
+    private static void propertiesNextFloatUniform() {
+        initialize("nextFloatUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            float f = rp.nextFloatUniform();
+            assertTrue(rp, Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
+        }
+    }
+
+    private static void propertiesFloatsUniform() {
+        initialize("floatsUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Float> fs = rp.floatsUniform();
+            simpleTest(rp, fs, f -> Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
+            supplierEquivalence(rp, fs, rp::nextFloatUniform);
+        }
+    }
+
+    private static void propertiesNextPositiveDoubleUniform() {
+        initialize("nextPositiveDoubleUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextPositiveDoubleUniform();
+            assertTrue(rp, d > 0 && Double.isFinite(d));
+        }
+    }
+
+    private static void propertiesPositiveDoublesUniform() {
+        initialize("positiveDoublesUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.positiveDoublesUniform();
+            simpleTest(rp, ds, d -> d > 0 && Double.isFinite(d));
+            supplierEquivalence(rp, ds, rp::nextPositiveDoubleUniform);
+        }
+    }
+
+    private static void propertiesNextNegativeDoubleUniform() {
+        initialize("nextNegativeDoubleUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextNegativeDoubleUniform();
+            assertTrue(rp, d < 0 && Double.isFinite(d));
+        }
+    }
+
+    private static void propertiesNegativeDoublesUniform() {
+        initialize("negativeDoublesUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.negativeDoublesUniform();
+            simpleTest(rp, ds, d -> d < 0 && Double.isFinite(d));
+            supplierEquivalence(rp, ds, rp::nextNegativeDoubleUniform);
+        }
+    }
+
+    private static void propertiesNextNonzeroDoubleUniform() {
+        initialize("nextNonzeroDoubleUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextNonzeroDoubleUniform();
+            assertTrue(rp, d != 0 && Double.isFinite(d));
+        }
+    }
+
+    private static void propertiesNonzeroDoublesUniform() {
+        initialize("nonzeroDoublesUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.nonzeroDoublesUniform();
+            simpleTest(rp, ds, d -> d != 0 && Double.isFinite(d));
+            supplierEquivalence(rp, ds, rp::nextNonzeroDoubleUniform);
+        }
+    }
+
+    private static void propertiesNextDoubleUniform() {
+        initialize("nextDoubleUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            double d = rp.nextDoubleUniform();
+            assertTrue(rp, Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
+        }
+    }
+
+    private static void propertiesDoublesUniform() {
+        initialize("doublesUniform()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            Iterable<Double> ds = rp.doublesUniform();
+            simpleTest(rp, ds, d -> Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
+            supplierEquivalence(rp, ds, rp::nextDoubleUniform);
         }
     }
 
