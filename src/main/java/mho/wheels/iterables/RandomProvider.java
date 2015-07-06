@@ -3214,7 +3214,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public double nextNonzeroDoubleUniform() {
         double d = nextPositiveDoubleUniform();
         return nextBoolean() ? d : -d;
-    }                                                                    .
+    }
 
     @Override
     public @NotNull Iterable<Double> nonzeroDoublesUniform() {
