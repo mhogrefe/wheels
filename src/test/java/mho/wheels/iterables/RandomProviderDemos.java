@@ -1344,6 +1344,118 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveFloatUniform(" + rp + ") = " + rp.nextPositiveFloatUniform());
+        }
+    }
+
+    private static void demoPositiveFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveFloatsUniform(" + rp + ") = " + its(rp.positiveFloatsUniform()));
+        }
+    }
+
+    private static void demoNextNegativeFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeFloatUniform(" + rp + ") = " + rp.nextNegativeFloatUniform());
+        }
+    }
+
+    private static void demoNegativeFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeFloatsUniform(" + rp + ") = " + its(rp.negativeFloatsUniform()));
+        }
+    }
+
+    private static void demoNextNonzeroFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroFloatUniform(" + rp + ") = " + rp.nextNonzeroFloatUniform());
+        }
+    }
+
+    private static void demoNonzeroFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroFloatsUniform(" + rp + ") = " + its(rp.nonzeroFloatsUniform()));
+        }
+    }
+
+    private static void demoNextFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextFloatUniform(" + rp + ") = " + rp.nextFloatUniform());
+        }
+    }
+
+    private static void demoFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("floatsUniform(" + rp + ") = " + its(rp.floatsUniform()));
+        }
+    }
+
+    private static void demoNextPositiveDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveDoubleUniform(" + rp + ") = " + rp.nextPositiveDoubleUniform());
+        }
+    }
+
+    private static void demoPositiveDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveDoublesUniform(" + rp + ") = " + its(rp.positiveDoublesUniform()));
+        }
+    }
+
+    private static void demoNextNegativeDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeDoubleUniform(" + rp + ") = " + rp.nextNegativeDoubleUniform());
+        }
+    }
+
+    private static void demoNegativeDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeDoublesUniform(" + rp + ") = " + its(rp.negativeDoublesUniform()));
+        }
+    }
+
+    private static void demoNextNonzeroDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroDoubleUniform(" + rp + ") = " + rp.nextNonzeroDoubleUniform());
+        }
+    }
+
+    private static void demoNonzeroDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroDoublesUniform(" + rp + ") = " + its(rp.nonzeroDoublesUniform()));
+        }
+    }
+
+    private static void demoNextDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextDoubleUniform(" + rp + ") = " + rp.nextDoubleUniform());
+        }
+    }
+
+    private static void demoDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("doublesUniform(" + rp + ") = " + its(rp.doublesUniform()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
