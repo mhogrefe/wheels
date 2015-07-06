@@ -65,16 +65,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     private static final int SPECIAL_ELEMENT_RATIO = 50;
 
     /**
-     * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}
-     */
-    private static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE);
-
-    /**
-     * {@link Double#MAX_VALUE} divided by {@link Double#MIN_VALUE}
-     */
-    private static final @NotNull BigInteger SCALED_UP_MAX_DOUBLE = scaleUp(Double.MAX_VALUE);
-
-    /**
      * A list of numbers which determines exactly which values will be deterministically output over the life of
      * {@code this}. It must have length {@link mho.wheels.random.IsaacPRNG#SIZE}.
      */
@@ -3157,16 +3147,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextDouble);
     }
 
-    private static @NotNull BigInteger scaleUp(float f) {
-        return BinaryFraction.of(f).get().shiftLeft(149).bigIntegerValueExact();
-    }
-
-    private static @NotNull BigInteger scaleUp(double d) {
-        return BinaryFraction.of(d).get().shiftLeft(1074).bigIntegerValueExact();
-    }
-
     public float nextPositiveFloatUniform() {
-        BigInteger scaled = nextFromRange(BigInteger.ONE, SCALED_UP_MAX_FLOAT);
+        BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_FLOAT);
         Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
         return nextBoolean() ? range.a : range.b;
     }
@@ -3196,7 +3178,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextFloatUniform() {
-        BigInteger scaled = nextFromRange(SCALED_UP_MAX_FLOAT.negate(), SCALED_UP_MAX_FLOAT);
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(),
+                FloatingPointUtils.SCALED_UP_MAX_FLOAT
+        );
         Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
@@ -3207,7 +3192,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextPositiveDoubleUniform() {
-        BigInteger scaled = nextFromRange(BigInteger.ONE, SCALED_UP_MAX_DOUBLE);
+        BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_DOUBLE);
         Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
         return nextBoolean() ? range.a : range.b;
     }
@@ -3229,7 +3214,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public double nextNonzeroDoubleUniform() {
         double d = nextPositiveDoubleUniform();
         return nextBoolean() ? d : -d;
-    }
+    }                                                                    .
 
     @Override
     public @NotNull Iterable<Double> nonzeroDoublesUniform() {
@@ -3237,7 +3222,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextDoubleUniform() {
-        BigInteger scaled = nextFromRange(SCALED_UP_MAX_DOUBLE.negate(), SCALED_UP_MAX_DOUBLE);
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.SCALED_UP_MAX_DOUBLE.negate(),
+                FloatingPointUtils.SCALED_UP_MAX_DOUBLE
+        );
         Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }

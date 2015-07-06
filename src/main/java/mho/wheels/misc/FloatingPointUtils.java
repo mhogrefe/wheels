@@ -12,6 +12,16 @@ import java.util.Optional;
  */
 public final strictfp class FloatingPointUtils {
     /**
+     * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}, or 2<sup>277</sup>–2<sup>253</sup>
+     */
+    public static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE);
+
+    /**
+     * {@link Double#MAX_VALUE} divided by {@link Double#MIN_VALUE}, or 2<sup>2098</sup>–2<sup>2045</sup>
+     */
+    public static final @NotNull BigInteger SCALED_UP_MAX_DOUBLE = scaleUp(Double.MAX_VALUE);
+
+    /**
      * Disallow instantiation
      */
     private FloatingPointUtils() {}
@@ -286,5 +296,37 @@ public final strictfp class FloatingPointUtils {
      */
     public static double absNegativeZeros(double d) {
         return d == 0.0 ? 0.0 : d;
+    }
+
+    /**
+     * Return how many multiples of {@link Float#MIN_VALUE} a given {@code float} is.
+     *
+     * <ul>
+     *  <li>{@code f} cannot be infinite or {@code NaN}.</li>
+     *  <li>The result is a {@code BigInteger} whose absolute value is less than or equal to
+     *  {@link FloatingPointUtils#SCALED_UP_MAX_FLOAT}.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return {@code f}/{@code Float.MIN_VALUE}
+     */
+    private static @NotNull BigInteger scaleUp(float f) {
+        return BinaryFraction.of(f).get().shiftLeft(149).bigIntegerValueExact();
+    }
+
+    /**
+     * Return how many multiples of {@link Double#MIN_VALUE} a given {@code double} is.
+     *
+     * <ul>
+     *  <li>{@code d} cannot be infinite or {@code NaN}.</li>
+     *  <li>The result is a {@code BigInteger} whose absolute value is less than or equal to
+     *  {@link FloatingPointUtils#SCALED_UP_MAX_DOUBLE}.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return {@code d}/{@code Double.MIN_VALUE}
+     */
+    private static @NotNull BigInteger scaleUp(double d) {
+        return BinaryFraction.of(d).get().shiftLeft(1074).bigIntegerValueExact();
     }
 }
