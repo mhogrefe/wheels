@@ -5212,6 +5212,136 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void testNextPositiveFloatUniform() {
+        aeq(P.nextPositiveFloatUniform(), 9.929094E37f);
+        aeq(Q.nextPositiveFloatUniform(), 2.0204882E38f);
+        aeq(R.nextPositiveFloatUniform(), 9.500816E37f);
+    }
+
+    @Test
+    public void testPositiveFloatsUniform() {
+        aeqit(take(TINY_LIMIT, P.positiveFloatsUniform()),
+                "[9.929094E37, 3.3988664E38, 1.6264806E38, 2.9887745E38, 2.3484774E37, 2.0084857E38, 3.076517E38," +
+                " 1.293602E38, 2.6551666E38, 3.3685456E38, 9.823196E37, 3.2878975E37, 1.6963695E38, 6.2983905E37," +
+                " 2.767365E38, 8.4991095E37, 3.9025083E37, 1.1304424E38, 1.9060855E37, 1.4810831E38]");
+    }
+
+    @Test
+    public void testNextNegativeFloatUniform() {
+        aeq(P.nextNegativeFloatUniform(), -9.929094E37f);
+        aeq(Q.nextNegativeFloatUniform(), -2.0204882E38f);
+        aeq(R.nextNegativeFloatUniform(), -9.500816E37f);
+    }
+
+    @Test
+    public void testNegativeFloatsUniform() {
+        aeqit(take(TINY_LIMIT, P.negativeFloatsUniform()),
+                "[-9.929094E37, -3.3988664E38, -1.6264806E38, -2.9887745E38, -2.3484774E37, -2.0084857E38," +
+                " -3.076517E38, -1.293602E38, -2.6551666E38, -3.3685456E38, -9.823196E37, -3.2878975E37," +
+                " -1.6963695E38, -6.2983905E37, -2.767365E38, -8.4991095E37, -3.9025083E37, -1.1304424E38," +
+                " -1.9060855E37, -1.4810831E38]");
+    }
+
+    @Test
+    public void testNextNonzeroFloatUniform() {
+        aeq(P.nextNonzeroFloatUniform(), 9.929094E37f);
+        aeq(Q.nextNonzeroFloatUniform(), -2.0204882E38f);
+        aeq(R.nextNonzeroFloatUniform(), 9.500816E37f);
+    }
+
+    @Test
+    public void testNonzeroFloatsUniform() {
+        aeqit(take(TINY_LIMIT, P.nonzeroFloatsUniform()),
+                "[9.929094E37, 1.9126927E38, 2.3923068E38, 2.7261729E38, 3.0669539E38, 2.5483572E38, -2.3865865E38," +
+                " 2.584016E38, -1.8050742E38, 1.6911248E38, 3.2878975E37, -2.938879E38, -2.2382738E38, 2.366022E38," +
+                " 2.0822496E38, 2.130368E37, -2.2906584E38, 1.7886733E38, 3.0884502E38, -7.3493103E37]");
+    }
+
+    @Test
+    public void testNextFloatUniform() {
+        aeq(P.nextFloatUniform(), 9.929096E37f);
+        aeq(Q.nextFloatUniform(), 2.0204884E38f);
+        aeq(R.nextFloatUniform(), -2.4527419E38f);
+    }
+
+    @Test
+    public void testFloatsUniform() {
+        aeqit(take(TINY_LIMIT, P.floatsUniform()),
+                "[9.929096E37, 3.3988666E38, -1.7763428E38, -4.1404879E37, -3.1679759E38, -1.3943378E38," +
+                " -3.2630645E37, 1.2936022E38, 2.6551668E38, 3.3685458E38, -2.420504E38, -3.0740338E38," +
+                " 1.6963697E38, -2.7729845E38, -6.354583E37, 8.4991115E37, -3.0125725E38, 1.1304426E38," +
+                " 1.9060875E37, -1.9217403E38]");
+    }
+
+    @Test
+    public void testNextPositiveDoubleUniform() {
+        aeq(P.nextPositiveDoubleUniform(), 6.010031716528839E307);
+        aeq(Q.nextPositiveDoubleUniform(), 1.3485310997296055E308);
+        aeq(R.nextPositiveDoubleUniform(), 4.199972353586778E307);
+    }
+
+    @Test
+    public void testPositiveDoublesUniform() {
+        aeqit(take(TINY_LIMIT, P.positiveDoublesUniform()),
+                "[6.010031716528839E307, 1.0138295960478667E308, 5.899671652551286E307, 1.126139741743928E307," +
+                " 7.792941514562586E307, 7.116301123722935E307, 1.6486699798227538E308, 2.8116085611644773E307," +
+                " 1.3981609323339555E308, 1.1533582639738811E308, 8.382602851978314E307, 1.2599937155037416E308," +
+                " 1.3884097958031977E308, 1.2875997268467397E308, 5.684802572807711E307, 8.174351118522927E307," +
+                " 2.5109586043466547E307, 1.3589111426555418E308, 1.093640071507309E308, 1.575071884935976E308]");
+    }
+
+    @Test
+    public void testNextNegativeDoubleUniform() {
+        aeq(P.nextNegativeDoubleUniform(), -6.010031716528839E307);
+        aeq(Q.nextNegativeDoubleUniform(), -1.3485310997296055E308);
+        aeq(R.nextNegativeDoubleUniform(), -4.199972353586778E307);
+    }
+
+    @Test
+    public void testNegativeDoublesUniform() {
+        aeqit(take(TINY_LIMIT, P.negativeDoublesUniform()),
+                "[-6.010031716528839E307, -1.0138295960478667E308, -5.899671652551286E307, -1.126139741743928E307," +
+                " -7.792941514562586E307, -7.116301123722935E307, -1.6486699798227538E308, -2.8116085611644773E307," +
+                " -1.3981609323339555E308, -1.1533582639738811E308, -8.382602851978314E307, -1.2599937155037416E308," +
+                " -1.3884097958031977E308, -1.2875997268467397E308, -5.684802572807711E307, -8.174351118522927E307," +
+                " -2.5109586043466547E307, -1.3589111426555418E308, -1.093640071507309E308, -1.575071884935976E308]");
+    }
+
+    @Test
+    public void testNextNonzeroDoubleUniform() {
+        aeq(P.nextNonzeroDoubleUniform(), -6.010031716528839E307);
+        aeq(Q.nextNonzeroDoubleUniform(), -1.3485310997296055E308);
+        aeq(R.nextNonzeroDoubleUniform(), -4.199972353586778E307);
+    }
+
+    @Test
+    public void testNonzeroDoublesUniform() {
+        aeqit(take(TINY_LIMIT, P.nonzeroDoublesUniform()),
+                "[-6.010031716528839E307, -4.38991984513168E306, 6.045170159795733E307, -1.2213236277546202E308," +
+                " 1.093132363674069E308, -2.8350010073869094E307, 5.794375093677068E307, -6.211178609893169E307," +
+                " 1.3155340847210589E308, -6.434171608796906E307, -9.114494942217177E307, 9.914564182242407E307," +
+                " -8.523326292029085E306, 1.7505475135241652E308, -2.148267505726024E306, -8.64944544675027E307," +
+                " -1.0680271527860177E308, 6.700517384784714E307, 1.7054593739868952E308, -1.318586604367549E308]");
+    }
+
+    @Test
+    public void testNextDoubleUniform() {
+        aeq(P.nextDoubleUniform(), -1.1966899632094317E308);
+        aeq(Q.nextDoubleUniform(), -4.4916203513271024E307);
+        aeq(R.nextDoubleUniform(), -1.3776958995036378E308);
+    }
+
+    @Test
+    public void testDoublesUniform() {
+        aeqit(take(TINY_LIMIT, P.doublesUniform()),
+                "[-1.1966899632094317E308, -7.838635388144489E307, -1.207725969607187E308, 1.12613974174393E307," +
+                " -1.0183989834060572E308, -1.0860630224900222E308, 1.648669979822754E308, -1.516532278745868E308," +
+                " 1.3981609323339557E308, -6.443348708884346E307, -9.594328496644843E307, -5.37699419358574E307," +
+                " -4.0928333905911806E307, 1.2875997268467399E308, -1.2292128775815446E308, 8.174351118522929E307," +
+                " 2.5109586043466566E307, 1.358911142655542E308, 1.0936400715073092E308, -2.226212499263397E307]");
+    }
+
+    @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
                 P,
