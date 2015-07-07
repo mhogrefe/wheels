@@ -145,7 +145,7 @@ public class FloatingPointUtilsProperties {
 
         Iterable<Pair<Integer, Integer>> ps = filter(
                 q -> floatFromMantissaAndExponent(q.a, q.b).isPresent(),
-                P.pairs(P.range(-1 << 24, 1 << 24), P.range(-149, 128))
+                P.pairs(P.range(-1 << 24, 1 << 24), P.range(FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT, 128))
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             float f = floatFromMantissaAndExponent(p.a, p.b).get();
@@ -169,7 +169,7 @@ public class FloatingPointUtilsProperties {
 
         Iterable<Pair<Long, Integer>> ps = filter(
                 q -> doubleFromMantissaAndExponent(q.a, q.b).isPresent(),
-                P.pairs(P.range(-1L << 53, 1L << 53), P.range(-1074, 1024))
+                P.pairs(P.range(-1L << 53, 1L << 53), P.range(FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT, 1024))
         );
         for (Pair<Long, Integer> p : take(LIMIT, ps)) {
             double d = doubleFromMantissaAndExponent(p.a, p.b).get();

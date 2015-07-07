@@ -1,7 +1,6 @@
 package mho.wheels.math;
 
 import mho.wheels.misc.BigDecimalUtils;
-import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
@@ -12,6 +11,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.misc.FloatingPointUtils.*;
 import static mho.wheels.ordering.Ordering.gt;
 import static mho.wheels.testing.Testing.*;
 
@@ -47,7 +47,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * The largest subnormal float value, or (2<sup>23</sup>–1)/2<sup>149</sup>
      */
     public static final @NotNull BinaryFraction LARGEST_SUBNORMAL_FLOAT =
-            of(FloatingPointUtils.predecessor(Float.MIN_NORMAL)).get();
+            of(predecessor(Float.MIN_NORMAL)).get();
 
     /**
      * The smallest positive normal float value, or 2<sup>–126</sup>
@@ -68,7 +68,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * The largest subnormal double value, or (2<sup>52</sup>–1)/2<sup>1074</sup>
      */
     public static final @NotNull BinaryFraction LARGEST_SUBNORMAL_DOUBLE =
-            of(FloatingPointUtils.predecessor(Double.MIN_NORMAL)).get();
+            of(predecessor(Double.MIN_NORMAL)).get();
 
     /**
      * The smallest positive normal double value, or 2<sup>–1022</sup>
@@ -227,13 +227,13 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         boolean isPositive = f > 0.0f;
         if (!isPositive) f = -f;
         int bits = Float.floatToIntBits(f);
-        int exponent = bits >> 23 & ((1 << 8) - 1);
-        int mantissa = bits & ((1 << 23) - 1);
+        int exponent = bits >> FLOAT_FRACTION_WIDTH & ((1 << FLOAT_EXPONENT_WIDTH) - 1);
+        int mantissa = bits & ((1 << FLOAT_FRACTION_WIDTH) - 1);
         if (exponent == 0) {
-            exponent = -149;
+            exponent = MIN_SUBNORMAL_FLOAT_EXPONENT;
         } else {
-            mantissa += 1 << 23;
-            exponent -= 150;
+            mantissa += 1 << FLOAT_FRACTION_WIDTH;
+            exponent += MIN_SUBNORMAL_FLOAT_EXPONENT - 1;
         }
         return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
     }
@@ -265,13 +265,13 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         boolean isPositive = d > 0.0f;
         if (!isPositive) d = -d;
         long bits = Double.doubleToLongBits(d);
-        int exponent = (int) (bits >> 52 & ((1 << 11) - 1));
-        long mantissa = bits & ((1L << 52) - 1);
+        int exponent = (int) (bits >> DOUBLE_FRACTION_WIDTH & ((1 << DOUBLE_EXPONENT_WIDTH) - 1));
+        long mantissa = bits & ((1L << DOUBLE_FRACTION_WIDTH) - 1);
         if (exponent == 0) {
-            exponent = -1074;
+            exponent = MIN_SUBNORMAL_DOUBLE_EXPONENT;
         } else {
-            mantissa += 1L << 52;
-            exponent -= 1075;
+            mantissa += 1L << DOUBLE_FRACTION_WIDTH;
+            exponent += MIN_SUBNORMAL_DOUBLE_EXPONENT - 1;
         }
         return Optional.of(of(BigInteger.valueOf(isPositive ? mantissa : -mantissa), exponent));
     }
@@ -343,14 +343,15 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         BinaryFraction fraction;
         int adjustedExponent;
         if (floatExponent < Float.MIN_EXPONENT) {
-            fraction = shiftLeft(149);
+            fraction = shiftRight(MIN_SUBNORMAL_FLOAT_EXPONENT);
             adjustedExponent = 0;
         } else {
-            fraction = shiftRight((int) floatExponent).subtract(ONE).shiftLeft(23);
+            fraction = shiftRight((int) floatExponent).subtract(ONE).shiftLeft(FLOAT_FRACTION_WIDTH);
             adjustedExponent = ((int) floatExponent) + Float.MAX_EXPONENT;
         }
-        float loFloat = Float.intBitsToFloat((adjustedExponent << 23) + fraction.floor().intValueExact());
-        float hiFloat = fraction.getExponent() >= 0 ? loFloat : FloatingPointUtils.successor(loFloat);
+        float loFloat = Float.intBitsToFloat((adjustedExponent << FLOAT_FRACTION_WIDTH) +
+                fraction.floor().intValueExact());
+        float hiFloat = fraction.getExponent() >= 0 ? loFloat : successor(loFloat);
         return new Pair<>(loFloat, hiFloat);
     }
 
@@ -389,14 +390,15 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         BinaryFraction fraction;
         long adjustedExponent;
         if (doubleExponent < Double.MIN_EXPONENT) {
-            fraction = shiftLeft(1074);
+            fraction = shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT);
             adjustedExponent = 0;
         } else {
-            fraction = shiftRight((int) doubleExponent).subtract(ONE).shiftLeft(52);
+            fraction = shiftRight((int) doubleExponent).subtract(ONE).shiftLeft(DOUBLE_FRACTION_WIDTH);
             adjustedExponent = doubleExponent + Double.MAX_EXPONENT;
         }
-        double loDouble = Double.longBitsToDouble((adjustedExponent << 52) + fraction.floor().longValueExact());
-        double hiDouble = fraction.getExponent() >= 0 ? loDouble : FloatingPointUtils.successor(loDouble);
+        double loDouble = Double.longBitsToDouble((adjustedExponent << DOUBLE_FRACTION_WIDTH) +
+                fraction.floor().longValueExact());
+        double hiDouble = fraction.getExponent() >= 0 ? loDouble : successor(loDouble);
         return new Pair<>(loDouble, hiDouble);
     }
 

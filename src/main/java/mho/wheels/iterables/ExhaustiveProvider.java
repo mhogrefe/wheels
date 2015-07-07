@@ -1112,7 +1112,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
-    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(1, 2, 1 << 24);
+    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(
+            1,
+            2,
+            1 << (FloatingPointUtils.FLOAT_FRACTION_WIDTH + 1)
+    );
 
     /**
      * An {@code Iterable} that generates all possible float exponents. A positive float's exponent is the base-2
@@ -1122,7 +1126,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 127), IterableUtils.rangeBy(-1, -1, -149)))
+            mux(
+                    Arrays.asList(INSTANCE.range(1, Float.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT))
+            )
     );
 
     /**
@@ -1215,7 +1222,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
-    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(1L, 2, 1L << 53);
+    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(
+            1L,
+            2,
+            1L << (FloatingPointUtils.DOUBLE_FRACTION_WIDTH + 1)
+    );
 
     /**
      * An {@code Iterable} that generates all possible {@code double} exponents. A positive {@code double}'s exponent
@@ -1225,7 +1236,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 1023), IterableUtils.rangeBy(-1, -1, -1074)))
+            mux(
+                    Arrays.asList(INSTANCE.range(1, Double.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT))
+            )
     );
 
     /**

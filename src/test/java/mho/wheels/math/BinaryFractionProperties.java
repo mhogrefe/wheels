@@ -158,7 +158,7 @@ public strictfp class BinaryFractionProperties {
         for (float f : take(LIMIT, filter(Float::isFinite, P.floats()))) {
             BinaryFraction bf = of(f).get();
             bf.validate();
-            assertTrue(f, le(bf.getExponent(), 149));
+            assertTrue(f, le(bf.getExponent(), -FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT));
             assertTrue(f, le(bf.getMantissa(), BigInteger.ONE.shiftLeft(24)));
         }
     }
@@ -173,7 +173,7 @@ public strictfp class BinaryFractionProperties {
         for (double d : take(LIMIT, filter(Double::isFinite, P.doubles()))) {
             BinaryFraction bf = of(d).get();
             bf.validate();
-            assertTrue(d, le(bf.getExponent(), 1074));
+            assertTrue(d, le(bf.getExponent(), -FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT));
             assertTrue(d, le(bf.getMantissa(), BigInteger.ONE.shiftLeft(53)));
         }
     }

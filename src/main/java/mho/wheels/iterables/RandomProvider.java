@@ -3015,7 +3015,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         while (true) {
             int floatBits = nextInt();
             float f = Float.intBitsToFloat(floatBits);
-            if (!Float.isNaN(f) || floatBits == 0x7fc00000) return f; //only generate the canonical NaN
+            //only generate the canonical NaN
+            if (!Float.isNaN(f) || floatBits == Float.floatToIntBits(Float.NaN)) return f;
         }
     }
 
@@ -3132,7 +3133,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         while (true) {
             long longBits = nextLong();
             double d = Double.longBitsToDouble(longBits);
-            if (!Double.isNaN(d) || longBits == 0x7ff8000000000000L) return d; //only generate the canonical NaN
+            //only generate the canonical NaN
+            if (!Double.isNaN(d) || longBits == Double.doubleToLongBits(Double.NaN)) return d;
         }
     }
 
@@ -3149,7 +3151,10 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     public float nextPositiveFloatUniform() {
         BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_FLOAT);
-        Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
+        Pair<Float, Float> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
+        ).floatRange();
         return nextBoolean() ? range.a : range.b;
     }
 
@@ -3182,7 +3187,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(),
                 FloatingPointUtils.SCALED_UP_MAX_FLOAT
         );
-        Pair<Float, Float> range = BinaryFraction.of(scaled, -149).floatRange();
+        Pair<Float, Float> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
+        ).floatRange();
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
@@ -3193,7 +3201,10 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     public double nextPositiveDoubleUniform() {
         BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_DOUBLE);
-        Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
+        Pair<Double, Double> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
+        ).doubleRange();
         return nextBoolean() ? range.a : range.b;
     }
 
@@ -3226,7 +3237,10 @@ public final strictfp class RandomProvider extends IterableProvider {
                 FloatingPointUtils.SCALED_UP_MAX_DOUBLE.negate(),
                 FloatingPointUtils.SCALED_UP_MAX_DOUBLE
         );
-        Pair<Double, Double> range = BinaryFraction.of(scaled, -1074).doubleRange();
+        Pair<Double, Double> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
+        ).doubleRange();
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 

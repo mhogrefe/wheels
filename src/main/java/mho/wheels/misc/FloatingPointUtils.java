@@ -11,6 +11,18 @@ import java.util.Optional;
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
 public final strictfp class FloatingPointUtils {
+    public static final int FLOAT_EXPONENT_WIDTH = 8;
+
+    public static final int DOUBLE_EXPONENT_WIDTH = 11;
+
+    public static final int FLOAT_FRACTION_WIDTH = 23;
+
+    public static final int DOUBLE_FRACTION_WIDTH = 52;
+
+    public static final int MIN_SUBNORMAL_FLOAT_EXPONENT = Float.MIN_EXPONENT - FLOAT_FRACTION_WIDTH;
+
+    public static final int MIN_SUBNORMAL_DOUBLE_EXPONENT = Double.MIN_EXPONENT - DOUBLE_FRACTION_WIDTH;
+
     /**
      * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}, or 2<sup>277</sup>–2<sup>253</sup>
      */
@@ -311,7 +323,7 @@ public final strictfp class FloatingPointUtils {
      * @return {@code f}/{@code Float.MIN_VALUE}
      */
     private static @NotNull BigInteger scaleUp(float f) {
-        return BinaryFraction.of(f).get().shiftLeft(149).bigIntegerValueExact();
+        return BinaryFraction.of(f).get().shiftRight(MIN_SUBNORMAL_FLOAT_EXPONENT).bigIntegerValueExact();
     }
 
     /**
@@ -327,6 +339,6 @@ public final strictfp class FloatingPointUtils {
      * @return {@code d}/{@code Double.MIN_VALUE}
      */
     private static @NotNull BigInteger scaleUp(double d) {
-        return BinaryFraction.of(d).get().shiftLeft(1074).bigIntegerValueExact();
+        return BinaryFraction.of(d).get().shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT).bigIntegerValueExact();
     }
 }
