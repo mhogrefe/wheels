@@ -11,16 +11,34 @@ import java.util.Optional;
  * Methods for manipulating and analyzing {@link float}s and {@link double}s.
  */
 public final strictfp class FloatingPointUtils {
+    /**
+     * The bit size of a {@code float}'s exponent
+     */
     public static final int FLOAT_EXPONENT_WIDTH = 8;
 
+    /**
+     * The bit size of a {@code double}'s exponent
+     */
     public static final int DOUBLE_EXPONENT_WIDTH = 11;
 
+    /**
+     * The bit size of a {@code float}'s fraction
+     */
     public static final int FLOAT_FRACTION_WIDTH = 23;
 
+    /**
+     * The bit size of a {@code double}'s fraction
+     */
     public static final int DOUBLE_FRACTION_WIDTH = 52;
 
+    /**
+     * The exponent of the smallest {@code float} value
+     */
     public static final int MIN_SUBNORMAL_FLOAT_EXPONENT = Float.MIN_EXPONENT - FLOAT_FRACTION_WIDTH;
 
+    /**
+     * The exponent of the smallest {@code double} value
+     */
     public static final int MIN_SUBNORMAL_DOUBLE_EXPONENT = Double.MIN_EXPONENT - DOUBLE_FRACTION_WIDTH;
 
     /**
