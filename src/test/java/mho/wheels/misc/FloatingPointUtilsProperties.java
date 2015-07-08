@@ -64,7 +64,9 @@ public class FloatingPointUtilsProperties {
             isNegativeZero(f);
         }
 
-        //todo test nonzero floats
+        for (float f : take(LIMIT, P.nonzeroFloats())) {
+            assertFalse(f, isNegativeZero(f));
+        }
     }
 
     private static void propertiesIsNegativeZero_double() {
@@ -73,7 +75,9 @@ public class FloatingPointUtilsProperties {
             isNegativeZero(d);
         }
 
-        //todo test nonzero doubles
+        for (double d : take(LIMIT, P.nonzeroDoubles())) {
+            assertFalse(d, isNegativeZero(d));
+        }
     }
 
     private static void propertiesIsPositiveZero_float() {
@@ -82,7 +86,9 @@ public class FloatingPointUtilsProperties {
             isPositiveZero(f);
         }
 
-        //todo test nonzero floats
+        for (float f : take(LIMIT, P.nonzeroFloats())) {
+            assertFalse(f, isPositiveZero(f));
+        }
     }
 
     private static void propertiesIsPositiveZero_double() {
@@ -91,7 +97,9 @@ public class FloatingPointUtilsProperties {
             isPositiveZero(d);
         }
 
-        //todo test nonzero doubles
+        for (double d : take(LIMIT, P.nonzeroDoubles())) {
+            assertFalse(d, isPositiveZero(d));
+        }
     }
 
     private static void propertiesSuccessor_float() {
