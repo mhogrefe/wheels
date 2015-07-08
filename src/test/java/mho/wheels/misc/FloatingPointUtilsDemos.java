@@ -13,6 +13,7 @@ import static mho.wheels.misc.FloatingPointUtils.*;
 public strictfp class FloatingPointUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
+    private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -126,6 +127,20 @@ public strictfp class FloatingPointUtilsDemos {
         initialize();
         for (double d : take(LIMIT, P.doubles())) {
             System.out.println("absNegativeZeros(" + d + ") = " + absNegativeZeros(d));
+        }
+    }
+
+    private static void demoScaleUp_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println("scaleUp(" + f + ") = " + scaleUp(f));
+        }
+    }
+
+    private static void demoScaleUp_double() {
+        initialize();
+        for (double d : take(SMALL_LIMIT, P.doubles())) {
+            System.out.println("scaleUp(" + d + ") = " + scaleUp(d));
         }
     }
 }
