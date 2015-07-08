@@ -3965,6 +3965,48 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<T> filterInfinite(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                return result;
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<T> takeFilter(int n, @NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < n;
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                i++;
+                return result;
+            }
+        };
+    }
+
     public static @NotNull String filter(@NotNull Predicate<Character> p, @NotNull String s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
