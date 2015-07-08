@@ -1325,6 +1325,36 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    @Override
+    public @NotNull Iterable<Float> rangeUp(float a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> rangeDown(float a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> range(float a, float b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> rangeUp(double a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> rangeDown(double a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> range(double a, double b) {
+        return null;
+    }
+
     /**
      * An {@code Iterable} that generates all positive {@link BigDecimal}s. Does not support removal.
      *

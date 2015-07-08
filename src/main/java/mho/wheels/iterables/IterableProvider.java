@@ -566,6 +566,50 @@ public abstract strictfp class IterableProvider {
         return doubles();
     }
 
+    /**
+     * Generates {@code float}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code float}s
+     */
+    public abstract @NotNull Iterable<Float> rangeUp(float a);
+
+    /**
+     * Generates {@code float}s less than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code float}s
+     */
+    public abstract @NotNull Iterable<Float> rangeDown(float a);
+
+    /**
+     * Generates {@code float}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code float}s
+     * @param b the inclusive upper bound of the generated {@code float}s
+     */
+    public abstract @NotNull Iterable<Float> range(float a, float b);
+
+    /**
+     * Generates {@code double}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code double}s
+     */
+    public abstract @NotNull Iterable<Double> rangeUp(double a);
+
+    /**
+     * Generates {@code double}s less than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code double}s
+     */
+    public abstract @NotNull Iterable<Double> rangeDown(double a);
+
+    /**
+     * Generates {@code double}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code double}s
+     * @param b the inclusive upper bound of the generated {@code double}s
+     */
+    public abstract @NotNull Iterable<Double> range(double a, double b);
+
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();

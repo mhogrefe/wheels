@@ -3399,6 +3399,108 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextDoubleUniform);
     }
 
+    public float nextFromRangeUp(float a) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> rangeUp(float a) {
+        return null;
+    }
+
+    public float nextFromRangeDown(float a) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> rangeDown(float a) {
+        return null;
+    }
+
+    public float nextFromRange(float a, float b) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Float> range(float a, float b) {
+        return null;
+    }
+
+    public double nextFromRangeUp(double a) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> rangeUp(double a) {
+        return null;
+    }
+
+    public double nextFromRangeDown(double a) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> rangeDown(double a) {
+        return null;
+    }
+
+    public double nextFromRange(double a, double b) {
+        return 0.0f;
+    }
+
+    @Override
+    public @NotNull Iterable<Double> range(double a, double b) {
+        return null;
+    }
+
+    public float nextFromRangeUpUniform(float a) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Float> rangeUpUniform(float a) {
+        return null;
+    }
+
+    public float nextFromRangeDownUniform(float a) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Float> rangeDownUniform(float a) {
+        return null;
+    }
+
+    public float nextFromRangeUniform(float a, float b) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Float> rangeUniform(float a, float b) {
+        return null;
+    }
+
+    public double nextFromRangeUpUniform(double a) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Double> rangeUpUniform(double a) {
+        return null;
+    }
+
+    public double nextFromRangeDownUniform(double a) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Double> rangeDownUniform(double a) {
+        return null;
+    }
+
+    public double nextFromRangeUniform(double a, double b) {
+        return 0.0f;
+    }
+
+    public @NotNull Iterable<Double> rangeUniform(double a, double b) {
+        return null;
+    }
+
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
