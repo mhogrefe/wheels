@@ -44,12 +44,12 @@ public final strictfp class FloatingPointUtils {
     /**
      * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}, or 2<sup>277</sup>–2<sup>253</sup>
      */
-    public static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE);
+    public static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE).get();
 
     /**
      * {@link Double#MAX_VALUE} divided by {@link Double#MIN_VALUE}, or 2<sup>2098</sup>–2<sup>2045</sup>
      */
-    public static final @NotNull BigInteger SCALED_UP_MAX_DOUBLE = scaleUp(Double.MAX_VALUE);
+    public static final @NotNull BigInteger SCALED_UP_MAX_DOUBLE = scaleUp(Double.MAX_VALUE).get();
 
     /**
      * Disallow instantiation
@@ -329,34 +329,36 @@ public final strictfp class FloatingPointUtils {
     }
 
     /**
-     * Return how many multiples of {@link Float#MIN_VALUE} a given {@code float} is.
+     * Return how many multiples of {@link Float#MIN_VALUE} a given {@code float} is. Returns an empty result if
+     * {@code f} is infinite or {@code NaN}.
      *
      * <ul>
-     *  <li>{@code f} cannot be infinite or {@code NaN}.</li>
-     *  <li>The result is a {@code BigInteger} whose absolute value is less than or equal to
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result is empty or a {@code BigInteger} whose absolute value is less than or equal to
      *  {@link FloatingPointUtils#SCALED_UP_MAX_FLOAT}.</li>
      * </ul>
      *
      * @param f a {@code float}
      * @return {@code f}/{@code Float.MIN_VALUE}
      */
-    private static @NotNull BigInteger scaleUp(float f) {
-        return BinaryFraction.of(f).get().shiftRight(MIN_SUBNORMAL_FLOAT_EXPONENT).bigIntegerValueExact();
+    public static @NotNull Optional<BigInteger> scaleUp(float f) {
+        return BinaryFraction.of(f).map(bf -> bf.shiftRight(MIN_SUBNORMAL_FLOAT_EXPONENT).bigIntegerValueExact());
     }
 
     /**
-     * Return how many multiples of {@link Double#MIN_VALUE} a given {@code double} is.
+     * Return how many multiples of {@link Double#MIN_VALUE} a given {@code double} is. Returns an empty result if
+     * {@code d} is infinite or {@code NaN}.
      *
      * <ul>
-     *  <li>{@code d} cannot be infinite or {@code NaN}.</li>
-     *  <li>The result is a {@code BigInteger} whose absolute value is less than or equal to
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result is empty or a {@code BigInteger} whose absolute value is less than or equal to
      *  {@link FloatingPointUtils#SCALED_UP_MAX_DOUBLE}.</li>
      * </ul>
      *
      * @param d a {@code double}
      * @return {@code d}/{@code Double.MIN_VALUE}
      */
-    private static @NotNull BigInteger scaleUp(double d) {
-        return BinaryFraction.of(d).get().shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT).bigIntegerValueExact();
+    public static @NotNull Optional<BigInteger> scaleUp(double d) {
+        return BinaryFraction.of(d).map(bf -> bf.shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT).bigIntegerValueExact());
     }
 }
