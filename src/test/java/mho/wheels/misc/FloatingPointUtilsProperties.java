@@ -3,10 +3,13 @@ package mho.wheels.misc;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.math.BinaryFraction;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -49,6 +52,8 @@ public class FloatingPointUtilsProperties {
             propertiesToMantissaAndExponent_double();
             propertiesAbsNegativeZeros_float();
             propertiesAbsNegativeZeros_double();
+            propertiesScaleUp_float();
+            propertiesScaleUp_double();
         }
         System.out.println("Done");
     }
@@ -246,6 +251,46 @@ public class FloatingPointUtilsProperties {
 
         for (double d : take(LIMIT, filter(e -> !isNegativeZero(e), P.doubles()))) {
             assertEquals(d, d, absNegativeZeros(d));
+        }
+    }
+
+    private static void propertiesScaleUp_float() {
+        initialize("scaleUp(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            scaleUp(f);
+        }
+
+        for (float f : take(LIMIT, filter(Float::isFinite, P.floats()))) {
+            BigInteger scaled = scaleUp(f).get();
+            assertTrue(f, Ordering.le(scaled.abs(), SCALED_UP_MAX_FLOAT));
+        }
+
+        for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !isNegativeZero(g), P.floats()))) {
+            inverses(
+                    g -> scaleUp(g).get(),
+                    (BigInteger i) -> BinaryFraction.of(i, MIN_SUBNORMAL_FLOAT_EXPONENT).floatRange().a,
+                    f
+            );
+        }
+    }
+
+    private static void propertiesScaleUp_double() {
+        initialize("scaleUp(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            scaleUp(d);
+        }
+
+        for (double d : take(LIMIT, filter(Double::isFinite, P.doubles()))) {
+            BigInteger scaled = scaleUp(d).get();
+            assertTrue(d, Ordering.le(scaled.abs(), SCALED_UP_MAX_DOUBLE));
+        }
+
+        for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !isNegativeZero(e), P.doubles()))) {
+            inverses(
+                    e -> scaleUp(e).get(),
+                    (BigInteger i) -> BinaryFraction.of(i, MIN_SUBNORMAL_DOUBLE_EXPONENT).doubleRange().a,
+                    d
+            );
         }
     }
 }
