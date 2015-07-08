@@ -3149,6 +3149,18 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextDouble);
     }
 
+    /**
+     * Returns a randomly-generated positive finite {@code float}, as if a real were sampled from a uniform
+     * distribution between {@code Float.MIN_VALUE} and {@code Float.MAX_VALUE} and then rounded to the nearest
+     * {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive and finite.</li>
+     * </ul>
+     *
+     * @return a positive, finite {@code float}
+     */
     public float nextPositiveFloatUniform() {
         BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_FLOAT);
         Pair<Float, Float> range = BinaryFraction.of(
@@ -3158,30 +3170,86 @@ public final strictfp class RandomProvider extends IterableProvider {
         return nextBoolean() ? range.a : range.b;
     }
 
+    /**
+     * An {@code Iterable} that generates all positive finite {@code Float}s, as if reals were sampled from a uniform
+     * distribution between {@code Float.MIN_VALUE} and {@code Float.MAX_VALUE} and then rounded to the nearest
+     * {@code float}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> positiveFloatsUniform() {
         return fromSupplier(this::nextPositiveFloatUniform);
     }
 
+    /**
+     * Returns a randomly-generated negative finite {@code float}, as if a real were sampled from a uniform
+     * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE} and then rounded to the nearest
+     * {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative and finite.</li>
+     * </ul>
+     *
+     * @return a negative, finite {@code float}
+     */
     public float nextNegativeFloatUniform() {
         return -nextPositiveFloatUniform();
     }
 
+    /**
+     * An {@code Iterable} that generates all negative finite {@code Float}s, as if reals were sampled from a uniform
+     * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE} and then rounded to the nearest
+     * {@code float}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> negativeFloatsUniform() {
         return map(f -> -f, positiveFloatsUniform());
     }
 
+    /**
+     * Returns a randomly-generated nonzero finite {@code float}, as if a real were sampled from a uniform
+     * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MAX_VALUE}, rounded to the nearest
+     * {@code float}, and resampled if zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is nonzero and finite.</li>
+     * </ul>
+     *
+     * @return a nonzero, finite {@code float}
+     */
     public float nextNonzeroFloatUniform() {
         float f = nextPositiveFloatUniform();
         return nextBoolean() ? f : -f;
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero finite {@code Float}s, as if reals were sampled from a uniform
+     * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE}, rounded to the nearest
+     * {@code float}s, and resampled if zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> nonzeroFloatsUniform() {
         return fromSupplier(this::nextNonzeroFloatUniform);
     }
 
+    /**
+     * Returns a randomly-generated finite {@code float}, as if a real were sampled from a uniform distribution between
+     * {@code -Float.MAX_VALUE} and {@code Float.MAX_VALUE} and then rounded to the nearest {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @return a finite, not-negative-zero {@code float}
+     */
     public float nextFloatUniform() {
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(),
@@ -3194,11 +3262,30 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all finite {@code Float}s except for negative zero, as if reals were sampled
+     * from a uniform distribution between {@code -Float.MAX_VALUE} and {@code Float.MAX_VALUE} and rounded to the
+     * nearest {@code float}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Float> floatsUniform() {
         return fromSupplier(this::nextFloatUniform);
     }
 
+    /**
+     * Returns a randomly-generated positive finite {@code double}, as if a real were sampled from a uniform
+     * distribution between {@code Double.MIN_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest
+     * {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is positive and finite.</li>
+     * </ul>
+     *
+     * @return a positive, finite {@code double}
+     */
     public double nextPositiveDoubleUniform() {
         BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_DOUBLE);
         Pair<Double, Double> range = BinaryFraction.of(
@@ -3208,30 +3295,86 @@ public final strictfp class RandomProvider extends IterableProvider {
         return nextBoolean() ? range.a : range.b;
     }
 
+    /**
+     * An {@code Iterable} that generates all positive finite {@code Double}s, as if reals were sampled from a uniform
+     * distribution between {@code Double.MIN_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest
+     * {@code double}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> positiveDoublesUniform() {
         return fromSupplier(this::nextPositiveDoubleUniform);
     }
 
+    /**
+     * Returns a randomly-generated negative finite {@code double}, as if a real were sampled from a uniform
+     * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE} and then rounded to the nearest
+     * {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is negative and finite.</li>
+     * </ul>
+     *
+     * @return a negative, finite {@code double}
+     */
     public double nextNegativeDoubleUniform() {
         return -nextPositiveDoubleUniform();
     }
 
+    /**
+     * An {@code Iterable} that generates all negative finite {@code Double}s, as if reals were sampled from a uniform
+     * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE} and then rounded to the nearest
+     * {@code double}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> negativeDoublesUniform() {
         return map(d -> -d, positiveDoublesUniform());
     }
 
+    /**
+     * Returns a randomly-generated nonzero finite {@code double}, as if a real were sampled from a uniform
+     * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MAX_VALUE}, rounded to the nearest
+     * {@code double}, and resampled if zero.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is nonzero and finite.</li>
+     * </ul>
+     *
+     * @return a nonzero, finite {@code double}
+     */
     public double nextNonzeroDoubleUniform() {
         double d = nextPositiveDoubleUniform();
         return nextBoolean() ? d : -d;
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero finite {@code Double}s, as if reals were sampled from a uniform
+     * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE}, rounded to the nearest
+     * {@code double}s, and resampled if zero. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> nonzeroDoublesUniform() {
         return fromSupplier(this::nextNonzeroDoubleUniform);
     }
 
+    /**
+     * Returns a randomly-generated finite {@code double}, as if a real were sampled from a uniform distribution
+     * between {@code -Double.MAX_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @return a finite, not-negative-zero {@code double}
+     */
     public double nextDoubleUniform() {
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.SCALED_UP_MAX_DOUBLE.negate(),
@@ -3244,6 +3387,13 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all finite {@code Double}s except for negative zero, as if reals were sampled
+     * from a uniform distribution between {@code -Double.MAX_VALUE} and {@code Double.MAX_VALUE} and rounded to the
+     * nearest {@code double}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<Double> doublesUniform() {
         return fromSupplier(this::nextDoubleUniform);
