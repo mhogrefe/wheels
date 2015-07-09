@@ -42,6 +42,16 @@ public final strictfp class FloatingPointUtils {
     public static final int MIN_SUBNORMAL_DOUBLE_EXPONENT = Double.MIN_EXPONENT - DOUBLE_FRACTION_WIDTH;
 
     /**
+     * The number of positive, finite {@code float}s
+     */
+    public static final int POSITIVE_FINITE_FLOAT_COUNT = Integer.MAX_VALUE - (1 << FLOAT_FRACTION_WIDTH);
+
+    /**
+     * The number of positive, finite {@code double}s
+     */
+    public static final long POSITIVE_FINITE_DOUBLE_COUNT = Long.MAX_VALUE - (1L << DOUBLE_FRACTION_WIDTH);
+
+    /**
      * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}, or 2<sup>277</sup>–2<sup>253</sup>
      */
     public static final @NotNull BigInteger SCALED_UP_MAX_FLOAT = scaleUp(Float.MAX_VALUE).get();
