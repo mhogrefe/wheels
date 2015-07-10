@@ -225,13 +225,33 @@ public final strictfp class FloatingPointUtils {
      */
     public static int toOrderedRepresentation(float f) {
         if (Float.isNaN(f)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("f cannot be NaN.");
         }
         if (f >= 0) {
             return Float.floatToIntBits(f);
         } else {
             return -Float.floatToIntBits(-f);
         }
+    }
+
+    /**
+     * The inverse of {@link FloatingPointUtils#toOrderedRepresentation(float)}.
+     *
+     * <ul>
+     *  <li>{@code n} must have an absolute value less than or equal to 2<sup>31</sup>–2<sup>23</sup>.</li>
+     *  <li>The result is not {@code NaN}.</li>
+     * </ul>
+     *
+     * @param n an {@code int} being used to represent a {@code float}
+     * @return the {@code float}
+     */
+    public static float floatFromOrderedRepresentation(int n) {
+        float f = n >= 0 ? Float.intBitsToFloat(n) : -Float.intBitsToFloat(-n);
+        if (Float.isNaN(f)) {
+            throw new ArithmeticException("n must have an absolute value less than or equal to 2^31-2^23. Invalid" +
+                    " n: " + n);
+        }
+        return f;
     }
 
     /**
@@ -249,13 +269,33 @@ public final strictfp class FloatingPointUtils {
      */
     public static long toOrderedRepresentation(double d) {
         if (Double.isNaN(d)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("d cannot be NaN.");
         }
         if (d >= 0) {
             return Double.doubleToLongBits(d);
         } else {
             return -Double.doubleToLongBits(-d);
         }
+    }
+
+    /**
+     * The inverse of {@link FloatingPointUtils#toOrderedRepresentation(double)}.
+     *
+     * <ul>
+     *  <li>{@code n} must have an absolute value less than or equal to 2<sup>63</sup>–2<sup>52</sup>.</li>
+     *  <li>The result is not {@code NaN}.</li>
+     * </ul>
+     *
+     * @param n a {@code long} being used to represent a {@code double}
+     * @return the {@code double}
+     */
+    public static double doubleFromOrderedRepresentation(long n) {
+        double d = n >= 0 ? Double.longBitsToDouble(n) : -Double.longBitsToDouble(-n);
+        if (Double.isNaN(d)) {
+            throw new ArithmeticException("n must have an absolute value less than or equal to 2^63-2^52. Invalid" +
+                    " n: " + n);
+        }
+        return d;
     }
 
     /**
