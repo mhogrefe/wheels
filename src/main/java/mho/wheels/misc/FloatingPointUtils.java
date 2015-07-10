@@ -42,14 +42,14 @@ public final strictfp class FloatingPointUtils {
     public static final int MIN_SUBNORMAL_DOUBLE_EXPONENT = Double.MIN_EXPONENT - DOUBLE_FRACTION_WIDTH;
 
     /**
-     * The number of positive, finite {@code float}s
+     * The number of positive, finite {@code float}s, or 2<sup>31</sup>–2<sup>23</sup>–1
      */
-    public static final int POSITIVE_FINITE_FLOAT_COUNT = Integer.MAX_VALUE - (1 << FLOAT_FRACTION_WIDTH);
+    public static final int POSITIVE_FINITE_FLOAT_COUNT = Float.floatToIntBits(Float.MAX_VALUE);
 
     /**
-     * The number of positive, finite {@code double}s
+     * The number of positive, finite {@code double}s, or 2<sup>63</sup>–2<sup>52</sup>–1
      */
-    public static final long POSITIVE_FINITE_DOUBLE_COUNT = Long.MAX_VALUE - (1L << DOUBLE_FRACTION_WIDTH);
+    public static final long POSITIVE_FINITE_DOUBLE_COUNT = Double.doubleToRawLongBits(Double.MAX_VALUE);
 
     /**
      * {@link Float#MAX_VALUE} divided by {@link Float#MIN_VALUE}, or 2<sup>277</sup>–2<sup>253</sup>
@@ -208,6 +208,54 @@ public final strictfp class FloatingPointUtils {
         if (d == 0.0) return -Double.MIN_VALUE;
         long doubleBits = Double.doubleToLongBits(d);
         return Double.longBitsToDouble(d > 0 ? doubleBits - 1 : doubleBits + 1);
+    }
+
+    /**
+     * Maps a {@code float} to an {@code int} in a way that adjacent {@code float}s correspond to adjacent {@code int}s
+     * and ordering is preserved. The {@code float} may be infinite, but may not be {@code NaN}. Positive and negative
+     * zeros both map to 0.
+     *
+     * <ul>
+     *  <li>{@code f} cannot be {@code NaN}.</li>
+     *  <li>The result has an absolute value less than or equal to 2<sup>31</sup>–2<sup>23</sup>.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return an {@code int} value that may be used to represent {@code f}
+     */
+    public static int toOrderedRepresentation(float f) {
+        if (Float.isNaN(f)) {
+            throw new ArithmeticException();
+        }
+        if (f >= 0) {
+            return Float.floatToIntBits(f);
+        } else {
+            return -Float.floatToIntBits(-f);
+        }
+    }
+
+    /**
+     * Maps a {@code double} to an {@code long} in a way that adjacent {@code double}s correspond to adjacent
+     * {@code long}s and ordering is preserved. The {@code double} may be infinite, but may not be {@code NaN}.
+     * Positive and negative zeros both map to 0.
+     *
+     * <ul>
+     *  <li>{@code d} cannot be {@code NaN}.</li>
+     *  <li>The result has an absolute value less than or equal to 2<sup>63</sup>–2<sup>52</sup>.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return an {@code long} value that may be used to represent {@code f}
+     */
+    public static long toOrderedRepresentation(double d) {
+        if (Double.isNaN(d)) {
+            throw new ArithmeticException();
+        }
+        if (d >= 0) {
+            return Double.doubleToLongBits(d);
+        } else {
+            return -Double.doubleToLongBits(-d);
+        }
     }
 
     /**
