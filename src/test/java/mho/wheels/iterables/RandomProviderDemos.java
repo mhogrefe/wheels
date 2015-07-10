@@ -810,7 +810,7 @@ public class RandomProviderDemos {
 
     private static void demoNextNegativeIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -966,7 +966,7 @@ public class RandomProviderDemos {
 
     private static void demoNextNegativeBigInteger() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );

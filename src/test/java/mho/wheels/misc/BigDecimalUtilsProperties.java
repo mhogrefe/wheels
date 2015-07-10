@@ -43,13 +43,11 @@ public class BigDecimalUtilsProperties {
     private static void propertiesSetPrecision() {
         System.out.println("\t\ttesting setPrecision(BigDecimal, int) properties...");
 
-        Iterable<Pair<BigDecimal, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
-        } else {
-            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
-        }
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, IterableUtils.filter(q -> ne(q.a, BigDecimal.ZERO), ps))) {
+        Iterable<Pair<BigDecimal, Integer>> ps = filterInfinite(
+                q -> ne(q.a, BigDecimal.ZERO),
+                P.pairsSquareRootOrder(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric())
+        );
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             BigDecimal bd = setPrecision(p.a, p.b);
             assertEquals(p.toString(), bd.precision(), (int) p.b);
             assertTrue(p.toString(), ne(bd, BigDecimal.ZERO));
@@ -72,7 +70,7 @@ public class BigDecimalUtilsProperties {
             assertTrue(p.toString(), eq(bd, BigDecimal.ZERO));
         }
 
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, filter(q -> q.b > 1, zeroPs))) {
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, filterInfinite(q -> q.b > 1, zeroPs))) {
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
                     p.toString(),

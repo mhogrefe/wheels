@@ -1380,6 +1380,7 @@ public final class MathUtils {
     }
 
     public static @NotNull Iterable<Integer> intPrimes() {
+        @SuppressWarnings("ConstantConditions")
         int start = (PRIME_SIEVE_SIZE & 1) == 0 ? PRIME_SIEVE_SIZE + 1 : PRIME_SIEVE_SIZE;
         return concat(
                 filter(PRIME_SIEVE::get, range(2, PRIME_SIEVE_SIZE - 1)),
@@ -1396,6 +1397,6 @@ public final class MathUtils {
                 rangeUp(BigInteger.valueOf(PRIME_SIEVE_SIZE / 6))
         );
         //noinspection Convert2MethodRef
-        return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filter(MathUtils::isPrime, candidates));
+        return concat(map(i -> BigInteger.valueOf(i), intPrimes()), filterInfinite(MathUtils::isPrime, candidates));
     }
 }

@@ -51,7 +51,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoOf_BigInteger_int() {
         initialize();
-        Iterable<Pair<BigInteger, Integer>> ps = filter(
+        Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
                 p -> (long) p.b + p.a.getLowestSetBit() < Integer.MAX_VALUE,
                 P.pairs(P.bigIntegers(), P.integers())
         );
@@ -125,7 +125,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoAdd() {
         initialize();
-        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     try {
                         p.a.add(p.b);
@@ -164,7 +164,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoSubtract() {
         initialize();
-        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     try {
                         p.a.subtract(p.b);
@@ -182,7 +182,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoMultiply() {
         initialize();
-        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filter(
+        Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
                     long productExponent = (long) p.a.getExponent() + p.b.getExponent();
                     return productExponent <= Integer.MAX_VALUE && productExponent >= Integer.MIN_VALUE;
@@ -196,7 +196,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoShiftLeft() {
         initialize();
-        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+        Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
                     long shiftedExponent = (long) p.a.getExponent() + p.b;
                     return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;
@@ -210,7 +210,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoShiftRight() {
         initialize();
-        Iterable<Pair<BinaryFraction, Integer>> ps = filter(
+        Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
                     long shiftedExponent = (long) p.a.getExponent() - p.b;
                     return shiftedExponent <= Integer.MAX_VALUE && shiftedExponent >= Integer.MIN_VALUE;

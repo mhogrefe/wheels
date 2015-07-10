@@ -1962,14 +1962,14 @@ public class MathUtilsProperties {
                     map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filterInfinite(p -> all(i -> lt(i, p.b), p.a), unfilteredPs);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
             BigInteger n = fromDigits(p.b, p.a);
             assertEquals(p, n, fromBigEndianDigits(p.b, reverse(p.a)));
             assertNotEquals(p, n.signum(), -1);
         }
 
-        ps = filter(p -> p.a.isEmpty() || !last(p.a).equals(BigInteger.ZERO), ps);
+        ps = filterInfinite(p -> p.a.isEmpty() || !last(p.a).equals(BigInteger.ZERO), ps);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, ps)) {
             BigInteger n = fromDigits(p.b, p.a);
             aeqit(p, p.a, digits(p.b, n));
@@ -1989,7 +1989,10 @@ public class MathUtilsProperties {
                 P.lists(P.bigIntegers()),
                 P.rangeDown(BigInteger.ONE)
         );
-        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filter(p -> all(i -> lt(i, p.b), p.a), unfilteredPsFail);
+        Iterable<Pair<List<BigInteger>, BigInteger>> psFail = filterInfinite(
+                p -> all(i -> lt(i, p.b), p.a),
+                unfilteredPsFail
+        );
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromDigits(p.b, p.a);
@@ -1998,7 +2001,7 @@ public class MathUtilsProperties {
         }
 
         unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(BigInteger.valueOf(2)));
-        psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
+        psFail = filterInfinite(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromDigits(p.b, p.a);
@@ -2006,7 +2009,7 @@ public class MathUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = filter(p -> any(i -> ge(i, p.b), p.a), unfilteredPsFail);
+        psFail = filterInfinite(p -> any(i -> ge(i, p.b), p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 fromDigits(p.b, p.a);
@@ -2580,7 +2583,10 @@ public class MathUtilsProperties {
             } catch (NullPointerException ignored) {}
         }
 
-        Iterable<List<BigInteger>> isFail = filter(is -> any(i -> i.signum() == -1, is), P.lists(P.bigIntegers()));
+        Iterable<List<BigInteger>> isFail = filterInfinite(
+                is -> any(i -> i.signum() == -1, is),
+                P.lists(P.bigIntegers())
+        );
         for (List<BigInteger> is : take(LIMIT, isFail)) {
             try {
                 mux(is);

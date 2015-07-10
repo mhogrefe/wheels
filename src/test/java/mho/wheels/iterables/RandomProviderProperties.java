@@ -1565,7 +1565,7 @@ public class RandomProviderProperties {
 
     private static void propertiesIntegersGeometric() {
         initialize("integersGeometric()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1575,7 +1575,10 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, is, rp::nextIntGeometric);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.integersGeometric();
@@ -1593,7 +1596,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextIntGeometricFromRangeUp() {
         initialize("nextIntGeometricFromRangeUp(int)");
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1602,7 +1605,7 @@ public class RandomProviderProperties {
             assertTrue(p, i >= p.b);
         }
 
-        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b || p.b < 1 && p.a.getScale() >= Integer.MAX_VALUE + p.b,
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1616,7 +1619,7 @@ public class RandomProviderProperties {
 
     private static void propertiesRangeUpGeometric() {
         initialize("rangeUpGeometric(int)");
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1626,7 +1629,7 @@ public class RandomProviderProperties {
             supplierEquivalence(p.a, is, () -> p.a.nextIntGeometricFromRangeUp(p.b));
         }
 
-        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() <= p.b || p.b < 1 && p.a.getScale() >= Integer.MAX_VALUE + p.b,
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1640,7 +1643,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextIntGeometricFromRangeDown() {
         initialize("nextIntGeometricFromRangeDown(int)");
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1649,7 +1652,7 @@ public class RandomProviderProperties {
             assertTrue(p, i <= p.b);
         }
 
-        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() >= p.b || p.b > -1 && p.a.getScale() <= p.b - Integer.MAX_VALUE,
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1663,7 +1666,7 @@ public class RandomProviderProperties {
 
     private static void propertiesRangeDownGeometric() {
         initialize("rangeDownGeometric(int)");
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1673,7 +1676,7 @@ public class RandomProviderProperties {
             supplierEquivalence(p.a, is, () -> p.a.nextIntGeometricFromRangeDown(p.b));
         }
 
-        Iterable<Pair<RandomProvider, Integer>> psFail = filter(
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
                 p -> p.a.getScale() >= p.b || p.b > -1 && p.a.getScale() <= p.b - Integer.MAX_VALUE,
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -1687,13 +1690,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextPositiveBigInteger() {
         initialize("nextPositiveBigInteger()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             BigInteger i = rp.nextPositiveBigInteger();
             assertEquals(rp, i.signum(), 1);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextPositiveBigInteger();
@@ -1704,14 +1713,20 @@ public class RandomProviderProperties {
 
     private static void propertiesPositiveBigIntegers() {
         initialize("positiveBigIntegers()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.positiveBigIntegers();
             simpleTest(rp, is, i -> i.signum() == 1);
             supplierEquivalence(rp, is, rp::nextPositiveBigInteger);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveBigIntegers();
@@ -1722,13 +1737,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNegativeBigInteger() {
         initialize("nextNegativeBigInteger()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             BigInteger i = rp.nextNegativeBigInteger();
             assertEquals(rp, i.signum(), -1);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNegativeBigInteger();
@@ -1739,14 +1760,20 @@ public class RandomProviderProperties {
 
     private static void propertiesNegativeBigIntegers() {
         initialize("negativeBigIntegers()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.negativeBigIntegers();
             simpleTest(rp, is, i -> i.signum() == -1);
             supplierEquivalence(rp, is, rp::nextNegativeBigInteger);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeBigIntegers();
@@ -1757,7 +1784,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNaturalBigInteger() {
         initialize("nextNaturalBigInteger()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1766,7 +1793,10 @@ public class RandomProviderProperties {
             assertNotEquals(rp, i.signum(), -1);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNaturalBigInteger();
@@ -1784,7 +1814,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNaturalBigIntegers() {
         initialize("naturalBigIntegers()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1794,7 +1824,10 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, is, rp::nextNaturalBigInteger);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.naturalBigIntegers();
@@ -1812,13 +1845,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNonzeroBigInteger() {
         initialize("nextNonzeroBigInteger()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             BigInteger i = rp.nextNonzeroBigInteger();
             assertNotEquals(rp, i, BigInteger.ZERO);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNonzeroBigInteger();
@@ -1829,14 +1868,20 @@ public class RandomProviderProperties {
 
     private static void propertiesNonzeroBigIntegers() {
         initialize("nonzeroBigIntegers()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigInteger> is = rp.nonzeroBigIntegers();
             simpleTest(rp, is, i -> !i.equals(BigInteger.ZERO));
             supplierEquivalence(rp, is, rp::nextNonzeroBigInteger);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroBigIntegers();
@@ -1847,7 +1892,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextBigInteger() {
         initialize("nextBigInteger()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1855,7 +1900,10 @@ public class RandomProviderProperties {
             rp.nextBigInteger();
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextBigInteger();
@@ -1873,7 +1921,7 @@ public class RandomProviderProperties {
 
     private static void propertiesBigIntegers() {
         initialize("bigIntegers()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1883,7 +1931,10 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, is, rp::nextBigInteger);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.bigIntegers();
@@ -1901,7 +1952,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextFromRangeUp_BigInteger() {
         initialize("nextFromRangeUp(BigInteger)");
-        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
@@ -1913,7 +1964,7 @@ public class RandomProviderProperties {
             assertTrue(p, ge(i, p.b));
         }
 
-        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
@@ -1930,7 +1981,7 @@ public class RandomProviderProperties {
 
     private static void propertiesRangeUp_BigInteger() {
         initialize("rangeUp(BigInteger)");
-        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
@@ -1943,7 +1994,7 @@ public class RandomProviderProperties {
             supplierEquivalence(p.a, is, () -> p.a.nextFromRangeUp(p.b));
         }
 
-        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
@@ -1960,7 +2011,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextFromRangeDown_BigInteger() {
         initialize("nextFromRangeDown(BigInteger)");
-        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
@@ -1972,7 +2023,7 @@ public class RandomProviderProperties {
             assertTrue(p, le(i, p.b));
         }
 
-        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
@@ -1989,7 +2040,7 @@ public class RandomProviderProperties {
 
     private static void propertiesRangeDown_BigInteger() {
         initialize("rangeDown(BigInteger)");
-        Iterable<Pair<RandomProvider, BigInteger>> ps = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
@@ -2002,7 +2053,7 @@ public class RandomProviderProperties {
             supplierEquivalence(p.a, is, () -> p.a.nextFromRangeDown(p.b));
         }
 
-        Iterable<Pair<RandomProvider, BigInteger>> psFail = filter(
+        Iterable<Pair<RandomProvider, BigInteger>> psFail = filterInfinite(
                 p -> {
                     int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
                     return p.a.getScale() <= minBitLength || minBitLength != 0 && p.a.getScale() == Integer.MAX_VALUE;
@@ -2019,7 +2070,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextPositiveBinaryFraction() {
         initialize("nextPositiveBinaryFraction()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2029,14 +2080,14 @@ public class RandomProviderProperties {
             assertEquals(rp, bf.signum(), 1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.nextPositiveBinaryFraction();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nextPositiveBinaryFraction();
                 fail(rp);
@@ -2046,7 +2097,7 @@ public class RandomProviderProperties {
 
     private static void propertiesPositiveBinaryFractions() {
         initialize("positiveBinaryFractions()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2058,14 +2109,14 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, bfs, rp::nextPositiveBinaryFraction);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.positiveBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.positiveBinaryFractions();
                 fail(rp);
@@ -2075,7 +2126,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNegativeBinaryFraction() {
         initialize("nextNegativeBinaryFraction()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2085,14 +2136,14 @@ public class RandomProviderProperties {
             assertEquals(rp, bf.signum(), -1);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.nextNegativeBinaryFraction();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nextNegativeBinaryFraction();
                 fail(rp);
@@ -2102,7 +2153,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNegativeBinaryFractions() {
         initialize("negativeBinaryFractions()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2114,14 +2165,14 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, bfs, rp::nextNegativeBinaryFraction);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.negativeBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.negativeBinaryFractions();
                 fail(rp);
@@ -2131,7 +2182,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNonzeroBinaryFraction() {
         initialize("nextNonzeroBinaryFraction()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2141,14 +2192,14 @@ public class RandomProviderProperties {
             assertTrue(rp, bf != BinaryFraction.ZERO);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.nextNonzeroBinaryFraction();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nextNonzeroBinaryFraction();
                 fail(rp);
@@ -2158,7 +2209,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNonzeroBinaryFractions() {
         initialize("nonzeroBinaryFractions()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
@@ -2170,14 +2221,14 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, bfs, rp::nextNonzeroBinaryFraction);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 2, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.nonzeroBinaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nonzeroBinaryFractions();
                 fail(rp);
@@ -2187,20 +2238,23 @@ public class RandomProviderProperties {
 
     private static void propertiesNextBinaryFraction() {
         initialize("nextBinaryFraction()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             BinaryFraction bf = rp.nextBinaryFraction();
             bf.validate();
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
             try {
                 rp.nextBinaryFraction();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.nextBinaryFraction();
                 fail(rp);
@@ -2210,7 +2264,10 @@ public class RandomProviderProperties {
 
     private static void propertiesBinaryFractions() {
         initialize("binaryFractions()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BinaryFraction> bfs = rp.binaryFractions();
             rp.reset();
@@ -2219,14 +2276,14 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, bfs, rp::nextBinaryFraction);
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
             try {
                 rp.binaryFractions();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
 
-        for (RandomProvider rp : take(LIMIT, filter(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.binaryFractions();
                 fail(rp);
@@ -2237,7 +2294,7 @@ public class RandomProviderProperties {
     private static void propertiesNextFromRangeUp_BinaryFraction() {
         initialize("nextFromRangeUp(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -2246,7 +2303,7 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filter(x -> x.getScale() < 1,
+                filterInfinite(x -> x.getScale() < 1,
                 P.randomProviders()), P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -2256,7 +2313,7 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.nextFromRangeUp(p.b);
@@ -2268,7 +2325,7 @@ public class RandomProviderProperties {
     private static void propertiesRangeUp_BinaryFraction() {
         initialize("rangeUp(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -2278,7 +2335,7 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filter(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -2288,7 +2345,7 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeUp(p.b);
@@ -2300,7 +2357,7 @@ public class RandomProviderProperties {
     private static void propertiesNextFromRangeDown_BinaryFraction() {
         initialize("nextFromRangeDown(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -2309,7 +2366,7 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filter(x -> x.getScale() < 1,
+                filterInfinite(x -> x.getScale() < 1,
                 P.randomProviders()), P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -2319,7 +2376,7 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.nextFromRangeDown(p.b);
@@ -2331,7 +2388,7 @@ public class RandomProviderProperties {
     private static void propertiesRangeDown_BinaryFraction() {
         initialize("rangeDown(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
-                filter(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
@@ -2341,7 +2398,7 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filter(x -> x.getScale() < 1, P.randomProviders()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
                 P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
@@ -2351,7 +2408,7 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        psFail = P.pairs(filter(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.binaryFractions());
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
                 p.a.rangeDown(p.b);
@@ -2362,10 +2419,10 @@ public class RandomProviderProperties {
 
     private static void propertiesNextFromRange_BinaryFraction_BinaryFraction() {
         initialize("nextFromRange(BinaryFraction, BinaryFraction)");
-        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filter(
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filter(
+                        filterInfinite(
                                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                                 P.randomProvidersDefaultSecondaryScale()
                         ),
@@ -2384,10 +2441,10 @@ public class RandomProviderProperties {
             assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
         }
 
-        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = filter(
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
                         P.binaryFractions(),
                         P.binaryFractions()
                 )
@@ -2399,7 +2456,7 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        tsFail = filter(
+        tsFail = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(P.randomProvidersDefault(), P.binaryFractions(), P.binaryFractions())
         );
@@ -2410,10 +2467,10 @@ public class RandomProviderProperties {
             } catch (IllegalStateException ignored) {}
         }
 
-        tsFail = filter(
+        tsFail = filterInfinite(
                 t -> gt(t.b, t.c),
                 P.triples(
-                        filter(
+                        filterInfinite(
                                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                                 P.randomProvidersDefaultSecondaryScale()
                         ),
@@ -2433,7 +2490,7 @@ public class RandomProviderProperties {
         initialize("range(BinaryFraction, BinaryFraction)");
 
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
-                filter(
+                filterInfinite(
                         x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                         P.randomProvidersDefaultSecondaryScale()
                 ),
@@ -2456,7 +2513,7 @@ public class RandomProviderProperties {
         }
 
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> tsFail = P.triples(
-                filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
                 P.binaryFractions(),
                 P.binaryFractions()
         );

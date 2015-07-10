@@ -333,7 +333,7 @@ public class MathUtilsDemos {
                     map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filterInfinite(
                 p -> all((BigInteger i) -> lt(i, p.b), p.a),
                 unfilteredPs
         );
@@ -377,7 +377,7 @@ public class MathUtilsDemos {
                     map(i -> BigInteger.valueOf(i + 2), P.withScale(20).naturalIntegersGeometric())
             );
         }
-        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filter(
+        Iterable<Pair<List<BigInteger>, BigInteger>> ps = filterInfinite(
                 p -> all((BigInteger i) -> lt(i, p.b), p.a),
                 unfilteredPs
         );
