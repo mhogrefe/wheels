@@ -228,7 +228,7 @@ public final strictfp class FloatingPointUtils {
             throw new ArithmeticException("f cannot be NaN.");
         }
         if (f >= 0) {
-            return Float.floatToIntBits(f);
+            return Float.floatToIntBits(absNegativeZeros(f));
         } else {
             return -Float.floatToIntBits(-f);
         }
@@ -272,7 +272,7 @@ public final strictfp class FloatingPointUtils {
             throw new ArithmeticException("d cannot be NaN.");
         }
         if (d >= 0) {
-            return Double.doubleToLongBits(d);
+            return Double.doubleToLongBits(absNegativeZeros(d));
         } else {
             return -Double.doubleToLongBits(-d);
         }
