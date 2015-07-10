@@ -237,7 +237,8 @@ public class RandomProviderProperties {
             assertEquals(is, rp.getSecondaryScale(), 8);
         }
 
-        for (List<Integer> is : take(LIMIT, filter(js -> js.size() != IsaacPRNG.SIZE, P.lists(P.integers())))) {
+        Iterable<List<Integer>> isFail = filterInfinite(js -> js.size() != IsaacPRNG.SIZE, P.lists(P.integers()));
+        for (List<Integer> is : take(LIMIT, isFail)) {
             try {
                 new RandomProvider(is);
                 fail(is);
@@ -1110,7 +1111,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextFromRange_byte_byte() {
         initialize("nextFromRange(byte, byte)");
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filter(
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
         );
@@ -1144,7 +1145,7 @@ public class RandomProviderProperties {
     
     private static void propertiesNextFromRange_short_short() {
         initialize("nextFromRange(short, short)");
-        Iterable<Triple<RandomProvider, Short, Short>> ts = filter(
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
         );
@@ -1182,7 +1183,7 @@ public class RandomProviderProperties {
     
     private static void propertiesNextFromRange_int_int() {
         initialize("nextFromRange(int, int)");
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filter(
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
         );
@@ -1220,7 +1221,7 @@ public class RandomProviderProperties {
     
     private static void propertiesNextFromRange_long_long() {
         initialize("nextFromRange(long, long)");
-        Iterable<Triple<RandomProvider, Long, Long>> ts = filter(
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
         );
@@ -1254,7 +1255,7 @@ public class RandomProviderProperties {
     
     private static void propertiesNextFromRange_BigInteger_BigInteger() {
         initialize("nextFromRange(BigInteger, BigInteger)");
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filter(
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
         );
@@ -1294,7 +1295,7 @@ public class RandomProviderProperties {
     
     private static void propertiesNextFromRange_char_char() {
         initialize("nextFromRange(char, char)");
-        Iterable<Triple<RandomProvider, Character, Character>> ts = filter(
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
         );
@@ -1333,13 +1334,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextPositiveIntGeometric() {
         initialize("nextPositiveIntGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             int i = rp.nextPositiveIntGeometric();
             assertTrue(rp, i > 0);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextPositiveIntGeometric();
@@ -1350,14 +1357,20 @@ public class RandomProviderProperties {
 
     private static void propertiesPositiveIntegersGeometric() {
         initialize("positiveIntegersGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.positiveIntegersGeometric();
             simpleTest(rp, is, i -> i > 0);
             supplierEquivalence(rp, is, rp::nextPositiveIntGeometric);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.positiveIntegersGeometric();
@@ -1368,13 +1381,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNegativeIntGeometric() {
         initialize("nextNegativeIntGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             int i = rp.nextNegativeIntGeometric();
             assertTrue(rp, i < 0);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNegativeIntGeometric();
@@ -1385,14 +1404,20 @@ public class RandomProviderProperties {
 
     private static void propertiesNegativeIntegersGeometric() {
         initialize("negativeIntegersGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.negativeIntegersGeometric();
             simpleTest(rp, is, i -> i < 0);
             supplierEquivalence(rp, is, rp::nextNegativeIntGeometric);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.negativeIntegersGeometric();
@@ -1403,7 +1428,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNaturalIntGeometric() {
         initialize("nextNaturalIntGeometric()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1412,7 +1437,10 @@ public class RandomProviderProperties {
             assertTrue(rp, i >= 0);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNaturalIntGeometric();
@@ -1430,7 +1458,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNaturalIntegersGeometric() {
         initialize("naturalIntegersGeometric()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1440,7 +1468,10 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, is, rp::nextNaturalIntGeometric);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.naturalIntegersGeometric();
@@ -1458,13 +1489,19 @@ public class RandomProviderProperties {
 
     private static void propertiesNextNonzeroIntGeometric() {
         initialize("nextNonzeroIntGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             int i = rp.nextNonzeroIntGeometric();
             assertTrue(rp, i != 0);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextNonzeroIntGeometric();
@@ -1475,14 +1512,20 @@ public class RandomProviderProperties {
 
     private static void propertiesNonzeroIntegersGeometric() {
         initialize("nonzeroIntegersGeometric()");
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<Integer> is = rp.nonzeroIntegersGeometric();
             simpleTest(rp, is, i -> i != 0);
             supplierEquivalence(rp, is, rp::nextNonzeroIntGeometric);
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nonzeroIntegersGeometric();
@@ -1493,7 +1536,7 @@ public class RandomProviderProperties {
 
     private static void propertiesNextIntGeometric() {
         initialize("nextPositiveIntGeometric()");
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -1501,7 +1544,10 @@ public class RandomProviderProperties {
             rp.nextIntGeometric();
         }
 
-        Iterable<RandomProvider> rpsFail = filter(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                x -> x.getScale() < 1,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(LIMIT, rpsFail)) {
             try {
                 rp.nextIntGeometric();

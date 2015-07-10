@@ -614,6 +614,8 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
 
+    public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
+
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);
     public abstract @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs);

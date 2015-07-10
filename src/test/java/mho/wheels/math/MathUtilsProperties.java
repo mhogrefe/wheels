@@ -2601,7 +2601,7 @@ public class MathUtilsProperties {
                     ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
             );
         } else {
-            ps = ((RandomProvider) P).addSpecialElement(
+            ps = ((RandomProvider) P).withSpecialElement(
                     zeroPair,
                     P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
             );

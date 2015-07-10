@@ -3985,7 +3985,7 @@ public final strictfp class IterableUtils {
         };
     }
 
-    public static @NotNull <T> Iterable<T> takeFilter(int n, @NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+    public static @NotNull <T> Iterable<T> filter(int n, @NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<T>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
             private int i = 0;
@@ -4002,6 +4002,32 @@ public final strictfp class IterableUtils {
                     result = xsi.next();
                 } while (!p.test(result));
                 i++;
+                return result;
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<T> filter(
+            @NotNull BigInteger n,
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private @NotNull BigInteger i = BigInteger.ZERO;
+
+            @Override
+            public boolean hasNext() {
+                return lt(i, n);
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                i = i.add(BigInteger.ONE);
                 return result;
             }
         };

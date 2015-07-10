@@ -531,7 +531,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
      */
     private @NotNull Iterable<Integer> integersBounded(int n) {
-        return filter(i -> i < n, integersPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(i -> i < n, integersPow2(MathUtils.ceilingLog2(n)));
     }
 
     /**
@@ -571,7 +571,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Long}s less than {@code n}
      */
     private @NotNull Iterable<Long> longsBounded(long n) {
-        return filter(l -> l < n, longsPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(l -> l < n, longsPow2(MathUtils.ceilingLog2(n)));
     }
 
     /**
@@ -613,7 +613,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull Iterable<BigInteger> bigIntegersBounded(@NotNull BigInteger n) {
         if (n.equals(BigInteger.ONE)) return repeat(BigInteger.ZERO);
-        return filter(i -> lt(i, n), bigIntegersPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(i -> lt(i, n), bigIntegersPow2(MathUtils.ceilingLog2(n)));
     }
 
     /**
@@ -2171,7 +2171,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
                     (Integer.MAX_VALUE + a));
         }
-        return filter(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
+        return filterInfinite(j -> j >= a, map(i -> i + a - 1, withScale(scale - a + 1).positiveIntegersGeometric()));
     }
 
     /**
@@ -2232,7 +2232,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale greater than a - Integer.MAX_VALUE, which is " +
                     (a - Integer.MAX_VALUE));
         }
-        return filter(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
+        return filterInfinite(j -> j <= a, map(i -> a - i + 1, withScale(a - scale + 1).positiveIntegersGeometric()));
     }
 
     /**
@@ -2939,7 +2939,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> positiveFloats() {
-        return filter(f -> f > 0, floats());
+        return filterInfinite(f -> f > 0, floats());
     }
 
     /**
@@ -2968,7 +2968,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> negativeFloats() {
-        return filter(f -> f < 0, floats());
+        return filterInfinite(f -> f < 0, floats());
     }
 
     /**
@@ -2997,7 +2997,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> nonzeroFloats() {
-        return filter(f -> f != 0, floats());
+        return filterInfinite(f -> f != 0, floats());
     }
 
     /**
@@ -3057,7 +3057,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> positiveDoubles() {
-        return filter(d -> d > 0, doubles());
+        return filterInfinite(d -> d > 0, doubles());
     }
 
     /**
@@ -3086,7 +3086,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> negativeDoubles() {
-        return filter(d -> d < 0, doubles());
+        return filterInfinite(d -> d < 0, doubles());
     }
 
     /**
@@ -3115,7 +3115,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> nonzeroDoubles() {
-        return filter(d -> d != 0, doubles());
+        return filterInfinite(d -> d != 0, doubles());
     }
 
     /**
@@ -3522,7 +3522,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
     }
 
-    public @NotNull <T> Iterable<T> addSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
             private Iterator<Integer> specialSelector = integersBounded(SPECIAL_ELEMENT_RATIO).iterator();
@@ -3549,17 +3550,17 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
-        return addSpecialElement(null, xs);
+        return withSpecialElement(null, xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return addSpecialElement(Optional.<T>empty(), map(Optional::of, xs));
+        return withSpecialElement(Optional.<T>empty(), map(Optional::of, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return addSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+        return withSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
