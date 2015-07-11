@@ -1328,17 +1328,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
-        a = FloatingPointUtils.absNegativeZeros(a);
-        long elementCount;
-        if (a >= 0.0f) {
-            elementCount = FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
-                    Float.floatToIntBits(FloatingPointUtils.absNegativeZeros(a)) + 1;
-        } else {
-            elementCount = (long) FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT +
-                    Float.floatToIntBits(FloatingPointUtils.absNegativeZeros(-a)) + 1;
-        }
         return map(q -> q.a, filter(
-                        BigInteger.valueOf(elementCount),
+                        BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
+                                FloatingPointUtils.toOrderedRepresentation(a) + 2),
                         p -> p.a.equals(p.b),
                         map(BinaryFraction::floatRange, rangeUp(BinaryFraction.of(a).get())))
         );
@@ -1351,24 +1343,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        return null;
+        return map(q -> q.a, filter(
+                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b) -
+                                FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                        p -> p.a.equals(p.b),
+                        map(BinaryFraction::floatRange, range(BinaryFraction.of(a).get(), BinaryFraction.of(b).get())))
+        );
     }
 
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
-        a = FloatingPointUtils.absNegativeZeros(a);
-        BigInteger elementCount;
-        if (a >= 0.0) {
-            elementCount = BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT)
-                    .subtract(BigInteger.valueOf(Double.doubleToLongBits(FloatingPointUtils.absNegativeZeros(a))))
-                    .add(BigInteger.ONE);
-        } else {
-            elementCount = BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT)
-                    .add(BigInteger.valueOf(Double.doubleToLongBits(FloatingPointUtils.absNegativeZeros(-a))))
-                    .add(BigInteger.ONE);
-        }
         return map(q -> q.a, filter(
-                        elementCount,
+                        BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT -
+                                FloatingPointUtils.toOrderedRepresentation(a) + 2),
                         p -> p.a.equals(p.b),
                         map(BinaryFraction::doubleRange, rangeUp(BinaryFraction.of(a).get())))
         );
@@ -1381,7 +1368,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        return null;
+        return map(q -> q.a, filter(
+                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b) -
+                                FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                        p -> p.a.equals(p.b),
+                        map(
+                                BinaryFraction::doubleRange,
+                                range(BinaryFraction.of(a).get(),
+                                BinaryFraction.of(b).get()))
+                        )
+        );
     }
 
     /**
