@@ -4,7 +4,6 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
@@ -17,6 +16,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.misc.FloatingPointUtils.*;
+import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class FloatingPointUtilsProperties {
@@ -46,6 +46,8 @@ public class FloatingPointUtilsProperties {
             propertiesPredecessor_float();
             propertiesSuccessor_double();
             propertiesPredecessor_double();
+            propertiesToOrderedRepresentation_float();
+            propertiesToOrderedRepresentation_double();
             propertiesFloatFromMantissaAndExponent();
             propertiesDoubleFromMantissaAndExponent();
             propertiesToMantissaAndExponent_float();
@@ -150,6 +152,116 @@ public class FloatingPointUtilsProperties {
         }
     }
 
+    private static void propertiesToOrderedRepresentation_float() {
+        initialize("toOrderedRepresentation(float)");
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            int n = toOrderedRepresentation(f);
+            assertTrue(f, le(n, POSITIVE_FINITE_FLOAT_COUNT + 1));
+            homomorphic(
+                    g -> -g,
+                    i -> -i,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    f
+            );
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && !isNegativeZero(g), P.floats()))) {
+            inverses(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    f
+            );
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.POSITIVE_INFINITY, P.floats()))) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::successor,
+                    i -> i + 1,
+                    f
+            );
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.NEGATIVE_INFINITY, P.floats()))) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::predecessor,
+                    i -> i - 1,
+                    f
+            );
+        }
+
+        Iterable<Pair<Float, Float>> ps = P.pairs(filter(f -> !Float.isNaN(f) && !isNegativeZero(f), P.floats()));
+        for (Pair<Float, Float> p : take(LIMIT, ps)) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    Function.identity(),
+                    Float::compare,
+                    Integer::compare,
+                    p
+            );
+        }
+    }
+
+    private static void propertiesToOrderedRepresentation_double() {
+        initialize("toOrderedRepresentation(double)");
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            long n = toOrderedRepresentation(d);
+            assertTrue(d, le(n, POSITIVE_FINITE_DOUBLE_COUNT + 1));
+            homomorphic(
+                    g -> -g,
+                    i -> -i,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    d
+            );
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && !isNegativeZero(e), P.doubles()))) {
+            inverses(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    d
+            );
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.POSITIVE_INFINITY, P.doubles()))) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::successor,
+                    l -> l + 1,
+                    d
+            );
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.NEGATIVE_INFINITY, P.doubles()))) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::predecessor,
+                    l -> l - 1,
+                    d
+            );
+        }
+
+        Iterable<Pair<Double, Double>> ps = P.pairs(filter(d -> !Double.isNaN(d) && !isNegativeZero(d), P.doubles()));
+        for (Pair<Double, Double> p : take(LIMIT, ps)) {
+            homomorphic(
+                    FloatingPointUtils::toOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    Function.identity(),
+                    Double::compare,
+                    Long::compare,
+                    p
+            );
+        }
+    }
+
     private static void propertiesFloatFromMantissaAndExponent() {
         initialize("floatFromMantissaAndExponent()");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
@@ -158,7 +270,7 @@ public class FloatingPointUtilsProperties {
 
         Iterable<Pair<Integer, Integer>> ps = filter(
                 q -> floatFromMantissaAndExponent(q.a, q.b).isPresent(),
-                P.pairs(P.range(-1 << 24, 1 << 24), P.range(FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT, 128))
+                P.pairs(P.range(-1 << 24, 1 << 24), P.range(MIN_SUBNORMAL_FLOAT_EXPONENT, 128))
         );
         for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
             float f = floatFromMantissaAndExponent(p.a, p.b).get();
@@ -182,7 +294,7 @@ public class FloatingPointUtilsProperties {
 
         Iterable<Pair<Long, Integer>> ps = filter(
                 q -> doubleFromMantissaAndExponent(q.a, q.b).isPresent(),
-                P.pairs(P.range(-1L << 53, 1L << 53), P.range(FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT, 1024))
+                P.pairs(P.range(-1L << 53, 1L << 53), P.range(MIN_SUBNORMAL_DOUBLE_EXPONENT, 1024))
         );
         for (Pair<Long, Integer> p : take(LIMIT, ps)) {
             double d = doubleFromMantissaAndExponent(p.a, p.b).get();
@@ -270,7 +382,7 @@ public class FloatingPointUtilsProperties {
 
         for (float f : take(LIMIT, filter(Float::isFinite, P.floats()))) {
             BigInteger scaled = scaleUp(f).get();
-            assertTrue(f, Ordering.le(scaled.abs(), SCALED_UP_MAX_FLOAT));
+            assertTrue(f, le(scaled.abs(), SCALED_UP_MAX_FLOAT));
         }
 
         for (float f : take(LIMIT, filter(g -> Float.isFinite(g) && !isNegativeZero(g), P.floats()))) {
@@ -290,7 +402,7 @@ public class FloatingPointUtilsProperties {
 
         for (double d : take(LIMIT, filter(Double::isFinite, P.doubles()))) {
             BigInteger scaled = scaleUp(d).get();
-            assertTrue(d, Ordering.le(scaled.abs(), SCALED_UP_MAX_DOUBLE));
+            assertTrue(d, le(scaled.abs(), SCALED_UP_MAX_DOUBLE));
         }
 
         for (double d : take(LIMIT, filter(e -> Double.isFinite(e) && !isNegativeZero(e), P.doubles()))) {
