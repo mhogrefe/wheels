@@ -86,6 +86,36 @@ public strictfp class FloatingPointUtilsDemos {
         }
     }
 
+    private static void demoToOrderedRepresentation_float() {
+        initialize();
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("toOrderedRepresentation(" + f + ") = " + toOrderedRepresentation(f));
+        }
+    }
+
+    private static void demoToOrderedRepresentation_double() {
+        initialize();
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("toOrderedRepresentation(" + d + ") = " + toOrderedRepresentation(d));
+        }
+    }
+
+    private static void demoFloatFromOrderedRepresentation() {
+        initialize();
+        int maxAbs = FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1;
+        for (int i : take(LIMIT, P.range(-maxAbs, maxAbs))) {
+            System.out.println("floatFromOrderedRepresentation(" + i + ") = " + floatFromOrderedRepresentation(i));
+        }
+    }
+
+    private static void demoDoubleFromOrderedRepresentation() {
+        initialize();
+        long maxAbs = FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1;
+        for (long l : take(LIMIT, P.range(-maxAbs, maxAbs))) {
+            System.out.println("doubleFromOrderedRepresentation(" + l + ") = " + doubleFromOrderedRepresentation(l));
+        }
+    }
+
     private static void demoFloatFromMantissaAndExponent() {
         initialize();
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
