@@ -248,7 +248,7 @@ public final strictfp class FloatingPointUtils {
     public static float floatFromOrderedRepresentation(int n) {
         float f = n >= 0 ? Float.intBitsToFloat(n) : -Float.intBitsToFloat(-n);
         if (Float.isNaN(f)) {
-            throw new ArithmeticException("n must have an absolute value less than or equal to 2^31-2^23. Invalid" +
+            throw new ArithmeticException("n must have an absolute value less than or equal to 2^31 - 2^23. Invalid" +
                     " n: " + n);
         }
         return f;
@@ -292,7 +292,7 @@ public final strictfp class FloatingPointUtils {
     public static double doubleFromOrderedRepresentation(long n) {
         double d = n >= 0 ? Double.longBitsToDouble(n) : -Double.longBitsToDouble(-n);
         if (Double.isNaN(d)) {
-            throw new ArithmeticException("n must have an absolute value less than or equal to 2^63-2^52. Invalid" +
+            throw new ArithmeticException("n must have an absolute value less than or equal to 2^63 - 2^52. Invalid" +
                     " n: " + n);
         }
         return d;

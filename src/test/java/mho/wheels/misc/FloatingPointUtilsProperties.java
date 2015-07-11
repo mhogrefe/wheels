@@ -47,7 +47,9 @@ public class FloatingPointUtilsProperties {
             propertiesSuccessor_double();
             propertiesPredecessor_double();
             propertiesToOrderedRepresentation_float();
+            propertiesFloatFromOrderedRepresentation();
             propertiesToOrderedRepresentation_double();
+            propertiesDoubleFromOrderedRepresentation();
             propertiesFloatFromMantissaAndExponent();
             propertiesDoubleFromMantissaAndExponent();
             propertiesToMantissaAndExponent_float();
@@ -207,6 +209,76 @@ public class FloatingPointUtilsProperties {
         }
     }
 
+    private static void propertiesFloatFromOrderedRepresentation() {
+        initialize("floatFromOrderedRepresentation(int)");
+        int maxAbs = FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1;
+
+        for (int i : take(LIMIT, P.range(-maxAbs, maxAbs))) {
+            float f = floatFromOrderedRepresentation(i);
+            assertFalse(f, Float.isNaN(f));
+            inverses(
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    i
+            );
+        }
+
+        for (int i : take(LIMIT, filter(j -> j != 0, P.range(-maxAbs, maxAbs)))) {
+            homomorphic(
+                    j -> -j,
+                    g -> -g,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    i
+            );
+        }
+
+        for (int i : take(LIMIT, filter(j -> j != -1, P.range(-maxAbs, maxAbs - 1)))) {
+            homomorphic(
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    j -> j + 1,
+                    FloatingPointUtils::successor,
+                    i
+            );
+        }
+
+        for (int i : take(LIMIT, P.range(-maxAbs + 1, maxAbs))) {
+            homomorphic(
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    j -> j - 1,
+                    FloatingPointUtils::predecessor,
+                    i
+            );
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.range(-maxAbs, maxAbs)))) {
+            homomorphic(
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    Function.identity(),
+                    Integer::compare,
+                    Float::compare,
+                    p
+            );
+        }
+
+        for (int i : take(LIMIT, P.rangeUp(maxAbs + 1))) {
+            try {
+                floatFromOrderedRepresentation(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (int i : take(LIMIT, P.rangeDown(-maxAbs - 1))) {
+            try {
+                floatFromOrderedRepresentation(i);
+                fail(i);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
     private static void propertiesToOrderedRepresentation_double() {
         initialize("toOrderedRepresentation(double)");
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
@@ -259,6 +331,76 @@ public class FloatingPointUtilsProperties {
                     Long::compare,
                     p
             );
+        }
+    }
+
+    private static void propertiesDoubleFromOrderedRepresentation() {
+        initialize("doubleFromOrderedRepresentation(long)");
+        long maxAbs = FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1;
+
+        for (long l : take(LIMIT, P.range(-maxAbs, maxAbs))) {
+            double d = doubleFromOrderedRepresentation(l);
+            assertFalse(d, Double.isNaN(d));
+            inverses(
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    FloatingPointUtils::toOrderedRepresentation,
+                    l
+            );
+        }
+
+        for (long l : take(LIMIT, filter(m -> m != 0L, P.range(-maxAbs, maxAbs)))) {
+            homomorphic(
+                    m -> -m,
+                    e -> -e,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    l
+            );
+        }
+
+        for (long l : take(LIMIT, filter(m -> m != -1L, P.range(-maxAbs, maxAbs - 1)))) {
+            homomorphic(
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    m -> m + 1,
+                    FloatingPointUtils::successor,
+                    l
+            );
+        }
+
+        for (long l : take(LIMIT, P.range(-maxAbs + 1, maxAbs))) {
+            homomorphic(
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    m -> m - 1,
+                    FloatingPointUtils::predecessor,
+                    l
+            );
+        }
+
+        for (Pair<Long, Long> p : take(LIMIT, P.pairs(P.range(-maxAbs, maxAbs)))) {
+            homomorphic(
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    Function.identity(),
+                    Long::compare,
+                    Double::compare,
+                    p
+            );
+        }
+
+        for (long l : take(LIMIT, P.rangeUp(maxAbs + 1))) {
+            try {
+                doubleFromOrderedRepresentation(l);
+                fail(l);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        for (long l : take(LIMIT, P.rangeDown(-maxAbs - 1))) {
+            try {
+                doubleFromOrderedRepresentation(l);
+                fail(l);
+            } catch (ArithmeticException ignored) {}
         }
     }
 
