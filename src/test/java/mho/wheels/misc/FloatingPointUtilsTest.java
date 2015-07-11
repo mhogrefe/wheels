@@ -241,7 +241,53 @@ public strictfp class FloatingPointUtilsTest {
         toOrderedRepresentation_float_helper(-Float.MAX_VALUE, -2139095039);
         toOrderedRepresentation_float_helper(Float.POSITIVE_INFINITY, 2139095040);
         toOrderedRepresentation_float_helper(Float.NEGATIVE_INFINITY, -2139095040);
+        toOrderedRepresentation_float_helper(1.401E-42f, 1000);
+        toOrderedRepresentation_float_helper(1.401298E-39f, 1000000);
+        toOrderedRepresentation_float_helper(0.0047237873f, 1000000000);
+        toOrderedRepresentation_float_helper(-1.401E-42f, -1000);
+        toOrderedRepresentation_float_helper(-1.401298E-39f, -1000000);
+        toOrderedRepresentation_float_helper(-0.0047237873f, -1000000000);
         toOrderedRepresentation_float_fail_helper(Float.NaN);
+    }
+
+    private static void floatFromOrderedRepresentation_helper(int n, float output) {
+        aeq(floatFromOrderedRepresentation(n), output);
+    }
+
+    private static void floatFromOrderedRepresentation_fail_helper(int n) {
+        try {
+            floatFromOrderedRepresentation(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testFloatFromOrderedRepresentation() {
+        floatFromOrderedRepresentation_helper(1065353216, 1.0f);
+        floatFromOrderedRepresentation_helper(1621981420, 1.0E20f);
+        floatFromOrderedRepresentation_helper(-1065353216, -1.0f);
+        floatFromOrderedRepresentation_helper(-1621981420, -1.0E20f);
+        floatFromOrderedRepresentation_helper(1078530011, 3.1415927f);
+        floatFromOrderedRepresentation_helper(1068827891, 1.4142135f);
+        floatFromOrderedRepresentation_helper(-1078530011, -3.1415927f);
+        floatFromOrderedRepresentation_helper(-1068827891, -1.4142135f);
+        floatFromOrderedRepresentation_helper(0, 0.0f);
+        floatFromOrderedRepresentation_helper(1, 1.4E-45f);
+        floatFromOrderedRepresentation_helper(8388608, 1.17549435E-38f);
+        floatFromOrderedRepresentation_helper(-1, -1.4E-45f);
+        floatFromOrderedRepresentation_helper(-8388608, -1.17549435E-38f);
+        floatFromOrderedRepresentation_helper(2139095039, 3.4028235E38f);
+        floatFromOrderedRepresentation_helper(-2139095039, -3.4028235E38f);
+        floatFromOrderedRepresentation_helper(2139095040, Float.POSITIVE_INFINITY);
+        floatFromOrderedRepresentation_helper(-2139095040, Float.NEGATIVE_INFINITY);
+        floatFromOrderedRepresentation_helper(1000, 1.401E-42f);
+        floatFromOrderedRepresentation_helper(1000000, 1.401298E-39f);
+        floatFromOrderedRepresentation_helper(1000000000, 0.0047237873f);
+        floatFromOrderedRepresentation_helper(-1000, -1.401E-42f);
+        floatFromOrderedRepresentation_helper(-1000000, -1.401298E-39f);
+        floatFromOrderedRepresentation_helper(-1000000000, -0.0047237873f);
+        floatFromOrderedRepresentation_fail_helper(2139095041);
+        floatFromOrderedRepresentation_fail_helper(-2139095041);
     }
 
     private static void toOrderedRepresentation_double_helper(double d, long output) {
@@ -275,7 +321,53 @@ public strictfp class FloatingPointUtilsTest {
         toOrderedRepresentation_double_helper(-Double.MAX_VALUE, -9218868437227405311L);
         toOrderedRepresentation_double_helper(Double.POSITIVE_INFINITY, 9218868437227405312L);
         toOrderedRepresentation_double_helper(Double.NEGATIVE_INFINITY, -9218868437227405312L);
+        toOrderedRepresentation_double_helper(4.940656E-318, 1000000L);
+        toOrderedRepresentation_double_helper(4.94065645841E-312, 1000000000000L);
+        toOrderedRepresentation_double_helper(7.832953389245686E-242, 1000000000000000000L);
+        toOrderedRepresentation_double_helper(-4.940656E-318, -1000000L);
+        toOrderedRepresentation_double_helper(-4.94065645841E-312, -1000000000000L);
+        toOrderedRepresentation_double_helper(-7.832953389245686E-242, -1000000000000000000L);
         toOrderedRepresentation_double_fail_helper(Double.NaN);
+    }
+
+    private static void doubleFromOrderedRepresentation_helper(long n, double output) {
+        aeq(doubleFromOrderedRepresentation(n), output);
+    }
+
+    private static void doubleFromOrderedRepresentation_fail_helper(long n) {
+        try {
+            doubleFromOrderedRepresentation(n);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testDoubleFromOrderedRepresentation() {
+        doubleFromOrderedRepresentation_helper(4607182418800017408L, 1.0);
+        doubleFromOrderedRepresentation_helper(4906019910204099648L, 1.0E20);
+        doubleFromOrderedRepresentation_helper(-4607182418800017408L, -1.0);
+        doubleFromOrderedRepresentation_helper(-4906019910204099648L, -1.0E20);
+        doubleFromOrderedRepresentation_helper(4614256656552045848L, 3.141592653589793);
+        doubleFromOrderedRepresentation_helper(4609047870845172685L, 1.4142135623730951);
+        doubleFromOrderedRepresentation_helper(-4614256656552045848L, -3.141592653589793);
+        doubleFromOrderedRepresentation_helper(-4609047870845172685L, -1.4142135623730951);
+        doubleFromOrderedRepresentation_helper(0L, 0.0);
+        doubleFromOrderedRepresentation_helper(1L, 4.9E-324);
+        doubleFromOrderedRepresentation_helper(4503599627370496L, 2.2250738585072014E-308);
+        doubleFromOrderedRepresentation_helper(-1L, -4.9E-324);
+        doubleFromOrderedRepresentation_helper(-4503599627370496L, -2.2250738585072014E-308);
+        doubleFromOrderedRepresentation_helper(9218868437227405311L, 1.7976931348623157E308);
+        doubleFromOrderedRepresentation_helper(-9218868437227405311L, -1.7976931348623157E308);
+        doubleFromOrderedRepresentation_helper(9218868437227405312L, Double.POSITIVE_INFINITY);
+        doubleFromOrderedRepresentation_helper(-9218868437227405312L, Double.NEGATIVE_INFINITY);
+        doubleFromOrderedRepresentation_helper(1000000L, 4.940656E-318);
+        doubleFromOrderedRepresentation_helper(1000000000000L, 4.94065645841E-312);
+        doubleFromOrderedRepresentation_helper(1000000000000000000L, 7.832953389245686E-242);
+        doubleFromOrderedRepresentation_helper(-1000000L, -4.940656E-318);
+        doubleFromOrderedRepresentation_helper(-1000000000000L, -4.94065645841E-312);
+        doubleFromOrderedRepresentation_helper(-1000000000000000000L, -7.832953389245686E-242);
+        doubleFromOrderedRepresentation_fail_helper(9218868437227405313L);
+        doubleFromOrderedRepresentation_fail_helper(-9218868437227405313L);
     }
 
     private static void floatFromMantissaAndExponent_helper(int m, int e, float f) {
