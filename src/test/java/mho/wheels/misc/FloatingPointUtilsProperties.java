@@ -156,7 +156,7 @@ public class FloatingPointUtilsProperties {
         initialize("toOrderedRepresentation(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             int n = toOrderedRepresentation(f);
-            assertTrue(f, le(n, POSITIVE_FINITE_FLOAT_COUNT + 1));
+            assertTrue(f, le(Math.abs(n), POSITIVE_FINITE_FLOAT_COUNT + 1));
             homomorphic(
                     g -> -g,
                     i -> -i,
@@ -211,7 +211,7 @@ public class FloatingPointUtilsProperties {
         initialize("toOrderedRepresentation(double)");
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             long n = toOrderedRepresentation(d);
-            assertTrue(d, le(n, POSITIVE_FINITE_DOUBLE_COUNT + 1));
+            assertTrue(d, le(Math.abs(n), POSITIVE_FINITE_DOUBLE_COUNT + 1));
             homomorphic(
                     g -> -g,
                     i -> -i,
