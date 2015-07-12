@@ -1329,8 +1329,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
         if (a == Float.POSITIVE_INFINITY) return Collections.singletonList(Float.POSITIVE_INFINITY);
-        if (a == Float.NEGATIVE_INFINITY) return Arrays.asList(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
-        return cons(
+        if (a == Float.NEGATIVE_INFINITY) return filter(f -> !Float.isNaN(f), floats());
+        Iterable<Float> noNegativeZeros = cons(
                 Float.POSITIVE_INFINITY,
                 map(
                         q -> q.a,
@@ -1342,6 +1342,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         )
                 )
         );
+        return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
     }
 
     @Override
@@ -1362,8 +1363,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
         if (a == Double.POSITIVE_INFINITY) return Collections.singletonList(Double.POSITIVE_INFINITY);
-        if (a == Double.NEGATIVE_INFINITY) return Arrays.asList(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        return cons(
+        if (a == Double.NEGATIVE_INFINITY) return filter(d -> !Double.isNaN(d), doubles());
+        Iterable<Double> noNegativeZeros = cons(
                 Double.POSITIVE_INFINITY,
                 map(
                         q -> q.a,
@@ -1376,6 +1377,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         )
                 )
         );
+        return concatMap(d -> d == 0.0 ? Arrays.asList(0.0, -0.0) : Collections.singletonList(d), noNegativeZeros);
     }
 
     @Override
