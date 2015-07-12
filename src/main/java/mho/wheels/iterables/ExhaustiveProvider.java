@@ -1328,11 +1328,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
-        return map(q -> q.a, filter(
-                        BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
-                                FloatingPointUtils.toOrderedRepresentation(a) + 2),
-                        p -> p.a.equals(p.b),
-                        map(BinaryFraction::floatRange, rangeUp(BinaryFraction.of(a).get())))
+        if (a == Float.POSITIVE_INFINITY) return Collections.singletonList(Float.POSITIVE_INFINITY);
+        if (a == Float.NEGATIVE_INFINITY) return Arrays.asList(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        return cons(
+                Float.POSITIVE_INFINITY,
+                map(
+                        q -> q.a,
+                        filter(
+                                BigInteger.valueOf((long) FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
+                                        FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                                p -> p.a.equals(p.b), map(BinaryFraction::floatRange,
+                                rangeUp(BinaryFraction.of(a).get()))
+                        )
+                )
         );
     }
 
@@ -1344,7 +1352,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
         return map(q -> q.a, filter(
-                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b) -
+                        BigInteger.valueOf((long) FloatingPointUtils.toOrderedRepresentation(b) -
                                 FloatingPointUtils.toOrderedRepresentation(a) + 1),
                         p -> p.a.equals(p.b),
                         map(BinaryFraction::floatRange, range(BinaryFraction.of(a).get(), BinaryFraction.of(b).get())))
@@ -1353,11 +1361,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
-        return map(q -> q.a, filter(
-                        BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT -
-                                FloatingPointUtils.toOrderedRepresentation(a) + 2),
-                        p -> p.a.equals(p.b),
-                        map(BinaryFraction::doubleRange, rangeUp(BinaryFraction.of(a).get())))
+        if (a == Double.POSITIVE_INFINITY) return Collections.singletonList(Double.POSITIVE_INFINITY);
+        if (a == Double.NEGATIVE_INFINITY) return Arrays.asList(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        return cons(
+                Double.POSITIVE_INFINITY,
+                map(
+                        q -> q.a,
+                        filter(
+                                BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT)
+                                        .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(a)))
+                                        .add(BigInteger.ONE),
+                                p -> p.a.equals(p.b), map(BinaryFraction::doubleRange,
+                                        rangeUp(BinaryFraction.of(a).get()))
+                        )
+                )
         );
     }
 
@@ -1369,14 +1386,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
         return map(q -> q.a, filter(
-                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b) -
-                                FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b))
+                                .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(a)))
+                                .add(BigInteger.ONE),
                         p -> p.a.equals(p.b),
                         map(
                                 BinaryFraction::doubleRange,
                                 range(BinaryFraction.of(a).get(),
-                                BinaryFraction.of(b).get()))
-                        )
+                                        BinaryFraction.of(b).get()))
+                )
         );
     }
 
