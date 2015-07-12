@@ -188,4 +188,46 @@ public class ExhaustiveProviderDemos {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
         }
     }
+
+    private static void demoRangeUp_float() {
+        initialize();
+        for (float f : take(SMALL_LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("rangeUp(" + f + ") = " + its(EP.rangeUp(f)));
+        }
+    }
+
+    private static void demoRangeDown_float() {
+        initialize();
+        for (float f : take(SMALL_LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("rangeDown(" + f + ") = " + its(EP.rangeDown(f)));
+        }
+    }
+
+    private static void demoRange_float_float() {
+        initialize();
+        for (Pair<Float, Float> p : take(SMALL_LIMIT, P.pairs(filter(f -> !Float.isNaN(f), P.floats())))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_double() {
+        initialize();
+        for (double d : take(SMALL_LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("rangeUp(" + d + ") = " + its(EP.rangeUp(d)));
+        }
+    }
+
+    private static void demoRangeDown_double() {
+        initialize();
+        for (double d : take(SMALL_LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("rangeDown(" + d + ") = " + its(EP.rangeDown(d)));
+        }
+    }
+
+    private static void demoRange_double_double() {
+        initialize();
+        for (Pair<Double, Double> p : take(SMALL_LIMIT, P.pairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
 }
