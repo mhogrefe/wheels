@@ -1352,12 +1352,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        return map(q -> q.a, filter(
+        if (Float.isNaN(a) || Float.isNaN(b)) {
+            throw new ArithmeticException();
+        }
+        if (a == Float.NEGATIVE_INFINITY) return rangeDown(b);
+        if (b == Float.POSITIVE_INFINITY) return rangeUp(a);
+        if (a == Float.POSITIVE_INFINITY || b == Float.NEGATIVE_INFINITY) return Collections.emptyList();
+        Iterable<Float> noNegativeZeros = map(q -> q.a, filter(
                         BigInteger.valueOf((long) FloatingPointUtils.toOrderedRepresentation(b) -
                                 FloatingPointUtils.toOrderedRepresentation(a) + 1),
                         p -> p.a.equals(p.b),
                         map(BinaryFraction::floatRange, range(BinaryFraction.of(a).get(), BinaryFraction.of(b).get())))
         );
+        return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
     }
 
     @Override
@@ -1387,7 +1394,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        return map(q -> q.a, filter(
+        if (Double.isNaN(a) || Double.isNaN(b)) {
+            throw new ArithmeticException();
+        }
+        if (a == Double.NEGATIVE_INFINITY) return rangeDown(b);
+        if (b == Double.POSITIVE_INFINITY) return rangeUp(a);
+        if (a == Double.POSITIVE_INFINITY || b == Double.NEGATIVE_INFINITY) return Collections.emptyList();
+        Iterable<Double> noNegativeZeros = map(q -> q.a, filter(
                         BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b))
                                 .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(a)))
                                 .add(BigInteger.ONE),
@@ -1398,6 +1411,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                         BinaryFraction.of(b).get()))
                 )
         );
+        return concatMap(d -> d == 0.0 ? Arrays.asList(0.0, -0.0) : Collections.singletonList(d), noNegativeZeros);
     }
 
     /**

@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.misc.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -1040,6 +1041,82 @@ public strictfp class ExhaustiveProviderTest {
                 " -1.5, 1.5, -12.0, 12.0]");
         rangeDown_float_helper(Float.NEGATIVE_INFINITY, "[-Infinity]");
         rangeDown_float_fail_helper(Float.NaN);
+    }
+
+    private static void range_float_float_helper(float a, float b, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.range(a, b)), output);
+    }
+
+    private static void range_float_float_fail_helper(float a, float b) {
+        try {
+            P.range(a, b);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRange_float_float() {
+        range_float_float_helper(1.0f, 2.0f,
+                "[1.0, 2.0, 1.5, 1.25, 1.75, 1.125, 1.375, 1.625, 1.875, 1.0625, 1.1875, 1.3125, 1.4375, 1.5625," +
+                " 1.6875, 1.8125, 1.9375, 1.03125, 1.09375, 1.15625]");
+        range_float_float_helper(1.0f, 3.0f,
+                "[1.0, 3.0, 2.0, 1.5, 2.5, 1.25, 1.75, 2.25, 2.75, 1.125, 1.375, 1.625, 1.875, 2.125, 2.375, 2.625," +
+                " 2.875, 1.0625, 1.1875, 1.3125]");
+        range_float_float_helper(1.0f, 4.0f,
+                "[1.0, 2.0, 3.0, 4.0, 1.5, 2.5, 3.5, 1.25, 2.25, 3.25, 1.75, 2.75, 3.75, 1.125, 2.125, 3.125, 1.375," +
+                " 2.375, 3.375, 1.625]");
+        range_float_float_helper(1.0f, 257.0f,
+                "[1.0, 257.0, 129.0, 65.0, 193.0, 33.0, 97.0, 161.0, 225.0, 17.0, 49.0, 81.0, 113.0, 145.0, 177.0," +
+                " 209.0, 241.0, 9.0, 25.0, 41.0]");
+        range_float_float_helper(1.0f, 1.0E20f,
+                "[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0," +
+                " 19.0, 20.0]");
+        range_float_float_helper((float) Math.sqrt(2), (float) Math.PI,
+                "[1.4142135, 1.4142137, 1.4142138, 1.4142139, 1.414214, 1.4142141, 1.4142143, 1.4142144, 1.4142145," +
+                " 1.4142146, 1.4142147, 1.4142148, 1.414215, 1.4142151, 1.4142152, 1.4142153, 1.4142154, 1.4142156," +
+                " 1.4142157, 1.4142158]");
+        range_float_float_helper((float) Math.PI, FloatingPointUtils.successor((float) Math.PI),
+                "[3.1415927, 3.141593]");
+        range_float_float_helper(0.0f, 1.0f,
+                "[0.0, -0.0, 1.0, 0.5, 0.25, 0.75, 0.125, 0.375, 0.625, 0.875, 0.0625, 0.1875, 0.3125, 0.4375," +
+                " 0.5625, 0.6875, 0.8125, 0.9375, 0.03125, 0.09375]");
+        range_float_float_helper(-1.0f, 1.0f,
+                "[-1.0, 1.0, 0.0, -0.0, -0.5, 0.5, -0.75, -0.25, 0.25, 0.75, -0.875, -0.625, -0.375, -0.125, 0.125," +
+                " 0.375, 0.625, 0.875, -0.9375, -0.8125]");
+        range_float_float_helper(1.0f, 1.0f, "[1.0]");
+        range_float_float_helper((float) Math.PI, (float) Math.PI, "[3.1415927]");
+        range_float_float_helper((float) -Math.PI, (float) Math.PI,
+                "[-3.1415927, -3.1415923, -3.1415918, -3.1415913, -3.1415908, -3.1415904, -3.1415899, -3.1415894," +
+                " -3.141589, -3.1415884, -3.141588, -3.1415875, -3.141587, -3.1415865, -3.141586, -3.1415856," +
+                " -3.141585, -3.1415846, -3.1415842, -3.1415837]");
+        range_float_float_helper(1.0f, Float.POSITIVE_INFINITY,
+                "[Infinity, 1.0, 2.0, 3.0, 4.0, 1.5, 6.0, 7.0, 8.0, 5.0, 10.0, 11.0, 12.0, 2.5, 14.0, 15.0, 16.0," +
+                " 1.25, 18.0, 19.0]");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f,
+                "[-Infinity, 1.0, -0.0, 0.0, -1.0, -2.0, 0.5, -4.0, -5.0, -6.0, -3.0, -8.0, -9.0, -10.0, -0.5," +
+                " -12.0, -13.0, -14.0, 0.75, -16.0]");
+        range_float_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY, "[Infinity, 3.4028235E38]");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE, "[-Infinity, -3.4028235E38]");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY,
+                "[-Infinity, Infinity, -0.0, 0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0, -6.0, 6.0, -0.5, 0.5, -4.0, 4.0," +
+                " -1.5, 1.5, -12.0, 12.0]");
+        range_float_float_helper(0.0f, 0.0f, "[0.0, -0.0]");
+        range_float_float_helper(-0.0f, -0.0f, "[0.0, -0.0]");
+        range_float_float_helper(-0.0f, 0.0f, "[0.0, -0.0]");
+        range_float_float_helper(0.0f, -0.0f, "[0.0, -0.0]");
+        range_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, "[Infinity]");
+        range_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, "[-Infinity]");
+        range_float_float_helper(1.0f, -1.0f, "[]");
+        range_float_float_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, "[]");
+        range_float_float_helper(Float.POSITIVE_INFINITY, 1.0f, "[]");
+        range_float_float_helper(1.0f, Float.NEGATIVE_INFINITY, "[]");
+        range_float_float_fail_helper(Float.NaN, 1.0f);
+        range_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
+        range_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
+        range_float_float_fail_helper(1.0f, Float.NaN);
+        range_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NaN);
+        range_float_float_fail_helper(Float.NEGATIVE_INFINITY, Float.NaN);
+        range_float_float_fail_helper(Float.NaN, Float.NaN);
     }
 
     @Test
