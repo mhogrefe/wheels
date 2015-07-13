@@ -1326,6 +1326,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s greater than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If {@code a}≤0,
+     * length is 2<sup>31</sup>–2<sup>23</sup>+2–rep({@code a}); otherwise it's
+     * 2<sup>31</sup>–2<sup>23</sup>+1–rep({@code a})
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Float}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
         if (a == Float.POSITIVE_INFINITY) return Collections.singletonList(Float.POSITIVE_INFINITY);
@@ -1345,11 +1362,46 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s less than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If {@code a}≥0,
+     * length is 2<sup>31</sup>–2<sup>23</sup>+2+rep({@code a}); otherwise it's
+     * 2<sup>31</sup>–2<sup>23</sup>+1+rep({@code a})
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Float}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Float> rangeDown(float a) {
         return map(f -> -f, rangeUp(-a));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not include {@code NaN}; may include
+     * infinities. Positive and negative zeros are both present or both absent. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If
+     * {@code a}≤0≤{@code b}, length is rep({@code b})–rep({@code a})+2; otherwise it's rep({@code b})–rep({@code a})+2
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Float}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
         if (Float.isNaN(a) || Float.isNaN(b)) {
@@ -1376,6 +1428,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s greater than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0, length is 2<sup>63</sup>–2<sup>52</sup>+2–rep({@code a}); otherwise it's
+     * 2<sup>63</sup>–2<sup>52</sup>+1–rep({@code a})
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Double}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
         if (a == Double.POSITIVE_INFINITY) return Collections.singletonList(Double.POSITIVE_INFINITY);
@@ -1396,11 +1465,46 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(d -> d == 0.0 ? Arrays.asList(0.0, -0.0) : Collections.singletonList(d), noNegativeZeros);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s less than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0, length is 2<sup>63</sup>–2<sup>52</sup>+2+rep({@code a}); otherwise it's
+     * 2<sup>63</sup>–2<sup>52</sup>+1+rep({@code a})
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Double}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<Double> rangeDown(double a) {
         return map(d -> -d, rangeUp(-a));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not include {@code NaN}; may include
+     * infinities. Positive and negative zeros are both present or both absent. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0≤{@code b}, length is rep({@code b})–rep({@code a})+2; otherwise it's rep({@code b})–rep({@code a})+2
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Double}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
         if (Double.isNaN(a) || Double.isNaN(b)) {
