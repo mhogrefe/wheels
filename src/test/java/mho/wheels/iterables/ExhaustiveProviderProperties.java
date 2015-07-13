@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.misc.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -114,6 +115,12 @@ public class ExhaustiveProviderProperties {
             propertiesRangeUp_BinaryFraction();
             propertiesRangeDown_BinaryFraction();
             propertiesRange_BinaryFraction_BinaryFraction();
+            propertiesRangeUp_float();
+            propertiesRangeDown_float();
+            propertiesRange_float_float();
+            propertiesRangeUp_double();
+            propertiesRangeDown_double();
+            propertiesRange_double_double();
         }
         System.out.println("Done");
     }
@@ -646,8 +653,8 @@ public class ExhaustiveProviderProperties {
     private static void propertiesRangeUp_BinaryFraction() {
         initialize("rangeUp(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            Iterable<BinaryFraction> is = EP.rangeUp(bf);
-            simpleTest(bf, is, j -> ge(j, bf));
+            Iterable<BinaryFraction> bfs = EP.rangeUp(bf);
+            simpleTest(bf, bfs, j -> ge(j, bf));
             take(TINY_LIMIT, EP.rangeUp(bf)).forEach(BinaryFraction::validate);
         }
     }
@@ -655,8 +662,8 @@ public class ExhaustiveProviderProperties {
     private static void propertiesRangeDown_BinaryFraction() {
         initialize("rangeDown(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            Iterable<BinaryFraction> is = EP.rangeDown(bf);
-            simpleTest(bf, is, j -> le(j, bf));
+            Iterable<BinaryFraction> bfs = EP.rangeDown(bf);
+            simpleTest(bf, bfs, j -> le(j, bf));
             take(TINY_LIMIT, EP.rangeDown(bf)).forEach(BinaryFraction::validate);
         }
     }
@@ -670,8 +677,8 @@ public class ExhaustiveProviderProperties {
             take(TINY_LIMIT, EP.range(p.a, p.b)).forEach(BinaryFraction::validate);
         }
 
-        for (BigInteger i : take(LIMIT, P.bigIntegers())) {
-            aeqit(i, EP.range(i, i), Collections.singletonList(i));
+        for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
+            aeqit(bf, EP.range(bf, bf), Collections.singletonList(bf));
         }
     }
 
@@ -713,5 +720,121 @@ public class ExhaustiveProviderProperties {
     private static void propertiesDoubles() {
         initializeConstant("doubles()");
         biggerTest(EP, EP.doubles(), d -> true);
+    }
+
+    private static void propertiesRangeUp_float() {
+        initialize("rangeUp(float)");
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            Iterable<Float> fs = EP.rangeUp(f);
+            assertEquals(f, head(fs), Float.POSITIVE_INFINITY);
+            simpleTest(
+                    f,
+                    fs,
+                    g -> !Float.isNaN(g) &&
+                            ge(FloatingPointUtils.absNegativeZeros(g), FloatingPointUtils.absNegativeZeros(f))
+            );
+        }
+    }
+
+    private static void propertiesRangeDown_float() {
+        initialize("rangeDown(float)");
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            Iterable<Float> fs = EP.rangeDown(f);
+            assertEquals(f, head(fs), Float.NEGATIVE_INFINITY);
+            simpleTest(
+                    f,
+                    fs,
+                    g -> !Float.isNaN(g) &&
+                            le(FloatingPointUtils.absNegativeZeros(g), FloatingPointUtils.absNegativeZeros(f))
+            );
+        }
+    }
+
+    private static void propertiesRange_float_float() {
+        initialize("range(float, float)");
+        for (Pair<Float, Float> p : take(LIMIT, P.pairs(filter(g -> !Float.isNaN(g), P.floats())))) {
+            Iterable<Float> fs = EP.range(p.a, p.b);
+            Pair<Float, Float> q = new Pair<>(
+                    FloatingPointUtils.absNegativeZeros(p.a),
+                    FloatingPointUtils.absNegativeZeros(p.b)
+            );
+            simpleTest(
+                    p,
+                    fs,
+                    f -> ge(FloatingPointUtils.absNegativeZeros(f), q.a) &&
+                         le(FloatingPointUtils.absNegativeZeros(f), q.b)
+            );
+            assertEquals(p, gt(q.a, q.b), isEmpty(fs));
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != 0.0f, P.floats()))) {
+            aeqit(f, EP.range(f, f), Collections.singletonList(f));
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.NEGATIVE_INFINITY, P.floats()))) {
+            aeqit(f, TINY_LIMIT, EP.range(f, Float.POSITIVE_INFINITY), EP.rangeUp(f));
+        }
+
+        for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != Float.POSITIVE_INFINITY, P.floats()))) {
+            aeqit(f, TINY_LIMIT, EP.range(Float.NEGATIVE_INFINITY, f), EP.rangeDown(f));
+        }
+    }
+
+    private static void propertiesRangeUp_double() {
+        initialize("rangeUp(double)");
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            Iterable<Double> ds = EP.rangeUp(d);
+            assertEquals(d, head(ds), Double.POSITIVE_INFINITY);
+            simpleTest(
+                    d,
+                    ds,
+                    e -> !Double.isNaN(e) &&
+                            ge(FloatingPointUtils.absNegativeZeros(e), FloatingPointUtils.absNegativeZeros(d))
+            );
+        }
+    }
+
+    private static void propertiesRangeDown_double() {
+        initialize("rangeDown(double)");
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            Iterable<Double> ds = EP.rangeDown(d);
+            assertEquals(d, head(ds), Double.NEGATIVE_INFINITY);
+            simpleTest(
+                    d,
+                    ds,
+                    e -> !Double.isNaN(e) &&
+                            le(FloatingPointUtils.absNegativeZeros(e), FloatingPointUtils.absNegativeZeros(d))
+            );
+        }
+    }
+
+    private static void propertiesRange_double_double() {
+        initialize("range(double, double)");
+        for (Pair<Double, Double> p : take(LIMIT, P.pairs(filter(g -> !Double.isNaN(g), P.doubles())))) {
+            Iterable<Double> ds = EP.range(p.a, p.b);
+            Pair<Double, Double> q = new Pair<>(
+                    FloatingPointUtils.absNegativeZeros(p.a),
+                    FloatingPointUtils.absNegativeZeros(p.b)
+            );
+            simpleTest(
+                    p,
+                    ds,
+                    f -> ge(FloatingPointUtils.absNegativeZeros(f), q.a) &&
+                         le(FloatingPointUtils.absNegativeZeros(f), q.b)
+            );
+            assertEquals(p, gt(q.a, q.b), isEmpty(ds));
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != 0.0, P.floats()))) {
+            aeqit(d, EP.range(d, d), Collections.singletonList(d));
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.NEGATIVE_INFINITY, P.doubles()))) {
+            aeqit(d, TINY_LIMIT, EP.range(d, Double.POSITIVE_INFINITY), EP.rangeUp(d));
+        }
+
+        for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.POSITIVE_INFINITY, P.doubles()))) {
+            aeqit(d, TINY_LIMIT, EP.range(Double.NEGATIVE_INFINITY, d), EP.rangeDown(d));
+        }
     }
 }
