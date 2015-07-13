@@ -3402,57 +3402,87 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextFromRangeUp(float a) {
-        return 0.0f;
+        int oa = FloatingPointUtils.toOrderedRepresentation(a);
+        if (oa <= 0) {
+            int n = nextFromRange(oa - 1, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1);
+            return n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n);
+        } else {
+            return FloatingPointUtils.floatFromOrderedRepresentation(
+                    nextFromRange(oa, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1)
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     public float nextFromRangeDown(float a) {
-        return 0.0f;
+        return -nextFromRangeUp(-a);
     }
 
     @Override
     public @NotNull Iterable<Float> rangeDown(float a) {
-        return null;
+        return map(f -> -f, rangeUp(-a));
     }
 
     public float nextFromRange(float a, float b) {
-        return 0.0f;
+        int oa = FloatingPointUtils.toOrderedRepresentation(a);
+        int ob = FloatingPointUtils.toOrderedRepresentation(b);
+        if (oa <= 0 && 0 <= ob) {
+            int n = nextFromRange(oa - 1, ob);
+            return n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n);
+        } else {
+            return FloatingPointUtils.floatFromOrderedRepresentation(nextFromRange(oa, ob));
+        }
     }
 
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        return null;
+        return fromSupplier(() -> nextFromRange(a, b));
     }
 
     public double nextFromRangeUp(double a) {
-        return 0.0f;
+        long oa = FloatingPointUtils.toOrderedRepresentation(a);
+        if (oa <= 0L) {
+            long n = nextFromRange(oa - 1, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1);
+            return n == oa - 1 ? -0.0 : FloatingPointUtils.doubleFromOrderedRepresentation(n);
+        } else {
+            return FloatingPointUtils.doubleFromOrderedRepresentation(
+                    nextFromRange(oa, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1)
+            );
+        }
     }
 
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     public double nextFromRangeDown(double a) {
-        return 0.0f;
+        return -nextFromRangeUp(-a);
     }
 
     @Override
     public @NotNull Iterable<Double> rangeDown(double a) {
-        return null;
+        return map(f -> -f, rangeUp(-a));
     }
 
     public double nextFromRange(double a, double b) {
-        return 0.0f;
+        long oa = FloatingPointUtils.toOrderedRepresentation(a);
+        long ob = FloatingPointUtils.toOrderedRepresentation(b);
+        if (oa <= 0L && 0L <= ob) {
+            long n = nextFromRange(oa - 1, ob);
+            return n == oa - 1 ? -0.0 : FloatingPointUtils.doubleFromOrderedRepresentation(n);
+        } else {
+            return FloatingPointUtils.doubleFromOrderedRepresentation(nextFromRange(oa, ob));
+        }
     }
 
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        return null;
+        return fromSupplier(() -> nextFromRange(a, b));
     }
 
     public float nextFromRangeUpUniform(float a) {
@@ -3480,7 +3510,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextFromRangeUpUniform(double a) {
-        return 0.0f;
+        return 0.0;
     }
 
     public @NotNull Iterable<Double> rangeUpUniform(double a) {
@@ -3488,7 +3518,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextFromRangeDownUniform(double a) {
-        return 0.0f;
+        return 0.0;
     }
 
     public @NotNull Iterable<Double> rangeDownUniform(double a) {
@@ -3496,7 +3526,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextFromRangeUniform(double a, double b) {
-        return 0.0f;
+        return 0.0;
     }
 
     public @NotNull Iterable<Double> rangeUniform(double a, double b) {
