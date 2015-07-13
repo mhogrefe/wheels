@@ -297,8 +297,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code this} may be any {@code long}.</li>
+     *  <li>The result may be any {@code long}.</li>
      * </ul>
+     *
+     * @return the id
      */
     public long getId() {
         return prng.getId();
