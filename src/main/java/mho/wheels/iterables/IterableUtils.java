@@ -3796,38 +3796,23 @@ public final strictfp class IterableUtils {
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
-    public static <T extends Comparable<T>> boolean increasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean increasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean decreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean decreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean weaklyIncreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean weaklyIncreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean weaklyDecreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean weaklyDecreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean zigzagging(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 (a, b) -> new Pair<Ordering, Ordering>(a, b),
                 adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
