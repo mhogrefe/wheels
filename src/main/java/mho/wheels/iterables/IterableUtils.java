@@ -5302,10 +5302,7 @@ public final strictfp class IterableUtils {
         return sb.toString();
     }
 
-    public static @NotNull <T extends Comparable<T>> List<T> sort(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xss
-    ) {
+    public static @NotNull <T> List<T> sort(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list, comparator);
         return list;
