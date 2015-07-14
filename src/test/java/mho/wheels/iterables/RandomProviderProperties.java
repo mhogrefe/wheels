@@ -212,6 +212,18 @@ public class RandomProviderProperties {
             propertiesNonzeroDoublesUniform();
             propertiesNextDoubleUniform();
             propertiesDoublesUniform();
+            propertiesNextFromRangeUp_float();
+            propertiesRangeUp_float();
+            propertiesNextFromRangeDown_float();
+            propertiesRangeDown_float();
+            propertiesNextFromRange_float_float();
+            propertiesRange_float_float();
+            propertiesNextFromRangeUp_double();
+            propertiesRangeUp_double();
+            propertiesNextFromRangeDown_double();
+            propertiesRangeDown_double();
+            propertiesNextFromRange_double_double();
+            propertiesRange_double_double();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2800,6 +2812,254 @@ public class RandomProviderProperties {
             Iterable<Double> ds = rp.doublesUniform();
             simpleTest(rp, ds, d -> Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
             supplierEquivalence(rp, ds, rp::nextDoubleUniform);
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_float() {
+        initialize("nextFromRangeUp(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            float f = p.a.nextFromRangeUp(p.b);
+            assertTrue(p, f >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp, rp.nextFromRangeUp(Float.POSITIVE_INFINITY), Float.POSITIVE_INFINITY);
+        }
+    }
+
+    private static void propertiesRangeUp_float() {
+        initialize("rangeUp(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            Iterable<Float> fs = p.a.rangeUp(p.b);
+            simpleTest(p.a, fs, f -> f >= p.b);
+            supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeUp(p.b));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp, TINY_LIMIT, rp.rangeUp(Float.POSITIVE_INFINITY), repeat(Float.POSITIVE_INFINITY));
+        }
+    }
+
+    private static void propertiesNextFromRangeDown_float() {
+        initialize("nextFromRangeDown(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            float f = p.a.nextFromRangeDown(p.b);
+            assertTrue(p, f <= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp, rp.nextFromRangeDown(Float.NEGATIVE_INFINITY), Float.NEGATIVE_INFINITY);
+        }
+    }
+
+    private static void propertiesRangeDown_float() {
+        initialize("rangeDown(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            Iterable<Float> fs = p.a.rangeDown(p.b);
+            simpleTest(p.a, fs, f -> f <= p.b);
+            supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeDown(p.b));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp, TINY_LIMIT, rp.rangeDown(Float.NEGATIVE_INFINITY), repeat(Float.NEGATIVE_INFINITY));
+        }
+    }
+
+    private static void propertiesNextFromRange_float_float() {
+        initialize("nextFromRange(float, float)");
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            float f = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t, f >= t.b);
+            assertTrue(t, f <= t.c);
+        }
+
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f) && f != 0.0f, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
+        }
+    }
+
+    private static void propertiesRange_float_float() {
+        initialize("range(float, float)");
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats()),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            Iterable<Float> fs = t.a.range(t.b, t.c);
+            simpleTest(t.a, fs, f -> f >= t.b && f <= t.c);
+            assertEquals(t, t.b > t.c, isEmpty(fs));
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, fs, () -> t.a.nextFromRange(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f) && f != 0.0f, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+            try {
+                p.a.range(Float.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.range(p.b, Float.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_double() {
+        initialize("nextFromRangeUp(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            double d = p.a.nextFromRangeUp(p.b);
+            assertTrue(p, d >= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp, rp.nextFromRangeUp(Double.POSITIVE_INFINITY), Double.POSITIVE_INFINITY);
+        }
+    }
+
+    private static void propertiesRangeUp_double() {
+        initialize("rangeUp(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            Iterable<Double> ds = p.a.rangeUp(p.b);
+            simpleTest(p.a, ds, d -> d >= p.b);
+            supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeUp(p.b));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp, TINY_LIMIT, rp.rangeUp(Double.POSITIVE_INFINITY), repeat(Double.POSITIVE_INFINITY));
+        }
+    }
+
+    private static void propertiesNextFromRangeDown_double() {
+        initialize("nextFromRangeDown(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Double.isNaN(f), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            double d = p.a.nextFromRangeDown(p.b);
+            assertTrue(p, d <= p.b);
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            assertEquals(rp, rp.nextFromRangeDown(Double.NEGATIVE_INFINITY), Double.NEGATIVE_INFINITY);
+        }
+    }
+
+    private static void propertiesRangeDown_double() {
+        initialize("rangeDown(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            Iterable<Double> ds = p.a.rangeDown(p.b);
+            simpleTest(p.a, ds, d -> d <= p.b);
+            supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeDown(p.b));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp, TINY_LIMIT, rp.rangeDown(Double.NEGATIVE_INFINITY), repeat(Double.NEGATIVE_INFINITY));
+        }
+    }
+
+    private static void propertiesNextFromRange_double_double() {
+        initialize("nextFromRange(double, double)");
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            double d = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t, d >= t.b);
+            assertTrue(t, d <= t.c);
+        }
+
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d) && d != 0.0, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
+        }
+    }
+
+    private static void propertiesRange_double_double() {
+        initialize("range(double, double)");
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles()),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            Iterable<Double> ds = t.a.range(t.b, t.c);
+            simpleTest(t.a, ds, f -> f >= t.b && f <= t.c);
+            assertEquals(t, t.b > t.c, isEmpty(ds));
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, ds, () -> t.a.nextFromRange(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d) && d != 0.0, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
+            try {
+                p.a.range(Double.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.range(p.b, Double.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
         }
     }
 

@@ -3440,6 +3440,10 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
+        if (Float.isNaN(a) || Float.isNaN(b)) {
+            throw new ArithmeticException();
+        }
+        if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
@@ -3482,6 +3486,10 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
+        if (Double.isNaN(a) || Double.isNaN(b)) {
+            throw new ArithmeticException();
+        }
+        if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
