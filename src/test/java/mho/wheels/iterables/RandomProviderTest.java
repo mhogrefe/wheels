@@ -5341,6 +5341,52 @@ public strictfp class RandomProviderTest {
                 " 2.5109586043466566E307, 1.358911142655542E308, 1.0936400715073092E308, -2.226212499263397E307]");
     }
 
+    private static void floatHelper(@NotNull Iterable<Float> fs, @NotNull String output, float sampleMean) {
+        List<Float> sample = toList(take(DEFAULT_SAMPLE_SIZE, fs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(meanOfFloats(sample), sampleMean);
+    }
+
+    private static void nextFromRangeUp_float_helper(float a, float output) {
+        aeq(P.nextFromRangeUp(a), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUp_float_fail_helper(float a) {
+        try {
+            P.rangeUp(Float.NaN);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUp_float() {
+        nextFromRangeUp_float_helper(1.0f, 6.9505213E34f);
+        nextFromRangeUp_float_helper(1.0E20f, 3.04433E22f);
+        nextFromRangeUp_float_helper(1.0f, 6.9505213E34f);
+        nextFromRangeUp_float_helper(-1.0E20f, -9.307628E-22f);
+        nextFromRangeUp_float_helper((float) Math.PI, 935.52563f);
+        nextFromRangeUp_float_helper((float) Math.sqrt(2), 427.6776f);
+        nextFromRangeUp_float_helper((float) -Math.PI, 1.2681087E-36f);
+        nextFromRangeUp_float_helper((float) -Math.sqrt(2), 2.7718172E-36f);
+        nextFromRangeUp_float_helper(0.0f, 643.27783f);
+        nextFromRangeUp_float_helper(-0.0f, 643.27783f);
+        nextFromRangeUp_float_helper(Float.MIN_VALUE, 643.27795f);
+        nextFromRangeUp_float_helper(Float.MIN_NORMAL, 1286.5558f);
+        nextFromRangeUp_float_helper(-Float.MIN_VALUE, 643.2778f);
+        nextFromRangeUp_float_helper(-Float.MIN_NORMAL, 321.63892f);
+        nextFromRangeUp_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
+        nextFromRangeUp_float_helper(-Float.MAX_VALUE, -0.0034054646f);
+        nextFromRangeUp_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+        nextFromRangeUp_float_helper(Float.NEGATIVE_INFINITY, -0.0034054648f);
+        nextFromRangeUp_float_fail_helper(Float.NaN);
+    }
+
+    private static void rangeUp_float_helper(float a, @NotNull String output) {
+        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        P.reset();
+    }
+
     @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
@@ -5382,6 +5428,14 @@ public strictfp class RandomProviderTest {
 
     private static double meanOfBinaryFractions(@NotNull List<BinaryFraction> xs) {
         return sumDouble(map(i -> i.doubleRange().a / DEFAULT_SAMPLE_SIZE, xs));
+    }
+
+    private static float meanOfFloats(@NotNull List<Float> xs) {
+        return sumFloat(map(f -> f / DEFAULT_SAMPLE_SIZE, xs));
+    }
+
+    private static double meanOfDoubles(@NotNull List<Double> xs) {
+        return sumDouble(map(d -> d / DEFAULT_SAMPLE_SIZE, xs));
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {

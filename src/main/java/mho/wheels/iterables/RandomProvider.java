@@ -3415,6 +3415,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
+        if (Float.isNaN(a)) {
+            throw new ArithmeticException();
+        }
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
@@ -3461,6 +3464,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
+        if (Double.isNaN(a)) {
+            throw new ArithmeticException();
+        }
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
