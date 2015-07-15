@@ -5360,7 +5360,7 @@ public strictfp class RandomProviderTest {
 
     private static void nextFromRangeUp_float_fail_helper(float a) {
         try {
-            P.rangeUp(a);
+            P.nextFromRangeUp(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -5539,7 +5539,7 @@ public strictfp class RandomProviderTest {
 
     private static void nextFromRangeDown_float_fail_helper(float a) {
         try {
-            P.rangeDown(a);
+            P.nextFromRangeDown(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -5731,9 +5731,43 @@ public strictfp class RandomProviderTest {
 
     private static void nextFromRange_float_float_fail_helper(float a, float b) {
         try {
-            P.range(a, b);
+            P.nextFromRange(a, b);
             fail();
-        } catch (ArithmeticException ignored) {}
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRange_float_float() {
+        nextFromRange_float_float_helper(1.0f, 2.0f, 1.2564021f);
+        nextFromRange_float_float_helper(1.0f, 3.0f, 1.2564021f);
+        nextFromRange_float_float_helper(1.0f, 4.0f, 1.2564021f);
+        nextFromRange_float_float_helper(1.0f, 257.0f, 13.386217f);
+        nextFromRange_float_float_helper(-257.0f, -1.0f, -21.290066f);
+        nextFromRange_float_float_helper(1.0f, 1.0E20f, 321.63895f);
+        nextFromRange_float_float_helper(-1.0E20f, -1.0f, -3.16722124E17f);
+        nextFromRange_float_float_helper(1.4142135f, 3.1415927f, 1.6706157f);
+        nextFromRange_float_float_helper(3.1415927f, 3.141593f, 3.141593f);
+        nextFromRange_float_float_helper(0.0f, 1.0f, 1.8904236E-36f);
+        nextFromRange_float_float_helper(-1.0f, 1.0f, 3.7808473E-36f);
+        nextFromRange_float_float_helper(1.0f, 1.0f, 1.0f);
+        nextFromRange_float_float_helper(1.0f, Float.POSITIVE_INFINITY, 6.9505213E34f);
+        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f, -0.0034054648f);
+        nextFromRange_float_float_helper(3.4028235E38f, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, -3.4028235E38f, -3.4028235E38f);
+        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, -0.0034054648f);
+        nextFromRange_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        nextFromRange_float_float_fail_helper(1.0f, -1.0f);
+        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
+        nextFromRange_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
+        nextFromRange_float_float_fail_helper(Float.NaN, 1.0f);
+        nextFromRange_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
+        nextFromRange_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
+        nextFromRange_float_float_fail_helper(1.0f, Float.NaN);
+        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NaN);
+        nextFromRange_float_float_fail_helper(Float.NEGATIVE_INFINITY, Float.NaN);
+        nextFromRange_float_float_fail_helper(Float.NaN, Float.NaN);
     }
 
     private static void nextFromRangeUp_double_helper(double a, double output) {
@@ -5743,7 +5777,7 @@ public strictfp class RandomProviderTest {
 
     private static void nextFromRangeUp_double_fail_helper(double a) {
         try {
-            P.rangeUp(a);
+            P.nextFromRangeUp(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -5953,12 +5987,10 @@ public strictfp class RandomProviderTest {
 
     private static void nextFromRangeDown_double_fail_helper(double a) {
         try {
-            P.rangeDown(a);
+            P.nextFromRangeDown(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
-
-
 
     @Test
     public void testNextFromRangeDown_double() {
@@ -6163,6 +6195,64 @@ public strictfp class RandomProviderTest {
                 Double.NEGATIVE_INFINITY
         );
         rangeDown_double_fail_helper(Double.NaN);
+    }
+
+    private static void nextFromRange_double_double_helper(double a, double b, double output) {
+        aeq(P.nextFromRange(a, b), output);
+        P.reset();
+    }
+
+    private static void nextFromRange_double_double_fail_helper(double a, double b) {
+        try {
+            P.nextFromRange(a, b);
+            fail();
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRange_double_double() {
+        nextFromRange_double_double_helper(1.0, 2.0, 1.5835797778827967);
+        nextFromRange_double_double_helper(1.0, 3.0, 1.5835797778827967);
+        nextFromRange_double_double_helper(1.0, 4.0, 1.2250037563816156);
+        nextFromRange_double_double_helper(1.0, 257.0, 44.685540415870975);
+        nextFromRange_double_double_helper(-257.0, -1.0, -6.429932448016128);
+        nextFromRange_double_double_helper(1.0, 1.0E20, 2928511.57669452);
+        nextFromRange_double_double_helper(-1.0E20, -1.0, -3.4460094358635984E13);
+        nextFromRange_double_double_helper(1.4142135623730951, 3.141592653589793, 1.9977933402558918);
+        nextFromRange_double_double_helper(3.141592653589793, 3.1415926535897936, 3.1415926535897936);
+        nextFromRange_double_double_helper(0.0, 1.0, 1.4864784103112476E-109);
+        nextFromRange_double_double_helper(-1.0, 1.0, -8.379780669198026E-200);
+        nextFromRange_double_double_helper(1.0, 1.0, 1.0);
+        nextFromRange_double_double_helper(1.0, Double.POSITIVE_INFINITY, 1.3361160166687895E199);
+        nextFromRange_double_double_helper(Double.NEGATIVE_INFINITY, 1.0, -2.5814761616832655E-108);
+        nextFromRange_double_double_helper(1.7976931348623157E308, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        nextFromRange_double_double_helper(Double.NEGATIVE_INFINITY, -1.7976931348623157E308, -1.7976931348623157E308);
+        nextFromRange_double_double_helper(
+                Double.NEGATIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                -2.5814761616832655E-108
+        );
+        nextFromRange_double_double_helper(
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY,
+                Double.POSITIVE_INFINITY
+        );
+        nextFromRange_double_double_helper(
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY,
+                Double.NEGATIVE_INFINITY
+        );
+        nextFromRange_double_double_fail_helper(1.0, -1.0);
+        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0);
+        nextFromRange_double_double_fail_helper(1.0, Double.NEGATIVE_INFINITY);
+        nextFromRange_double_double_fail_helper(Double.NaN, 1.0);
+        nextFromRange_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
+        nextFromRange_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
+        nextFromRange_double_double_fail_helper(1.0, Float.NaN);
+        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NaN);
+        nextFromRange_double_double_fail_helper(Double.NEGATIVE_INFINITY, Double.NaN);
+        nextFromRange_double_double_fail_helper(Double.NaN, Double.NaN);
     }
 
     @Test
