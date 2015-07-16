@@ -1498,6 +1498,150 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUp_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats()),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUp_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles()),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
