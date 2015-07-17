@@ -3729,51 +3729,83 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextFromRangeUpUniform(float a) {
-        return 0.0f;
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.scaleUp(a).get(),
+                FloatingPointUtils.SCALED_UP_MAX_FLOAT
+        );
+        Pair<Float, Float> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
+        ).floatRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     public @NotNull Iterable<Float> rangeUpUniform(float a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
     public float nextFromRangeDownUniform(float a) {
-        return 0.0f;
+        return -nextFromRangeUpUniform(-a);
     }
 
     public @NotNull Iterable<Float> rangeDownUniform(float a) {
-        return null;
+        return map(f -> -f, rangeUpUniform(-a));
     }
 
     public float nextFromRangeUniform(float a, float b) {
-        return 0.0f;
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.scaleUp(a).get(),
+                FloatingPointUtils.scaleUp(b).get()
+        );
+        Pair<Float, Float> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
+        ).floatRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     public @NotNull Iterable<Float> rangeUniform(float a, float b) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
     public double nextFromRangeUpUniform(double a) {
-        return 0.0;
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.scaleUp(a).get(),
+                FloatingPointUtils.SCALED_UP_MAX_DOUBLE
+        );
+        Pair<Double, Double> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
+        ).doubleRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     public @NotNull Iterable<Double> rangeUpUniform(double a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
     public double nextFromRangeDownUniform(double a) {
-        return 0.0;
+        return -nextFromRangeUpUniform(-a);
     }
 
     public @NotNull Iterable<Double> rangeDownUniform(double a) {
-        return null;
+        return map(d -> -d, rangeUpUniform(-a));
     }
 
     public double nextFromRangeUniform(double a, double b) {
-        return 0.0;
+        BigInteger scaled = nextFromRange(
+                FloatingPointUtils.scaleUp(a).get(),
+                FloatingPointUtils.scaleUp(b).get()
+        );
+        Pair<Double, Double> range = BinaryFraction.of(
+                scaled,
+                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
+        ).doubleRange();
+        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     public @NotNull Iterable<Double> rangeUniform(double a, double b) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
     @Override
