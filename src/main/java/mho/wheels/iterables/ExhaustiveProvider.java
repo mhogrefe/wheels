@@ -1404,8 +1404,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        if (Float.isNaN(a) || Float.isNaN(b)) {
-            throw new ArithmeticException();
+        if (Float.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Float.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
         }
         if (a > b) return Collections.emptyList();
         if (a == Float.NEGATIVE_INFINITY) return rangeDown(b);
@@ -1507,8 +1510,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        if (Double.isNaN(a) || Double.isNaN(b)) {
-            throw new ArithmeticException();
+        if (Double.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Double.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
         }
         if (a > b) return Collections.emptyList();
         if (a == Double.NEGATIVE_INFINITY) return rangeDown(b);

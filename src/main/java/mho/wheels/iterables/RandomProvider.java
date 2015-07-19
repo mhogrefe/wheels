@@ -3729,6 +3729,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextFromRangeUpUniform(float a) {
+        if (!Float.isFinite(a)) {
+            throw new ArithmeticException();
+        }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
                 FloatingPointUtils.SCALED_UP_MAX_FLOAT
@@ -3741,6 +3744,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<Float> rangeUpUniform(float a) {
+        if (!Float.isFinite(a)) {
+            throw new ArithmeticException();
+        }
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
@@ -3776,6 +3782,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextFromRangeUpUniform(double a) {
+        if (!Double.isFinite(a)) {
+            throw new ArithmeticException();
+        }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
                 FloatingPointUtils.SCALED_UP_MAX_DOUBLE
@@ -3788,6 +3797,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<Double> rangeUpUniform(double a) {
+        if (!Double.isFinite(a)) {
+            throw new ArithmeticException();
+        }
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
