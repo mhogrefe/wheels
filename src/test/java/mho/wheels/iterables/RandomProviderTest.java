@@ -6639,6 +6639,215 @@ public strictfp class RandomProviderTest {
         range_double_double_fail_helper(Double.NaN, Double.NaN);
     }
 
+    private static void nextFromRangeUpUniform_float_helper(float a, float output) {
+        aeq(P.nextFromRangeUpUniform(a), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUpUniform_float_fail_helper(float a) {
+        try {
+            P.nextFromRangeUpUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUpUniform_float() {
+
+    }
+
+    private static void rangeUpUniform_float_helper(float a, @NotNull String output, float sampleMean) {
+        floatHelper(P.rangeUpUniform(a), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeUpUniform_float_fail_helper(float a) {
+        try {
+            P.rangeUpUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeUpUniform_float() {
+
+    }
+
+    private static void nextFromRangeDownUniform_float_helper(float a, float output) {
+        aeq(P.nextFromRangeDownUniform(a), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeDownUniform_float_fail_helper(float a) {
+        try {
+            P.nextFromRangeDownUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeDownUniform_float() {
+
+    }
+
+    private static void rangeDownUniform_float_helper(float a, @NotNull String output, float sampleMean) {
+        floatHelper(P.rangeDownUniform(a), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeDownUniform_float_fail_helper(float a) {
+        try {
+            P.rangeDownUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeDownUniform_float() {
+
+    }
+
+    private static void nextFromRangeUniform_float_float_helper(float a, float b, float output) {
+        aeq(P.nextFromRangeUniform(a, b), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUniform_float_float_fail_helper(float a, float b) {
+        try {
+            P.nextFromRangeUniform(a, b);
+            fail();
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUniform_float_float() {
+
+    }
+
+    private static void rangeUniform_float_float_helper(float a, float b, @NotNull String output, float sampleMean) {
+        floatHelper(P.rangeUniform(a, b), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeUniform_float_float_fail_helper(float a, float b) {
+        try {
+            P.rangeUniform(a, b);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeUniform_float_float() {
+
+    }
+
+    private static void nextFromRangeUpUniform_double_helper(double a, double output) {
+        aeq(P.nextFromRangeUpUniform(a), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUpUniform_double_fail_helper(double a) {
+        try {
+            P.nextFromRangeUpUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUpUniform_double() {
+
+    }
+
+    private static void rangeUpUniform_double_helper(double a, @NotNull String output, double sampleMean) {
+        doubleHelper(P.rangeUpUniform(a), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeUpUniform_double_fail_helper(double a) {
+        try {
+            P.rangeUpUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeUpUniform_double() {
+
+    }
+
+    private static void nextFromRangeDownUniform_double_helper(double a, double output) {
+        aeq(P.nextFromRangeDownUniform(a), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeDownUniform_double_fail_helper(double a) {
+        try {
+            P.nextFromRangeDownUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeDownUniform_double() {
+
+    }
+
+    private static void rangeDownUniform_double_helper(double a, @NotNull String output, double sampleMean) {
+        doubleHelper(P.rangeDownUniform(a), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeDownUniform_double_fail_helper(double a) {
+        try {
+            P.rangeDownUniform(a);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeDownUniform_double() {
+
+    }
+
+    private static void nextFromRangeUniform_double_double_helper(double a, double b, double output) {
+        aeq(P.nextFromRangeUniform(a, b), output);
+        P.reset();
+    }
+
+    private static void nextFromRangeUniform_double_double_fail_helper(double a, double b) {
+        try {
+            P.nextFromRangeUniform(a, b);
+            fail();
+        } catch (ArithmeticException | IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testNextFromRangeUniform_double_double() {
+
+    }
+
+    private static void rangeUniform_double_double_helper(
+            double a,
+            double b,
+            @NotNull String output,
+            double sampleMean
+    ) {
+        doubleHelper(P.rangeUniform(a, b), output, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeUniform_double_double_fail_helper(double a, double b) {
+        try {
+            P.rangeUniform(a, b);
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testRangeUniform_double_double() {
+
+    }
+
     @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
