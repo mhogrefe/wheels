@@ -3753,6 +3753,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public float nextFromRangeUniform(float a, float b) {
+        if (!Float.isFinite(a) || !Float.isFinite(b)) {
+            throw new ArithmeticException();
+        }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
                 FloatingPointUtils.scaleUp(b).get()
@@ -3765,6 +3768,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<Float> rangeUniform(float a, float b) {
+        if (!Float.isFinite(a) || !Float.isFinite(b)) {
+            throw new ArithmeticException();
+        }
+        if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
@@ -3793,6 +3800,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public double nextFromRangeUniform(double a, double b) {
+        if (!Double.isFinite(a) || !Double.isFinite(b)) {
+            throw new ArithmeticException();
+        }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
                 FloatingPointUtils.scaleUp(b).get()
@@ -3805,6 +3815,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull Iterable<Double> rangeUniform(double a, double b) {
+        if (!Double.isFinite(a) || !Double.isFinite(b)) {
+            throw new ArithmeticException();
+        }
+        if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 

@@ -224,6 +224,18 @@ public class RandomProviderProperties {
             propertiesRangeDown_double();
             propertiesNextFromRange_double_double();
             propertiesRange_double_double();
+            propertiesNextFromRangeUpUniform_float();
+            propertiesRangeUpUniform_float();
+            propertiesNextFromRangeDownUniform_float();
+            propertiesRangeDownUniform_float();
+            propertiesNextFromRangeUniform_float_float();
+            propertiesRangeUniform_float_float();
+            propertiesNextFromRangeUpUniform_double();
+            propertiesRangeUpUniform_double();
+            propertiesNextFromRangeDownUniform_double();
+            propertiesRangeDownUniform_double();
+            propertiesNextFromRangeUniform_double_double();
+            propertiesRangeUniform_double_double();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2893,8 +2905,7 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             float f = t.a.nextFromRange(t.b, t.c);
-            assertTrue(t, f >= t.b);
-            assertTrue(t, f <= t.c);
+            assertTrue(t, f >= t.b && f <= t.c);
         }
 
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
@@ -2903,6 +2914,14 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
             assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
+            try {
+                p.a.nextFromRange(Float.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRange(p.b, Float.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
         }
     }
 
@@ -3017,8 +3036,7 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             double d = t.a.nextFromRange(t.b, t.c);
-            assertTrue(t, d >= t.b);
-            assertTrue(t, d <= t.c);
+            assertTrue(t, d >= t.b && d <= t.c);
         }
 
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
@@ -3027,6 +3045,14 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
             assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
+            try {
+                p.a.range(Double.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.range(p.b, Double.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
         }
     }
 
@@ -3058,6 +3084,316 @@ public class RandomProviderProperties {
             } catch (ArithmeticException ignored) {}
             try {
                 p.a.range(p.b, Double.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUpUniform_float() {
+        initialize("nextFromRangeUpUniform(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            float f = p.a.nextFromRangeUpUniform(p.b);
+            assertTrue(p, f >= p.b && Float.isFinite(f));
+        }
+    }
+
+    private static void propertiesRangeUpUniform_float() {
+        initialize("rangeUpUniform(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            Iterable<Float> fs = p.a.rangeUpUniform(p.b);
+            simpleTest(p.a, fs, f -> f >= p.b && Float.isFinite(f));
+            supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void propertiesNextFromRangeDownUniform_float() {
+        initialize("nextFromRangeDownUniform(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            float f = p.a.nextFromRangeDownUniform(p.b);
+            assertTrue(p, f <= p.b && Float.isFinite(f));
+        }
+    }
+
+    private static void propertiesRangeDownUniform_float() {
+        initialize("rangeDownUniform(float)");
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            Iterable<Float> fs = p.a.rangeDownUniform(p.b);
+            simpleTest(p.a, fs, f -> f <= p.b && Float.isFinite(f));
+            supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void propertiesNextFromRangeUniform_float_float() {
+        initialize("nextFromRangeUniform(float, float)");
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            float f = t.a.nextFromRangeUniform(t.b, t.c);
+            assertTrue(t, f >= t.b && f <= t.c && Float.isFinite(f));
+        }
+
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            assertEquals(p, p.a.nextFromRangeUniform(p.b, p.b), p.b);
+        }
+
+        ps = P.pairs(P.randomProvidersDefault(), filter(Float::isFinite, P.floats()));
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            try {
+                p.a.nextFromRangeUniform(Float.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(Float.NEGATIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(Float.POSITIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Float.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Float.NEGATIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Float.POSITIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUniform_float_float() {
+        initialize("rangeUniform(float, float)");
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats()),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            Iterable<Float> fs = t.a.rangeUniform(t.b, t.c);
+            simpleTest(t.a, fs, f -> f >= t.b && f <= t.c && Float.isFinite(f));
+            assertEquals(t, t.b > t.c, isEmpty(fs));
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, fs, () -> t.a.nextFromRangeUniform(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.rangeUniform(p.b, p.b), repeat(p.b));
+        }
+
+        ps = P.pairs(P.randomProvidersDefault(), filter(Float::isFinite, P.floats()));
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            try {
+                p.a.rangeUniform(Float.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(Float.NEGATIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(Float.POSITIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Float.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Float.NEGATIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Float.POSITIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUpUniform_double() {
+        initialize("nextFromRangeUpUniform(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            double d = p.a.nextFromRangeUpUniform(p.b);
+            assertTrue(p, d >= p.b && Double.isFinite(d));
+        }
+    }
+
+    private static void propertiesRangeUpUniform_double() {
+        initialize("rangeUpUniform(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            Iterable<Double> ds = p.a.rangeUpUniform(p.b);
+            simpleTest(p.a, ds, d -> d >= p.b && Double.isFinite(d));
+            supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void propertiesNextFromRangeDownUniform_double() {
+        initialize("nextFromRangeDownUniform(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            double d = p.a.nextFromRangeDownUniform(p.b);
+            assertTrue(p, d <= p.b && Double.isFinite(d));
+        }
+    }
+
+    private static void propertiesRangeDownUniform_double() {
+        initialize("rangeDownUniform(double)");
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            Iterable<Double> ds = p.a.rangeDownUniform(p.b);
+            simpleTest(p.a, ds, d -> d <= p.b && Double.isFinite(d));
+            supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void propertiesNextFromRangeUniform_double_double() {
+        initialize("nextFromRangeUniform(double, double)");
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filterInfinite(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            double d = t.a.nextFromRangeUniform(t.b, t.c);
+            assertTrue(t, d >= t.b && d <= t.c && Double.isFinite(d));
+        }
+
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            assertEquals(p, p.a.nextFromRangeUniform(p.b, p.b), p.b);
+        }
+
+        ps = P.pairs(P.randomProvidersDefault(), filter(Double::isFinite, P.doubles()));
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            try {
+                p.a.nextFromRangeUniform(Double.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(Double.NEGATIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(Double.POSITIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Double.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Double.NEGATIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.nextFromRangeUniform(p.b, Double.POSITIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUniform_double_double() {
+        initialize("rangeUniform(double, double)");
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles()),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            Iterable<Double> ds = t.a.rangeUniform(t.b, t.c);
+            simpleTest(t.a, ds, d -> d >= t.b && d <= t.c && Double.isFinite(d));
+            assertEquals(t, t.b > t.c, isEmpty(ds));
+            if (t.b <= t.c) {
+                supplierEquivalence(t.a, ds, () -> t.a.nextFromRangeUniform(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.rangeUniform(p.b, p.b), repeat(p.b));
+        }
+
+        ps = P.pairs(P.randomProvidersDefault(), filter(Double::isFinite, P.doubles()));
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            try {
+                p.a.rangeUniform(Double.NaN, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(Double.NEGATIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(Double.POSITIVE_INFINITY, p.b);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Double.NaN);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Double.NEGATIVE_INFINITY);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+            try {
+                p.a.rangeUniform(p.b, Double.POSITIVE_INFINITY);
                 fail(p);
             } catch (ArithmeticException ignored) {}
         }
