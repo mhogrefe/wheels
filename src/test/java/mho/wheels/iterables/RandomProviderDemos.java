@@ -1642,6 +1642,156 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextFromRangeUpUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void demoRangeUpUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void demoRangeDownUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUniform_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeUniform(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeUniform_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats()),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeUniform(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUpUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void demoRangeUpUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void demoRangeDownUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUniform_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeUniform(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeUniform_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles()),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeUniform(t.b, t.c)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
