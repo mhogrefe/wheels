@@ -1,9 +1,10 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
+import mho.wheels.numberUtils.FloatingPointUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-import static mho.wheels.misc.FloatingPointUtils.*;
+import static mho.wheels.numberUtils.FloatingPointUtils.*;
 import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.*;
 

@@ -1,4 +1,4 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;

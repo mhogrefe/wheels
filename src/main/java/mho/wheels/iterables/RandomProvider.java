@@ -2,7 +2,8 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.MathUtils;
-import mho.wheels.misc.FloatingPointUtils;
+import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -513,7 +514,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a non-negative {@code int} less than {@code n}
      */
     private int nextIntBounded(int n) {
-        int maxBits = MathUtils.ceilingLog2(n);
+        int maxBits = IntegerUtils.ceilingLog2(n);
         int i;
         do {
             i = nextIntPow2(maxBits);
@@ -537,7 +538,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
      */
     private @NotNull Iterable<Integer> integersBounded(int n) {
-        return filterInfinite(i -> i < n, integersPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
     }
 
     /**
@@ -554,7 +555,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a non-negative {@code long} less than {@code n}
      */
     private long nextLongBounded(long n) {
-        int maxBits = MathUtils.ceilingLog2(n);
+        int maxBits = IntegerUtils.ceilingLog2(n);
         long l;
         do {
             l = nextLongPow2(maxBits);
@@ -578,7 +579,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Long}s less than {@code n}
      */
     private @NotNull Iterable<Long> longsBounded(long n) {
-        return filterInfinite(l -> l < n, longsPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
     }
 
     /**
@@ -596,7 +597,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull BigInteger nextBigIntegerBounded(@NotNull BigInteger n) {
         if (n.equals(BigInteger.ONE)) return BigInteger.ZERO;
-        int maxBits = MathUtils.ceilingLog2(n);
+        int maxBits = IntegerUtils.ceilingLog2(n);
         BigInteger i;
         do {
             i = nextBigIntegerPow2(maxBits);
@@ -621,7 +622,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull Iterable<BigInteger> bigIntegersBounded(@NotNull BigInteger n) {
         if (n.equals(BigInteger.ONE)) return repeat(BigInteger.ZERO);
-        return filterInfinite(i -> lt(i, n), bigIntegersPow2(MathUtils.ceilingLog2(n)));
+        return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
     }
 
     /**

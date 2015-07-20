@@ -11,6 +11,7 @@ Progress
 
 | Class                      | Methods | JavaDoc | Tests | Demos | Properties |
 |:---------------------------|:-------:|:-------:|:-----:|:-----:|:----------:|
+| Readers                    | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                 | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterable             | ✔       | ✘       | ✘     | ✘     | ✘          |
@@ -25,7 +26,7 @@ Progress
 | MathUtils                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
-| Readers                    | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IntegerUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator              | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ShortlexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator   | ✔       | ✔       | ✘     | ✘     | ✘          |

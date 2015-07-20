@@ -1,7 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.MathUtils;
-import mho.wheels.misc.FloatingPointUtils;
+import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;

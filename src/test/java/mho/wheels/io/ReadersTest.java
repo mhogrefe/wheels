@@ -1,5 +1,6 @@
-package mho.wheels.misc;
+package mho.wheels.io;
 
+import mho.wheels.io.Readers;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static mho.wheels.misc.Readers.*;
+import static mho.wheels.io.Readers.*;
 import static org.junit.Assert.*;
 
 public class ReadersTest {

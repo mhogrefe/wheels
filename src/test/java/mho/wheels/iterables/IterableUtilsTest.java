@@ -1,7 +1,7 @@
 package mho.wheels.iterables;
 
-import mho.wheels.misc.BigDecimalUtils;
-import mho.wheels.misc.Readers;
+import mho.wheels.numberUtils.BigDecimalUtils;
+import mho.wheels.io.Readers;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

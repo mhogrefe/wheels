@@ -1,4 +1,4 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;

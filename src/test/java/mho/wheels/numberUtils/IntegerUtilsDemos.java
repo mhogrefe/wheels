@@ -1,4 +1,4 @@
-package mho.wheels.math;
+package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
@@ -12,13 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.math.MathUtils.demux;
-import static mho.wheels.math.MathUtils.mux;
+import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings("UnusedDeclaration")
-public class MathUtilsDemos {
+public class IntegerUtilsDemos {
     private static final boolean USE_RANDOM = false;
     private static final int SMALL_LIMIT = 3000;
     private static int LIMIT;
@@ -31,29 +29,6 @@ public class MathUtilsDemos {
         } else {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
-        }
-    }
-
-    private static void demoGcd_int_int() {
-        initialize();
-        Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));
-        for (Pair<Integer, Integer> p : take(LIMIT, ps)) {
-            System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
-        }
-    }
-
-    private static void demoGcd_long_long() {
-        initialize();
-        Iterable<Pair<Long, Long>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.longs()));
-        for (Pair<Long, Long> p : take(LIMIT, ps)) {
-            System.out.println("gcd(" + p.a + ", " + p.b + ") = " + gcd(p.a, p.b));
-        }
-    }
-
-    private static void demoLcm() {
-        initialize();
-        for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.positiveBigIntegers()))) {
-            System.out.println("lcm(" + p.a + ", " + p.b + ") = " + lcm(p.a, p.b));
         }
     }
 

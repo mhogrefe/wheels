@@ -1,13 +1,14 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.misc.FloatingPointUtils.*;
+import static mho.wheels.numberUtils.FloatingPointUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class FloatingPointUtilsDemos {

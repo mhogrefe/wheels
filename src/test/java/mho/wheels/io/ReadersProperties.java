@@ -1,5 +1,6 @@
-package mho.wheels.misc;
+package mho.wheels.io;
 
+import mho.wheels.io.Readers;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
@@ -11,10 +12,9 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.misc.Readers.*;
+import static mho.wheels.io.Readers.*;
 import static mho.wheels.testing.Testing.propertiesFindInHelper;
 import static org.junit.Assert.assertEquals;
 

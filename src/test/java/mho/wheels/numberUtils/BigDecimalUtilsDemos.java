@@ -1,4 +1,4 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
@@ -8,7 +8,7 @@ import mho.wheels.structures.Pair;
 import java.math.BigDecimal;
 
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.misc.BigDecimalUtils.*;
+import static mho.wheels.numberUtils.BigDecimalUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BigDecimalUtilsDemos {

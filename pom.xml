@@ -30,6 +30,8 @@
                 <version>2.17</version>
                 <configuration>
                     <includes>
+                        <include>**/ReadersProperties.java</include>
+                        <include>**/ReadersTest.java</include>
                         <include>**/ExhaustiveProviderProperties.java</include>
                         <include>**/ExhaustiveProviderTest.java</include>
                         <include>**/IterableUtilsProperties.java</include>
@@ -45,8 +47,8 @@
                         <include>**/BigDecimalUtilsTest.java</include>
                         <include>**/FloatingPointUtilsProperties.java</include>
                         <include>**/FloatingPointUtilsTest.java</include>
-                        <include>**/ReadersProperties.java</include>
-                        <include>**/ReadersTest.java</include>
+                        <include>**/IntegerUtilsProperties.java</include>
+                        <include>**/IntegerUtilsTest.java</include>
                         <include>**/OrderingTest.java</include>
                         <include>**/PairTest.java</include>
                         <include>**/QuadrupleTest.java</include>

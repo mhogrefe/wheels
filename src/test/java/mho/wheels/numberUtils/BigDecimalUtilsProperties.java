@@ -1,8 +1,7 @@
-package mho.wheels.misc;
+package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.misc.BigDecimalUtils.*;
+import static mho.wheels.numberUtils.BigDecimalUtils.*;
 import static mho.wheels.ordering.Ordering.eq;
 import static mho.wheels.ordering.Ordering.ne;
 import static org.junit.Assert.*;
