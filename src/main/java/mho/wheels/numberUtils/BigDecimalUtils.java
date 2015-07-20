@@ -12,6 +12,16 @@ import java.math.RoundingMode;
  */
 public class BigDecimalUtils {
     /**
+     * –1
+     */
+    public static final @NotNull BigDecimal NEGATIVE_ONE = BigDecimal.valueOf(-1);
+
+    /**
+     * 2
+     */
+    public static final @NotNull BigDecimal TWO = BigDecimal.valueOf(2);
+
+    /**
      * Disallow instantiation
      */
     private BigDecimalUtils() {}
@@ -79,10 +89,10 @@ public class BigDecimalUtils {
             case 0:
                 return bd;
             case 1:
-                return bd.multiply(BigDecimal.valueOf(2).pow(bits));
+                return bd.multiply(TWO.pow(bits));
             case -1:
                 //noinspection BigDecimalMethodWithoutRoundingCalled
-                return bd.divide(BigDecimal.valueOf(2).pow(-bits));
+                return bd.divide(TWO.pow(-bits));
             default:
                 throw new IllegalStateException("unreachable");
         }
@@ -94,9 +104,9 @@ public class BigDecimalUtils {
                 return bd;
             case 1:
                 //noinspection BigDecimalMethodWithoutRoundingCalled
-                return bd.divide(BigDecimal.valueOf(2).pow(bits));
+                return bd.divide(TWO.pow(bits));
             case -1:
-                return bd.multiply(BigDecimal.valueOf(2).pow(-bits));
+                return bd.multiply(TWO.pow(-bits));
             default:
                 throw new IllegalStateException("unreachable");
         }
