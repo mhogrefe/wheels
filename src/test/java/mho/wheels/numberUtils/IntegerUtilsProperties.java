@@ -737,10 +737,7 @@ public class IntegerUtilsProperties {
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                    P.naturalBigIntegers(),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -760,10 +757,7 @@ public class IntegerUtilsProperties {
         }
 
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                    P.positiveBigIntegers(),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.positiveBigIntegers(),
@@ -787,17 +781,17 @@ public class IntegerUtilsProperties {
             throw new IllegalArgumentException();
         };
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            List<BigInteger> digits = toList(digits(BigInteger.valueOf(2), i));
+            List<BigInteger> digits = toList(digits(TWO, i));
             aeqit(i, map(digitsToBits, digits), bits(i));
         }
 
-        for (BigInteger i : take(LIMIT, P.rangeUp(BigInteger.valueOf(2)))) {
+        for (BigInteger i : take(LIMIT, P.rangeUp(TWO))) {
             assertTrue(i, isEmpty(digits(i, BigInteger.ZERO)));
         }
 
         Iterable<Pair<BigInteger, BigInteger>> psFail = P.pairs(
                 P.naturalBigIntegers(),
-                P.rangeDown(BigInteger.valueOf(-1))
+                P.rangeDown(NEGATIVE_ONE)
         );
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -806,7 +800,7 @@ public class IntegerUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = P.pairs(P.negativeBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+        psFail = P.pairs(P.negativeBigIntegers(), P.rangeUp(TWO));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 digits(p.b, p.a);
@@ -1023,10 +1017,7 @@ public class IntegerUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairs(
-                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                                    P.naturalBigIntegers(),
-                                    P.rangeUp(BigInteger.valueOf(2))
-                            ),
+                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.rangeUp(TWO)),
                             p -> {
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
@@ -1087,13 +1078,13 @@ public class IntegerUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            List<BigInteger> digits = toList(digitsPadded(p.b, BigInteger.valueOf(2), p.a));
+            List<BigInteger> digits = toList(digitsPadded(p.b, TWO, p.a));
             aeqit(p, map(digitsToBits, digits), bitsPadded(p.b, p.a));
         }
 
         Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail = P.triples(
                 P.naturalIntegers(),
-                P.rangeUp(BigInteger.valueOf(2)),
+                P.rangeUp(TWO),
                 P.negativeBigIntegers()
         );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
@@ -1103,7 +1094,7 @@ public class IntegerUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(BigInteger.valueOf(2)), P.naturalBigIntegers());
+        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(TWO), P.naturalBigIntegers());
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 digitsPadded(t.a, t.b, t.c);
@@ -1222,10 +1213,7 @@ public class IntegerUtilsProperties {
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                    P.naturalBigIntegers(),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -1240,10 +1228,7 @@ public class IntegerUtilsProperties {
         }
 
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                    P.positiveBigIntegers(),
-                    P.rangeUp(BigInteger.valueOf(2))
-            );
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.positiveBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.positiveBigIntegers(),
@@ -1267,11 +1252,11 @@ public class IntegerUtilsProperties {
             throw new IllegalArgumentException();
         };
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
-            List<BigInteger> digits = bigEndianDigits(BigInteger.valueOf(2), i);
+            List<BigInteger> digits = bigEndianDigits(TWO, i);
             aeqit(i, map(digitsToBits, digits), bigEndianBits(i));
         }
 
-        for (BigInteger i : take(LIMIT, P.rangeUp(BigInteger.valueOf(2)))) {
+        for (BigInteger i : take(LIMIT, P.rangeUp(TWO))) {
             assertTrue(i, isEmpty(bigEndianDigits(i, BigInteger.ZERO)));
         }
 
@@ -1283,7 +1268,7 @@ public class IntegerUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        psFail = P.pairs(P.negativeBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+        psFail = P.pairs(P.negativeBigIntegers(), P.rangeUp(TWO));
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, psFail)) {
             try {
                 bigEndianDigits(p.b, p.a);
@@ -1493,10 +1478,7 @@ public class IntegerUtilsProperties {
             ts = map(
                     q -> new Triple<>(q.b, q.a.b, q.a.a),
                     P.dependentPairs(
-                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(
-                                    P.naturalBigIntegers(),
-                                    P.rangeUp(BigInteger.valueOf(2))
-                            ),
+                            ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.rangeUp(TWO)),
                             p -> {
                                 int targetDigitCount = 0;
                                 if (p.a.signum() == 1) {
@@ -1557,13 +1539,13 @@ public class IntegerUtilsProperties {
             ps = P.pairs(P.naturalBigIntegers(), P.withScale(20).naturalIntegersGeometric());
         }
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
-            List<BigInteger> digits = bigEndianDigitsPadded(p.b, BigInteger.valueOf(2), p.a);
+            List<BigInteger> digits = bigEndianDigitsPadded(p.b, TWO, p.a);
             aeqit(p, map(digitsToBits, digits), bigEndianBitsPadded(p.b, p.a));
         }
 
         Iterable<Triple<Integer, BigInteger, BigInteger>> tsFail = P.triples(
                 P.naturalIntegers(),
-                P.rangeUp(BigInteger.valueOf(2)),
+                P.rangeUp(TWO),
                 P.negativeBigIntegers()
         );
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
@@ -1573,7 +1555,7 @@ public class IntegerUtilsProperties {
             } catch (ArithmeticException ignored) {}
         }
 
-        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(BigInteger.valueOf(2)), P.naturalBigIntegers());
+        tsFail = P.triples(P.negativeIntegers(), P.rangeUp(TWO), P.naturalBigIntegers());
         for (Triple<Integer, BigInteger, BigInteger> t : take(LIMIT, tsFail)) {
             try {
                 bigEndianDigitsPadded(t.a, t.b, t.c);
@@ -1703,7 +1685,7 @@ public class IntegerUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                     P.lists(P.naturalBigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
+                    P.rangeUp(TWO)
             );
         } else {
             //noinspection Convert2MethodRef
@@ -1732,7 +1714,7 @@ public class IntegerUtilsProperties {
         };
 
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
-            assertEquals(is, fromDigits(BigInteger.valueOf(2), is), fromBits(map(digitsToBits, is)));
+            assertEquals(is, fromDigits(TWO, is), fromBits(map(digitsToBits, is)));
         }
 
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail = P.pairs(
@@ -1750,7 +1732,7 @@ public class IntegerUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(BigInteger.valueOf(2)));
+        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(TWO));
         psFail = filterInfinite(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -1882,7 +1864,7 @@ public class IntegerUtilsProperties {
         if (P instanceof ExhaustiveProvider) {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                     P.lists(P.naturalBigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
+                    P.rangeUp(TWO)
             );
         } else {
             //noinspection Convert2MethodRef
@@ -1911,7 +1893,7 @@ public class IntegerUtilsProperties {
         };
 
         for (List<BigInteger> is : take(LIMIT, P.lists(P.range(BigInteger.ZERO, BigInteger.ONE)))) {
-            assertEquals(is, fromBigEndianDigits(BigInteger.valueOf(2), is), fromBigEndianBits(map(digitsToBits, is)));
+            assertEquals(is, fromBigEndianDigits(TWO, is), fromBigEndianBits(map(digitsToBits, is)));
         }
 
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPsFail = P.pairs(
@@ -1926,7 +1908,7 @@ public class IntegerUtilsProperties {
             } catch (IllegalArgumentException ignored) {}
         }
 
-        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(BigInteger.valueOf(2)));
+        unfilteredPsFail = P.pairs(P.lists(P.bigIntegers()), P.rangeUp(TWO));
         psFail = filter(p -> any(i -> i.signum() == -1, p.a), unfilteredPsFail);
         for (Pair<List<BigInteger>, BigInteger> p : take(LIMIT, psFail)) {
             try {
@@ -2080,7 +2062,7 @@ public class IntegerUtilsProperties {
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.bigIntegers(),
@@ -2094,12 +2076,9 @@ public class IntegerUtilsProperties {
 
         String chars = charsToString(cons('-', concat(range('0', '9'), range('A', 'Z'))));
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(
-                    P.bigIntegers(),
-                    P.range(BigInteger.valueOf(2), BigInteger.valueOf(36))
-            );
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.range(TWO, BigInteger.valueOf(36)));
         } else {
-            ps = P.pairs(P.bigIntegers(), P.range(BigInteger.valueOf(2), BigInteger.valueOf(36)));
+            ps = P.pairs(P.bigIntegers(), P.range(TWO, BigInteger.valueOf(36)));
         }
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, ps)) {
             String s = toStringBase(p.b, p.a);
@@ -2197,14 +2176,14 @@ public class IntegerUtilsProperties {
 
         Iterable<Pair<BigInteger, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
-                P.pairs(P.rangeUp(BigInteger.valueOf(2)), P.bigIntegers())
+                P.pairs(P.rangeUp(TWO), P.bigIntegers())
         );
         for (Pair<BigInteger, String> p : take(LIMIT, ps)) {
             BigInteger i = fromStringBase(p.a, p.b);
             assertEquals(p, toStringBase(p.a, i), p.b);
         }
 
-        for (BigInteger i : take(LIMIT, P.rangeUp(BigInteger.valueOf(2)))) {
+        for (BigInteger i : take(LIMIT, P.rangeUp(TWO))) {
             assertEquals(i, fromStringBase(i, ""), BigInteger.ZERO);
         }
 

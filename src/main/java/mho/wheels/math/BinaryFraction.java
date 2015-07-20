@@ -2,6 +2,7 @@ package mho.wheels.math;
 
 import mho.wheels.io.Readers;
 import mho.wheels.numberUtils.BigDecimalUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -457,7 +458,7 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      */
     public @NotNull BinaryFraction negate() {
         if (this == ZERO) return ZERO;
-        if (mantissa.equals(BigInteger.valueOf(-1)) && exponent == 0) return ONE;
+        if (mantissa.equals(IntegerUtils.NEGATIVE_ONE) && exponent == 0) return ONE;
         return new BinaryFraction(mantissa.negate(), exponent);
     }
 

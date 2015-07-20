@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
 import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -256,7 +257,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
-        return IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
+        return IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE);
     }
 
     /**
@@ -599,7 +600,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     mux(
                             Arrays.asList(
                                     IterableUtils.rangeUp(BigInteger.ONE),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                             )
                     )
             );
@@ -742,14 +743,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
         if (a.signum() != 1) {
-            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
+            return IterableUtils.rangeBy(a, IntegerUtils.NEGATIVE_ONE);
         } else {
             return cons(
                     BigInteger.ZERO,
                     mux(
                             Arrays.asList(
                                     IterableUtils.range(BigInteger.ONE, a),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE)
                             )
                     )
             );
@@ -926,14 +927,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a.signum() != -1 && b.signum() != -1) {
             return IterableUtils.range(a, b);
         } else if (a.signum() == -1 && b.signum() == -1) {
-            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
+            return IterableUtils.rangeBy(b, IntegerUtils.NEGATIVE_ONE, a);
         } else {
             return cons(
                     BigInteger.ZERO,
                     mux(
                             Arrays.asList(
                                     IterableUtils.range(BigInteger.ONE, b),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                             )
                     )
             );

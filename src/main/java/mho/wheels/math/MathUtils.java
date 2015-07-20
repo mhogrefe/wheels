@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -166,7 +167,7 @@ public final class MathUtils {
     }
 
     public static @NotNull BigInteger ceilingLog(@NotNull BigInteger base, @NotNull BigInteger x) {
-        if (lt(base, BigInteger.valueOf(2))) {
+        if (lt(base, IntegerUtils.TWO)) {
             throw new ArithmeticException("Base must be at least 2. Invalid base: " + base);
         }
         if (x.signum() != 1) {
@@ -224,13 +225,13 @@ public final class MathUtils {
         if (le(n, BigInteger.valueOf(Integer.MAX_VALUE))) {
             return BigInteger.valueOf(smallestPrimeFactor(n.intValueExact()));
         }
-        if (!n.testBit(0)) return BigInteger.valueOf(2);
+        if (!n.testBit(0)) return IntegerUtils.TWO;
         for (int i = 3; i < PRIME_SIEVE_SIZE; i += 2) {
             BigInteger bi = BigInteger.valueOf(i);
             if (gt(bi.pow(2), n)) return n;
             if (PRIME_SIEVE.get(i) && n.mod(bi).equals(BigInteger.ZERO)) return bi;
         }
-        BigInteger limit = ceilingRoot(BigInteger.valueOf(2), n);
+        BigInteger limit = ceilingRoot(IntegerUtils.TWO, n);
         Iterable<BigInteger> candidates = concatMap(
                 i -> {
                     BigInteger sixI = i.multiply(BigInteger.valueOf(6));

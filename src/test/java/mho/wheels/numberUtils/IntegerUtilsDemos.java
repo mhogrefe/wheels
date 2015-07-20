@@ -147,7 +147,7 @@ public class IntegerUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -187,10 +187,7 @@ public class IntegerUtilsDemos {
             ts = map(
                     p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(
-                                    P.naturalIntegers(),
-                                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
-                            ),
+                            P.pairs(P.naturalIntegers(), map(i -> i.add(TWO), P.naturalBigIntegers())),
                             P.naturalBigIntegers()
                     )
             );
@@ -221,7 +218,7 @@ public class IntegerUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.naturalBigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.naturalBigIntegers(),
@@ -261,10 +258,7 @@ public class IntegerUtilsDemos {
             ts = map(
                     p -> new Triple<>(p.a.a, p.a.b, p.b),
                     (Iterable<Pair<Pair<Integer, BigInteger>, BigInteger>>) P.pairs(
-                            P.pairs(
-                                    P.naturalIntegers(),
-                                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
-                            ),
+                            P.pairs(P.naturalIntegers(), map(i -> i.add(TWO), P.naturalBigIntegers())),
                             P.naturalBigIntegers()
                     )
             );
@@ -301,7 +295,7 @@ public class IntegerUtilsDemos {
         if (P instanceof ExhaustiveProvider) {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                     P.lists(P.naturalBigIntegers()),
-                    P.rangeUp(BigInteger.valueOf(2))
+                    P.rangeUp(TWO)
             );
         } else {
             //noinspection Convert2MethodRef
@@ -345,7 +339,7 @@ public class IntegerUtilsDemos {
         if (P instanceof ExhaustiveProvider) {
             unfilteredPs = ((ExhaustiveProvider) P).pairsLogarithmicOrder(
                     P.lists(P.naturalBigIntegers()),
-                    map(i -> i.add(BigInteger.valueOf(2)), P.naturalBigIntegers())
+                    map(i -> i.add(TWO), P.naturalBigIntegers())
             );
         } else {
             //noinspection Convert2MethodRef
@@ -394,7 +388,7 @@ public class IntegerUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, BigInteger>> ps;
         if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(BigInteger.valueOf(2)));
+            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigIntegers(), P.rangeUp(TWO));
         } else {
             ps = P.pairs(
                     P.bigIntegers(),
@@ -421,7 +415,7 @@ public class IntegerUtilsDemos {
         initialize();
         Iterable<Pair<BigInteger, String>> ps = map(
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
-                P.pairs(P.rangeUp(BigInteger.valueOf(2)), P.bigIntegers())
+                P.pairs(P.rangeUp(TWO), P.bigIntegers())
         );
         for (Pair<BigInteger, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));

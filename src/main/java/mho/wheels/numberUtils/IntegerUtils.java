@@ -17,6 +17,16 @@ import static mho.wheels.ordering.Ordering.*;
 
 public class IntegerUtils {
     /**
+     * –1
+     */
+    public static final @NotNull BigInteger NEGATIVE_ONE = BigInteger.valueOf(-1);
+
+    /**
+     * 2
+     */
+    public static final @NotNull BigInteger TWO = BigInteger.valueOf(2);
+
+    /**
      * The default maximum number of elements to print when printing an {@code Iterable}.
      */
     private static final int ITERABLE_PRINT_LIMIT = 20;
@@ -418,7 +428,7 @@ public class IntegerUtils {
      * @return {@code n}'s digits in little-endian order
      */
     public static @NotNull Iterable<BigInteger> digits(@NotNull BigInteger base, @NotNull final BigInteger n) {
-        if (lt(base, BigInteger.valueOf(2))) {
+        if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (n.signum() == -1) {
@@ -680,7 +690,7 @@ public class IntegerUtils {
             @NotNull BigInteger base,
             @NotNull Iterable<BigInteger> digits
     ) {
-        if (lt(base, BigInteger.valueOf(2)))
+        if (lt(base, TWO))
             throw new IllegalArgumentException("base must be at least 2");
         BigInteger n = BigInteger.ZERO;
         for (BigInteger digit : digits) {
@@ -805,7 +815,7 @@ public class IntegerUtils {
      * @return a {@code String} representation of {@code n} in base {@code base}
      */
     public static @NotNull String toStringBase(@NotNull BigInteger base, @NotNull BigInteger n) {
-        if (lt(base, BigInteger.valueOf(2))) {
+        if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         boolean bigBase = gt(base, BigInteger.valueOf(36));
@@ -910,7 +920,7 @@ public class IntegerUtils {
      * @return the number represented by {@code s}
      */
     public static @NotNull BigInteger fromStringBase(@NotNull BigInteger base, @NotNull String s) {
-        if (lt(base, BigInteger.valueOf(2))) {
+        if (lt(base, TWO)) {
             throw new IllegalArgumentException("base must be at least 2. Invalid base: " + base);
         }
         if (s.isEmpty())
