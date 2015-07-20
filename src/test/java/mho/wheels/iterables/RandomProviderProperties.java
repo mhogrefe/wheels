@@ -3097,7 +3097,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
             float f = p.a.nextFromRangeUpUniform(p.b);
-            assertTrue(p, f >= p.b && Float.isFinite(f));
+            assertTrue(p, f >= p.b && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
         }
     }
 
@@ -3109,7 +3109,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
             Iterable<Float> fs = p.a.rangeUpUniform(p.b);
-            simpleTest(p.a, fs, f -> f >= p.b && Float.isFinite(f));
+            simpleTest(p.a, fs, f -> f >= p.b && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
             supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeUpUniform(p.b));
         }
     }
@@ -3122,7 +3122,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
             float f = p.a.nextFromRangeDownUniform(p.b);
-            assertTrue(p, f <= p.b && Float.isFinite(f));
+            assertTrue(p, f <= p.b && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
         }
     }
 
@@ -3134,7 +3134,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
             Iterable<Float> fs = p.a.rangeDownUniform(p.b);
-            simpleTest(p.a, fs, f -> f <= p.b && Float.isFinite(f));
+            simpleTest(p.a, fs, f -> f <= p.b && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
             supplierEquivalence(p.a, fs, () -> p.a.nextFromRangeDownUniform(p.b));
         }
     }
@@ -3151,7 +3151,7 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             float f = t.a.nextFromRangeUniform(t.b, t.c);
-            assertTrue(t, f >= t.b && f <= t.c && Float.isFinite(f));
+            assertTrue(t, f >= t.b && f <= t.c && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f));
         }
 
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
@@ -3200,7 +3200,11 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
             Iterable<Float> fs = t.a.rangeUniform(t.b, t.c);
-            simpleTest(t.a, fs, f -> f >= t.b && f <= t.c && Float.isFinite(f));
+            simpleTest(
+                    t.a,
+                    fs,
+                    f -> f >= t.b && f <= t.c && Float.isFinite(f) && !FloatingPointUtils.isNegativeZero(f)
+            );
             assertEquals(t, t.b > t.c, isEmpty(fs));
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, fs, () -> t.a.nextFromRangeUniform(t.b, t.c));
@@ -3252,7 +3256,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
             double d = p.a.nextFromRangeUpUniform(p.b);
-            assertTrue(p, d >= p.b && Double.isFinite(d));
+            assertTrue(p, d >= p.b && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
         }
     }
 
@@ -3264,7 +3268,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
             Iterable<Double> ds = p.a.rangeUpUniform(p.b);
-            simpleTest(p.a, ds, d -> d >= p.b && Double.isFinite(d));
+            simpleTest(p.a, ds, d -> d >= p.b && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
             supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeUpUniform(p.b));
         }
     }
@@ -3277,7 +3281,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
             double d = p.a.nextFromRangeDownUniform(p.b);
-            assertTrue(p, d <= p.b && Double.isFinite(d));
+            assertTrue(p, d <= p.b && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
         }
     }
 
@@ -3289,7 +3293,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
             Iterable<Double> ds = p.a.rangeDownUniform(p.b);
-            simpleTest(p.a, ds, d -> d <= p.b && Double.isFinite(d));
+            simpleTest(p.a, ds, d -> d <= p.b && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
             supplierEquivalence(p.a, ds, () -> p.a.nextFromRangeDownUniform(p.b));
         }
     }
@@ -3306,7 +3310,7 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             double d = t.a.nextFromRangeUniform(t.b, t.c);
-            assertTrue(t, d >= t.b && d <= t.c && Double.isFinite(d));
+            assertTrue(t, d >= t.b && d <= t.c && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d));
         }
 
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
@@ -3355,7 +3359,11 @@ public class RandomProviderProperties {
         );
         for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
             Iterable<Double> ds = t.a.rangeUniform(t.b, t.c);
-            simpleTest(t.a, ds, d -> d >= t.b && d <= t.c && Double.isFinite(d));
+            simpleTest(
+                    t.a,
+                    ds,
+                    d -> d >= t.b && d <= t.c && Double.isFinite(d) && !FloatingPointUtils.isNegativeZero(d)
+            );
             assertEquals(t, t.b > t.c, isEmpty(ds));
             if (t.b <= t.c) {
                 supplierEquivalence(t.a, ds, () -> t.a.nextFromRangeUniform(t.b, t.c));
