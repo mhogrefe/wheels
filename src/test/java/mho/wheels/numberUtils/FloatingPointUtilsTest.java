@@ -1,6 +1,5 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.numberUtils.FloatingPointUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

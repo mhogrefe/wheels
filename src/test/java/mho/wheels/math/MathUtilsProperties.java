@@ -2,7 +2,6 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -11,14 +10,10 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties {

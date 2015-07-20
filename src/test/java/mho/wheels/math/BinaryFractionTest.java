@@ -1,7 +1,7 @@
 package mho.wheels.math;
 
-import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.io.Readers;
+import mho.wheels.numberUtils.FloatingPointUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +9,8 @@ import org.junit.Test;
 import java.math.BigInteger;
 import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.iterate;
+import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.testing.Testing.*;
 

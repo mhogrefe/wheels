@@ -1,7 +1,7 @@
 package mho.wheels.math;
 
-import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.io.Readers;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,8 @@ import java.util.Optional;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.numberUtils.FloatingPointUtils.*;
 import static mho.wheels.ordering.Ordering.gt;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.assertEquals;
+import static mho.wheels.testing.Testing.assertTrue;
 
 /**
  * <p>The {@code BinaryFraction} class uniquely represents rational numbers whose denominator is a power of 2. Every

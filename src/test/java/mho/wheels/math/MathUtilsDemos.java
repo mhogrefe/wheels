@@ -2,18 +2,15 @@ package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.math.MathUtils.*;
-import static mho.wheels.ordering.Ordering.lt;
+import static mho.wheels.iterables.IterableUtils.filter;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.math.MathUtils.gcd;
+import static mho.wheels.math.MathUtils.lcm;
 
 @SuppressWarnings("UnusedDeclaration")
 public class MathUtilsDemos {

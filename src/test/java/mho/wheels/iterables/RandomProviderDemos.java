@@ -9,7 +9,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.le;
+import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")

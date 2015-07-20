@@ -4,7 +4,6 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import java.util.function.Function;
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.numberUtils.FloatingPointUtils.*;
-import static mho.wheels.ordering.Ordering.*;
+import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 public class FloatingPointUtilsProperties {

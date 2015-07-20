@@ -4,9 +4,9 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 
+import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.fromString;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.io.Readers.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {

@@ -13,8 +13,7 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
-import static mho.wheels.math.BinaryFraction.of;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class BinaryFractionDemos {

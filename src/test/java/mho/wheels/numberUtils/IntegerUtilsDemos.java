@@ -13,6 +13,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.numberUtils.IntegerUtils.*;
+import static mho.wheels.numberUtils.IntegerUtils.demux;
+import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings("UnusedDeclaration")

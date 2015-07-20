@@ -18,10 +18,7 @@ import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
-import static mho.wheels.math.BinaryFraction.of;
 import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.ordering.Ordering.compare;
-import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionProperties {

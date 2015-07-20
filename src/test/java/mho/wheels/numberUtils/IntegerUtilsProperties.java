@@ -17,14 +17,12 @@ import java.util.List;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.mux;
-import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.math.MathUtils.ceilingLog;
 import static mho.wheels.numberUtils.IntegerUtils.*;
+import static mho.wheels.numberUtils.IntegerUtils.demux;
 import static mho.wheels.ordering.Ordering.ge;
 import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
-import static mho.wheels.testing.Testing.fail;
 
 public class IntegerUtilsProperties {
     private static boolean USE_RANDOM;

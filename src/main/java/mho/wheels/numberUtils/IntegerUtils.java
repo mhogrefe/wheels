@@ -1,8 +1,8 @@
 package mho.wheels.numberUtils;
 
+import mho.wheels.io.Readers;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.NoRemoveIterator;
-import mho.wheels.io.Readers;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.reverse;
 import static mho.wheels.ordering.Ordering.*;
-import static mho.wheels.ordering.Ordering.max;
 
 public class IntegerUtils {
     /**

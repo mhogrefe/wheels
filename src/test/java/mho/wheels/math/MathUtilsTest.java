@@ -4,10 +4,10 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
-import static mho.wheels.math.MathUtils.*;
+import static mho.wheels.math.MathUtils.gcd;
+import static mho.wheels.math.MathUtils.lcm;
 import static mho.wheels.testing.Testing.aeq;
-import static mho.wheels.testing.Testing.aeqit;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class MathUtilsTest {
     @Test

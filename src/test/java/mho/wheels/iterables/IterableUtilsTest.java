@@ -1,7 +1,7 @@
 package mho.wheels.iterables;
 
-import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.io.Readers;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -11,10 +11,12 @@ import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.aeq;
-import static mho.wheels.testing.Testing.aeqit;
-import static mho.wheels.testing.Testing.aeqitLimit;
-import static org.junit.Assert.*;
+import static mho.wheels.testing.Testing.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public strictfp class IterableUtilsTest {
     private static final int TINY_LIMIT = 20;
