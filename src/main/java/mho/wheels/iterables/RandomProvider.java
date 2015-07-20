@@ -1641,7 +1641,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code byte}.</li>
      *  <li>{@code b} may be any {@code byte}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Byte}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -1687,7 +1687,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code short}.</li>
      *  <li>{@code b} may be any {@code short}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Short}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -1733,7 +1733,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code int}.</li>
      *  <li>{@code b} may be any {@code int}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -1781,7 +1781,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code long}.</li>
      *  <li>{@code b} may be any {@code long}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Long}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -1829,7 +1829,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code BigInteger}.</li>
      *  <li>{@code b} may be any {@code BigInteger}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -1875,7 +1875,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} may be any {@code char}.</li>
      *  <li>{@code b} may be any {@code char}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Character}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -2875,7 +2875,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code a} may be any {@code BinaryFraction}.</li>
      *  <li>{@code b} may be any {@code BinaryFraction}.</li>
      *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing
+     *  {@code BinaryFraction}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -2935,7 +2936,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
      *  <li>{@code a} may be any {@code BinaryFraction}.</li>
      *  <li>{@code b} may be any {@code BinaryFraction}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing
+     *  {@code BinaryFraction}s.</li>
      * </ul>
      *
      * Length is infinite if a≤b, 0 otherwise
@@ -3244,7 +3246,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all negative finite {@code Float}s, as if reals were sampled from a uniform
      * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE} and then rounded to the nearest
-     * {@code float}s. Does not support removal.
+     * {@code Float}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -3273,7 +3275,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all nonzero finite {@code Float}s, as if reals were sampled from a uniform
      * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE}, rounded to the nearest
-     * {@code float}s, and resampled if zero. Does not support removal.
+     * {@code Float}s, and resampled if zero. Does not support removal.
      *
      * Length is infinite
      */
@@ -3308,7 +3310,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all finite {@code Float}s except for negative zero, as if reals were sampled
      * from a uniform distribution between {@code -Float.MAX_VALUE} and {@code Float.MAX_VALUE} and rounded to the
-     * nearest {@code float}s. Does not support removal.
+     * nearest {@code Float}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -3341,7 +3343,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all positive finite {@code Double}s, as if reals were sampled from a uniform
      * distribution between {@code Double.MIN_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest
-     * {@code double}s. Does not support removal.
+     * {@code Double}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -3369,7 +3371,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all negative finite {@code Double}s, as if reals were sampled from a uniform
      * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE} and then rounded to the nearest
-     * {@code double}s. Does not support removal.
+     * {@code Double}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -3398,7 +3400,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all nonzero finite {@code Double}s, as if reals were sampled from a uniform
      * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE}, rounded to the nearest
-     * {@code double}s, and resampled if zero. Does not support removal.
+     * {@code Double}s, and resampled if zero. Does not support removal.
      *
      * Length is infinite
      */
@@ -3433,7 +3435,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all finite {@code Double}s except for negative zero, as if reals were sampled
      * from a uniform distribution between {@code -Double.MAX_VALUE} and {@code Double.MAX_VALUE} and rounded to the
-     * nearest {@code double}s. Does not support removal.
+     * nearest {@code Double}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -3469,7 +3471,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Float}s greater than or equal to {@code a} from a uniform
-     * distribution among {@code Float}s. If a≤0, both positive and negative zeros may be generated.
+     * distribution among {@code Float}s. If a≤0, both positive and negative zeros may be generated. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -3510,7 +3513,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Float}s less than or equal to {@code a} from a uniform
-     * distribution among {@code Float}s. If a≥0, both positive and negative zeros may be generated.
+     * distribution among {@code Float}s. If a≥0, both positive and negative zeros may be generated. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -3560,13 +3564,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive, from a uniform
      * distribution among {@code Float}s. If a≤0≤b, either positive or negative zero may be returned. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Float}s that are not
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Float}s that are not
      *  {@code NaN}.</li>
      * </ul>
      *
@@ -3612,7 +3616,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Double}s greater than or equal to {@code a} from a uniform
-     * distribution among {@code Double}s. If a≤0, both positive and negative zeros may be generated.
+     * distribution among {@code Double}s. If a≤0, both positive and negative zeros may be generated. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -3653,7 +3658,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all {@code Double}s less than or equal to {@code a} from a uniform
-     * distribution among {@code Double}s. If a≥0, both positive and negative zeros may be generated.
+     * distribution among {@code Double}s. If a≥0, both positive and negative zeros may be generated. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
@@ -3703,13 +3709,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive, from a
      * uniform distribution among {@code Double}s. If a≤0≤b, either positive or negative zero may be returned. If
-     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code a} cannot be {@code NaN}.</li>
      *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Double}s that are not
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code Double}s that are not
      *  {@code NaN}.</li>
      * </ul>
      *
@@ -3728,6 +3734,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
+    /**
+     * Returns a randomly-generated {@code float} greater than or equal to {@code a}, as if a real were sampled from a
+     * uniform distribution between {@code a} and {@code Float.MAX_VALUE} and then rounded to the nearest
+     * {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code float}
+     * @return a {@code float} greater than or equal to {@code a}
+     */
     public float nextFromRangeUpUniform(float a) {
         if (!Float.isFinite(a)) {
             throw new ArithmeticException();
@@ -3743,6 +3763,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s greater than or equal to {@code a}, as if reals were
+     * sampled from a uniform distribution between {@code a} and {@code Float.MAX_VALUE} and then rounded to the
+     * nearest {@code Float}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Float}s that are not
+     *  negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<Float> rangeUpUniform(float a) {
         if (!Float.isFinite(a)) {
             throw new ArithmeticException();
@@ -3750,14 +3784,59 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code float} less than or equal to {@code a}, as if a real were sampled from a
+     * uniform distribution between {@code -Float.MAX_VALUE} and {@code a} and then rounded to the nearest
+     * {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code float}
+     * @return a {@code float} less than or equal to {@code a}
+     */
     public float nextFromRangeDownUniform(float a) {
         return -nextFromRangeUpUniform(-a);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s less than or equal to {@code a}, as if reals were sampled
+     * from a uniform distribution between {@code -Float.MAX_VALUE} and {@code a} and then rounded to the nearest
+     * {@code Float}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Float}s that are not
+     *  negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<Float> rangeDownUniform(float a) {
         return map(f -> -f, rangeUpUniform(-a));
     }
 
+    /**
+     * Returns a randomly-generated {@code float} between {@code a} and {@code b}, inclusive, as if a real were sampled
+     * from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest {@code float}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>{@code b} must be finite.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
+     *  for this condition.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code float}
+     * @param b the inclusive upper bound of the generated {@code float}
+     * @return a {@code float} between {@code a} and {@code b}, inclusive
+     */
     public float nextFromRangeUniform(float a, float b) {
         if (!Float.isFinite(a) || !Float.isFinite(b)) {
             throw new ArithmeticException();
@@ -3773,6 +3852,26 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive, as if reals
+     * were sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
+     * {@code Float}s. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>{@code b} must be finite.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing finite {@code Float}s that
+     *  are not negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Float}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull Iterable<Float> rangeUniform(float a, float b) {
         if (!Float.isFinite(a) || !Float.isFinite(b)) {
             throw new ArithmeticException();
@@ -3781,6 +3880,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
+    /**
+     * Returns a randomly-generated {@code double} greater than or equal to {@code a}, as if a real were sampled from a
+     * uniform distribution between {@code a} and {@code Double.MAX_VALUE} and then rounded to the nearest
+     * {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code double}
+     * @return a {@code double} greater than or equal to {@code a}
+     */
     public double nextFromRangeUpUniform(double a) {
         if (!Double.isFinite(a)) {
             throw new ArithmeticException();
@@ -3796,6 +3909,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s greater than or equal to {@code a}, as if reals were
+     * sampled from a uniform distribution between {@code a} and {@code Double.MAX_VALUE} and then rounded to the
+     * nearest {@code Double}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Double}s that are not
+     *  negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<Double> rangeUpUniform(double a) {
         if (!Double.isFinite(a)) {
             throw new ArithmeticException();
@@ -3803,14 +3930,60 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code double} less than or equal to {@code a}, as if a real were sampled from a
+     * uniform distribution between {@code -Double.MAX_VALUE} and {@code a} and then rounded to the nearest
+     * {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive upper bound of the generated {@code double}
+     * @return a {@code double} less than or equal to {@code a}
+     */
     public double nextFromRangeDownUniform(double a) {
         return -nextFromRangeUpUniform(-a);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s less than or equal to {@code a}, as if reals were sampled
+     * from a uniform distribution between {@code -Double.MAX_VALUE} and {@code a} and then rounded to the nearest
+     * {@code Double}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing finite {@code Double}s that are not
+     *  negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     public @NotNull Iterable<Double> rangeDownUniform(double a) {
         return map(d -> -d, rangeUpUniform(-a));
     }
 
+    /**
+     * Returns a randomly-generated {@code double} between {@code a} and {@code b}, inclusive, as if a real were
+     * sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
+     * {@code double}.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>{@code b} must be finite.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
+     *  for this condition.</li>
+     *  <li>The result is finite and not negative zero.</li>
+     * </ul>
+     *
+     * @param a the inclusive lower bound of the generated {@code double}
+     * @param b the inclusive upper bound of the generated {@code double}
+     * @return a {@code double} between {@code a} and {@code b}, inclusive
+     */
     public double nextFromRangeUniform(double a, double b) {
         if (!Double.isFinite(a) || !Double.isFinite(b)) {
             throw new ArithmeticException();
@@ -3826,6 +3999,26 @@ public final strictfp class RandomProvider extends IterableProvider {
         return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive, as if reals
+     * were sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
+     * {@code Float}s. If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code a} must be finite.</li>
+     *  <li>{@code b} must be finite.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing finite {@code Double}s that
+     *  are not negative zero.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Double}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull Iterable<Double> rangeUniform(double a, double b) {
         if (!Double.isFinite(a) || !Double.isFinite(b)) {
             throw new ArithmeticException();
