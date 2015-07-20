@@ -459,4 +459,14 @@ public final strictfp class FloatingPointUtils {
     public static @NotNull Optional<BigInteger> scaleUp(double d) {
         return BinaryFraction.of(d).map(bf -> bf.shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT).bigIntegerValueExact());
     }
+
+    public static @NotNull String toStringCompact(float f) {
+        String s = Float.toString(f);
+        return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+    }
+
+    public static @NotNull String toStringCompact(double d) {
+        String s = Double.toString(d);
+        return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+    }
 }
