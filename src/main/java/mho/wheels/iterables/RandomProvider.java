@@ -3489,7 +3489,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
         if (Float.isNaN(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a cannot be NaN.");
         }
         return fromSupplier(() -> nextFromRangeUp(a));
     }
@@ -3582,8 +3582,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        if (Float.isNaN(a) || Float.isNaN(b)) {
-            throw new ArithmeticException();
+        if (Float.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Float.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
         }
         if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
@@ -3634,7 +3637,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
         if (Double.isNaN(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a cannot be NaN.");
         }
         return fromSupplier(() -> nextFromRangeUp(a));
     }
@@ -3727,8 +3730,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        if (Double.isNaN(a) || Double.isNaN(b)) {
-            throw new ArithmeticException();
+        if (Double.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Double.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
         }
         if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRange(a, b));
@@ -3750,7 +3756,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public float nextFromRangeUpUniform(float a) {
         if (!Float.isFinite(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a must be finite.");
         }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
@@ -3779,7 +3785,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public @NotNull Iterable<Float> rangeUpUniform(float a) {
         if (!Float.isFinite(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a must be finite.");
         }
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
@@ -3838,8 +3844,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code float} between {@code a} and {@code b}, inclusive
      */
     public float nextFromRangeUniform(float a, float b) {
-        if (!Float.isFinite(a) || !Float.isFinite(b)) {
-            throw new ArithmeticException();
+        if (!Float.isFinite(a)) {
+            throw new ArithmeticException("a must be finite.");
+        }
+        if (!Float.isFinite(b)) {
+            throw new ArithmeticException("b must be finite.");
         }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
@@ -3873,8 +3882,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return {@code Float}s between {@code a} and {@code b}, inclusive
      */
     public @NotNull Iterable<Float> rangeUniform(float a, float b) {
-        if (!Float.isFinite(a) || !Float.isFinite(b)) {
-            throw new ArithmeticException();
+        if (!Float.isFinite(a)) {
+            throw new ArithmeticException("a must be finite.");
+        }
+        if (!Float.isFinite(b)) {
+            throw new ArithmeticException("b must be finite.");
         }
         if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRangeUniform(a, b));
@@ -3896,7 +3908,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public double nextFromRangeUpUniform(double a) {
         if (!Double.isFinite(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a must be finite.");
         }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
@@ -3925,7 +3937,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public @NotNull Iterable<Double> rangeUpUniform(double a) {
         if (!Double.isFinite(a)) {
-            throw new ArithmeticException();
+            throw new ArithmeticException("a must be finite.");
         }
         return fromSupplier(() -> nextFromRangeUpUniform(a));
     }
@@ -3985,8 +3997,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return a {@code double} between {@code a} and {@code b}, inclusive
      */
     public double nextFromRangeUniform(double a, double b) {
-        if (!Double.isFinite(a) || !Double.isFinite(b)) {
-            throw new ArithmeticException();
+        if (!Double.isFinite(a)) {
+            throw new ArithmeticException("a must be finite.");
+        }
+        if (!Double.isFinite(b)) {
+            throw new ArithmeticException("b must be finite.");
         }
         BigInteger scaled = nextFromRange(
                 FloatingPointUtils.scaleUp(a).get(),
@@ -4020,8 +4035,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return {@code Double}s between {@code a} and {@code b}, inclusive
      */
     public @NotNull Iterable<Double> rangeUniform(double a, double b) {
-        if (!Double.isFinite(a) || !Double.isFinite(b)) {
-            throw new ArithmeticException();
+        if (!Double.isFinite(a)) {
+            throw new ArithmeticException("a must be finite.");
+        }
+        if (!Double.isFinite(b)) {
+            throw new ArithmeticException("b must be finite.");
         }
         if (a > b) return Collections.emptyList();
         return fromSupplier(() -> nextFromRangeUniform(a, b));
