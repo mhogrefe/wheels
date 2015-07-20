@@ -460,11 +460,39 @@ public final strictfp class FloatingPointUtils {
         return BinaryFraction.of(d).map(bf -> bf.shiftRight(MIN_SUBNORMAL_DOUBLE_EXPONENT).bigIntegerValueExact());
     }
 
+    /**
+     * Converts a {@code float} to a {@code String} in the same way as {@link Float#toString()}, but with no trailing
+     * {@code ".0"}.
+     *
+     * <ul>
+     *  <li>{@code f} may be any {@code float}.</li>
+     *  <li>The result is a {@code String s} such that either {@code Float.toString(}x{@code )} is equal to {@code s}
+     *  for some {@code float} x, or {@code Float.toString(}x{@code )} is equal to {@code s + ".0"} for some
+     *  {@code float} x.</li>
+     * </ul>
+     *
+     * @param f a {@code float}
+     * @return a compact {@code String} representation of {@code f}
+     */
     public static @NotNull String toStringCompact(float f) {
         String s = Float.toString(f);
         return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
     }
 
+    /**
+     * Converts a {@code double} to a {@code String} in the same way as {@link Double#toString()}, but with no trailing
+     * {@code ".0"}.
+     *
+     * <ul>
+     *  <li>{@code d} may be any {@code double}.</li>
+     *  <li>The result is a {@code String s} such that either {@code Double.toString(}x{@code )} is equal to {@code s}
+     *  for some {@code double} x, or {@code Double.toString(}x{@code )} is equal to {@code s + ".0"} for some
+     *  {@code double} x.</li>
+     * </ul>
+     *
+     * @param d a {@code double}
+     * @return a compact {@code String} representation of {@code d}
+     */
     public static @NotNull String toStringCompact(double d) {
         String s = Double.toString(d);
         return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
