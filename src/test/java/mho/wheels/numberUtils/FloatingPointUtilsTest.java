@@ -657,4 +657,56 @@ public strictfp class FloatingPointUtilsTest {
         scaleUp_double_empty_helper(Double.NEGATIVE_INFINITY);
         scaleUp_double_empty_helper(Double.NaN);
     }
+
+    private static void toStringCompact_float_helper(float f, @NotNull String output) {
+        aeq(toStringCompact(f), output);
+    }
+
+    @Test
+    public void testToStringCompact_float() {
+        toStringCompact_float_helper(1.0f, "1");
+        toStringCompact_float_helper(1.0E20f, "1E20");
+        toStringCompact_float_helper(1.0E-20f, "1E-20");
+        toStringCompact_float_helper(-1.0f, "-1");
+        toStringCompact_float_helper(-1.0E20f, "-1E20");
+        toStringCompact_float_helper(-1.0E-20f, "-1E-20");
+        toStringCompact_float_helper((float) Math.PI, "3.1415927");
+        toStringCompact_float_helper((float) Math.sqrt(2), "1.4142135");
+        toStringCompact_float_helper((float) -Math.PI, "-3.1415927");
+        toStringCompact_float_helper((float) -Math.sqrt(2), "-1.4142135");
+        toStringCompact_float_helper(0.0f, "0");
+        toStringCompact_float_helper(-0.0f, "-0");
+        toStringCompact_float_helper(Float.MIN_VALUE, "1.4E-45");
+        toStringCompact_float_helper(Float.MIN_NORMAL, "1.17549435E-38");
+        toStringCompact_float_helper(-Float.MIN_VALUE, "-1.4E-45");
+        toStringCompact_float_helper(-Float.MIN_NORMAL, "-1.17549435E-38");
+        toStringCompact_float_helper(Float.MAX_VALUE, "3.4028235E38");
+        toStringCompact_float_helper(-Float.MAX_VALUE, "-3.4028235E38");
+    }
+
+    private static void toStringCompact_double_helper(double d, @NotNull String output) {
+        aeq(toStringCompact(d), output);
+    }
+
+    @Test
+    public void testToStringCompact_double() {
+        toStringCompact_double_helper(1.0, "1");
+        toStringCompact_double_helper(1.0E20, "1E20");
+        toStringCompact_double_helper(1.0E-20, "1E-20");
+        toStringCompact_double_helper(-1.0, "-1");
+        toStringCompact_double_helper(-1.0E20, "-1E20");
+        toStringCompact_double_helper(-1.0E-20, "-1E-20");
+        toStringCompact_double_helper(Math.PI, "3.141592653589793");
+        toStringCompact_double_helper(Math.sqrt(2), "1.4142135623730951");
+        toStringCompact_double_helper(-Math.PI, "-3.141592653589793");
+        toStringCompact_double_helper(-Math.sqrt(2), "-1.4142135623730951");
+        toStringCompact_double_helper(0.0, "0");
+        toStringCompact_double_helper(-0.0, "-0");
+        toStringCompact_double_helper(Double.MIN_VALUE, "4.9E-324");
+        toStringCompact_double_helper(Double.MIN_NORMAL, "2.2250738585072014E-308");
+        toStringCompact_double_helper(-Double.MIN_VALUE, "-4.9E-324");
+        toStringCompact_double_helper(-Double.MIN_NORMAL, "-2.2250738585072014E-308");
+        toStringCompact_double_helper(Double.MAX_VALUE, "1.7976931348623157E308");
+        toStringCompact_double_helper(-Double.MAX_VALUE, "-1.7976931348623157E308");
+    }
 }

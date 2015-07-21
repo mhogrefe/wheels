@@ -461,14 +461,12 @@ public final strictfp class FloatingPointUtils {
     }
 
     /**
-     * Converts a {@code float} to a {@code String} in the same way as {@link Float#toString()}, but with no trailing
-     * {@code ".0"}.
+     * Converts a {@code float} to a {@code String} in the same way as {@link Float#toString()}, but with trailing
+     * {@code ".0"}s removed, and any occurrence {@code ".0E"} replaced by {@code "E"}.
      *
      * <ul>
      *  <li>{@code f} may be any {@code float}.</li>
-     *  <li>The result is a {@code String s} such that either {@code Float.toString(}x{@code )} is equal to {@code s}
-     *  for some {@code float} x, or {@code Float.toString(}x{@code )} is equal to {@code s + ".0"} for some
-     *  {@code float} x.</li>
+     *  <li>See tests and demos for example results.</li>
      * </ul>
      *
      * @param f a {@code float}
@@ -476,18 +474,28 @@ public final strictfp class FloatingPointUtils {
      */
     public static @NotNull String toStringCompact(float f) {
         String s = Float.toString(f);
-        return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+        int exponentIndex = s.indexOf('E');
+        if (exponentIndex == -1) {
+            return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+        } else {
+            String beforeExponent = s.substring(0, exponentIndex);
+            if (beforeExponent.endsWith(".0")) {
+                String afterExponent = s.substring(exponentIndex + 1);
+                beforeExponent = beforeExponent.substring(0, beforeExponent.length() - 2);
+                return beforeExponent + 'E' + afterExponent;
+            } else {
+                return s;
+            }
+        }
     }
 
     /**
-     * Converts a {@code double} to a {@code String} in the same way as {@link Double#toString()}, but with no trailing
-     * {@code ".0"}.
+     * Converts a {@code double} to a {@code String} in the same way as {@link Double#toString()}, but with trailing
+     * {@code ".0"}s removed, and any occurrence {@code ".0E"} replaced by {@code "E"}.
      *
      * <ul>
      *  <li>{@code d} may be any {@code double}.</li>
-     *  <li>The result is a {@code String s} such that either {@code Double.toString(}x{@code )} is equal to {@code s}
-     *  for some {@code double} x, or {@code Double.toString(}x{@code )} is equal to {@code s + ".0"} for some
-     *  {@code double} x.</li>
+     *  <li>See tests and demos for example results.</li>
      * </ul>
      *
      * @param d a {@code double}
@@ -495,6 +503,18 @@ public final strictfp class FloatingPointUtils {
      */
     public static @NotNull String toStringCompact(double d) {
         String s = Double.toString(d);
-        return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+        int exponentIndex = s.indexOf('E');
+        if (exponentIndex == -1) {
+            return s.endsWith(".0") ? s.substring(0, s.length() - 2) : s;
+        } else {
+            String beforeExponent = s.substring(0, exponentIndex);
+            if (beforeExponent.endsWith(".0")) {
+                String afterExponent = s.substring(exponentIndex + 1);
+                beforeExponent = beforeExponent.substring(0, beforeExponent.length() - 2);
+                return beforeExponent + 'E' + afterExponent;
+            } else {
+                return s;
+            }
+        }
     }
 }
