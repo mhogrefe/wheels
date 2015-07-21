@@ -58,6 +58,8 @@ public class FloatingPointUtilsProperties {
             propertiesAbsNegativeZeros_double();
             propertiesScaleUp_float();
             propertiesScaleUp_double();
+            propertiesToStringCompact_float();
+            propertiesToStringCompact_double();
         }
         System.out.println("Done");
     }
@@ -553,6 +555,26 @@ public class FloatingPointUtilsProperties {
                     (BigInteger i) -> BinaryFraction.of(i, MIN_SUBNORMAL_DOUBLE_EXPONENT).doubleRange().a,
                     d
             );
+        }
+    }
+
+    private static void propertiesToStringCompact_float() {
+        initialize("toStringCompact(float)");
+        for (float f : take(LIMIT, P.floats())) {
+            String s = toStringCompact(f);
+            assertFalse(f, s.endsWith(".0"));
+            assertFalse(f, s.contains(".0E"));
+            inverses(FloatingPointUtils::toStringCompact, Float::parseFloat, f);
+        }
+    }
+
+    private static void propertiesToStringCompact_double() {
+        initialize("toStringCompact(double)");
+        for (double d : take(LIMIT, P.doubles())) {
+            String s = toStringCompact(d);
+            assertFalse(d, s.endsWith(".0"));
+            assertFalse(d, s.contains(".0E"));
+            inverses(FloatingPointUtils::toStringCompact, Double::parseDouble, d);
         }
     }
 }
