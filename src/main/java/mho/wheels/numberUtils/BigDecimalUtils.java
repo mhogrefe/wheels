@@ -8,7 +8,10 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 
 /**
- * Some utilities for manipulating and analyzing {@code BigDecimal}s.
+ * Some utilities for manipulating and analyzing {@code BigDecimal}s. In {@code BigDecimal} terminology, a
+ * {@code BigDecimal}'s <i>scale</i> is the number of digits after the decimal point. It may be negative: for example,
+ * 1E+1 has a scale of –1. A {@code BigDecimal}'s <i>precision</i> is the number of significant figures. It is always
+ * positive, and a zero, regardless of its scale, always has a precision of 1.
  */
 public class BigDecimalUtils {
     /**
