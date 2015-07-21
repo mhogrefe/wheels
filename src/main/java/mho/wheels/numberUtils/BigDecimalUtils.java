@@ -87,6 +87,19 @@ public class BigDecimalUtils {
         return new BigDecimal(bd.unscaledValue().subtract(BigInteger.ONE), bd.scale());
     }
 
+    /**
+     * Returns the left shift of {@code this} by {@code bits}; {@code this}×2<sup>{@code bits}</sup>. Negative
+     * {@code bits} corresponds to a right shift.
+     *
+     * <ul>
+     *  <li>{@code this} can be any {@code BigDecimal}.</li>
+     *  <li>{@code bits} may be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param bits the number of bits to left-shift by
+     * @return {@code this}≪{@code bits}
+     */
     public static @NotNull BigDecimal shiftLeft(@NotNull BigDecimal bd, int bits) {
         switch (Integer.signum(bits)) {
             case 0:
@@ -101,6 +114,19 @@ public class BigDecimalUtils {
         }
     }
 
+    /**
+     * Returns the right shift of {@code this} by {@code bits}; {@code this}×2<sup>–{@code bits}</sup>. Negative
+     * {@code bits} corresponds to a left shift.
+     *
+     * <ul>
+     *  <li>{@code this} can be any {@code BigDecimal}.</li>
+     *  <li>{@code bits} may be any {@code int}.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param bits the number of bits to right-shift by
+     * @return {@code this}≫{@code bits}
+     */
     public static @NotNull BigDecimal shiftRight(@NotNull BigDecimal bd, int bits) {
         switch (Integer.signum(bits)) {
             case 0:
