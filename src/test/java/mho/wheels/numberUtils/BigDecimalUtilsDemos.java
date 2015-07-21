@@ -28,12 +28,10 @@ public class BigDecimalUtilsDemos {
 
     private static void demoSetPrecision() {
         initialize();
-        Iterable<Pair<BigDecimal, Integer>> ps;
-        if (P instanceof ExhaustiveProvider) {
-            ps = ((ExhaustiveProvider) P).pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegers());
-        } else {
-            ps = P.pairs(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric());
-        }
+        Iterable<Pair<BigDecimal, Integer>> ps = P.pairsSquareRootOrder(
+                P.bigDecimals(),
+                P.positiveIntegersGeometric()
+        );
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             System.out.println("setPrecision(" + p.a + ", " + p.b + ") = " + setPrecision(p.a, p.b));
         }

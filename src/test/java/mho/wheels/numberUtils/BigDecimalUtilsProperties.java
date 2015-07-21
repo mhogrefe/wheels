@@ -16,7 +16,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.numberUtils.BigDecimalUtils.*;
 import static mho.wheels.ordering.Ordering.eq;
 import static mho.wheels.ordering.Ordering.ne;
-import static org.junit.Assert.*;
+import static mho.wheels.testing.Testing.*;
 
 public class BigDecimalUtilsProperties {
     private static int LIMIT;
@@ -44,35 +44,28 @@ public class BigDecimalUtilsProperties {
 
         Iterable<Pair<BigDecimal, Integer>> ps = filterInfinite(
                 q -> ne(q.a, BigDecimal.ZERO),
-                P.pairsSquareRootOrder(P.bigDecimals(), P.withScale(20).positiveIntegersGeometric())
+                P.pairsSquareRootOrder(P.bigDecimals(), P.positiveIntegersGeometric())
         );
         for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             BigDecimal bd = setPrecision(p.a, p.b);
-            assertEquals(p.toString(), bd.precision(), (int) p.b);
-            assertTrue(p.toString(), ne(bd, BigDecimal.ZERO));
+            assertEquals(p, bd.precision(), p.b);
+            assertTrue(p, ne(bd, BigDecimal.ZERO));
         }
 
-        Iterable<Pair<BigDecimal, Integer>> zeroPs;
-        if (P instanceof ExhaustiveProvider) {
-            Iterable<BigDecimal> zeroes = map(i -> new BigDecimal(BigInteger.ZERO, i), P.integers());
-            zeroPs = ((ExhaustiveProvider) P).pairsSquareRootOrder(zeroes, P.positiveIntegers());
-        } else {
-            Iterable<BigDecimal> zeroes = map(
-                    i -> new BigDecimal(BigInteger.ZERO, i),
-                    P.withScale(20).integersGeometric()
-            );
-            zeroPs = P.pairs(zeroes, P.withScale(20).positiveIntegersGeometric());
-        }
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, zeroPs)) {
+        ps = P.pairsSquareRootOrder(
+                map(i -> new BigDecimal(BigInteger.ZERO, i), P.integersGeometric()),
+                P.positiveIntegersGeometric()
+        );
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, ps)) {
             BigDecimal bd = setPrecision(p.a, p.b);
-            assertTrue(p.toString(), bd.scale() > -1);
-            assertTrue(p.toString(), eq(bd, BigDecimal.ZERO));
+            assertTrue(p, bd.scale() > -1);
+            assertTrue(p, eq(bd, BigDecimal.ZERO));
         }
 
-        for (Pair<BigDecimal, Integer> p : take(LIMIT, filterInfinite(q -> q.b > 1, zeroPs))) {
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, filterInfinite(q -> q.b > 1, ps))) {
             BigDecimal bd = setPrecision(p.a, p.b);
             assertTrue(
-                    p.toString(),
+                    p,
                     bd.toString().equals("0." + replicate(p.b - 1, '0')) || bd.toString().equals("0E-" + (p.b - 1))
             );
         }
@@ -80,7 +73,7 @@ public class BigDecimalUtilsProperties {
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.rangeDown(0)))) {
             try {
                 setPrecision(p.a, p.b);
-                fail(p.toString());
+                fail(p);
             } catch (ArithmeticException ignored) {}
         }
     }
