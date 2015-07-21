@@ -9,6 +9,12 @@ import static mho.wheels.testing.Testing.aeq;
 import static org.junit.Assert.fail;
 
 public class BigDecimalUtilsTest {
+    @Test
+    public void testConstants() {
+        aeq(NEGATIVE_ONE, "-1");
+        aeq(TWO, "2");
+    }
+
     private static void setPrecision_helper(@NotNull String x, int scale, @NotNull String output) {
         aeq(setPrecision(Readers.readBigDecimal(x).get(), scale), output);
     }
