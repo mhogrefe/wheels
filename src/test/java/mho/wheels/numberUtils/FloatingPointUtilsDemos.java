@@ -173,4 +173,18 @@ public strictfp class FloatingPointUtilsDemos {
             System.out.println("scaleUp(" + d + ") = " + scaleUp(d));
         }
     }
+
+    private static void demoToStringCompact_float() {
+        initialize();
+        for (float f : take(LIMIT, P.floats())) {
+            System.out.println("toStringCompact(" + f + ") = " + toStringCompact(f));
+        }
+    }
+
+    private static void demoToStringCompact_double() {
+        initialize();
+        for (double d : take(LIMIT, P.doubles())) {
+            System.out.println("toStringCompact(" + d + ") = " + toStringCompact(d));
+        }
+    }
 }
