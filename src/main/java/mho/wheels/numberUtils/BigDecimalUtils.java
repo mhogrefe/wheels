@@ -92,7 +92,7 @@ public class BigDecimalUtils {
      * {@code bits} corresponds to a right shift.
      *
      * <ul>
-     *  <li>{@code this} can be any {@code BigDecimal}.</li>
+     *  <li>{@code this} cannot be null.</li>
      *  <li>{@code bits} may be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>
@@ -119,7 +119,7 @@ public class BigDecimalUtils {
      * {@code bits} corresponds to a left shift.
      *
      * <ul>
-     *  <li>{@code this} can be any {@code BigDecimal}.</li>
+     *  <li>{@code this} cannot be null.</li>
      *  <li>{@code bits} may be any {@code int}.</li>
      *  <li>The result is not null.</li>
      * </ul>

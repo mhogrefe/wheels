@@ -98,4 +98,86 @@ public class BigDecimalUtilsTest {
         predecessor_helper("0E+1", "-1E+1");
         predecessor_helper("0.0", "-0.1");
     }
+
+    private static void shiftLeft_helper(@NotNull String input, int bits, @NotNull String output) {
+        aeq(shiftLeft(Readers.readBigDecimal(input).get(), bits), output);
+    }
+
+    @Test
+    public void testShiftLeft() {
+        shiftLeft_helper("3.14159", 0, "3.14159");
+        shiftLeft_helper("3.14159", 5, "100.53088");
+        shiftLeft_helper("3.14159", -5, "0.0981746875");
+        shiftLeft_helper("1200", 0, "1200");
+        shiftLeft_helper("1200", 5, "38400");
+        shiftLeft_helper("1200", -5, "37.5");
+        shiftLeft_helper("1.2E+3", 0, "1.2E+3");
+        shiftLeft_helper("1.2E+3", 5, "3.84E+4");
+        shiftLeft_helper("1.2E+3", -5, "37.5");
+        shiftLeft_helper("-9", 0, "-9");
+        shiftLeft_helper("-9", 5, "-288");
+        shiftLeft_helper("-9", -5, "-0.28125");
+        shiftLeft_helper("0.99", 0, "0.99");
+        shiftLeft_helper("0.99", 5, "31.68");
+        shiftLeft_helper("0.99", -5, "0.0309375");
+        shiftLeft_helper("0.999", 0, "0.999");
+        shiftLeft_helper("0.999", 5, "31.968");
+        shiftLeft_helper("0.999", -5, "0.03121875");
+        shiftLeft_helper("-0.99", 0, "-0.99");
+        shiftLeft_helper("-0.99", 5, "-31.68");
+        shiftLeft_helper("-0.99", -5, "-0.0309375");
+        shiftLeft_helper("-0.999", 0, "-0.999");
+        shiftLeft_helper("-0.999", 5, "-31.968");
+        shiftLeft_helper("-0.999", -5, "-0.03121875");
+        shiftLeft_helper("0", 0, "0");
+        shiftLeft_helper("0", 5, "0");
+        shiftLeft_helper("0", -5, "0");
+        shiftLeft_helper("0E+1", 0, "0E+1");
+        shiftLeft_helper("0E+1", 5, "0E+1");
+        shiftLeft_helper("0E+1", -5, "0E+1");
+        shiftLeft_helper("0.0", 0, "0.0");
+        shiftLeft_helper("0.0", 5, "0.0");
+        shiftLeft_helper("0.0", -5, "0.0");
+    }
+
+    private static void shiftRight_helper(@NotNull String input, int bits, @NotNull String output) {
+        aeq(shiftRight(Readers.readBigDecimal(input).get(), bits), output);
+    }
+
+    @Test
+    public void testShiftRight() {
+        shiftRight_helper("3.14159", 0, "3.14159");
+        shiftRight_helper("3.14159", 5, "0.0981746875");
+        shiftRight_helper("3.14159", -5, "100.53088");
+        shiftRight_helper("1200", 0, "1200");
+        shiftRight_helper("1200", 5, "37.5");
+        shiftRight_helper("1200", -5, "38400");
+        shiftRight_helper("1.2E+3", 0, "1.2E+3");
+        shiftRight_helper("1.2E+3", 5, "37.5");
+        shiftRight_helper("1.2E+3", -5, "3.84E+4");
+        shiftRight_helper("-9", 0, "-9");
+        shiftRight_helper("-9", 5, "-0.28125");
+        shiftRight_helper("-9", -5, "-288");
+        shiftRight_helper("0.99", 0, "0.99");
+        shiftRight_helper("0.99", 5, "0.0309375");
+        shiftRight_helper("0.99", -5, "31.68");
+        shiftRight_helper("0.999", 0, "0.999");
+        shiftRight_helper("0.999", 5, "0.03121875");
+        shiftRight_helper("0.999", -5, "31.968");
+        shiftRight_helper("-0.99", 0, "-0.99");
+        shiftRight_helper("-0.99", 5, "-0.0309375");
+        shiftRight_helper("-0.99", -5, "-31.68");
+        shiftRight_helper("-0.999", 0, "-0.999");
+        shiftRight_helper("-0.999", 5, "-0.03121875");
+        shiftRight_helper("-0.999", -5, "-31.968");
+        shiftRight_helper("0", 0, "0");
+        shiftRight_helper("0", 5, "0");
+        shiftRight_helper("0", -5, "0");
+        shiftRight_helper("0E+1", 0, "0E+1");
+        shiftRight_helper("0E+1", 5, "0E+1");
+        shiftRight_helper("0E+1", -5, "0E+1");
+        shiftRight_helper("0.0", 0, "0.0");
+        shiftRight_helper("0.0", 5, "0.0");
+        shiftRight_helper("0.0", -5, "0.0");
+    }
 }
