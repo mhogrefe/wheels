@@ -1418,6 +1418,14 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testNonzeroBigDecimals() {
+        aeqit(take(50, P.nonzeroBigDecimals()),
+                "[1, 0.1, -1, 1E+1, 2, -0.1, -2, 0.01, 3, 0.2, -3, -1E+1, 4, -0.2, -4, 1E+2, 5, 0.3, -5, 2E+1, 6," +
+                " -0.3, -6, -0.01, 7, 0.4, -7, -2E+1, 8, -0.4, -8, 0.001, 9, 0.5, -9, 3E+1, 10, -0.5, -10, 0.02, 11," +
+                " 0.6, -11, -3E+1, 12, -0.6, -12, -1E+2, 13, 0.7]");
+    }
+
+    @Test
     public void testBigDecimals() {
         aeqit(take(50, P.bigDecimals()),
                 "[0, 0.0, 1, 0E+1, -1, 0.1, 2, 0.00, -2, -0.1, 3, 1E+1, -3, 0.2, 4, 0E+2, -4, -0.2, 5, -1E+1, -5," +
