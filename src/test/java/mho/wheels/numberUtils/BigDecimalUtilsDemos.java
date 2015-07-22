@@ -71,4 +71,11 @@ public class BigDecimalUtilsDemos {
             System.out.println("canonicalize(" + bd + ") = " + canonicalize(bd));
         }
     }
+
+    private static void demoIsCanonical() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            System.out.println(bd + " is " + (isCanonical(bd) ? "" : "not ") + "canonical");
+        }
+    }
 }
