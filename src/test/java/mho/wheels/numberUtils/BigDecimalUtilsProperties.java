@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.numberUtils.BigDecimalUtils.*;
@@ -39,6 +40,8 @@ public class BigDecimalUtilsProperties {
             propertiesSetPrecision();
             propertiesSuccessor();
             propertiesPredecessor();
+            propertiesShiftLeft();
+            propertiesShiftRight();
         }
         System.out.println("Done");
     }
@@ -99,6 +102,55 @@ public class BigDecimalUtilsProperties {
             assertEquals(bd, bd.scale(), predecessor.scale());
             assertEquals(bd, successor(predecessor), bd);
             assertEquals(bd, predecessor(bd.negate()), successor(bd).negate());
+        }
+    }
+
+    private static void propertiesShiftLeft() {
+        initialize("shiftLeft(BigDecimal, int)");
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
+            homomorphic(
+                    BigDecimal::negate,
+                    Function.identity(),
+                    BigDecimal::negate,
+                    BigDecimalUtils::shiftLeft,
+                    BigDecimalUtils::shiftLeft,
+                    p
+            );
+            BigDecimal shifted = shiftLeft(p.a, p.b);
+            assertEquals(p, shifted, shiftRight(p.a, -p.b));
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            assertEquals(bd, shiftLeft(bd, 0), bd);
+        }
+
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.naturalIntegersGeometric()))) {
+            assertEquals(p, shiftLeft(p.a, p.b), p.a.multiply(TWO.pow(p.b)));
+        }
+    }
+
+    private static void propertiesShiftRight() {
+        initialize("shiftRight(BigDecimal, int)");
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
+            homomorphic(
+                    BigDecimal::negate,
+                    Function.identity(),
+                    BigDecimal::negate,
+                    BigDecimalUtils::shiftRight,
+                    BigDecimalUtils::shiftRight,
+                    p
+            );
+            BigDecimal shifted = shiftRight(p.a, p.b);
+            assertEquals(p, shifted, shiftLeft(p.a, -p.b));
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            assertEquals(bd, shiftRight(bd, 0), bd);
+        }
+
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.naturalIntegersGeometric()))) {
+            //noinspection BigDecimalMethodWithoutRoundingCalled
+            assertEquals(p, shiftRight(p.a, p.b), p.a.divide(TWO.pow(p.b)));
         }
     }
 }
