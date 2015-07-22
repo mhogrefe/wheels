@@ -50,4 +50,18 @@ public class BigDecimalUtilsDemos {
             System.out.println("predecessor(" + bd + ") = " + predecessor(bd));
         }
     }
+
+    private static void demoShiftLeft() {
+        initialize();
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
+            System.out.println(p.a + " << " + p.b + " = " + shiftLeft(p.a, p.b));
+        }
+    }
+
+    private static void demoShiftRight() {
+        initialize();
+        for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
+            System.out.println(p.a + " >> " + p.b + " = " + shiftRight(p.a, p.b));
+        }
+    }
 }
