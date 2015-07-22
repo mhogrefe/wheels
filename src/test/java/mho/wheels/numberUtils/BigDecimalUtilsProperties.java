@@ -42,6 +42,7 @@ public class BigDecimalUtilsProperties {
             propertiesPredecessor();
             propertiesShiftLeft();
             propertiesShiftRight();
+            propertiesCanonicalize();
         }
         System.out.println("Done");
     }
@@ -151,6 +152,34 @@ public class BigDecimalUtilsProperties {
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.naturalIntegersGeometric()))) {
             //noinspection BigDecimalMethodWithoutRoundingCalled
             assertEquals(p, shiftRight(p.a, p.b), p.a.divide(TWO.pow(p.b)));
+        }
+    }
+
+    private static void propertiesCanonicalize() {
+        initialize("canonicalize(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            homomorphic(
+                    BigDecimal::negate,
+                    BigDecimal::negate,
+                    BigDecimalUtils::canonicalize,
+                    BigDecimalUtils::canonicalize,
+                    bd
+            );
+            BigDecimal canonicalized = canonicalize(bd);
+            assertTrue(bd, eq(bd, canonicalized));
+            assertFalse(bd, canonicalized.scale() < 0);
+            assertTrue(bd, canonicalized.scale() == 0 ||
+                    !canonicalized.unscaledValue().mod(BigInteger.TEN).equals(BigInteger.ZERO));
+        }
+
+        for (BigDecimal bd : take(LIMIT, map(i -> new BigDecimal(BigInteger.ZERO, i), P.integersGeometric()))) {
+            assertEquals(bd, canonicalize(bd).scale(), 0);
+        }
+
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+            if (eq(p.a, p.b)) {
+                assertEquals(p, canonicalize(p.a), canonicalize(p.b));
+            }
         }
     }
 }
