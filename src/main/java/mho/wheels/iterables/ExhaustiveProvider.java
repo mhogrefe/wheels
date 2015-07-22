@@ -1580,26 +1580,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
-        return null;
-    }
-
-    @Override
     public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
          return cons(x, xs);
     }

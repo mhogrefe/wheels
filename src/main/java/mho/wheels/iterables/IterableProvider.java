@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -634,25 +635,33 @@ public abstract strictfp class IterableProvider {
      * Generates positive {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public abstract @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals();
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, positiveBigDecimals());
+    }
 
     /**
      * Generates negative {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public abstract @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals();
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, negativeBigDecimals());
+    }
 
     /**
      * Generates nonzero {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public abstract @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals();
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, nonzeroBigDecimals());
+    }
 
     /**
      * Generates {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public abstract @NotNull Iterable<BigDecimal> canonicalBigDecimals();
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
+    }
 
     public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
 

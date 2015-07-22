@@ -4085,17 +4085,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
-    @Override
-    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
-        return null;
-    }
-
     public @NotNull BigDecimal nextNegativeCanonicalBigDecimal() {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
         return null;
     }
 
@@ -4103,17 +4093,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
-    @Override
-    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
-        return null;
-    }
-
     public @NotNull BigDecimal nextCanonicalBigDecimal() {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
         return null;
     }
 
