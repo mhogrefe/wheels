@@ -24,7 +24,7 @@ Progress
 | BinaryFraction             | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Combinatorics              | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                  | ✔       | ✘       | ✘     | ✘     | ✘          |
-| BigDecimalUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
+| BigDecimalUtils            | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IntegerUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator              | ✔       | ✔       | ✘     | ✘     | ✘          |

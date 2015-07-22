@@ -141,6 +141,20 @@ public class BigDecimalUtils {
         }
     }
 
+    /**
+     * Returns a canonical representation for a {@code BigDecimal} that is invariant under lossless scale changes.
+     * Integer {@code BigDecimal}s are given a scale of zero, and non-integer {@code BigDecimal}s are given the
+     * smallest possible scale that doesn't introduce rounding errors.
+     *
+     * <ul>
+     *  <li>{@code bd} cannot be null.</li>
+     *  <li>The result has a non-negative scale. If the scale is positive, the unscaled value is not divisible by
+     *  10.</li>
+     * </ul>
+     *
+     * @param bd a {@code BigDecimal}
+     * @return a canonical representation of {@code bd}
+     */
     public static @NotNull BigDecimal canonicalize(@NotNull BigDecimal bd) {
         int scale = bd.scale();
         if (scale == 0) {
