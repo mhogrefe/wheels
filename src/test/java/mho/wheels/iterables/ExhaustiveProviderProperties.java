@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -90,6 +91,10 @@ public class ExhaustiveProviderProperties {
         propertiesNegativeBigDecimals();
         propertiesNonzeroBigDecimals();
         propertiesBigDecimals();
+        propertiesPositiveCanonicalBigDecimals();
+        propertiesNegativeCanonicalBigDecimals();
+        propertiesNonzeroCanonicalBigDecimals();
+        propertiesCanonicalBigDecimals();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -861,5 +866,29 @@ public class ExhaustiveProviderProperties {
     private static void propertiesBigDecimals() {
         initializeConstant("bigDecimals()");
         biggerTest(EP, EP.bigDecimals(), bd -> true);
+    }
+
+    private static void propertiesPositiveCanonicalBigDecimals() {
+        initializeConstant("positiveCanonicalBigDecimals()");
+        biggerTest(EP, EP.positiveCanonicalBigDecimals(), bd -> BigDecimalUtils.isCanonical(bd) && bd.signum() == 1);
+    }
+
+    private static void propertiesNegativeCanonicalBigDecimals() {
+        initializeConstant("negativeCanonicalBigDecimals()");
+        biggerTest(EP, EP.negativeCanonicalBigDecimals(), bd -> BigDecimalUtils.isCanonical(bd) && bd.signum() == -1);
+    }
+
+    private static void propertiesNonzeroCanonicalBigDecimals() {
+        initializeConstant("nonzeroCanonicalBigDecimals()");
+        biggerTest(
+                EP,
+                EP.nonzeroCanonicalBigDecimals(),
+                bd -> BigDecimalUtils.isCanonical(bd) && !bd.equals(BigDecimal.ZERO)
+        );
+    }
+
+    private static void propertiesCanonicalBigDecimals() {
+        initializeConstant("canonicalBigDecimals()");
+        biggerTest(EP, EP.canonicalBigDecimals(), BigDecimalUtils::isCanonical);
     }
 }
