@@ -43,6 +43,7 @@ public class BigDecimalUtilsProperties {
             propertiesShiftLeft();
             propertiesShiftRight();
             propertiesCanonicalize();
+            propertiesIsCanonical();
         }
         System.out.println("Done");
     }
@@ -166,7 +167,7 @@ public class BigDecimalUtilsProperties {
                     bd
             );
             BigDecimal canonicalized = canonicalize(bd);
-            assertTrue(bd, isCanonical(bd));
+            assertTrue(bd, isCanonical(canonicalized));
             assertTrue(bd, eq(bd, canonicalized));
             assertFalse(bd, canonicalized.scale() < 0);
             assertTrue(bd, canonicalized.scale() == 0 ||
@@ -179,6 +180,13 @@ public class BigDecimalUtilsProperties {
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
             assertEquals(p, eq(p.a, p.b), canonicalize(p.a).equals(canonicalize(p.b)));
+        }
+    }
+
+    private static void propertiesIsCanonical() {
+        initialize("isCanonical(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            assertEquals(bd, isCanonical(bd), bd.equals(canonicalize(bd)));
         }
     }
 }
