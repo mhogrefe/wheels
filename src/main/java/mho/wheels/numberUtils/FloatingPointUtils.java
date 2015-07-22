@@ -462,7 +462,7 @@ public final strictfp class FloatingPointUtils {
 
     /**
      * Converts a {@code float} to a {@code String} in the same way as {@link Float#toString()}, but with trailing
-     * {@code ".0"}s removed, and any occurrence {@code ".0E"} replaced by {@code "E"}.
+     * {@code ".0"}s removed, and any occurrence of {@code ".0E"} replaced by {@code "E"}.
      *
      * <ul>
      *  <li>{@code f} may be any {@code float}.</li>
@@ -491,7 +491,7 @@ public final strictfp class FloatingPointUtils {
 
     /**
      * Converts a {@code double} to a {@code String} in the same way as {@link Double#toString()}, but with trailing
-     * {@code ".0"}s removed, and any occurrence {@code ".0E"} replaced by {@code "E"}.
+     * {@code ".0"}s removed, and any occurrence of {@code ".0E"} replaced by {@code "E"}.
      *
      * <ul>
      *  <li>{@code d} may be any {@code double}.</li>
