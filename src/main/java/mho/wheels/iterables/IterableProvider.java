@@ -614,22 +614,30 @@ public abstract strictfp class IterableProvider {
     /**
      * Generates positive {@code BigDecimal}s.
      */
-    public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
+    public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
+    }
 
     /**
      * Generates negative {@code BigDecimal}s.
      */
-    public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
+    public Iterable<BigDecimal> negativeBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
+    }
 
     /**
      * Generates nonzero {@code BigDecimal}s.
      */
-    public abstract @NotNull Iterable<BigDecimal> nonzeroBigDecimals();
+    public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(nonzeroBigIntegers(), integers()));
+    }
 
     /**
      * Generates {@code BigDecimal}s.
      */
-    public abstract @NotNull Iterable<BigDecimal> bigDecimals();
+    public @NotNull Iterable<BigDecimal> bigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
 
     /**
      * Generates positive {@code BigDecimal}s in canonical form (see
