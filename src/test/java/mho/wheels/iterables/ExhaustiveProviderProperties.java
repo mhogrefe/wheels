@@ -7,6 +7,7 @@ import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +86,10 @@ public class ExhaustiveProviderProperties {
         propertiesNegativeDoubles();
         propertiesNonzeroDoubles();
         propertiesDoubles();
+        propertiesPositiveBigDecimals();
+        propertiesNegativeBigDecimals();
+        propertiesNonzeroBigDecimals();
+        propertiesBigDecimals();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -836,5 +841,25 @@ public class ExhaustiveProviderProperties {
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != Double.POSITIVE_INFINITY, P.doubles()))) {
             aeqit(d, TINY_LIMIT, EP.range(Double.NEGATIVE_INFINITY, d), EP.rangeDown(d));
         }
+    }
+
+    private static void propertiesPositiveBigDecimals() {
+        initializeConstant("positiveBigDecimals()");
+        biggerTest(EP, EP.positiveBigDecimals(), bd -> bd.signum() == 1);
+    }
+
+    private static void propertiesNegativeBigDecimals() {
+        initializeConstant("negativeBigDecimals()");
+        biggerTest(EP, EP.negativeBigDecimals(), bd -> bd.signum() == -1);
+    }
+
+    private static void propertiesNonzeroBigDecimals() {
+        initializeConstant("nonzeroBigDecimals()");
+        biggerTest(EP, EP.nonzeroBigDecimals(), bd -> !bd.equals(BigDecimal.ZERO));
+    }
+
+    private static void propertiesBigDecimals() {
+        initializeConstant("bigDecimals()");
+        biggerTest(EP, EP.bigDecimals(), bd -> true);
     }
 }
