@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import static mho.wheels.numberUtils.BigDecimalUtils.*;
 import static mho.wheels.testing.Testing.aeq;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 public class BigDecimalUtilsTest {
@@ -205,5 +207,35 @@ public class BigDecimalUtilsTest {
         canonicalize_helper("0", "0");
         canonicalize_helper("0E+1", "0");
         canonicalize_helper("0.0", "0");
+    }
+
+    private static void isCanonical_true_helper(@NotNull String x) {
+        assertTrue(isCanonical(Readers.readBigDecimal(x).get()));
+    }
+
+    private static void isCanonical_false_helper(@NotNull String x) {
+        assertFalse(isCanonical(Readers.readBigDecimal(x).get()));
+    }
+
+    @Test
+    public void testIsCanonical() {
+        isCanonical_false_helper("1E+1");
+        isCanonical_true_helper("10");
+        isCanonical_false_helper("10.0");
+        isCanonical_false_helper("10.00");
+        isCanonical_true_helper("1.1");
+        isCanonical_false_helper("1.10");
+        isCanonical_false_helper("1.100");
+        isCanonical_true_helper("3.14159");
+        isCanonical_true_helper("1200");
+        isCanonical_false_helper("1.2E+3");
+        isCanonical_true_helper("-9");
+        isCanonical_true_helper("0.99");
+        isCanonical_true_helper("0.999");
+        isCanonical_true_helper("-0.99");
+        isCanonical_true_helper("-0.999");
+        isCanonical_true_helper("0");
+        isCanonical_false_helper("0E+1");
+        isCanonical_false_helper("0.0");
     }
 }
