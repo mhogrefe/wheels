@@ -53,10 +53,6 @@ public strictfp class Testing {
         assertEquals(message, Double.toString(d1), Double.toString(d2));
     }
 
-    public static void aeq(@NotNull Object message, @NotNull BigDecimal x, @NotNull BigDecimal y) {
-        assertEquals(message, x.stripTrailingZeros(), y.stripTrailingZeros());
-    }
-
     public static void aeq(@NotNull Object a, @NotNull Object b) {
         Assert.assertEquals(a.toString(), b.toString());
     }

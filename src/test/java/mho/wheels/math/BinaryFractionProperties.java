@@ -181,6 +181,7 @@ public strictfp class BinaryFractionProperties {
             BigDecimal bd = bf.bigDecimalValue();
             assertEquals(bf, bd.signum(), bf.signum());
             assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
+            assertEquals(bd, bd, BigDecimalUtils.canonicalize(bd));
         }
     }
 
@@ -316,9 +317,9 @@ public strictfp class BinaryFractionProperties {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::bigDecimalValue,
-                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::add,
-                    (x, y) -> x.add(y).stripTrailingZeros(),
+                    (x, y) -> BigDecimalUtils.canonicalize(x.add(y)),
                     p
             );
             BinaryFraction sum = p.a.add(p.b);
@@ -420,9 +421,9 @@ public strictfp class BinaryFractionProperties {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::bigDecimalValue,
-                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::subtract,
-                    (x, y) -> x.subtract(y).stripTrailingZeros(),
+                    (x, y) -> BigDecimalUtils.canonicalize(x.subtract(y)),
                     p
             );
             BinaryFraction difference = p.a.subtract(p.b);
@@ -461,9 +462,9 @@ public strictfp class BinaryFractionProperties {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     BinaryFraction::bigDecimalValue,
-                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::multiply,
-                    (x, y) -> x.multiply(y).stripTrailingZeros(),
+                    (x, y) -> BigDecimalUtils.canonicalize(x.multiply(y)),
                     p
             );
             BinaryFraction product = p.a.multiply(p.b);
@@ -498,9 +499,9 @@ public strictfp class BinaryFractionProperties {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     Function.identity(),
-                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::shiftLeft,
-                    (x, bits) -> BigDecimalUtils.shiftLeft(x, bits).stripTrailingZeros(),
+                    (x, bits) -> BigDecimalUtils.canonicalize(BigDecimalUtils.shiftLeft(x, bits)),
                     p
             );
             homomorphic(
@@ -566,9 +567,9 @@ public strictfp class BinaryFractionProperties {
             homomorphic(
                     BinaryFraction::bigDecimalValue,
                     Function.identity(),
-                    bf -> bf.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::shiftRight,
-                    (x, bits) -> BigDecimalUtils.shiftRight(x, bits).stripTrailingZeros(),
+                    (x, bits) -> BigDecimalUtils.canonicalize(BigDecimalUtils.shiftRight(x, bits)),
                     p
             );
             homomorphic(
@@ -621,9 +622,9 @@ public strictfp class BinaryFractionProperties {
         for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
             homomorphic(
                     xs -> map(BinaryFraction::bigDecimalValue, xs),
-                    x -> x.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::sum,
-                    xs -> IterableUtils.sumBigDecimal(xs).stripTrailingZeros(),
+                    xs -> BigDecimalUtils.canonicalize(IterableUtils.sumBigDecimal(xs)),
                     bfs
             );
         }
@@ -644,9 +645,9 @@ public strictfp class BinaryFractionProperties {
         for (List<BinaryFraction> bfs : take(LIMIT, P.lists(P.binaryFractions()))) {
             homomorphic(
                     xs -> map(BinaryFraction::bigDecimalValue, xs),
-                    x -> x.bigDecimalValue().stripTrailingZeros(),
+                    BinaryFraction::bigDecimalValue,
                     BinaryFraction::product,
-                    xs -> IterableUtils.productBigDecimal(xs).stripTrailingZeros(),
+                    xs -> BigDecimalUtils.canonicalize(IterableUtils.productBigDecimal(xs)),
                     bfs
             );
         }
@@ -667,9 +668,9 @@ public strictfp class BinaryFractionProperties {
         for (List<BinaryFraction> bfs : take(LIMIT, P.listsAtLeast(1, P.binaryFractions()))) {
             homomorphic(
                     xs -> map(BinaryFraction::bigDecimalValue, xs),
-                    deltas -> toList(map(delta -> delta.bigDecimalValue().stripTrailingZeros(), deltas)),
+                    deltas -> toList(map(BinaryFraction::bigDecimalValue, deltas)),
                     BinaryFraction::delta,
-                    bds -> toList(map(BigDecimal::stripTrailingZeros, IterableUtils.deltaBigDecimal(bds))),
+                    bds -> toList(map(BigDecimalUtils::canonicalize, IterableUtils.deltaBigDecimal(bds))),
                     bfs
             );
         }
