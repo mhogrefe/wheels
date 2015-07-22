@@ -1559,9 +1559,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code BigDecimal}s. Does not support removal.
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
-        return null;
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
     }
 
     /**
