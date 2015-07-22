@@ -4045,25 +4045,76 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
+    public @NotNull BigDecimal nextPositiveBigDecimal() {
+        return null;
+    }
+
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
-        return map(
-                p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric())
-        );
+        return map(p -> new BigDecimal(p.a, p.b), pairs(negativeBigIntegers(), integersGeometric()));
+    }
+
+    public @NotNull BigDecimal nextNegativeBigDecimal() {
+        return null;
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
-        return map(
-                p -> new BigDecimal(p.a, p.b),
-                pairs(negativeBigIntegers(), integersGeometric())
-        );
+        return map(p -> new BigDecimal(p.a, p.b), pairs(negativeBigIntegers(), integersGeometric()));
+    }
+
+    public @NotNull BigDecimal nextNonzeroBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextBigDecimal() {
+        return null;
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
+    }
+
+    public @NotNull BigDecimal nextPositiveCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextNegativeCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextNonzeroCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
+        return null;
     }
 
     @Override

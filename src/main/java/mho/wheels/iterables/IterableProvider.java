@@ -610,9 +610,49 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<Double> range(double a, double b);
 
+    /**
+     * Generates positive {@code BigDecimal}s.
+     */
     public abstract @NotNull Iterable<BigDecimal> positiveBigDecimals();
+
+    /**
+     * Generates negative {@code BigDecimal}s.
+     */
     public abstract @NotNull Iterable<BigDecimal> negativeBigDecimals();
+
+    /**
+     * Generates nonzero {@code BigDecimal}s.
+     */
+    public abstract @NotNull Iterable<BigDecimal> nonzeroBigDecimals();
+
+    /**
+     * Generates {@code BigDecimal}s.
+     */
     public abstract @NotNull Iterable<BigDecimal> bigDecimals();
+
+    /**
+     * Generates positive {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     */
+    public abstract @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals();
+
+    /**
+     * Generates negative {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     */
+    public abstract @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals();
+
+    /**
+     * Generates nonzero {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     */
+    public abstract @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals();
+
+    /**
+     * Generates {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     */
+    public abstract @NotNull Iterable<BigDecimal> canonicalBigDecimals();
 
     public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
 

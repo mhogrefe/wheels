@@ -1544,6 +1544,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
     }
@@ -1553,8 +1554,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
+        return null;
     }
 
     /**
@@ -1562,8 +1569,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
+        return null;
     }
 
     @Override
