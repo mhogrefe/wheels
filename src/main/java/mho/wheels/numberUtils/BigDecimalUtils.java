@@ -140,4 +140,23 @@ public class BigDecimalUtils {
                 throw new IllegalStateException("unreachable");
         }
     }
+
+    public static @NotNull BigDecimal canonicalize(@NotNull BigDecimal bd) {
+        int scale = bd.scale();
+        if (scale == 0) {
+            return bd;
+        } else if (scale < 0) {
+            //noinspection BigDecimalMethodWithoutRoundingCalled
+            return bd.setScale(0);
+        } else {
+            BigInteger unscaled = bd.unscaledValue();
+            int newScale = scale;
+            while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO)) {
+                unscaled = unscaled.divide(BigInteger.TEN);
+                newScale--;
+            }
+            //noinspection BigDecimalMethodWithoutRoundingCalled
+            return bd.setScale(newScale);
+        }
+    }
 }
