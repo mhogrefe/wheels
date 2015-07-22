@@ -46,8 +46,9 @@ public class BigDecimalUtils {
      * @return {@code bd} rounded to {@code precision}
      */
     public static @NotNull BigDecimal setPrecision(@NotNull BigDecimal bd, int precision) {
-        if (precision <= 0)
-            throw new ArithmeticException("precision must be positive");
+        if (precision <= 0) {
+            throw new ArithmeticException("precision must be positive. Invalid precision: " + precision);
+        }
         if (Ordering.eq(bd, BigDecimal.ZERO)) {
             return BigDecimal.ZERO.setScale(precision - 1, RoundingMode.UNNECESSARY);
         }
