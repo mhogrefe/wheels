@@ -180,4 +180,30 @@ public class BigDecimalUtilsTest {
         shiftRight_helper("0.0", 5, "0.0");
         shiftRight_helper("0.0", -5, "0.0");
     }
+
+    private static void canonicalize_helper(@NotNull String x, @NotNull String output) {
+        aeq(canonicalize(Readers.readBigDecimal(x).get()), output);
+    }
+
+    @Test
+    public void testCanonicalize() {
+        canonicalize_helper("1E+1", "10");
+        canonicalize_helper("10", "10");
+        canonicalize_helper("10.0", "10");
+        canonicalize_helper("10.00", "10");
+        canonicalize_helper("1.1", "1.1");
+        canonicalize_helper("1.10", "1.1");
+        canonicalize_helper("1.100", "1.1");
+        canonicalize_helper("3.14159", "3.14159");
+        canonicalize_helper("1200", "1200");
+        canonicalize_helper("1.2E+3", "1200");
+        canonicalize_helper("-9", "-9");
+        canonicalize_helper("0.99", "0.99");
+        canonicalize_helper("0.999", "0.999");
+        canonicalize_helper("-0.99", "-0.99");
+        canonicalize_helper("-0.999", "-0.999");
+        canonicalize_helper("0", "0");
+        canonicalize_helper("0E+1", "0");
+        canonicalize_helper("0.0", "0");
+    }
 }

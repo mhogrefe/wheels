@@ -151,7 +151,7 @@ public class BigDecimalUtils {
         } else {
             BigInteger unscaled = bd.unscaledValue();
             int newScale = scale;
-            while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO)) {
+            while (newScale > 0 && unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO)) {
                 unscaled = unscaled.divide(BigInteger.TEN);
                 newScale--;
             }
