@@ -166,6 +166,7 @@ public class BigDecimalUtilsProperties {
                     bd
             );
             BigDecimal canonicalized = canonicalize(bd);
+            assertTrue(bd, isCanonical(bd));
             assertTrue(bd, eq(bd, canonicalized));
             assertFalse(bd, canonicalized.scale() < 0);
             assertTrue(bd, canonicalized.scale() == 0 ||

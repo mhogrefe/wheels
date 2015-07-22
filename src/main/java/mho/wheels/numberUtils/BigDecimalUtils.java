@@ -174,4 +174,21 @@ public class BigDecimalUtils {
             return bd.setScale(newScale);
         }
     }
+
+    /**
+     * Determines whether a {@code BigDecimal} is canonical; that is, whether it has a scale of zero or a positive
+     * scale and an unscaled value not divisible by 10.
+     *
+     * <ul>
+     *  <li>{@code bd} cannot be null.</li>
+     *  <li>The result may be either {@code boolean}.</li>
+     * </ul>
+     *
+     * @param bd a {@code BigDecimal}
+     * @return whether {@code bd} is canonical
+     */
+    public static boolean isCanonical(@NotNull BigDecimal bd) {
+        int scale = bd.scale();
+        return scale == 0 || (scale > 0 && !bd.unscaledValue().mod(BigInteger.TEN).equals(BigInteger.ZERO));
+    }
 }

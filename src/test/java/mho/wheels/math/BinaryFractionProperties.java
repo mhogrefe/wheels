@@ -181,7 +181,7 @@ public strictfp class BinaryFractionProperties {
             BigDecimal bd = bf.bigDecimalValue();
             assertEquals(bf, bd.signum(), bf.signum());
             assertEquals(bf, BigDecimalUtils.shiftRight(bd, bf.getExponent()).toBigIntegerExact(), bf.getMantissa());
-            assertEquals(bd, bd, BigDecimalUtils.canonicalize(bd));
+            assertTrue(bd, BigDecimalUtils.isCanonical(bd));
         }
     }
 
