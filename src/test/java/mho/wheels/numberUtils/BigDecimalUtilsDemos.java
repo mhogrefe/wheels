@@ -64,4 +64,11 @@ public class BigDecimalUtilsDemos {
             System.out.println(p.a + " >> " + p.b + " = " + shiftRight(p.a, p.b));
         }
     }
+
+    private static void demoCanonicalize() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            System.out.println("canonicalize(" + bd + ") = " + canonicalize(bd));
+        }
+    }
 }
