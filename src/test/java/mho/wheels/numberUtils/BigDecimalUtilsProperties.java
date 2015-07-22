@@ -177,9 +177,7 @@ public class BigDecimalUtilsProperties {
         }
 
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
-            if (eq(p.a, p.b)) {
-                assertEquals(p, canonicalize(p.a), canonicalize(p.b));
-            }
+            assertEquals(p, eq(p.a, p.b), canonicalize(p.a).equals(canonicalize(p.b)));
         }
     }
 }
