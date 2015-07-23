@@ -4047,39 +4047,48 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextPositiveBigDecimal() {
-        return null;
+        return new BigDecimal(nextPositiveBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(negativeBigIntegers(), integersGeometric()));
+        return map(
+                p -> new BigDecimal(p.a, p.b), pairs(positiveBigIntegers(),
+                withScale(secondaryScale).integersGeometric())
+        );
     }
 
     public @NotNull BigDecimal nextNegativeBigDecimal() {
-        return null;
+        return new BigDecimal(nextNegativeBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(negativeBigIntegers(), integersGeometric()));
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(negativeBigIntegers(), withScale(secondaryScale).integersGeometric())
+        );
     }
 
     public @NotNull BigDecimal nextNonzeroBigDecimal() {
-        return null;
+        return new BigDecimal(nextNonzeroBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
-        return null;
+        return map(
+                p -> new BigDecimal(p.a, p.b),
+                pairs(nonzeroBigIntegers(), withScale(secondaryScale).integersGeometric())
+        );
     }
 
     public @NotNull BigDecimal nextBigDecimal() {
-        return null;
+        return new BigDecimal(nextBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
-        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), integersGeometric()));
+        return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), withScale(secondaryScale).integersGeometric()));
     }
 
     public @NotNull BigDecimal nextPositiveCanonicalBigDecimal() {
