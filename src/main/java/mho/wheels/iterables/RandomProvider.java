@@ -4200,39 +4200,57 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextPositiveCanonicalBigDecimal() {
-        return null;
+        int scale = withScale(secondaryScale).nextNaturalIntGeometric();
+        BigInteger unscaled;
+        if (scale == 0) {
+            unscaled = nextPositiveBigInteger();
+        } else {
+            do {
+                unscaled = nextPositiveBigInteger();
+            } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+        }
+        return new BigDecimal(unscaled, scale);
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
-        return null;
+        return fromSupplier(this::nextPositiveCanonicalBigDecimal);
     }
 
     public @NotNull BigDecimal nextNegativeCanonicalBigDecimal() {
-        return null;
+        return nextPositiveCanonicalBigDecimal().negate();
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
-        return null;
+        return map(BigDecimal::negate, positiveCanonicalBigDecimals());
     }
 
     public @NotNull BigDecimal nextNonzeroCanonicalBigDecimal() {
-        return null;
+        return nextBoolean() ? nextPositiveCanonicalBigDecimal() : nextPositiveCanonicalBigDecimal().negate();
     }
-
 
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
-        return null;
+        return fromSupplier(this::nextNonzeroCanonicalBigDecimal);
     }
+
     public @NotNull BigDecimal nextCanonicalBigDecimal() {
-        return null;
+        int scale = withScale(secondaryScale).nextNaturalIntGeometric();
+        BigInteger unscaled;
+        if (scale == 0) {
+            unscaled = nextBigInteger();
+        } else {
+            do {
+                unscaled = nextBigInteger();
+            } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+        }
+        return new BigDecimal(unscaled, scale);
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
-        return null;
+        return fromSupplier(this::nextCanonicalBigDecimal);
     }
 
     @Override
