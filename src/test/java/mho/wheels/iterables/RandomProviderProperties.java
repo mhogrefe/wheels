@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
@@ -245,6 +246,14 @@ public class RandomProviderProperties {
             propertiesNonzeroBigDecimals();
             propertiesNextBigDecimal();
             propertiesBigDecimals();
+            propertiesNextPositiveCanonicalBigDecimal();
+            propertiesPositiveCanonicalBigDecimals();
+            propertiesNextNegativeCanonicalBigDecimal();
+            propertiesNegativeCanonicalBigDecimals();
+            propertiesNextNonzeroCanonicalBigDecimal();
+            propertiesNonzeroCanonicalBigDecimals();
+            propertiesNextCanonicalBigDecimal();
+            propertiesCanonicalBigDecimals();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -3532,7 +3541,7 @@ public class RandomProviderProperties {
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
             BigDecimal bd = rp.nextNonzeroBigDecimal();
-            assertNotEquals(rp, bd, BigDecimal.ZERO);
+            assertFalse(rp, eq(bd, BigDecimal.ZERO));
         }
 
         for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
@@ -3559,7 +3568,7 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, rps)) {
             Iterable<BigDecimal> bds = rp.nonzeroBigDecimals();
             rp.reset();
-            simpleTest(rp, bds, bd -> !bd.equals(BigDecimal.ZERO));
+            simpleTest(rp, bds, bd -> ne(bd, BigDecimal.ZERO));
             supplierEquivalence(rp, bds, rp::nextNonzeroBigDecimal);
         }
 
@@ -3626,6 +3635,225 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
             try {
                 rp.bigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextPositiveCanonicalBigDecimal() {
+        initialize("nextPositiveCanonicalBigDecimal()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigDecimal bd = rp.nextPositiveCanonicalBigDecimal();
+            assertEquals(rp, bd.signum(), 1);
+            assertTrue(rp, BigDecimalUtils.isCanonical(bd));
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nextPositiveCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextPositiveCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesPositiveCanonicalBigDecimals() {
+        initialize("positiveCanonicalBigDecimals()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigDecimal> bds = rp.positiveCanonicalBigDecimals();
+            rp.reset();
+            simpleTest(rp, bds, bd -> bd.signum() == 1 && BigDecimalUtils.isCanonical(bd));
+            supplierEquivalence(rp, bds, rp::nextPositiveCanonicalBigDecimal);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.positiveCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.positiveCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNegativeCanonicalBigDecimal() {
+        initialize("nextNegativeCanonicalBigDecimal()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigDecimal bd = rp.nextNegativeCanonicalBigDecimal();
+            assertEquals(rp, bd.signum(), -1);
+            assertTrue(rp, BigDecimalUtils.isCanonical(bd));
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nextNegativeCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextNegativeCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNegativeCanonicalBigDecimals() {
+        initialize("negativeCanonicalBigDecimals()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigDecimal> bds = rp.negativeCanonicalBigDecimals();
+            rp.reset();
+            simpleTest(rp, bds, bd -> bd.signum() == -1 && BigDecimalUtils.isCanonical(bd));
+            supplierEquivalence(rp, bds, rp::nextNegativeCanonicalBigDecimal);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.negativeCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.negativeCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextNonzeroCanonicalBigDecimal() {
+        initialize("nextNonzeroCanonicalBigDecimal()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigDecimal bd = rp.nextNonzeroCanonicalBigDecimal();
+            assertFalse(rp, eq(bd, BigDecimal.ZERO));
+            assertTrue(rp, BigDecimalUtils.isCanonical(bd));
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nextNonzeroCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextNonzeroCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNonzeroCanonicalBigDecimals() {
+        initialize("nonzeroCanonicalBigDecimals()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigDecimal> bds = rp.nonzeroCanonicalBigDecimals();
+            rp.reset();
+            simpleTest(rp, bds, bd -> ne(bd, BigDecimal.ZERO) && BigDecimalUtils.isCanonical(bd));
+            supplierEquivalence(rp, bds, rp::nextNonzeroCanonicalBigDecimal);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
+            try {
+                rp.nonzeroCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nonzeroCanonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextCanonicalBigDecimal() {
+        initialize("nextCanonicalBigDecimal()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            BigDecimal bd = rp.nextCanonicalBigDecimal();
+            assertTrue(rp, BigDecimalUtils.isCanonical(bd));
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.nextCanonicalBigDecimal();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesCanonicalBigDecimals() {
+        initialize("canonicalBigDecimals()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            Iterable<BigDecimal> bds = rp.canonicalBigDecimals();
+            rp.reset();
+            simpleTest(rp, bds, BigDecimalUtils::isCanonical);
+            supplierEquivalence(rp, bds, rp::nextCanonicalBigDecimal);
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+            try {
+                rp.canonicalBigDecimals();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()))) {
+            try {
+                rp.canonicalBigDecimals();
                 fail(rp);
             } catch (IllegalStateException ignored) {}
         }
