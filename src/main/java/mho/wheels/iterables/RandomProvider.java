@@ -2606,9 +2606,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * Returns a randomly-generated positive {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
-     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
-     * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
-     * {@code secondaryScale}, and its sign is chosen uniformly.
+     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd positive
+     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
@@ -2623,7 +2623,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all positive {@code BinaryFraction}s. The mantissa bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd
+     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd positive
      * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
      * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
      *
@@ -2648,9 +2648,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * Returns a randomly-generated negative {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
-     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd {@code BigInteger}s
-     * with that bit size. The absolute value of the exponent is chosen from a geometric distribution with mean
-     * {@code secondaryScale}, and its sign is chosen uniformly.
+     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd negative
+     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
@@ -2665,7 +2665,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates all negative {@code BinaryFraction}s. The mantissa bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd
+     * geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd negative
      * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
      * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
      *
@@ -4046,10 +4046,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUniform(a, b));
     }
 
+    /**
+     * Returns a randomly-generated positive {@code BigDecimal}. The unscaled-value bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all positive
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is positive.</li>
+     * </ul>
+     *
+     * @return a positive {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextPositiveBigDecimal() {
         return new BigDecimal(nextPositiveBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
+    /**
+     * An {@code Iterable} that generates all positive {@code BigDecimal}s. The unscaled-value bit size is chosen from
+     * a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all positive
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
@@ -4058,10 +4084,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated negative {@code BigDecimal}. The unscaled-value bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all negative
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is negative.</li>
+     * </ul>
+     *
+     * @return a negative {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextNegativeBigDecimal() {
         return new BigDecimal(nextNegativeBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
+    /**
+     * An {@code Iterable} that generates all negative {@code BigDecimal}s. The unscaled-value bit size is chosen from
+     * a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all negative
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(
@@ -4070,10 +4122,38 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated nonzero {@code BigDecimal}. The unscaled-value bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the
+     * {@code BigDecimal} itself is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextNonzeroBigDecimal() {
         return new BigDecimal(nextNonzeroBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero {@code BigDecimal}s. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the {@code BigDecimal}
+     * itself is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
         return map(
@@ -4082,10 +4162,38 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns a randomly-generated {@code BigDecimal}. The unscaled-value bit size is chosen from a geometric
+     * distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the
+     * {@code BigDecimal} itself is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BinaryFraction}
+     */
     public @NotNull BigDecimal nextBigDecimal() {
         return new BigDecimal(nextBigInteger(), withScale(secondaryScale).nextIntGeometric());
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the {@code BigDecimal}
+     * itself is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), withScale(secondaryScale).integersGeometric()));
