@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
@@ -1577,6 +1578,50 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
+
+    /**
+     * Generates positive {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, positiveBigDecimals());
+    }
+
+    /**
+     * Generates negative {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, negativeBigDecimals());
+    }
+
+    /**
+     * Generates nonzero {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, nonzeroBigDecimals());
+    }
+
+    /**
+     * Generates {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
     }
 
     @Override

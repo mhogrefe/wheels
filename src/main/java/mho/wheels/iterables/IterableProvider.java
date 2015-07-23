@@ -643,33 +643,25 @@ public abstract strictfp class IterableProvider {
      * Generates positive {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
-        return filterInfinite(BigDecimalUtils::isCanonical, positiveBigDecimals());
-    }
+    public abstract @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals();
 
     /**
      * Generates negative {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
-        return filterInfinite(BigDecimalUtils::isCanonical, negativeBigDecimals());
-    }
+    public abstract @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals();
 
     /**
      * Generates nonzero {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
-        return filterInfinite(BigDecimalUtils::isCanonical, nonzeroBigDecimals());
-    }
+    public abstract @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals();
 
     /**
      * Generates {@code BigDecimal}s in canonical form (see
      * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
      */
-    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
-        return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
-    }
+    public abstract @NotNull Iterable<BigDecimal> canonicalBigDecimals();
 
     public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
 

@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
@@ -4085,7 +4086,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return null;
+    }
+
     public @NotNull BigDecimal nextNegativeCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
         return null;
     }
 
@@ -4093,7 +4104,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         return null;
     }
 
+
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return null;
+    }
     public @NotNull BigDecimal nextCanonicalBigDecimal() {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
         return null;
     }
 
