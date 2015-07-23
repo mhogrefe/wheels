@@ -7687,6 +7687,134 @@ public strictfp class RandomProviderTest {
         rangeUniform_double_double_fail_helper(1.0, Double.NaN);
     }
 
+    private static void nextPositiveBigDecimal_helper(
+            int unscaledMeanBitSize,
+            int meanScaleSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveBigDecimal(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextPositiveBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
+        try {
+            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveBigDecimal();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextPositiveBigDecimal() {
+        nextPositiveBigDecimal_helper(2, 1, "1.3");
+        nextPositiveBigDecimal_helper(5, 3, "2.1E-7");
+        nextPositiveBigDecimal_helper(32, 8, "9.899036265412338E+22");
+        nextPositiveBigDecimal_helper(100, 10, "9.4790976865653102300816908025048767680216168E+58");
+        nextPositiveBigDecimal_fail_helper(1, 1);
+        nextPositiveBigDecimal_fail_helper(2, 0);
+    }
+
+    private static void nextNegativeBigDecimal_helper(
+            int unscaledMeanBitSize,
+            int meanScaleSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeBigDecimal(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextNegativeBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
+        try {
+            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeBigDecimal();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextNegativeBigDecimal() {
+        nextNegativeBigDecimal_helper(2, 1, "-1.3");
+        nextNegativeBigDecimal_helper(5, 3, "-2.1E-7");
+        nextNegativeBigDecimal_helper(32, 8, "-9.899036265412338E+22");
+        nextNegativeBigDecimal_helper(100, 10, "-9.4790976865653102300816908025048767680216168E+58");
+        nextNegativeBigDecimal_fail_helper(1, 1);
+        nextNegativeBigDecimal_fail_helper(2, 0);
+    }
+
+    private static void nextNonzeroBigDecimal_helper(
+            int unscaledMeanBitSize,
+            int meanScaleSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroBigDecimal(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextNonzeroBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
+        try {
+            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroBigDecimal();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextNonzeroBigDecimal() {
+        nextNonzeroBigDecimal_helper(2, 1, "13");
+        nextNonzeroBigDecimal_helper(5, 3, "0.0000021");
+        nextNonzeroBigDecimal_helper(32, 8, "-9.899036265412338E+21");
+        nextNonzeroBigDecimal_helper(100, 10, "9.4790976865653102300816908025048767680216168E+58");
+        nextNonzeroBigDecimal_fail_helper(1, 1);
+        nextNonzeroBigDecimal_fail_helper(2, 0);
+    }
+
+    private static void nextBigDecimal_helper(
+            int unscaledMeanBitSize,
+            int meanScaleSize,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextBigDecimal(),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
+        try {
+            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextBigDecimal();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextBigDecimal() {
+        nextBigDecimal_helper(2, 1, "0.0000013");
+        nextBigDecimal_helper(5, 3, "0.0000021");
+        nextBigDecimal_helper(32, 8, "4.69790E+12");
+        nextBigDecimal_helper(100, 10, "6.30008861630388057697674146568609443823746152E+59");
+        nextBigDecimal_fail_helper(0, 1);
+        nextBigDecimal_fail_helper(2, 0);
+    }
+
     @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
