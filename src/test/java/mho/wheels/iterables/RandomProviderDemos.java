@@ -1793,6 +1793,94 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveBigDecimal(" + rp + ") = " + rp.nextPositiveBigDecimal());
+        }
+    }
+
+    private static void demoPositiveBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveBigDecimals(" + rp + ") = " + its(rp.positiveBigDecimals()));
+        }
+    }
+
+    private static void demoNextNegativeBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeBigDecimal(" + rp + ") = " + rp.nextNegativeBigDecimal());
+        }
+    }
+
+    private static void demoNegativeBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeBigDecimals(" + rp + ") = " + its(rp.negativeBigDecimals()));
+        }
+    }
+
+    private static void demoNextNonzeroBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroBigDecimal(" + rp + ") = " + rp.nextNonzeroBigDecimal());
+        }
+    }
+
+    private static void demoNonzeroBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroBigDecimals(" + rp + ") = " + its(rp.nonzeroBigDecimals()));
+        }
+    }
+
+    private static void demoNextBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextBigDecimal(" + rp + ") = " + rp.nextBigDecimal());
+        }
+    }
+
+    private static void demoBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("bigDecimals(" + rp + ") = " + its(rp.bigDecimals()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
