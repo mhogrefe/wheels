@@ -1625,6 +1625,36 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
+    }
+
+    @Override
     public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
          return cons(x, xs);
     }

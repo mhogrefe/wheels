@@ -4079,7 +4079,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b), pairs(positiveBigIntegers(),
-                withScale(secondaryScale).integersGeometric())
+                        withScale(secondaryScale).integersGeometric())
         );
     }
 
@@ -4387,6 +4387,60 @@ public final strictfp class RandomProvider extends IterableProvider {
                     secondaryScale);
         }
         return fromSupplier(this::nextCanonicalBigDecimal);
+    }
+
+    public @NotNull BigDecimal nextFromRangeUp(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextFromRangeDown(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextFromRange(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextFromRangeDownCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
+        return null;
+    }
+
+    public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        return null;
     }
 
     @Override

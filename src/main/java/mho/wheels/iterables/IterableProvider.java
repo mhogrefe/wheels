@@ -663,6 +663,53 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<BigDecimal> canonicalBigDecimals();
 
+    /**
+     * Generates {@code BigDecimal}s greater than or equal to a given value.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a);
+
+    /**
+     * Generates {@code BigDecimal}s less than or equal to a given value.
+     *
+     * @param a the inclusive upper bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a);
+
+    /**
+     * Generates {@code BigDecimal}s between {@code a} and {@code b}, inclusive.
+     *
+     * @param a the inclusive lower bound of the generated {@code BigDecimal}s
+     * @param b the inclusive upper bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b);
+
+    /**
+     * Generates {@code BigDecimal}s greater than or equal to a given value, in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     *
+     * @param a the inclusive lower bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a);
+
+    /**
+     * Generates {@code BigDecimal}s less than or equal to a given value, in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     *
+     * @param a the inclusive upper bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a);
+
+    /**
+     * Generates {@code BigDecimal}s between {@code a} and {@code b}, inclusive, in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}).
+     *
+     * @param a the inclusive lower bound of the generated {@code BigDecimal}s
+     * @param b the inclusive upper bound of the generated {@code BigDecimal}s
+     */
+    public abstract @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b);
+
     public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
 
     public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
