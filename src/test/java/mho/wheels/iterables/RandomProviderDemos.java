@@ -1881,6 +1881,96 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveCanonicalBigDecimal(" + rp + ") = " +
+                    rp.nextPositiveCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoPositiveCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveCanonicalBigDecimals(" + rp + ") = " + its(rp.positiveCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextNegativeCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeCanonicalBigDecimal(" + rp + ") = " +
+                    rp.nextNegativeCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoNegativeCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeCanonicalBigDecimals(" + rp + ") = " + its(rp.negativeCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextNonzeroCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroCanonicalBigDecimal(" + rp + ") = " + rp.nextNonzeroCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoNonzeroCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroCanonicalBigDecimals(" + rp + ") = " + its(rp.nonzeroCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextCanonicalBigDecimal(" + rp + ") = " + rp.nextCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("canonicalBigDecimals(" + rp + ") = " + its(rp.canonicalBigDecimals()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
