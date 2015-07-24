@@ -3808,7 +3808,7 @@ public class RandomProviderProperties {
     private static void propertiesNextCanonicalBigDecimal() {
         initialize("nextCanonicalBigDecimal()");
         Iterable<RandomProvider> rps = filterInfinite(
-                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
@@ -3816,7 +3816,7 @@ public class RandomProviderProperties {
             assertTrue(rp, BigDecimalUtils.isCanonical(bd));
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.nextCanonicalBigDecimal();
                 fail(rp);
@@ -3834,7 +3834,7 @@ public class RandomProviderProperties {
     private static void propertiesCanonicalBigDecimals() {
         initialize("canonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
-                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
         for (RandomProvider rp : take(LIMIT, rps)) {
@@ -3844,7 +3844,7 @@ public class RandomProviderProperties {
             supplierEquivalence(rp, bds, rp::nextCanonicalBigDecimal);
         }
 
-        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 1, P.randomProviders()))) {
+        for (RandomProvider rp : take(LIMIT, filterInfinite(x -> x.getScale() < 2, P.randomProviders()))) {
             try {
                 rp.canonicalBigDecimals();
                 fail(rp);

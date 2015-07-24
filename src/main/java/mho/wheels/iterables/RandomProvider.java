@@ -4204,8 +4204,10 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale == 0) {
             unscaled = nextPositiveBigInteger();
         } else {
+            int unscaledBitSize = nextPositiveIntGeometric();
             do {
-                unscaled = nextPositiveBigInteger();
+                unscaled = nextBigIntegerPow2(unscaledBitSize);
+                unscaled = unscaled.setBit(unscaledBitSize - 1);
             } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
         }
         return new BigDecimal(unscaled, scale);
@@ -4249,22 +4251,27 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextCanonicalBigDecimal() {
-        int scale = withScale(secondaryScale).nextNaturalIntGeometric();
+        int bdScale = withScale(secondaryScale).nextNaturalIntGeometric();
         BigInteger unscaled;
-        if (scale == 0) {
-            unscaled = nextBigInteger();
+        if (bdScale == 0) {
+            if (scale < 2) {
+                throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + bdScale);
+            }
+            unscaled = nextNaturalBigInteger();
         } else {
+            int unscaledBitSize = nextPositiveIntGeometric();
             do {
-                unscaled = nextBigInteger();
+                unscaled = nextBigIntegerPow2(unscaledBitSize);
+                unscaled = unscaled.setBit(unscaledBitSize - 1);
             } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
         }
-        return new BigDecimal(unscaled, scale);
+        return new BigDecimal(nextBoolean() ? unscaled : unscaled.negate(), bdScale);
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
         }
         if (secondaryScale < 1) {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +

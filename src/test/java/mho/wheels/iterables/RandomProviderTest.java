@@ -8207,6 +8207,91 @@ public strictfp class RandomProviderTest {
         nextPositiveCanonicalBigDecimal_fail_helper(2, 0);
     }
 
+    private static void positiveCanonicalBigDecimals_helper(
+            int meanUnscaledBitSize,
+            int meanScaleSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double unscaledBitSizeMean,
+            double scaleMean
+    ) {
+        bigDecimalHelper(
+                P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).positiveCanonicalBigDecimals(),
+                output,
+                topSampleCount,
+                sampleMean,
+                unscaledBitSizeMean,
+                scaleMean
+        );
+        P.reset();
+    }
+
+    private static void positiveCanonicalBigDecimals_fail_helper(int meanUnscaledBitSize, int meanScaleSize) {
+        try {
+            P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).positiveCanonicalBigDecimals();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testPositiveCanonicalBigDecimals() {
+        positiveCanonicalBigDecimals_helper(
+                2,
+                1,
+                "[0.005, 7E-8, 0.1, 12, 7, 0.6, 0.01, 0.2, 0.5, 0.1, 0.1, 1, 0.1, 1, 1, 1, 2.5, 0.001, 0.1, 0.1]",
+                "{1=249991, 0.1=124728, 2=62606, 3=62591, 0.01=62142, 0.001=31606, 0.3=31288, 0.2=31004, 5=15796," +
+                " 7=15770}",
+                6.995086292023604,
+                1.9993349999798273,
+                1.0016879999976924
+        );
+        positiveCanonicalBigDecimals_helper(
+                5,
+                3,
+                "[0.000013, 0.25387, 0.00029, 2, 0.1, 1, 0.000117, 3.44E-11, 0.0001, 2, 1.8073E-7, 320, 28, 0.0014," +
+                " 8797, 46, 30, 0.04, 0.00002, 0.01]",
+                "{1=49969, 0.1=37361, 0.01=28100, 0.001=21268, 2=20017, 3=19806, 0.0001=15587, 0.3=15037, 0.2=14924," +
+                " 0.00001=11705}",
+                5.0163406598608475E10,
+                5.010096000008702,
+                2.9996349999914838
+        );
+        positiveCanonicalBigDecimals_helper(
+                32,
+                8,
+                "[4.04936997654063E-17, 3.03219670608E-16, 0.00003, 5.254848612E-8, 0.00969839, 2416.5," +
+                " 0.0000012564, 121.36, 0.018, 16911639184143047868995522284006, 5E-9, 0.005286, 242603041.628," +
+                " 1.4851833763E-9, 3E-8, 0.02487512677886, 235204.68, 6.9E-27, 8.01E-29, 39]",
+                "{1=3543, 0.1=3098, 0.01=2697, 0.001=2426, 0.0001=2127, 0.00001=2023, 2=1696, 3=1678, 0.000001=1641," +
+                " 1E-7=1589}",
+                2.1875960862631944E131,
+                32.00952900002345,
+                7.992489000016789
+        );
+        positiveCanonicalBigDecimals_helper(
+                100,
+                10,
+                "[0.000572989721722831798340552401503927, 0.0004630900152605, 187.100459, 1.391E-8," +
+                " 11020766789070271789168299386221637820812.61, 41079721.9, 604019.34935913508416666426308," +
+                " 321818.8, 3.0670984070649E-27, 699054793294702.2497, 0.64652," +
+                " 335585631423363819657482206242300627801.49, 0.000232414," +
+                " 7900327901320824758445664748118373163749341529.563303614027921087108394697463," +
+                " 250153592592617448957.359681493474, 7.802322497623E-9, 6.38746676987305497E-10, 1.801161E-15," +
+                " 88208944088305682602813392107305565097650624.6571," +
+                " 15713218602914447431492283897880756550610073314504466517671827791587317575567925917482809.548]",
+                "{1=948, 0.01=768, 0.1=753, 0.001=692, 0.0001=623, 0.00001=515, 0.000001=515, 1E-7=479, 2=472, 3=456}",
+                Double.POSITIVE_INFINITY,
+                99.93904899999788,
+                10.005566000005233
+        );
+        positiveCanonicalBigDecimals_fail_helper(1, 1);
+        positiveCanonicalBigDecimals_fail_helper(2, 0);
+    }
+
     private static void nextNegativeCanonicalBigDecimal_helper(
             int unscaledMeanBitSize,
             int meanScaleSize,
@@ -8237,6 +8322,93 @@ public strictfp class RandomProviderTest {
         nextNegativeCanonicalBigDecimal_helper(100, 10, "-0.000572989721722831798340552401503927");
         nextNegativeCanonicalBigDecimal_fail_helper(1, 1);
         nextNegativeCanonicalBigDecimal_fail_helper(2, 0);
+    }
+
+    private static void negativeCanonicalBigDecimals_helper(
+            int meanUnscaledBitSize,
+            int meanScaleSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double unscaledBitSizeMean,
+            double scaleMean
+    ) {
+        bigDecimalHelper(
+                P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).negativeCanonicalBigDecimals(),
+                output,
+                topSampleCount,
+                sampleMean,
+                unscaledBitSizeMean,
+                scaleMean
+        );
+        P.reset();
+    }
+
+    private static void negativeCanonicalBigDecimals_fail_helper(int meanUnscaledBitSize, int meanScaleSize) {
+        try {
+            P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).negativeCanonicalBigDecimals();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNegativeCanonicalBigDecimals() {
+        negativeCanonicalBigDecimals_helper(
+                2,
+                1,
+                "[-0.005, -7E-8, -0.1, -12, -7, -0.6, -0.01, -0.2, -0.5, -0.1, -0.1, -1, -0.1, -1, -1, -1, -2.5," +
+                " -0.001, -0.1, -0.1]",
+                "{-1=249991, -0.1=124728, -2=62606, -3=62591, -0.01=62142, -0.001=31606, -0.3=31288, -0.2=31004," +
+                " -5=15796, -7=15770}",
+                -6.995086292023604,
+                1.9993349999798273,
+                1.0016879999976924
+        );
+        negativeCanonicalBigDecimals_helper(
+                5,
+                3,
+                "[-0.000013, -0.25387, -0.00029, -2, -0.1, -1, -0.000117, -3.44E-11, -0.0001, -2, -1.8073E-7, -320," +
+                " -28, -0.0014, -8797, -46, -30, -0.04, -0.00002, -0.01]",
+                "{-1=49969, -0.1=37361, -0.01=28100, -0.001=21268, -2=20017, -3=19806, -0.0001=15587, -0.3=15037," +
+                " -0.2=14924, -0.00001=11705}",
+                -5.0163406598608475E10,
+                5.010096000008702,
+                2.9996349999914838
+        );
+        negativeCanonicalBigDecimals_helper(
+                32,
+                8,
+                "[-4.04936997654063E-17, -3.03219670608E-16, -0.00003, -5.254848612E-8, -0.00969839, -2416.5," +
+                " -0.0000012564, -121.36, -0.018, -16911639184143047868995522284006, -5E-9, -0.005286," +
+                " -242603041.628, -1.4851833763E-9, -3E-8, -0.02487512677886, -235204.68, -6.9E-27, -8.01E-29, -39]",
+                "{-1=3543, -0.1=3098, -0.01=2697, -0.001=2426, -0.0001=2127, -0.00001=2023, -2=1696, -3=1678," +
+                " -0.000001=1641, -1E-7=1589}",
+                -2.1875960862631944E131,
+                32.00952900002345,
+                7.992489000016789
+        );
+        negativeCanonicalBigDecimals_helper(
+                100,
+                10,
+                "[-0.000572989721722831798340552401503927, -0.0004630900152605, -187.100459, -1.391E-8," +
+                " -11020766789070271789168299386221637820812.61, -41079721.9, -604019.34935913508416666426308," +
+                " -321818.8, -3.0670984070649E-27, -699054793294702.2497, -0.64652," +
+                " -335585631423363819657482206242300627801.49, -0.000232414," +
+                " -7900327901320824758445664748118373163749341529.563303614027921087108394697463," +
+                " -250153592592617448957.359681493474, -7.802322497623E-9, -6.38746676987305497E-10, -1.801161E-15," +
+                " -88208944088305682602813392107305565097650624.6571," +
+                " -15713218602914447431492283897880756550610073314504466517671827791587317575567925917482809.548]",
+                "{-1=948, -0.01=768, -0.1=753, -0.001=692, -0.0001=623, -0.00001=515, -0.000001=515, -1E-7=479," +
+                " -2=472, -3=456}",
+                Double.NEGATIVE_INFINITY,
+                99.93904899999788,
+                10.005566000005233
+        );
+        negativeCanonicalBigDecimals_fail_helper(1, 1);
+        negativeCanonicalBigDecimals_fail_helper(2, 0);
     }
 
     private static void nextNonzeroCanonicalBigDecimal_helper(
@@ -8271,6 +8443,92 @@ public strictfp class RandomProviderTest {
         nextNonzeroCanonicalBigDecimal_fail_helper(2, 0);
     }
 
+    private static void nonzeroCanonicalBigDecimals_helper(
+            int meanUnscaledBitSize,
+            int meanScaleSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double unscaledBitSizeMean,
+            double scaleMean
+    ) {
+        bigDecimalHelper(
+                P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).nonzeroCanonicalBigDecimals(),
+                output,
+                topSampleCount,
+                sampleMean,
+                unscaledBitSizeMean,
+                scaleMean
+        );
+        P.reset();
+    }
+
+    private static void nonzeroCanonicalBigDecimals_fail_helper(int meanUnscaledBitSize, int meanScaleSize) {
+        try {
+            P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).nonzeroCanonicalBigDecimals();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNonzeroCanonicalBigDecimals() {
+        nonzeroCanonicalBigDecimals_helper(
+                2,
+                1,
+                "[0.05, 7E-7, 1, -0.001, 0.7, 1, 1, 2, 5, 1, 1, -1, -1, -1, -1, 25, 0.01, 1, 1, -0.000009]",
+                "{1=124850, -1=124579, -0.1=62675, 0.1=62491, 3=31558, 0.01=31399, 2=31278, -2=31169, -3=31120," +
+                " -0.01=31065}",
+                -4.360432485051689,
+                2.0000579999799557,
+                1.0015299999976932
+        );
+        nonzeroCanonicalBigDecimals_helper(
+                5,
+                3,
+                "[0.00013, 2.5387, 0.0029, -0.01, -2, 0.00117, -3.44E-10, -0.001, -1, -0.0000018073, -0.0028, -1E-9," +
+                " -0.014, -0.0605, -1E-11, -2, 0.4, 0.0002, 0.1, 0.01]",
+                "{-1=24836, 1=24785, -0.1=18867, 0.1=18657, 0.01=14289, -0.01=13967, -0.001=10501, 0.001=10362," +
+                " -2=10068, 2=10010}",
+                7.150490952200898E13,
+                5.008832000008888,
+                2.9996659999914486
+        );
+        nonzeroCanonicalBigDecimals_helper(
+                32,
+                8,
+                "[4.04936997654063E-17, 3.03219670608E-15, -0.00003, -5.254848612E-7, -0.0969839, -2416.5," +
+                " 0.000012564, 121.36, -0.18, 16911639184143047868995522284006, -5E-8, -0.05286, 2426030416.28," +
+                " 1.4851833763E-8, 3E-7, -0.02487512677886, -2352046.8, 6.9E-27, 8.01E-28, 39]",
+                "{1=1783, -1=1782, 0.1=1565, -0.1=1417, 0.01=1405, -0.01=1326, 0.001=1184, -0.001=1175," +
+                " -0.0001=1128, 0.0001=1113}",
+                -2.1875960862631944E131,
+                32.006803000023154,
+                7.998565000016982
+        );
+        nonzeroCanonicalBigDecimals_helper(
+                100,
+                10,
+                "[0.00572989721722831798340552401503927, 0.004630900152605, 1871.00459, -1.391E-8," +
+                " 110207667890702717891682993862216378208126.1, 410797219, -604019.34935913508416666426308," +
+                " -321818.8, 3.0670984070649E-26, 699054793294702.2497, -0.64652," +
+                " -3355856314233638196574822062423006278014.9, -0.000232414," +
+                " 79003279013208247584456647481183731637493415295.63303614027921087108394697463," +
+                " 250153592592617448957.359681493474, -7.802322497623E-9, 6.38746676987305497E-9, -1.801161E-14," +
+                " 882089440883056826028133921073055650976506246.571," +
+                " 157132186029144474314922838978807565506100733145044665176718277915873175755679259174828095.48]",
+                "{1=453, -1=424, -0.1=423, 0.1=407, -0.01=405, 0.001=358, 0.01=352, -0.001=341, 0.0001=305," +
+                " 0.00001=288}",
+                Double.NaN,
+                99.93122599999683,
+                10.008304000004127
+        );
+        nonzeroCanonicalBigDecimals_fail_helper(1, 1);
+        nonzeroCanonicalBigDecimals_fail_helper(2, 0);
+    }
+
     private static void nextCanonicalBigDecimal_helper(
             int unscaledMeanBitSize,
             int meanScaleSize,
@@ -8295,12 +8553,98 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testNextCanonicalBigDecimal() {
-        nextCanonicalBigDecimal_helper(2, 1, "0.001");
-        nextCanonicalBigDecimal_helper(5, 3, "0.000085");
-        nextCanonicalBigDecimal_helper(32, 8, "1.12685255093845E-17");
+        nextCanonicalBigDecimal_helper(2, 1, "0.005");
+        nextCanonicalBigDecimal_helper(5, 3, "0.000013");
+        nextCanonicalBigDecimal_helper(32, 8, "4.04936997654063E-17");
         nextCanonicalBigDecimal_helper(100, 10, "0.000572989721722831798340552401503927");
-        nextCanonicalBigDecimal_fail_helper(0, 1);
+        nextCanonicalBigDecimal_fail_helper(1, 1);
         nextCanonicalBigDecimal_fail_helper(2, 0);
+    }
+
+    private static void canonicalBigDecimals_helper(
+            int meanUnscaledBitSize,
+            int meanScaleSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double unscaledBitSizeMean,
+            double scaleMean
+    ) {
+        bigDecimalHelper(
+                P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).canonicalBigDecimals(),
+                output,
+                topSampleCount,
+                sampleMean,
+                unscaledBitSizeMean,
+                scaleMean
+        );
+        P.reset();
+    }
+
+    private static void canonicalBigDecimals_fail_helper(int meanUnscaledBitSize, int meanScaleSize) {
+        try {
+            P.withScale(meanUnscaledBitSize).withSecondaryScale(meanScaleSize).canonicalBigDecimals();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testCanonicalBigDecimals() {
+        canonicalBigDecimals_helper(
+                2,
+                1,
+                "[0.005, 7E-7, 0, 6, 0.7, -2, 0.2, 6, -13, -1, 0, 0, 2.5, 0.01, -5, -0.000009, -0.00015, -0.9," +
+                " -0.01, 0]",
+                "{0=166144, -0.1=62544, 0.1=62440, 1=55648, -1=55389, 0.01=31366, -0.01=31309, 3=18600, 2=18525," +
+                " -2=18445}",
+                -763.4558908243097,
+                2.0009919999845023,
+                1.0021219999976965
+        );
+        canonicalBigDecimals_helper(
+                5,
+                3,
+                "[0.000013, 2.5387, -0.0029, -0.01, 1, -0.00117, -3.44E-10, -0.001, 0, -1.8073E-7, -0.0028, -1E-9," +
+                " -0.014, -0.0605, -1E-11, 2, 0.4, 0.0002, 0.1, -0.01]",
+                "{0=41405, 0.1=18877, -0.1=18614, 1=17329, -1=17242, -0.01=14144, 0.01=14105, 0.001=10507," +
+                " -0.001=10435, -0.0001=7929}",
+                1.0252835941140206E14,
+                5.008561000007895,
+                3.000018999991451
+        );
+        canonicalBigDecimals_helper(
+                32,
+                8,
+                "[4.04936997654063E-17, -3.03219670608E-15, -0.00003, -5.254848612E-7, -0.0969839, 2416.5," +
+                " 0.000012564, -121.36, 0.18, -97522628338787590093079, 24260304162.8, 1.4851833763E-8, -3E-7," +
+                " -0.02487512677886, 2352046.8, 6.9E-27, 8.01E-28, -2910742, 0.0003541, 1E-8]",
+                "{0=3437, 1=1624, -1=1604, -0.1=1524, 0.1=1473, 0.01=1378, -0.01=1336, -0.001=1203, 0.001=1162," +
+                " -0.0001=1119}",
+                -6.239390326218754E113,
+                32.01280800002317,
+                8.001077000016947
+        );
+        canonicalBigDecimals_helper(
+                100,
+                10,
+                "[0.000572989721722831798340552401503927, 0.004630900152605, -1871.00459, 1.391E-8," +
+                " 110207667890702717891682993862216378208126.1, -142361763, -604019.34935913508416666426308," +
+                " 321818.8, 3.0670984070649E-26, -699054793294702.2497, -0.64652," +
+                " -3355856314233638196574822062423006278014.9, 0.000232414," +
+                " 79003279013208247584456647481183731637493415295.63303614027921087108394697463," +
+                " -250153592592617448957.359681493474, 7.802322497623E-9, -6.38746676987305497E-9, 1.801161E-14," +
+                " 882089440883056826028133921073055650976506246.571," +
+                " 157132186029144474314922838978807565506100733145044665176718277915873175755679259174828095.48]",
+                "{0=872, -1=492, 1=469, 0.1=423, -0.1=413, -0.01=397, 0.01=357, -0.001=352, 0.001=344, -0.0001=298}",
+                Double.NaN,
+                99.93086299999682,
+                10.008105000004125
+        );
+        canonicalBigDecimals_fail_helper(1, 1);
+        canonicalBigDecimals_fail_helper(2, 0);
     }
 
     @Test
