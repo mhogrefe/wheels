@@ -4173,7 +4173,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is not null.</li>
      * </ul>
      *
-     * @return a {@code BinaryFraction}
+     * @return a {@code BigDecimal}
      */
     public @NotNull BigDecimal nextBigDecimal() {
         return new BigDecimal(nextBigInteger(), withScale(secondaryScale).nextIntGeometric());
@@ -4198,6 +4198,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(p -> new BigDecimal(p.a, p.b), pairs(bigIntegers(), withScale(secondaryScale).integersGeometric()));
     }
 
+    /**
+     * Returns a randomly-generated positive canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * positive {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is positive and canonical.</li>
+     * </ul>
+     *
+     * @return a positive canonical {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextPositiveCanonicalBigDecimal() {
         int scale = withScale(secondaryScale).nextNaturalIntGeometric();
         BigInteger unscaled;
@@ -4213,6 +4226,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return new BigDecimal(unscaled, scale);
     }
 
+    /**
+     * An {@code Iterable} that generates all positive canonical {@code BigDecimal}s. The unscaled-value bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all
+     * positive {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing positive canonical
+     *  {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
         if (scale < 2) {
@@ -4225,19 +4252,73 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextPositiveCanonicalBigDecimal);
     }
 
+    /**
+     * Returns a randomly-generated negative canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * negative {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is negative and canonical.</li>
+     * </ul>
+     *
+     * @return a negative canonical {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextNegativeCanonicalBigDecimal() {
         return nextPositiveCanonicalBigDecimal().negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all negative canonical {@code BigDecimal}s. The unscaled-value bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all
+     * negative {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
+     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing negative canonical
+     *  {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
         return map(BigDecimal::negate, positiveCanonicalBigDecimals());
     }
 
+    /**
+     * Returns a randomly-generated nonzero canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is nonzero and canonical.</li>
+     * </ul>
+     *
+     * @return a nonzero canonical {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextNonzeroCanonicalBigDecimal() {
         return nextBoolean() ? nextPositiveCanonicalBigDecimal() : nextPositiveCanonicalBigDecimal().negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all nonzero canonical {@code BigDecimal}s. The unscaled-value bit size is
+     * chosen from a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing nonzero canonical
+     *  {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
         if (scale < 2) {
@@ -4250,6 +4331,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextNonzeroCanonicalBigDecimal);
     }
 
+    /**
+     * Returns a randomly-generated canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
+     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the
+     * {@code BigDecimal} itself is chosen uniformly.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>The result is not canonical.</li>
+     * </ul>
+     *
+     * @return a canonical {@code BigDecimal}
+     */
     public @NotNull BigDecimal nextCanonicalBigDecimal() {
         int bdScale = withScale(secondaryScale).nextNaturalIntGeometric();
         BigInteger unscaled;
@@ -4268,6 +4363,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return new BigDecimal(nextBoolean() ? unscaled : unscaled.negate(), bdScale);
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s. The unscaled-value bit size is chosen from
+     * a geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
+     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
+     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the {@code BigDecimal}
+     * itself is chosen uniformly. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
         if (scale < 2) {
