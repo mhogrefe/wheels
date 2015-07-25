@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -228,6 +229,48 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Double, Double> p : take(SMALL_LIMIT, P.pairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
             System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeUp(" + bd + ") = " + its(EP.rangeUp(bd)));
+        }
+    }
+
+    private static void demoRangeDown_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeDown(" + bd + ") = " + its(EP.rangeDown(bd)));
+        }
+    }
+
+    private static void demoRange_BigDecimal_BigDecimal() {
+        initialize();
+        for (Pair<BigDecimal, BigDecimal> p : take(SMALL_LIMIT, P.pairs(P.bigDecimals()))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUpCanonical_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeUpCanonical(" + bd + ") = " + its(EP.rangeUpCanonical(bd)));
+        }
+    }
+
+    private static void demoRangeDownCanonical_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeDownCanonical(" + bd + ") = " + its(EP.rangeDownCanonical(bd)));
+        }
+    }
+
+    private static void demoRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        for (Pair<BigDecimal, BigDecimal> p : take(SMALL_LIMIT, P.pairs(P.bigDecimals()))) {
+            System.out.println("rangeCanonical(" + p.a + ", " + p.b + ") = " + its(EP.rangeCanonical(p.a, p.b)));
         }
     }
 }
