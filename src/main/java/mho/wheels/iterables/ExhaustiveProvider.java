@@ -2,6 +2,7 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
+import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
@@ -1624,25 +1625,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
     }
 
-    private static int minZeroToOneScale(@NotNull BigInteger n) {
-        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
-            return 0;
-        } else {
-            return n.toString().length();
-        }
-    }
-
-    private static @NotNull Iterable<BigDecimal> zeroToOneBigDecimals() {
-        return map(
-                p -> new BigDecimal(p.a, p.b + minZeroToOneScale(p.a)),
-                INSTANCE.pairsLogarithmicOrder(INSTANCE.naturalBigIntegers(), INSTANCE.naturalIntegers())
+    private static @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
+        return cons(
+                BigDecimal.ZERO,
+                filter(
+                        BigDecimalUtils::isCanonical,
+                        map(
+                                p -> new BigDecimal(
+                                        p.a,
+                                        p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
+                                ),
+                                INSTANCE.pairsLogarithmicOrder(
+                                        INSTANCE.positiveBigIntegers(),
+                                        INSTANCE.naturalIntegers()
+                                )
+                        )
+                )
         );
-    }
-
-    public static void main(String[] args) {
-        for (BigDecimal bd : take(10000, INSTANCE.rangeUpCanonical(new BigDecimal("-1.5")))) {
-            System.out.println(bd);
-        }
     }
 
     @Override
@@ -1676,7 +1675,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return null;
+        BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
+        return map(
+                c -> BigDecimalUtils.canonicalize(c.add(a)),
+                filter(
+                        bd -> le(bd, difference),
+                        zeroToPowerOfTenCanonicalBigDecimals(BigDecimalUtils.ceilingLog10(difference))
+                )
+        );
     }
 
     @Override
