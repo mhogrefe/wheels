@@ -3,6 +3,7 @@ package mho.wheels.numberUtils;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class BigDecimalUtilsProperties {
             P = config.a;
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
+            propertiesCeilingLog10();
             propertiesSetPrecision();
             propertiesSuccessor();
             propertiesPredecessor();
@@ -46,6 +48,36 @@ public class BigDecimalUtilsProperties {
             propertiesIsCanonical();
         }
         System.out.println("Done");
+    }
+
+    private static void propertiesCeilingLog10() {
+        initialize("ceilingLog10(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.positiveBigDecimals())) {
+            int log = ceilingLog10(bd);
+            assertTrue(bd, Ordering.le(bd, BigDecimal.ONE.movePointRight(log)));
+            assertTrue(bd, Ordering.gt(bd, BigDecimal.ONE.movePointRight(log - 1)));
+            homomorphic(
+                    BigDecimalUtils::ceilingLog10,
+                    BigDecimalUtils::ceilingLog10,
+                    c -> c.movePointLeft(1),
+                    i -> i - 1,
+                    bd
+            );
+            homomorphic(
+                    BigDecimalUtils::ceilingLog10,
+                    BigDecimalUtils::ceilingLog10,
+                    c -> c.movePointRight(1),
+                    i -> i + 1,
+                    bd
+            );
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.withSpecialElement(BigDecimal.ZERO, P.negativeBigDecimals()))) {
+            try {
+                ceilingLog10(bd);
+                fail(bd);
+            } catch (ArithmeticException ignored) {}
+        }
     }
 
     private static void propertiesSetPrecision() {
