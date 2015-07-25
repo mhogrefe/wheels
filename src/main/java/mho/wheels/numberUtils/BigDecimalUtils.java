@@ -35,7 +35,7 @@ public class BigDecimalUtils {
      *
      * <ul>
      *  <li>{@code bd} must be positive.</li>
-     *  <li>The result is non-negative</li>
+     *  <li>The result may be any {@code int}.</li>
      * </ul>
      *
      * @param bd a positive {@code BigDecimal}

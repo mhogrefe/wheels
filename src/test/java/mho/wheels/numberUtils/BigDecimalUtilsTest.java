@@ -17,6 +17,39 @@ public class BigDecimalUtilsTest {
         aeq(TWO, "2");
     }
 
+    private static void ceilingLog10_helper(@NotNull String x, int result) {
+        aeq(ceilingLog10(Readers.readBigDecimal(x).get()), result);
+    }
+
+    private static void ceilingLog10_fail_helper(@NotNull String x) {
+        try {
+            ceilingLog10(Readers.readBigDecimal(x).get());
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
+    @Test
+    public void testCeilingLog10() {
+        ceilingLog10_helper("1", 0);
+        ceilingLog10_helper("2", 1);
+        ceilingLog10_helper("9", 1);
+        ceilingLog10_helper("10", 1);
+        ceilingLog10_helper("11", 2);
+        ceilingLog10_helper("99", 2);
+        ceilingLog10_helper("100", 2);
+        ceilingLog10_helper("101", 3);
+        ceilingLog10_helper("1234567", 7);
+        ceilingLog10_helper("0.09", -1);
+        ceilingLog10_helper("0.1", -1);
+        ceilingLog10_helper("0.11", 0);
+        ceilingLog10_helper("9E-12", -11);
+        ceilingLog10_helper("1E-11", -11);
+        ceilingLog10_helper("1.1E-11", -10);
+        ceilingLog10_fail_helper("0");
+        ceilingLog10_fail_helper("-1");
+        ceilingLog10_fail_helper("-0.001");
+    }
+
     private static void setPrecision_helper(@NotNull String x, int scale, @NotNull String output) {
         aeq(setPrecision(Readers.readBigDecimal(x).get(), scale), output);
     }
