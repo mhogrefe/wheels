@@ -26,6 +26,13 @@ public class BigDecimalUtilsDemos {
         }
     }
 
+    private static void demoCeilingLog10() {
+        initialize();
+        for (BigDecimal bd : take(LIMIT, P.positiveBigDecimals())) {
+            System.out.println("ceilingLog10(" + bd + ") = " + ceilingLog10(bd));
+        }
+    }
+
     private static void demoSetPrecision() {
         initialize();
         Iterable<Pair<BigDecimal, Integer>> ps = P.pairsSquareRootOrder(

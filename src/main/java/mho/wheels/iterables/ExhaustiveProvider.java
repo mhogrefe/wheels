@@ -1421,8 +1421,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (bfa.getExponent() > bfb.getExponent()) {
             return map(f -> -f, range(-b, -a));
         }
-        Iterable<Float> noNegativeZeros =
-                map(q -> q.a,
+        Iterable<Float> noNegativeZeros = map(
+                q -> q.a,
                 filter(
                         BigInteger.valueOf((long) FloatingPointUtils.toOrderedRepresentation(b) -
                                 FloatingPointUtils.toOrderedRepresentation(a) + 1),
@@ -1624,6 +1624,27 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
     }
 
+    private static int minZeroToOneScale(@NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO) || n.equals(BigInteger.ONE)) {
+            return 0;
+        } else {
+            return n.toString().length();
+        }
+    }
+
+    private static @NotNull Iterable<BigDecimal> zeroToOneBigDecimals() {
+        return map(
+                p -> new BigDecimal(p.a, p.b + minZeroToOneScale(p.a)),
+                INSTANCE.pairsLogarithmicOrder(INSTANCE.naturalBigIntegers(), INSTANCE.naturalIntegers())
+        );
+    }
+
+    public static void main(String[] args) {
+        for (BigDecimal bd : take(10000, INSTANCE.rangeUpCanonical(new BigDecimal("-1.5")))) {
+            System.out.println(bd);
+        }
+    }
+
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
         return null;
@@ -1641,12 +1662,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
-        return null;
+        BigDecimal ca = BigDecimalUtils.canonicalize(a);
+        return map(
+                bd -> BigDecimalUtils.canonicalize(bd.add(ca)),
+                cons(BigDecimal.ZERO, positiveCanonicalBigDecimals())
+        );
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
-        return null;
+        return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
     }
 
     @Override
