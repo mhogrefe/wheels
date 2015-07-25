@@ -131,6 +131,12 @@ public class ExhaustiveProviderProperties {
             propertiesRangeUp_double();
             propertiesRangeDown_double();
             propertiesRange_double_double();
+            propertiesRangeUp_BigDecimal();
+            propertiesRangeDown_BigDecimal();
+            propertiesRange_BigDecimal_BigDecimal();
+            propertiesRangeUpCanonical_BigDecimal();
+            propertiesRangeDownCanonical_BigDecimal();
+            propertiesRangeCanonical_BigDecimal_BigDecimal();
         }
         System.out.println("Done");
     }
@@ -664,7 +670,7 @@ public class ExhaustiveProviderProperties {
         initialize("rangeUp(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Iterable<BinaryFraction> bfs = EP.rangeUp(bf);
-            simpleTest(bf, bfs, j -> ge(j, bf));
+            simpleTest(bf, bfs, c -> ge(c, bf));
             take(TINY_LIMIT, EP.rangeUp(bf)).forEach(BinaryFraction::validate);
         }
     }
@@ -673,7 +679,7 @@ public class ExhaustiveProviderProperties {
         initialize("rangeDown(BinaryFraction)");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Iterable<BinaryFraction> bfs = EP.rangeDown(bf);
-            simpleTest(bf, bfs, j -> le(j, bf));
+            simpleTest(bf, bfs, c -> le(c, bf));
             take(TINY_LIMIT, EP.rangeDown(bf)).forEach(BinaryFraction::validate);
         }
     }
@@ -682,7 +688,7 @@ public class ExhaustiveProviderProperties {
         initialize("range(BinaryFraction, BinaryFraction)");
         for (Pair<BinaryFraction, BinaryFraction> p : take(LIMIT, P.pairs(P.binaryFractions()))) {
             Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
-            simpleTest(p, bfs, i -> ge(i, p.a) && le(i, p.b));
+            simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
             take(TINY_LIMIT, EP.range(p.a, p.b)).forEach(BinaryFraction::validate);
         }
@@ -890,5 +896,63 @@ public class ExhaustiveProviderProperties {
     private static void propertiesCanonicalBigDecimals() {
         initializeConstant("canonicalBigDecimals()");
         biggerTest(EP, EP.canonicalBigDecimals(), BigDecimalUtils::isCanonical);
+    }
+
+    private static void propertiesRangeUp_BigDecimal() {
+        initialize("rangeUp(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            Iterable<BigDecimal> bds = EP.rangeUp(bd);
+            simpleTest(bd, bds, c -> ge(c, bd));
+        }
+    }
+
+    private static void propertiesRangeDown_BigDecimal() {
+        initialize("rangeDown(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            Iterable<BigDecimal> bds = EP.rangeDown(bd);
+            simpleTest(bd, bds, c -> le(c, bd));
+        }
+    }
+
+    private static void propertiesRange_BigDecimal_BigDecimal() {
+        initialize("range(BigDecimal, BigDecimal)");
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+            Iterable<BigDecimal> bds = EP.range(p.a, p.b);
+            simpleTest(p, bds, bd -> ge(bd, p.a) && le(bd, p.b));
+            assertEquals(p, gt(p.a, p.b), isEmpty(bds));
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            all(c -> eq(c, bd), take(TINY_LIMIT, EP.range(bd, bd)));
+        }
+    }
+
+    private static void propertiesRangeUpCanonical_BigDecimal() {
+        initialize("rangeUpCanonical(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            Iterable<BigDecimal> bds = EP.rangeUpCanonical(bd);
+            simpleTest(bd, bds, c -> BigDecimalUtils.isCanonical(c) && ge(c, bd));
+        }
+    }
+
+    private static void propertiesRangeDownCanonical_BigDecimal() {
+        initialize("rangeDownCanonical(BigDecimal)");
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            Iterable<BigDecimal> bds = EP.rangeDownCanonical(bd);
+            simpleTest(bd, bds, c -> BigDecimalUtils.isCanonical(c) && le(c, bd));
+        }
+    }
+
+    private static void propertiesRangeCanonical_BigDecimal_BigDecimal() {
+        initialize("rangeCanonical(BigDecimal, BigDecimal)");
+        for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
+            Iterable<BigDecimal> bds = EP.rangeCanonical(p.a, p.b);
+            simpleTest(p, bds, bd -> BigDecimalUtils.isCanonical(bd) && ge(bd, p.a) && le(bd, p.b));
+            assertEquals(p, gt(p.a, p.b), isEmpty(bds));
+        }
+
+        for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
+            aeqit(bd, EP.rangeCanonical(bd, bd), Collections.singletonList(BigDecimalUtils.canonicalize(bd)));
+        }
     }
 }

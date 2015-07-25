@@ -1628,12 +1628,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private static @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
         return cons(
                 BigDecimal.ZERO,
-                filter(
-                        BigDecimalUtils::isCanonical,
+                nub(
                         map(
-                                p -> new BigDecimal(
-                                        p.a,
-                                        p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
+                                p -> BigDecimalUtils.canonicalize(
+                                        new BigDecimal(
+                                                p.a,
+                                                p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
+                                        )
                                 ),
                                 INSTANCE.pairsLogarithmicOrder(
                                         INSTANCE.positiveBigIntegers(),
@@ -1663,6 +1664,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (eq(a, b)) {
+            return map(
+                    x -> BigDecimalUtils.setPrecision(a, x),
+                    IterableUtils.rangeUp(a.stripTrailingZeros().precision())
+            );
+        }
         return uncanonicalize(rangeCanonical(a, b));
     }
 
@@ -1682,6 +1689,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) return Collections.emptyList();
+        if (eq(a, b)) return Collections.singletonList(BigDecimalUtils.canonicalize(a));
         BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
         return map(
                 c -> BigDecimalUtils.canonicalize(c.add(a)),
@@ -1690,6 +1699,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         zeroToPowerOfTenCanonicalBigDecimals(BigDecimalUtils.ceilingLog10(difference))
                 )
         );
+    }
+
+    public static void main(String[] args) {
+//        for (BigDecimal bd : take(1000, INSTANCE.range(new BigDecimal("-6.04470E+33"), new BigDecimal("-3788")))) {
+//            System.out.println(bd);
+//        }
+        for (BigDecimal bd : take(1000, zeroToPowerOfTenCanonicalBigDecimals(34))) {
+            System.out.println(bd);
+        }
     }
 
     @Override
