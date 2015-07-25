@@ -15,6 +15,14 @@ import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.*;
 
 public class IntegerUtilsTest {
+    private static void isPowerOfTwo_int_true_helper(int n) {
+        assertTrue(isPowerOfTwo(n));
+    }
+
+    private static void isPowerOfTwo_int_false_helper(int n) {
+        assertFalse(isPowerOfTwo(n));
+    }
+
     private static void isPowerOfTwo_int_fail_helper(int n) {
         try {
             isPowerOfTwo(n);
@@ -24,15 +32,15 @@ public class IntegerUtilsTest {
 
     @Test
     public void testIsPowerOfTwo_int() {
-        assertTrue(isPowerOfTwo(1));
-        assertTrue(isPowerOfTwo(2));
-        assertTrue(isPowerOfTwo(4));
-        assertTrue(isPowerOfTwo(8));
-        assertTrue(isPowerOfTwo(16));
-        assertTrue(isPowerOfTwo(1 << 30));
-        assertFalse(isPowerOfTwo(3));
-        assertFalse(isPowerOfTwo(13));
-        assertFalse(isPowerOfTwo(100));
+        isPowerOfTwo_int_true_helper(1);
+        isPowerOfTwo_int_true_helper(2);
+        isPowerOfTwo_int_true_helper(4);
+        isPowerOfTwo_int_true_helper(8);
+        isPowerOfTwo_int_true_helper(16);
+        isPowerOfTwo_int_true_helper(1 << 30);
+        isPowerOfTwo_int_false_helper(3);
+        isPowerOfTwo_int_false_helper(13);
+        isPowerOfTwo_int_false_helper(100);
         isPowerOfTwo_int_fail_helper(0);
         isPowerOfTwo_int_fail_helper(-5);
     }

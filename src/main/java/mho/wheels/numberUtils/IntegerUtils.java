@@ -79,7 +79,7 @@ public class IntegerUtils {
      * @return whether {@code n} is a power of two
      */
     public static boolean isPowerOfTwo(@NotNull BigInteger n) {
-        if (lt(n, BigInteger.ONE)) {
+        if (n.signum() != 1) {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         return n.getLowestSetBit() == n.bitLength() - 1;
@@ -135,7 +135,7 @@ public class IntegerUtils {
      * @return ⌈log<sub>2</sub>({@code n})⌉
      */
     public static int ceilingLog2(@NotNull BigInteger n) {
-        if (lt(n, BigInteger.ONE)) {
+        if (n.signum() != 1) {
             throw new ArithmeticException("n must be positive. Invalid n: " + n);
         }
         int bitLength = n.bitLength();

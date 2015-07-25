@@ -1,5 +1,6 @@
 package mho.wheels.numberUtils;
 
+import mho.wheels.math.MathUtils;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,24 @@ public class BigDecimalUtils {
      * Disallow instantiation
      */
     private BigDecimalUtils() {}
+
+    /**
+     * Finds the largest integer p such that {@code n}≤10<sup>p</sup>.
+     *
+     * <ul>
+     *  <li>{@code bd} must be positive.</li>
+     *  <li>The result is non-negative</li>
+     * </ul>
+     *
+     * @param bd a positive {@code BigDecimal}
+     * @return ⌈log<sub>10</sub>({@code n})⌉
+     */
+    public static int ceilingLog10(@NotNull BigDecimal bd) {
+        if (bd.signum() != 1) {
+            throw new ArithmeticException("bd must be positive. Invalid bd: " + bd);
+        }
+        return MathUtils.ceilingLog(BigInteger.TEN, bd.unscaledValue()).intValueExact() - bd.scale();
+    }
 
     /**
      * Rounds a {@code BigDecimal} to a specified precision (number of significant figures). If the precision is
