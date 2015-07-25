@@ -1644,19 +1644,26 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    private static @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> xs) {
+        return map(
+                p -> BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
+                INSTANCE.pairsLogarithmicOrder(xs, INSTANCE.naturalIntegers())
+        );
+    }
+
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
-        return null;
+        return uncanonicalize(rangeUpCanonical(a));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
-        return null;
+        return uncanonicalize(rangeDownCanonical(a));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return null;
+        return uncanonicalize(rangeCanonical(a, b));
     }
 
     @Override
