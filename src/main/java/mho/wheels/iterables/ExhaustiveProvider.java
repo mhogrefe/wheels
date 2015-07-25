@@ -1,5 +1,6 @@
 package mho.wheels.iterables;
 
+import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
@@ -1646,10 +1647,35 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     private static @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> xs) {
+        CachedIterable<Integer> integers = new CachedIterable<>(INSTANCE.integers());
         return map(
-                p -> BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
+                p -> p.a.equals(BigDecimal.ZERO) ? new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) : BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
                 INSTANCE.pairsLogarithmicOrder(xs, INSTANCE.naturalIntegers())
         );
+    }
+
+    private static void bigDecimalHelper(String x) {
+        System.out.println("        rangeUp_BigDecimal_helper(" + x + ", \"" + toList(take(20, INSTANCE.rangeUp(Readers.readBigDecimal(x).get()))) + "\");");
+    }
+
+    public static void main(String[] args) {
+        bigDecimalHelper("0");
+        bigDecimalHelper("1");
+        bigDecimalHelper("-1");
+        bigDecimalHelper("9");
+        bigDecimalHelper("-9");
+        bigDecimalHelper("10");
+        bigDecimalHelper("-10");
+        bigDecimalHelper("101");
+        bigDecimalHelper("-101");
+        bigDecimalHelper("1234567");
+        bigDecimalHelper("-1234567");
+        bigDecimalHelper("0.09");
+        bigDecimalHelper("-0.09");
+        bigDecimalHelper("1E-12");
+        bigDecimalHelper("-1E-12");
+        bigDecimalHelper("1E+12");
+        bigDecimalHelper("-1E+12");
     }
 
     @Override
@@ -1699,15 +1725,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         zeroToPowerOfTenCanonicalBigDecimals(BigDecimalUtils.ceilingLog10(difference))
                 )
         );
-    }
-
-    public static void main(String[] args) {
-//        for (BigDecimal bd : take(1000, INSTANCE.range(new BigDecimal("-6.04470E+33"), new BigDecimal("-3788")))) {
-//            System.out.println(bd);
-//        }
-        for (BigDecimal bd : take(1000, zeroToPowerOfTenCanonicalBigDecimals(34))) {
-            System.out.println(bd);
-        }
     }
 
     @Override
