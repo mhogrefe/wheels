@@ -1654,30 +1654,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    private static void bigDecimalHelper(String x) {
-        System.out.println("        rangeUp_BigDecimal_helper(" + x + ", \"" + toList(take(20, INSTANCE.rangeUp(Readers.readBigDecimal(x).get()))) + "\");");
-    }
-
-    public static void main(String[] args) {
-        bigDecimalHelper("0");
-        bigDecimalHelper("1");
-        bigDecimalHelper("-1");
-        bigDecimalHelper("9");
-        bigDecimalHelper("-9");
-        bigDecimalHelper("10");
-        bigDecimalHelper("-10");
-        bigDecimalHelper("101");
-        bigDecimalHelper("-101");
-        bigDecimalHelper("1234567");
-        bigDecimalHelper("-1234567");
-        bigDecimalHelper("0.09");
-        bigDecimalHelper("-0.09");
-        bigDecimalHelper("1E-12");
-        bigDecimalHelper("-1E-12");
-        bigDecimalHelper("1E+12");
-        bigDecimalHelper("-1E+12");
-    }
-
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
         return uncanonicalize(rangeUpCanonical(a));
@@ -1691,10 +1667,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (eq(a, b)) {
-            return map(
-                    x -> BigDecimalUtils.setPrecision(a, x),
-                    IterableUtils.rangeUp(a.stripTrailingZeros().precision())
-            );
+            if (a.signum() == 0) {
+                return map(i -> new BigDecimal(BigInteger.ZERO, i), integers());
+            } else {
+                return map(
+                        x -> BigDecimalUtils.setPrecision(a, x),
+                        IterableUtils.rangeUp(a.stripTrailingZeros().precision())
+                );
+            }
         }
         return uncanonicalize(rangeCanonical(a, b));
     }
