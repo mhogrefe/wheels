@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
@@ -4417,21 +4418,25 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
-        return null;
+        BigDecimal nonnegative;
+        do {
+            nonnegative = nextCanonicalBigDecimal();
+        } while (nonnegative.signum() == -1);
+        return BigDecimalUtils.canonicalize(a.add(nonnegative));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
-        return null;
+        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     public @NotNull BigDecimal nextFromRangeDownCanonical(@NotNull BigDecimal a) {
-        return null;
+        return nextFromRangeUpCanonical(a.negate()).negate();
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
-        return null;
+        return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
     }
 
     public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
