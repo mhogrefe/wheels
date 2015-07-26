@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
 import mho.wheels.math.MathUtils;
@@ -1077,7 +1076,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * Length is infinite
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1626,6 +1625,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
     }
 
+    /**
+     * Generates canonical {@code BigDecimal}s greater than or equal to zero and less than or equal to a specified
+     * power of ten.
+     *
+     * <ul>
+     *  <li>{@code pow} may be any {@code int}.</li>
+     *  <li>The result is a non-removable, infinite {@code Iterable} containing canonical {@code BigDecimal}s between
+     *  zero and a power of ten, inclusive.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param pow an {@code int}
+     * @return all canonical {@code BigDecimal}s between 0 and 10<sup>{@code pow}</sup>, inclusive
+     */
     private static @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
         return cons(
                 BigDecimal.ZERO,
@@ -1646,24 +1660,86 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Given an {@code Iterable xs} of unique, canonical {@code BigDecimal}s, returns an {@code Iterable} whose
+     * elements are {x|{@code BigDecimalUtils.canonicalize(x)}∈{@code xs}}.
+     *
+     * <ul>
+     *  <li>{@code xs} must only contain canonical {@code BigDecimal}s and cannot contain any duplicates.</li>
+     *  <li>The result does not contain any nulls, is either empty or infinite, and for every {@code BigDecimal} x that
+     *  it contains, if {@code BigDecimalUtils.canonicalize(}x{@code )} is y, then the result contains every
+     *  {@code BigDecimal} which, when canonicalized, yields y. The result contains no duplicates.</li>
+     * </ul>
+     *
+     * Length is empty if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs an {@code Iterable} of unique, canonical {@code BigDecimal}s
+     * @return all {@code BigDecimal}s which, once canonicalized, belong to {@code xs}
+     */
     private static @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> xs) {
         CachedIterable<Integer> integers = new CachedIterable<>(INSTANCE.integers());
         return map(
-                p -> p.a.equals(BigDecimal.ZERO) ? new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) : BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
+                p -> p.a.equals(BigDecimal.ZERO) ?
+                        new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) :
+                        BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
                 INSTANCE.pairsLogarithmicOrder(xs, INSTANCE.naturalIntegers())
         );
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BigDecimal}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
         return uncanonicalize(rangeUpCanonical(a));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
         return uncanonicalize(rangeDownCanonical(a));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (eq(a, b)) {
@@ -1679,6 +1755,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return uncanonicalize(rangeCanonical(a, b));
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s greater than or equal to {@code a}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return canonical {@code BigDecimal}s greater than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
         BigDecimal ca = BigDecimalUtils.canonicalize(a);
@@ -1688,11 +1778,41 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s less than or equal to {@code a}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s less than or equal to {@code a}
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
         return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (gt(a, b)) return Collections.emptyList();
