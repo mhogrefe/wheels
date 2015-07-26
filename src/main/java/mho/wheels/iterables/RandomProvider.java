@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
@@ -4390,31 +4391,53 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextCanonicalBigDecimal);
     }
 
+    private @NotNull BigDecimal nextZeroToPowerOfTenCanonicalBigDecimal(int pow) {
+        int normalizedScale = nextNaturalIntGeometric();
+        if (normalizedScale == 0) {
+            return nextBoolean() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
+        } else {
+            BigInteger limit = BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE);
+            BigInteger digits;
+            do {
+                digits = nextFromRange(BigInteger.ONE, limit);
+            } while (digits.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+            return new BigDecimal(digits, normalizedScale - pow);
+        }
+    }
+
+    private @NotNull BigDecimal uncanonicalize(@NotNull BigDecimal bd) {
+        if (bd.equals(BigDecimal.ZERO)) {
+            return new BigDecimal(BigInteger.ZERO, nextIntGeometric());
+        } else {
+            return BigDecimalUtils.setPrecision(bd, nextNaturalIntGeometric() + bd.stripTrailingZeros().precision());
+        }
+    }
+
     public @NotNull BigDecimal nextFromRangeUp(@NotNull BigDecimal a) {
-        return null;
+        return uncanonicalize(nextFromRangeUpCanonical(a));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
-        return null;
+        return map(this::uncanonicalize, rangeUpCanonical(a));
     }
 
     public @NotNull BigDecimal nextFromRangeDown(@NotNull BigDecimal a) {
-        return null;
+        return nextFromRangeUp(a.negate()).negate();
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
-        return null;
+        return map(BigDecimal::negate, rangeUp(a.negate()));
     }
 
     public @NotNull BigDecimal nextFromRange(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return null;
+        return uncanonicalize(nextFromRangeCanonical(a, b));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return null;
+        return map(this::uncanonicalize, rangeCanonical(a, b));
     }
 
     public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
@@ -4440,7 +4463,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return null;
+        BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
+        int pow = BigDecimalUtils.ceilingLog10(difference);
+        BigDecimal next;
+        do {
+            next = nextZeroToPowerOfTenCanonicalBigDecimal(pow);
+        } while (gt(next, difference));
+        return BigDecimalUtils.canonicalize(a.add(next));
     }
 
     @Override
