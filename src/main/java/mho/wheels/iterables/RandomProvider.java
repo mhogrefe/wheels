@@ -4408,7 +4408,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (bd.equals(BigDecimal.ZERO)) {
             return new BigDecimal(BigInteger.ZERO, nextIntGeometric());
         } else {
-            return BigDecimalUtils.setPrecision(bd, nextNaturalIntGeometric() + bd.stripTrailingZeros().precision());
+            bd = bd.stripTrailingZeros();
+            return BigDecimalUtils.setPrecision(bd, nextNaturalIntGeometric() + bd.precision());
         }
     }
 

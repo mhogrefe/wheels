@@ -1681,7 +1681,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(
                 p -> p.a.equals(BigDecimal.ZERO) ?
                         new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) :
-                        BigDecimalUtils.setPrecision(p.a, p.b + p.a.stripTrailingZeros().precision()),
+                        BigDecimalUtils.setPrecision(
+                                p.a.stripTrailingZeros(),
+                                p.b + p.a.stripTrailingZeros().precision()
+                        ),
                 INSTANCE.pairsLogarithmicOrder(xs, INSTANCE.naturalIntegers())
         );
     }

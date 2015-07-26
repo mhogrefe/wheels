@@ -8647,15 +8647,563 @@ public strictfp class RandomProviderTest {
         canonicalBigDecimals_fail_helper(2, 0);
     }
 
+    private static void nextFromRangeUp_BigDecimal_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(Readers.readBigDecimal(a).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeUp_BigDecimal_fail_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a
+    ) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(Readers.readBigDecimal(a).get());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeUp_BigDecimal() {
+        nextFromRangeUp_BigDecimal_helper(2, 1, "0", "0.005000");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "0", "0.000013000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "0", "4.0493699765406300000000000000000000000E-17");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "0.0", "0.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "0.0", "0.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "0.0", "58756.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "1", "1.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "1", "1.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "1", "58757.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "1.0", "1.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "1.0", "1.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "1.0", "58757.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-1.0", "-0.987");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-1.0", "-0.99997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-1.0", "58755.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "9", "9.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "9", "9.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "9", "58765.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-9", "-8.987");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-9", "-8.99997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-9", "58747.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "10", "10.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "10", "10.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "10", "58766.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-10", "-9.987");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-10", "-9.99997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-10", "58746.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "101", "101.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "101", "101.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "101", "58857.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-101", "-100.987");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-101", "-100.99997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-101", "58655.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "1234567", "1234567.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "1234567", "1234567.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "1234567", "1293323.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-1234567", "-1234566.987");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-1234567", "-1234566.99997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-1234567", "-1175810.61020856200000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "0.09", "0.103");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "0.09", "0.09002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "0.09", "58756.47979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "-0.09", "-0.077");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "-0.09", "-0.08997900000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "-0.09", "58756.29979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "1E-12", "0.013000000001");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "1E-12", "0.00002100000100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "1E-12", "58756.38979143800100000000000000000000000");
+        nextFromRangeUp_BigDecimal_helper(2, 1, "1E+12", "1000000000000.013");
+        nextFromRangeUp_BigDecimal_helper(5, 3, "1E+12", "1000000000000.00002100000");
+        nextFromRangeUp_BigDecimal_helper(32, 8, "1E+12", "1000000058756.38979143800000000000000000000000");
+        nextFromRangeUp_BigDecimal_fail_helper(1, 1, "0");
+        nextFromRangeUp_BigDecimal_fail_helper(2, 0, "0");
+    }
+
+    private static void nextFromRangeDown_BigDecimal_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).withSecondaryScale(secondaryScale)
+                        .nextFromRangeDown(Readers.readBigDecimal(a).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeDown_BigDecimal_fail_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a
+    ) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeDown(Readers.readBigDecimal(a).get());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeDown_BigDecimal() {
+        nextFromRangeDown_BigDecimal_helper(2, 1, "0", "-0.005000");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "0", "-0.000013000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "0", "-4.0493699765406300000000000000000000000E-17");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "0.0", "-0.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "0.0", "-0.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "0.0", "-58756.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "1", "0.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "1", "0.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "1", "-58755.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "1.0", "0.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "1.0", "0.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "1.0", "-58755.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-1.0", "-1.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-1.0", "-1.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-1.0", "-58757.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "9", "8.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "9", "8.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "9", "-58747.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-9", "-9.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-9", "-9.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-9", "-58765.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "10", "9.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "10", "9.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "10", "-58746.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-10", "-10.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-10", "-10.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-10", "-58766.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "101", "100.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "101", "100.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "101", "-58655.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-101", "-101.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-101", "-101.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-101", "-58857.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "1234567", "1234566.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "1234567", "1234566.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "1234567", "1175810.61020856200000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-1234567", "-1234567.013");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-1234567", "-1234567.00002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-1234567", "-1293323.38979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "0.09", "0.077");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "0.09", "0.08997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "0.09", "-58756.29979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "-0.09", "-0.103");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "-0.09", "-0.09002100000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "-0.09", "-58756.47979143800000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "1E-12", "-0.012999999999");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "1E-12", "-0.00002099999900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "1E-12", "-58756.38979143799900000000000000000000000");
+        nextFromRangeDown_BigDecimal_helper(2, 1, "1E+12", "999999999999.987");
+        nextFromRangeDown_BigDecimal_helper(5, 3, "1E+12", "999999999999.99997900000");
+        nextFromRangeDown_BigDecimal_helper(32, 8, "1E+12", "999999941243.61020856200000000000000000000000");
+        nextFromRangeDown_BigDecimal_fail_helper(1, 1, "0");
+        nextFromRangeDown_BigDecimal_fail_helper(2, 0, "0");
+    }
+
+    private static void nextFromRange_BigDecimal_BigDecimal_helper(
+            int scale,
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).nextFromRange(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRange_BigDecimal_BigDecimal_fail_helper(
+            int scale,
+            @NotNull String a,
+            @NotNull String b
+    ) {
+        try {
+            P.withScale(scale).nextFromRange(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
+            fail();
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRange_BigDecimal_BigDecimal() {
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "1", "0.835");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "1", "0.983150000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "1",
+                "0.31071981102286999070000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "3", "2");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "3", "2.7");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "3",
+                "1.6019764774046182122497182910994697724087035370000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "1E+6", "8.35E+5");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "1E+6", "983150.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "1E+6",
+                "310719.81102286999070000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "0.000001", "8.35E-7");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "0.000001", "9.83150000E-7");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "0.000001",
+                "3.1071981102286999070000000000000000000000000000000000000000000000E-7");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "1", "3", "3");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "1", "3", "1.0");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "1", "3",
+                "2.6019764774046182122497182910994697724087035370000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "1", "1E+6", "835001");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "1", "1E+6", "983151.0000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "1", "1E+6",
+                "310720.81102286999070000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-1", "0", "-0.165");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-1", "0", "-0.016850000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-1", "0",
+                "-0.68928018897713000930000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-3", "0", "-1");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-3", "0", "-0.3");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-3", "0",
+                "-1.3980235225953817877502817089005302275912964630000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-1E+6", "0", "-1.65E+5");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-1E+6", "0", "-16850.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-1E+6", "0",
+                "-689280.18897713000930000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-0.000001", "0", "-1.65E-7");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-0.000001", "0", "-1.6850000E-8");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-0.000001", "0",
+                "-6.8928018897713000930000000000000000000000000000000000000000000000E-7");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-3", "-1", "-1");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-3", "-1", "-3.0");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-3", "-1",
+                "-1.3980235225953817877502817089005302275912964630000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-1E+6", "-1", "-1.65E+5");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-1E+6", "-1", "-16850.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-1E+6", "-1",
+                "-689280.18897713000930000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "100", "101", "100.835");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "100", "101", "100.983150000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "100", "101",
+                "100.31071981102286999070000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "2.7183", "3.1416", "2.9183");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "2.7183", "3.1416", "2.9883");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "2.7183", "3.1416",
+                "3.02901981102286999070000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "-3.1416", "2.7183", "-1.1416");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "-3.1416", "2.7183", "2.45640000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "-3.1416", "2.7183",
+                "-0.0344018897713000930000000000000000000000000000000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "0", "0.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "0", "0.00000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "0", "0E-19");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0", "0.0", "0.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0", "0.0", "0.00000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0", "0.0", "0E-19");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0.0", "0", "0.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0.0", "0", "0.00000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0.0", "0", "0E-19");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "0.0", "0.0", "0.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "0.0", "0.0", "0.00000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "0.0", "0.0", "0E-19");
+        nextFromRange_BigDecimal_BigDecimal_helper(1, "1", "1", "1.000");
+        nextFromRange_BigDecimal_BigDecimal_helper(5, "1", "1", "1.00000");
+        nextFromRange_BigDecimal_BigDecimal_helper(32, "1", "1", "1.0000000000000000000");
+        nextFromRange_BigDecimal_BigDecimal_fail_helper(1, "5", "3");
+        nextFromRange_BigDecimal_BigDecimal_fail_helper(0, "0", "1");
+    }
+
+    private static void nextFromRangeUpCanonical_BigDecimal_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).withSecondaryScale(secondaryScale)
+                        .nextFromRangeUpCanonical(Readers.readBigDecimal(a).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeUpCanonical_BigDecimal_fail_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a
+    ) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale)
+                    .nextFromRangeUpCanonical(Readers.readBigDecimal(a).get());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeUpCanonical_BigDecimal() {
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0", "0.005");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0", "0.000013");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0", "4.04936997654063E-17");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0.0", "0.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0.0", "0.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0.0", "58756.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1", "1.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1", "1.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1", "58757.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1.0", "1.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1.0", "1.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1.0", "58757.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-1.0", "-0.987");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-1.0", "-0.999979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-1.0", "58755.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "9", "9.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "9", "9.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "9", "58765.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-9", "-8.987");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-9", "-8.999979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-9", "58747.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "10", "10.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "10", "10.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "10", "58766.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-10", "-9.987");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-10", "-9.999979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-10", "58746.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "101", "101.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "101", "101.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "101", "58857.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-101", "-100.987");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-101", "-100.999979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-101", "58655.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1234567", "1234567.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1234567", "1234567.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1234567", "1293323.389791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-1234567", "-1234566.987");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-1234567", "-1234566.999979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-1234567", "-1175810.610208562");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0.09", "0.103");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0.09", "0.090021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0.09", "58756.479791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-0.09", "-0.077");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-0.09", "-0.089979");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-0.09", "58756.299791438");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1E-12", "0.013000000001");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1E-12", "0.000021000001");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1E-12", "58756.389791438001");
+        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1E+12", "1000000000000.013");
+        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1E+12", "1000000000000.000021");
+        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1E+12", "1000000058756.389791438");
+        nextFromRangeUpCanonical_BigDecimal_fail_helper(1, 1, "0");
+        nextFromRangeUpCanonical_BigDecimal_fail_helper(2, 0, "0");
+    }
+
+    private static void nextFromRangeDownCanonical_BigDecimal_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(scale).withSecondaryScale(secondaryScale)
+                        .nextFromRangeDownCanonical(Readers.readBigDecimal(a).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeDownCanonical_BigDecimal_fail_helper(
+            int scale,
+            int secondaryScale,
+            @NotNull String a
+    ) {
+        try {
+            P.withScale(scale).withSecondaryScale(secondaryScale)
+                    .nextFromRangeDownCanonical(Readers.readBigDecimal(a).get());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeDownCanonical_BigDecimal() {
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0", "-0.005");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0", "-0.000013");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0", "-4.04936997654063E-17");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0.0", "-0.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0.0", "-0.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0.0", "-58756.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1", "0.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1", "0.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1", "-58755.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1.0", "0.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1.0", "0.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1.0", "-58755.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-1.0", "-1.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-1.0", "-1.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-1.0", "-58757.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "9", "8.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "9", "8.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "9", "-58747.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-9", "-9.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-9", "-9.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-9", "-58765.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "10", "9.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "10", "9.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "10", "-58746.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-10", "-10.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-10", "-10.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-10", "-58766.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "101", "100.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "101", "100.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "101", "-58655.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-101", "-101.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-101", "-101.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-101", "-58857.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1234567", "1234566.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1234567", "1234566.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1234567", "1175810.610208562");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-1234567", "-1234567.013");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-1234567", "-1234567.000021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-1234567", "-1293323.389791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0.09", "0.077");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0.09", "0.089979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0.09", "-58756.299791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-0.09", "-0.103");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-0.09", "-0.090021");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-0.09", "-58756.479791438");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1E-12", "-0.012999999999");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1E-12", "-0.000020999999");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1E-12", "-58756.389791437999");
+        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1E+12", "999999999999.987");
+        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1E+12", "999999999999.999979");
+        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1E+12", "999999941243.610208562");
+        nextFromRangeDownCanonical_BigDecimal_fail_helper(1, 1, "0");
+        nextFromRangeDownCanonical_BigDecimal_fail_helper(2, 0, "0");
+    }
+
+    private static void nextFromRangeCanonical_BigDecimal_BigDecimal_helper(
+            int meanDivisionSize,
+            @NotNull String a,
+            @NotNull String b,
+            @NotNull String output
+    ) {
+        aeq(
+                P.withScale(meanDivisionSize)
+                        .nextFromRangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                output
+        );
+        P.reset();
+    }
+
+    private static void nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(
+            int meanDivisionSize,
+            @NotNull String a,
+            @NotNull String b
+    ) {
+        try {
+            P.withScale(meanDivisionSize)
+                    .nextFromRangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
+            fail();
+        } catch (IllegalStateException | IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNextFromRangeCanonical_BigDecimal_BigDecimal() {
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "1", "0.835");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "1", "0.98315");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "1", "0.3107198110228699907");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "3", "2");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "3", "2.7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "3",
+                "1.601976477404618212249718291099469772408703537");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "1E+6", "835000");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "1E+6", "983150");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "1E+6", "310719.8110228699907");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "0.000001", "8.35E-7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "0.000001", "9.8315E-7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "0.000001", "3.107198110228699907E-7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "1", "3", "3");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "1", "3", "1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "1", "3",
+                "2.601976477404618212249718291099469772408703537");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "1", "1E+6", "835001");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "1", "1E+6", "983151");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "1", "1E+6", "310720.8110228699907");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-1", "0", "-0.165");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-1", "0", "-0.01685");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-1", "0", "-0.6892801889771300093");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-3", "0", "-1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-3", "0", "-0.3");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-3", "0",
+                "-1.398023522595381787750281708900530227591296463");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-1E+6", "0", "-165000");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-1E+6", "0", "-16850");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-1E+6", "0", "-689280.1889771300093");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-0.000001", "0", "-1.65E-7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-0.000001", "0", "-1.685E-8");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-0.000001", "0", "-6.892801889771300093E-7");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-3", "-1", "-1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-3", "-1", "-3");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-3", "-1",
+                "-1.398023522595381787750281708900530227591296463");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-1E+6", "-1", "-165000");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-1E+6", "-1", "-16850");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-1E+6", "-1", "-689280.1889771300093");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "100", "101", "100.835");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "100", "101", "100.98315");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "100", "101", "100.3107198110228699907");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "2.7183", "3.1416", "2.9183");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "2.7183", "3.1416", "2.9883");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "2.7183", "3.1416", "3.0290198110228699907");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "-3.1416", "2.7183", "-1.1416");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "-3.1416", "2.7183", "2.4564");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "-3.1416", "2.7183", "-0.034401889771300093");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0.0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0.0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0.0", "0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "0.0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "0.0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "0.0", "0.0", "0");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, "1", "1", "1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, "1", "1", "1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, "1", "1", "1");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(1, "5", "3");
+        nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(0, "0", "1");
+    }
+
     @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
-                P,
+                RandomProvider.example(),
                 Q.withScale(3).withSecondaryScale(0),
                 R.withScale(0).withSecondaryScale(10)
         );
         List<RandomProvider> ys = Arrays.asList(
-                P,
+                RandomProvider.example(),
                 Q.withScale(3).withSecondaryScale(0),
                 R.withScale(0).withSecondaryScale(10)
         );
