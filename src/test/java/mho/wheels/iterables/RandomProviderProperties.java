@@ -254,6 +254,18 @@ public class RandomProviderProperties {
             propertiesNonzeroCanonicalBigDecimals();
             propertiesNextCanonicalBigDecimal();
             propertiesCanonicalBigDecimals();
+            propertiesNextFromRangeUp_BigDecimal();
+            propertiesRangeUp_BigDecimal();
+            propertiesNextFromRangeDown_BigDecimal();
+            propertiesRangeDown_BigDecimal();
+            propertiesNextFromRange_BigDecimal_BigDecimal();
+            propertiesRange_BigDecimal_BigDecimal();
+            propertiesNextFromRangeUpCanonical_BigDecimal();
+            propertiesRangeUpCanonical_BigDecimal();
+            propertiesNextFromRangeDownCanonical_BigDecimal();
+            propertiesRangeDownCanonical_BigDecimal();
+            propertiesNextFromRangeCanonical_BigDecimal_BigDecimal();
+            propertiesRangeCanonical_BigDecimal_BigDecimal();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2345,8 +2357,8 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 1,
-                P.randomProviders()), P.binaryFractions()
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
@@ -2372,7 +2384,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
             Iterable<BinaryFraction> bfs = p.a.rangeUp(p.b);
-            simpleTest(p.a, bfs, i -> ge(i, p.b));
+            simpleTest(p.a, bfs, bf -> ge(bf, p.b));
             supplierEquivalence(p.a, bfs, () -> p.a.nextFromRangeUp(p.b));
         }
 
@@ -2408,8 +2420,8 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BinaryFraction>> psFail = P.pairs(
-                filterInfinite(x -> x.getScale() < 1,
-                P.randomProviders()), P.binaryFractions()
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                P.binaryFractions()
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, psFail)) {
             try {
@@ -2435,7 +2447,7 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
             Iterable<BinaryFraction> bfs = p.a.rangeDown(p.b);
-            simpleTest(p.a, bfs, i -> le(i, p.b));
+            simpleTest(p.a, bfs, bf -> le(bf, p.b));
             supplierEquivalence(p.a, bfs, () -> p.a.nextFromRangeDown(p.b));
         }
 
@@ -2479,7 +2491,8 @@ public class RandomProviderProperties {
             assertTrue(t, le(bf, t.c));
         }
 
-        for (Pair<RandomProvider, BigInteger> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigIntegers()))) {
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(P.randomProvidersDefault(), P.binaryFractions());
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
             assertEquals(p, p.a.nextFromRange(p.b, p.b), p.b);
         }
 
@@ -3855,6 +3868,431 @@ public class RandomProviderProperties {
             try {
                 rp.canonicalBigDecimals();
                 fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUp_BigDecimal() {
+        initialize("nextFromRangeUp(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            BigDecimal bd = p.a.nextFromRangeUp(p.b);
+            assertTrue(p, ge(bd, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUp_BigDecimal() {
+        initialize("rangeUp(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            Iterable<BigDecimal> bds = p.a.rangeUp(p.b);
+            simpleTest(p.a, bds, bd -> ge(bd, p.b));
+            supplierEquivalence(p.a, bds, () -> p.a.nextFromRangeUp(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUp(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeDown_BigDecimal() {
+        initialize("nextFromRangeDown(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            BigDecimal bd = p.a.nextFromRangeDown(p.b);
+            assertTrue(p, le(bd, p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeDown_BigDecimal() {
+        initialize("rangeDown(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            Iterable<BigDecimal> bds = p.a.rangeDown(p.b);
+            simpleTest(p.a, bds, bd -> le(bd, p.b));
+            supplierEquivalence(p.a, bds, () -> p.a.nextFromRangeDown(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDown(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRange_BigDecimal_BigDecimal() {
+        initialize("nextFromRange(BigDecimal, BigDecimal)");
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            BigDecimal bd = t.a.nextFromRange(t.b, t.c);
+            assertTrue(t, ge(bd, t.b));
+            assertTrue(t, le(bd, t.c));
+        }
+
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigDecimals()))) {
+            assertTrue(p, eq(p.a.nextFromRange(p.b, p.b), p.b));
+        }
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesRange_BigDecimal_BigDecimal() {
+        initialize("range(BigDecimal, BigDecimal)");
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            Iterable<BigDecimal> bds = t.a.range(t.b, t.c);
+            simpleTest(t.a, bds, bd -> ge(bd, t.b) && le(bd, t.c));
+            assertEquals(t, gt(t.b, t.c), isEmpty(bds));
+            if (le(t.b, t.c)) {
+                supplierEquivalence(t.a, bds, () -> t.a.nextFromRange(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(P.randomProvidersDefault(), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            assertTrue(p, all(bd -> eq(bd, p.b), take(TINY_LIMIT, p.a.range(p.b, p.b))));
+        }
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeUpCanonical_BigDecimal() {
+        initialize("nextFromRangeUpCanonical(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            BigDecimal bd = p.a.nextFromRangeUpCanonical(p.b);
+            assertTrue(p, ge(bd, p.b) && BigDecimalUtils.isCanonical(bd));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUpCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeUpCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeUpCanonical_BigDecimal() {
+        initialize("rangeUpCanonical(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            Iterable<BigDecimal> bds = p.a.rangeUpCanonical(p.b);
+            simpleTest(p.a, bds, bd -> ge(bd, p.b) && BigDecimalUtils.isCanonical(bd));
+            supplierEquivalence(p.a, bds, () -> p.a.nextFromRangeUpCanonical(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUpCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeUpCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeDownCanonical_BigDecimal() {
+        initialize("nextFromRangeDownCanonical(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            BigDecimal bd = p.a.nextFromRangeDownCanonical(p.b);
+            assertTrue(p, le(bd, p.b) && BigDecimalUtils.isCanonical(bd));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDownCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.nextFromRangeDownCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeDownCanonical_BigDecimal() {
+        initialize("rangeDownCanonical(BigDecimal)");
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            Iterable<BigDecimal> bds = p.a.rangeDownCanonical(p.b);
+            simpleTest(p.a, bds, bd -> le(bd, p.b) && BigDecimalUtils.isCanonical(bd));
+            supplierEquivalence(p.a, bds, () -> p.a.nextFromRangeDownCanonical(p.b));
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> psFail = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDownCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        psFail = P.pairs(filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, psFail)) {
+            try {
+                p.a.rangeDownCanonical(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesNextFromRangeCanonical_BigDecimal_BigDecimal() {
+        initialize("nextFromRangeCanonical(BigDecimal, BigDecimal)");
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            BigDecimal bd = t.a.nextFromRangeCanonical(t.b, t.c);
+            assertTrue(t, ge(bd, t.b));
+            assertTrue(t, le(bd, t.c));
+            assertTrue(t, BigDecimalUtils.isCanonical(bd));
+        }
+
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bigDecimals()))) {
+            assertEquals(p, p.a.nextFromRangeCanonical(p.b, p.b), BigDecimalUtils.canonicalize(p.b));
+        }
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRangeCanonical(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> gt(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRangeCanonical(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesRangeCanonical_BigDecimal_BigDecimal() {
+        initialize("rangeCanonical(BigDecimal, BigDecimal)");
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            Iterable<BigDecimal> bds = t.a.rangeCanonical(t.b, t.c);
+            simpleTest(t.a, bds, bd -> ge(bd, t.b) && le(bd, t.c) && BigDecimalUtils.isCanonical(bd));
+            assertEquals(t, gt(t.b, t.c), isEmpty(bds));
+            if (le(t.b, t.c)) {
+                supplierEquivalence(t.a, bds, () -> t.a.nextFromRangeCanonical(t.b, t.c));
+            }
+        }
+
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(P.randomProvidersDefault(), P.bigDecimals());
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.rangeCanonical(p.b, p.b), repeat(BigDecimalUtils.canonicalize(p.b)));
+        }
+
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
+                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.rangeCanonical(t.b, t.c);
+                fail(t);
             } catch (IllegalStateException ignored) {}
         }
     }

@@ -4418,7 +4418,14 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
-        return map(this::uncanonicalize, rangeUpCanonical(a));
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
+        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     public @NotNull BigDecimal nextFromRangeDown(@NotNull BigDecimal a) {
@@ -4440,16 +4447,23 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
-        BigDecimal nonnegative;
+        BigDecimal nonNegative;
         do {
-            nonnegative = nextCanonicalBigDecimal();
-        } while (nonnegative.signum() == -1);
-        return BigDecimalUtils.canonicalize(a.add(nonnegative));
+            nonNegative = nextCanonicalBigDecimal();
+        } while (nonNegative.signum() == -1);
+        return BigDecimalUtils.canonicalize(a.add(nonNegative));
     }
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
-        return fromSupplier(() -> nextFromRangeUp(a));
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        if (secondaryScale < 1) {
+            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
+                    secondaryScale);
+        }
+        return fromSupplier(() -> nextFromRangeUpCanonical(a));
     }
 
     public @NotNull BigDecimal nextFromRangeDownCanonical(@NotNull BigDecimal a) {
@@ -4462,6 +4476,14 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (eq(a, b)) return BigDecimalUtils.canonicalize(a);
+        if (gt(a, b)) {
+            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
+                    ".");
+        }
         BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
         int pow = BigDecimalUtils.ceilingLog10(difference);
         BigDecimal next;
@@ -4473,6 +4495,10 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (gt(a, b)) return Collections.emptyList();
         return fromSupplier(() -> nextFromRangeCanonical(a, b));
     }
 
