@@ -43,217 +43,217 @@ public class RandomProviderProperties {
             P = config.a;
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
-            propertiesConstructor();
-            propertiesConstructor_List_Integer();
-            propertiesGetScale();
-            propertiesGetSecondaryScale();
-            propertiesGetSeed();
-            propertiesWithScale();
-            propertiesWithSecondaryScale();
-            propertiesCopy();
-            propertiesDeepCopy();
-            propertiesReset();
-            propertiesGetId();
-            propertiesNextInt();
-            propertiesIntegers();
-            propertiesNextLong();
-            propertiesLongs();
-            propertiesNextBoolean();
-            propertiesBooleans();
-            propertiesNextUniformSample_Iterable();
-            propertiesUniformSample_Iterable();
-            propertiesNextUniformSample_String();
-            propertiesUniformSample_String();
-            propertiesNextOrdering();
-            propertiesOrderings();
-            propertiesNextRoundingMode();
-            propertiesRoundingModes();
-            propertiesNextPositiveByte();
-            propertiesPositiveBytes();
-            propertiesNextPositiveShort();
-            propertiesPositiveShorts();
-            propertiesNextPositiveInt();
-            propertiesPositiveIntegers();
-            propertiesNextPositiveLong();
-            propertiesPositiveLongs();
-            propertiesNextNegativeByte();
-            propertiesNegativeBytes();
-            propertiesNextNegativeShort();
-            propertiesNegativeShorts();
-            propertiesNextNegativeInt();
-            propertiesNegativeIntegers();
-            propertiesNextNegativeLong();
-            propertiesNegativeLongs();
-            propertiesNextNaturalByte();
-            propertiesNaturalBytes();
-            propertiesNextNaturalShort();
-            propertiesNaturalShorts();
-            propertiesNextNaturalInt();
-            propertiesNaturalIntegers();
-            propertiesNextNaturalLong();
-            propertiesNaturalLongs();
-            propertiesNextNonzeroByte();
-            propertiesNonzeroBytes();
-            propertiesNextNonzeroShort();
-            propertiesNonzeroShorts();
-            propertiesNextNonzeroInt();
-            propertiesNonzeroIntegers();
-            propertiesNextNonzeroLong();
-            propertiesNonzeroLongs();
-            propertiesNextByte();
-            propertiesBytes();
-            propertiesNextShort();
-            propertiesShorts();
-            propertiesNextAsciiChar();
-            propertiesAsciiCharacters();
-            propertiesNextChar();
-            propertiesCharacters();
-            propertiesNextFromRangeUp_byte();
-            propertiesRangeUp_byte();
-            propertiesNextFromRangeUp_short();
-            propertiesRangeUp_short();
-            propertiesNextFromRangeUp_int();
-            propertiesRangeUp_int();
-            propertiesNextFromRangeUp_long();
-            propertiesRangeUp_long();
-            propertiesNextFromRangeUp_char();
-            propertiesRangeUp_char();
-            propertiesNextFromRangeDown_byte();
-            propertiesRangeDown_byte();
-            propertiesNextFromRangeDown_short();
-            propertiesRangeDown_short();
-            propertiesNextFromRangeDown_int();
-            propertiesRangeDown_int();
-            propertiesNextFromRangeDown_long();
-            propertiesRangeDown_long();
-            propertiesNextFromRangeDown_char();
-            propertiesRangeDown_char();
-            propertiesNextFromRange_byte_byte();
-            propertiesRange_byte_byte();
-            propertiesNextFromRange_short_short();
-            propertiesRange_short_short();
-            propertiesNextFromRange_int_int();
-            propertiesRange_int_int();
-            propertiesNextFromRange_long_long();
-            propertiesRange_long_long();
-            propertiesNextFromRange_BigInteger_BigInteger();
-            propertiesRange_BigInteger_BigInteger();
-            propertiesNextFromRange_char_char();
-            propertiesRange_char_char();
-            propertiesNextPositiveIntGeometric();
-            propertiesPositiveIntegersGeometric();
-            propertiesNextNegativeIntGeometric();
-            propertiesNegativeIntegersGeometric();
-            propertiesNextNaturalIntGeometric();
-            propertiesNaturalIntegersGeometric();
-            propertiesNextNonzeroIntGeometric();
-            propertiesNonzeroIntegersGeometric();
-            propertiesNextIntGeometric();
-            propertiesIntegersGeometric();
-            propertiesNextIntGeometricFromRangeUp();
-            propertiesRangeUpGeometric();
-            propertiesNextIntGeometricFromRangeDown();
-            propertiesRangeDownGeometric();
-            propertiesNextPositiveBigInteger();
-            propertiesPositiveBigIntegers();
-            propertiesNextNegativeBigInteger();
-            propertiesNegativeBigIntegers();
-            propertiesNextNaturalBigInteger();
-            propertiesNaturalBigIntegers();
-            propertiesNextNonzeroBigInteger();
-            propertiesNonzeroBigIntegers();
-            propertiesNextBigInteger();
-            propertiesBigIntegers();
-            propertiesNextFromRangeUp_BigInteger();
-            propertiesRangeUp_BigInteger();
-            propertiesNextFromRangeDown_BigInteger();
-            propertiesRangeDown_BigInteger();
-            propertiesNextPositiveBinaryFraction();
-            propertiesPositiveBinaryFractions();
-            propertiesNextNegativeBinaryFraction();
-            propertiesNegativeBinaryFractions();
-            propertiesNextNonzeroBinaryFraction();
-            propertiesNonzeroBinaryFractions();
-            propertiesNextBinaryFraction();
-            propertiesBinaryFractions();
-            propertiesNextFromRangeUp_BinaryFraction();
-            propertiesRangeUp_BinaryFraction();
-            propertiesNextFromRangeDown_BinaryFraction();
-            propertiesRangeDown_BinaryFraction();
-            propertiesNextFromRange_BinaryFraction_BinaryFraction();
-            propertiesRange_BinaryFraction_BinaryFraction();
-            propertiesNextPositiveFloat();
-            propertiesPositiveFloats();
-            propertiesNextNegativeFloat();
-            propertiesNegativeFloats();
-            propertiesNextNonzeroFloat();
-            propertiesNonzeroFloats();
-            propertiesNextFloat();
-            propertiesFloats();
-            propertiesNextPositiveDouble();
-            propertiesPositiveDoubles();
-            propertiesNextNegativeDouble();
-            propertiesNegativeDoubles();
-            propertiesNextNonzeroDouble();
-            propertiesNonzeroDoubles();
-            propertiesNextDouble();
-            propertiesDoubles();
-            propertiesNextPositiveFloatUniform();
-            propertiesPositiveFloatsUniform();
-            propertiesNextNegativeFloatUniform();
-            propertiesNegativeFloatsUniform();
-            propertiesNextNonzeroFloatUniform();
-            propertiesNonzeroFloatsUniform();
-            propertiesNextFloatUniform();
-            propertiesFloatsUniform();
-            propertiesNextPositiveDoubleUniform();
-            propertiesPositiveDoublesUniform();
-            propertiesNextNegativeDoubleUniform();
-            propertiesNegativeDoublesUniform();
-            propertiesNextNonzeroDoubleUniform();
-            propertiesNonzeroDoublesUniform();
-            propertiesNextDoubleUniform();
-            propertiesDoublesUniform();
-            propertiesNextFromRangeUp_float();
-            propertiesRangeUp_float();
-            propertiesNextFromRangeDown_float();
-            propertiesRangeDown_float();
-            propertiesNextFromRange_float_float();
-            propertiesRange_float_float();
-            propertiesNextFromRangeUp_double();
-            propertiesRangeUp_double();
-            propertiesNextFromRangeDown_double();
-            propertiesRangeDown_double();
-            propertiesNextFromRange_double_double();
-            propertiesRange_double_double();
-            propertiesNextFromRangeUpUniform_float();
-            propertiesRangeUpUniform_float();
-            propertiesNextFromRangeDownUniform_float();
-            propertiesRangeDownUniform_float();
-            propertiesNextFromRangeUniform_float_float();
-            propertiesRangeUniform_float_float();
-            propertiesNextFromRangeUpUniform_double();
-            propertiesRangeUpUniform_double();
-            propertiesNextFromRangeDownUniform_double();
-            propertiesRangeDownUniform_double();
-            propertiesNextFromRangeUniform_double_double();
-            propertiesRangeUniform_double_double();
-            propertiesNextPositiveBigDecimal();
-            propertiesPositiveBigDecimals();
-            propertiesNextNegativeBigDecimal();
-            propertiesNegativeBigDecimals();
-            propertiesNextNonzeroBigDecimal();
-            propertiesNonzeroBigDecimals();
-            propertiesNextBigDecimal();
-            propertiesBigDecimals();
-            propertiesNextPositiveCanonicalBigDecimal();
-            propertiesPositiveCanonicalBigDecimals();
-            propertiesNextNegativeCanonicalBigDecimal();
-            propertiesNegativeCanonicalBigDecimals();
-            propertiesNextNonzeroCanonicalBigDecimal();
-            propertiesNonzeroCanonicalBigDecimals();
-            propertiesNextCanonicalBigDecimal();
-            propertiesCanonicalBigDecimals();
+//            propertiesConstructor();
+//            propertiesConstructor_List_Integer();
+//            propertiesGetScale();
+//            propertiesGetSecondaryScale();
+//            propertiesGetSeed();
+//            propertiesWithScale();
+//            propertiesWithSecondaryScale();
+//            propertiesCopy();
+//            propertiesDeepCopy();
+//            propertiesReset();
+//            propertiesGetId();
+//            propertiesNextInt();
+//            propertiesIntegers();
+//            propertiesNextLong();
+//            propertiesLongs();
+//            propertiesNextBoolean();
+//            propertiesBooleans();
+//            propertiesNextUniformSample_Iterable();
+//            propertiesUniformSample_Iterable();
+//            propertiesNextUniformSample_String();
+//            propertiesUniformSample_String();
+//            propertiesNextOrdering();
+//            propertiesOrderings();
+//            propertiesNextRoundingMode();
+//            propertiesRoundingModes();
+//            propertiesNextPositiveByte();
+//            propertiesPositiveBytes();
+//            propertiesNextPositiveShort();
+//            propertiesPositiveShorts();
+//            propertiesNextPositiveInt();
+//            propertiesPositiveIntegers();
+//            propertiesNextPositiveLong();
+//            propertiesPositiveLongs();
+//            propertiesNextNegativeByte();
+//            propertiesNegativeBytes();
+//            propertiesNextNegativeShort();
+//            propertiesNegativeShorts();
+//            propertiesNextNegativeInt();
+//            propertiesNegativeIntegers();
+//            propertiesNextNegativeLong();
+//            propertiesNegativeLongs();
+//            propertiesNextNaturalByte();
+//            propertiesNaturalBytes();
+//            propertiesNextNaturalShort();
+//            propertiesNaturalShorts();
+//            propertiesNextNaturalInt();
+//            propertiesNaturalIntegers();
+//            propertiesNextNaturalLong();
+//            propertiesNaturalLongs();
+//            propertiesNextNonzeroByte();
+//            propertiesNonzeroBytes();
+//            propertiesNextNonzeroShort();
+//            propertiesNonzeroShorts();
+//            propertiesNextNonzeroInt();
+//            propertiesNonzeroIntegers();
+//            propertiesNextNonzeroLong();
+//            propertiesNonzeroLongs();
+//            propertiesNextByte();
+//            propertiesBytes();
+//            propertiesNextShort();
+//            propertiesShorts();
+//            propertiesNextAsciiChar();
+//            propertiesAsciiCharacters();
+//            propertiesNextChar();
+//            propertiesCharacters();
+//            propertiesNextFromRangeUp_byte();
+//            propertiesRangeUp_byte();
+//            propertiesNextFromRangeUp_short();
+//            propertiesRangeUp_short();
+//            propertiesNextFromRangeUp_int();
+//            propertiesRangeUp_int();
+//            propertiesNextFromRangeUp_long();
+//            propertiesRangeUp_long();
+//            propertiesNextFromRangeUp_char();
+//            propertiesRangeUp_char();
+//            propertiesNextFromRangeDown_byte();
+//            propertiesRangeDown_byte();
+//            propertiesNextFromRangeDown_short();
+//            propertiesRangeDown_short();
+//            propertiesNextFromRangeDown_int();
+//            propertiesRangeDown_int();
+//            propertiesNextFromRangeDown_long();
+//            propertiesRangeDown_long();
+//            propertiesNextFromRangeDown_char();
+//            propertiesRangeDown_char();
+//            propertiesNextFromRange_byte_byte();
+//            propertiesRange_byte_byte();
+//            propertiesNextFromRange_short_short();
+//            propertiesRange_short_short();
+//            propertiesNextFromRange_int_int();
+//            propertiesRange_int_int();
+//            propertiesNextFromRange_long_long();
+//            propertiesRange_long_long();
+//            propertiesNextFromRange_BigInteger_BigInteger();
+//            propertiesRange_BigInteger_BigInteger();
+//            propertiesNextFromRange_char_char();
+//            propertiesRange_char_char();
+//            propertiesNextPositiveIntGeometric();
+//            propertiesPositiveIntegersGeometric();
+//            propertiesNextNegativeIntGeometric();
+//            propertiesNegativeIntegersGeometric();
+//            propertiesNextNaturalIntGeometric();
+//            propertiesNaturalIntegersGeometric();
+//            propertiesNextNonzeroIntGeometric();
+//            propertiesNonzeroIntegersGeometric();
+//            propertiesNextIntGeometric();
+//            propertiesIntegersGeometric();
+//            propertiesNextIntGeometricFromRangeUp();
+//            propertiesRangeUpGeometric();
+//            propertiesNextIntGeometricFromRangeDown();
+//            propertiesRangeDownGeometric();
+//            propertiesNextPositiveBigInteger();
+//            propertiesPositiveBigIntegers();
+//            propertiesNextNegativeBigInteger();
+//            propertiesNegativeBigIntegers();
+//            propertiesNextNaturalBigInteger();
+//            propertiesNaturalBigIntegers();
+//            propertiesNextNonzeroBigInteger();
+//            propertiesNonzeroBigIntegers();
+//            propertiesNextBigInteger();
+//            propertiesBigIntegers();
+//            propertiesNextFromRangeUp_BigInteger();
+//            propertiesRangeUp_BigInteger();
+//            propertiesNextFromRangeDown_BigInteger();
+//            propertiesRangeDown_BigInteger();
+//            propertiesNextPositiveBinaryFraction();
+//            propertiesPositiveBinaryFractions();
+//            propertiesNextNegativeBinaryFraction();
+//            propertiesNegativeBinaryFractions();
+//            propertiesNextNonzeroBinaryFraction();
+//            propertiesNonzeroBinaryFractions();
+//            propertiesNextBinaryFraction();
+//            propertiesBinaryFractions();
+//            propertiesNextFromRangeUp_BinaryFraction();
+//            propertiesRangeUp_BinaryFraction();
+//            propertiesNextFromRangeDown_BinaryFraction();
+//            propertiesRangeDown_BinaryFraction();
+//            propertiesNextFromRange_BinaryFraction_BinaryFraction();
+//            propertiesRange_BinaryFraction_BinaryFraction();
+//            propertiesNextPositiveFloat();
+//            propertiesPositiveFloats();
+//            propertiesNextNegativeFloat();
+//            propertiesNegativeFloats();
+//            propertiesNextNonzeroFloat();
+//            propertiesNonzeroFloats();
+//            propertiesNextFloat();
+//            propertiesFloats();
+//            propertiesNextPositiveDouble();
+//            propertiesPositiveDoubles();
+//            propertiesNextNegativeDouble();
+//            propertiesNegativeDoubles();
+//            propertiesNextNonzeroDouble();
+//            propertiesNonzeroDoubles();
+//            propertiesNextDouble();
+//            propertiesDoubles();
+//            propertiesNextPositiveFloatUniform();
+//            propertiesPositiveFloatsUniform();
+//            propertiesNextNegativeFloatUniform();
+//            propertiesNegativeFloatsUniform();
+//            propertiesNextNonzeroFloatUniform();
+//            propertiesNonzeroFloatsUniform();
+//            propertiesNextFloatUniform();
+//            propertiesFloatsUniform();
+//            propertiesNextPositiveDoubleUniform();
+//            propertiesPositiveDoublesUniform();
+//            propertiesNextNegativeDoubleUniform();
+//            propertiesNegativeDoublesUniform();
+//            propertiesNextNonzeroDoubleUniform();
+//            propertiesNonzeroDoublesUniform();
+//            propertiesNextDoubleUniform();
+//            propertiesDoublesUniform();
+//            propertiesNextFromRangeUp_float();
+//            propertiesRangeUp_float();
+//            propertiesNextFromRangeDown_float();
+//            propertiesRangeDown_float();
+//            propertiesNextFromRange_float_float();
+//            propertiesRange_float_float();
+//            propertiesNextFromRangeUp_double();
+//            propertiesRangeUp_double();
+//            propertiesNextFromRangeDown_double();
+//            propertiesRangeDown_double();
+//            propertiesNextFromRange_double_double();
+//            propertiesRange_double_double();
+//            propertiesNextFromRangeUpUniform_float();
+//            propertiesRangeUpUniform_float();
+//            propertiesNextFromRangeDownUniform_float();
+//            propertiesRangeDownUniform_float();
+//            propertiesNextFromRangeUniform_float_float();
+//            propertiesRangeUniform_float_float();
+//            propertiesNextFromRangeUpUniform_double();
+//            propertiesRangeUpUniform_double();
+//            propertiesNextFromRangeDownUniform_double();
+//            propertiesRangeDownUniform_double();
+//            propertiesNextFromRangeUniform_double_double();
+//            propertiesRangeUniform_double_double();
+//            propertiesNextPositiveBigDecimal();
+//            propertiesPositiveBigDecimals();
+//            propertiesNextNegativeBigDecimal();
+//            propertiesNegativeBigDecimals();
+//            propertiesNextNonzeroBigDecimal();
+//            propertiesNonzeroBigDecimals();
+//            propertiesNextBigDecimal();
+//            propertiesBigDecimals();
+//            propertiesNextPositiveCanonicalBigDecimal();
+//            propertiesPositiveCanonicalBigDecimals();
+//            propertiesNextNegativeCanonicalBigDecimal();
+//            propertiesNegativeCanonicalBigDecimals();
+//            propertiesNextNonzeroCanonicalBigDecimal();
+//            propertiesNonzeroCanonicalBigDecimals();
+//            propertiesNextCanonicalBigDecimal();
+//            propertiesCanonicalBigDecimals();
             propertiesNextFromRangeUp_BigDecimal();
             propertiesRangeUp_BigDecimal();
             propertiesNextFromRangeDown_BigDecimal();
@@ -266,9 +266,9 @@ public class RandomProviderProperties {
             propertiesRangeDownCanonical_BigDecimal();
             propertiesNextFromRangeCanonical_BigDecimal_BigDecimal();
             propertiesRangeCanonical_BigDecimal_BigDecimal();
-            propertiesEquals();
-            propertiesHashCode();
-            propertiesToString();
+//            propertiesEquals();
+//            propertiesHashCode();
+//            propertiesToString();
         }
         System.out.println("Done");
     }
@@ -4003,7 +4003,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4021,7 +4021,22 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRange(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4036,7 +4051,7 @@ public class RandomProviderProperties {
         tsFail = filterInfinite(
                 t -> gt(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4053,7 +4068,7 @@ public class RandomProviderProperties {
         initialize("range(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -4072,7 +4087,19 @@ public class RandomProviderProperties {
         }
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.range(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -4215,7 +4242,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4234,7 +4261,22 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = filterInfinite(
                 t -> le(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.nextFromRangeCanonical(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4249,7 +4291,7 @@ public class RandomProviderProperties {
         tsFail = filterInfinite(
                 t -> gt(t.b, t.c),
                 P.triples(
-                        filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                         P.bigDecimals(),
                         P.bigDecimals()
                 )
@@ -4266,7 +4308,7 @@ public class RandomProviderProperties {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
-                filterInfinite(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
@@ -4280,12 +4322,25 @@ public class RandomProviderProperties {
         }
 
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(P.randomProvidersDefault(), P.bigDecimals());
+        //todo don't just test default RP
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
             aeqit(p, TINY_LIMIT, p.a.rangeCanonical(p.b, p.b), repeat(BigDecimalUtils.canonicalize(p.b)));
         }
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> tsFail = P.triples(
-                filterInfinite(x -> x.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                filterInfinite(x -> x.getScale() < 1, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.rangeCanonical(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = P.triples(
+                filterInfinite(x -> x.getSecondaryScale() < 1, P.randomProviders()),
                 P.bigDecimals(),
                 P.bigDecimals()
         );
