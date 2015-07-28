@@ -1,6 +1,5 @@
 package mho.wheels.iterables;
 
-import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
@@ -400,7 +399,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates a {@code Integer}s taken from a uniform distribution between 0 and
+     * An {@code Iterable} that generates {@code Integer}s taken from a uniform distribution between 0 and
      * 2<sup>{@code bits}</sup>–1, inclusive.
      *
      * <ul>
@@ -2885,7 +2884,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
-     * @return approximately uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     * @return approximately uniformly-distributed {@code BinaryFraction}s between {@code a} and {@code b}, inclusive
      */
     public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
         if (scale < 1) {
@@ -2946,7 +2945,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
-     * @return approximately uniformly-distributed {@code BigInteger}s between {@code a} and {@code b}, inclusive
+     * @return approximately uniformly-distributed {@code BinaryFraction}s between {@code a} and {@code b}, inclusive
      */
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
@@ -4341,7 +4340,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code BigDecimal} itself is chosen uniformly.
      *
      * <ul>
-     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
      *  <li>The result is not canonical.</li>
      * </ul>
      *
@@ -4391,6 +4390,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(this::nextCanonicalBigDecimal);
     }
 
+    /**
+     * Returns a randomly-generated canonical {@code BigDecimal} greater than or equal to zero and less than or equal
+     * to a specified power of ten. A higher {@code scale} corresponds to a larger unscaled-value bit size, but the
+     * exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code pow} may be any {@code int}.</li>
+     *  <li>The result is canonical.</li>
+     * </ul>
+     *
+     * @param pow an {@code int}
+     * @return a canonical {@code BigDecimal} between 0 and 10<sup>{@code pow}</sup>, inclusive
+     */
     private @NotNull BigDecimal nextZeroToPowerOfTenCanonicalBigDecimal(int pow) {
         int normalizedScale = nextNaturalIntGeometric();
         if (normalizedScale == 0) {
@@ -4405,6 +4418,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * Given a {@code BigDecimal} x, returns a {@code BigDecimal} whose canonical form is x; this may be x itself. A
+     * higher {@code scale} corresponds to a higher precision, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale.</li>
+     *  <li>{@code bd} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param bd a {@code BigDecimal}
+     * @return a {@code BigDecimal} whose canonical form is {@code bd}
+     */
     private @NotNull BigDecimal uncanonicalize(@NotNull BigDecimal bd) {
         if (bd.equals(BigDecimal.ZERO)) {
             return new BigDecimal(BigInteger.ZERO, nextIntGeometric());
@@ -4414,10 +4440,37 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * Returns a randomly-generated {@code BigDecimal} greater than or equal to {@code a}. A higher {@code scale}
+     * corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher
+     * unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigDecimal} greater than or equal to {@code a}
+     */
     public @NotNull BigDecimal nextFromRangeUp(@NotNull BigDecimal a) {
         return withScale(secondaryScale).uncanonicalize(nextFromRangeUpCanonical(a));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s greater than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
         if (scale < 2) {
@@ -4430,19 +4483,83 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUp(a));
     }
 
+    /**
+     * Returns a randomly-generated {@code BigDecimal} less than or equal to {@code a}. A higher {@code scale}
+     * corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher
+     * unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a {@code BigDecimal} less than or equal to {@code a}
+     */
     public @NotNull BigDecimal nextFromRangeDown(@NotNull BigDecimal a) {
         return nextFromRangeUp(a.negate()).negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s less than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
         return map(BigDecimal::negate, rangeUp(a.negate()));
     }
 
+    /**
+     * Returns a {@code BigDecimal} between {@code a} and {@code b}, inclusive. A higher {@code scale} corresponds to a
+     * higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher unscaled-value bit
+     * size and a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} may be any {@code BigDecimal}.</li>
+     *  <li>{@code b} may be any {@code BigDecimal}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull BigDecimal nextFromRange(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         return withScale(secondaryScale).uncanonicalize(nextFromRangeCanonical(a, b));
     }
 
+    /**
+     * <p>An {@code Iterable} that generates {@code BigDecimal}s between {@code a} and {@code b}, inclusive. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} may be any {@code BigDecimal}.</li>
+     *  <li>{@code b} may be any {@code BigDecimal}.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (scale < 1) {
@@ -4456,6 +4573,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRange(a, b));
     }
 
+    /**
+     * Returns a randomly-generated canonical {@code BigDecimal} greater than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a canonical {@code BigDecimal} greater than or equal to {@code a}
+     */
     public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
         BigDecimal nonNegative;
         do {
@@ -4464,6 +4594,19 @@ public final strictfp class RandomProvider extends IterableProvider {
         return BigDecimalUtils.canonicalize(a.add(nonNegative));
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s greater than or equal to {@code a}. A
+     * higher {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale}
+     * corresponds to a higher scale, but the exact relationship is not simple to describe. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
         if (scale < 2) {
@@ -4476,15 +4619,61 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeUpCanonical(a));
     }
 
+    /**
+     * Returns a randomly-generated canonical {@code BigDecimal} less than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @return a canonical {@code BigDecimal} less than or equal to {@code a}
+     */
     public @NotNull BigDecimal nextFromRangeDownCanonical(@NotNull BigDecimal a) {
         return nextFromRangeUpCanonical(a.negate()).negate();
     }
 
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s less than or equal to {@code a}. A higher
+     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
+     * a higher scale, but the exact relationship is not simple to describe. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
         return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
     }
 
+    /**
+     * Returns a canonical {@code BigDecimal} between {@code a} and {@code b}, inclusive. A higher {@code scale}
+     * corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher
+     * unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} may be any {@code BigDecimal}.</li>
+     *  <li>{@code b} may be any {@code BigDecimal}.</li>
+     *  <li>{@code a} must be less than or equal to {@code b}.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing canonical
+     *  {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (scale < 1) {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
@@ -4508,6 +4697,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         return BigDecimalUtils.canonicalize(a.add(next));
     }
 
+    /**
+     * <p>An {@code Iterable} that generates canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive.
+     * A higher {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale}
+     * corresponds to a higher unscaled-value bit size and a higher scale, but the exact relationship is not simple to
+     * describe.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
+     *  <li>{@code a} may be any {@code BigDecimal}.</li>
+     *  <li>{@code b} may be any {@code BigDecimal}.</li>
+     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite if a≤b, 0 otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
     @Override
     public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (scale < 1) {
