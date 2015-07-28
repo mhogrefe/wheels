@@ -33,6 +33,8 @@ public class NoRemoveIteratorProperties {
             System.out.println("\ttesting " + config.c);
             propertiesConstructor_finite();
             propertiesConstructor_cyclic();
+            propertiesRemove_finite();
+            propertiesRemove_cyclic();
         }
         System.out.println("Done");
     }
@@ -78,6 +80,50 @@ public class NoRemoveIteratorProperties {
                 }
             };
             aeqit(xs, TINY_LIMIT, xs, () -> it);
+        }
+    }
+
+    private static void propertiesRemove_finite() {
+        initialize("remove() [finite]");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
+                private int i = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return i < xs.size();
+                }
+
+                @Override
+                public Integer next() {
+                    return xs.get(i++);
+                }
+            };
+            testNoRemove(TINY_LIMIT, () -> it);
+        }
+    }
+
+    private static void propertiesRemove_cyclic() {
+        initialize("remove() [cyclic]");
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
+                private Iterator<Integer> iterator = xs.iterator();
+
+                @Override
+                public boolean hasNext() {
+                    return true;
+                }
+
+                @Override
+                public Integer next() {
+                    return iterator.next();
+                }
+            };
+            testNoRemove(TINY_LIMIT, () -> it);
         }
     }
 }
