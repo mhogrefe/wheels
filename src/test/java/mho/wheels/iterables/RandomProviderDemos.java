@@ -5,6 +5,7 @@ import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
+    private static final int TINY_LIMIT = 100;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -1968,6 +1970,153 @@ public class RandomProviderDemos {
         );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("canonicalBigDecimals(" + rp + ") = " + its(rp.canonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextFromRangeUp_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUpCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpCanonical(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpCanonical(p.b));
+        }
+    }
+
+    private static void demoRangeUpCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeUpCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpCanonical(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownCanonical(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownCanonical(p.b));
+        }
+    }
+
+    private static void demoRangeDownCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeDownCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownCanonical(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeCanonical(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeCanonical(t.b, t.c)));
         }
     }
 
