@@ -1,21 +1,25 @@
 package mho.wheels.iterables;
 
-import mho.wheels.ordering.Ordering;
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.ordering.Ordering.le;
+import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
+@SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
-    private static final int SMALL_LIMIT = 1000;
     private static int LIMIT;
+    private static final int SMALL_LIMIT = 1000;
+    private static final int TINY_LIMIT = 100;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -651,7 +655,7 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_byte_byte() {
         initialize();
-        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filter(
+        Iterable<Triple<RandomProvider, Byte, Byte>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes())
         );
@@ -671,7 +675,7 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_short_short() {
         initialize();
-        Iterable<Triple<RandomProvider, Short, Short>> ts = filter(
+        Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.shorts(), P.shorts())
         );
@@ -695,7 +699,7 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_int_int() {
         initialize();
-        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filter(
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.integers(), P.integers())
         );
@@ -719,7 +723,7 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_long_long() {
         initialize();
-        Iterable<Triple<RandomProvider, Long, Long>> ts = filter(
+        Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.longs(), P.longs())
         );
@@ -739,8 +743,8 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_BigInteger_BigInteger() {
         initialize();
-        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filter(
-                t -> Ordering.le(t.b, t.c),
+        Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
+                t -> le(t.b, t.c),
                 P.triples(P.randomProvidersDefault(), P.bigIntegers(), P.bigIntegers())
         );
         for (Triple<RandomProvider, BigInteger, BigInteger> p : take(SMALL_LIMIT, ts)) {
@@ -763,7 +767,7 @@ public class RandomProviderDemos {
 
     private static void demoNextFromRange_char_char() {
         initialize();
-        Iterable<Triple<RandomProvider, Character, Character>> ts = filter(
+        Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
                 t -> t.b <= t.c,
                 P.triples(P.randomProvidersDefault(), P.characters(), P.characters())
         );
@@ -787,7 +791,10 @@ public class RandomProviderDemos {
 
     private static void demoNextPositiveIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nextPositiveIntGeometric(" + rp + ") = " + rp.nextPositiveIntGeometric());
         }
@@ -795,7 +802,10 @@ public class RandomProviderDemos {
 
     private static void demoPositiveIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("positiveIntegersGeometric(" + rp + ") = " + its(rp.positiveIntegersGeometric()));
         }
@@ -803,7 +813,10 @@ public class RandomProviderDemos {
 
     private static void demoNextNegativeIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nextNegativeIntGeometric(" + rp + ") = " + rp.nextNegativeIntGeometric());
         }
@@ -811,7 +824,10 @@ public class RandomProviderDemos {
 
     private static void demoNegativeIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("negativeIntegersGeometric(" + rp + ") = " + its(rp.negativeIntegersGeometric()));
         }
@@ -819,7 +835,7 @@ public class RandomProviderDemos {
 
     private static void demoNextNaturalIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -830,7 +846,7 @@ public class RandomProviderDemos {
 
     private static void demoNaturalIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -841,7 +857,10 @@ public class RandomProviderDemos {
 
     private static void demoNextNonzeroIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nextNonzeroIntGeometric(" + rp + ") = " + rp.nextNonzeroIntGeometric());
         }
@@ -849,7 +868,10 @@ public class RandomProviderDemos {
 
     private static void demoNonzeroIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nonzeroIntegersGeometric(" + rp + ") = " + its(rp.nonzeroIntegersGeometric()));
         }
@@ -857,7 +879,7 @@ public class RandomProviderDemos {
 
     private static void demoNextIntGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -868,7 +890,7 @@ public class RandomProviderDemos {
 
     private static void demoIntegersGeometric() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
@@ -879,7 +901,7 @@ public class RandomProviderDemos {
 
     private static void demoNextIntGeometricFromRangeUp() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -891,7 +913,7 @@ public class RandomProviderDemos {
 
     private static void demoRangeUpGeometric() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -902,7 +924,7 @@ public class RandomProviderDemos {
 
     private static void demoNextIntGeometricFromRangeDown() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -914,7 +936,7 @@ public class RandomProviderDemos {
 
     private static void demoRangeDownGeometric() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
@@ -923,43 +945,1178 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextPositiveBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextPositiveBigInteger(" + rp + ") = " + rp.nextPositiveBigInteger());
+        }
+    }
+
     private static void demoPositiveBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("positiveBigIntegers(" + rp + ") = " + its(rp.positiveBigIntegers()));
         }
     }
 
+    private static void demoNextNegativeBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNegativeBigInteger(" + rp + ") = " + rp.nextNegativeBigInteger());
+        }
+    }
+
     private static void demoNegativeBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("negativeBigIntegers(" + rp + ") = " + its(rp.negativeBigIntegers()));
         }
     }
 
+    private static void demoNextNaturalBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNaturalBigInteger(" + rp + ") = " + rp.nextNaturalBigInteger());
+        }
+    }
+
     private static void demoNaturalBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("naturalBigIntegers(" + rp + ") = " + its(rp.naturalBigIntegers()));
         }
     }
 
+    private static void demoNextNonzeroBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextNonzeroBigInteger(" + rp + ") = " + rp.nextNonzeroBigInteger());
+        }
+    }
+
     private static void demoNonzeroBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("nonzeroBigIntegers(" + rp + ") = " + its(rp.nonzeroBigIntegers()));
         }
     }
 
+    private static void demoNextBigInteger() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nextBigInteger(" + rp + ") = " + rp.nextBigInteger());
+        }
+    }
+
     private static void demoBigIntegers() {
         initialize();
-        Iterable<RandomProvider> rps = filter(x -> x.getScale() > 0, P.randomProvidersDefaultSecondaryScale());
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                P.randomProvidersDefaultSecondaryScale()
+        );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("bigIntegers(" + rp + ") = " + its(rp.bigIntegers()));
+        }
+    }
+
+    private static void demoNextFromRangeUp_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
+                p -> {
+                    int minBitLength = p.b.signum() == -1 ? 0 : p.b.bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BigInteger() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
+                p -> {
+                    int minBitLength = p.b.signum() == 1 ? 0 : p.b.negate().bitLength();
+                    return p.a.getScale() > minBitLength && (minBitLength == 0 || p.a.getScale() != Integer.MAX_VALUE);
+                },
+                P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
+        );
+        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextPositiveBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveBinaryFraction(" + rp + ") = " + rp.nextPositiveBinaryFraction());
+        }
+    }
+
+    private static void demoPositiveBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveBinaryFractions(" + rp + ") = " + its(rp.positiveBinaryFractions()));
+        }
+    }
+
+    private static void demoNextNegativeBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeBinaryFraction(" + rp + ") = " + rp.nextNegativeBinaryFraction());
+        }
+    }
+
+    private static void demoNegativeBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeBinaryFractions(" + rp + ") = " + its(rp.negativeBinaryFractions()));
+        }
+    }
+
+    private static void demoNextNonzeroBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroBinaryFraction(" + rp + ") = " + rp.nextNonzeroBinaryFraction());
+        }
+    }
+
+    private static void demoNonzeroBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroBinaryFractions(" + rp + ") = " + its(rp.nonzeroBinaryFractions()));
+        }
+    }
+
+    private static void demoNextBinaryFraction() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextBinaryFraction(" + rp + ") = " + rp.nextBinaryFraction());
+        }
+    }
+
+    private static void demoBinaryFractions() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("binaryFractions(" + rp + ") = " + its(rp.binaryFractions()));
+        }
+    }
+
+    private static void demoNextFromRangeUp_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BinaryFraction() {
+        initialize();
+        Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.binaryFractions()
+        );
+        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = filterInfinite(
+                t -> lt(t.b, t.c),
+                P.triples(
+                        filterInfinite(
+                                x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                                P.randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.binaryFractions(),
+                        P.binaryFractions()
+                )
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
+                filterInfinite(
+                        x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
+                        P.randomProvidersDefaultSecondaryScale()
+                ),
+                P.binaryFractions(),
+                P.binaryFractions()
+        );
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextPositiveFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveFloat(" + rp + ") = " + rp.nextPositiveFloat());
+        }
+    }
+
+    private static void demoPositiveFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveFloats(" + rp + ") = " + its(rp.positiveFloats()));
+        }
+    }
+
+    private static void demoNextNegativeFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeFloat(" + rp + ") = " + rp.nextNegativeFloat());
+        }
+    }
+
+    private static void demoNegativeFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeFloats(" + rp + ") = " + its(rp.negativeFloats()));
+        }
+    }
+
+    private static void demoNextNonzeroFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroFloat(" + rp + ") = " + rp.nextNonzeroFloat());
+        }
+    }
+
+    private static void demoNonzeroFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroFloats(" + rp + ") = " + its(rp.nonzeroFloats()));
+        }
+    }
+
+    private static void demoNextFloat() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextFloat(" + rp + ") = " + rp.nextFloat());
+        }
+    }
+
+    private static void demoFloats() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("floats(" + rp + ") = " + its(rp.floats()));
+        }
+    }
+
+    private static void demoNextPositiveDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveDouble(" + rp + ") = " + rp.nextPositiveDouble());
+        }
+    }
+
+    private static void demoPositiveDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveDoubles(" + rp + ") = " + its(rp.positiveDoubles()));
+        }
+    }
+
+    private static void demoNextNegativeDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeDouble(" + rp + ") = " + rp.nextNegativeDouble());
+        }
+    }
+
+    private static void demoNegativeDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeDoubles(" + rp + ") = " + its(rp.negativeDoubles()));
+        }
+    }
+
+    private static void demoNextNonzeroDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroDouble(" + rp + ") = " + rp.nextNonzeroDouble());
+        }
+    }
+
+    private static void demoNonzeroDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroDoubles(" + rp + ") = " + its(rp.nonzeroDoubles()));
+        }
+    }
+
+    private static void demoNextDouble() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextDouble(" + rp + ") = " + rp.nextDouble());
+        }
+    }
+
+    private static void demoDoubles() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("doubles(" + rp + ") = " + its(rp.doubles()));
+        }
+    }
+
+    private static void demoNextPositiveFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveFloatUniform(" + rp + ") = " + rp.nextPositiveFloatUniform());
+        }
+    }
+
+    private static void demoPositiveFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveFloatsUniform(" + rp + ") = " + its(rp.positiveFloatsUniform()));
+        }
+    }
+
+    private static void demoNextNegativeFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeFloatUniform(" + rp + ") = " + rp.nextNegativeFloatUniform());
+        }
+    }
+
+    private static void demoNegativeFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeFloatsUniform(" + rp + ") = " + its(rp.negativeFloatsUniform()));
+        }
+    }
+
+    private static void demoNextNonzeroFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroFloatUniform(" + rp + ") = " + rp.nextNonzeroFloatUniform());
+        }
+    }
+
+    private static void demoNonzeroFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroFloatsUniform(" + rp + ") = " + its(rp.nonzeroFloatsUniform()));
+        }
+    }
+
+    private static void demoNextFloatUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextFloatUniform(" + rp + ") = " + rp.nextFloatUniform());
+        }
+    }
+
+    private static void demoFloatsUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("floatsUniform(" + rp + ") = " + its(rp.floatsUniform()));
+        }
+    }
+
+    private static void demoNextPositiveDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextPositiveDoubleUniform(" + rp + ") = " + rp.nextPositiveDoubleUniform());
+        }
+    }
+
+    private static void demoPositiveDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("positiveDoublesUniform(" + rp + ") = " + its(rp.positiveDoublesUniform()));
+        }
+    }
+
+    private static void demoNextNegativeDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNegativeDoubleUniform(" + rp + ") = " + rp.nextNegativeDoubleUniform());
+        }
+    }
+
+    private static void demoNegativeDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("negativeDoublesUniform(" + rp + ") = " + its(rp.negativeDoublesUniform()));
+        }
+    }
+
+    private static void demoNextNonzeroDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextNonzeroDoubleUniform(" + rp + ") = " + rp.nextNonzeroDoubleUniform());
+        }
+    }
+
+    private static void demoNonzeroDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nonzeroDoublesUniform(" + rp + ") = " + its(rp.nonzeroDoublesUniform()));
+        }
+    }
+
+    private static void demoNextDoubleUniform() {
+        initialize();
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            System.out.println("nextDoubleUniform(" + rp + ") = " + rp.nextDoubleUniform());
+        }
+    }
+
+    private static void demoDoublesUniform() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("doublesUniform(" + rp + ") = " + its(rp.doublesUniform()));
+        }
+    }
+
+    private static void demoNextFromRangeUp_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(f -> !Float.isNaN(f), P.floats()),
+                        filter(f -> !Float.isNaN(f), P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(f -> !Float.isNaN(f), P.floats()),
+                filter(f -> !Float.isNaN(f), P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUp_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(d -> !Double.isNaN(d), P.doubles()),
+                        filter(d -> !Double.isNaN(d), P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(d -> !Double.isNaN(d), P.doubles()),
+                filter(d -> !Double.isNaN(d), P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUpUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void demoRangeUpUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void demoRangeDownUniform_float() {
+        initialize();
+        Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUniform_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Float::isFinite, P.floats()),
+                        filter(Float::isFinite, P.floats())
+                )
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeUniform(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeUniform_float_float() {
+        initialize();
+        Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Float::isFinite, P.floats()),
+                filter(Float::isFinite, P.floats())
+        );
+        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeUniform(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUpUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpUniform(p.b));
+        }
+    }
+
+    private static void demoRangeUpUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownUniform(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownUniform(p.b));
+        }
+    }
+
+    private static void demoRangeDownUniform_double() {
+        initialize();
+        Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeUniform_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = filter(
+                t -> t.b <= t.c,
+                P.triples(
+                        P.randomProvidersDefault(),
+                        filter(Double::isFinite, P.doubles()),
+                        filter(Double::isFinite, P.doubles())
+                )
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeUniform(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeUniform_double_double() {
+        initialize();
+        Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
+                P.randomProvidersDefault(),
+                filter(Double::isFinite, P.doubles()),
+                filter(Double::isFinite, P.doubles())
+        );
+        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeUniform(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextPositiveBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveBigDecimal(" + rp + ") = " + rp.nextPositiveBigDecimal());
+        }
+    }
+
+    private static void demoPositiveBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveBigDecimals(" + rp + ") = " + its(rp.positiveBigDecimals()));
+        }
+    }
+
+    private static void demoNextNegativeBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeBigDecimal(" + rp + ") = " + rp.nextNegativeBigDecimal());
+        }
+    }
+
+    private static void demoNegativeBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeBigDecimals(" + rp + ") = " + its(rp.negativeBigDecimals()));
+        }
+    }
+
+    private static void demoNextNonzeroBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroBigDecimal(" + rp + ") = " + rp.nextNonzeroBigDecimal());
+        }
+    }
+
+    private static void demoNonzeroBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroBigDecimals(" + rp + ") = " + its(rp.nonzeroBigDecimals()));
+        }
+    }
+
+    private static void demoNextBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextBigDecimal(" + rp + ") = " + rp.nextBigDecimal());
+        }
+    }
+
+    private static void demoBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("bigDecimals(" + rp + ") = " + its(rp.bigDecimals()));
+        }
+    }
+
+    private static void demoNextPositiveCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextPositiveCanonicalBigDecimal(" + rp + ") = " +
+                    rp.nextPositiveCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoPositiveCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("positiveCanonicalBigDecimals(" + rp + ") = " + its(rp.positiveCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextNegativeCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNegativeCanonicalBigDecimal(" + rp + ") = " +
+                    rp.nextNegativeCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoNegativeCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("negativeCanonicalBigDecimals(" + rp + ") = " + its(rp.negativeCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextNonzeroCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextNonzeroCanonicalBigDecimal(" + rp + ") = " + rp.nextNonzeroCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoNonzeroCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("nonzeroCanonicalBigDecimals(" + rp + ") = " + its(rp.nonzeroCanonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextCanonicalBigDecimal() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            System.out.println("nextCanonicalBigDecimal(" + rp + ") = " + rp.nextCanonicalBigDecimal());
+        }
+    }
+
+    private static void demoCanonicalBigDecimals() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
+                P.randomProviders()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("canonicalBigDecimals(" + rp + ") = " + its(rp.canonicalBigDecimals()));
+        }
+    }
+
+    private static void demoNextFromRangeUp_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUp(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeUp(p.b));
+        }
+    }
+
+    private static void demoRangeUp_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDown_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDown(" + p.a + ", " + p.b + ") = " + p.a.nextFromRangeDown(p.b));
+        }
+    }
+
+    private static void demoRangeDown_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
+        }
+    }
+
+    private static void demoNextFromRange_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRange(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRange(t.b, t.c));
+        }
+    }
+
+    private static void demoRange_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
+        }
+    }
+
+    private static void demoNextFromRangeUpCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeUpCanonical(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeUpCanonical(p.b));
+        }
+    }
+
+    private static void demoRangeUpCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeUpCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpCanonical(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeDownCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
+            System.out.println("nextFromRangeDownCanonical(" + p.a + ", " + p.b + ") = " +
+                    p.a.nextFromRangeDownCanonical(p.b));
+        }
+    }
+
+    private static void demoRangeDownCanonical_BigDecimal() {
+        initialize();
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
+        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+            System.out.println("rangeDownCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownCanonical(p.b)));
+        }
+    }
+
+    private static void demoNextFromRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = filterInfinite(
+                t -> le(t.b, t.c),
+                P.triples(
+                        filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                        P.bigDecimals(),
+                        P.bigDecimals()
+                )
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(LIMIT, ts)) {
+            System.out.println("nextFromRangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextFromRangeCanonical(t.b, t.c));
+        }
+    }
+
+    private static void demoRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals(),
+                P.bigDecimals()
+        );
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("rangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.rangeCanonical(t.b, t.c)));
         }
     }
 

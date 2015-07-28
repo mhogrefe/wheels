@@ -9,31 +9,36 @@ Useful stuff. Highlights:
 Progress
 ========
 
-| Class                    | Methods | JavaDoc | Tests | Demos | Properties |
-|:------------------------ |:-------:|:-------:|:-----:|:-----:|:----------:|
-| CachedIterable           | ✔       | ✘       | ✘     | ✘     | ✘          |
-| ExhaustiveProvider       | ✔       | ✘       | ✘     | ✘     | ✘          |
-| IterableProvider         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| IterableUtils            | ✘       | ✘       | ✘     | ✘     | ✘          |
-| NoRemoveIterable         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| NoRemoveIterator         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| RandomProvider           | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Combinatorics            | ✘       | ✘       | ✘     | ✘     | ✘          |
-| MathUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
-| BigDecimalUtils          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| FloatingPointUtils       | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Readers                  | ✔       | ✘       | ✘     | ✘     | ✘          |
-| LexComparator            | ✔       | ✔       | ✘     | ✘     | ✘          |
-| ShortlexComparator       | ✔       | ✔       | ✘     | ✘     | ✘          |
-| StringShortlexComparator | ✔       | ✔       | ✘     | ✘     | ✘          |
-| Ordering                 | ✔       | ✘       | ✘     | ✘     | ✘          |
-| IsaacPRNG                | ✔       | ✘       | ✘     | ✘     | ✘          |
-| FiniteDomainFunction     | ✔       | ✘       | ✘     | ✘     | ✘          |
-| NullableOptional         | ✔       | ✘       | ✘     | ✘     | ✘          |
-| Pair                     | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Quadruple                | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Quintuple                | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Septuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Sextuple                 | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Triple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
-| Testing                  | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Class                      | Methods | JavaDoc | Tests | Demos | Properties |
+|:---------------------------|:-------:|:-------:|:-----:|:-----:|:----------:|
+| Readers                    | ✔       | ✘       | ✘     | ✘     | ✘          |
+| TextInput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| TextOutput                 | ✔       | ✘       | ✘     | ✘     | ✘          |
+| CachedIterable             | ✔       | ✘       | ✘     | ✘     | ✘          |
+| ExhaustiveProvider         | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IterableProvider           | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IterableUtils              | ✘       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterable           | ✔       | ✘       | ✘     | ✘     | ✘          |
+| NoRemoveIterator           | ✔       | ✘       | ✘     | ✘     | ✘          |
+| RandomProvider             | ✘       | ✘       | ✘     | ✘     | ✘          |
+| BinaryFraction             | ✔       | ✔       | ✔     | ✔     | ✔          |
+| Combinatorics              | ✘       | ✘       | ✘     | ✘     | ✘          |
+| MathUtils                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| BigDecimalUtils            | ✔       | ✔       | ✔     | ✔     | ✔          |
+| FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
+| IntegerUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
+| LexComparator              | ✔       | ✔       | ✘     | ✘     | ✘          |
+| ShortlexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
+| StringShortlexComparator   | ✔       | ✔       | ✘     | ✘     | ✘          |
+| Ordering                   | ✔       | ✘       | ✘     | ✘     | ✘          |
+| IsaacPRNG                  | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Either                     | ✘       | ✘       | ✘     | ✘     | ✘          |
+| FiniteDomainFunction       | ✔       | ✘       | ✘     | ✘     | ✘          |
+| NullableOptional           | ✔       | ✘       | ✘     | ✘     | ✘          |
+| Pair                       | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Quadruple                  | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Quintuple                  | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Septuple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Sextuple                   | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Triple                     | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Testing                    | ✘       | ✘       | ✘     | ✘     | ✘          |

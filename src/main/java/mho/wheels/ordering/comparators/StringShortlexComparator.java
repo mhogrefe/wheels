@@ -2,9 +2,9 @@ package mho.wheels.ordering.comparators;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import static mho.wheels.ordering.Ordering.EQ;
 
@@ -14,18 +14,18 @@ import static mho.wheels.ordering.Ordering.EQ;
  * looks at their {@code Character}s in parallel, left-to-right. The first pair of {@code Character}s which aren't
  * equal determine the ordering.
  */
-public class StringShortlexComparator implements Comparator<String> {
+public final class StringShortlexComparator implements Comparator<String> {
     /**
      * The {@code Comparator} used to compare {@code Character}s. It can be null, in which case the natural ordering of
      * {@code Character}s is used.
      */
-    private final @Nullable Comparator<Character> characterComparator;
+    private final @NotNull Optional<Comparator<Character>> characterComparator;
 
     /**
      * Constructs a {@code StringShortlexComparator} which uses the natural ordering to compare {@code Character}s.
      */
     public StringShortlexComparator() {
-        this.characterComparator = null;
+        this.characterComparator = Optional.empty();
     }
 
     /**
@@ -40,7 +40,7 @@ public class StringShortlexComparator implements Comparator<String> {
      */
     @SuppressWarnings("NullableProblems")
     public StringShortlexComparator(@NotNull Comparator<Character> characterComparator) {
-        this.characterComparator = characterComparator;
+        this.characterComparator = Optional.of(characterComparator);
     }
 
     /**
@@ -67,10 +67,10 @@ public class StringShortlexComparator implements Comparator<String> {
             char sc = s.charAt(i);
             char tc = t.charAt(i);
             Ordering characterOrdering;
-            if (characterComparator == null) {
-                characterOrdering = Ordering.compare(sc, tc);
+            if (characterComparator.isPresent()) {
+                characterOrdering = Ordering.compare(characterComparator.get(), sc, tc);
             } else {
-                characterOrdering = Ordering.compare(characterComparator, sc, tc);
+                characterOrdering = Ordering.compare(sc, tc);
             }
             if (characterOrdering != EQ) return characterOrdering.toInt();
         }

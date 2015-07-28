@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,32 +27,32 @@ public final class Sextuple<A, B, C, D, E, F> {
     /**
      * The first component of the {@code Sextuple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Sextuple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Sextuple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Sextuple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * The fifth component of the {@code Sextuple}
      */
-    public final @Nullable E e;
+    public final E e;
 
     /**
      * The fifth component of the {@code Sextuple}
      */
-    public final @Nullable F f;
+    public final F f;
 
     /**
      * Constructs a {@code Sextuple} from six values.
@@ -75,7 +74,7 @@ public final class Sextuple<A, B, C, D, E, F> {
      * @param e the fifth value
      * @param f the sixth value
      */
-    public Sextuple(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d, @Nullable E e, @Nullable F f) {
+    public Sextuple(A a, B b, C c, D d, E e, F f) {
         this.a = a;
         this.b = b;
         this.c = c;

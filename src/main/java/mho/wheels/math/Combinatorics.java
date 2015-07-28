@@ -3,12 +3,12 @@ package mho.wheels.math;
 import mho.wheels.iterables.CachedIterable;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -19,7 +19,6 @@ import static mho.wheels.ordering.Ordering.lt;
 /**
  * Various combinatorial functions and {@code Iterable}s.
  */
-@SuppressWarnings("ConstantConditions")
 public final class Combinatorics {
     /**
      * A provider of {@code Iterable}s containing every value of some type.
@@ -474,7 +473,7 @@ public final class Combinatorics {
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
                         i -> s.charAt(i.intValueExact()),
-                        MathUtils.bigEndianDigitsPadded(length, BigInteger.valueOf(s.length()), bi)
+                        IntegerUtils.bigEndianDigitsPadded(length, BigInteger.valueOf(s.length()), bi)
                 )
         );
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
@@ -511,7 +510,7 @@ public final class Combinatorics {
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
                         i -> s.charAt(i.intValueExact()),
-                        MathUtils.bigEndianDigitsPadded(length.intValueExact(), BigInteger.valueOf(s.length()), bi)
+                        IntegerUtils.bigEndianDigitsPadded(length.intValueExact(), BigInteger.valueOf(s.length()), bi)
                 )
         );
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
@@ -632,7 +631,7 @@ public final class Combinatorics {
         if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = MathUtils.logarithmicDemux(bi);
+            Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
@@ -684,7 +683,7 @@ public final class Combinatorics {
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
-        return pairsByFunction(MathUtils::logarithmicDemux, as, bs);
+        return pairsByFunction(IntegerUtils::logarithmicDemux, as, bs);
     }
 
     /**
@@ -709,7 +708,7 @@ public final class Combinatorics {
         if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = MathUtils.squareRootDemux(bi);
+            Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
@@ -761,7 +760,7 @@ public final class Combinatorics {
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
-        return pairsByFunction(MathUtils::squareRootDemux, as, bs);
+        return pairsByFunction(IntegerUtils::squareRootDemux, as, bs);
     }
 
     /**
@@ -787,7 +786,7 @@ public final class Combinatorics {
     public static @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return pairsByFunction(
                 bi -> {
-                    List<BigInteger> list = MathUtils.demux(2, bi);
+                    List<BigInteger> list = IntegerUtils.demux(2, bi);
                     return new Pair<>(list.get(0), list.get(1));
                 },
                 as,
@@ -828,7 +827,7 @@ public final class Combinatorics {
         CachedIterable<B> bii = new CachedIterable<>(bs);
         CachedIterable<C> cii = new CachedIterable<>(cs);
         Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
-            List<BigInteger> p = MathUtils.demux(3, bi);
+            List<BigInteger> p = IntegerUtils.demux(3, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
@@ -901,7 +900,7 @@ public final class Combinatorics {
         CachedIterable<C> cii = new CachedIterable<>(cs);
         CachedIterable<D> dii = new CachedIterable<>(ds);
         Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
-            List<BigInteger> p = MathUtils.demux(4, bi);
+            List<BigInteger> p = IntegerUtils.demux(4, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
@@ -984,7 +983,7 @@ public final class Combinatorics {
         CachedIterable<D> dii = new CachedIterable<>(ds);
         CachedIterable<E> eii = new CachedIterable<>(es);
         Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
-            List<BigInteger> p = MathUtils.demux(5, bi);
+            List<BigInteger> p = IntegerUtils.demux(5, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
@@ -1091,7 +1090,7 @@ public final class Combinatorics {
         CachedIterable<E> eii = new CachedIterable<>(es);
         CachedIterable<F> fii = new CachedIterable<>(fs);
         Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
-            List<BigInteger> p = MathUtils.demux(6, bi);
+            List<BigInteger> p = IntegerUtils.demux(6, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
@@ -1210,7 +1209,7 @@ public final class Combinatorics {
         CachedIterable<F> fii = new CachedIterable<>(fs);
         CachedIterable<G> gii = new CachedIterable<>(gs);
         Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
-            List<BigInteger> p = MathUtils.demux(7, bi);
+            List<BigInteger> p = IntegerUtils.demux(7, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
@@ -1273,55 +1272,13 @@ public final class Combinatorics {
         );
     }
 
-    public static @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f,
-            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction
-    ) {
-        CachedIterable<Pair<A, CachedIterable<B>>> pairs = new CachedIterable<>(
-                map(x -> new Pair<>(x, new CachedIterable<>(f.apply(x))), xs)
-        );
-        BiFunction<BigInteger, BigInteger, Optional<Pair<A, B>>> p2p = (x, y) -> {
-            NullableOptional<Pair<A, CachedIterable<B>>> optPair = pairs.get(x.intValueExact());
-            if (!optPair.isPresent()) return Optional.empty();
-            Pair<A, CachedIterable<B>> pair = optPair.get();
-            NullableOptional<B> optB = pair.b.get(y.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<>(pair.a, optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            NullableOptional<Pair<A, CachedIterable<B>>> optLast = pairs.getLast();
-            if (!optLast.isPresent()) return false;
-            Pair<A, CachedIterable<B>> last = optLast.get();
-            if (!Objects.equals(last.a, p.a)) return false;
-            NullableOptional<B> optLastB = last.b.getLast();
-            return optLastB.isPresent() && Objects.equals(optLastB.get(), p.b);
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                map(p -> p2p.apply(p.a, p.b), pairsByFunction(
-                                        unpairingFunction,
-                                        rangeUp(BigInteger.ZERO),
-                                        rangeUp(BigInteger.ZERO))
-                                )
-                        )
-                )
-        );
-    }
-
     public static <T> Iterable<List<T>> lists(int size, Iterable<T> xs) {
         if (size == 0) {
             return Collections.singletonList(new ArrayList<T>());
         }
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi ->
-                ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, bi)));
+                ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, bi)));
         Predicate<Optional<List<T>>> lastList = o -> {
             if (!o.isPresent()) return false;
             List<T> list = o.get();
@@ -1339,7 +1296,7 @@ public final class Combinatorics {
 
     public static @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
         if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
-        if (xss.size() == 1) return map(x -> Collections.singletonList(x), xss.get(0));
+        if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
         if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsIncreasing(xss.get(0), xss.get(1)));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
@@ -1444,11 +1401,11 @@ public final class Combinatorics {
                 return Optional.of(new ArrayList<T>());
             }
             bi = bi.subtract(BigInteger.ONE);
-            Pair<BigInteger, BigInteger> sizeIndex = MathUtils.logarithmicDemux(bi);
+            Pair<BigInteger, BigInteger> sizeIndex = IntegerUtils.logarithmicDemux(bi);
             int size = sizeIndex.b.intValueExact() + 1;
-            return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
+            return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
         };
-        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
+        return optionalMap(f::apply, P.naturalBigIntegers());
     }
 
     public static @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
@@ -1467,11 +1424,11 @@ public final class Combinatorics {
                 return Optional.<List<T>>empty();
             }
             bi = bi.subtract(BigInteger.ONE);
-            Pair<BigInteger, BigInteger> sizeIndex = MathUtils.logarithmicDemux(bi);
+            Pair<BigInteger, BigInteger> sizeIndex = IntegerUtils.logarithmicDemux(bi);
             int size = sizeIndex.b.intValueExact() + minSize;
-            return ii.get(map(BigInteger::intValueExact, MathUtils.demux(size, sizeIndex.a)));
+            return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
         };
-        return map(Optional::get, filter(Optional::isPresent, map(f::apply, P.naturalBigIntegers())));
+        return optionalMap(f::apply, P.naturalBigIntegers());
     }
 
     public static @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
@@ -1528,67 +1485,11 @@ public final class Combinatorics {
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
                 Optional::get,
-                takeWhile(Optional::isPresent, map(i -> cxs.select(MathUtils.bits(i)), rangeUp(BigInteger.ZERO)))
+                takeWhile(Optional::isPresent, map(i -> cxs.select(IntegerUtils.bits(i)), rangeUp(BigInteger.ZERO)))
         );
     }
 
     public static @NotNull Iterable<String> substrings(@NotNull String s) {
         return map(IterableUtils::charsToString, subsequences(fromString(s)));
-    }
-
-    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
-        return () -> new Iterator<List<Integer>>() {
-            private List<Integer> indices = start;
-
-            @Override
-            public boolean hasNext() {
-                return indices != null;
-            }
-
-            @Override
-            public List<Integer> next() {
-                List<Integer> oldIndices = indices;
-                if (weaklyDecreasing(indices)) {
-                    indices = null;
-                } else {
-                    int i;
-                    int previous = -1;
-                    for (i = indices.size() - 1; i >= 0; i--) {
-                        if (indices.get(i) < previous) break;
-                        previous = indices.get(i);
-                    }
-                    i++;
-                    Iterable<Integer> prefix = take(i - 1, indices);
-                    Iterable<Integer> suffix = drop(i - 1, indices);
-                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
-                    indices = toList(
-                            concat(
-                                    (Iterable<Iterable<Integer>>) Arrays.asList(
-                                            prefix,
-                                            Collections.singletonList(pivot),
-                                            sort(delete(pivot, suffix))
-                                    )
-                            )
-                    );
-                }
-                return oldIndices;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
-        };
-    }
-
-    public static @NotNull <T> Iterable<List<T>> permutationsIncreasing(@NotNull Iterable<T> xs) {
-        List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, rangeUp(0)));
-        List<Integer> startingIndices = sort(map(indexMap::get, xs));
-        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
-    }
-
-    public static @NotNull Iterable<String> permutationsIncreasing(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutationsIncreasing(fromString(s)));
     }
 }

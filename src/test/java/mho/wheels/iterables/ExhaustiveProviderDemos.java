@@ -1,14 +1,16 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
-@SuppressWarnings({"UnusedDeclaration", "ConstantConditions"})
+@SuppressWarnings("UnusedDeclaration")
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
@@ -164,6 +166,111 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Character, Character> p : take(SMALL_LIMIT, P.pairs(P.characters()))) {
             System.out.println("range(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " + cits(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_BinaryFraction() {
+        initialize();
+        for (BinaryFraction bf : take(SMALL_LIMIT, P.binaryFractions())) {
+            System.out.println("rangeUp(" + bf + ") = " + its(EP.rangeUp(bf)));
+        }
+    }
+
+    private static void demoRangeDown_BinaryFraction() {
+        initialize();
+        for (BinaryFraction bf : take(SMALL_LIMIT, P.binaryFractions())) {
+            System.out.println("rangeDown(" + bf + ") = " + its(EP.rangeDown(bf)));
+        }
+    }
+
+    private static void demoRange_BinaryFraction_BinaryFraction() {
+        initialize();
+        for (Pair<BinaryFraction, BinaryFraction> p : take(SMALL_LIMIT, P.pairs(P.binaryFractions()))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_float() {
+        initialize();
+        for (float f : take(SMALL_LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("rangeUp(" + f + ") = " + its(EP.rangeUp(f)));
+        }
+    }
+
+    private static void demoRangeDown_float() {
+        initialize();
+        for (float f : take(SMALL_LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
+            System.out.println("rangeDown(" + f + ") = " + its(EP.rangeDown(f)));
+        }
+    }
+
+    private static void demoRange_float_float() {
+        initialize();
+        for (Pair<Float, Float> p : take(SMALL_LIMIT, P.pairs(filter(f -> !Float.isNaN(f), P.floats())))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_double() {
+        initialize();
+        for (double d : take(SMALL_LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("rangeUp(" + d + ") = " + its(EP.rangeUp(d)));
+        }
+    }
+
+    private static void demoRangeDown_double() {
+        initialize();
+        for (double d : take(SMALL_LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
+            System.out.println("rangeDown(" + d + ") = " + its(EP.rangeDown(d)));
+        }
+    }
+
+    private static void demoRange_double_double() {
+        initialize();
+        for (Pair<Double, Double> p : take(SMALL_LIMIT, P.pairs(filter(d -> !Double.isNaN(d), P.doubles())))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUp_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeUp(" + bd + ") = " + its(EP.rangeUp(bd)));
+        }
+    }
+
+    private static void demoRangeDown_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeDown(" + bd + ") = " + its(EP.rangeDown(bd)));
+        }
+    }
+
+    private static void demoRange_BigDecimal_BigDecimal() {
+        initialize();
+        for (Pair<BigDecimal, BigDecimal> p : take(SMALL_LIMIT, P.pairs(P.bigDecimals()))) {
+            System.out.println("range(" + p.a + ", " + p.b + ") = " + its(EP.range(p.a, p.b)));
+        }
+    }
+
+    private static void demoRangeUpCanonical_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeUpCanonical(" + bd + ") = " + its(EP.rangeUpCanonical(bd)));
+        }
+    }
+
+    private static void demoRangeDownCanonical_BigDecimal() {
+        initialize();
+        for (BigDecimal bd : take(SMALL_LIMIT, P.bigDecimals())) {
+            System.out.println("rangeDownCanonical(" + bd + ") = " + its(EP.rangeDownCanonical(bd)));
+        }
+    }
+
+    private static void demoRangeCanonical_BigDecimal_BigDecimal() {
+        initialize();
+        for (Pair<BigDecimal, BigDecimal> p : take(SMALL_LIMIT, P.pairs(P.bigDecimals()))) {
+            System.out.println("rangeCanonical(" + p.a + ", " + p.b + ") = " + its(EP.rangeCanonical(p.a, p.b)));
         }
     }
 }

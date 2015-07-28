@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,17 +19,16 @@ import static mho.wheels.ordering.Ordering.EQ;
  * @param <A> the type of the first value
  * @param <B> the type of the second value
  */
-@SuppressWarnings("ConstantConditions")
 public final class Pair<A, B> {
     /**
      * The first component of the {@code Pair}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Pair}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * Constructs a {@code Pair} from two values.
@@ -44,7 +42,7 @@ public final class Pair<A, B> {
      * @param a the first value
      * @param b the second value
      */
-    public Pair(@Nullable A a, @Nullable B b) {
+    public Pair(A a, B b) {
         this.a = a;
         this.b = b;
     }
@@ -92,7 +90,7 @@ public final class Pair<A, B> {
      * @return {@code this}={@code that}
      */
     @Override
-    public boolean equals(@Nullable Object that) {
+    public boolean equals(Object that) {
         if (this == that) return true;
         if (that == null || getClass() != that.getClass()) return false;
         Pair pair = (Pair) that;

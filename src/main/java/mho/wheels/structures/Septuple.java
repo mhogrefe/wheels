@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,37 +28,37 @@ public final class Septuple<A, B, C, D, E, F, G> {
     /**
      * The first component of the {@code Septuple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Septuple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Septuple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Septuple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * The fifth component of the {@code Septuple}
      */
-    public final @Nullable E e;
+    public final E e;
 
     /**
      * The fifth component of the {@code Septuple}
      */
-    public final @Nullable F f;
+    public final F f;
 
     /**
      * The sixth component of the {@code Septuple}
      */
-    public final @Nullable G g;
+    public final G g;
 
     /**
      * Constructs a {@code Septuple} from seven values.
@@ -83,14 +82,7 @@ public final class Septuple<A, B, C, D, E, F, G> {
      * @param f the sixth value
      * @param g the seventh value
      */
-    public Septuple(
-            @Nullable A a,
-            @Nullable B b,
-            @Nullable C c,
-            @Nullable D d,
-            @Nullable E e,
-            @Nullable F f,
-            @Nullable G g) {
+    public Septuple(A a, B b, C c, D d, E e, F f, G g) {
         this.a = a;
         this.b = b;
         this.c = c;

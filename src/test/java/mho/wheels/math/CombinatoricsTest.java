@@ -1,6 +1,7 @@
 package mho.wheels.math;
 
 import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -12,7 +13,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.Combinatorics.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.aeqit;
 import static org.junit.Assert.fail;
 
 public strictfp class CombinatoricsTest {
@@ -40,7 +42,7 @@ public strictfp class CombinatoricsTest {
     public void testFactorial_BigInteger() {
         aeq(factorial(BigInteger.ZERO), 1);
         aeq(factorial(BigInteger.ONE), 1);
-        aeq(factorial(BigInteger.valueOf(2)), 2);
+        aeq(factorial(IntegerUtils.TWO), 2);
         aeq(factorial(BigInteger.valueOf(3)), 6);
         aeq(factorial(BigInteger.valueOf(4)), 24);
         aeq(factorial(BigInteger.valueOf(5)), 120);
@@ -50,7 +52,7 @@ public strictfp class CombinatoricsTest {
                 "9332621544394415268169923885626670049071596826438162146859296389521759999322991" +
                 "5608941463976156518286253697920827223758251185210916864000000000000000000000000");
         try {
-            factorial(BigInteger.valueOf(-1));
+            factorial(IntegerUtils.NEGATIVE_ONE);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -77,7 +79,7 @@ public strictfp class CombinatoricsTest {
     public void testSubfactorial_BigInteger() {
         aeq(subfactorial(BigInteger.ZERO), 1);
         aeq(subfactorial(BigInteger.ONE), 0);
-        aeq(subfactorial(BigInteger.valueOf(2)), 1);
+        aeq(subfactorial(IntegerUtils.TWO), 1);
         aeq(subfactorial(BigInteger.valueOf(3)), 2);
         aeq(subfactorial(BigInteger.valueOf(4)), 9);
         aeq(subfactorial(BigInteger.valueOf(5)), 44);
@@ -87,7 +89,7 @@ public strictfp class CombinatoricsTest {
                 "3433279598416380476519597752677614203236578380537578498354340028268518079332763" +
                 "2432791396429850988990237345920155783984828001486412574060553756854137069878601");
         try {
-            subfactorial(BigInteger.valueOf(-1));
+            subfactorial(IntegerUtils.NEGATIVE_ONE);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1004,7 +1006,7 @@ public strictfp class CombinatoricsTest {
     public void testListsIncreasing_BigInteger_Iterable() {
         aeqit(listsIncreasing(BigInteger.ZERO, Arrays.asList(1, 2, 3)), "[[]]");
         aeqit(listsIncreasing(BigInteger.ONE, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeqit(listsIncreasing(BigInteger.valueOf(2), Arrays.asList(1, 2, 3)),
+        aeqit(listsIncreasing(IntegerUtils.TWO, Arrays.asList(1, 2, 3)),
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
         aeqit(listsIncreasing(BigInteger.valueOf(3), Arrays.asList(1, 2, 3)),
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
@@ -1025,10 +1027,10 @@ public strictfp class CombinatoricsTest {
 
         aeqit(listsIncreasing(BigInteger.ZERO, new ArrayList<Integer>()), "[[]]");
         aeqit(listsIncreasing(BigInteger.ONE, new ArrayList<Integer>()), "[]");
-        aeqit(listsIncreasing(BigInteger.valueOf(2), new ArrayList<Integer>()), "[]");
+        aeqit(listsIncreasing(IntegerUtils.TWO, new ArrayList<Integer>()), "[]");
         aeqit(listsIncreasing(BigInteger.valueOf(3), new ArrayList<Integer>()), "[]");
         try {
-            listsIncreasing(BigInteger.valueOf(-1), Arrays.asList(1, 2, 3));
+            listsIncreasing(IntegerUtils.NEGATIVE_ONE, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -1066,24 +1068,24 @@ public strictfp class CombinatoricsTest {
         aeq(length(stringsIncreasing(BigInteger.ZERO, "abc")), 1);
         aeq(length(stringsIncreasing(0, "abc")), 1);
         aeqit(stringsIncreasing(BigInteger.ONE, "abc"), "[a, b, c]");
-        aeqit(stringsIncreasing(BigInteger.valueOf(2), "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeqit(stringsIncreasing(IntegerUtils.TWO, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
         aeqit(stringsIncreasing(BigInteger.valueOf(3), "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
         aeqit(stringsIncreasing(BigInteger.ZERO, "a"), "[]");
         aeqit(stringsIncreasing(BigInteger.ONE, "a"), "[a]");
-        aeqit(stringsIncreasing(BigInteger.valueOf(2), "a"), "[aa]");
+        aeqit(stringsIncreasing(IntegerUtils.TWO, "a"), "[aa]");
         aeqit(stringsIncreasing(BigInteger.valueOf(3), "a"), "[aaa]");
         aeqit(stringsIncreasing(BigInteger.ZERO, ""), "[]");
         aeq(length(stringsIncreasing(BigInteger.ZERO, "")), 1);
         aeqit(stringsIncreasing(BigInteger.ONE, ""), "[]");
         aeq(length(stringsIncreasing(BigInteger.ONE, "")), 0);
-        aeqit(stringsIncreasing(BigInteger.valueOf(2), ""), "[]");
-        aeq(length(stringsIncreasing(BigInteger.valueOf(2), "")), 0);
+        aeqit(stringsIncreasing(IntegerUtils.TWO, ""), "[]");
+        aeq(length(stringsIncreasing(IntegerUtils.TWO, "")), 0);
         aeqit(stringsIncreasing(BigInteger.valueOf(3), ""), "[]");
         aeq(length(stringsIncreasing(BigInteger.valueOf(3), "")), 0);
         try {
-            stringsIncreasing(BigInteger.valueOf(-1), "");
+            stringsIncreasing(IntegerUtils.NEGATIVE_ONE, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

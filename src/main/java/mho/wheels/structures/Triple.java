@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,22 +20,21 @@ import static mho.wheels.ordering.Ordering.EQ;
  * @param <B> the type of the second value
  * @param <C> the type of the third value
  */
-@SuppressWarnings("ConstantConditions")
 public final class Triple<A, B, C> {
     /**
      * The first component of the {@code Triple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Triple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Triple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * Constructs a {@code Triple} from three values.
@@ -52,7 +50,7 @@ public final class Triple<A, B, C> {
      * @param b the second value
      * @param c the third value
      */
-    public Triple(@Nullable A a, @Nullable B b, @Nullable C c) {
+    public Triple(A a, B b, C c) {
         this.a = a;
         this.b = b;
         this.c = c;

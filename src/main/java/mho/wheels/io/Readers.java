@@ -1,4 +1,4 @@
-package mho.wheels.misc;
+package mho.wheels.io;
 
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.NullableOptional;
@@ -19,7 +19,6 @@ import static mho.wheels.iterables.IterableUtils.*;
  * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
  * exception. Instead, they return empty {@code Optional}s.
  */
-@SuppressWarnings("ConstantConditions")
 public class Readers {
     /**
      * The length of the longest {@code String} representation of any positive {@code Byte}.
@@ -49,15 +48,15 @@ public class Readers {
     /**
      * Turns a function {@code read} from {@code String} to {@code T} into a function from {@code String} to
      * {@code Optional<T>} such that the new function returns an empty {@code Optional} whenever {@code read} would
-     * throw an exception, or whenever the {@code T} value produced by {@code read} has a different {@code String}
-     * representation than the original {@code String}. Consider calling
+     * throw an exception, return null, or whenever the {@code T} value produced by {@code read} has a different
+     * {@code String} representation than the original {@code String}. Consider calling
      * {@code genericRead(Integer::parseInt).apply("0xff")}. This returns an empty {@code Optional}, since although
      * {@code "0xff"} can be read as 127, it isn't the string returned by {@code Integer.toString(127)}.
      *
      * <ul>
      *  <li>{@code read} must be non-null.</li>
      *  <li>The result must be called on {@code String}s {@code s} such that {@code read.apply(s)} terminates (possibly
-     *  by throwing an exception) and does not return null.</li>
+     *  by throwing an exception).</li>
      * </ul>
      *
      * @param read the original read function
@@ -73,8 +72,7 @@ public class Readers {
             } catch (Exception e) {
                 return Optional.empty();
             }
-            if (x == null)
-                throw new IllegalArgumentException("read function cannot return null on " + s);
+            if (x == null) return Optional.empty();
             return x.toString().equals(s) ? Optional.of(x) : Optional.<T>empty();
         };
     }

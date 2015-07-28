@@ -1,4 +1,4 @@
-package mho.wheels.misc;
+package mho.wheels.io;
 
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static mho.wheels.misc.Readers.*;
+import static mho.wheels.io.Readers.*;
 import static org.junit.Assert.*;
 
 public class ReadersTest {
@@ -89,11 +89,7 @@ public class ReadersTest {
         assertFalse(f.apply("").isPresent());
         assertFalse(f.apply(" ").isPresent());
         assertFalse(f.apply("null").isPresent());
-
-        try {
-            genericRead(s -> null).apply("four");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        assertFalse(genericRead(s -> null).apply("four").isPresent());
     }
 
     @Test

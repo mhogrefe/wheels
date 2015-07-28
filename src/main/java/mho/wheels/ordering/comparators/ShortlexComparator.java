@@ -2,10 +2,10 @@ package mho.wheels.ordering.comparators;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static mho.wheels.ordering.Ordering.EQ;
 
@@ -17,18 +17,18 @@ import static mho.wheels.ordering.Ordering.EQ;
  *
  * @param <T> the type of the {@code Iterable}s' values
  */
-public class ShortlexComparator<T extends Comparable<T>> implements Comparator<Iterable<T>> {
+public final class ShortlexComparator<T extends Comparable<T>> implements Comparator<Iterable<T>> {
     /**
      * The {@code Comparator} used to compare values of type {@code T}. It can be null, in which case the natural
      * ordering of {@code T} is used.
      */
-    private final @Nullable Comparator<T> elementComparator;
+    private final @NotNull Optional<Comparator<T>> elementComparator;
 
     /**
      * Constructs a {@code ShortlexComparator} which uses the natural ordering to compare elements.
      */
     public ShortlexComparator() {
-        this.elementComparator = null;
+        this.elementComparator = Optional.empty();
     }
 
     /**
@@ -42,7 +42,7 @@ public class ShortlexComparator<T extends Comparable<T>> implements Comparator<I
      */
     @SuppressWarnings("NullableProblems")
     public ShortlexComparator(@NotNull Comparator<T> elementComparator) {
-        this.elementComparator = elementComparator;
+        this.elementComparator = Optional.of(elementComparator);
     }
 
     /**
@@ -79,10 +79,10 @@ public class ShortlexComparator<T extends Comparable<T>> implements Comparator<I
         ysi = ys.iterator();
         while (xsi.hasNext()) {
             Ordering elementOrdering;
-            if (elementComparator == null) {
-                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
+            if (elementComparator.isPresent()) {
+                elementOrdering = Ordering.compare(elementComparator.get(), xsi.next(), ysi.next());
             } else {
-                elementOrdering = Ordering.compare(elementComparator, xsi.next(), ysi.next());
+                elementOrdering = Ordering.compare(xsi.next(), ysi.next());
             }
             if (elementOrdering != EQ) return elementOrdering.toInt();
         }

@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.MathUtils;
+import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,6 @@ import static mho.wheels.ordering.Ordering.*;
  * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
  * {@link mho.wheels.math.Combinatorics}).
  */
-@SuppressWarnings("ConstantConditions")
 public final strictfp class IterableUtils {
     /**
      * Disallow instantiation
@@ -403,10 +403,12 @@ public final strictfp class IterableUtils {
         if (Float.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         Iterable<Float> fs = map(BigDecimal::floatValue, rangeUp(new BigDecimal(Float.toString(a))));
-        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -433,10 +435,12 @@ public final strictfp class IterableUtils {
         if (Double.isNaN(a))
             throw new IllegalArgumentException("cannot begin a range with NaN");
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
-        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)) : ds;
+        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)) : ds;
     }
 
     /**
@@ -764,7 +768,9 @@ public final strictfp class IterableUtils {
         if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Float.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) : Collections.singletonList(Float.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Float.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Float.POSITIVE_INFINITY);
         }
         if (Float.isInfinite(b)) {
             return rangeUp(a);
@@ -773,7 +779,7 @@ public final strictfp class IterableUtils {
                 BigDecimal::floatValue,
                 range(new BigDecimal(Float.toString(a)), new BigDecimal(Float.toString(b)))
         );
-        return Float.valueOf(a).equals(-0.0f) ? cons(-0.0f, tail(fs)): fs;
+        return FloatingPointUtils.isNegativeZero(Float.valueOf(a)) ? cons(-0.0f, tail(fs)): fs;
     }
 
     /**
@@ -809,7 +815,9 @@ public final strictfp class IterableUtils {
         if (a == b) return Collections.singletonList(a);
         if (a > b) return new ArrayList<>();
         if (Double.isInfinite(a)) {
-            return a < 0 ? cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) : Collections.singletonList(Double.POSITIVE_INFINITY);
+            return a < 0 ?
+                    cycle(Collections.singletonList(Double.NEGATIVE_INFINITY)) :
+                    Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         if (Double.isInfinite(b)) {
             return rangeUp(a);
@@ -818,7 +826,7 @@ public final strictfp class IterableUtils {
                 BigDecimal::doubleValue,
                 range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
         );
-        return Double.valueOf(a).equals(-0.0) ? cons(-0.0, tail(ds)): ds;
+        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)): ds;
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
@@ -1322,7 +1330,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code Iterable}'s element type
      * @return the {@code Iterable}'s first element
      */
-    public static @Nullable <T> T head(@NotNull Iterable<T> xs) {
+    public static <T> T head(@NotNull Iterable<T> xs) {
         return xs.iterator().next();
     }
 
@@ -1339,7 +1347,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code List}'s element type
      * @return the {@code List}'s first element
      */
-    public static @Nullable <T> T head(@NotNull List<T> xs) {
+    public static <T> T head(@NotNull List<T> xs) {
         return xs.get(0);
     }
 
@@ -1356,7 +1364,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code SortedSet}'s element type
      * @return the {@code SortedSet}'s first element
      */
-    public static @Nullable <T> T head(@NotNull SortedSet<T> xs) {
+    public static <T> T head(@NotNull SortedSet<T> xs) {
         return xs.first();
     }
 
@@ -1389,7 +1397,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code Iterable}'s element type
      * @return the {@code Iterable}'s last element
      */
-    public static @Nullable <T> T last(@NotNull Iterable<T> xs) {
+    public static <T> T last(@NotNull Iterable<T> xs) {
         T previous = null;
         boolean empty = true;
         for (T x : xs) {
@@ -1414,7 +1422,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code List}'s element type
      * @return the {@code List}'s last element
      */
-    public static @Nullable <T> T last(@NotNull List<T> xs) {
+    public static <T> T last(@NotNull List<T> xs) {
         return xs.get(xs.size() - 1);
     }
 
@@ -1431,7 +1439,7 @@ public final strictfp class IterableUtils {
      * @param <T> the {@code SortedSet}'s element type
      * @return the {@code SortedSet}'s last element
      */
-    public static @Nullable <T> T last(@NotNull SortedSet<T> xs) {
+    public static <T> T last(@NotNull SortedSet<T> xs) {
         return xs.last();
     }
 
@@ -2165,7 +2173,7 @@ public final strictfp class IterableUtils {
         );
     }
 
-    public static @Nullable <A, B> B foldl(@NotNull BiFunction<B, A, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
+    public static <A, B> B foldl(@NotNull BiFunction<B, A, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
         B result = z;
         for (A x : xs) {
             result = f.apply(result, x);
@@ -2173,7 +2181,7 @@ public final strictfp class IterableUtils {
         return result;
     }
 
-    public static @Nullable <A> A foldl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+    public static <A> A foldl1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         A result = null;
         boolean started = false;
         for (A x : xs) {
@@ -2187,12 +2195,12 @@ public final strictfp class IterableUtils {
         return result;
     }
 
-    public static @Nullable <A, B> B foldr(@NotNull BiFunction<A, B, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
+    public static <A, B> B foldr(@NotNull BiFunction<A, B, B> f, @Nullable B z, @NotNull Iterable<A> xs) {
         //noinspection unchecked
         return foldl((x, y) -> f.apply(y, x), z, reverse(xs));
     }
 
-    public static @Nullable <A> A foldr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
+    public static <A> A foldr1(@NotNull BiFunction<A, A, A> f, @NotNull Iterable<A> xs) {
         //noinspection unchecked
         return foldl1((x, y) -> f.apply(y, x), reverse(xs));
     }
@@ -2243,6 +2251,20 @@ public final strictfp class IterableUtils {
             sb.append(f.apply(x));
         }
         return sb.toString();
+    }
+
+    public static @NotNull <A, B> Iterable<B> optionalMap(
+            @NotNull Function<A, Optional<B>> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return map(Optional::get, filter(Optional::isPresent, map(f, xs)));
+    }
+
+    public static @NotNull <A, B> Iterable<B> nullableOptionalMap(
+            @NotNull Function<A, NullableOptional<B>> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return map(NullableOptional::get, filter(NullableOptional::isPresent, map(f, xs)));
     }
 
     public static boolean and(@NotNull Iterable<Boolean> xs) {
@@ -2547,7 +2569,7 @@ public final strictfp class IterableUtils {
         return foldl(BigDecimal::multiply, BigDecimal.ONE, xs);
     }
 
-    public static @Nullable <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> T maximum(@NotNull Iterable<T> xs) {
         return foldl1((x, y) -> max(x, y), xs);
     }
 
@@ -2555,7 +2577,7 @@ public final strictfp class IterableUtils {
         return foldl1((x, y) -> max(x, y), fromString(s));
     }
 
-    public static @Nullable <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
+    public static <T extends Comparable<T>> T minimum(@NotNull Iterable<T> xs) {
         return foldl1((x, y) -> min(x, y), xs);
     }
 
@@ -3671,13 +3693,13 @@ public final strictfp class IterableUtils {
     }
 
     /**
-     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow or may occur. If {@code xs}
+     * Returns the differences between successive {@code Float}s in {@code xs}. Overflow may occur. If {@code xs}
      * contains a single {@code Float}, an empty {@code Iterable} is returned. {@code xs} cannot be empty. Does not
      * support removal.
      *
      * <ul>
      *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result is finite and does not contain any nulls.</li>
+     *  <li>The result is finite and does not contain any nulls or negative zeros.</li>
      * </ul>
      *
      * Length is |{@code xs}|–1
@@ -3690,7 +3712,7 @@ public final strictfp class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith((x, y) -> y - x, xs);
+        return map(FloatingPointUtils::absNegativeZeros, adjacentPairsWith((x, y) -> y - x, xs));
     }
 
     /**
@@ -3699,8 +3721,8 @@ public final strictfp class IterableUtils {
      * support removal.
      *
      * <ul>
-     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls.</li>
-     *  <li>The result is finite and does not contain any nulls.</li>
+     *  <li>{@code xs} must be finite, must not be empty and may not contain any nulls or negative zeros.</li>
+     *  <li>The result is finite and does not contain any nulls or negative zeros.</li>
      * </ul>
      *
      * Length is |{@code xs}|–1
@@ -3713,7 +3735,7 @@ public final strictfp class IterableUtils {
             throw new IllegalArgumentException("cannot get delta of empty Iterable");
         if (head(xs) == null)
             throw new NullPointerException();
-        return adjacentPairsWith((x, y) -> y - x, xs);
+        return map(FloatingPointUtils::absNegativeZeros, adjacentPairsWith((x, y) -> y - x, xs));
     }
 
     /**
@@ -3774,38 +3796,23 @@ public final strictfp class IterableUtils {
         return all(p -> p.a != EQ && p.a == p.b.invert(), compares);
     }
 
-    public static <T extends Comparable<T>> boolean increasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean increasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> lt(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean decreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean decreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> gt(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean weaklyIncreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean weaklyIncreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> le(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean weaklyDecreasing(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean weaklyDecreasing(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return and(adjacentPairsWith((x, y) -> ge(comparator, x, y), xs));
     }
 
-    public static <T extends Comparable<T>> boolean zigzagging(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xs
-    ) {
+    public static <T> boolean zigzagging(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         Iterable<Pair<Ordering, Ordering>> compares = adjacentPairsWith(
                 (a, b) -> new Pair<Ordering, Ordering>(a, b),
                 adjacentPairsWith((x, y) -> compare(comparator, x, y), xs)
@@ -3943,6 +3950,74 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<T> filterInfinite(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                return result;
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<T> filter(int n, @NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private int i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < n;
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                i++;
+                return result;
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<T> filter(
+            @NotNull BigInteger n,
+            @NotNull Predicate<T> p,
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private @NotNull BigInteger i = BigInteger.ZERO;
+
+            @Override
+            public boolean hasNext() {
+                return lt(i, n);
+            }
+
+            @Override
+            public T next() {
+                T result;
+                do {
+                    result = xsi.next();
+                } while (!p.test(result));
+                i = i.add(BigInteger.ONE);
+                return result;
+            }
+        };
+    }
+
     public static @NotNull String filter(@NotNull Predicate<Character> p, @NotNull String s) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
@@ -3968,7 +4043,7 @@ public final strictfp class IterableUtils {
         return new Pair<>(sba.toString(), sbb.toString());
     }
 
-    public static @Nullable <T> T get(@NotNull Iterable<T> xs, int i) {
+    public static <T> T get(@NotNull Iterable<T> xs, int i) {
         if (i < 0)
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3981,7 +4056,7 @@ public final strictfp class IterableUtils {
         return element;
     }
 
-    public static @Nullable <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
+    public static <T> T get(@NotNull Iterable<T> xs, @NotNull BigInteger i) {
         if (lt(i, BigInteger.ZERO))
             throw new IndexOutOfBoundsException();
         Iterator<T> xsi = xs.iterator();
@@ -3994,7 +4069,7 @@ public final strictfp class IterableUtils {
         return element;
     }
 
-    public static @Nullable <T> T get(@NotNull List<T> xs, int i) {
+    public static <T> T get(@NotNull List<T> xs, int i) {
         return xs.get(i);
     }
 
@@ -5227,10 +5302,7 @@ public final strictfp class IterableUtils {
         return sb.toString();
     }
 
-    public static @NotNull <T extends Comparable<T>> List<T> sort(
-            @NotNull Comparator<T> comparator,
-            @NotNull Iterable<T> xss
-    ) {
+    public static @NotNull <T> List<T> sort(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xss) {
         List<T> list = toList(xss);
         Collections.sort(list, comparator);
         return list;
@@ -5242,7 +5314,7 @@ public final strictfp class IterableUtils {
         return charsToString(list);
     }
 
-    public static @Nullable <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static <T> T maximum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1((x, y) -> max(comparator, x, y), xs);
     }
 
@@ -5250,7 +5322,7 @@ public final strictfp class IterableUtils {
         return foldl1((x, y) -> max(comparator, x, y), fromString(s));
     }
 
-    public static @Nullable <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
+    public static <T> T minimum(@NotNull Comparator<T> comparator, @NotNull Iterable<T> xs) {
         return foldl1((x, y) -> min(comparator, x, y), xs);
     }
 

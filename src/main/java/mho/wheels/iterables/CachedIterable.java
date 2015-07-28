@@ -10,12 +10,12 @@ import java.util.*;
 public class CachedIterable<T> {
     private final @NotNull Iterator<T> iterator;
     private final @NotNull List<T> cache;
-    private @Nullable Integer size;
+    private @NotNull Optional<Integer> size;
 
     public CachedIterable(@NotNull Iterable<T> iterable) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
-        size = null;
+        size = Optional.empty();
     }
 
     public @NotNull NullableOptional<T> get(int i) {
@@ -61,12 +61,12 @@ public class CachedIterable<T> {
     }
 
     public int size() {
-        if (size != null) return size;
+        if (size.isPresent()) return size.get();
         while (iterator.hasNext()) {
             cache.add(iterator.next());
         }
-        size = cache.size();
-        return size;
+        size = Optional.of(cache.size());
+        return size.get();
     }
 
     public @NotNull NullableOptional<T> getLast() {

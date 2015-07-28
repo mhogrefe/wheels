@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,27 +26,27 @@ public final class Quintuple<A, B, C, D, E> {
     /**
      * The first component of the {@code Quintuple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Quintuple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Quintuple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Quintuple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * The fifth component of the {@code Quintuple}
      */
-    public final @Nullable E e;
+    public final E e;
 
     /**
      * Constructs a {@code Quintuple} from five values.
@@ -67,7 +66,7 @@ public final class Quintuple<A, B, C, D, E> {
      * @param d the fourth value
      * @param e the fifth value
      */
-    public Quintuple(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d, @Nullable E e) {
+    public Quintuple(A a, B b, C c, D d, E e) {
         this.a = a;
         this.b = b;
         this.c = c;

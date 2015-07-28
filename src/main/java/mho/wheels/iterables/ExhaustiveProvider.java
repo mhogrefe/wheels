@@ -1,18 +1,21 @@
 package mho.wheels.iterables;
 
+import mho.wheels.math.BinaryFraction;
 import mho.wheels.math.Combinatorics;
-import mho.wheels.misc.FloatingPointUtils;
+import mho.wheels.math.MathUtils;
+import mho.wheels.numberUtils.BigDecimalUtils;
+import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -21,7 +24,6 @@ import static mho.wheels.ordering.Ordering.*;
  * An {@code ExhaustiveProvider} produces {@code Iterable}s that generate some set of values in a specified order.
  * There is only a single instance of this class.
  */
-@SuppressWarnings("ConstantConditions")
 public final strictfp class ExhaustiveProvider extends IterableProvider {
     /**
      * The single instance of this class.
@@ -40,7 +42,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private ExhaustiveProvider() {}
 
     /**
-     * An {@link Iterable} that contains both {@link boolean}s. Does not support removal.
+     * An {@link Iterable} that generates both {@link boolean}s. Does not support removal.
      *
      * Length is 2
      */
@@ -50,7 +52,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Ordering}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Ordering}s in increasing order. Does not support removal.
      *
      * Length is 3
      */
@@ -59,7 +61,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Ordering}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Ordering}s. Does not support removal.
      *
      * Length is 3
      */
@@ -69,7 +71,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link RoundingMode}s. Does not support removal.
+     * An {@code Iterable} that generates all {@link RoundingMode}s. Does not support removal.
      *
      * Length is 8
      */
@@ -125,7 +127,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Byte}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Byte}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 256
      */
@@ -134,7 +136,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Short}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Short}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -143,7 +145,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Integer}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Integer}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -152,7 +154,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@link Long}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@link Long}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -161,7 +163,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup>–1 = 127
      */
@@ -171,7 +173,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>15</sup>–1 = 32,767
      */
@@ -181,7 +183,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>31</sup>–1 = 2,147,483,647
      */
@@ -191,7 +193,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>63</sup>–1 = 9,223,372,036,854,775,807
      */
@@ -201,7 +203,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@link BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@link BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -211,7 +213,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
      */
@@ -221,7 +223,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>15</sup> = 32,768
      */
@@ -231,7 +233,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>31</sup> = 2,147,483,648
      */
@@ -241,7 +243,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
      */
@@ -251,67 +253,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
-        return IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1));
+        return IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE);
     }
 
     /**
-     * An {@code Iterable} that contains all natural {@code Byte}s. Does not support removal.
-     *
-     * Length is 2<sup>7</sup> = 128
-     */
-    @Override
-    public @NotNull Iterable<Byte> naturalBytes() {
-        return IterableUtils.rangeUp((byte) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Short}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>15</sup> = 32,768
-     */
-    @Override
-    public @NotNull Iterable<Short> naturalShorts() {
-        return IterableUtils.rangeUp((short) 0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Integer}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>31</sup> = 2,147,483,648
-     */
-    @Override
-    public @NotNull Iterable<Integer> naturalIntegers() {
-        return IterableUtils.rangeUp(0);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code Long}s (including 0). Does not support removal.
-     *
-     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
-     */
-    @Override
-    public @NotNull Iterable<Long> naturalLongs() {
-        return IterableUtils.rangeUp(0L);
-    }
-
-    /**
-     * An {@code Iterable} that contains all natural {@code BigInteger}s (including 0). Does not support removal.
-     *
-     * Length is infinite
-     */
-    @Override
-    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        return rangeUp(BigInteger.ZERO);
-    }
-
-    /**
-     * An {@code Iterable} that contains all nonzero {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup>–1 = 127
      */
@@ -321,7 +273,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>16</sup>–1 = 65,535
      */
@@ -331,7 +283,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>32</sup>–1 = 4,294,967,295
      */
@@ -341,7 +293,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>64</sup>–1 = 18,446,744,073,709,551,615
      */
@@ -351,7 +303,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all nonzero {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -361,7 +313,57 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Byte}s. Does not support removal.
+     * An {@code Iterable} that generates all natural {@code Byte}s. Does not support removal.
+     *
+     * Length is 2<sup>7</sup> = 128
+     */
+    @Override
+    public @NotNull Iterable<Byte> naturalBytes() {
+        return IterableUtils.rangeUp((byte) 0);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Short}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>15</sup> = 32,768
+     */
+    @Override
+    public @NotNull Iterable<Short> naturalShorts() {
+        return IterableUtils.rangeUp((short) 0);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>31</sup> = 2,147,483,648
+     */
+    @Override
+    public @NotNull Iterable<Integer> naturalIntegers() {
+        return IterableUtils.rangeUp(0);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code Long}s (including 0). Does not support removal.
+     *
+     * Length is 2<sup>63</sup> = 9,223,372,036,854,775,808
+     */
+    @Override
+    public @NotNull Iterable<Long> naturalLongs() {
+        return IterableUtils.rangeUp(0L);
+    }
+
+    /**
+     * An {@code Iterable} that generates all natural {@code BigInteger}s (including 0). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigInteger> naturalBigIntegers() {
+        return rangeUp(BigInteger.ZERO);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Byte}s. Does not support removal.
      *
      * Length is 2<sup>8</sup> = 128
      */
@@ -371,7 +373,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Short}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Short}s. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -381,7 +383,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Integer}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Integer}s. Does not support removal.
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
@@ -391,7 +393,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Long}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Long}s. Does not support removal.
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
@@ -401,7 +403,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code BigInteger}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code BigInteger}s. Does not support removal.
      *
      * Length is infinite
      */
@@ -411,7 +413,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ASCII {@link Character}s in increasing order. Does not support
+     * An {@code Iterable} that generates all ASCII {@link Character}s in increasing order. Does not support
      * removal.
      *
      * Length is 2<sup>7</sup> = 128
@@ -421,7 +423,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ASCII {@code Character}s in an order which places "friendly" characters
+     * An {@code Iterable} that generates all ASCII {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>7</sup> = 128
@@ -443,7 +445,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Character}s in increasing order. Does not support removal.
+     * An {@code Iterable} that generates all {@code Character}s in increasing order. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
      */
@@ -452,7 +454,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all {@code Character}s in an order which places "friendly" characters
+     * An {@code Iterable} that generates all {@code Character}s in an order which places "friendly" characters
      * first. Does not support removal.
      *
      * Length is 2<sup>16</sup> = 65,536
@@ -600,7 +602,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     mux(
                             Arrays.asList(
                                     IterableUtils.rangeUp(BigInteger.ONE),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                             )
                     )
             );
@@ -743,14 +745,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
         if (a.signum() != 1) {
-            return IterableUtils.rangeBy(a, BigInteger.valueOf(-1));
+            return IterableUtils.rangeBy(a, IntegerUtils.NEGATIVE_ONE);
         } else {
             return cons(
                     BigInteger.ZERO,
                     mux(
                             Arrays.asList(
                                     IterableUtils.range(BigInteger.ONE, a),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1))
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE)
                             )
                     )
             );
@@ -910,8 +912,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
      *
      * <ul>
-     *  <li>{@code a} may be any {@code BigInteger}.</li>
-     *  <li>{@code b} may be any {@code BigInteger}.</li>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
      *  <li>The result is a non-removable {@code Iterable} containing {@code BigInteger}s.</li>
      * </ul>
      *
@@ -927,14 +929,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (a.signum() != -1 && b.signum() != -1) {
             return IterableUtils.range(a, b);
         } else if (a.signum() == -1 && b.signum() == -1) {
-            return IterableUtils.rangeBy(b, BigInteger.valueOf(-1), a);
+            return IterableUtils.rangeBy(b, IntegerUtils.NEGATIVE_ONE, a);
         } else {
             return cons(
                     BigInteger.ZERO,
                     mux(
                             Arrays.asList(
                                     IterableUtils.range(BigInteger.ONE, b),
-                                    IterableUtils.rangeBy(BigInteger.valueOf(-1), BigInteger.valueOf(-1), a)
+                                    IterableUtils.rangeBy(IntegerUtils.NEGATIVE_ONE, IntegerUtils.NEGATIVE_ONE, a)
                             )
                     )
             );
@@ -963,116 +965,249 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@link float}s in
-     * increasing order. Does not support removal.
+     * An {@code Iterable} that generates all positive {@link BinaryFraction}s. Does not support removal.
      *
-     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
+     * Length is infinite
      */
-    public @NotNull Iterable<Float> positiveOrdinaryFloatsIncreasing() {
-        return stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE));
+    @Override
+    public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
+        return map(
+                p -> BinaryFraction.of(p.a.shiftLeft(1).add(BigInteger.ONE), p.b),
+                pairsLogarithmicOrder(naturalBigIntegers(), integers())
+        );
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s in
-     * increasing order. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all negative {@link BinaryFraction}s. Does not support removal.
      *
-     * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
+     * Length is infinite
      */
-    public @NotNull Iterable<Float> negativeOrdinaryFloatsIncreasing() {
-        return stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE));
+    @Override
+    public @NotNull Iterable<BinaryFraction> negativeBinaryFractions() {
+        return map(BinaryFraction::negate, positiveBinaryFractions());
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code float}s in increasing
-     * order. Negative zero is not included, but positive zero is. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@link BinaryFraction}s. Does not support removal.
      *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>-1 = 4,278,190,079
+     * Length is infinite
      */
-    public @NotNull Iterable<Float> ordinaryFloatsIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, -Float.MAX_VALUE)),
-                Collections.singletonList(0.0f),
-                stopAt(f -> f == Float.MAX_VALUE, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
-        ));
+    @Override
+    public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
+        return mux(Arrays.asList(positiveBinaryFractions(), negativeBinaryFractions()));
     }
 
     /**
-     * An {@code Iterable} that contains all {@code float}s in increasing order. {@code NaN} is traditionally unordered,
-     * but here it is placed between negative zero and positive zero. Does not support removal.
+     * An {@code Iterable} that generates all {@link BinaryFraction}s. Does not support removal.
      *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
+     * Length is infinite
      */
-    public @NotNull Iterable<Float> floatsIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Float>>) Arrays.asList(
-                stopAt(f -> f == -Float.MIN_VALUE, iterate(FloatingPointUtils::successor, Float.NEGATIVE_INFINITY)),
-                Arrays.asList(-0.0f, Float.NaN, 0.0f),
-                stopAt(f -> f == Float.POSITIVE_INFINITY, iterate(FloatingPointUtils::successor, Float.MIN_VALUE))
-        ));
+    @Override
+    public @NotNull Iterable<BinaryFraction> binaryFractions() {
+        return cons(BinaryFraction.ZERO, nonzeroBinaryFractions());
     }
 
     /**
-     * An {@code Iterable} that contains all possible positive {@code float} mantissas. A {@code float}'s mantissa is
+     * An {@code Iterable} that generates all {@code BinaryFraction}s greater than or equal to {@code a}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BinaryFraction}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
+        return cons(a, map(bf -> bf.shiftLeft(a.getExponent()).add(a), positiveBinaryFractions()));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}s less than or equal to {@code a}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BinaryFraction}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
+        return cons(a, map(bf -> a.subtract(bf.shiftLeft(a.getExponent())), positiveBinaryFractions()));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}s between 0 and 1, exclusive. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s greater than 0 and less
+     *  than 1.</li>
+     * </ul>
+     *
+     * Length is infinite
+     */
+    private static @NotNull Iterable<BinaryFraction> positiveBinaryFractionsLessThanOne() {
+        return concatMap(
+                e -> map(
+                        i -> BinaryFraction.of(i.shiftLeft(1).add(BigInteger.ONE), -e),
+                        IterableUtils.range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(e - 1).subtract(BigInteger.ONE))
+                ),
+                IterableUtils.rangeUp(1)
+        );
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BinaryFraction}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
+     * </ul>
+     *
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BinaryFraction}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        switch (compare(a, b)) {
+            case GT: return Collections.emptyList();
+            case EQ: return Collections.singletonList(a);
+            case LT:
+                BinaryFraction difference = b.subtract(a);
+                int blockExponent = difference.getExponent();
+                BigInteger blockCount = difference.getMantissa();
+                return concat(
+                        map(
+                                i -> BinaryFraction.ONE.shiftLeft(blockExponent).multiply(BinaryFraction.of(i)).add(a),
+                                IterableUtils.range(BigInteger.ZERO, blockCount)
+                        ),
+                        concatMap(
+                                bf -> map(
+                                        j -> bf.add(BinaryFraction.of(j)).shiftLeft(blockExponent).add(a),
+                                        IterableUtils.range(BigInteger.ZERO, blockCount.subtract(BigInteger.ONE))
+                                ),
+                                positiveBinaryFractionsLessThanOne()
+                        )
+                );
+            default:
+                throw new IllegalStateException("unreachable");
+        }
+    }
+
+    /**
+     * An {@code Iterable} that generates all possible positive {@code float} mantissas. A {@code float}'s mantissa is
      * the unique odd integer that, when multiplied by a power of 2, equals the {@code float}. Does not support
      * removal.
      *
      * Length is 2<sup>23</sup> = 8,388,608
      */
-    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(1, 2, 1 << 24);
+    private static final @NotNull Iterable<Integer> FLOAT_MANTISSAS = IterableUtils.rangeBy(
+            1,
+            2,
+            1 << (FloatingPointUtils.FLOAT_FRACTION_WIDTH + 1)
+    );
 
     /**
-     * An {@code Iterable} that contains all possible float exponents. A positive float's exponent is the base-2
+     * An {@code Iterable} that generates all possible float exponents. A positive float's exponent is the base-2
      * logarithm of the float divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>8</sup>+23–2 = 277
      */
     private static final @NotNull Iterable<Integer> FLOAT_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 127), IterableUtils.rangeBy(-1, -1, -149)))
+            mux(
+                    Arrays.asList(INSTANCE.range(1, Float.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT))
+            )
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code float}s. Does
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code Float}s. Does
      * not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
-    @Override
-    public @NotNull Iterable<Float> positiveOrdinaryFloats() {
-        return map(
-                Optional::get,
-                filter(
-                        Optional::isPresent,
-                        map(p -> FloatingPointUtils.floatFromME(p.a, p.b), pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS))
-                )
+    private static @NotNull Iterable<Float> positiveOrdinaryFloats() {
+        return optionalMap(
+                p -> FloatingPointUtils.floatFromMantissaAndExponent(p.a, p.b),
+                INSTANCE.pairs(FLOAT_MANTISSAS, FLOAT_EXPONENTS)
         );
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code float}s.
-     * Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
+     * {@code Float}s. Does not support removal.
      *
      * Length is 2<sup>31</sup>–2<sup>23</sup>–1 = 2,139,095,039
      */
-    @Override
-    public @NotNull Iterable<Float> negativeOrdinaryFloats() {
+    private static @NotNull Iterable<Float> negativeOrdinaryFloats() {
         return map(f -> -f, positiveOrdinaryFloats());
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) floats. Negative zero is not
-     * included, but positive zero is. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code Float}s. Does
+     * not support removal.
      *
-     * Length is 2<sup>32</sup>–2<sup>24</sup>–1 = 4,278,190,079
+     * Length is 2<sup>32</sup>–2<sup>24</sup>–2 = 4,278,190,078
      */
-    @Override
-    public @NotNull Iterable<Float> ordinaryFloats() {
-        return cons(0.0f, mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats())));
+    private static @NotNull Iterable<Float> nonzeroOrdinaryFloats() {
+        return mux(Arrays.asList(positiveOrdinaryFloats(), negativeOrdinaryFloats()));
     }
 
     /**
-     * An {@code Iterable} that contains all {@code float}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Float}s, including {@code Infinity} but not positive
+     * zero. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
+     */
+    @Override
+    public @NotNull Iterable<Float> positiveFloats() {
+        return cons(Float.POSITIVE_INFINITY, positiveOrdinaryFloats());
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Float}s, including {@code -Infinity} but not negative
+     * zero. Does not support removal.
+     *
+     * Length is 2<sup>31</sup>–2<sup>23</sup> = 2,139,095,040
+     */
+    @Override
+    public @NotNull Iterable<Float> negativeFloats() {
+        return cons(Float.NEGATIVE_INFINITY, negativeOrdinaryFloats());
+    }
+
+    /**
+     * An {@code Iterable} that generates all nonzero {@code Float}s, including {@code NaN}, {@code Infinity}, and
+     * {@code -Infinity}. Does not support removal.
+     *
+     * Length is 2<sup>32</sup>–2<sup>24</sup>+1 = 4,278,190,081
+     */
+    @Override
+    public @NotNull Iterable<Float> nonzeroFloats() {
+        return concat(
+                Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY),
+                nonzeroOrdinaryFloats()
+        );
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Float}s, including {@code NaN}, positive and negative zeros,
+     * {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>32</sup>–2<sup>24</sup>+3 = 4,278,190,083
      */
@@ -1080,121 +1215,109 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull Iterable<Float> floats() {
         return concat(
                 Arrays.asList(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, 0.0f, -0.0f),
-                tail(ordinaryFloats())
+                nonzeroOrdinaryFloats()
         );
     }
 
     /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive
-     * {@link double}s in increasing order. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
-     */
-    public @NotNull Iterable<Double> positiveOrdinaryDoublesIncreasing() {
-        return stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative
-     * {@code double}s in increasing order. Negative zero is not included. Does not support removal.
-     *
-     * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
-     */
-    public @NotNull Iterable<Double> negativeOrdinaryDoublesIncreasing() {
-        return stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in
-     * increasing order. Negative zero is not included, but positive zero is. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
-     */
-    public @NotNull Iterable<Double> ordinaryDoublesIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, -Double.MAX_VALUE)),
-                Collections.singletonList(0.0),
-                stopAt(d -> d == Double.MAX_VALUE, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
-        ));
-    }
-
-    /**
-     * @return An {@code Iterable} that contains all {@code double}s in increasing order. {@code NaN} is traditionally
-     * unordered, but here it is placed between negative zero and positive zero. Does not support removal.
-     *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
-     */
-    public @NotNull Iterable<Double> doublesIncreasing() {
-        //noinspection RedundantCast
-        return concat((Iterable<Iterable<Double>>) Arrays.asList(
-                stopAt(d -> d == -Double.MIN_VALUE, iterate(FloatingPointUtils::successor, Double.NEGATIVE_INFINITY)),
-                Arrays.asList(-0.0, Double.NaN, 0.0),
-                stopAt(d -> d == Double.POSITIVE_INFINITY, iterate(FloatingPointUtils::successor, Double.MIN_VALUE))
-        ));
-    }
-
-    /**
-     * An {@code Iterable} that contains all possible positive {@code double} mantissas. A {@code double}'s mantissa is
-     * the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
+     * An {@code Iterable} that generates all possible positive {@code double} mantissas. A {@code double}'s mantissa
+     * is the unique odd integer that, when multiplied by a power of 2, equals the {@code double}. Does not support
      * removal.
      *
      * Length is 2<sup>52</sup> = 4,503,599,627,370,496
      */
-    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(1L, 2, 1L << 53);
+    private static final @NotNull Iterable<Long> DOUBLE_MANTISSAS = IterableUtils.rangeBy(
+            1L,
+            2,
+            1L << (FloatingPointUtils.DOUBLE_FRACTION_WIDTH + 1)
+    );
 
     /**
-     * An {@code Iterable} that contains all possible {@code double} exponents. A positive {@code double}'s exponent is
-     * the base-2 logarithm of the {@code double} divided by its mantissa. Does not support removal.
+     * An {@code Iterable} that generates all possible {@code double} exponents. A positive {@code double}'s exponent
+     * is the base-2 logarithm of the {@code double} divided by its mantissa. Does not support removal.
      *
      * Length is 2<sup>11</sup>+52–2 = 2,098
      */
     private static final @NotNull Iterable<Integer> DOUBLE_EXPONENTS = cons(
             0,
-            mux(Arrays.asList(INSTANCE.range(1, 1023), IterableUtils.rangeBy(-1, -1, -1074)))
+            mux(
+                    Arrays.asList(INSTANCE.range(1, Double.MAX_EXPONENT),
+                    IterableUtils.rangeBy(-1, -1, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT))
+            )
     );
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) positive {@code double}s. Does
-     * not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) positive {@code Double}s.
+     * Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    @Override
-    public @NotNull Iterable<Double> positiveOrdinaryDoubles() {
-        return map(
-                Optional::get,
-                filter(
-                        Optional::isPresent,
-                        map(p -> FloatingPointUtils.doubleFromME(p.a, p.b), pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS))
-                )
+    private static @NotNull Iterable<Double> positiveOrdinaryDoubles() {
+        return optionalMap(
+                p -> FloatingPointUtils.doubleFromMantissaAndExponent(p.a, p.b),
+                INSTANCE.pairs(DOUBLE_MANTISSAS, DOUBLE_EXPONENTS)
         );
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) negative {@code double}s in
-     * increasing order. Negative zero is not included. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN}, negative zero, nor infinite) negative
+     * {@code Double}s. Does not support removal.
      *
      * Length is 2<sup>63</sup>–2<sup>52</sup>–1 = 9,218,868,437,227,405,311
      */
-    @Override
-    public @NotNull Iterable<Double> negativeOrdinaryDoubles() {
+    private static @NotNull Iterable<Double> negativeOrdinaryDoubles() {
         return map(d -> -d, positiveOrdinaryDoubles());
     }
 
     /**
-     * An {@code Iterable} that contains all ordinary (neither {@code NaN} nor infinite) {@code double}s in increasing
-     * order. Negative zero is not included, but positive zero is. Does not support removal.
+     * An {@code Iterable} that generates all ordinary (neither {@code NaN} nor infinite) nonzero {@code Double}s. Does
+     * not support removal.
      *
-     * Length is 2<sup>64</sup>–2<sup>53</sup>–1 = 18,437,736,874,454,810,623
+     * Length is 2<sup>64</sup>–2<sup>53</sup>–2 = 18,437,736,874,454,810,622
      */
-    @Override
-    public @NotNull Iterable<Double> ordinaryDoubles() {
-        return cons(0.0, mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles())));
+    private static @NotNull Iterable<Double> nonzeroOrdinaryDoubles() {
+        return mux(Arrays.asList(positiveOrdinaryDoubles(), negativeOrdinaryDoubles()));
     }
 
     /**
-     * An {@code Iterable} that contains all {@code double}s. Does not support removal.
+     * An {@code Iterable} that generates all positive {@code Double}s, including {@code Infinity} but not positive
+     * zero. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
+     */
+    @Override
+    public @NotNull Iterable<Double> positiveDoubles() {
+        return cons(Double.POSITIVE_INFINITY, positiveOrdinaryDoubles());
+    }
+
+    /**
+     * An {@code Iterable} that generates all negative {@code Double}s, including {@code -Infinity} but not negative
+     * zero. Does not support removal.
+     *
+     * Length is 2<sup>63</sup>–2<sup>52</sup> = 9,218,868,437,227,405,312
+     */
+    @Override
+    public @NotNull Iterable<Double> negativeDoubles() {
+        return cons(Double.NEGATIVE_INFINITY, negativeOrdinaryDoubles());
+    }
+
+    /**
+     * An {@code Iterable} that generates all nonzero {@code Double}s, including {@code NaN}, {@code Infinity}, and
+     * {@code -Infinity}. Does not support removal.
+     *
+     * Length is 2<sup>64</sup>–2<sup>53</sup>+1 = 18,437,736,874,454,810,625
+     */
+    @Override
+    public @NotNull Iterable<Double> nonzeroDoubles() {
+        return concat(
+                Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY),
+                nonzeroOrdinaryDoubles()
+        );
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Double}s, including {@code NaN}, positive and negative zeros,
+     * {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
      * Length is 2<sup>64</sup>–2<sup>53</sup>+3 = 18,437,736,874,454,810,627
      */
@@ -1202,35 +1325,514 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull Iterable<Double> doubles() {
         return concat(
                 Arrays.asList(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, 0.0, -0.0),
-                tail(ordinaryDoubles())
+                nonzeroOrdinaryDoubles()
         );
     }
 
     /**
-     * An {@code Iterable} that contains all positive {@link BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all {@code Float}s greater than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If {@code a}≤0,
+     * length is 2<sup>31</sup>–2<sup>23</sup>+2–rep({@code a}); otherwise it's
+     * 2<sup>31</sup>–2<sup>23</sup>+1–rep({@code a})
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Float}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Float> rangeUp(float a) {
+        if (a == Float.POSITIVE_INFINITY) return Collections.singletonList(Float.POSITIVE_INFINITY);
+        if (a == Float.NEGATIVE_INFINITY) return filter(f -> !Float.isNaN(f), floats());
+        Iterable<Float> noNegativeZeros = cons(
+                Float.POSITIVE_INFINITY,
+                map(
+                        q -> q.a,
+                        filter(
+                                BigInteger.valueOf((long) FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
+                                        FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                                p -> p.a.equals(p.b), map(BinaryFraction::floatRange,
+                                rangeUp(BinaryFraction.of(a).get()))
+                        )
+                )
+        );
+        return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Float}s less than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If {@code a}≥0,
+     * length is 2<sup>31</sup>–2<sup>23</sup>+2+rep({@code a}); otherwise it's
+     * 2<sup>31</sup>–2<sup>23</sup>+1+rep({@code a})
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Float}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Float> rangeDown(float a) {
+        return map(f -> -f, rangeUp(-a));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not include {@code NaN}; may include
+     * infinities. Positive and negative zeros are both present or both absent. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Float}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code float}→{@code int} be {@link FloatingPointUtils#toOrderedRepresentation(float)}. If
+     * {@code a}≤0≤{@code b}, length is rep({@code b})–rep({@code a})+2; otherwise it's rep({@code b})–rep({@code a})+2
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Float}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Float> range(float a, float b) {
+        if (Float.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Float.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
+        }
+        if (a > b) return Collections.emptyList();
+        if (a == Float.NEGATIVE_INFINITY) return rangeDown(b);
+        if (b == Float.POSITIVE_INFINITY) return rangeUp(a);
+        if (a == Float.POSITIVE_INFINITY || b == Float.NEGATIVE_INFINITY) return Collections.emptyList();
+        BinaryFraction bfa = BinaryFraction.of(a).get();
+        BinaryFraction bfb = BinaryFraction.of(b).get();
+        if (bfa.getExponent() > bfb.getExponent()) {
+            return map(f -> -f, range(-b, -a));
+        }
+        Iterable<Float> noNegativeZeros = map(
+                q -> q.a,
+                filter(
+                        BigInteger.valueOf((long) FloatingPointUtils.toOrderedRepresentation(b) -
+                                FloatingPointUtils.toOrderedRepresentation(a) + 1),
+                        p -> p.a.equals(p.b),
+                        map(BinaryFraction::floatRange, range(bfa, bfb))
+                )
+        );
+        return concatMap(f -> f == 0.0f ? Arrays.asList(0.0f, -0.0f) : Collections.singletonList(f), noNegativeZeros);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Double}s greater than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0, length is 2<sup>63</sup>–2<sup>52</sup>+2–rep({@code a}); otherwise it's
+     * 2<sup>63</sup>–2<sup>52</sup>+1–rep({@code a})
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code Double}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Double> rangeUp(double a) {
+        if (a == Double.POSITIVE_INFINITY) return Collections.singletonList(Double.POSITIVE_INFINITY);
+        if (a == Double.NEGATIVE_INFINITY) return filter(d -> !Double.isNaN(d), doubles());
+        Iterable<Double> noNegativeZeros = cons(
+                Double.POSITIVE_INFINITY,
+                map(
+                        q -> q.a,
+                        filter(
+                                BigInteger.valueOf(FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT)
+                                        .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(a)))
+                                        .add(BigInteger.ONE),
+                                p -> p.a.equals(p.b), map(BinaryFraction::doubleRange,
+                                        rangeUp(BinaryFraction.of(a).get()))
+                        )
+                )
+        );
+        return concatMap(d -> d == 0.0 ? Arrays.asList(0.0, -0.0) : Collections.singletonList(d), noNegativeZeros);
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Double}s less than or equal to {@code a}. Does not include
+     * {@code NaN}; may include infinities. Positive and negative zeros are both present or both absent. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0, length is 2<sup>63</sup>–2<sup>52</sup>+2+rep({@code a}); otherwise it's
+     * 2<sup>63</sup>–2<sup>52</sup>+1+rep({@code a})
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code Double}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<Double> rangeDown(double a) {
+        return map(d -> -d, rangeUp(-a));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not include {@code NaN}; may include
+     * infinities. Positive and negative zeros are both present or both absent. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be {@code NaN}.</li>
+     *  <li>{@code b} cannot be {@code NaN}.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code Double}s which aren't {@code NaN}.</li>
+     * </ul>
+     *
+     * Let rep:{@code double}→{@code long} be {@link FloatingPointUtils#toOrderedRepresentation(double)}. If
+     * {@code a}≤0≤{@code b}, length is rep({@code b})–rep({@code a})+2; otherwise it's rep({@code b})–rep({@code a})+2
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code Double}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<Double> range(double a, double b) {
+        if (Double.isNaN(a)) {
+            throw new ArithmeticException("a cannot be NaN.");
+        }
+        if (Double.isNaN(b)) {
+            throw new ArithmeticException("b cannot be NaN.");
+        }
+        if (a > b) return Collections.emptyList();
+        if (a == Double.NEGATIVE_INFINITY) return rangeDown(b);
+        if (b == Double.POSITIVE_INFINITY) return rangeUp(a);
+        if (a == Double.POSITIVE_INFINITY || b == Double.NEGATIVE_INFINITY) return Collections.emptyList();
+        BinaryFraction bfa = BinaryFraction.of(a).get();
+        BinaryFraction bfb = BinaryFraction.of(b).get();
+        if (bfa.getExponent() > bfb.getExponent()) {
+            return map(f -> -f, range(-b, -a));
+        }
+        Iterable<Double> noNegativeZeros = map(
+                q -> q.a,
+                filter(
+                        BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(b))
+                                .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(a)))
+                                .add(BigInteger.ONE),
+                        p -> p.a.equals(p.b),
+                        map(BinaryFraction::doubleRange, range(bfa, bfb))
+                )
+        );
+        return concatMap(d -> d == 0.0 ? Arrays.asList(0.0, -0.0) : Collections.singletonList(d), noNegativeZeros);
+    }
+
+    /**
+     * An {@code Iterable} that generates all positive {@link BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(positiveBigIntegers(), integers()));
     }
 
     /**
-     * An {@code Iterable} that contains all negative {@code BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all negative {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
+    @Override
     public @NotNull Iterable<BigDecimal> negativeBigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(negativeBigIntegers(), integers()));
     }
 
     /**
-     * An {@code Iterable} that contains all {@code BigDecimal}s. Does not support removal.
+     * An {@code Iterable} that generates all nonzero {@code BigDecimal}s. Does not support removal.
      *
      * Length is infinite
      */
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroBigDecimals() {
+        return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(nonzeroBigIntegers(), integers()));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s. Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
     public @NotNull Iterable<BigDecimal> bigDecimals() {
         return map(p -> new BigDecimal(p.a, p.b), pairsLogarithmicOrder(bigIntegers(), integers()));
+    }
+
+    /**
+     * Generates positive {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, positiveBigDecimals());
+    }
+
+    /**
+     * Generates negative {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> negativeCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, negativeBigDecimals());
+    }
+
+    /**
+     * Generates nonzero {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, nonzeroBigDecimals());
+    }
+
+    /**
+     * Generates {@code BigDecimal}s in canonical form (see
+     * {@link mho.wheels.numberUtils.BigDecimalUtils#canonicalize(BigDecimal)}). Does not support removal.
+     *
+     * Length is infinite
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
+        return filterInfinite(BigDecimalUtils::isCanonical, bigDecimals());
+    }
+
+    /**
+     * Generates canonical {@code BigDecimal}s greater than or equal to zero and less than or equal to a specified
+     * power of ten.
+     *
+     * <ul>
+     *  <li>{@code pow} may be any {@code int}.</li>
+     *  <li>The result is a non-removable, infinite {@code Iterable} containing canonical {@code BigDecimal}s between
+     *  zero and a power of ten, inclusive.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param pow an {@code int}
+     * @return all canonical {@code BigDecimal}s between 0 and 10<sup>{@code pow}</sup>, inclusive
+     */
+    private static @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
+        return cons(
+                BigDecimal.ZERO,
+                nub(
+                        map(
+                                p -> BigDecimalUtils.canonicalize(
+                                        new BigDecimal(
+                                                p.a,
+                                                p.b + MathUtils.ceilingLog(BigInteger.TEN, p.a).intValueExact() - pow
+                                        )
+                                ),
+                                INSTANCE.pairsLogarithmicOrder(
+                                        INSTANCE.positiveBigIntegers(),
+                                        INSTANCE.naturalIntegers()
+                                )
+                        )
+                )
+        );
+    }
+
+    /**
+     * Given an {@code Iterable xs} of unique, canonical {@code BigDecimal}s, returns an {@code Iterable} whose
+     * elements are {x|{@code BigDecimalUtils.canonicalize(x)}∈{@code xs}}.
+     *
+     * <ul>
+     *  <li>{@code xs} must only contain canonical {@code BigDecimal}s and cannot contain any duplicates.</li>
+     *  <li>The result does not contain any nulls, is either empty or infinite, and for every {@code BigDecimal} x that
+     *  it contains, if {@code BigDecimalUtils.canonicalize(}x{@code )} is y, then the result contains every
+     *  {@code BigDecimal} which, when canonicalized, yields y. The result contains no duplicates.</li>
+     * </ul>
+     *
+     * Length is empty if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs an {@code Iterable} of unique, canonical {@code BigDecimal}s
+     * @return all {@code BigDecimal}s which, once canonicalized, belong to {@code xs}
+     */
+    private static @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> xs) {
+        CachedIterable<Integer> integers = new CachedIterable<>(INSTANCE.integers());
+        return map(
+                p -> p.a.equals(BigDecimal.ZERO) ?
+                        new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) :
+                        BigDecimalUtils.setPrecision(
+                                p.a.stripTrailingZeros(),
+                                p.b + p.a.stripTrailingZeros().precision()
+                        ),
+                INSTANCE.pairsLogarithmicOrder(xs, INSTANCE.naturalIntegers())
+        );
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s greater than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return {@code BigDecimal}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
+        return uncanonicalize(rangeUpCanonical(a));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s less than or equal to {@code a}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
+        return uncanonicalize(rangeDownCanonical(a));
+    }
+
+    /**
+     * An {@code Iterable} that generates all {@code BigDecimal}s between {@code a} and {@code b}, inclusive. If
+     * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (eq(a, b)) {
+            if (a.signum() == 0) {
+                return map(i -> new BigDecimal(BigInteger.ZERO, i), integers());
+            } else {
+                return map(
+                        x -> BigDecimalUtils.setPrecision(a, x),
+                        IterableUtils.rangeUp(a.stripTrailingZeros().precision())
+                );
+            }
+        }
+        return uncanonicalize(rangeCanonical(a, b));
+    }
+
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s greater than or equal to {@code a}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @return canonical {@code BigDecimal}s greater than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
+        BigDecimal ca = BigDecimalUtils.canonicalize(a);
+        return map(
+                bd -> BigDecimalUtils.canonicalize(bd.add(ca)),
+                cons(BigDecimal.ZERO, positiveCanonicalBigDecimals())
+        );
+    }
+
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s less than or equal to {@code a}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param a the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s less than or equal to {@code a}
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
+        return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
+    }
+
+    /**
+     * An {@code Iterable} that generates all canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive.
+     * If {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code a} cannot be null.</li>
+     *  <li>{@code b} cannot be null.</li>
+     *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
+     * </ul>
+     *
+     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     *
+     * @param a the inclusive lower bound of the generated elements
+     * @param b the inclusive upper bound of the generated elements
+     * @return canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive
+     */
+    @Override
+    public @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
+        if (gt(a, b)) return Collections.emptyList();
+        if (eq(a, b)) return Collections.singletonList(BigDecimalUtils.canonicalize(a));
+        BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
+        return map(
+                c -> BigDecimalUtils.canonicalize(c.add(a)),
+                filter(
+                        bd -> le(bd, difference),
+                        zeroToPowerOfTenCanonicalBigDecimals(BigDecimalUtils.ceilingLog10(difference))
+                )
+        );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
+         return cons(x, xs);
     }
 
     @Override
@@ -1304,6 +1906,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         return Combinatorics.pairsSquareRootOrder(as, bs);
+    }
+
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
     /**
@@ -1539,6 +2148,59 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings() {
         return Combinatorics.strings(characters());
+    }
+
+    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
+        return () -> new Iterator<List<Integer>>() {
+            private List<Integer> indices = start;
+
+            @Override
+            public boolean hasNext() {
+                return indices != null;
+            }
+
+            @Override
+            public List<Integer> next() {
+                List<Integer> oldIndices = indices;
+                if (weaklyDecreasing(indices)) {
+                    indices = null;
+                } else {
+                    int i;
+                    int previous = -1;
+                    for (i = indices.size() - 1; i >= 0; i--) {
+                        if (indices.get(i) < previous) break;
+                        previous = indices.get(i);
+                    }
+                    i++;
+                    Iterable<Integer> prefix = take(i - 1, indices);
+                    Iterable<Integer> suffix = drop(i - 1, indices);
+                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
+                    indices = toList(
+                            concat(
+                                    (Iterable<Iterable<Integer>>) Arrays.asList(
+                                            prefix,
+                                            Collections.singletonList(pivot),
+                                            sort(delete(pivot, suffix))
+                                    )
+                            )
+                    );
+                }
+                return oldIndices;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("cannot remove from this iterator");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+        List<T> nub = toList(nub(xs));
+        Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
+        List<Integer> startingIndices = sort(map(indexMap::get, xs));
+        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
 
     /**

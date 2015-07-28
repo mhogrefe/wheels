@@ -2,7 +2,6 @@ package mho.wheels.structures;
 
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,22 +25,22 @@ public final class Quadruple<A, B, C, D> {
     /**
      * The first component of the {@code Quadruple}
      */
-    public final @Nullable A a;
+    public final A a;
 
     /**
      * The second component of the {@code Quadruple}
      */
-    public final @Nullable B b;
+    public final B b;
 
     /**
      * The third component of the {@code Quadruple}
      */
-    public final @Nullable C c;
+    public final C c;
 
     /**
      * The fourth component of the {@code Quadruple}
      */
-    public final @Nullable D d;
+    public final D d;
 
     /**
      * Constructs a {@code Quadruple} from four values.
@@ -59,7 +58,7 @@ public final class Quadruple<A, B, C, D> {
      * @param c the third value
      * @param d the fourth value
      */
-    public Quadruple(@Nullable A a, @Nullable B b, @Nullable C c, @Nullable D d) {
+    public Quadruple(A a, B b, C c, D d) {
         this.a = a;
         this.b = b;
         this.c = c;
