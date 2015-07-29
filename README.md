@@ -34,7 +34,7 @@ Progress
 | IsaacPRNG                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Either                     | ✘       | ✘       | ✘     | ✘     | ✘          |
 | FiniteDomainFunction       | ✔       | ✘       | ✘     | ✘     | ✘          |
-| NullableOptional           | ✔       | ✔       | ✔     | ✔     | ✘          |
+| NullableOptional           | ✔       | ✔       | ✔     | ✔     | ✔          |
 | Pair                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Quadruple                  | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Quintuple                  | ✘       | ✘       | ✘     | ✘     | ✘          |

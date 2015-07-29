@@ -53,6 +53,7 @@
                         <include>**/IntegerUtilsProperties.java</include>
                         <include>**/OrderingTest.java</include>
                         <include>**/NullableOptionalTest.java</include>
+                        <include>**/NullableOptionalProperties.java</include>
                         <include>**/PairTest.java</include>
                         <include>**/QuadrupleTest.java</include>
                         <include>**/QuintupleTest.java</include>
