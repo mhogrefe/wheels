@@ -4755,8 +4755,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         return nextWithElement(null, sx);
     }
 
+    public @NotNull <T> Optional<T> nextNonEmptyOptional(@NotNull Supplier<T> sx) {
+        return Optional.of(sx.get());
+    }
+
     public @NotNull <T> Optional<T> nextOptional(@NotNull Supplier<T> sx) {
         return nextWithElement(Optional.<T>empty(), () -> Optional.of(sx.get()));
+    }
+
+    public @NotNull <T> NullableOptional<T> nextNonEmptyNullableOptional(@NotNull Supplier<T> sx) {
+        return NullableOptional.of(sx.get());
     }
 
     public @NotNull <T> NullableOptional<T> nextNullableOptional(@NotNull Supplier<T> sx) {

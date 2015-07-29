@@ -731,6 +731,16 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
+     * Generates nonempty {@link Optional}s; the result contains wrapped values of {@code xs}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<Optional<T>> nonEmptyOptionals(@NotNull Iterable<T> xs) {
+        return map(Optional::of, xs);
+    }
+
+    /**
      * Generates {@link Optional}s; the result contains wrapped values of {@code xs}, along with the empty
      * {@code Optional}.
      *
@@ -739,6 +749,16 @@ public abstract strictfp class IterableProvider {
      */
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
         return cons(Optional.<T>empty(), map(Optional::of, xs));
+    }
+
+    /**
+     * Generates nonempty {@link NullableOptional}s; the result contains wrapped values of {@code xs}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<NullableOptional<T>> nonEmptyNullableOptionals(@NotNull Iterable<T> xs) {
+        return map(NullableOptional::of, xs);
     }
 
     /**
