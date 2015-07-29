@@ -748,7 +748,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of element contained in {@code xs}
      */
     public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return cons(Optional.<T>empty(), map(Optional::of, xs));
+        return withElement(Optional.<T>empty(), map(Optional::of, xs));
     }
 
     /**
@@ -769,7 +769,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of element contained in {@code xs}
      */
     public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return cons(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+        return withElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {

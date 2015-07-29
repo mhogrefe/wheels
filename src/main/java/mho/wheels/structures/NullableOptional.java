@@ -90,7 +90,7 @@ public class NullableOptional<T> {
      *
      * <ul>
      *  <li>{@code ot} cannot be null.</li>
-     *  <li>The result is not null.</li>
+     *  <li>The result does not contain null.</li>
      * </ul>
      *
      * @param ot an {@code Optional}
