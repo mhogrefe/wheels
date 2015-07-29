@@ -72,7 +72,7 @@ public class BigDecimalUtilsProperties {
             );
         }
 
-        for (BigDecimal bd : take(LIMIT, P.withSpecialElement(BigDecimal.ZERO, P.negativeBigDecimals()))) {
+        for (BigDecimal bd : take(LIMIT, P.withElement(BigDecimal.ZERO, P.negativeBigDecimals()))) {
             try {
                 ceilingLog10(bd);
                 fail(bd);

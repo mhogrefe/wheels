@@ -710,11 +710,48 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b);
 
-    public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
+    /**
+     * Generates all the elements in a given {@code Iterable}, along with an extra element.
+     *
+     * @param x an extra element
+     * @param xs an {@code Iterable}
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public abstract @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs);
 
-    public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs);
+    /**
+     * Generates all the elements in a given {@code Iterable}, along with null.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of element contained in {@code xs}
+     * @return an {@code Iterable} including null and every element in {@code xs}
+     */
+    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
+        return withElement(null, xs);
+    }
+
+    /**
+     * Generates {@link Optional}s; the result contains wrapped values of {@code xs}, along with the empty
+     * {@code Optional}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
+        return cons(Optional.<T>empty(), map(Optional::of, xs));
+    }
+
+    /**
+     * Generates {@link NullableOptional}s; the result contains wrapped values of {@code xs}, along with the empty
+     * {@code NullableOptional}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
+        return cons(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+    }
+
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return pairs(xs);
     }

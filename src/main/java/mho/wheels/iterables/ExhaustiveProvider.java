@@ -1831,23 +1831,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
          return cons(x, xs);
-    }
-
-    @Override
-    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
-        return cons(null, xs);
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return cons(Optional.<T>empty(), map(Optional::of, xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return cons(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
     /**

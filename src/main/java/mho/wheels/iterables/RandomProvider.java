@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -4729,8 +4730,12 @@ public final strictfp class RandomProvider extends IterableProvider {
         return fromSupplier(() -> nextFromRangeCanonical(a, b));
     }
 
+    public <T> T nextWithElement(@Nullable T x, @NotNull Supplier<T> sx) {
+        return null;
+    }
+
     @Override
-    public @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new Iterator<T>() {
             private Iterator<T> xsi = xs.iterator();
             private Iterator<Integer> specialSelector = integersBounded(SPECIAL_ELEMENT_RATIO).iterator();
@@ -4755,19 +4760,16 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
-    @Override
-    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
-        return withSpecialElement(null, xs);
+    public <T> T nextWithNull(@NotNull Supplier<T> sx) {
+        return nextWithElement(null, sx);
     }
 
-    @Override
-    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
-        return withSpecialElement(Optional.<T>empty(), map(Optional::of, xs));
+    public @NotNull <T> Optional<T> nextOptional(@NotNull Supplier<T> sx) {
+        return nextWithElement(Optional.<T>empty(), () -> Optional.of(sx.get()));
     }
 
-    @Override
-    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
-        return withSpecialElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+    public @NotNull <T> NullableOptional<T> nextNullableOptional(@NotNull Supplier<T> sx) {
+        return nextWithElement(NullableOptional.<T>empty(), () -> NullableOptional.of(sx.get()));
     }
 
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
