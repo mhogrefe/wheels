@@ -4731,31 +4731,22 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public <T> T nextWithElement(@Nullable T x, @NotNull Supplier<T> sx) {
-        return null;
+        return nextFromRange(1, scale) == 0 ? x : sx.get();
     }
 
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
-            private Iterator<Integer> specialSelector = integersBounded(SPECIAL_ELEMENT_RATIO).iterator();
-            boolean specialSelection = specialSelector.next() == 0;
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> it = xs.iterator();
 
             @Override
             public boolean hasNext() {
-                return specialSelection || xsi.hasNext();
+                return true;
             }
 
             @Override
             public T next() {
-                boolean previousSelection = specialSelection;
-                specialSelection = specialSelector.next() == 0;
-                return previousSelection ? x : xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
+                return nextFromRange(1, scale) == 0 ? x : it.next();
             }
         };
     }
