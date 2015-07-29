@@ -1890,6 +1890,24 @@ public strictfp class ExhaustiveProviderTest {
         rangeCanonical_BigDecimal_BigDecimal_helper("5", "3", "[]");
     }
 
+    private static void withNull_finite_helper(@NotNull String x, @NotNull String output) {
+        aeqit(P.withNull(readIntegerListWithNulls(x)), output);
+    }
+
+    private static void withNull_cyclic_helper(@NotNull String x, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.withNull(cycle(readIntegerListWithNulls(x))), output);
+    }
+
+    @Test
+    public void testWithNull() {
+        withNull_finite_helper("[]", "[null]");
+        withNull_finite_helper("[1, 2, 3]", "[null, 1, 2, 3]");
+        withNull_finite_helper("[1, null, 3]", "[null, 1, null, 3]");
+        withNull_cyclic_helper("[1, 2, 3]", "[null, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, ...]");
+        withNull_cyclic_helper("[1, null, 3]",
+                "[null, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, ...]");
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
