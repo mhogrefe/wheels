@@ -972,6 +972,78 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
+     * Returns a randomly-generated nonzero {@code byte} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code byte}
+     */
+    public byte nextNonzeroByte() {
+        byte b;
+        do {
+            b = nextByte();
+        } while (b == 0);
+        return b;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code short} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code short}
+     */
+    public short nextNonzeroShort() {
+        short s;
+        do {
+            s = nextShort();
+        } while (s == 0);
+        return s;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code int} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code int}
+     */
+    public int nextNonzeroInt() {
+        int i;
+        do {
+            i = nextInt();
+        } while (i == 0);
+        return i;
+    }
+
+    /**
+     * Returns a randomly-generated nonzero {@code long} from a uniform distribution.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>The result is not zero.</li>
+     * </ul>
+     *
+     * @return a nonzero {@code long}
+     */
+    public long nextNonzeroLong() {
+        long l;
+        do {
+            l = nextLong();
+        } while (l == 0L);
+        return l;
+    }
+
+    /**
      * Returns a randomly-generated natural (non-negative) {@code byte} from a uniform distribution.
      *
      * <ul>
@@ -1069,78 +1141,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
         return fromSupplier(this::nextNaturalLong);
-    }
-
-    /**
-     * Returns a randomly-generated nonzero {@code byte} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not zero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code byte}
-     */
-    public byte nextNonzeroByte() {
-        byte b;
-        do {
-            b = nextByte();
-        } while (b == 0);
-        return b;
-    }
-
-    /**
-     * Returns a randomly-generated nonzero {@code short} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not zero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code short}
-     */
-    public short nextNonzeroShort() {
-        short s;
-        do {
-            s = nextShort();
-        } while (s == 0);
-        return s;
-    }
-
-    /**
-     * Returns a randomly-generated nonzero {@code int} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not zero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code int}
-     */
-    public int nextNonzeroInt() {
-        int i;
-        do {
-            i = nextInt();
-        } while (i == 0);
-        return i;
-    }
-
-    /**
-     * Returns a randomly-generated nonzero {@code long} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not zero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code long}
-     */
-    public long nextNonzeroLong() {
-        long l;
-        do {
-            l = nextLong();
-        } while (l == 0L);
-        return l;
     }
 
     /**
