@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -1906,6 +1908,80 @@ public strictfp class ExhaustiveProviderTest {
         withNull_cyclic_helper("[1, 2, 3]", "[null, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, ...]");
         withNull_cyclic_helper("[1, null, 3]",
                 "[null, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, null, 3, 1, ...]");
+    }
+
+    @Test
+    public void testNonEmptyOptionals() {
+        aeqitLimit(TINY_LIMIT, P.nonEmptyOptionals(P.integers()),
+                "[Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3], Optional[-3]," +
+                " Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6], Optional[7]," +
+                " Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], Optional[10], ...]");
+        aeqitLimit(TINY_LIMIT, P.nonEmptyOptionals(P.strings()),
+                "[Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c], Optional[ab]," +
+                " Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab], Optional[g]," +
+                " Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], Optional[j], ...]");
+        aeqit(P.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "[Optional[1], Optional[2], Optional[3]]");
+        aeqit(P.nonEmptyOptionals(Collections.emptyList()), "[]");
+        try {
+            toList(take(TINY_LIMIT, P.nonEmptyOptionals(P.withNull(P.integers()))));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testOptionals() {
+        aeqitLimit(TINY_LIMIT, P.optionals(P.integers()),
+                "[Optional.empty, Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3]," +
+                " Optional[-3], Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6]," +
+                " Optional[7], Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], ...]");
+        aeqitLimit(TINY_LIMIT, P.optionals(P.strings()),
+                "[Optional.empty, Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c]," +
+                " Optional[ab], Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab]," +
+                " Optional[g], Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], ...]");
+        aeqit(P.optionals(Arrays.asList(1, 2, 3)), "[Optional.empty, Optional[1], Optional[2], Optional[3]]");
+        aeqit(P.optionals(Collections.emptyList()), "[Optional.empty]");
+        try {
+            toList(take(TINY_LIMIT, P.optionals(P.withNull(P.integers()))));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testNonEmptyNullableOptionals() {
+        aeqitLimit(TINY_LIMIT, P.nonEmptyNullableOptionals(P.withNull(P.integers())),
+                "[NullableOptional[null], NullableOptional[0], NullableOptional[1], NullableOptional[-1]," +
+                " NullableOptional[2], NullableOptional[-2], NullableOptional[3], NullableOptional[-3]," +
+                " NullableOptional[4], NullableOptional[-4], NullableOptional[5], NullableOptional[-5]," +
+                " NullableOptional[6], NullableOptional[-6], NullableOptional[7], NullableOptional[-7]," +
+                " NullableOptional[8], NullableOptional[-8], NullableOptional[9], NullableOptional[-9], ...]");
+        aeqitLimit(TINY_LIMIT, P.nonEmptyNullableOptionals(P.withNull(P.strings())),
+                "[NullableOptional[null], NullableOptional[], NullableOptional[a], NullableOptional[aa]," +
+                " NullableOptional[b], NullableOptional[aaa], NullableOptional[c], NullableOptional[ab]," +
+                " NullableOptional[d], NullableOptional[aaaa], NullableOptional[e], NullableOptional[ba]," +
+                " NullableOptional[f], NullableOptional[aab], NullableOptional[g], NullableOptional[bb]," +
+                " NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], NullableOptional[ac], ...]");
+        aeqit(P.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
+                "[NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
+        aeqit(P.nonEmptyNullableOptionals(Collections.emptyList()), "[]");
+    }
+
+    @Test
+    public void testNullableOptionals() {
+        aeqitLimit(TINY_LIMIT, P.nullableOptionals(P.withNull(P.integers())),
+                "[NullableOptional.empty, NullableOptional[null], NullableOptional[0], NullableOptional[1]," +
+                " NullableOptional[-1], NullableOptional[2], NullableOptional[-2], NullableOptional[3]," +
+                " NullableOptional[-3], NullableOptional[4], NullableOptional[-4], NullableOptional[5]," +
+                " NullableOptional[-5], NullableOptional[6], NullableOptional[-6], NullableOptional[7]," +
+                " NullableOptional[-7], NullableOptional[8], NullableOptional[-8], NullableOptional[9], ...]");
+        aeqitLimit(TINY_LIMIT, P.nullableOptionals(P.withNull(P.strings())),
+                "[NullableOptional.empty, NullableOptional[null], NullableOptional[], NullableOptional[a]," +
+                " NullableOptional[aa], NullableOptional[b], NullableOptional[aaa], NullableOptional[c]," +
+                " NullableOptional[ab], NullableOptional[d], NullableOptional[aaaa], NullableOptional[e]," +
+                " NullableOptional[ba], NullableOptional[f], NullableOptional[aab], NullableOptional[g]," +
+                " NullableOptional[bb], NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], ...]");
+        aeqit(P.nullableOptionals(Arrays.asList(1, 2, 3)),
+                "[NullableOptional.empty, NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
+        aeqit(P.nullableOptionals(Collections.emptyList()), "[NullableOptional.empty]");
     }
 
     @Test
