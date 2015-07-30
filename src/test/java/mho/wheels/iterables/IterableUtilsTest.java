@@ -1326,7 +1326,6 @@ public strictfp class IterableUtilsTest {
         } catch (NullPointerException ignored) {}
     }
 
-
     @Test
     public void testProductFloat() {
         aeq(productFloat(Arrays.asList(10.0f, 10.5f, 11.0f)), 1155.0f);
