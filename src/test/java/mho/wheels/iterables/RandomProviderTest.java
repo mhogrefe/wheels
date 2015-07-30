@@ -4153,7 +4153,7 @@ public strictfp class RandomProviderTest {
         rangeUp_BinaryFraction_fail_helper(1, 0, "0");
         rangeUp_BinaryFraction_fail_helper(0, 1, "0");
     }
-    
+
     private static void nextFromRangeDown_BinaryFraction_helper(
             int scale,
             int secondaryScale,
@@ -4248,7 +4248,7 @@ public strictfp class RandomProviderTest {
             P.reset();
         }
     }
-    
+
     @Test
     public void testRangeDown_BinaryFraction() {
         rangeDown_BinaryFraction_helper(

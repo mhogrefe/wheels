@@ -326,7 +326,7 @@ public strictfp class IterableUtilsProperties {
                 true
         );
     }
-    
+
     private static void propertiesDeltaByte() {
         initialize();
         System.out.println("\t\ttesting deltaByte(Iterable<Byte>) properties...");

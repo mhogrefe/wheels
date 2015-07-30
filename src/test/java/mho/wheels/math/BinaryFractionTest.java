@@ -339,7 +339,7 @@ public strictfp class BinaryFractionTest {
         aeq(justAboveZero.floatRange(), "(0.0, 1.4E-45)");
         aeq(justBelowZero.floatRange(), "(-1.4E-45, -0.0)");
     }
-    
+
     private static void doubleRange_helper(@NotNull String input, @NotNull String output) {
         aeq(read(input).get().doubleRange(), output);
     }

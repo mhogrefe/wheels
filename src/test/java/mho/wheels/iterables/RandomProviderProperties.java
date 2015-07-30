@@ -1196,7 +1196,7 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
     }
-    
+
     private static void propertiesNextFromRange_short_short() {
         initialize("nextFromRange(short, short)");
         Iterable<Triple<RandomProvider, Short, Short>> ts = filterInfinite(
@@ -1234,7 +1234,7 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
     }
-    
+
     private static void propertiesNextFromRange_int_int() {
         initialize("nextFromRange(int, int)");
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = filterInfinite(
@@ -1272,7 +1272,7 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
     }
-    
+
     private static void propertiesNextFromRange_long_long() {
         initialize("nextFromRange(long, long)");
         Iterable<Triple<RandomProvider, Long, Long>> ts = filterInfinite(
@@ -1306,7 +1306,7 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
     }
-    
+
     private static void propertiesNextFromRange_BigInteger_BigInteger() {
         initialize("nextFromRange(BigInteger, BigInteger)");
         Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = filterInfinite(
@@ -1346,7 +1346,7 @@ public class RandomProviderProperties {
             aeqit(p, TINY_LIMIT, p.a.range(p.b, p.b), repeat(p.b));
         }
     }
-    
+
     private static void propertiesNextFromRange_char_char() {
         initialize("nextFromRange(char, char)");
         Iterable<Triple<RandomProvider, Character, Character>> ts = filterInfinite(
