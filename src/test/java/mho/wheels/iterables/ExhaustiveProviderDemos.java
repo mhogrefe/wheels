@@ -273,4 +273,100 @@ public class ExhaustiveProviderDemos {
             System.out.println("rangeCanonical(" + p.a + ", " + p.b + ") = " + its(EP.rangeCanonical(p.a, p.b)));
         }
     }
+
+    private static void demoWithNull_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            System.out.println("withNull(" + xs + ") = " + its(EP.withNull(xs)));
+        }
+    }
+
+    private static void demoWithNull_cyclic() {
+        initialize();
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
+        }
+    }
+
+    private static void demoNonEmptyOptionals_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            System.out.println("nonEmptyOptionals(" + xs + ") = " + its(EP.nonEmptyOptionals(xs)));
+        }
+    }
+
+    private static void demoNonEmptyOptionals_cyclic() {
+        initialize();
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
+        }
+    }
+
+    private static void demoOptionals_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            System.out.println("optionals(" + xs + ") = " + its(EP.optionals(xs)));
+        }
+    }
+
+    private static void demoOptionals_cyclic() {
+        initialize();
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
+        }
+    }
+
+    private static void demoNonEmptyNullableOptionals_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            System.out.println("nonEmptyNullableOptionals(" + xs + ") = " + its(EP.nonEmptyNullableOptionals(xs)));
+        }
+    }
+
+    private static void demoNonEmptyNullableOptionals_cyclic() {
+        initialize();
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
+        );
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
+                    its(EP.nonEmptyNullableOptionals(xs)));
+        }
+    }
+
+    private static void demoNullableOptionals_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            System.out.println("nullableOptionals(" + xs + ") = " + its(EP.nullableOptionals(xs)));
+        }
+    }
+
+    private static void demoNullableOptionals_cyclic() {
+        initialize();
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
+        );
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
+        }
+    }
 }
