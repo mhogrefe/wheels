@@ -278,7 +278,7 @@ public class ReadersTest {
     }
 
     @Test
-     public void testReadShort() {
+    public void testReadShort() {
         aeq(readShort("0").get(), "0");
         aeq(readShort("5").get(), "5");
         aeq(readShort("-100").get(), "-100");
@@ -315,7 +315,7 @@ public class ReadersTest {
     }
 
     @Test
-     public void testReadInteger() {
+    public void testReadInteger() {
         aeq(readInteger("0").get(), "0");
         aeq(readInteger("5").get(), "5");
         aeq(readInteger("-100").get(), "-100");

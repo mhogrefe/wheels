@@ -95,7 +95,7 @@ public final class Pair<A, B> {
         if (that == null || getClass() != that.getClass()) return false;
         Pair pair = (Pair) that;
         return (a == null ? pair.a == null : a.equals(pair.a)) &&
-               (b == null ? pair.b == null : b.equals(pair.b));
+               (b == null ? pair.b == null : b.equals(pair.b)); ///
     }
 
     /**

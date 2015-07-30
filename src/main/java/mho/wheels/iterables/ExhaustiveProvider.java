@@ -1835,7 +1835,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
-         return cons(x, xs);
+        return cons(x, xs);
     }
 
     /**
