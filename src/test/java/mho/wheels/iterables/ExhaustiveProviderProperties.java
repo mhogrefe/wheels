@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -137,6 +139,11 @@ public class ExhaustiveProviderProperties {
             propertiesRangeUpCanonical_BigDecimal();
             propertiesRangeDownCanonical_BigDecimal();
             propertiesRangeCanonical_BigDecimal_BigDecimal();
+            propertiesWithNull();
+            propertiesNonEmptyOptionals();
+            propertiesOptionals();
+            propertiesNonEmptyNullableOptionals();
+            propertiesNullableOptionals();
         }
         System.out.println("Done");
     }
@@ -953,6 +960,129 @@ public class ExhaustiveProviderProperties {
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             aeqit(bd, EP.rangeCanonical(bd, bd), Collections.singletonList(BigDecimalUtils.canonicalize(bd)));
+        }
+    }
+
+    private static void propertiesWithNull() {
+        initialize("withNull(Iterable<Integer>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            Iterable<Integer> withNull = EP.withNull(xs);
+            testNoRemove(withNull);
+            assertFalse(xs, isEmpty(withNull));
+            assertNull(xs, head(withNull));
+            assertTrue(xs, all(i -> i != null, tail(withNull)));
+            inverses(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
+        }
+
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            Iterable<Integer> withNull = EP.withNull(xs);
+            testNoRemove(TINY_LIMIT, withNull);
+            assertFalse(xs, isEmpty(withNull));
+            assertNull(xs, head(withNull));
+            assertTrue(xs, all(i -> i != null, take(TINY_LIMIT, tail(withNull))));
+            aeqit(xs, TINY_LIMIT, tail(withNull), xs);
+        }
+    }
+
+    private static void propertiesNonEmptyOptionals() {
+        initialize("nonEmptyOptionals(Iterable<Integer>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
+            testNoRemove(neos);
+            assertEquals(xs, xs.size(), length(neos));
+            inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
+        }
+
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
+            testNoRemove(TINY_LIMIT, neos);
+            aeqit(xs, TINY_LIMIT, map(Optional::get, neos), xs);
+        }
+    }
+
+    private static void propertiesOptionals() {
+        initialize("optionals(Iterable<Integer>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+            Iterable<Optional<Integer>> os = EP.optionals(xs);
+            testNoRemove(os);
+            assertFalse(xs, isEmpty(os));
+            assertFalse(xs, head(os).isPresent());
+            assertTrue(xs, all(Optional::isPresent, tail(os)));
+            inverses(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
+        }
+
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            Iterable<Optional<Integer>> os = EP.optionals(xs);
+            testNoRemove(TINY_LIMIT, os);
+            assertFalse(xs, isEmpty(os));
+            assertFalse(xs, head(os).isPresent());
+            assertTrue(xs, all(Optional::isPresent, take(TINY_LIMIT, tail(os))));
+            aeqit(xs, TINY_LIMIT, map(Optional::get, tail(os)), xs);
+        }
+    }
+
+    private static void propertiesNonEmptyNullableOptionals() {
+        initialize("nonEmptyNullableOptionals(Iterable<Integer>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
+            testNoRemove(nenos);
+            assertEquals(xs, xs.size(), length(nenos));
+            inverses(
+                    EP::nonEmptyNullableOptionals,
+                    (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, ys)),
+                    xs
+            );
+        }
+
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
+            testNoRemove(TINY_LIMIT, nenos);
+            aeqit(xs, TINY_LIMIT, map(NullableOptional::get, nenos), xs);
+        }
+    }
+
+    private static void propertiesNullableOptionals() {
+        initialize("nullableOptionals(Iterable<Integer>)");
+        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+            Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
+            testNoRemove(nos);
+            assertFalse(xs, isEmpty(nos));
+            assertFalse(xs, head(nos).isPresent());
+            assertTrue(xs, all(NullableOptional::isPresent, tail(nos)));
+            inverses(
+                    EP::nullableOptionals,
+                    (Iterable<NullableOptional<Integer>> ys) -> toList(map(NullableOptional::get, tail(ys))),
+                    xs
+            );
+        }
+
+        Iterable<Iterable<Integer>> xss = map(
+                IterableUtils::cycle,
+                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
+        );
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+            Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
+            testNoRemove(TINY_LIMIT, nos);
+            assertFalse(xs, isEmpty(nos));
+            assertFalse(xs, head(nos).isPresent());
+            assertTrue(xs, all(NullableOptional::isPresent, take(TINY_LIMIT, tail(nos))));
+            aeqit(xs, TINY_LIMIT, map(NullableOptional::get, tail(nos)), xs);
         }
     }
 }
