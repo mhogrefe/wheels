@@ -847,7 +847,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                             )
                     )
             );
-
         }
     }
 
