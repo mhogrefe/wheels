@@ -1632,7 +1632,7 @@ public strictfp class ExhaustiveProviderTest {
                 " 0.30, 0.03, 0.200]");
         range_BigDecimal_BigDecimal_helper("0", "3",
                 "[0, 0.0, 1, 0E+1, 2, 1.0, 0.1, 0.00, 3, 2.0, 0.2, 1.00, 0.01, 0.10, 0.3, 0E+2, 0.02, 3.0, 0.4," +
-                 " 2.00]");
+                " 2.00]");
         range_BigDecimal_BigDecimal_helper("0", "1E+6",
                 "[0, 0.0, 1E+5, 0E+1, 2E+5, 1.0E+5, 1E+4, 0.00, 3E+5, 2.0E+5, 2E+4, 1.00E+5, 4E+5, 1.0E+4, 1E+3," +
                 " 0E+2, 5E+5, 3.0E+5, 3E+4, 2.00E+5]");

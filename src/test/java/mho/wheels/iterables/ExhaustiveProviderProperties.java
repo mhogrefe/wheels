@@ -778,7 +778,7 @@ public class ExhaustiveProviderProperties {
                     p,
                     fs,
                     f -> ge(FloatingPointUtils.absNegativeZeros(f), q.a) &&
-                         le(FloatingPointUtils.absNegativeZeros(f), q.b)
+                         le(FloatingPointUtils.absNegativeZeros(f), q.b) ///
             );
             assertEquals(p, gt(q.a, q.b), isEmpty(fs));
         }
@@ -836,7 +836,7 @@ public class ExhaustiveProviderProperties {
                     p,
                     ds,
                     f -> ge(FloatingPointUtils.absNegativeZeros(f), q.a) &&
-                         le(FloatingPointUtils.absNegativeZeros(f), q.b)
+                         le(FloatingPointUtils.absNegativeZeros(f), q.b) ///
             );
             assertEquals(p, gt(q.a, q.b), isEmpty(ds));
         }
