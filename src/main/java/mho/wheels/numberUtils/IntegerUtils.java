@@ -1077,9 +1077,9 @@ public class IntegerUtils {
     /**
      * Bijectively maps one natural {@code BigInteger} to a list of natural {@code BigInteger}s in such a way that
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
-     * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed size, not
-     * between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps to the
-     * empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
+     * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed
+     * size, not between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps
+     * to the empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
