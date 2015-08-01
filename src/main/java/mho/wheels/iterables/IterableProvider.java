@@ -877,6 +877,10 @@ public abstract strictfp class IterableProvider {
         return stringsWithSubstrings(substrings, characters());
     }
 
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
+        return map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, listsAtLeast(1, xs))));
+    }
+
     public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
     public @NotNull Iterable<String> permutations(@NotNull String s) {
         return map(IterableUtils::charsToString, permutations(toList(fromString(s))));

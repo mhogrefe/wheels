@@ -974,11 +974,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
         }
 
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
             testNoRemove(TINY_LIMIT, withNull);
             assertFalse(xs, isEmpty(withNull));
@@ -997,11 +993,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
         }
 
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(TINY_LIMIT, neos);
             aeqit(xs, TINY_LIMIT, map(Optional::get, neos), xs);
@@ -1019,11 +1011,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
         }
 
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
             testNoRemove(TINY_LIMIT, os);
             assertFalse(xs, isEmpty(os));
@@ -1046,11 +1034,7 @@ public class ExhaustiveProviderProperties {
             );
         }
 
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(TINY_LIMIT, nenos);
             aeqit(xs, TINY_LIMIT, map(NullableOptional::get, nenos), xs);
@@ -1072,11 +1056,7 @@ public class ExhaustiveProviderProperties {
             );
         }
 
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
             testNoRemove(TINY_LIMIT, nos);
             assertFalse(xs, isEmpty(nos));

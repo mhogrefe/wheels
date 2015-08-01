@@ -283,11 +283,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoWithNull_cyclic() {
         initialize();
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
         }
@@ -302,11 +298,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNonEmptyOptionals_cyclic() {
         initialize();
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
@@ -321,11 +313,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoOptionals_cyclic() {
         initialize();
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
         }
@@ -340,11 +328,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNonEmptyNullableOptionals_cyclic() {
         initialize();
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
-        );
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
@@ -360,11 +344,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNullableOptionals_cyclic() {
         initialize();
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
-        );
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
         }

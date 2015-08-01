@@ -2138,10 +2138,7 @@ public class RandomProviderDemos {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integers()),
-                map(
-                        IterableUtils::cycle,
-                        nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
-                )
+                P.repeatingIterables(P.withNull(P.integers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +

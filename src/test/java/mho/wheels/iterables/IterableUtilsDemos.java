@@ -414,11 +414,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaByte_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Byte>> bss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.bytes())))
-        );
-        for (Iterable<Byte> bs : take(SMALL_LIMIT, bss)) {
+        for (Iterable<Byte> bs : take(SMALL_LIMIT, P.repeatingIterables(P.bytes()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaByte(bs)));
         }
@@ -434,11 +430,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaShort_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Short>> sss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.shorts())))
-        );
-        for (Iterable<Short> ss : take(SMALL_LIMIT, sss)) {
+        for (Iterable<Short> ss : take(SMALL_LIMIT, P.repeatingIterables(P.shorts()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ss)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaShort(ss)));
         }
@@ -454,11 +446,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaInteger_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Integer>> iss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> is : take(SMALL_LIMIT, iss)) {
+        for (Iterable<Integer> is : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, is)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaInteger(is)));
         }
@@ -474,11 +462,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaLong_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Long>> lss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.longs())))
-        );
-        for (Iterable<Long> ls : take(SMALL_LIMIT, lss)) {
+        for (Iterable<Long> ls : take(SMALL_LIMIT, P.repeatingIterables(P.longs()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ls)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaLong(ls)));
         }
@@ -494,11 +478,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaBigInteger_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<BigInteger>> iss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.bigIntegers())))
-        );
-        for (Iterable<BigInteger> is : take(SMALL_LIMIT, iss)) {
+        for (Iterable<BigInteger> is : take(SMALL_LIMIT, P.repeatingIterables(P.bigIntegers()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, is)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigInteger(is)));
         }
@@ -514,11 +494,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaBigDecimal_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<BigDecimal>> bdss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.bigDecimals())))
-        );
-        for (Iterable<BigDecimal> bds : take(SMALLER_LIMIT, bdss)) {
+        for (Iterable<BigDecimal> bds : take(SMALLER_LIMIT, P.repeatingIterables(P.bigDecimals()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bds)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaBigDecimal(bds)));
         }
@@ -534,11 +510,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaFloat_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Float>> fss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.floats())))
-        );
-        for (Iterable<Float> fs : take(SMALL_LIMIT, fss)) {
+        for (Iterable<Float> fs : take(SMALL_LIMIT, P.repeatingIterables(P.floats()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, fs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaFloat(fs)));
         }
@@ -554,11 +526,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaDouble_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Double>> dss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.doubles())))
-        );
-        for (Iterable<Double> ds : take(SMALL_LIMIT, dss)) {
+        for (Iterable<Double> ds : take(SMALL_LIMIT, P.repeatingIterables(P.doubles()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, ds)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, deltaDouble(ds)));
         }
@@ -574,11 +542,7 @@ public strictfp class IterableUtilsDemos {
 
     private static void demoDeltaCharacter_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<Character>> css = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.characters())))
-        );
-        for (Iterable<Character> cs : take(SMALL_LIMIT, css)) {
+        for (Iterable<Character> cs : take(SMALL_LIMIT, P.repeatingIterables(P.characters()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, cs)));
             System.out.println("Δ(" + Testing.nicePrint(listString) + ") = " +
                     Testing.nicePrint(IterableUtils.toString(TINY_LIMIT, deltaCharacter(cs))));

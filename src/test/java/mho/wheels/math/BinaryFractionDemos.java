@@ -247,11 +247,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoDelta_infinite_Iterable() {
         initialize();
-        Iterable<Iterable<BinaryFraction>> bfss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.binaryFractions())))
-        );
-        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, bfss)) {
+        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.repeatingIterables(P.binaryFractions()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bfs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(bfs)));
         }

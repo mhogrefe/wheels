@@ -61,11 +61,7 @@ public class NoRemoveIteratorProperties {
 
     private static void propertiesConstructor_cyclic() {
         initialize("NoRemoveIterator() [cyclic]");
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private Iterator<Integer> iterator = xs.iterator();
 
@@ -105,11 +101,7 @@ public class NoRemoveIteratorProperties {
 
     private static void propertiesRemove_cyclic() {
         initialize("remove() [cyclic]");
-        Iterable<Iterable<Integer>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.integers())))
-        );
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private Iterator<Integer> iterator = xs.iterator();
 

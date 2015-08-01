@@ -566,11 +566,7 @@ public strictfp class Testing {
             );
         }
 
-        Iterable<Iterable<A>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, xs)))
-        );
-        for (Iterable<A> ixs : take(limit, xss)) {
+        for (Iterable<A> ixs : take(limit, P.repeatingIterables(xs))) {
             Iterable<B> deltas = deltaF.apply(ixs);
             List<B> deltaPrefix = toList(take(TINY_LIMIT, deltas));
             deltaPrefix.forEach(validate);
