@@ -2120,6 +2120,35 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoNextWithElement() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+                filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integers()),
+                P.withNull(P.integers())
+        );
+        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
+            System.out.println("nextWithElement(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    t.a.nextWithElement(t.b, () -> t.c));
+        }
+    }
+
+    private static void demoWithElement_cyclic() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
+                filter(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integers()),
+                map(
+                        IterableUtils::cycle,
+                        nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, P.withNull(P.integers()))))
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.withElement(t.b, t.c)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
