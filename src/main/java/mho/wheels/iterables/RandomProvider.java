@@ -5067,9 +5067,17 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result may be either {@code boolean}.</li>
      * </ul>
      *
-     * @param that The {@code RandomProvider} to be compared with {@code this}
+     * @param that The {@code Object} to be compared with {@code this}
      * @return {@code this}={@code that}
      */
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) return true;
+        if (that == null || getClass() != that.getClass()) return false;
+        RandomProvider rp = (RandomProvider) that;
+        return scale == rp.scale && secondaryScale == rp.secondaryScale &&
+                seed.equals(rp.seed) && prng.equals(rp.prng);
+    }
 
     /**
      * Calculates the hash code of {@code this}.
@@ -5081,15 +5089,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return {@code this}'s hash code.
      */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RandomProvider that = (RandomProvider) o;
-        return scale == that.scale && secondaryScale == that.secondaryScale &&
-                seed.equals(that.seed) && prng.equals(that.prng);
-    }
-
     @Override
     public int hashCode() {
         int result = seed.hashCode();
