@@ -265,7 +265,7 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             RandomProvider copy = rp.copy();
             assertEquals(rp, rp, copy);
-            rp.nextInt();
+            head(rp.integers());
             assertEquals(rp, rp, copy);
         }
     }
@@ -275,7 +275,7 @@ public class RandomProviderProperties {
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             RandomProvider copy = rp.deepCopy();
             assertEquals(rp, rp, copy);
-            rp.nextInt();
+            head(rp.integers());
             assertNotEquals(rp, rp, copy);
         }
     }
@@ -287,7 +287,7 @@ public class RandomProviderProperties {
             RandomProvider original = rp.deepCopy();
             RandomProvider dependent = original.withScale(10);
             assertEquals(rp, rpDependent, dependent);
-            rp.nextInt();
+            head(rp.integers());
             assertNotEquals(rp, rp, original);
             assertNotEquals(rp, rpDependent, dependent);
             rp.reset();

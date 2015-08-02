@@ -165,7 +165,7 @@ public strictfp class RandomProviderTest {
     public void testCopy() {
         RandomProvider copy = P.copy();
         assertEquals(P, copy);
-        P.nextInt();
+        head(P.integers());
         assertEquals(P, copy);
     }
 
@@ -173,7 +173,7 @@ public strictfp class RandomProviderTest {
     public void testDeepCopy() {
         RandomProvider copy = P.deepCopy();
         assertEquals(P, copy);
-        P.nextInt();
+        head(P.integers());
         assertNotEquals(P, copy);
     }
 
@@ -183,7 +183,7 @@ public strictfp class RandomProviderTest {
         RandomProvider original = P.deepCopy();
         RandomProvider dependent = original.withScale(10);
         assertEquals(PDependent, dependent);
-        P.nextInt();
+        head(P.integers());
         assertNotEquals(P, original);
         assertNotEquals(PDependent, dependent);
         P.reset();
@@ -194,7 +194,7 @@ public strictfp class RandomProviderTest {
     @Test
     public void testGetId() {
         aeq(P.getId(), -8800290164235921060L);
-        P.nextInt();
+        head(P.integers());
         aeq(P.getId(), -6220528511995005615L);
         aeq(Q.getId(), -7948823947390831374L);
         aeq(R.getId(), 2449928962525148503L);

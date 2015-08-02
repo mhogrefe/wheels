@@ -96,7 +96,7 @@ public class RandomProviderDemos {
     private static void demoReset() {
         initialize();
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
-            rp.nextInt();
+            head(rp.integers());
             RandomProvider beforeReset = rp.deepCopy();
             rp.reset();
             System.out.println("reset(" + beforeReset + ") = " + rp);
