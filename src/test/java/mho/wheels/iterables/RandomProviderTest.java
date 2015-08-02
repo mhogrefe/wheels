@@ -13,7 +13,6 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -213,13 +212,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextInt() {
-        aeq(P.nextInt(), -1084795351);
-        aeq(Q.nextInt(), 405143795);
-        aeq(R.nextInt(), 87945096);
-    }
-
-    @Test
     public void testIntegers() {
         aeqit(
                 take(TINY_LIMIT, P.integers()),
@@ -227,13 +219,6 @@ public strictfp class RandomProviderTest {
                 " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
                 " -195502731, 102870776, -1612587755, -483804495, -831718234]"
         );
-    }
-
-    @Test
-    public void testNextLong() {
-        aeq(P.nextLong(), -4659160554254839351L);
-        aeq(Q.nextLong(), 1740079350508374669L);
-        aeq(R.nextLong(), 377721315096188309L);
     }
 
     @Test
@@ -249,13 +234,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextBoolean() {
-        aeq(P.nextBoolean(), true);
-        aeq(Q.nextBoolean(), true);
-        aeq(R.nextBoolean(), false);
-    }
-
-    @Test
     public void testBooleans() {
         simpleProviderHelper(
                 P.booleans(),
@@ -263,21 +241,6 @@ public strictfp class RandomProviderTest {
                 " false, true, true, false]",
                 "[true=499965, false=500035]"
         );
-    }
-
-    private static void nextUniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
-        aeq(Objects.toString(P.nextUniformSample(readIntegerListWithNulls(xs))), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextUniformSample_Iterable() {
-        nextUniformSample_Iterable_helper("[3, 1, 4, 1]", "1");
-        nextUniformSample_Iterable_helper("[3, 1, null, 1]", "1");
-        P.reset();
-        try {
-            P.nextUniformSample(Collections.emptyList());
-        } catch (ArithmeticException ignored) {}
     }
 
     private static void uniformSample_Iterable_helper(@NotNull String xs, @NotNull String output) {
@@ -298,19 +261,6 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void nextUniformSample_String_helper(@NotNull String s, char output) {
-        aeq(P.nextUniformSample(s), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextUniformSample_String() {
-        nextUniformSample_String_helper("hello", 'e');
-        try {
-            P.nextUniformSample("");
-        } catch (ArithmeticException ignored) {}
-    }
-
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
         P.reset();
         aeqcs(P.uniformSample(s), output);
@@ -327,26 +277,12 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextOrdering() {
-        aeq(P.nextOrdering(), "LT");
-        aeq(Q.nextOrdering(), "LT");
-        aeq(R.nextOrdering(), "EQ");
-    }
-
-    @Test
     public void testOrderings() {
         simpleProviderHelper(
                 P.orderings(),
                 "[LT, LT, GT, LT, EQ, LT, LT, LT, LT, LT, EQ, LT, LT, GT, LT, GT, EQ, GT, LT, LT]",
                 "[LT=333313, GT=333615, EQ=333072]"
         );
-    }
-
-    @Test
-    public void testNextRoundingMode() {
-        aeq(P.nextRoundingMode(), "UP");
-        aeq(Q.nextRoundingMode(), "CEILING");
-        aeq(R.nextRoundingMode(), "UNNECESSARY");
     }
 
     @Test
@@ -361,23 +297,9 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextPositiveByte() {
-        aeq(P.nextPositiveByte(), 41);
-        aeq(Q.nextPositiveByte(), 115);
-        aeq(R.nextPositiveByte(), 8);
-    }
-
-    @Test
     public void testPositiveBytes() {
         aeqit(take(TINY_LIMIT, P.positiveBytes()),
                 "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38]");
-    }
-
-    @Test
-    public void testNextPositiveShort() {
-        aeq(P.nextPositiveShort(), 22057);
-        aeq(Q.nextPositiveShort(), 243);
-        aeq(R.nextPositiveShort(), 28552);
     }
 
     @Test
@@ -388,25 +310,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextPositiveInt() {
-        aeq(P.nextPositiveInt(), 1143001545);
-        aeq(Q.nextPositiveInt(), 405143795);
-        aeq(R.nextPositiveInt(), 87945096);
-    }
-
-    @Test
     public void testPositiveIntegers() {
         aeqit(take(TINY_LIMIT, P.positiveIntegers()),
                 "[1143001545, 1997176995, 293205759, 565581811, 102870776, 94129103, 1488978913, 1855658460," +
                 " 1833521269, 595157118, 1108943146, 1968520527, 80838404, 181782398, 960691757, 442512834," +
                 " 474345991, 896325532, 1936225302, 419244611]");
-    }
-
-    @Test
-    public void testNextPositiveLong() {
-        aeq(P.nextPositiveLong(), 1259309150092131537L);
-        aeq(Q.nextPositiveLong(), 1740079350508374669L);
-        aeq(R.nextPositiveLong(), 377721315096188309L);
     }
 
     @Test
@@ -420,24 +328,10 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNegativeByte() {
-        aeq(P.nextNegativeByte(), -42);
-        aeq(Q.nextNegativeByte(), -116);
-        aeq(R.nextNegativeByte(), -9);
-    }
-
-    @Test
     public void testNegativeBytes() {
         aeqit(take(TINY_LIMIT, P.negativeBytes()),
                 "[-42, -74, -4, -115, -54, -64, -57, -102, -126, -36, -128, -82, -104, -22, -116, -118, -121, -22," +
                 " -50, -39]");
-    }
-
-    @Test
-    public void testNextNegativeShort() {
-        aeq(P.nextNegativeShort(), -22058);
-        aeq(Q.nextNegativeShort(), -244);
-        aeq(R.nextNegativeShort(), -28553);
     }
 
     @Test
@@ -448,25 +342,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNegativeInt() {
-        aeq(P.nextNegativeInt(), -1084795351);
-        aeq(Q.nextNegativeInt(), -1333080799);
-        aeq(R.nextNegativeInt(), -362359403);
-    }
-
-    @Test
     public void testNegativeIntegers() {
         aeqit(take(TINY_LIMIT, P.negativeIntegers()),
                 "[-1084795351, -1986160253, -1177145870, -968883275, -1465892161, -470080200, -2011352603," +
                 " -248472835, -106693423, -1593537177, -206249451, -195502731, -1612587755, -483804495, -831718234," +
                 " -884703402, -759016897, -1408421570, -372683595, -138708033]");
-    }
-
-    @Test
-    public void testNextNegativeLong() {
-        aeq(P.nextNegativeLong(), -4659160554254839351L);
-        aeq(Q.nextNegativeLong(), -5476473126251815900L);
-        aeq(R.nextNegativeLong(), -4625575076888178893L);
     }
 
     @Test
@@ -480,23 +360,9 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNaturalByte() {
-        aeq(P.nextNaturalByte(), 41);
-        aeq(Q.nextNaturalByte(), 115);
-        aeq(R.nextNaturalByte(), 8);
-    }
-
-    @Test
     public void testNaturalBytes() {
         aeqit(take(TINY_LIMIT, P.naturalBytes()),
                 "[41, 73, 3, 114, 53, 63, 56, 101, 125, 35, 127, 81, 103, 21, 115, 117, 120, 21, 49, 38]");
-    }
-
-    @Test
-    public void testNextNaturalShort() {
-        aeq(P.nextNaturalShort(), 22057);
-        aeq(Q.nextNaturalShort(), 243);
-        aeq(R.nextNaturalShort(), 28552);
     }
 
     @Test
@@ -507,25 +373,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNaturalInt() {
-        aeq(P.nextNaturalInt(), 1062688297);
-        aeq(Q.nextNaturalInt(), 405143795);
-        aeq(R.nextNaturalInt(), 87945096);
-    }
-
-    @Test
     public void testNaturalIntegers() {
         aeqit(take(TINY_LIMIT, P.naturalIntegers()),
                 "[1062688297, 1143001545, 161323395, 970337778, 1178600373, 681591487, 1677403448, 136131045," +
                 " 1899010813, 1997176995, 293205759, 2040790225, 553946471, 1941234197, 565581811, 1951980917," +
                 " 102870776, 534895893, 1663679153, 1315765414]");
-    }
-
-    @Test
-    public void testNextNaturalLong() {
-        aeq(P.nextNaturalLong(), 4564211482599936457L);
-        aeq(Q.nextNaturalLong(), 1740079350508374669L);
-        aeq(R.nextNaturalLong(), 377721315096188309L);
     }
 
     @Test
@@ -539,23 +391,9 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroByte() {
-        aeq(P.nextNonzeroByte(), 41);
-        aeq(Q.nextNonzeroByte(), -13);
-        aeq(R.nextNonzeroByte(), -120);
-    }
-
-    @Test
     public void testNonzeroBytes() {
         aeqit(take(TINY_LIMIT, P.nonzeroBytes()),
                 "[41, -55, -125, -14, -75, -65, 56, -27, -3, -93, -1, -47, 103, 21, -13, 117, -8, 21, -79, -90]");
-    }
-
-    @Test
-    public void testNextNonzeroShort() {
-        aeq(P.nextNonzeroShort(), 22057);
-        aeq(Q.nextNonzeroShort(), 243);
-        aeq(R.nextNonzeroShort(), -4216);
     }
 
     @Test
@@ -566,25 +404,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroInt() {
-        aeq(P.nextNonzeroInt(), -1084795351);
-        aeq(Q.nextNonzeroInt(), 405143795);
-        aeq(R.nextNonzeroInt(), 87945096);
-    }
-
-    @Test
     public void testNonzeroIntegers() {
         aeqit(take(TINY_LIMIT, P.nonzeroIntegers()),
                 "[-1084795351, 1143001545, -1986160253, -1177145870, -968883275, -1465892161, -470080200," +
                 " -2011352603, -248472835, 1997176995, 293205759, -106693423, -1593537177, -206249451, 565581811," +
                 " -195502731, 102870776, -1612587755, -483804495, -831718234]");
-    }
-
-    @Test
-    public void testNextNonzeroLong() {
-        aeq(P.nextNonzeroLong(), -4659160554254839351L);
-        aeq(Q.nextNonzeroLong(), 1740079350508374669L);
-        aeq(R.nextNonzeroLong(), 377721315096188309L);
     }
 
     @Test
@@ -598,23 +422,9 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextByte() {
-        aeq(P.nextByte(), 41);
-        aeq(Q.nextByte(), -13);
-        aeq(R.nextByte(), -120);
-    }
-
-    @Test
     public void testBytes() {
         aeqit(take(TINY_LIMIT, P.bytes()),
                 "[41, -55, -125, -14, -75, -65, 56, -27, -3, -93, -1, -47, 103, 21, -13, 117, -8, 21, -79, -90]");
-    }
-
-    @Test
-    public void testNextShort() {
-        aeq(P.nextShort(), 22057);
-        aeq(Q.nextShort(), 243);
-        aeq(R.nextShort(), -4216);
     }
 
     @Test
@@ -625,24 +435,10 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextAsciiChar() {
-        aeq(P.nextAsciiChar(), ')');
-        aeq(Q.nextAsciiChar(), 's');
-        aeq(R.nextAsciiChar(), '\b');
-    }
-
-    @Test
     public void testAsciiCharacters() {
         aeqcs(P.asciiCharacters(),
                 ")I\3r5?8e}#\177Qg\25sux\u00151&OaV\\?>5?u~\34*Oy\4w?~+-Br\7)\34d\26CLERd%@c7\2\5o.\u001c2S\6z=Vz\30" +
                 "}l\nNph\32Xx^$x.\23\22\3oK10)\177u;\u001c2nEZF\17If`5f\23OSS\5\3v\5s\u000b2Y\\oKo;\1|CQ7&");
-    }
-
-    @Test
-    public void testNextChar() {
-        aeq(P.nextChar(), '嘩');
-        aeq(Q.nextChar(), 'ó');
-        aeq(R.nextChar(), '\uef88');
     }
 
     @Test
@@ -652,20 +448,6 @@ public strictfp class RandomProviderTest {
                 "㵏ꏹ缄㩷ⴿ읾纫\ufe2d㗂䝲\uf207갩힜坤琖\u2a43퉌\uea45\ue352蕤餥䉀\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ" +
                 "\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆" +
                 "\ue78f㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ");
-    }
-
-    private static void nextFromRangeUp_byte_helper(int a, int output) {
-        P.reset();
-        aeq(P.nextFromRangeUp((byte) a), output);
-    }
-
-    @Test
-    public void testNextFromRangeUp_byte() {
-        nextFromRangeUp_byte_helper(0, 41);
-        nextFromRangeUp_byte_helper(1 << 6, 105);
-        nextFromRangeUp_byte_helper(-1 << 6, -23);
-        nextFromRangeUp_byte_helper(Byte.MAX_VALUE, 127);
-        nextFromRangeUp_byte_helper(Byte.MIN_VALUE, -87);
     }
 
     private static void rangeUp_byte_helper(byte a, @NotNull String output) {
@@ -695,20 +477,6 @@ public strictfp class RandomProviderTest {
                 Byte.MIN_VALUE,
                 "[-87, 73, 3, 114, 53, 63, -72, 101, 125, 35, 127, 81, -25, -107, 115, -11, 120, -107, 49, 38]"
         );
-    }
-
-    private static void nextFromRangeUp_short_helper(int a, int output) {
-        P.reset();
-        aeq(P.nextFromRangeUp((short) a), output);
-    }
-
-    @Test
-    public void testNextFromRangeUp_short() {
-        nextFromRangeUp_short_helper(0, 22057);
-        nextFromRangeUp_short_helper(1 << 14, 22057);
-        nextFromRangeUp_short_helper(-1 << 14, 5673);
-        nextFromRangeUp_short_helper(Short.MAX_VALUE, 32767);
-        nextFromRangeUp_short_helper(Short.MIN_VALUE, -10711);
     }
 
     private static void rangeUp_short_helper(short a, @NotNull String output) {
@@ -743,20 +511,6 @@ public strictfp class RandomProviderTest {
                 "[-10711, 20937, 6531, -21006, -31819, -15681, -23240, -19995, 6909, 163, 30463, 31953, 3431, 25109," +
                 " -26637, 23925, 12024, 23829, 15025, 31910]"
         );
-    }
-
-    private static void nextFromRangeUp_int_helper(int a, int output) {
-        aeq(P.nextFromRangeUp(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeUp_int() {
-        nextFromRangeUp_int_helper(0, 1143001545);
-        nextFromRangeUp_int_helper(1 << 30, 1143001545);
-        nextFromRangeUp_int_helper(-1 << 30, 69259721);
-        nextFromRangeUp_int_helper(Integer.MAX_VALUE, 2147483647);
-        nextFromRangeUp_int_helper(Integer.MIN_VALUE, -1004482103);
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
@@ -796,20 +550,6 @@ public strictfp class RandomProviderTest {
                 " 534895893, 1315765414, -658504735, -291825188, 739062078, 2008775615, -1552326530, " +
                 "-1038540502, 1275438073, 985283191, -1965701250, -1186791891]"
         );
-    }
-
-    private static void nextFromRangeUp_long_helper(long a, long output) {
-        aeq(P.nextFromRangeUp(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeUp_long() {
-        nextFromRangeUp_long_helper(0L, 2978664684788457540L);
-        nextFromRangeUp_long_helper(1L << 62, 7590350703215845444L);
-        nextFromRangeUp_long_helper(-1L << 62, 1609966265326126211L);
-        nextFromRangeUp_long_helper(Long.MAX_VALUE, 9223372036854775807L);
-        nextFromRangeUp_long_helper(Long.MIN_VALUE, -3001719753101261693L);
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
@@ -861,19 +601,6 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void nextFromRangeUp_char_helper(char a, char output) {
-        aeq(P.nextFromRangeUp(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeUp_char() {
-        nextFromRangeUp_char_helper('\0', '嘩');
-        nextFromRangeUp_char_helper('a', '嚊');
-        nextFromRangeUp_char_helper('Ш', '婑');
-        nextFromRangeUp_char_helper('\uffff', '\uffff');
-    }
-
     private static void rangeUp_char_helper(char a, @NotNull String output) {
         aeqcs(P.rangeUp(a), output);
         P.reset();
@@ -915,20 +642,6 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void nextFromRangeDown_byte_helper(int a, int output) {
-        aeq(P.nextFromRangeDown((byte) a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeDown_byte() {
-        nextFromRangeDown_byte_helper(0, -87);
-        nextFromRangeDown_byte_helper(1 << 6, -87);
-        nextFromRangeDown_byte_helper(-1 << 6, -87);
-        nextFromRangeDown_byte_helper(Byte.MAX_VALUE, -87);
-        nextFromRangeDown_byte_helper(Byte.MIN_VALUE, -128);
-    }
-
     private static void rangeDown_byte_helper(byte a, @NotNull String output) {
         aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
         P.reset();
@@ -958,20 +671,6 @@ public strictfp class RandomProviderTest {
                 "[-128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128, -128," +
                 " -128, -128, -128, -128]"
         );
-    }
-
-    private static void nextFromRangeDown_short_helper(int a, int output) {
-        aeq(P.nextFromRangeDown((short) a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeDown_short() {
-        nextFromRangeDown_short_helper(0, -10711);
-        nextFromRangeDown_short_helper(1 << 14, -10711);
-        nextFromRangeDown_short_helper(-1 << 14, -26237);
-        nextFromRangeDown_short_helper(Short.MAX_VALUE, -10711);
-        nextFromRangeDown_short_helper(Short.MIN_VALUE, -32768);
     }
 
     private static void rangeDown_short_helper(short a, @NotNull String output) {
@@ -1006,20 +705,6 @@ public strictfp class RandomProviderTest {
                 "[-32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768," +
                 " -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768]"
         );
-    }
-
-    private static void nextFromRangeDown_int_helper(int a, int output) {
-        aeq(P.nextFromRangeDown(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeDown_int() {
-        nextFromRangeDown_int_helper(0, -1004482103);
-        nextFromRangeDown_int_helper(1 << 30, -1004482103);
-        nextFromRangeDown_int_helper(-1 << 30, -1177145870);
-        nextFromRangeDown_int_helper(Integer.MAX_VALUE, -1004482103);
-        nextFromRangeDown_int_helper(Integer.MIN_VALUE, -2147483648);
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
@@ -1059,20 +744,6 @@ public strictfp class RandomProviderTest {
                 " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648," +
                 " -2147483648, -2147483648, -2147483648, -2147483648, -2147483648, -2147483648]"
         );
-    }
-
-    private static void nextFromRangeDown_long_helper(long a, long output) {
-        aeq(P.nextFromRangeDown(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeDown_long() {
-        nextFromRangeDown_long_helper(0L, -3001719753101261693L);
-        nextFromRangeDown_long_helper(1L << 62, -3001719753101261693L);
-        nextFromRangeDown_long_helper(-1L << 62, -6244707352066318268L);
-        nextFromRangeDown_long_helper(Long.MAX_VALUE, -3001719753101261693L);
-        nextFromRangeDown_long_helper(Long.MIN_VALUE, -9223372036854775808L);
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
@@ -1124,19 +795,6 @@ public strictfp class RandomProviderTest {
         );
     }
 
-    private static void nextFromRangeDown_char_helper(char a, char output) {
-        aeq(P.nextFromRangeDown(a), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRangeDown_char() {
-        nextFromRangeDown_char_helper('\0', '\0');
-        nextFromRangeDown_char_helper('a', ')');
-        nextFromRangeDown_char_helper('Ш', 'ǉ');
-        nextFromRangeDown_char_helper('\uffff', '嘩');
-    }
-
     private static void rangeDown_char_helper(char a, @NotNull String output) {
         aeqcs(P.rangeDown(a), output);
         P.reset();
@@ -1169,31 +827,6 @@ public strictfp class RandomProviderTest {
                 "\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f" +
                 "㱉泦㭠瀵컦刓嗏\u3353\ue2d3\ud805ឃᳶ쪅右䦋\u2832ﭙ빜䫯噋\uf36fꌻ躁\ue87c홃祝몷ࢦ"
         );
-    }
-
-    private static void nextFromRange_byte_byte_helper(int a, int b, int output) {
-        aeq(P.nextFromRange((byte) a, (byte) b), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_byte_byte() {
-        nextFromRange_byte_byte_helper(10, 20, 19);
-        nextFromRange_byte_byte_helper(10, 10, 10);
-        nextFromRange_byte_byte_helper(-20, -10, -11);
-        nextFromRange_byte_byte_helper(-20, -20, -20);
-        nextFromRange_byte_byte_helper(0, 0, 0);
-        nextFromRange_byte_byte_helper(0, 10, 9);
-        nextFromRange_byte_byte_helper(-5, 0, -4);
-        nextFromRange_byte_byte_helper(-5, 10, 4);
-        nextFromRange_byte_byte_helper(-10, 5, -1);
-        try {
-            P.nextFromRange((byte) 5, (byte) -10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
@@ -1237,31 +870,6 @@ public strictfp class RandomProviderTest {
                 "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
         );
         range_byte_byte_helper(5, -10, "[]");
-    }
-
-    private static void nextFromRange_short_short_helper(int a, int b, int output) {
-        aeq(P.nextFromRange((short) a, (short) b), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_short_short() {
-        nextFromRange_short_short_helper(10, 20, 19);
-        nextFromRange_short_short_helper(10, 10, 10);
-        nextFromRange_short_short_helper(-20, -10, -11);
-        nextFromRange_short_short_helper(-20, -20, -20);
-        nextFromRange_short_short_helper(0, 0, 0);
-        nextFromRange_short_short_helper(0, 10, 9);
-        nextFromRange_short_short_helper(-5, 0, -4);
-        nextFromRange_short_short_helper(-5, 10, 4);
-        nextFromRange_short_short_helper(-10, 5, -1);
-        try {
-            P.nextFromRange((short) 5, (short) -10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
@@ -1311,31 +919,6 @@ public strictfp class RandomProviderTest {
         range_short_short_helper(5, -10, "[]");
     }
 
-    private static void nextFromRange_int_int_helper(int a, int b, int output) {
-        aeq(P.nextFromRange(a, b), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_int_int() {
-        nextFromRange_int_int_helper(10, 20, 19);
-        nextFromRange_int_int_helper(10, 10, 10);
-        nextFromRange_int_int_helper(-20, -10, -11);
-        nextFromRange_int_int_helper(-20, -20, -20);
-        nextFromRange_int_int_helper(0, 0, 0);
-        nextFromRange_int_int_helper(0, 10, 9);
-        nextFromRange_int_int_helper(-5, 0, -4);
-        nextFromRange_int_int_helper(-5, 10, 4);
-        nextFromRange_int_int_helper(-10, 5, -1);
-        try {
-            P.nextFromRange(5, -10);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
         aeqitLimit(TINY_LIMIT, P.range(a, b), output);
         P.reset();
@@ -1373,31 +956,6 @@ public strictfp class RandomProviderTest {
         range_int_int_helper(-5, 10, "[4, -3, 10, 0, -2, -4, 0, 0, 0, 1, -4, 7, 9, 10, 9, 5, 4, 2, 9, 8, ...]");
         range_int_int_helper(-10, 5, "[-1, -8, 5, -5, -7, -9, -5, -5, -5, -4, -9, 2, 4, 5, 4, 0, -1, -3, 4, 3, ...]");
         range_int_int_helper(5, -10, "[]");
-    }
-
-    private static void nextFromRange_long_long_helper(long a, long b, long output) {
-        aeq(P.nextFromRange(a, b), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_long_long() {
-        nextFromRange_long_long_helper(10L, 20L, 19L);
-        nextFromRange_long_long_helper(10L, 10L, 10L);
-        nextFromRange_long_long_helper(-20L, -10L, -11L);
-        nextFromRange_long_long_helper(-20L, -20L, -20L);
-        nextFromRange_long_long_helper(0L, 0L, 0L);
-        nextFromRange_long_long_helper(0L, 10L, 9L);
-        nextFromRange_long_long_helper(-5L, 0L, -4L);
-        nextFromRange_long_long_helper(-5L, 10L, 4L);
-        nextFromRange_long_long_helper(-10L, 5L, -1L);
-        try {
-            P.nextFromRange(5L, -10L);
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
@@ -1445,32 +1003,6 @@ public strictfp class RandomProviderTest {
                 "[-1, -1, -7, -8, -5, 5, -2, -5, 3, -7, 5, -9, -3, -5, -7, -5, -2, -5, -9, -4, ...]"
         );
         range_long_long_helper(5L, -10L, "[]");
-    }
-
-    private static void nextFromRange_BigInteger_BigInteger_helper(int a, int b, int output) {
-        aeq(P.nextFromRange(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_BigInteger_BigInteger() {
-        nextFromRange_BigInteger_BigInteger_helper(10, 20, 19);
-        nextFromRange_BigInteger_BigInteger_helper(10, 10, 10);
-        nextFromRange_BigInteger_BigInteger_helper(-20, -10, -11);
-        nextFromRange_BigInteger_BigInteger_helper(-20, -20, -20);
-        nextFromRange_BigInteger_BigInteger_helper(0, 0, 0);
-        nextFromRange_BigInteger_BigInteger_helper(0, 10, 9);
-        nextFromRange_BigInteger_BigInteger_helper(-5, 0, -4);
-        nextFromRange_BigInteger_BigInteger_helper(-5, 10, 4);
-        nextFromRange_BigInteger_BigInteger_helper(-10, 5, -1);
-        P.reset();
-        try {
-            P.nextFromRange(BigInteger.valueOf(5), BigInteger.valueOf(-10));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
@@ -1524,26 +1056,6 @@ public strictfp class RandomProviderTest {
         range_BigInteger_BigInteger_helper(5, -10, "[]");
     }
 
-    private static void nextFromRange_char_char_helper(char a, char b, char output) {
-        aeq(P.nextFromRange(a, b), output);
-        P.reset();
-    }
-
-    @Test
-    public void testNextFromRange_char_char() {
-        nextFromRange_char_char_helper('a', 'z', 'j');
-        nextFromRange_char_char_helper('a', 'a', 'a');
-        nextFromRange_char_char_helper('!', '9', '*');
-        P.reset();
-        try {
-            P.nextFromRange('a', 'A');
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
         aeqcs(P.range(a, b), output);
         P.reset();
@@ -1582,34 +1094,6 @@ public strictfp class RandomProviderTest {
         aeqit(take(TINY_LIMIT, sample), output);
         aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
         aeq(meanOfIntegers(sample), sampleMean);
-    }
-
-    private static void nextPositiveIntGeometric_helper(int mean, int output) {
-        aeq(P.withScale(mean).nextPositiveIntGeometric(), output);
-        P.reset();
-    }
-
-    private static void nextPositiveIntGeometric_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextPositiveIntGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextPositiveIntGeometric() {
-        nextPositiveIntGeometric_helper(2, 4);
-        nextPositiveIntGeometric_helper(3, 5);
-        nextPositiveIntGeometric_helper(4, 7);
-        nextPositiveIntGeometric_helper(5, 5);
-        nextPositiveIntGeometric_helper(10, 36);
-        nextPositiveIntGeometric_helper(100, 147);
-        nextPositiveIntGeometric_fail_helper(1);
-        nextPositiveIntGeometric_fail_helper(0);
-        nextPositiveIntGeometric_fail_helper(-1);
     }
 
     private static void positiveIntegersGeometric_helper(
@@ -1673,34 +1157,6 @@ public strictfp class RandomProviderTest {
         positiveIntegersGeometric_fail_helper(1);
         positiveIntegersGeometric_fail_helper(0);
         positiveIntegersGeometric_fail_helper(-1);
-    }
-
-    private static void nextNegativeIntGeometric_helper(int mean, int output) {
-        aeq(P.withScale(mean).nextNegativeIntGeometric(), output);
-        P.reset();
-    }
-
-    private static void nextNegativeIntGeometric_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNegativeIntGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNegativeIntGeometric() {
-        nextNegativeIntGeometric_helper(2, -4);
-        nextNegativeIntGeometric_helper(3, -5);
-        nextNegativeIntGeometric_helper(4, -7);
-        nextNegativeIntGeometric_helper(5, -5);
-        nextNegativeIntGeometric_helper(10, -36);
-        nextNegativeIntGeometric_helper(100, -147);
-        nextNegativeIntGeometric_fail_helper(1);
-        nextNegativeIntGeometric_fail_helper(0);
-        nextNegativeIntGeometric_fail_helper(-1);
     }
 
     private static void negativeIntegersGeometric_helper(
@@ -1771,35 +1227,6 @@ public strictfp class RandomProviderTest {
         negativeIntegersGeometric_fail_helper(-1);
     }
 
-    private static void nextNaturalIntGeometric_helper(int mean, int output) {
-        aeq(P.withScale(mean).nextNaturalIntGeometric(), output);
-        P.reset();
-    }
-
-    private static void nextNaturalIntGeometric_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNaturalIntGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNaturalIntGeometric() {
-        nextNaturalIntGeometric_helper(1, 3);
-        nextNaturalIntGeometric_helper(2, 4);
-        nextNaturalIntGeometric_helper(3, 6);
-        nextNaturalIntGeometric_helper(4, 4);
-        nextNaturalIntGeometric_helper(5, 5);
-        nextNaturalIntGeometric_helper(10, 36);
-        nextNaturalIntGeometric_helper(100, 149);
-        nextNaturalIntGeometric_fail_helper(0);
-        nextNaturalIntGeometric_fail_helper(-1);
-        nextNaturalIntGeometric_fail_helper(Integer.MAX_VALUE);
-    }
-
     private static void naturalIntegersGeometric_helper(
             int mean,
             @NotNull String output,
@@ -1867,34 +1294,6 @@ public strictfp class RandomProviderTest {
         naturalIntegersGeometric_fail_helper(0);
         naturalIntegersGeometric_fail_helper(-1);
         naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
-    }
-
-    private static void nextNonzeroIntGeometric_helper(int mean, int output) {
-        aeq(P.withScale(mean).nextNonzeroIntGeometric(), output);
-        P.reset();
-    }
-
-    private static void nextNonzeroIntGeometric_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNonzeroIntGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNonzeroIntGeometric() {
-        nextNonzeroIntGeometric_helper(2, 4);
-        nextNonzeroIntGeometric_helper(3, 5);
-        nextNonzeroIntGeometric_helper(4, 7);
-        nextNonzeroIntGeometric_helper(5, 5);
-        nextNonzeroIntGeometric_helper(10, 36);
-        nextNonzeroIntGeometric_helper(100, -147);
-        nextNonzeroIntGeometric_fail_helper(1);
-        nextNonzeroIntGeometric_fail_helper(0);
-        nextNonzeroIntGeometric_fail_helper(-1);
     }
 
     private static void nonzeroIntegersGeometric_helper(
@@ -1967,35 +1366,6 @@ public strictfp class RandomProviderTest {
         nonzeroIntegersGeometric_fail_helper(1);
         nonzeroIntegersGeometric_fail_helper(0);
         nonzeroIntegersGeometric_fail_helper(-1);
-    }
-
-    private static void nextIntGeometric_helper(int mean, int output) {
-        aeq(P.withScale(mean).nextIntGeometric(), output);
-        P.reset();
-    }
-
-    private static void nextIntGeometric_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextIntGeometric();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextIntGeometric() {
-        nextIntGeometric_helper(1, 3);
-        nextIntGeometric_helper(2, 4);
-        nextIntGeometric_helper(3, 6);
-        nextIntGeometric_helper(4, 4);
-        nextIntGeometric_helper(5, 5);
-        nextIntGeometric_helper(10, 36);
-        nextIntGeometric_helper(100, -149);
-        nextIntGeometric_fail_helper(0);
-        nextIntGeometric_fail_helper(-1);
-        nextIntGeometric_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void integersGeometric_helper(
@@ -2075,36 +1445,6 @@ public strictfp class RandomProviderTest {
         integersGeometric_fail_helper(0);
         integersGeometric_fail_helper(-1);
         integersGeometric_fail_helper(Integer.MAX_VALUE);
-    }
-
-    private static void nextIntGeometricFromRangeUp_helper(int mean, int a, int output) {
-        aeq(P.withScale(mean).nextIntGeometricFromRangeUp(a), output);
-        P.reset();
-    }
-
-    private static void nextIntGeometricFromRangeUp_fail_helper(int mean, int a) {
-        try {
-            P.withScale(mean).nextIntGeometricFromRangeUp(a);
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextIntGeometricFromRangeUp() {
-        nextIntGeometricFromRangeUp_helper(3, 2, 5);
-        nextIntGeometricFromRangeUp_helper(10, 2, 33);
-        nextIntGeometricFromRangeUp_helper(11, 10, 13);
-        nextIntGeometricFromRangeUp_helper(20, 10, 46);
-        nextIntGeometricFromRangeUp_helper(-9, -10, -7);
-        nextIntGeometricFromRangeUp_helper(0, -10, 26);
-        nextIntGeometricFromRangeUp_helper(Integer.MAX_VALUE, Integer.MAX_VALUE - 1, 2147483646);
-        nextIntGeometricFromRangeUp_helper(Integer.MIN_VALUE + 1, Integer.MIN_VALUE, -2147483645);
-        nextIntGeometricFromRangeUp_fail_helper(5, 5);
-        nextIntGeometricFromRangeUp_fail_helper(4, 5);
-        nextIntGeometricFromRangeUp_fail_helper(Integer.MAX_VALUE - 5, -10);
     }
 
     private static void rangeUpGeometric_helper(
@@ -2195,36 +1535,6 @@ public strictfp class RandomProviderTest {
         rangeUpGeometric_fail_helper(5, 5);
         rangeUpGeometric_fail_helper(4, 5);
         rangeUpGeometric_fail_helper(Integer.MAX_VALUE - 5, -10);
-    }
-
-    private static void nextIntGeometricFromRangeDown_helper(int mean, int a, int output) {
-        aeq(P.withScale(mean).nextIntGeometricFromRangeDown(a), output);
-        P.reset();
-    }
-
-    private static void nextIntGeometricFromRangeDown_fail_helper(int mean, int a) {
-        try {
-            P.withScale(mean).nextIntGeometricFromRangeDown(a);
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextIntGeometricFromRangeDown() {
-        nextIntGeometricFromRangeDown_helper(0, 2, -2);
-        nextIntGeometricFromRangeDown_helper(-5, 2, -4);
-        nextIntGeometricFromRangeDown_helper(5, 10, 5);
-        nextIntGeometricFromRangeDown_helper(0, 10, -26);
-        nextIntGeometricFromRangeDown_helper(-11, -10, -13);
-        nextIntGeometricFromRangeDown_helper(-20, -10, -46);
-        nextIntGeometricFromRangeDown_helper(Integer.MAX_VALUE - 1, Integer.MAX_VALUE, 2147483644);
-        nextIntGeometricFromRangeDown_helper(Integer.MIN_VALUE, Integer.MIN_VALUE + 1, -2147483647);
-        nextIntGeometricFromRangeDown_fail_helper(5, 5);
-        nextIntGeometricFromRangeDown_fail_helper(6, 5);
-        nextIntGeometricFromRangeDown_fail_helper(-5, Integer.MIN_VALUE);
     }
 
     private static void rangeDownGeometric_helper(
@@ -2332,34 +1642,6 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(toList(map(x -> x.abs().bitLength(), sample))), bitSizeMean);
     }
 
-    private static void nextPositiveBigInteger_helper(int mean, @NotNull String output) {
-        aeq(P.withScale(mean).nextPositiveBigInteger(), output);
-        P.reset();
-    }
-
-    private static void nextPositiveBigInteger_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextPositiveBigInteger();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextPositiveBigInteger() {
-        nextPositiveBigInteger_helper(2, "13");
-        nextPositiveBigInteger_helper(3, "21");
-        nextPositiveBigInteger_helper(4, "101");
-        nextPositiveBigInteger_helper(5, "21");
-        nextPositiveBigInteger_helper(10, "47968091191");
-        nextPositiveBigInteger_helper(100, "94790976865653102300816908025048767680216168");
-        nextPositiveBigInteger_fail_helper(1);
-        nextPositiveBigInteger_fail_helper(0);
-        nextPositiveBigInteger_fail_helper(-1);
-    }
-
     private static void positiveBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
@@ -2440,34 +1722,6 @@ public strictfp class RandomProviderTest {
         positiveBigIntegers_fail_helper(1);
         positiveBigIntegers_fail_helper(0);
         positiveBigIntegers_fail_helper(-1);
-    }
-
-    private static void nextNegativeBigInteger_helper(int mean, @NotNull String output) {
-        aeq(P.withScale(mean).nextNegativeBigInteger(), output);
-        P.reset();
-    }
-
-    private static void nextNegativeBigInteger_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNegativeBigInteger();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNegativeBigInteger() {
-        nextNegativeBigInteger_helper(2, "-13");
-        nextNegativeBigInteger_helper(3, "-21");
-        nextNegativeBigInteger_helper(4, "-101");
-        nextNegativeBigInteger_helper(5, "-21");
-        nextNegativeBigInteger_helper(10, "-47968091191");
-        nextNegativeBigInteger_helper(100, "-94790976865653102300816908025048767680216168");
-        nextNegativeBigInteger_fail_helper(1);
-        nextNegativeBigInteger_fail_helper(0);
-        nextNegativeBigInteger_fail_helper(-1);
     }
 
     private static void negativeBigIntegers_helper(
@@ -2559,35 +1813,6 @@ public strictfp class RandomProviderTest {
         negativeBigIntegers_fail_helper(-1);
     }
 
-    private static void nextNaturalBigInteger_helper(int mean, @NotNull String output) {
-        aeq(P.withScale(mean).nextNaturalBigInteger(), output);
-        P.reset();
-    }
-
-    private static void nextNaturalBigInteger_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNaturalBigInteger();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNaturalBigInteger() {
-        nextNaturalBigInteger_helper(1, "5");
-        nextNaturalBigInteger_helper(2, "13");
-        nextNaturalBigInteger_helper(3, "37");
-        nextNaturalBigInteger_helper(4, "13");
-        nextNaturalBigInteger_helper(5, "21");
-        nextNaturalBigInteger_helper(10, "47968091191");
-        nextNaturalBigInteger_helper(100, "630008861630388057697674146568609443823746152");
-        nextNaturalBigInteger_fail_helper(0);
-        nextNaturalBigInteger_fail_helper(-1);
-        nextNaturalBigInteger_fail_helper(Integer.MAX_VALUE);
-    }
-
     private static void naturalBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
@@ -2677,34 +1902,6 @@ public strictfp class RandomProviderTest {
         naturalBigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
-    private static void nextNonzeroBigInteger_helper(int mean, @NotNull String output) {
-        aeq(P.withScale(mean).nextNonzeroBigInteger(), output);
-        P.reset();
-    }
-
-    private static void nextNonzeroBigInteger_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextNonzeroBigInteger();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNonzeroBigInteger() {
-        nextNonzeroBigInteger_helper(2, "13");
-        nextNonzeroBigInteger_helper(3, "21");
-        nextNonzeroBigInteger_helper(4, "101");
-        nextNonzeroBigInteger_helper(5, "21");
-        nextNonzeroBigInteger_helper(10, "-47968091191");
-        nextNonzeroBigInteger_helper(100, "94790976865653102300816908025048767680216168");
-        nextNonzeroBigInteger_fail_helper(1);
-        nextNonzeroBigInteger_fail_helper(0);
-        nextNonzeroBigInteger_fail_helper(-1);
-    }
-
     private static void nonzeroBigIntegers_helper(
             int meanBitSize,
             @NotNull String output,
@@ -2786,35 +1983,6 @@ public strictfp class RandomProviderTest {
         nonzeroBigIntegers_fail_helper(1);
         nonzeroBigIntegers_fail_helper(0);
         nonzeroBigIntegers_fail_helper(-1);
-    }
-
-    private static void nextBigInteger_helper(int mean, @NotNull String output) {
-        aeq(P.withScale(mean).nextBigInteger(), output);
-        P.reset();
-    }
-
-    private static void nextBigInteger_fail_helper(int mean) {
-        try {
-            P.withScale(mean).nextBigInteger();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextBigInteger() {
-        nextBigInteger_helper(1, "5");
-        nextBigInteger_helper(2, "13");
-        nextBigInteger_helper(3, "37");
-        nextBigInteger_helper(4, "13");
-        nextBigInteger_helper(5, "21");
-        nextBigInteger_helper(10, "-47968091191");
-        nextBigInteger_helper(100, "630008861630388057697674146568609443823746152");
-        nextBigInteger_fail_helper(0);
-        nextBigInteger_fail_helper(-1);
-        nextBigInteger_fail_helper(Integer.MAX_VALUE);
     }
 
     private static void bigIntegers_helper(
@@ -2905,38 +2073,6 @@ public strictfp class RandomProviderTest {
         bigIntegers_fail_helper(0);
         bigIntegers_fail_helper(-1);
         bigIntegers_fail_helper(Integer.MAX_VALUE);
-    }
-
-    private static void nextFromRangeUp_BigInteger_helper(int meanBitSize, int a, @NotNull String output) {
-        aeq(P.withScale(meanBitSize).nextFromRangeUp(BigInteger.valueOf(a)), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
-        try {
-            P.withScale(meanBitSize).nextFromRangeUp(BigInteger.valueOf(a));
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeUp_BigInteger() {
-        nextFromRangeUp_BigInteger_helper(5, 8, "117");
-        nextFromRangeUp_BigInteger_helper(10, 8, "305");
-        nextFromRangeUp_BigInteger_helper(5, 10, "117");
-        nextFromRangeUp_BigInteger_helper(10, 10, "305");
-        nextFromRangeUp_BigInteger_helper(1, 0, "5");
-        nextFromRangeUp_BigInteger_helper(10, 0, "47968091191");
-        nextFromRangeUp_BigInteger_helper(5, -8, "21");
-        nextFromRangeUp_BigInteger_helper(10, -8, "47968091191");
-        nextFromRangeUp_BigInteger_helper(5, -10, "21");
-        nextFromRangeUp_BigInteger_helper(10, -10, "47968091191");
-        nextFromRangeUp_BigInteger_fail_helper(4, 10);
-        nextFromRangeUp_BigInteger_fail_helper(3, 10);
-        nextFromRangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
     }
 
     private static void rangeUp_BigInteger_helper(
@@ -3057,38 +2193,6 @@ public strictfp class RandomProviderTest {
         rangeUp_BigInteger_fail_helper(4, 10);
         rangeUp_BigInteger_fail_helper(3, 10);
         rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
-    }
-
-    private static void nextFromRangeDown_BigInteger_helper(int meanBitSize, int a, @NotNull String output) {
-        aeq(P.withScale(meanBitSize).nextFromRangeDown(BigInteger.valueOf(a)), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
-        try {
-            P.withScale(meanBitSize).nextFromRangeDown(BigInteger.valueOf(a));
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeDown_BigInteger() {
-        nextFromRangeDown_BigInteger_helper(5, 8, "-21");
-        nextFromRangeDown_BigInteger_helper(10, 8, "-47968091191");
-        nextFromRangeDown_BigInteger_helper(5, 10, "-21");
-        nextFromRangeDown_BigInteger_helper(10, 10, "-47968091191");
-        nextFromRangeDown_BigInteger_helper(1, 0, "-5");
-        nextFromRangeDown_BigInteger_helper(10, 0, "-47968091191");
-        nextFromRangeDown_BigInteger_helper(5, -8, "-117");
-        nextFromRangeDown_BigInteger_helper(10, -8, "-305");
-        nextFromRangeDown_BigInteger_helper(5, -10, "-117");
-        nextFromRangeDown_BigInteger_helper(10, -10, "-305");
-        nextFromRangeDown_BigInteger_fail_helper(4, -10);
-        nextFromRangeDown_BigInteger_fail_helper(3, -10);
-        nextFromRangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
     }
 
     private static void rangeDown_BigInteger_helper(
@@ -3235,38 +2339,6 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
     }
 
-    private static void nextPositiveBinaryFraction_helper(
-            int mantissaMeanBitSize,
-            int meanExponentSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextPositiveBinaryFraction(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextPositiveBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
-        try {
-            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextPositiveBinaryFraction();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextPositiveBinaryFraction() {
-        nextPositiveBinaryFraction_helper(2, 1, "13 << 1");
-        nextPositiveBinaryFraction_helper(5, 3, "21 << 8");
-        nextPositiveBinaryFraction_helper(32, 8, "9899036265412339 >> 7");
-        nextPositiveBinaryFraction_helper(100, 10, "94790976865653102300816908025048767680216169 >> 15");
-        nextPositiveBinaryFraction_fail_helper(1, 1);
-        nextPositiveBinaryFraction_fail_helper(2, 0);
-    }
-
     private static void positiveBinaryFractions_helper(
             int meanMantissaBitSize,
             int meanExponentSize,
@@ -3351,38 +2423,6 @@ public strictfp class RandomProviderTest {
         );
         positiveBinaryFractions_fail_helper(1, 1);
         positiveBinaryFractions_fail_helper(2, 0);
-    }
-
-    private static void nextNegativeBinaryFraction_helper(
-            int mantissaMeanBitSize,
-            int meanExponentSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNegativeBinaryFraction(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNegativeBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
-        try {
-            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNegativeBinaryFraction();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNegativeBinaryFraction() {
-        nextNegativeBinaryFraction_helper(2, 1, "-13 << 1");
-        nextNegativeBinaryFraction_helper(5, 3, "-21 << 8");
-        nextNegativeBinaryFraction_helper(32, 8, "-9899036265412339 >> 7");
-        nextNegativeBinaryFraction_helper(100, 10, "-94790976865653102300816908025048767680216169 >> 15");
-        nextNegativeBinaryFraction_fail_helper(1, 1);
-        nextNegativeBinaryFraction_fail_helper(2, 0);
     }
 
     private static void negativeBinaryFractions_helper(
@@ -3475,38 +2515,6 @@ public strictfp class RandomProviderTest {
         negativeBinaryFractions_fail_helper(2, 0);
     }
 
-    private static void nextNonzeroBinaryFraction_helper(
-            int mantissaMeanBitSize,
-            int meanExponentSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNonzeroBinaryFraction(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNonzeroBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
-        try {
-            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextNonzeroBinaryFraction();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNonzeroBinaryFraction() {
-        nextNonzeroBinaryFraction_helper(2, 1, "5 << 1");
-        nextNonzeroBinaryFraction_helper(5, 3, "13 << 8");
-        nextNonzeroBinaryFraction_helper(32, 8, "5395436638041843 >> 7");
-        nextNonzeroBinaryFraction_helper(100, 10, "50189486468591856017745471479752044668255337 >> 15");
-        nextNonzeroBinaryFraction_fail_helper(1, 1);
-        nextNonzeroBinaryFraction_fail_helper(2, 0);
-    }
-
     private static void nonzeroBinaryFractions_helper(
             int meanMantissaBitSize,
             int meanExponentSize,
@@ -3591,38 +2599,6 @@ public strictfp class RandomProviderTest {
         );
         nonzeroBinaryFractions_fail_helper(1, 1);
         nonzeroBinaryFractions_fail_helper(2, 0);
-    }
-
-    private static void nextBinaryFraction_helper(
-            int mantissaMeanBitSize,
-            int meanExponentSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextBinaryFraction(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextBinaryFraction_fail_helper(int mantissaMeanBitSize, int meanExponentSize) {
-        try {
-            P.withScale(mantissaMeanBitSize).withSecondaryScale(meanExponentSize).nextBinaryFraction();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextBinaryFraction() {
-        nextBinaryFraction_helper(2, 1, "13 << 1");
-        nextBinaryFraction_helper(5, 3, "21");
-        nextBinaryFraction_helper(32, 8, "469791");
-        nextBinaryFraction_helper(100, 10, "630008861630388057697674146568609443823746153 >> 5");
-        nextBinaryFraction_fail_helper(1, 0);
-        nextBinaryFraction_fail_helper(0, 1);
     }
 
     private static void binaryFractions_helper(
@@ -3711,66 +2687,6 @@ public strictfp class RandomProviderTest {
         );
         binaryFractions_fail_helper(1, 0);
         binaryFractions_fail_helper(0, 1);
-    }
-
-    private static void nextFromRangeUp_BinaryFraction_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(BinaryFraction.read(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeUp_BinaryFraction_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(BinaryFraction.read(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeUp_BinaryFraction() {
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "0", "5");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "0", "21");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "0", "469791");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "1", "3 << 1");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "1", "11 << 1");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "1", "14681 << 5");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "11", "1 << 4");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "11", "1 << 5");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "11", "234901 << 1");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "5 << 20", "5 << 21");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "5 << 20", "13 << 21");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "5 << 20", "117449 << 22");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "5 >> 20", "5 >> 19");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "5 >> 20", "13 >> 19");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "5 >> 20", "117449 >> 18");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "-1", "1 << 2");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "-1", "5 << 2");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "-1", "234895 << 1");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "-11", "-3 << 1");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "-11", "5 << 1");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "-11", "117445 << 2");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "-5 << 20", "0");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "-5 << 20", "1 << 24");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "-5 << 20", "234893 << 21");
-        nextFromRangeUp_BinaryFraction_helper(1, 1, "-5 >> 20", "0");
-        nextFromRangeUp_BinaryFraction_helper(5, 3, "-5 >> 20", "1 >> 16");
-        nextFromRangeUp_BinaryFraction_helper(32, 8, "-5 >> 20", "234893 >> 19");
-        nextFromRangeUp_BinaryFraction_fail_helper(1, 0, "0");
-        nextFromRangeUp_BinaryFraction_fail_helper(0, 1, "0");
     }
 
     private static void rangeUp_BinaryFraction_helper(
@@ -4154,66 +3070,6 @@ public strictfp class RandomProviderTest {
         rangeUp_BinaryFraction_fail_helper(0, 1, "0");
     }
 
-    private static void nextFromRangeDown_BinaryFraction_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeDown(BinaryFraction.read(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeDown_BinaryFraction_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeDown(BinaryFraction.read(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeDown_BinaryFraction() {
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "0", "-5");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "0", "-21");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "0", "-469791");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "1", "-1 << 2");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "1", "-5 << 2");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "1", "-234895 << 1");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "11", "3 << 1");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "11", "-5 << 1");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "11", "-117445 << 2");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "5 << 20", "0");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "5 << 20", "-1 << 24");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "5 << 20", "-234893 << 21");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "5 >> 20", "0");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "5 >> 20", "-1 >> 16");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "5 >> 20", "-234893 >> 19");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "-1", "-3 << 1");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "-1", "-11 << 1");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "-1", "-14681 << 5");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "-11", "-1 << 4");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "-11", "-1 << 5");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "-11", "-234901 << 1");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "-5 << 20", "-5 << 21");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "-5 << 20", "-13 << 21");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "-5 << 20", "-117449 << 22");
-        nextFromRangeDown_BinaryFraction_helper(1, 1, "-5 >> 20", "-5 >> 19");
-        nextFromRangeDown_BinaryFraction_helper(5, 3, "-5 >> 20", "-13 >> 19");
-        nextFromRangeDown_BinaryFraction_helper(32, 8, "-5 >> 20", "-117449 >> 18");
-        nextFromRangeDown_BinaryFraction_fail_helper(1, 0, "0");
-        nextFromRangeDown_BinaryFraction_fail_helper(0, 1, "0");
-    }
-
     private static void rangeDown_BinaryFraction_helper(
             int scale,
             int secondaryScale,
@@ -4595,73 +3451,6 @@ public strictfp class RandomProviderTest {
         );
         rangeDown_BinaryFraction_fail_helper(1, 0, "0");
         rangeDown_BinaryFraction_fail_helper(0, 1, "0");
-    }
-
-    private static void nextFromRange_BinaryFraction_BinaryFraction_helper(
-            int meanDivisionSize,
-            @NotNull String a,
-            @NotNull String b,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(meanDivisionSize)
-                        .nextFromRange(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRange_BinaryFraction_BinaryFraction_fail_helper(
-            int meanDivisionSize,
-            @NotNull String a,
-            @NotNull String b
-    ) {
-        try {
-            P.withScale(meanDivisionSize).nextFromRange(BinaryFraction.read(a).get(), BinaryFraction.read(b).get());
-            fail();
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRange_BinaryFraction_BinaryFraction() {
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "1", "3 >> 3");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "1", "1180057081 >> 31");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "1", "415293 >> 19");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "1", "11", "7 >> 2");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "1", "11", "6548766201 >> 30");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "1", "11", "1726013 >> 18");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "11", "11", "11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "11", "11", "11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "11", "11", "11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-11", "-1", "-41 >> 2");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-11", "-1", "-6336135687 >> 30");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-11", "-1", "-1419715 >> 18");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-11", "-11", "-11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-11", "-11", "-11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-11", "-11", "-11");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "0", "0");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "0", "0");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "0", "0");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "0", "11", "67 >> 3");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "0", "11", "16212442617 >> 31");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "0", "11", "4085309 >> 19");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "-1", "11", "1 >> 1");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "-1", "11", "4938153465 >> 29");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "-1", "11", "1332797 >> 17");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "5 >> 20", "1", "8000811 >> 23");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "5 >> 20", "1", "1120933957221881 >> 51");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "5 >> 20", "1", "273665644093 >> 39");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(1, "1", "5 << 20", "33166603 >> 3");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(8, "1", "5 << 20", "7876324808343033 >> 31");
-        nextFromRange_BinaryFraction_BinaryFraction_helper(32, "1", "5 << 20", "1922930988605 >> 19");
-        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(0, "0", "1");
-        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(-1, "0", "1");
-        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(Integer.MAX_VALUE, "0", "1");
-        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(1, "11", "1");
-        nextFromRange_BinaryFraction_BinaryFraction_fail_helper(1, "-1", "-11");
     }
 
     private static void range_BinaryFraction_BinaryFraction_helper(
@@ -5079,25 +3868,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextPositiveFloat() {
-        aeq(P.nextPositiveFloat(), 643.2779f);
-        aeq(Q.nextPositiveFloat(), 2.1455476E-24f);
-        aeq(R.nextPositiveFloat(), 8.930732E-36f);
-    }
-
-    @Test
     public void testPositiveFloats() {
         aeqit(take(TINY_LIMIT, P.positiveFloats()),
                 "[643.2779, 2.8091642E33, 1.9718748E-28, 1.2339139E-18, 3.040928E-35, 1.4698017E-35, 1.68898314E15," +
                 " 2.400072E28, 3.8939846E27, 1.351875E-17, 38.282387, 2.7031316E32, 4.925231E-36, 2.0586195E-32," +
                 " 1.859597E-4, 4.636554E-23, 6.5494645E-22, 8.8230604E-7, 1.841686E31, 6.544164E-24]");
-    }
-
-    @Test
-    public void testNextNegativeFloat() {
-        aeq(P.nextNegativeFloat(), -0.84115845f);
-        aeq(Q.nextNegativeFloat(), -1.0099123E-9f);
-        aeq(R.nextNegativeFloat(), -6.976539E25f);
     }
 
     @Test
@@ -5110,26 +3885,12 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroFloat() {
-        aeq(P.nextNonzeroFloat(), -0.84115845f);
-        aeq(Q.nextNonzeroFloat(), 2.1455476E-24f);
-        aeq(R.nextNonzeroFloat(), 8.930732E-36f);
-    }
-
-    @Test
     public void testNonzeroFloats() {
         aeqit(take(TINY_LIMIT, P.nonzeroFloats()),
                 "[-0.84115845, 643.2779, -3.7940737E-33, -4.0851493E-4, -12288.927, -1.7792515E-14, -9.2656293E21," +
                 " -4.730412E-34, -8.745077E29, 2.8091642E33, 1.9718748E-28, -1.0643401E35, -4.4910484E-19," +
                 " -2.8662077E31, 1.2339139E-18, -6.8727283E31, 3.040928E-35, -9.5656956E-20, -3.1309523E21," +
                 " -9.9399514E8]");
-    }
-
-    @Test
-    public void testNextFloat() {
-        aeq(P.nextFloat(), -0.84115845f);
-        aeq(Q.nextFloat(), 2.1455476E-24f);
-        aeq(R.nextFloat(), 8.930732E-36f);
     }
 
     @Test
@@ -5142,13 +3903,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextPositiveDouble() {
-        aeq(P.nextPositiveDouble(), 1.7536743524958916E-224);
-        aeq(Q.nextPositiveDouble(), 2.4113969466699316E-192);
-        aeq(R.nextPositiveDouble(), 2.0131366863465367E-283);
-    }
-
-    @Test
     public void testPositiveDoubles() {
         aeqit(take(TINY_LIMIT, P.positiveDoubles()),
                 "[1.7536743524958916E-224, 2.764572212578795E-146, 3.896743264763858E-279, 1.217842565654434E-281," +
@@ -5156,13 +3910,6 @@ public strictfp class RandomProviderTest {
                 " 1.774583871298936E-172, 2.409016063284675E-51, 8.548832445406645E247, 3.828636429008211E278," +
                 " 6.640742249139187E161, 0.023971318720341354, 1.1041744221277698E-301, 1.5042403999912119E200," +
                 " 2.0828213847164863E289, 7.70184820812619E-204, 2.1509695971995357E227, 7.617347059029767E-140]");
-    }
-
-    @Test
-    public void testNextNegativeDouble() {
-        aeq(P.nextNegativeDouble(), -0.0014243510236272453);
-        aeq(Q.nextNegativeDouble(), -3.152232323573363E-58);
-        aeq(R.nextNegativeDouble(), -0.23950118766162518);
     }
 
     @Test
@@ -5177,13 +3924,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroDouble() {
-        aeq(P.nextNonzeroDouble(), -0.0014243510236272453);
-        aeq(Q.nextNonzeroDouble(), 2.4113969466699316E-192);
-        aeq(R.nextNonzeroDouble(), 2.0131366863465367E-283);
-    }
-
-    @Test
     public void testNonzeroDoubles() {
         aeqit(take(TINY_LIMIT, P.nonzeroDoubles()),
                 "[-0.0014243510236272453, -2.3500148334353684E-262, -2.537597334289803E30, -4.1961757252226754E173," +
@@ -5192,13 +3932,6 @@ public strictfp class RandomProviderTest {
                 " -3.9265241758078536E54, -4.665139345047659E90, -3.8731262819404067E201, 2.792496130931957E218," +
                 " -2.515767423879933E-158, 1.5945589508926632E257, 1.8384296161192212E-285, -2.28825237318607E268," +
                 " -2.44117139354519E166]");
-    }
-
-    @Test
-    public void testNextDouble() {
-        aeq(P.nextDouble(), -0.0014243510236272453);
-        aeq(Q.nextDouble(), 2.4113969466699316E-192);
-        aeq(R.nextDouble(), 2.0131366863465367E-283);
     }
 
     @Test
@@ -5213,25 +3946,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextPositiveFloatUniform() {
-        aeq(P.nextPositiveFloatUniform(), 9.929094E37f);
-        aeq(Q.nextPositiveFloatUniform(), 2.0204882E38f);
-        aeq(R.nextPositiveFloatUniform(), 9.500816E37f);
-    }
-
-    @Test
     public void testPositiveFloatsUniform() {
         aeqit(take(TINY_LIMIT, P.positiveFloatsUniform()),
                 "[9.929094E37, 3.3988664E38, 1.6264806E38, 2.9887745E38, 2.3484774E37, 2.0084857E38, 3.076517E38," +
                 " 1.293602E38, 2.6551666E38, 3.3685456E38, 9.823196E37, 3.2878975E37, 1.6963695E38, 6.2983905E37," +
                 " 2.767365E38, 8.4991095E37, 3.9025083E37, 1.1304424E38, 1.9060855E37, 1.4810831E38]");
-    }
-
-    @Test
-    public void testNextNegativeFloatUniform() {
-        aeq(P.nextNegativeFloatUniform(), -9.929094E37f);
-        aeq(Q.nextNegativeFloatUniform(), -2.0204882E38f);
-        aeq(R.nextNegativeFloatUniform(), -9.500816E37f);
     }
 
     @Test
@@ -5244,25 +3963,11 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroFloatUniform() {
-        aeq(P.nextNonzeroFloatUniform(), 9.929094E37f);
-        aeq(Q.nextNonzeroFloatUniform(), -2.0204882E38f);
-        aeq(R.nextNonzeroFloatUniform(), 9.500816E37f);
-    }
-
-    @Test
     public void testNonzeroFloatsUniform() {
         aeqit(take(TINY_LIMIT, P.nonzeroFloatsUniform()),
                 "[9.929094E37, 1.9126927E38, 2.3923068E38, 2.7261729E38, 3.0669539E38, 2.5483572E38, -2.3865865E38," +
                 " 2.584016E38, -1.8050742E38, 1.6911248E38, 3.2878975E37, -2.938879E38, -2.2382738E38, 2.366022E38," +
                 " 2.0822496E38, 2.130368E37, -2.2906584E38, 1.7886733E38, 3.0884502E38, -7.3493103E37]");
-    }
-
-    @Test
-    public void testNextFloatUniform() {
-        aeq(P.nextFloatUniform(), 9.929096E37f);
-        aeq(Q.nextFloatUniform(), 2.0204884E38f);
-        aeq(R.nextFloatUniform(), -2.4527419E38f);
     }
 
     @Test
@@ -5272,13 +3977,6 @@ public strictfp class RandomProviderTest {
                 " -3.2630645E37, 1.2936022E38, 2.6551668E38, 3.3685458E38, -2.420504E38, -3.0740338E38," +
                 " 1.6963697E38, -2.7729845E38, -6.354583E37, 8.4991115E37, -3.0125725E38, 1.1304426E38," +
                 " 1.9060875E37, -1.9217403E38]");
-    }
-
-    @Test
-    public void testNextPositiveDoubleUniform() {
-        aeq(P.nextPositiveDoubleUniform(), 6.010031716528839E307);
-        aeq(Q.nextPositiveDoubleUniform(), 1.3485310997296055E308);
-        aeq(R.nextPositiveDoubleUniform(), 4.199972353586778E307);
     }
 
     @Test
@@ -5292,13 +3990,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNegativeDoubleUniform() {
-        aeq(P.nextNegativeDoubleUniform(), -6.010031716528839E307);
-        aeq(Q.nextNegativeDoubleUniform(), -1.3485310997296055E308);
-        aeq(R.nextNegativeDoubleUniform(), -4.199972353586778E307);
-    }
-
-    @Test
     public void testNegativeDoublesUniform() {
         aeqit(take(TINY_LIMIT, P.negativeDoublesUniform()),
                 "[-6.010031716528839E307, -1.0138295960478667E308, -5.899671652551286E307, -1.126139741743928E307," +
@@ -5309,13 +4000,6 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void testNextNonzeroDoubleUniform() {
-        aeq(P.nextNonzeroDoubleUniform(), -6.010031716528839E307);
-        aeq(Q.nextNonzeroDoubleUniform(), -1.3485310997296055E308);
-        aeq(R.nextNonzeroDoubleUniform(), -4.199972353586778E307);
-    }
-
-    @Test
     public void testNonzeroDoublesUniform() {
         aeqit(take(TINY_LIMIT, P.nonzeroDoublesUniform()),
                 "[-6.010031716528839E307, -4.38991984513168E306, 6.045170159795733E307, -1.2213236277546202E308," +
@@ -5323,13 +4007,6 @@ public strictfp class RandomProviderTest {
                 " 1.3155340847210589E308, -6.434171608796906E307, -9.114494942217177E307, 9.914564182242407E307," +
                 " -8.523326292029085E306, 1.7505475135241652E308, -2.148267505726024E306, -8.64944544675027E307," +
                 " -1.0680271527860177E308, 6.700517384784714E307, 1.7054593739868952E308, -1.318586604367549E308]");
-    }
-
-    @Test
-    public void testNextDoubleUniform() {
-        aeq(P.nextDoubleUniform(), -1.1966899632094317E308);
-        aeq(Q.nextDoubleUniform(), -4.4916203513271024E307);
-        aeq(R.nextDoubleUniform(), -1.3776958995036378E308);
     }
 
     @Test
@@ -5352,41 +4029,6 @@ public strictfp class RandomProviderTest {
         List<Double> sample = toList(take(DEFAULT_SAMPLE_SIZE, ds));
         aeqit(take(TINY_LIMIT, sample), output);
         aeq(meanOfDoubles(sample), sampleMean);
-    }
-
-    private static void nextFromRangeUp_float_helper(float a, float output) {
-        aeq(P.nextFromRangeUp(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUp_float_fail_helper(float a) {
-        try {
-            P.nextFromRangeUp(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUp_float() {
-        nextFromRangeUp_float_helper(1.0f, 6.9505213E34f);
-        nextFromRangeUp_float_helper(1.0E20f, 3.04433E22f);
-        nextFromRangeUp_float_helper(-1.0f, 3.7808473E-36f);
-        nextFromRangeUp_float_helper(-1.0E20f, -9.307628E-22f);
-        nextFromRangeUp_float_helper((float) Math.PI, 935.52563f);
-        nextFromRangeUp_float_helper((float) Math.sqrt(2), 427.6776f);
-        nextFromRangeUp_float_helper((float) -Math.PI, 1.2681087E-36f);
-        nextFromRangeUp_float_helper((float) -Math.sqrt(2), 2.7718172E-36f);
-        nextFromRangeUp_float_helper(0.0f, 643.27783f);
-        nextFromRangeUp_float_helper(-0.0f, 643.27783f);
-        nextFromRangeUp_float_helper(Float.MIN_VALUE, 643.27795f);
-        nextFromRangeUp_float_helper(Float.MIN_NORMAL, 1286.5558f);
-        nextFromRangeUp_float_helper(-Float.MIN_VALUE, 643.2778f);
-        nextFromRangeUp_float_helper(-Float.MIN_NORMAL, 321.63892f);
-        nextFromRangeUp_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY);
-        nextFromRangeUp_float_helper(-Float.MAX_VALUE, -0.0034054646f);
-        nextFromRangeUp_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-        nextFromRangeUp_float_helper(Float.NEGATIVE_INFINITY, -0.0034054648f);
-        nextFromRangeUp_float_fail_helper(Float.NaN);
     }
 
     private static void rangeUp_float_helper(float a, @NotNull String output, float sampleMean) {
@@ -5531,41 +4173,6 @@ public strictfp class RandomProviderTest {
                 -5.471121E33f
         );
         rangeUp_float_fail_helper(Float.NaN);
-    }
-
-    private static void nextFromRangeDown_float_helper(float a, float output) {
-        aeq(P.nextFromRangeDown(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeDown_float_fail_helper(float a) {
-        try {
-            P.nextFromRangeDown(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeDown_float() {
-        nextFromRangeDown_float_helper(1.0f, -3.7808473E-36f);
-        nextFromRangeDown_float_helper(1.0E20f, 9.307628E-22f);
-        nextFromRangeDown_float_helper(-1.0f, -6.9505213E34f);
-        nextFromRangeDown_float_helper(-1.0E20f, -3.04433E22f);
-        nextFromRangeDown_float_helper((float) Math.PI, -1.2681087E-36f);
-        nextFromRangeDown_float_helper((float) Math.sqrt(2), -2.7718172E-36f);
-        nextFromRangeDown_float_helper((float) -Math.PI, -935.52563f);
-        nextFromRangeDown_float_helper((float) -Math.sqrt(2), -427.6776f);
-        nextFromRangeDown_float_helper(0.0f, -643.27783f);
-        nextFromRangeDown_float_helper(-0.0f, -643.27783f);
-        nextFromRangeDown_float_helper(Float.MIN_VALUE, -643.2778f);
-        nextFromRangeDown_float_helper(Float.MIN_NORMAL, -321.63892f);
-        nextFromRangeDown_float_helper(-Float.MIN_VALUE, -643.27795f);
-        nextFromRangeDown_float_helper(-Float.MIN_NORMAL, -1286.5558f);
-        nextFromRangeDown_float_helper(Float.MAX_VALUE, 0.0034054646f);
-        nextFromRangeDown_float_helper(-Float.MAX_VALUE, Float.NEGATIVE_INFINITY);
-        nextFromRangeDown_float_helper(Float.POSITIVE_INFINITY, 0.0034054648f);
-        nextFromRangeDown_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
-        nextFromRangeDown_float_fail_helper(Float.NaN);
     }
 
     private static void rangeDown_float_helper(float a, @NotNull String output, float sampleMean) {
@@ -5723,52 +4330,6 @@ public strictfp class RandomProviderTest {
                 Float.NEGATIVE_INFINITY
         );
         rangeDown_float_fail_helper(Float.NaN);
-    }
-
-    private static void nextFromRange_float_float_helper(float a, float b, float output) {
-        aeq(P.nextFromRange(a, b), output);
-        P.reset();
-    }
-
-    private static void nextFromRange_float_float_fail_helper(float a, float b) {
-        try {
-            P.nextFromRange(a, b);
-            fail();
-        } catch (ArithmeticException | IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRange_float_float() {
-        nextFromRange_float_float_helper(1.0f, 2.0f, 1.2564021f);
-        nextFromRange_float_float_helper(1.0f, 3.0f, 1.2564021f);
-        nextFromRange_float_float_helper(1.0f, 4.0f, 1.2564021f);
-        nextFromRange_float_float_helper(1.0f, 257.0f, 13.386217f);
-        nextFromRange_float_float_helper(-257.0f, -1.0f, -21.290066f);
-        nextFromRange_float_float_helper(1.0f, 1.0E20f, 321.63895f);
-        nextFromRange_float_float_helper(-1.0E20f, -1.0f, -3.16722124E17f);
-        nextFromRange_float_float_helper((float) Math.sqrt(2), (float) Math.PI, 1.6706157f);
-        nextFromRange_float_float_helper((float) Math.PI, FloatingPointUtils.successor((float) Math.PI), 3.141593f);
-        nextFromRange_float_float_helper(0.0f, 1.0f, 1.8904236E-36f);
-        nextFromRange_float_float_helper(-1.0f, 1.0f, 3.7808473E-36f);
-        nextFromRange_float_float_helper(1.0f, 1.0f, 1.0f);
-        nextFromRange_float_float_helper(1.0f, Float.POSITIVE_INFINITY, 6.9505213E34f);
-        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, 1.0f, -0.0034054648f);
-        nextFromRange_float_float_helper(Float.MAX_VALUE, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, -Float.MAX_VALUE, -3.4028235E38f);
-        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, -0.0034054648f);
-        nextFromRange_float_float_helper(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
-        nextFromRange_float_float_helper(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
-        nextFromRange_float_float_fail_helper(1.0f, -1.0f);
-        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY);
-        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
-        nextFromRange_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
-        nextFromRange_float_float_fail_helper(Float.NaN, 1.0f);
-        nextFromRange_float_float_fail_helper(Float.NaN, Float.POSITIVE_INFINITY);
-        nextFromRange_float_float_fail_helper(Float.NaN, Float.NEGATIVE_INFINITY);
-        nextFromRange_float_float_fail_helper(1.0f, Float.NaN);
-        nextFromRange_float_float_fail_helper(Float.POSITIVE_INFINITY, Float.NaN);
-        nextFromRange_float_float_fail_helper(Float.NEGATIVE_INFINITY, Float.NaN);
-        nextFromRange_float_float_fail_helper(Float.NaN, Float.NaN);
     }
 
     private static void range_float_float_helper(float a, float b, @NotNull String output, float sampleMean) {
@@ -5950,41 +4511,6 @@ public strictfp class RandomProviderTest {
         range_float_float_fail_helper(Float.NaN, Float.NaN);
     }
 
-    private static void nextFromRangeUp_double_helper(double a, double output) {
-        aeq(P.nextFromRangeUp(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUp_double_fail_helper(double a) {
-        try {
-            P.nextFromRangeUp(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUp_double() {
-        nextFromRangeUp_double_helper(1.0, 1.3361160166687895E199);
-        nextFromRangeUp_double_helper(1.0E20, 1.236689265426644E219);
-        nextFromRangeUp_double_helper(-1.0, 9.695749714968612E-201);
-        nextFromRangeUp_double_helper(-1.0E20, 9.995264080399706E-221);
-        nextFromRangeUp_double_helper(Math.PI, 3.764522892368842E199);
-        nextFromRangeUp_double_helper(Math.sqrt(2), 1.7324409986526723E199);
-        nextFromRangeUp_double_helper(-Math.PI, 3.1248378519408627E-201);
-        nextFromRangeUp_double_helper(-Math.sqrt(2), 6.99006493837807E-201);
-        nextFromRangeUp_double_helper(0.0, 1.4864784103112476E-109);
-        nextFromRangeUp_double_helper(-0.0, 1.4864784103112476E-109);
-        nextFromRangeUp_double_helper(Double.MIN_VALUE, 1.486478410311248E-109);
-        nextFromRangeUp_double_helper(Double.MIN_NORMAL, 2.9729568206224957E-109);
-        nextFromRangeUp_double_helper(-Double.MIN_VALUE, 1.4864784103112474E-109);
-        nextFromRangeUp_double_helper(-Double.MIN_NORMAL, 4.3574956749855824E107);
-        nextFromRangeUp_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY);
-        nextFromRangeUp_double_helper(-Double.MAX_VALUE, -2.581476161683265E-108);
-        nextFromRangeUp_double_helper(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-        nextFromRangeUp_double_helper(Double.NEGATIVE_INFINITY, -2.5814761616832655E-108);
-        nextFromRangeUp_double_fail_helper(Double.NaN);
-    }
-
     private static void rangeUp_double_helper(double a, @NotNull String output, double sampleMean) {
         doubleHelper(P.rangeUp(a), output, sampleMean);
         P.reset();
@@ -6158,41 +4684,6 @@ public strictfp class RandomProviderTest {
                 -3.959346934339273E303
         );
         rangeUp_double_fail_helper(Double.NaN);
-    }
-
-    private static void nextFromRangeDown_double_helper(double a, double output) {
-        aeq(P.nextFromRangeDown(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeDown_double_fail_helper(double a) {
-        try {
-            P.nextFromRangeDown(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeDown_double() {
-        nextFromRangeDown_double_helper(1.0, -9.695749714968612E-201);
-        nextFromRangeDown_double_helper(1.0E20, -9.995264080399706E-221);
-        nextFromRangeDown_double_helper(-1.0, -1.3361160166687895E199);
-        nextFromRangeDown_double_helper(-1.0E20, -1.236689265426644E219);
-        nextFromRangeDown_double_helper(Math.PI, -3.1248378519408627E-201);
-        nextFromRangeDown_double_helper(Math.sqrt(2), -6.99006493837807E-201);
-        nextFromRangeDown_double_helper(-Math.PI, -3.764522892368842E199);
-        nextFromRangeDown_double_helper(-Math.sqrt(2), -1.7324409986526723E199);
-        nextFromRangeDown_double_helper(0.0, -1.4864784103112476E-109);
-        nextFromRangeDown_double_helper(-0.0, -1.4864784103112476E-109);
-        nextFromRangeDown_double_helper(Double.MIN_VALUE, -1.4864784103112474E-109);
-        nextFromRangeDown_double_helper(Double.MIN_NORMAL, -4.3574956749855824E107);
-        nextFromRangeDown_double_helper(-Double.MIN_VALUE, -1.486478410311248E-109);
-        nextFromRangeDown_double_helper(-Double.MIN_NORMAL, -2.9729568206224957E-109);
-        nextFromRangeDown_double_helper(Double.MAX_VALUE, 2.581476161683265E-108);
-        nextFromRangeDown_double_helper(-Double.MAX_VALUE, Double.NEGATIVE_INFINITY);
-        nextFromRangeDown_double_helper(Double.POSITIVE_INFINITY, 2.5814761616832655E-108);
-        nextFromRangeDown_double_helper(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        nextFromRangeDown_double_fail_helper(Double.NaN);
     }
 
     private static void rangeDown_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -6375,64 +4866,6 @@ public strictfp class RandomProviderTest {
                 Double.NEGATIVE_INFINITY
         );
         rangeDown_double_fail_helper(Double.NaN);
-    }
-
-    private static void nextFromRange_double_double_helper(double a, double b, double output) {
-        aeq(P.nextFromRange(a, b), output);
-        P.reset();
-    }
-
-    private static void nextFromRange_double_double_fail_helper(double a, double b) {
-        try {
-            P.nextFromRange(a, b);
-            fail();
-        } catch (ArithmeticException | IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRange_double_double() {
-        nextFromRange_double_double_helper(1.0, 2.0, 1.5835797778827967);
-        nextFromRange_double_double_helper(1.0, 3.0, 1.5835797778827967);
-        nextFromRange_double_double_helper(1.0, 4.0, 1.2250037563816156);
-        nextFromRange_double_double_helper(1.0, 257.0, 44.685540415870975);
-        nextFromRange_double_double_helper(-257.0, -1.0, -6.429932448016128);
-        nextFromRange_double_double_helper(1.0, 1.0E20, 2928511.57669452);
-        nextFromRange_double_double_helper(-1.0E20, -1.0, -3.4460094358635984E13);
-        nextFromRange_double_double_helper(Math.sqrt(2), Math.PI, 1.9977933402558918);
-        nextFromRange_double_double_helper(Math.PI, FloatingPointUtils.successor(Math.PI), 3.1415926535897936);
-        nextFromRange_double_double_helper(0.0, 1.0, 1.4864784103112476E-109);
-        nextFromRange_double_double_helper(-1.0, 1.0, -8.379780669198026E-200);
-        nextFromRange_double_double_helper(1.0, 1.0, 1.0);
-        nextFromRange_double_double_helper(1.0, Double.POSITIVE_INFINITY, 1.3361160166687895E199);
-        nextFromRange_double_double_helper(Double.NEGATIVE_INFINITY, 1.0, -2.5814761616832655E-108);
-        nextFromRange_double_double_helper(Double.MAX_VALUE, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
-        nextFromRange_double_double_helper(Double.NEGATIVE_INFINITY, -Double.MAX_VALUE, -1.7976931348623157E308);
-        nextFromRange_double_double_helper(
-                Double.NEGATIVE_INFINITY,
-                Double.POSITIVE_INFINITY,
-                -2.5814761616832655E-108
-        );
-        nextFromRange_double_double_helper(
-                Double.POSITIVE_INFINITY,
-                Double.POSITIVE_INFINITY,
-                Double.POSITIVE_INFINITY
-        );
-        nextFromRange_double_double_helper(
-                Double.NEGATIVE_INFINITY,
-                Double.NEGATIVE_INFINITY,
-                Double.NEGATIVE_INFINITY
-        );
-        nextFromRange_double_double_fail_helper(1.0, -1.0);
-        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
-        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0);
-        nextFromRange_double_double_fail_helper(1.0, Double.NEGATIVE_INFINITY);
-        nextFromRange_double_double_fail_helper(Double.NaN, 1.0);
-        nextFromRange_double_double_fail_helper(Double.NaN, Double.POSITIVE_INFINITY);
-        nextFromRange_double_double_fail_helper(Double.NaN, Double.NEGATIVE_INFINITY);
-        nextFromRange_double_double_fail_helper(1.0, Float.NaN);
-        nextFromRange_double_double_fail_helper(Double.POSITIVE_INFINITY, Double.NaN);
-        nextFromRange_double_double_fail_helper(Double.NEGATIVE_INFINITY, Double.NaN);
-        nextFromRange_double_double_fail_helper(Double.NaN, Double.NaN);
     }
 
     private static void range_double_double_helper(double a, double b, @NotNull String output, double sampleMean) {
@@ -6639,41 +5072,6 @@ public strictfp class RandomProviderTest {
         range_double_double_fail_helper(Double.NaN, Double.NaN);
     }
 
-    private static void nextFromRangeUpUniform_float_helper(float a, float output) {
-        aeq(P.nextFromRangeUpUniform(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUpUniform_float_fail_helper(float a) {
-        try {
-            P.nextFromRangeUpUniform(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUpUniform_float() {
-        nextFromRangeUpUniform_float_helper(1.0f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(1.0E20f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(-1.0f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(-1.0E20f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper((float) Math.PI, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper((float) Math.sqrt(2), 9.929094E37f);
-        nextFromRangeUpUniform_float_helper((float) -Math.PI, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper((float) -Math.sqrt(2), 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(0.0f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(-0.0f, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(Float.MIN_VALUE, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(Float.MIN_NORMAL, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(-Float.MIN_VALUE, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(-Float.MIN_NORMAL, 9.929094E37f);
-        nextFromRangeUpUniform_float_helper(Float.MAX_VALUE, 3.4028235E38f);
-        nextFromRangeUpUniform_float_helper(-Float.MAX_VALUE, 9.929096E37f);
-        nextFromRangeUpUniform_float_fail_helper(Float.POSITIVE_INFINITY);
-        nextFromRangeUpUniform_float_fail_helper(Float.NEGATIVE_INFINITY);
-        nextFromRangeUpUniform_float_fail_helper(Float.NaN);
-    }
-
     private static void rangeUpUniform_float_helper(float a, @NotNull String output, float sampleMean) {
         floatHelper(P.rangeUpUniform(a), output, sampleMean);
         P.reset();
@@ -6804,41 +5202,6 @@ public strictfp class RandomProviderTest {
         rangeUpUniform_float_fail_helper(Float.POSITIVE_INFINITY);
         rangeUpUniform_float_fail_helper(Float.NEGATIVE_INFINITY);
         rangeUpUniform_float_fail_helper(Float.NaN);
-    }
-
-    private static void nextFromRangeDownUniform_float_helper(float a, float output) {
-        aeq(P.nextFromRangeDownUniform(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeDownUniform_float_fail_helper(float a) {
-        try {
-            P.nextFromRangeDownUniform(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeDownUniform_float() {
-        nextFromRangeDownUniform_float_helper(1.0f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(1.0E20f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(-1.0f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(-1.0E20f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper((float) Math.PI, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper((float) Math.sqrt(2), -9.929094E37f);
-        nextFromRangeDownUniform_float_helper((float) -Math.PI, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper((float) -Math.sqrt(2), -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(0.0f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(-0.0f, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(Float.MIN_VALUE, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(Float.MIN_NORMAL, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(-Float.MIN_VALUE, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(-Float.MIN_NORMAL, -9.929094E37f);
-        nextFromRangeDownUniform_float_helper(Float.MAX_VALUE, -9.929096E37f);
-        nextFromRangeDownUniform_float_helper(-Float.MAX_VALUE, -3.4028235E38f);
-        nextFromRangeDownUniform_float_fail_helper(Float.POSITIVE_INFINITY);
-        nextFromRangeDownUniform_float_fail_helper(Float.NEGATIVE_INFINITY);
-        nextFromRangeDownUniform_float_fail_helper(Float.NaN);
     }
 
     private static void rangeDownUniform_float_helper(float a, @NotNull String output, float sampleMean) {
@@ -6987,44 +5350,6 @@ public strictfp class RandomProviderTest {
         rangeDownUniform_float_fail_helper(Float.NaN);
     }
 
-    private static void nextFromRangeUniform_float_float_helper(float a, float b, float output) {
-        aeq(P.nextFromRangeUniform(a, b), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUniform_float_float_fail_helper(float a, float b) {
-        try {
-            P.nextFromRangeUniform(a, b);
-            fail();
-        } catch (ArithmeticException | IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUniform_float_float() {
-        nextFromRangeUniform_float_float_helper(1.0f, 2.0f, 1.4779798f);
-        nextFromRangeUniform_float_float_helper(1.0f, 3.0f, 2.2917898f);
-        nextFromRangeUniform_float_float_helper(1.0f, 4.0f, 2.2917898f);
-        nextFromRangeUniform_float_float_helper(1.0f, 257.0f, 123.3628f);
-        nextFromRangeUniform_float_float_helper(-257.0f, -1.0f, -134.63719f);
-        nextFromRangeUniform_float_float_helper(1.0f, 1.0E20f, 4.9773216E19f);
-        nextFromRangeUniform_float_float_helper(-1.0E20f, -1.0f, -5.0226786E19f);
-        nextFromRangeUniform_float_float_helper((float) Math.sqrt(2), (float) Math.PI, 2.7060032f);
-        nextFromRangeUniform_float_float_helper(
-                (float) Math.PI,
-                FloatingPointUtils.successor((float) Math.PI),
-                3.1415927f
-        );
-        nextFromRangeUniform_float_float_helper(0.0f, 1.0f, 0.4779797f);
-        nextFromRangeUniform_float_float_helper(-1.0f, 1.0f, 0.29178986f);
-        nextFromRangeUniform_float_float_helper(1.0f, 1.0f, 1.0f);
-        nextFromRangeUniform_float_float_fail_helper(Float.POSITIVE_INFINITY, 1.0f);
-        nextFromRangeUniform_float_float_fail_helper(Float.NEGATIVE_INFINITY, 1.0f);
-        nextFromRangeUniform_float_float_fail_helper(Float.NaN, 1.0f);
-        nextFromRangeUniform_float_float_fail_helper(1.0f, Float.POSITIVE_INFINITY);
-        nextFromRangeUniform_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
-        nextFromRangeUniform_float_float_fail_helper(1.0f, Float.NaN);
-    }
-
     private static void rangeUniform_float_float_helper(float a, float b, @NotNull String output, float sampleMean) {
         floatHelper(P.rangeUniform(a, b), output, sampleMean);
         P.reset();
@@ -7141,41 +5466,6 @@ public strictfp class RandomProviderTest {
         rangeUniform_float_float_fail_helper(1.0f, Float.POSITIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NEGATIVE_INFINITY);
         rangeUniform_float_float_fail_helper(1.0f, Float.NaN);
-    }
-
-    private static void nextFromRangeUpUniform_double_helper(double a, double output) {
-        aeq(P.nextFromRangeUpUniform(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUpUniform_double_fail_helper(double a) {
-        try {
-            P.nextFromRangeUpUniform(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUpUniform_double() {
-        nextFromRangeUpUniform_double_helper(1.0, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(1.0E20, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-1.0, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-1.0E20, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(Math.PI, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(Math.sqrt(2), 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-Math.PI, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-Math.sqrt(2), 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(0.0, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-0.0, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(Double.MIN_VALUE, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(Double.MIN_NORMAL, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-Double.MIN_VALUE, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(-Double.MIN_NORMAL, 6.010031716528839E307);
-        nextFromRangeUpUniform_double_helper(Double.MAX_VALUE, 1.7976931348623157E308);
-        nextFromRangeUpUniform_double_helper(-Double.MAX_VALUE, -1.1966899632094317E308);
-        nextFromRangeUpUniform_double_fail_helper(Double.POSITIVE_INFINITY);
-        nextFromRangeUpUniform_double_fail_helper(Double.NEGATIVE_INFINITY);
-        nextFromRangeUpUniform_double_fail_helper(Double.NaN);
     }
 
     private static void rangeUpUniform_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -7339,41 +5629,6 @@ public strictfp class RandomProviderTest {
         rangeUpUniform_double_fail_helper(Double.POSITIVE_INFINITY);
         rangeUpUniform_double_fail_helper(Double.NEGATIVE_INFINITY);
         rangeUpUniform_double_fail_helper(Double.NaN);
-    }
-
-    private static void nextFromRangeDownUniform_double_helper(double a, double output) {
-        aeq(P.nextFromRangeDownUniform(a), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeDownUniform_double_fail_helper(double a) {
-        try {
-            P.nextFromRangeDownUniform(a);
-            fail();
-        } catch (ArithmeticException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeDownUniform_double() {
-        nextFromRangeDownUniform_double_helper(1.0, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(1.0E20, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-1.0, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-1.0E20, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(Math.PI, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(Math.sqrt(2), -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-Math.PI, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-Math.sqrt(2), -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(0.0, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-0.0, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(Double.MIN_VALUE, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(Double.MIN_NORMAL, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-Double.MIN_VALUE, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(-Double.MIN_NORMAL, -6.010031716528839E307);
-        nextFromRangeDownUniform_double_helper(Double.MAX_VALUE, 1.1966899632094317E308);
-        nextFromRangeDownUniform_double_helper(-Double.MAX_VALUE, -1.7976931348623157E308);
-        nextFromRangeDownUniform_double_fail_helper(Double.POSITIVE_INFINITY);
-        nextFromRangeDownUniform_double_fail_helper(Double.NEGATIVE_INFINITY);
-        nextFromRangeDownUniform_double_fail_helper(Double.NaN);
     }
 
     private static void rangeDownUniform_double_helper(double a, @NotNull String output, double sampleMean) {
@@ -7541,40 +5796,6 @@ public strictfp class RandomProviderTest {
         rangeDownUniform_double_fail_helper(Double.NaN);
     }
 
-    private static void nextFromRangeUniform_double_double_helper(double a, double b, double output) {
-        aeq(P.nextFromRangeUniform(a, b), output);
-        P.reset();
-    }
-
-    private static void nextFromRangeUniform_double_double_fail_helper(double a, double b) {
-        try {
-            P.nextFromRangeUniform(a, b);
-            fail();
-        } catch (ArithmeticException | IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testNextFromRangeUniform_double_double() {
-        nextFromRangeUniform_double_double_helper(1.0, 2.0, 1.3343191115311872);
-        nextFromRangeUniform_double_double_helper(1.0, 3.0, 2.124820775773226);
-        nextFromRangeUniform_double_double_helper(1.0, 4.0, 3.334319111531187);
-        nextFromRangeUniform_double_double_helper(1.0, 257.0, 86.58569255198388);
-        nextFromRangeUniform_double_double_helper(-257.0, -1.0, -171.4143074480161);
-        nextFromRangeUniform_double_double_helper(1.0, 1.0E20, 4.3060587236784865E19);
-        nextFromRangeUniform_double_double_helper(-1.0E20, -1.0, -5.6939412763215135E19);
-        nextFromRangeUniform_double_double_helper(Math.sqrt(2), Math.PI, 1.7485326739042824);
-        nextFromRangeUniform_double_double_helper(Math.PI, FloatingPointUtils.successor(Math.PI), 3.141592653589793);
-        nextFromRangeUniform_double_double_helper(0.0, 1.0, 0.33431911153118704);
-        nextFromRangeUniform_double_double_helper(-1.0, 1.0, 0.12482077577322558);
-        nextFromRangeUniform_double_double_helper(1.0, 1.0, 1.0);
-        nextFromRangeUniform_double_double_fail_helper(Double.POSITIVE_INFINITY, 1.0);
-        nextFromRangeUniform_double_double_fail_helper(Double.NEGATIVE_INFINITY, 1.0);
-        nextFromRangeUniform_double_double_fail_helper(Double.NaN, 1.0);
-        nextFromRangeUniform_double_double_fail_helper(1.0, Double.POSITIVE_INFINITY);
-        nextFromRangeUniform_double_double_fail_helper(1.0, Double.NEGATIVE_INFINITY);
-        nextFromRangeUniform_double_double_fail_helper(1.0, Double.NaN);
-    }
-
     private static void rangeUniform_double_double_helper(
             double a,
             double b,
@@ -7730,38 +5951,6 @@ public strictfp class RandomProviderTest {
         aeq(meanOfIntegers(toList(map(x -> Math.abs(x.scale()), sample))), scaleMean);
     }
 
-    private static void nextPositiveBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextPositiveBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextPositiveBigDecimal() {
-        nextPositiveBigDecimal_helper(2, 1, "1.3");
-        nextPositiveBigDecimal_helper(5, 3, "2.1E-7");
-        nextPositiveBigDecimal_helper(32, 8, "9.899036265412338E+22");
-        nextPositiveBigDecimal_helper(100, 10, "9.4790976865653102300816908025048767680216168E+58");
-        nextPositiveBigDecimal_fail_helper(1, 1);
-        nextPositiveBigDecimal_fail_helper(2, 0);
-    }
-
     private static void positiveBigDecimals_helper(
             int meanUnscaledBitSize,
             int meanScaleSize,
@@ -7845,38 +6034,6 @@ public strictfp class RandomProviderTest {
         );
         positiveBigDecimals_fail_helper(1, 1);
         positiveBigDecimals_fail_helper(2, 0);
-    }
-
-    private static void nextNegativeBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNegativeBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNegativeBigDecimal() {
-        nextNegativeBigDecimal_helper(2, 1, "-1.3");
-        nextNegativeBigDecimal_helper(5, 3, "-2.1E-7");
-        nextNegativeBigDecimal_helper(32, 8, "-9.899036265412338E+22");
-        nextNegativeBigDecimal_helper(100, 10, "-9.4790976865653102300816908025048767680216168E+58");
-        nextNegativeBigDecimal_fail_helper(1, 1);
-        nextNegativeBigDecimal_fail_helper(2, 0);
     }
 
     private static void negativeBigDecimals_helper(
@@ -7968,38 +6125,6 @@ public strictfp class RandomProviderTest {
         negativeBigDecimals_fail_helper(2, 0);
     }
 
-    private static void nextNonzeroBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNonzeroBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNonzeroBigDecimal() {
-        nextNonzeroBigDecimal_helper(2, 1, "13");
-        nextNonzeroBigDecimal_helper(5, 3, "0.0000021");
-        nextNonzeroBigDecimal_helper(32, 8, "-9.899036265412338E+21");
-        nextNonzeroBigDecimal_helper(100, 10, "9.4790976865653102300816908025048767680216168E+58");
-        nextNonzeroBigDecimal_fail_helper(1, 1);
-        nextNonzeroBigDecimal_fail_helper(2, 0);
-    }
-
     private static void nonzeroBigDecimals_helper(
             int meanUnscaledBitSize,
             int meanScaleSize,
@@ -8081,38 +6206,6 @@ public strictfp class RandomProviderTest {
         );
         nonzeroBigDecimals_fail_helper(1, 1);
         nonzeroBigDecimals_fail_helper(2, 0);
-    }
-
-    private static void nextBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextBigDecimal() {
-        nextBigDecimal_helper(2, 1, "0.0000013");
-        nextBigDecimal_helper(5, 3, "0.0000021");
-        nextBigDecimal_helper(32, 8, "4.69790E+12");
-        nextBigDecimal_helper(100, 10, "6.30008861630388057697674146568609443823746152E+59");
-        nextBigDecimal_fail_helper(0, 1);
-        nextBigDecimal_fail_helper(2, 0);
     }
 
     private static void bigDecimals_helper(
@@ -8201,38 +6294,6 @@ public strictfp class RandomProviderTest {
         bigDecimals_fail_helper(2, 0);
     }
 
-    private static void nextPositiveCanonicalBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveCanonicalBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextPositiveCanonicalBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextPositiveCanonicalBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextPositiveCanonicalBigDecimal() {
-        nextPositiveCanonicalBigDecimal_helper(2, 1, "0.005");
-        nextPositiveCanonicalBigDecimal_helper(5, 3, "0.000013");
-        nextPositiveCanonicalBigDecimal_helper(32, 8, "4.04936997654063E-17");
-        nextPositiveCanonicalBigDecimal_helper(100, 10, "0.000572989721722831798340552401503927");
-        nextPositiveCanonicalBigDecimal_fail_helper(1, 1);
-        nextPositiveCanonicalBigDecimal_fail_helper(2, 0);
-    }
-
     private static void positiveCanonicalBigDecimals_helper(
             int meanUnscaledBitSize,
             int meanScaleSize,
@@ -8316,38 +6377,6 @@ public strictfp class RandomProviderTest {
         );
         positiveCanonicalBigDecimals_fail_helper(1, 1);
         positiveCanonicalBigDecimals_fail_helper(2, 0);
-    }
-
-    private static void nextNegativeCanonicalBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeCanonicalBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNegativeCanonicalBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNegativeCanonicalBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNegativeCanonicalBigDecimal() {
-        nextNegativeCanonicalBigDecimal_helper(2, 1, "-0.005");
-        nextNegativeCanonicalBigDecimal_helper(5, 3, "-0.000013");
-        nextNegativeCanonicalBigDecimal_helper(32, 8, "-4.04936997654063E-17");
-        nextNegativeCanonicalBigDecimal_helper(100, 10, "-0.000572989721722831798340552401503927");
-        nextNegativeCanonicalBigDecimal_fail_helper(1, 1);
-        nextNegativeCanonicalBigDecimal_fail_helper(2, 0);
     }
 
     private static void negativeCanonicalBigDecimals_helper(
@@ -8437,38 +6466,6 @@ public strictfp class RandomProviderTest {
         negativeCanonicalBigDecimals_fail_helper(2, 0);
     }
 
-    private static void nextNonzeroCanonicalBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroCanonicalBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextNonzeroCanonicalBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextNonzeroCanonicalBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextNonzeroCanonicalBigDecimal() {
-        nextNonzeroCanonicalBigDecimal_helper(2, 1, "0.05");
-        nextNonzeroCanonicalBigDecimal_helper(5, 3, "0.00013");
-        nextNonzeroCanonicalBigDecimal_helper(32, 8, "4.04936997654063E-17");
-        nextNonzeroCanonicalBigDecimal_helper(100, 10, "0.00572989721722831798340552401503927");
-        nextNonzeroCanonicalBigDecimal_fail_helper(1, 1);
-        nextNonzeroCanonicalBigDecimal_fail_helper(2, 0);
-    }
-
     private static void nonzeroCanonicalBigDecimals_helper(
             int meanUnscaledBitSize,
             int meanScaleSize,
@@ -8555,38 +6552,6 @@ public strictfp class RandomProviderTest {
         nonzeroCanonicalBigDecimals_fail_helper(2, 0);
     }
 
-    private static void nextCanonicalBigDecimal_helper(
-            int unscaledMeanBitSize,
-            int meanScaleSize,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextCanonicalBigDecimal(),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextCanonicalBigDecimal_fail_helper(int unscaledMeanBitSize, int meanScaleSize) {
-        try {
-            P.withScale(unscaledMeanBitSize).withSecondaryScale(meanScaleSize).nextCanonicalBigDecimal();
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextCanonicalBigDecimal() {
-        nextCanonicalBigDecimal_helper(2, 1, "0.005");
-        nextCanonicalBigDecimal_helper(5, 3, "0.000013");
-        nextCanonicalBigDecimal_helper(32, 8, "4.04936997654063E-17");
-        nextCanonicalBigDecimal_helper(100, 10, "0.000572989721722831798340552401503927");
-        nextCanonicalBigDecimal_fail_helper(1, 1);
-        nextCanonicalBigDecimal_fail_helper(2, 0);
-    }
-
     private static void canonicalBigDecimals_helper(
             int meanUnscaledBitSize,
             int meanScaleSize,
@@ -8671,90 +6636,6 @@ public strictfp class RandomProviderTest {
         );
         canonicalBigDecimals_fail_helper(1, 1);
         canonicalBigDecimals_fail_helper(2, 0);
-    }
-
-    private static void nextFromRangeUp_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(Readers.readBigDecimal(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeUp_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeUp(Readers.readBigDecimal(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeUp_BigDecimal() {
-        nextFromRangeUp_BigDecimal_helper(2, 1, "0", "0.0050000000");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "0", "0.0000130000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "0", "4.0493699765406300000000000000000000000000E-17");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "0.0", "0.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "0.0", "0.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "0.0", "58756.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "1", "1.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "1", "1.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "1", "58757.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "1.0", "1.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "1.0", "1.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "1.0", "58757.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-1.0", "-0.98700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-1.0", "-0.999979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-1.0", "58755.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "9", "9.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "9", "9.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "9", "58765.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-9", "-8.98700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-9", "-8.999979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-9", "58747.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "10", "10.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "10", "10.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "10", "58766.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-10", "-9.98700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-10", "-9.999979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-10", "58746.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "101", "101.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "101", "101.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "101", "58857.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-101", "-100.98700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-101", "-100.999979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-101", "58655.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "1234567", "1234567.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "1234567", "1234567.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "1234567", "1293323.389791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-1234567", "-1234566.98700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-1234567", "-1234566.999979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-1234567", "-1175810.610208562000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "0.09", "0.10300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "0.09", "0.090021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "0.09", "58756.479791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "-0.09", "-0.07700");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "-0.09", "-0.089979000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "-0.09", "58756.299791438000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "1E-12", "0.01300000000100");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "1E-12", "0.000021000001000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "1E-12", "58756.389791438001000000000");
-        nextFromRangeUp_BigDecimal_helper(2, 1, "1E+12", "1000000000000.01300");
-        nextFromRangeUp_BigDecimal_helper(5, 3, "1E+12", "1000000000000.000021000000000");
-        nextFromRangeUp_BigDecimal_helper(32, 8, "1E+12", "1000000058756.389791438000000000");
-        nextFromRangeUp_BigDecimal_fail_helper(1, 1, "0");
-        nextFromRangeUp_BigDecimal_fail_helper(2, 0, "0");
     }
 
     private static void rangeUp_BigDecimal_helper(
@@ -9512,91 +7393,6 @@ public strictfp class RandomProviderTest {
         );
         rangeUp_BigDecimal_fail_helper(1, 1, "0");
         rangeUp_BigDecimal_fail_helper(2, 0, "0");
-    }
-
-    private static void nextFromRangeDown_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .nextFromRangeDown(Readers.readBigDecimal(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeDown_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale).nextFromRangeDown(Readers.readBigDecimal(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeDown_BigDecimal() {
-        nextFromRangeDown_BigDecimal_helper(2, 1, "0", "-0.0050000000");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "0", "-0.0000130000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "0", "-4.0493699765406300000000000000000000000000E-17");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "0.0", "-0.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "0.0", "-0.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "0.0", "-58756.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "1", "0.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "1", "0.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "1", "-58755.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "1.0", "0.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "1.0", "0.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "1.0", "-58755.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-1.0", "-1.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-1.0", "-1.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-1.0", "-58757.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "9", "8.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "9", "8.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "9", "-58747.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-9", "-9.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-9", "-9.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-9", "-58765.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "10", "9.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "10", "9.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "10", "-58746.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-10", "-10.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-10", "-10.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-10", "-58766.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "101", "100.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "101", "100.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "101", "-58655.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-101", "-101.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-101", "-101.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-101", "-58857.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "1234567", "1234566.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "1234567", "1234566.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "1234567", "1175810.610208562000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-1234567", "-1234567.01300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-1234567", "-1234567.000021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-1234567", "-1293323.389791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "0.09", "0.07700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "0.09", "0.089979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "0.09", "-58756.299791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "-0.09", "-0.10300");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "-0.09", "-0.090021000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "-0.09", "-58756.479791438000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "1E-12", "-0.01299999999900");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "1E-12", "-0.000020999999000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "1E-12", "-58756.389791437999000000000");
-        nextFromRangeDown_BigDecimal_helper(2, 1, "1E+12", "999999999999.98700");
-        nextFromRangeDown_BigDecimal_helper(5, 3, "1E+12", "999999999999.999979000000000");
-        nextFromRangeDown_BigDecimal_helper(32, 8, "1E+12", "999999941243.610208562000000000");
-        nextFromRangeDown_BigDecimal_fail_helper(1, 1, "0");
-        nextFromRangeDown_BigDecimal_fail_helper(2, 0, "0");
     }
 
     private static void rangeDown_BigDecimal_helper(
@@ -10362,134 +8158,6 @@ public strictfp class RandomProviderTest {
         );
         rangeDown_BigDecimal_fail_helper(1, 1, "0");
         rangeDown_BigDecimal_fail_helper(2, 0, "0");
-    }
-
-    private static void nextFromRange_BigDecimal_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String b,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .nextFromRange(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRange_BigDecimal_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String b
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .nextFromRange(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
-            fail();
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRange_BigDecimal_BigDecimal() {
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "1", "0.835");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "1", "0.34025400000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "1", "0.785693340317779469094037902976600000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "3", "2");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "3", "0.847400");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "3", "2.093200000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "1E+6", "8.35E+5");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "1E+6", "340254.00000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "1E+6", "785693.340317779469094037902976600000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "0.000001", "8.35E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "0.000001", "3.4025400000000E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "0.000001", "7.85693340317779469094037902976600000E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "1", "3", "3");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "1", "3", "1.847400");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "1", "3", "2.6422");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "1", "1E+6", "835001");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "1", "1E+6", "340255.00000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "1", "1E+6", "785694.340317779469094037902976600000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-1", "0", "-0.165");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-1", "0", "-0.65974600000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-1", "0", "-0.214306659682220530905962097023400000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-3", "0", "-1");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-3", "0", "-2.152600");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-3", "0", "-0.906800000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-1E+6", "0", "-1.65E+5");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-1E+6", "0", "-659746.00000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-1E+6", "0", "-214306.659682220530905962097023400000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-0.000001", "0", "-1.65E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-0.000001", "0", "-6.5974600000000E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-0.000001", "0",
-                "-2.14306659682220530905962097023400000E-7");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-3", "-1", "-1");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-3", "-1", "-2.152600");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-3", "-1", "-1.3578");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-1E+6", "-1", "-1.65E+5");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-1E+6", "-1", "-659746.00000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-1E+6", "-1", "-214306.659682220530905962097023400000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "100", "101", "100.835");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "100", "101", "100.34025400000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "100", "101", "100.785693340317779469094037902976600000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "2.7183", "3.1416", "2.9183");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "2.7183", "3.1416", "3.05855400000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "2.7183", "3.1416", "2.9276200000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "-3.1416", "2.7183", "-1.1416");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "-3.1416", "2.7183", "0.2609400000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "-3.1416", "2.7183", "-1.048400000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "0", "0.000");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "0", "0.000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "0", "0E-31");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0", "0.0", "0.000");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0", "0.0", "0.000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0", "0.0", "0E-31");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0.0", "0", "0.000");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0.0", "0", "0.000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0.0", "0", "0E-31");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "0.0", "0.0", "0.000");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "0.0", "0.0", "0.000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "0.0", "0.0", "0E-31");
-        nextFromRange_BigDecimal_BigDecimal_helper(1, 1, "1", "1", "1.000");
-        nextFromRange_BigDecimal_BigDecimal_helper(5, 3, "1", "1", "1.000000");
-        nextFromRange_BigDecimal_BigDecimal_helper(32, 8, "1", "1", "1.0000000000000000000000000000000");
-        nextFromRange_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
-        nextFromRange_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
-        nextFromRange_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
-    }
-
-    private static void nextFromRangeUpCanonical_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .nextFromRangeUpCanonical(Readers.readBigDecimal(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeUpCanonical_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .nextFromRangeUpCanonical(Readers.readBigDecimal(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
     }
 
     private static void range_BigDecimal_BigDecimal_helper(
@@ -11381,63 +9049,6 @@ public strictfp class RandomProviderTest {
         range_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
     }
 
-    @Test
-    public void testNextFromRangeUpCanonical_BigDecimal() {
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0", "0.005");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0", "0.000013");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0", "4.04936997654063E-17");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0.0", "0.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0.0", "0.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0.0", "58756.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1", "1.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1", "1.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1", "58757.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1.0", "1.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1.0", "1.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1.0", "58757.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-1.0", "-0.987");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-1.0", "-0.999979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-1.0", "58755.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "9", "9.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "9", "9.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "9", "58765.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-9", "-8.987");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-9", "-8.999979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-9", "58747.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "10", "10.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "10", "10.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "10", "58766.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-10", "-9.987");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-10", "-9.999979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-10", "58746.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "101", "101.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "101", "101.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "101", "58857.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-101", "-100.987");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-101", "-100.999979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-101", "58655.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1234567", "1234567.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1234567", "1234567.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1234567", "1293323.389791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-1234567", "-1234566.987");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-1234567", "-1234566.999979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-1234567", "-1175810.610208562");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "0.09", "0.103");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "0.09", "0.090021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "0.09", "58756.479791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "-0.09", "-0.077");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "-0.09", "-0.089979");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "-0.09", "58756.299791438");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1E-12", "0.013000000001");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1E-12", "0.000021000001");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1E-12", "58756.389791438001");
-        nextFromRangeUpCanonical_BigDecimal_helper(2, 1, "1E+12", "1000000000000.013");
-        nextFromRangeUpCanonical_BigDecimal_helper(5, 3, "1E+12", "1000000000000.000021");
-        nextFromRangeUpCanonical_BigDecimal_helper(32, 8, "1E+12", "1000000058756.389791438");
-        nextFromRangeUpCanonical_BigDecimal_fail_helper(1, 1, "0");
-        nextFromRangeUpCanonical_BigDecimal_fail_helper(2, 0, "0");
-    }
-
     private static void rangeUpCanonical_BigDecimal_helper(
             int scale,
             int secondaryScale,
@@ -12155,92 +9766,6 @@ public strictfp class RandomProviderTest {
         );
         rangeUpCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeUpCanonical_BigDecimal_fail_helper(2, 0, "0");
-    }
-
-    private static void nextFromRangeDownCanonical_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .nextFromRangeDownCanonical(Readers.readBigDecimal(a).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeDownCanonical_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .nextFromRangeDownCanonical(Readers.readBigDecimal(a).get());
-            fail();
-        } catch (IllegalStateException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeDownCanonical_BigDecimal() {
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0", "-0.005");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0", "-0.000013");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0", "-4.04936997654063E-17");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0.0", "-0.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0.0", "-0.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0.0", "-58756.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1", "0.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1", "0.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1", "-58755.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1.0", "0.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1.0", "0.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1.0", "-58755.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-1.0", "-1.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-1.0", "-1.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-1.0", "-58757.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "9", "8.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "9", "8.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "9", "-58747.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-9", "-9.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-9", "-9.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-9", "-58765.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "10", "9.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "10", "9.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "10", "-58746.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-10", "-10.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-10", "-10.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-10", "-58766.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "101", "100.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "101", "100.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "101", "-58655.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-101", "-101.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-101", "-101.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-101", "-58857.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1234567", "1234566.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1234567", "1234566.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1234567", "1175810.610208562");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-1234567", "-1234567.013");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-1234567", "-1234567.000021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-1234567", "-1293323.389791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "0.09", "0.077");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "0.09", "0.089979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "0.09", "-58756.299791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "-0.09", "-0.103");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "-0.09", "-0.090021");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "-0.09", "-58756.479791438");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1E-12", "-0.012999999999");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1E-12", "-0.000020999999");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1E-12", "-58756.389791437999");
-        nextFromRangeDownCanonical_BigDecimal_helper(2, 1, "1E+12", "999999999999.987");
-        nextFromRangeDownCanonical_BigDecimal_helper(5, 3, "1E+12", "999999999999.999979");
-        nextFromRangeDownCanonical_BigDecimal_helper(32, 8, "1E+12", "999999941243.610208562");
-        nextFromRangeDownCanonical_BigDecimal_fail_helper(1, 1, "0");
-        nextFromRangeDownCanonical_BigDecimal_fail_helper(2, 0, "0");
     }
 
     private static void rangeDownCanonical_BigDecimal_helper(
@@ -12964,107 +10489,6 @@ public strictfp class RandomProviderTest {
         );
         rangeDownCanonical_BigDecimal_fail_helper(1, 1, "0");
         rangeDownCanonical_BigDecimal_fail_helper(2, 0, "0");
-    }
-
-    private static void nextFromRangeCanonical_BigDecimal_BigDecimal_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String b,
-            @NotNull String output
-    ) {
-        aeq(
-                P.withScale(scale).withSecondaryScale(secondaryScale)
-                        .nextFromRangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
-                output
-        );
-        P.reset();
-    }
-
-    private static void nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(
-            int scale,
-            int secondaryScale,
-            @NotNull String a,
-            @NotNull String b
-    ) {
-        try {
-            P.withScale(scale).withSecondaryScale(secondaryScale)
-                    .nextFromRangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get());
-            fail();
-        } catch (IllegalStateException | IllegalArgumentException ignored) {}
-        finally {
-            P.reset();
-        }
-    }
-
-    @Test
-    public void testNextFromRangeCanonical_BigDecimal_BigDecimal() {
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "1", "0.835");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "1", "0.340254");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "1", "0.7856933403177794690940379029766");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "3", "2");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "3", "0.8474");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "3", "2.0932");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "1E+6", "835000");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "1E+6", "340254");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "1E+6", "785693.3403177794690940379029766");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "0.000001", "8.35E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "0.000001", "3.40254E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "0.000001",
-                "7.856933403177794690940379029766E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "1", "3", "3");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "1", "3", "1.8474");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "1", "3", "2.6422");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "1", "1E+6", "835001");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "1", "1E+6", "340255");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "1", "1E+6", "785694.3403177794690940379029766");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-1", "0", "-0.165");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-1", "0", "-0.659746");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-1", "0", "-0.2143066596822205309059620970234");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-3", "0", "-1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-3", "0", "-2.1526");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-3", "0", "-0.9068");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-1E+6", "0", "-165000");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-1E+6", "0", "-659746");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-1E+6", "0", "-214306.6596822205309059620970234");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-0.000001", "0", "-1.65E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-0.000001", "0", "-6.59746E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-0.000001", "0",
-                "-2.143066596822205309059620970234E-7");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-3", "-1", "-1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-3", "-1", "-2.1526");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-3", "-1", "-1.3578");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-1E+6", "-1", "-165000");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-1E+6", "-1", "-659746");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-1E+6", "-1", "-214306.6596822205309059620970234");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "100", "101", "100.835");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "100", "101", "100.340254");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "100", "101",
-                "100.7856933403177794690940379029766");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "2.7183", "3.1416", "2.9183");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "2.7183", "3.1416", "3.058554");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "2.7183", "3.1416", "2.92762");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "-3.1416", "2.7183", "-1.1416");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "-3.1416", "2.7183", "0.26094");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "-3.1416", "2.7183", "-1.0484");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0.0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0.0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0.0", "0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "0.0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "0.0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "0.0", "0.0", "0");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(1, 1, "1", "1", "1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(5, 3, "1", "1", "1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "1", "1", "1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 1, "5", "3");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
-        nextFromRangeCanonical_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
     }
 
     private static void rangeCanonical_BigDecimal_BigDecimal_helper(

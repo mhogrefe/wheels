@@ -4731,7 +4731,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     public <T> T nextWithElement(@Nullable T x, @NotNull Supplier<T> sx) {
-        return nextFromRange(1, scale) == 1 ? x : sx.get();
+        return head(withElement(x, fromSupplier(sx)));
     }
 
     @Override

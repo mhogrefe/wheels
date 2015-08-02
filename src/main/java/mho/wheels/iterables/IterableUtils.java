@@ -43,6 +43,17 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Supplier<T> toSupplier(@NotNull Iterable<T> xs) {
+        return new Supplier<T>() {
+            private final @NotNull Iterator<T> it = xs.iterator();
+
+            @Override
+            public T get() {
+                return it.next();
+            }
+        };
+    }
+
     /**
      * Adds an {@code Iterable}'s elements to a {@link Collection}, in the order that the elements appear in the
      * {@code Iterable}. Only works for finite {@code Iterable}s.
