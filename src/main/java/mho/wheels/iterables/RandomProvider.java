@@ -322,22 +322,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code long} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code long}.</li>
-     * </ul>
-     *
-     * @return a {@code long}
-     */
-    public long nextLong() {
-        int a = prng.nextInt();
-        int b = prng.nextInt();
-        return (long) a << 32 | b & 0xffffffffL;
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Long}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
@@ -418,23 +402,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull Iterable<Integer> integersPow2(int bits) {
         int mask = (1 << bits) - 1;
         return map(i -> i & mask, integers());
-    }
-
-    /**
-     * Returns a randomly-generated {@code long} taken from a uniform distribution between 0 and
-     * 2<sup>{@code bits}</sup>–1, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code bits} must be greater than 0 and less than 64.</li>
-     *  <li>The result cannot be negative.</li>
-     * </ul>
-     *
-     * @param bits the maximum bitlength of the generated {@code long}
-     * @return a {@code long} with up to {@code bits} bits
-     */
-    private long nextLongPow2(int bits) {
-        return nextLong() & ((1L << bits) - 1);
     }
 
     /**
@@ -541,28 +508,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull Iterable<Integer> integersBounded(int n) {
         return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
-    }
-
-    /**
-     * Returns a randomly-generated {@code long} taken from a uniform distribution between 0 and {@code n}–1,
-     * inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code n} must be positive.</li>
-     *  <li>The result cannot be negative.</li>
-     * </ul>
-     *
-     * @param n the exclusive upper bound of the result
-     * @return a non-negative {@code long} less than {@code n}
-     */
-    private long nextLongBounded(long n) {
-        int maxBits = IntegerUtils.ceilingLog2(n);
-        long l;
-        do {
-            l = nextLongPow2(maxBits);
-        } while (l >= n);
-        return l;
     }
 
     /**
@@ -775,24 +720,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated positive {@code long} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code long}
-     */
-    public long nextPositiveLong() {
-        long l;
-        do {
-            l = nextLong();
-        } while (l <= 0);
-        return l;
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code Long}s from a uniform distribution. Does not support
      * removal.
      *
@@ -800,7 +727,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
-        return fromSupplier(this::nextPositiveLong);
+        return filter(l -> l > 0, longs());
     }
 
     /**
@@ -883,24 +810,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated negative {@code long} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is negative.</li>
-     * </ul>
-     *
-     * @return a negative {@code long}
-     */
-    public long nextNegativeLong() {
-        long l;
-        do {
-            l = nextLong();
-        } while (l >= 0);
-        return l;
-    }
-
-    /**
      * An {@code Iterable} that generates all negative {@code Long}s from a uniform distribution. Does not support
      * removal.
      *
@@ -908,7 +817,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
-        return fromSupplier(this::nextNegativeLong);
+        return filter(l -> l < 0, longs());
     }
 
     /**
@@ -987,20 +896,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated natural (non-negative) {@code long} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code long}
-     */
-    public long nextNaturalLong() {
-        return nextLongPow2(63);
-    }
-
-    /**
      * An {@code Iterable} that generates all natural {@code Long}s (including 0) from a uniform distribution. Does
      * not support removal.
      *
@@ -1008,7 +903,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> naturalLongs() {
-        return fromSupplier(this::nextNaturalLong);
+        return longsPow2(63);
     }
 
     /**
@@ -1374,29 +1269,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull Iterable<Short> range(short a, short b) {
         if (a > b) return Collections.emptyList();
         return map(i -> (short) (i + a), integersBounded((int) b - a + 1));
-    }
-
-    /**
-     * Returns a randomly-generated {@code int} between {@code a} and {@code b}, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>{@code b} may be any {@code int}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result may be any {@code int}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code int}
-     * @param b the inclusive upper bound of the generated {@code int}
-     * @return an {@code int} between {@code a} and {@code b}, inclusive
-     */
-    public int nextFromRange(int a, int b) {
-        if (a > b) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
-                    ".");
-        }
-        return (int) (nextLongBounded((long) b - a + 1) + a);
     }
 
     /**
@@ -2585,26 +2457,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code double} from a uniform distribution among {@code double}s, including
-     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code double}.</li>
-     * </ul>
-     *
-     * @return a {@code double}
-     */
-    public double nextDouble() {
-        while (true) {
-            long longBits = nextLong();
-            double d = Double.longBitsToDouble(longBits);
-            //only generate the canonical NaN
-            if (!Double.isNaN(d) || longBits == Double.doubleToLongBits(Double.NaN)) return d;
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Double}s from a uniform distribution among {@code Double}s,
      * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
@@ -2612,7 +2464,24 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
-        return fromSupplier(this::nextDouble);
+        return () -> new NoRemoveIterator<Double>() {
+            private final @NotNull Iterator<Long> longs = longs().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Double next() {
+                while (true) {
+                    long longBits = longs.next();
+                    double d = Double.longBitsToDouble(longBits);
+                    //only generate the canonical NaN
+                    if (!Double.isNaN(d) || longBits == Double.doubleToLongBits(Double.NaN)) return d;
+                }
+            }
+        };
     }
 
     /**
@@ -2834,31 +2703,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code float} greater than or equal to {@code a} from a uniform distribution among
-     * {@code float}s. If a≤0, either positive or negative zero may be returned.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is not {@code NaN}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code float}
-     * @return a {@code float} greater than or equal to {@code a}
-     */
-    public float nextFromRangeUp(float a) {
-        int oa = FloatingPointUtils.toOrderedRepresentation(a);
-        if (oa <= 0) {
-            int n = nextFromRange(oa - 1, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1);
-            return n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n);
-        } else {
-            return FloatingPointUtils.floatFromOrderedRepresentation(
-                    nextFromRange(oa, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1)
-            );
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Float}s greater than or equal to {@code a} from a uniform
      * distribution among {@code Float}s. If a≤0, both positive and negative zeros may be generated. Does not support
      * removal.
@@ -2877,10 +2721,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> rangeUp(float a) {
-        if (Float.isNaN(a)) {
-            throw new ArithmeticException("a cannot be NaN.");
+        int oa = FloatingPointUtils.toOrderedRepresentation(a);
+        if (oa <= 0) {
+            return map(
+                    n -> n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n),
+                    range(oa - 1, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1)
+            );
+        } else {
+            return map(
+                    FloatingPointUtils::floatFromOrderedRepresentation,
+                    range(oa, FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1)
+            );
         }
-        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     /**
@@ -2906,34 +2758,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code float} between {@code a} and {@code b}, inclusive, from a uniform
-     * distribution among {@code float}s. If a≤0≤b, either positive or negative zero may be returned.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
-     *  for this condition.</li>
-     *  <li>The result is not {@code NaN}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code float}
-     * @param b the inclusive upper bound of the generated {@code float}
-     * @return a {@code float} between {@code a} and {@code b}, inclusive
-     */
-    public float nextFromRange(float a, float b) {
-        int oa = FloatingPointUtils.toOrderedRepresentation(a);
-        int ob = FloatingPointUtils.toOrderedRepresentation(b);
-        if (oa <= 0 && 0 <= ob) {
-            int n = nextFromRange(oa - 1, ob);
-            return n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n);
-        } else {
-            return FloatingPointUtils.floatFromOrderedRepresentation(nextFromRange(oa, ob));
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Float}s between {@code a} and {@code b}, inclusive, from a uniform
      * distribution among {@code Float}s. If a≤0≤b, either positive or negative zero may be returned. If
      * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
@@ -2954,14 +2778,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> range(float a, float b) {
-        if (Float.isNaN(a)) {
-            throw new ArithmeticException("a cannot be NaN.");
+        int oa = FloatingPointUtils.toOrderedRepresentation(a);
+        int ob = FloatingPointUtils.toOrderedRepresentation(b);
+        if (oa <= 0 && 0 <= ob) {
+            return map(
+                    n -> n == oa - 1 ? -0.0f : FloatingPointUtils.floatFromOrderedRepresentation(n),
+                    range(oa - 1, ob)
+            );
+        } else {
+            return map(FloatingPointUtils::floatFromOrderedRepresentation, range(oa, ob));
         }
-        if (Float.isNaN(b)) {
-            throw new ArithmeticException("b cannot be NaN.");
-        }
-        if (a > b) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRange(a, b));
     }
 
     /**
