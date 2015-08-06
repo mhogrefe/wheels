@@ -2075,290 +2075,290 @@ public strictfp class RandomProviderTest {
         bigIntegers_fail_helper(Integer.MAX_VALUE);
     }
 
-//    private static void rangeUp_BigInteger_helper(
-//            int meanBitSize,
-//            int a,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double bitSizeMean
-//    ) {
-//        bigIntegerHelper(
-//                P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)),
-//                output,
-//                topSampleCount,
-//                sampleMean,
-//                bitSizeMean
-//        );
-//        P.reset();
-//    }
-//
-//    private static void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
-//        try {
-//            P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testRangeUp_BigInteger() {
-//        rangeUp_BigInteger_helper(
-//                5,
-//                8,
-//                "[117, 21, 3549, 31, 28, 21, 60, 15, 23, 27, 18, 36, 11, 13, 12, 19, 21, 28, 11, 10]",
-//                "{11=62758, 8=62664, 10=62529, 13=62511, 14=62497, 15=62490, 9=62457, 12=62163, 19=15819, 25=15812}",
-//                900.8645519990359,
-//                4.999453999951416
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                8,
-//                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 10," +
-//                " 7232, 11, 11449, 3621, 10]",
-//                "{15=18196, 13=17980, 8=17959, 12=17924, 10=17868, 9=17747, 11=17709, 14=17599, 28=7743, 30=7716}",
-//                7.070709518052013E21,
-//                10.008093999993136
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                10,
-//                "[117, 21, 3549, 31, 28, 21, 60, 11, 13, 18, 36, 13, 15, 14, 19, 21, 28, 13, 12, 26]",
-//                "{10=83635, 15=83453, 12=83407, 13=83388, 11=83086, 14=83073, 25=15868, 19=15768, 22=15712, 29=15707}",
-//                894.1639779982157,
-//                4.999280999951436
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                10,
-//                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 12," +
-//                " 7232, 13, 11449, 3621, 12]",
-//                "{15=24036, 14=24011, 10=23917, 11=23879, 12=23741, 13=23572, 28=7748, 27=7733, 30=7713, 23=7670}",
-//                7.070705170732308E21,
-//                10.006835999993193
-//        );
-//        rangeUp_BigInteger_helper(
-//                1,
-//                0,
-//                "[5, 1, 221, 1, 1, 1, 2, 0, 3, 1, 1, 2, 0, 1, 0, 0, 1, 1, 1, 0]",
-//                "{0=499823, 1=250086, 3=62677, 2=62065, 7=15883, 4=15841, 6=15689, 5=15562, 11=3976, 9=3968}",
-//                7.527205000038622,
-//                1.00042899999766
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                0,
-//                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, 4, 1, 5," +
-//                " 30, 3272]",
-//                "{0=90425, 1=83151, 3=37762, 2=37465, 5=17197, 6=17184, 7=17024, 4=16953, 9=7894, 11=7839}",
-//                6.216950515561165E39,
-//                9.998042000004142
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                -8,
-//                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0]",
-//                "{0=166826, -1=69668, 1=69233, 2=29112, 3=28791, -3=28686, -2=28548, -4=12165, 4=12071, -5=12065}",
-//                7.6976860134970016E16,
-//                5.007767000005044
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                -8,
-//                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
-//                " 5, 30, 3272]",
-//                "{0=90514, 1=41621, -1=41465, -3=18990, 2=18857, 3=18796, -2=18647, -6=8643, 5=8630, 4=8548}",
-//                6.216950511573439E39,
-//                9.99805800000423
-//        );
-//        rangeUp_BigInteger_helper(
-//                5,
-//                -10,
-//                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0]",
-//                "{0=166764, -1=69685, 1=69236, 2=29122, 3=28824, -3=28712, -2=28582, -4=12143, 7=12053, 4=12046}",
-//                7.6975187379143424E16,
-//                5.007546000005042
-//        );
-//        rangeUp_BigInteger_helper(
-//                10,
-//                -10,
-//                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
-//                " 5, 30, 3272]",
-//                "{0=90458, 1=41619, -1=41503, -3=18974, 2=18852, 3=18779, -2=18615, 5=8663, -6=8661, 4=8565}",
-//                6.216950512238074E39,
-//                9.998103000004235
-//        );
-//        rangeUp_BigInteger_fail_helper(4, 10);
-//        rangeUp_BigInteger_fail_helper(3, 10);
-//        rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
-//    }
-//
-//    private static void rangeDown_BigInteger_helper(
-//            int meanBitSize,
-//            int a,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double bitSizeMean
-//    ) {
-//        bigIntegerHelper(
-//                P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
-//                output,
-//                topSampleCount,
-//                sampleMean,
-//                bitSizeMean
-//        );
-//        P.reset();
-//    }
-//
-//    private static void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
-//        try {
-//            P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testRangeDown_BigInteger() {
-//        rangeDown_BigInteger_helper(
-//                5,
-//                8,
-//                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
-//                " -70, 0]",
-//                "{0=166826, 1=69668, -1=69233, -2=29112, -3=28791, 3=28686, 2=28548, 4=12165, -4=12071, 5=12065}",
-//                -7.6976860134970016E16,
-//                5.007767000005044
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                8,
-//                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-//                " -2, 4, 1, -5, -30, -3272]",
-//                "{0=90514, -1=41621, 1=41465, 3=18990, -2=18857, -3=18796, 2=18647, 6=8643, -5=8630, -4=8548}",
-//                -6.216950511573439E39,
-//                9.99805800000423
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                10,
-//                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
-//                " -70, 0]",
-//                "{0=166764, 1=69685, -1=69236, -2=29122, -3=28824, 3=28712, 2=28582, 4=12143, -7=12053, -4=12046}",
-//                -7.6975187379143424E16,
-//                5.007546000005042
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                10,
-//                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-//                " -2, 4, 1, -5, -30, -3272]",
-//                "{0=90458, -1=41619, 1=41503, 3=18974, -2=18852, -3=18779, 2=18615, -5=8663, 6=8661, -4=8565}",
-//                -6.216950512238074E39,
-//                9.998103000004235
-//        );
-//        rangeDown_BigInteger_helper(
-//                1,
-//                0,
-//                "[-5, -1, -221, -1, -1, -1, -2, 0, -3, -1, -1, -2, 0, -1, 0, 0, -1, -1, -1, 0]",
-//                "{0=499823, -1=250086, -3=62677, -2=62065, -7=15883, -4=15841, -6=15689, -5=15562, -11=3976, -9=3968}",
-//                -7.527205000038622,
-//                1.00042899999766
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                0,
-//                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
-//                " -2, -4, -1, -5, -30, -3272]",
-//                "{0=90425, -1=83151, -3=37762, -2=37465, -5=17197, -6=17184, -7=17024, -4=16953, -9=7894, -11=7839}",
-//                -6.216950515561165E39,
-//                9.998042000004142
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                -8,
-//                "[-117, -21, -3549, -31, -28, -21, -60, -15, -23, -27, -18, -36, -11, -13, -12, -19, -21, -28, -11," +
-//                " -10]",
-//                "{-11=62758, -8=62664, -10=62529, -13=62511, -14=62497, -15=62490, -9=62457, -12=62163, -19=15819," +
-//                " -25=15812}",
-//                -900.8645519990359,
-//                4.999453999951416
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                -8,
-//                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
-//                " -26823934, -10, -7232, -11, -11449, -3621, -10]",
-//                "{-15=18196, -13=17980, -8=17959, -12=17924, -10=17868, -9=17747, -11=17709, -14=17599, -28=7743," +
-//                " -30=7716}",
-//                -7.070709518052013E21,
-//                10.008093999993136
-//        );
-//        rangeDown_BigInteger_helper(
-//                5,
-//                -10,
-//                "[-117, -21, -3549, -31, -28, -21, -60, -11, -13, -18, -36, -13, -15, -14, -19, -21, -28, -13, -12," +
-//                " -26]",
-//                "{-10=83635, -15=83453, -12=83407, -13=83388, -11=83086, -14=83073, -25=15868, -19=15768, -22=15712," +
-//                " -29=15707}",
-//                -894.1639779982157,
-//                4.999280999951436
-//        );
-//        rangeDown_BigInteger_helper(
-//                10,
-//                -10,
-//                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
-//                " -26823934, -12, -7232, -13, -11449, -3621, -12]",
-//                "{-15=24036, -14=24011, -10=23917, -11=23879, -12=23741, -13=23572, -28=7748, -27=7733, -30=7713," +
-//                " -23=7670}",
-//                -7.070705170732308E21,
-//                10.006835999993193
-//        );
-//        rangeDown_BigInteger_fail_helper(4, -10);
-//        rangeDown_BigInteger_fail_helper(3, -10);
-//        rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
-//    }
-//
-//    private static void binaryFractionHelper(
-//            @NotNull Iterable<BinaryFraction> xs,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double mantissaBitSizeMean,
-//            double exponentMean
-//    ) {
-//        List<BinaryFraction> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-//        aeqit(take(TINY_LIMIT, sample), output);
-//        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
-//        aeq(meanOfBinaryFractions(sample), sampleMean);
-//        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), mantissaBitSizeMean);
-//        aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
-//    }
-//
-//    private static void positiveBinaryFractions_helper(
-//            int meanMantissaBitSize,
-//            int meanExponentSize,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double mantissaBitSizeMean,
-//            double exponentMean
-//    ) {
-//        binaryFractionHelper(
-//                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions(),
-//                output,
-//                topSampleCount,
-//                sampleMean,
-//                mantissaBitSizeMean,
-//                exponentMean
-//        );
-//        P.reset();
-//    }
-//
+    private static void rangeUp_BigInteger_helper(
+            int meanBitSize,
+            int a,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double bitSizeMean
+    ) {
+        bigIntegerHelper(
+                P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a)),
+                output,
+                topSampleCount,
+                sampleMean,
+                bitSizeMean
+        );
+        P.reset();
+    }
+
+    private static void rangeUp_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).rangeUp(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testRangeUp_BigInteger() {
+        rangeUp_BigInteger_helper(
+                5,
+                8,
+                "[117, 21, 3549, 31, 28, 21, 60, 15, 23, 27, 18, 36, 11, 13, 12, 19, 21, 28, 11, 10]",
+                "{11=62758, 8=62664, 10=62529, 13=62511, 14=62497, 15=62490, 9=62457, 12=62163, 19=15819, 25=15812}",
+                900.8645519990359,
+                4.999453999951416
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                8,
+                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 10," +
+                " 7232, 11, 11449, 3621, 10]",
+                "{15=18196, 13=17980, 8=17959, 12=17924, 10=17868, 9=17747, 11=17709, 14=17599, 28=7743, 30=7716}",
+                7.070709518052013E21,
+                10.008093999993136
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                10,
+                "[117, 21, 3549, 31, 28, 21, 60, 11, 13, 18, 36, 13, 15, 14, 19, 21, 28, 13, 12, 26]",
+                "{10=83635, 15=83453, 12=83407, 13=83388, 11=83086, 14=83073, 25=15868, 19=15768, 22=15712, 29=15707}",
+                894.1639779982157,
+                4.999280999951436
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                10,
+                "[305, 989, 2870934583, 32233, 104, 24, 46, 348, 13680, 425220133, 191, 38, 5035, 26823934, 12," +
+                " 7232, 13, 11449, 3621, 12]",
+                "{15=24036, 14=24011, 10=23917, 11=23879, 12=23741, 13=23572, 28=7748, 27=7733, 30=7713, 23=7670}",
+                7.070705170732308E21,
+                10.006835999993193
+        );
+        rangeUp_BigInteger_helper(
+                1,
+                0,
+                "[5, 1, 221, 1, 1, 1, 2, 0, 3, 1, 1, 2, 0, 1, 0, 0, 1, 1, 1, 0]",
+                "{0=499823, 1=250086, 3=62677, 2=62065, 7=15883, 4=15841, 6=15689, 5=15562, 11=3976, 9=3968}",
+                7.527205000038622,
+                1.00042899999766
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                0,
+                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, 4, 1, 5," +
+                " 30, 3272]",
+                "{0=90425, 1=83151, 3=37762, 2=37465, 5=17197, 6=17184, 7=17024, 4=16953, 9=7894, 11=7839}",
+                6.216950515561165E39,
+                9.998042000004142
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                -8,
+                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0]",
+                "{0=166826, -1=69668, 1=69233, 2=29112, 3=28791, -3=28686, -2=28548, -4=12165, 4=12071, -5=12065}",
+                7.6976860134970016E16,
+                5.007767000005044
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                -8,
+                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
+                " 5, 30, 3272]",
+                "{0=90514, 1=41621, -1=41465, -3=18990, 2=18857, 3=18796, -2=18647, -6=8643, 5=8630, 4=8548}",
+                6.216950511573439E39,
+                9.99805800000423
+        );
+        rangeUp_BigInteger_helper(
+                5,
+                -10,
+                "[21, 53, 2304798, 233, -2, -1, -1, 25, 117, 1661016, 14, 2, 67, 104780, 0, 576, 0, 28, 70, 0]",
+                "{0=166764, -1=69685, 1=69236, 2=29122, 3=28824, -3=28712, -2=28582, -4=12143, 7=12053, 4=12046}",
+                7.6975187379143424E16,
+                5.007546000005042
+        );
+        rangeUp_BigInteger_helper(
+                10,
+                -10,
+                "[47968091191, 593, 348, 117, 1719440537, 4626764, 0, 124, 0, 66364, 437219, 0, 566, 88, 2, -4, -1," +
+                " 5, 30, 3272]",
+                "{0=90458, 1=41619, -1=41503, -3=18974, 2=18852, 3=18779, -2=18615, 5=8663, -6=8661, 4=8565}",
+                6.216950512238074E39,
+                9.998103000004235
+        );
+        rangeUp_BigInteger_fail_helper(4, 10);
+        rangeUp_BigInteger_fail_helper(3, 10);
+        rangeUp_BigInteger_fail_helper(Integer.MAX_VALUE, -10);
+    }
+
+    private static void rangeDown_BigInteger_helper(
+            int meanBitSize,
+            int a,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double bitSizeMean
+    ) {
+        bigIntegerHelper(
+                P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a)),
+                output,
+                topSampleCount,
+                sampleMean,
+                bitSizeMean
+        );
+        P.reset();
+    }
+
+    private static void rangeDown_BigInteger_fail_helper(int meanBitSize, int a) {
+        try {
+            P.withScale(meanBitSize).rangeDown(BigInteger.valueOf(a));
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testRangeDown_BigInteger() {
+        rangeDown_BigInteger_helper(
+                5,
+                8,
+                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
+                " -70, 0]",
+                "{0=166826, 1=69668, -1=69233, -2=29112, -3=28791, 3=28686, 2=28548, 4=12165, -4=12071, 5=12065}",
+                -7.6976860134970016E16,
+                5.007767000005044
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                8,
+                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
+                " -2, 4, 1, -5, -30, -3272]",
+                "{0=90514, -1=41621, 1=41465, 3=18990, -2=18857, -3=18796, 2=18647, 6=8643, -5=8630, -4=8548}",
+                -6.216950511573439E39,
+                9.99805800000423
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                10,
+                "[-21, -53, -2304798, -233, 2, 1, 1, -25, -117, -1661016, -14, -2, -67, -104780, 0, -576, 0, -28," +
+                " -70, 0]",
+                "{0=166764, 1=69685, -1=69236, -2=29122, -3=28824, 3=28712, 2=28582, 4=12143, -7=12053, -4=12046}",
+                -7.6975187379143424E16,
+                5.007546000005042
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                10,
+                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
+                " -2, 4, 1, -5, -30, -3272]",
+                "{0=90458, -1=41619, 1=41503, 3=18974, -2=18852, -3=18779, 2=18615, -5=8663, 6=8661, -4=8565}",
+                -6.216950512238074E39,
+                9.998103000004235
+        );
+        rangeDown_BigInteger_helper(
+                1,
+                0,
+                "[-5, -1, -221, -1, -1, -1, -2, 0, -3, -1, -1, -2, 0, -1, 0, 0, -1, -1, -1, 0]",
+                "{0=499823, -1=250086, -3=62677, -2=62065, -7=15883, -4=15841, -6=15689, -5=15562, -11=3976, -9=3968}",
+                -7.527205000038622,
+                1.00042899999766
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                0,
+                "[-47968091191, -593, -348, -117, -1719440537, -4626764, 0, -124, 0, -66364, -437219, 0, -566, -88," +
+                " -2, -4, -1, -5, -30, -3272]",
+                "{0=90425, -1=83151, -3=37762, -2=37465, -5=17197, -6=17184, -7=17024, -4=16953, -9=7894, -11=7839}",
+                -6.216950515561165E39,
+                9.998042000004142
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                -8,
+                "[-117, -21, -3549, -31, -28, -21, -60, -15, -23, -27, -18, -36, -11, -13, -12, -19, -21, -28, -11," +
+                " -10]",
+                "{-11=62758, -8=62664, -10=62529, -13=62511, -14=62497, -15=62490, -9=62457, -12=62163, -19=15819," +
+                " -25=15812}",
+                -900.8645519990359,
+                4.999453999951416
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                -8,
+                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
+                " -26823934, -10, -7232, -11, -11449, -3621, -10]",
+                "{-15=18196, -13=17980, -8=17959, -12=17924, -10=17868, -9=17747, -11=17709, -14=17599, -28=7743," +
+                " -30=7716}",
+                -7.070709518052013E21,
+                10.008093999993136
+        );
+        rangeDown_BigInteger_helper(
+                5,
+                -10,
+                "[-117, -21, -3549, -31, -28, -21, -60, -11, -13, -18, -36, -13, -15, -14, -19, -21, -28, -13, -12," +
+                " -26]",
+                "{-10=83635, -15=83453, -12=83407, -13=83388, -11=83086, -14=83073, -25=15868, -19=15768, -22=15712," +
+                " -29=15707}",
+                -894.1639779982157,
+                4.999280999951436
+        );
+        rangeDown_BigInteger_helper(
+                10,
+                -10,
+                "[-305, -989, -2870934583, -32233, -104, -24, -46, -348, -13680, -425220133, -191, -38, -5035," +
+                " -26823934, -12, -7232, -13, -11449, -3621, -12]",
+                "{-15=24036, -14=24011, -10=23917, -11=23879, -12=23741, -13=23572, -28=7748, -27=7733, -30=7713," +
+                " -23=7670}",
+                -7.070705170732308E21,
+                10.006835999993193
+        );
+        rangeDown_BigInteger_fail_helper(4, -10);
+        rangeDown_BigInteger_fail_helper(3, -10);
+        rangeDown_BigInteger_fail_helper(Integer.MAX_VALUE, 10);
+    }
+
+    private static void binaryFractionHelper(
+            @NotNull Iterable<BinaryFraction> xs,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        List<BinaryFraction> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfBinaryFractions(sample), sampleMean);
+        aeq(meanOfIntegers(toList(map(x -> x.getMantissa().abs().bitLength(), sample))), mantissaBitSizeMean);
+        aeq(meanOfIntegers(toList(map(x -> Math.abs(x.getExponent()), sample))), exponentMean);
+    }
+
+    private static void positiveBinaryFractions_helper(
+            int meanMantissaBitSize,
+            int meanExponentSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double mantissaBitSizeMean,
+            double exponentMean
+    ) {
+        binaryFractionHelper(
+                P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions(),
+                output,
+                topSampleCount,
+                sampleMean,
+                mantissaBitSizeMean,
+                exponentMean
+        );
+        P.reset();
+    }
+
 //    private static void positiveBinaryFractions_fail_helper(int meanMantissaBitSize, int meanExponentSize) {
 //        try {
 //            P.withScale(meanMantissaBitSize).withSecondaryScale(meanExponentSize).positiveBinaryFractions();
