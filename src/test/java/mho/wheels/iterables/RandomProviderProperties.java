@@ -2197,7 +2197,7 @@ public class RandomProviderProperties {
     }
 
     private static void propertiesWithElement() {
-        initialize("withElement(Integer, Iterable<Integer>");
+        initialize("withElement(Integer, Iterable<Integer>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integers()),

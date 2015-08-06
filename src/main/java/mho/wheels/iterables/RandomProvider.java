@@ -76,7 +76,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      * consisting of {@code scale} and {@code secondaryScale}, respectively. Whenever {@code this}
      * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
      */
-    private @NotNull Map<Pair<Integer, Integer>, RandomProvider> dependents;
+     //todo fix docs
+    private @NotNull List<RandomProvider> dependents;
 
     /**
      * A parameter that determines the size of some of the generated objects.
@@ -103,7 +104,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             seed.add(prng.nextInt());
         }
         prng = new IsaacPRNG(seed);
-        dependents = new HashMap<>();
+        dependents = new ArrayList<>();
     }
 
     /**
@@ -124,7 +125,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
         this.seed = seed;
         prng = new IsaacPRNG(seed);
-        dependents = new HashMap<>();
+        dependents = new ArrayList<>();
     }
 
     /**
@@ -234,14 +235,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withScale(int scale) {
-        Pair<Integer, Integer> key = new Pair<>(scale, secondaryScale);
-        RandomProvider copy = dependents.get(key);
-        if (copy == null) {
-            copy = copy();
-            copy.scale = scale;
-            dependents.put(key, copy);
-        }
-        return copy;
+        RandomProvider scaled = copy();
+        scaled.scale = scale;
+        dependents.add(scaled);
+        return scaled;
     }
 
     /**
@@ -258,14 +255,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull RandomProvider withSecondaryScale(int secondaryScale) {
-        Pair<Integer, Integer> key = new Pair<>(scale, secondaryScale);
-        RandomProvider copy = dependents.get(key);
-        if (copy == null) {
-            copy = copy();
-            copy.secondaryScale = secondaryScale;
-            dependents.put(key, copy);
-        }
-        return copy;
+        RandomProvider scaled = copy();
+        scaled.secondaryScale = secondaryScale;
+        dependents.add(scaled);
+        return scaled;
     }
 
     /**
@@ -280,10 +273,17 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is not null.</li>
      * </ul>
      */
+     //todo docs
     @Override
     public void reset() {
-        prng = new IsaacPRNG(seed);
-        dependents.values().forEach(mho.wheels.iterables.RandomProvider::reset);
+        resetHelper(new IsaacPRNG(seed), this);
+    }
+
+    private static void resetHelper(@NotNull IsaacPRNG prng, @NotNull RandomProvider rp) {
+        rp.prng = prng;
+        for (RandomProvider dependent : rp.dependents) {
+            resetHelper(prng, dependent);
+        }
     }
 
     /**
@@ -328,33 +328,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> longs() {
-        return () -> new NoRemoveIterator<Long>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Long next() {
-                int a = prng.nextInt();
-                int b = prng.nextInt();
-                return (long) a << 32 | b & 0xffffffffL;
-            }
-        };
-    }
-
-    /**
-     * Returns a randomly-generated {@code boolean} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be either {@code boolean}.</li>
-     * </ul>
-     *
-     * @return a {@code boolean}
-     */
-    public boolean nextBoolean() {
-        return (prng.nextInt() & 1) != 0;
+        return map(c -> (long) c.get(0) << 32 | c.get(1) & 0xffffffffL, chunk(2, integers()));
     }
 
     /**
@@ -364,24 +338,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Boolean> booleans() {
-        return fromSupplier(this::nextBoolean);
-    }
-
-    /**
-     * Returns a randomly-generated {@code int} taken from a uniform distribution between 0 and
-     * 2<sup>{@code bits}</sup>–1, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code bits} must be greater than 0 and less than 32.</li>
-     *  <li>The result cannot be negative.</li>
-     * </ul>
-     *
-     * @param bits the maximum bitlength of the generated {@code int}
-     * @return an {@code int} with up to {@code bits} bits
-     */
-    private int nextIntPow2(int bits) {
-        return prng.nextInt() & ((1 << bits) - 1);
+        return map(i -> (i & 1) != 0, integers());
     }
 
     /**
@@ -467,28 +424,17 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code BigInteger}s with up to {@code bits} bits
      */
     private @NotNull Iterable<BigInteger> bigIntegersPow2(int bits) {
-        return fromSupplier(() -> this.nextBigIntegerPow2(bits));
-    }
+        return () -> new NoRemoveIterator<BigInteger>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
 
-    /**
-     * Returns a randomly-generated {@code int} taken from a uniform distribution between 0 and {@code n}–1, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code n} must be positive.</li>
-     *  <li>The result cannot be negative.</li>
-     * </ul>
-     *
-     * @param n the exclusive upper bound of the result
-     * @return a non-negative {@code int} less than {@code n}
-     */
-    private int nextIntBounded(int n) {
-        int maxBits = IntegerUtils.ceilingLog2(n);
-        int i;
-        do {
-            i = nextIntPow2(maxBits);
-        } while (i >= n);
-        return i;
+            @Override
+            public BigInteger next() {
+                return nextBigIntegerPow2(bits);
+            }
+        };
     }
 
     /**
@@ -527,29 +473,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     private @NotNull Iterable<Long> longsBounded(long n) {
         return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
-    }
-
-    /**
-     * Returns a randomly-generated {@code BigInteger} taken from a uniform distribution between 0 and {@code n}–1,
-     * inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code n} must be positive.</li>
-     *  <li>The result cannot be negative.</li>
-     * </ul>
-     *
-     * @param n the exclusive upper bound of the result
-     * @return a non-negative {@code BigInteger} less than {@code n}
-     */
-    private @NotNull BigInteger nextBigIntegerBounded(@NotNull BigInteger n) {
-        if (n.equals(BigInteger.ONE)) return BigInteger.ZERO;
-        int maxBits = IntegerUtils.ceilingLog2(n);
-        BigInteger i;
-        do {
-            i = nextBigIntegerPow2(maxBits);
-        } while (ge(i, n));
-        return i;
     }
 
     /**
@@ -633,24 +556,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated positive {@code byte} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code byte}
-     */
-    public byte nextPositiveByte() {
-        byte b;
-        do {
-            b = nextNaturalByte();
-        } while (b == 0);
-        return b;
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code Byte}s from a uniform distribution. Does not support
      * removal.
      *
@@ -658,25 +563,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> positiveBytes() {
-        return fromSupplier(this::nextPositiveByte);
-    }
-
-    /**
-     * Returns a randomly-generated positive {@code short} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code short}
-     */
-    public short nextPositiveShort() {
-        short s;
-        do {
-            s = nextNaturalShort();
-        } while (s == 0);
-        return s;
+        return filterInfinite(b -> b > 0, naturalBytes());
     }
 
     /**
@@ -687,25 +574,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> positiveShorts() {
-        return fromSupplier(this::nextPositiveShort);
-    }
-
-    /**
-     * Returns a randomly-generated positive {@code int} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code int}
-     */
-    public int nextPositiveInt() {
-        int i;
-        do {
-            i = prng.nextInt();
-        } while (i <= 0);
-        return i;
+        return filterInfinite(s -> s > 0, naturalShorts());
     }
 
     /**
@@ -716,7 +585,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> positiveIntegers() {
-        return fromSupplier(this::nextPositiveInt);
+        return filterInfinite(i -> i > 0, naturalIntegers());
     }
 
     /**
@@ -727,21 +596,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> positiveLongs() {
-        return filter(l -> l > 0, longs());
-    }
-
-    /**
-     * Returns a randomly-generated negative {@code byte} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is negative.</li>
-     * </ul>
-     *
-     * @return a negative {@code byte}
-     */
-    public byte nextNegativeByte() {
-        return (byte) ~nextNaturalByte();
+        return filterInfinite(l -> l > 0, naturalLongs());
     }
 
     /**
@@ -752,21 +607,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> negativeBytes() {
-        return fromSupplier(this::nextNegativeByte);
-    }
-
-    /**
-     * Returns a randomly-generated negative {@code short} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is negative.</li>
-     * </ul>
-     *
-     * @return a negative {@code short}
-     */
-    public short nextNegativeShort() {
-        return (short) ~nextNaturalShort();
+        return map(b -> (byte) ~b, naturalBytes());
     }
 
     /**
@@ -777,25 +618,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> negativeShorts() {
-        return fromSupplier(this::nextNegativeShort);
-    }
-
-    /**
-     * Returns a randomly-generated negative {@code int} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is negative.</li>
-     * </ul>
-     *
-     * @return a negative {@code int}
-     */
-    public int nextNegativeInt() {
-        int i;
-        do {
-            i = prng.nextInt();
-        } while (i >= 0);
-        return i;
+        return map(s -> (short) ~s, naturalShorts());
     }
 
     /**
@@ -806,7 +629,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegers() {
-        return fromSupplier(this::nextNegativeInt);
+        return map(i -> ~i, naturalIntegers());
     }
 
     /**
@@ -817,21 +640,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> negativeLongs() {
-        return filter(l -> l < 0, longs());
-    }
-
-    /**
-     * Returns a randomly-generated natural (non-negative) {@code byte} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code byte}
-     */
-    public byte nextNaturalByte() {
-        return (byte) nextIntPow2(7);
+        return map(l -> ~l, naturalLongs());
     }
 
     /**
@@ -842,21 +651,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> naturalBytes() {
-        return fromSupplier(this::nextNaturalByte);
-    }
-
-    /**
-     * Returns a randomly-generated natural (non-negative) {@code short} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code short}
-     */
-    public short nextNaturalShort() {
-        return (short) nextIntPow2(15);
+        return map(i -> (byte) i.intValue(), integersPow2(7));
     }
 
     /**
@@ -867,21 +662,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> naturalShorts() {
-        return fromSupplier(this::nextNaturalShort);
-    }
-
-    /**
-     * Returns a randomly-generated natural (non-negative) {@code int} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is not negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code int}
-     */
-    public int nextNaturalInt() {
-        return nextIntPow2(31);
+        return map(i -> (short) i.intValue(), integersPow2(15));
     }
 
     /**
@@ -892,7 +673,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegers() {
-        return fromSupplier(this::nextNaturalInt);
+        return integersPow2(31);
     }
 
     /**
@@ -907,41 +688,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code byte} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code byte}.</li>
-     * </ul>
-     *
-     * @return a {@code byte}
-     */
-    public byte nextByte() {
-        return (byte) prng.nextInt();
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Byte}s from a uniform distribution. Does not support removal.
      *
      * Length is infinite
      */
     @Override
     public @NotNull Iterable<Byte> bytes() {
-        return fromSupplier(this::nextByte);
-    }
-
-    /**
-     * Returns a randomly-generated {@code short} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code short}.</li>
-     * </ul>
-     *
-     * @return a {@code short}
-     */
-    public short nextShort() {
-        return (short) prng.nextInt();
+        return map(i -> (byte) i.intValue(), integers());
     }
 
     /**
@@ -951,21 +704,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> shorts() {
-        return fromSupplier(this::nextShort);
-    }
-
-    /**
-     * Returns a randomly-generated ASCII {@code char} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is an ASCII {@code char}.</li>
-     * </ul>
-     *
-     * @return an ASCII {@code char}
-     */
-    public char nextAsciiChar() {
-        return (char) nextIntPow2(7);
+        return map(i -> (short) i.intValue(), integers());
     }
 
     /**
@@ -976,21 +715,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> asciiCharacters() {
-        return fromSupplier(this::nextAsciiChar);
-    }
-
-    /**
-     * Returns a randomly-generated {@code char} from a uniform distribution.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code char}.</li>
-     * </ul>
-     *
-     * @return a {@code char}
-     */
-    public char nextChar() {
-        return (char) prng.nextInt();
+        return map(i -> (char) i.intValue(), integersPow2(7));
     }
 
     /**
@@ -1001,7 +726,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> characters() {
-        return fromSupplier(this::nextChar);
+        return map(i -> (char) i.intValue(), integers());
     }
 
     /**
@@ -1020,8 +745,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Byte> rangeUp(byte a) {
-        int offset = 1 << 7;
-        return map(i -> (byte) (i + a), integersBounded(offset - a));
+        return map(i -> (byte) (i + a), integersBounded((1 << 7) - a));
     }
 
     /**
@@ -1040,8 +764,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Short> rangeUp(short a) {
-        int offset = 1 << 15;
-        return map(i -> (short) (i + a), integersBounded(offset - a));
+        return map(i -> (short) (i + a), integersBounded((1 << 15) - a));
     }
 
     /**
@@ -1060,8 +783,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> rangeUp(int a) {
-        long offset = 1L << 31;
-        return map(l -> (int) (l + a), longsBounded(offset - a));
+        return map(l -> (int) (l + a), longsBounded((1L << 31) - a));
     }
 
     /**
@@ -1080,10 +802,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Long> rangeUp(long a) {
-        BigInteger offset = BigInteger.ONE.shiftLeft(63);
         return map(
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
-                bigIntegersBounded(offset.subtract(BigInteger.valueOf(a)))
+                bigIntegersBounded(BigInteger.ONE.shiftLeft(63).subtract(BigInteger.valueOf(a)))
         );
     }
 
@@ -1103,8 +824,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> rangeUp(char a) {
-        int offset = 1 << 16;
-        return map(i -> (char) (i + a), integersBounded(offset - a));
+        return map(i -> (char) (i + a), integersBounded((1 << 16) - a));
     }
 
     /**
@@ -1191,22 +911,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code char} less than or equal to {@code a}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} may be any {@code char}.</li>
-     *  <li>The result may be any {@code char}.</li>
-     * </ul>
-     *
-     * @param a the inclusive upper bound of the generated {@code char}
-     * @return a {@code char} less than or equal to {@code a}
-     */
-    public char nextFromRangeDown(char a) {
-        return (char) nextIntBounded(a + 1);
-    }
-
-    /**
      * An {@code Iterable} that uniformly generates {@code Character}s less than or equal to {@code a}.
      *
      * <ul>
@@ -1222,7 +926,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Character> rangeDown(char a) {
-        return fromSupplier(() -> nextFromRangeDown(a));
+        return map(i -> (char) i.intValue(), integersBounded(a + 1));
     }
 
     /**
@@ -1295,31 +999,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code long} between {@code a} and {@code b}, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} may be any {@code long}.</li>
-     *  <li>{@code b} may be any {@code long}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result may be any {@code long}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code long}
-     * @param b the inclusive upper bound of the generated {@code long}
-     * @return a {@code long} between {@code a} and {@code b}, inclusive
-     */
-    public long nextFromRange(long a, long b) {
-        if (a > b) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
-                    ".");
-        }
-        BigInteger ba = BigInteger.valueOf(a);
-        BigInteger bb = BigInteger.valueOf(b);
-        return nextBigIntegerBounded(bb.subtract(ba).add(BigInteger.ONE)).add(ba).longValueExact();
-    }
-
-    /**
      * An {@code Iterable} that uniformly generates {@code Long}s between {@code a} and {@code b}, inclusive. If
      * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned.
      *
@@ -1342,29 +1021,6 @@ public final strictfp class RandomProvider extends IterableProvider {
                 i -> i.add(BigInteger.valueOf(a)).longValueExact(),
                 bigIntegersBounded(BigInteger.valueOf(b).subtract(BigInteger.valueOf(a)).add(BigInteger.ONE))
         );
-    }
-
-    /**
-     * Returns a randomly-generated {@code BigInteger} between {@code a} and {@code b}, inclusive.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} may be any {@code BigInteger}.</li>
-     *  <li>{@code b} may be any {@code BigInteger}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code BigInteger}
-     * @param b the inclusive upper bound of the generated {@code BigInteger}
-     * @return a {@code BigInteger} between {@code a} and {@code b}, inclusive
-     */
-    public @NotNull BigInteger nextFromRange(@NotNull BigInteger a, @NotNull BigInteger b) {
-        if (gt(a, b)) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
-                    ".");
-        }
-        return nextBigIntegerBounded(b.subtract(a).add(BigInteger.ONE)).add(a);
     }
 
     /**
@@ -1414,29 +1070,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated positive {@code int} from a geometric distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code int}
-     */
-    public int nextPositiveIntGeometric() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        int i;
-        int j = 0;
-        do {
-            i = nextIntBounded(scale);
-            j++;
-        } while (i != 0);
-        return j;
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code Integer}s chosen from a geometric distribution with mean
      * {@code scale}. The distribution is truncated at {@code Integer.MAX_VALUE}. Does not support removal.
      *
@@ -1474,20 +1107,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated negative {@code int} from a geometric distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>The result is negative.</li>
-     * </ul>
-     *
-     * @return a negative {@code int}
-     */
-    public int nextNegativeIntGeometric() {
-        return -nextPositiveIntGeometric();
-    }
-
-    /**
      * An {@code Iterable} that generates all negative {@code Integer}s chosen from a geometric distribution with mean
      * –{@code scale}. The distribution is truncated at –{@code Integer.MAX_VALUE}. Does not support removal.
      *
@@ -1500,36 +1119,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> negativeIntegersGeometric() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        return fromSupplier(this::nextNegativeIntGeometric);
-    }
-
-    /**
-     * Returns a randomly-generated natural {@code int} from a geometric distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code int}
-     */
-    public int nextNaturalIntGeometric() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
-        int i;
-        int j = 0;
-        do {
-            i = nextIntBounded(scale + 1);
-            j++;
-        } while (i != 0);
-        return j - 1;
+        return map(i -> -i, positiveIntegersGeometric());
     }
 
     /**
@@ -1546,12 +1136,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegersGeometric() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
@@ -1569,7 +1153,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return a natural {@code int}
      */
-    private int nextNaturalIntGeometric(int numerator, int denominator) {
+    //todo fix docs
+    private @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
         if (numerator < 1) {
             throw new IllegalArgumentException("numerator must be positive. numerator: " + numerator);
         }
@@ -1581,28 +1166,25 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("The sum of numerator and denominator must be less than 2^31." +
                     " numerator is " + numerator + " and denominator is " + denominator + ".");
         }
-        int i;
-        int j = 0;
-        do {
-            i = nextIntBounded((int) sum);
-            j++;
-        } while (i >= denominator);
-        return j - 1;
-    }
+        return () -> new NoRemoveIterator<Integer>() {
+            private final @NotNull Iterator<Integer> is = integersBounded((int) sum).iterator();
 
-    /**
-     * Returns a randomly-generated nonzero {@code int} from a geometric distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>The result is nonzero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code int}
-     */
-    public int nextNonzeroIntGeometric() {
-        int i = nextPositiveIntGeometric();
-        return nextBoolean() ? i : -i;
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Integer next() {
+                int i;
+                int j = 0;
+                do {
+                    i = is.next();
+                    j++;
+                } while (i >= denominator);
+                return j - 1;
+            }
+        };
     }
 
     /**
@@ -1619,25 +1201,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> nonzeroIntegersGeometric() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        return fromSupplier(this::nextNonzeroIntGeometric);
-    }
-
-    /**
-     * Returns a randomly-generated {@code int} from a geometric distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>The result may be any {@code int}.</li>
-     * </ul>
-     *
-     * @return a negative {@code int}
-     */
-    public int nextIntGeometric() {
-        int i = nextNaturalIntGeometric();
-        return nextBoolean() ? i : -i;
+        return zipWith((i, b) -> b ? i : -i, positiveIntegersGeometric(), booleans());
     }
 
     /**
@@ -1654,13 +1218,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> integersGeometric() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
-        return fromSupplier(this::nextIntGeometric);
+        return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(), booleans());
     }
 
     /**
@@ -1676,43 +1234,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * @return a negative {@code int}
      */
-    private int nextIntGeometric(int numerator, int denominator) {
-        int absolute = nextNaturalIntGeometric(numerator, denominator);
-        return nextBoolean() ? absolute : -absolute;
-    }
-
-    /**
-     * Returns a randomly-generated {@code int} greater than or equal to {@code a}, chosen from a geometric
-     * distribution with mean {@code scale}.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale greater than {@code a} and less than {@code Integer.MAX_VALUE}+a.</li>
-     *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>The result may be any {@code int}.</li>
-     * </ul>
-     *
-     * @return an {@code int} greater than or equal to {@code a}
-     */
-    public int nextIntGeometricFromRangeUp(int a) {
-        if (scale <= a) {
-            throw new IllegalStateException("this must have a scale greater than a, which is " + a +
-                    ". Invalid scale: " + scale);
-        }
-        if (a < 1 && scale >= Integer.MAX_VALUE + a) {
-            throw new IllegalStateException("this must have a scale less than Integer.MAX_VALUE + a, which is " +
-                    (Integer.MAX_VALUE + a));
-        }
-        int j;
-        do {
-            int i;
-            j = 0;
-            do {
-                i = nextIntBounded(scale - a + 1);
-                j++;
-            } while (i != 0);
-            j += a - 1;
-        } while (j < a);
-        return j;
+    //todo fix docs
+    private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
+        return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(numerator, denominator), booleans());
     }
 
     /**
@@ -1767,23 +1291,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated positive {@code BigInteger}. The bit size is chosen from a geometric distribution
-     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
-     * that bit size.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code BigInteger}
-     */
-    public @NotNull BigInteger nextPositiveBigInteger() {
-        int size = nextPositiveIntGeometric();
-        return nextBigIntegerPow2(size).setBit(size - 1);
-    }
-
-    /**
      * An {@code Iterable} that generates all positive {@code BigInteger}s. The bit size is chosen from a geometric
      * distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
      * {@code BigInteger}s with that bit size. Does not support removal.
@@ -1796,10 +1303,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     public @NotNull Iterable<BigInteger> positiveBigIntegers() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        return fromSupplier(this::nextPositiveBigInteger);
+        return map(i -> nextBigIntegerPow2(i).setBit(i - 1), positiveIntegersGeometric());
     }
 
     /**
@@ -1817,30 +1321,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigInteger> negativeBigIntegers() {
         return map(BigInteger::negate, positiveBigIntegers());
-    }
-
-    /**
-     * Returns a randomly-generated natural {@code BigInteger}. The bit size is chosen from a geometric distribution
-     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
-     * that bit size.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>The result is non-negative.</li>
-     * </ul>
-     *
-     * @return a natural {@code BigInteger}
-     */
-    public @NotNull BigInteger nextNaturalBigInteger() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
-        int size = nextNaturalIntGeometric();
-        if (size == 0) return BigInteger.ZERO;
-        return nextBigIntegerPow2(size).setBit(size - 1);
     }
 
     /**
@@ -1863,24 +1343,21 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale == Integer.MAX_VALUE) {
             throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
         }
-        return fromSupplier(this::nextNaturalBigInteger);
-    }
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private final @NotNull Iterator<Integer> is = naturalIntegersGeometric().iterator();
 
-    /**
-     * Returns a randomly-generated nonzero {@code BigInteger}. The bit size is chosen from a geometric distribution
-     * with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with
-     * that bit size.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2.</li>
-     *  <li>The result is not zero.</li>
-     * </ul>
-     *
-     * @return a nonzero {@code BigInteger}
-     */
-    public @NotNull BigInteger nextNonzeroBigInteger() {
-        BigInteger i = nextPositiveBigInteger();
-        return nextBoolean() ? i : i.negate();
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigInteger next() {
+                int size = is.next();
+                if (size == 0) return BigInteger.ZERO;
+                return nextBigIntegerPow2(size).setBit(size - 1);
+            }
+        };
     }
 
     /**
@@ -1897,27 +1374,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> nonzeroBigIntegers() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        return fromSupplier(this::nextNonzeroBigInteger);
-    }
-
-    /**
-     * Returns a randomly-generated {@code BigInteger}. The bit size is chosen from a geometric distribution with mean
-     * {@code scale}, and then the {@code BigInteger} is chosen uniformly from all {@code BigInteger}s with that bit
-     * size.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a {@code BigInteger}
-     */
-    public @NotNull BigInteger nextBigInteger() {
-        BigInteger i = nextNaturalBigInteger();
-        return nextBoolean() ? i : i.negate();
+        return zipWith((i, b) -> b ? i : i.negate(), positiveBigIntegers(), booleans());
     }
 
     /**
@@ -1934,66 +1391,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> bigIntegers() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
-        return fromSupplier(this::nextBigInteger);
-    }
-
-    /**
-     * Returns a randomly-generated {@code BigInteger} greater than or equal to {@code a}. The bit size is chosen from
-     * a geometric distribution with mean {@code scale}, and then the {@code BigInteger} is chosen uniformly from all
-     * {@code BigInteger}s greater than or equal to {@code a} with that bit size.
-     *
-     * <ul>
-     *  <li>Let {@code minBitLength} be 0 if {@code a} is negative, and ⌊log<sub>2</sub>({@code a})⌋ otherwise.
-     *  {@code this} must have a scale greater than {@code minBitLength}. If {@code minBitLength} is 0, {@code scale}
-     *  cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code a} may be any {@code int}.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a {@code BigInteger} greater than or equal to {@code a}
-     */
-    public @NotNull BigInteger nextFromRangeUp(@NotNull BigInteger a) {
-        int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
-        if (scale <= minBitLength) {
-            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
-                    minBitLength + ". Invalid scale: " + scale);
-        }
-        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
-                    " {@code Integer.MAX_VALUE}.");
-        }
-        int absBitLength = a.abs().bitLength();
-        int size = nextIntGeometricFromRangeUp(minBitLength);
-        BigInteger i;
-        if (size != absBitLength) {
-            if (size == 0) {
-                i = BigInteger.ZERO;
-            } else {
-                i = nextBigIntegerPow2(size);
-                boolean mostSignificantBit = i.testBit(size - 1);
-                if (!mostSignificantBit) {
-                    i = i.setBit(size - 1);
-                    if (size < absBitLength && a.signum() == -1) {
-                        i = i.negate();
-                    }
-                }
-            }
-        } else {
-            if (a.signum() != -1) {
-                i = nextBigIntegerBounded(BigInteger.ONE.shiftLeft(absBitLength).subtract(a)).add(a);
-            } else {
-                BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
-                BigInteger x = nextBigIntegerBounded(b.add(a.negate().subtract(b)).add(BigInteger.ONE));
-                i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
-            }
-        }
-        return i;
+        return zipWith((i, b) -> b ? i : i.negate(), naturalBigIntegers(), booleans());
     }
 
     /**
@@ -2020,10 +1418,49 @@ public final strictfp class RandomProvider extends IterableProvider {
                     minBitLength + ". Invalid scale: " + scale);
         }
         if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
-                    " {@code Integer.MAX_VALUE}.");
+            throw new IllegalStateException("If minBitLength is 0, scale cannot be Integer.MAX_VALUE.");
         }
-        return fromSupplier(() -> nextFromRangeUp(a));
+        int absBitLength = a.abs().bitLength();
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private final @NotNull Iterator<Integer> is = rangeUpGeometric(minBitLength).iterator();
+            private final @NotNull Iterator<BigInteger> is2 = bigIntegersBounded(
+                    a.signum() == -1 ? BigInteger.ONE.subtract(a) : BigInteger.ONE.shiftLeft(absBitLength).subtract(a)
+            ).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigInteger next() {
+                int size = is.next();
+                BigInteger i;
+                if (size != absBitLength) {
+                    if (size == 0) {
+                        i = BigInteger.ZERO;
+                    } else {
+                        i = nextBigIntegerPow2(size);
+                        boolean mostSignificantBit = i.testBit(size - 1);
+                        if (!mostSignificantBit) {
+                            i = i.setBit(size - 1);
+                            if (size < absBitLength && a.signum() == -1) {
+                                i = i.negate();
+                            }
+                        }
+                    }
+                } else {
+                    if (a.signum() != -1) {
+                        i = is2.next().add(a);
+                    } else {
+                        BigInteger b = BigInteger.ONE.shiftLeft(absBitLength - 1);
+                        BigInteger x = is2.next();
+                        i = lt(x, b) ? x.add(b) : b.negate().subtract(x.subtract(b));
+                    }
+                }
+                return i;
+            }
+        };
     }
 
     /**
@@ -2044,33 +1481,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> rangeDown(@NotNull BigInteger a) {
-        int minBitLength = a.signum() == 1 ? 0 : a.negate().bitLength();
-        if (scale <= minBitLength) {
-            throw new IllegalStateException("this must have a scale greater than minBitLength, which is " +
-                    minBitLength + ". Invalid scale: " + scale);
-        }
-        if (minBitLength == 0 && scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("If {@code minBitLength} is 0, {@code scale} cannot be" +
-                    " {@code Integer.MAX_VALUE}.");
-        }
-        return map(BigInteger::negate, fromSupplier(() -> nextFromRangeUp(a.negate())));
-    }
-
-    /**
-     * Returns a randomly-generated positive {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
-     * distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all odd positive
-     * {@code BigInteger}s with that bit size. The absolute value of the exponent is chosen from a geometric
-     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>The result is positive.</li>
-     * </ul>
-     *
-     * @return a positive {@code BinaryFraction}
-     */
-    public @NotNull BinaryFraction nextPositiveBinaryFraction() {
-        return BinaryFraction.of(nextPositiveBigInteger().setBit(0), withScale(secondaryScale).nextIntGeometric());
+        return map(BigInteger::negate, rangeUp(a.negate()));
     }
 
     /**
@@ -2088,14 +1499,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> positiveBinaryFractions() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        return fromSupplier(this::nextPositiveBinaryFraction);
+        return zipWith(
+                (m, s) -> BinaryFraction.of(m.setBit(0), s),
+                positiveBigIntegers(),
+                withScale(secondaryScale).integersGeometric()
+        );
     }
 
     /**
@@ -2136,37 +1544,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code BinaryFraction}. The mantissa bit size is chosen from a geometric
-     * distribution with mean {@code scale}. If the bit size is zero, the {@code BinaryFraction} is zero; otherwise,
-     * the mantissa is chosen uniformly from all odd {@code BigInteger}s with that bit size, thhe absolute value of the
-     * exponent is chosen from a geometric distribution with mean {@code secondaryScale}, the exponent's sign is chosen
-     * uniformly, and, finally, the sign of the {@code BinaryFraction} itself is chosen uniformly.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a {@code BinaryFraction}
-     */
-    public @NotNull BinaryFraction nextBinaryFraction() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        BigInteger mantissa = nextBigInteger();
-        if (mantissa.equals(BigInteger.ZERO)) {
-            return BinaryFraction.ZERO;
-        } else {
-            int exponent = nextIntGeometric(secondaryScale * (scale + 1), scale);
-            return BinaryFraction.of(mantissa.setBit(0), exponent);
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code BinaryFraction}s. The mantissa bit size is chosen from a geometric
      * distribution with mean {@code scale}. If the bit size is zero, the {@code BinaryFraction} is zero; otherwise,
      * the mantissa is chosen uniformly from all odd {@code BigInteger}s with that bit size, thhe absolute value of the
@@ -2190,24 +1567,27 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        return fromSupplier(this::nextBinaryFraction);
-    }
+        return () -> new NoRemoveIterator<BinaryFraction>() {
+            private final @NotNull Iterator<BigInteger> ms = bigIntegers().iterator();
+            private final @NotNull Iterator<Integer> ss =
+                    integersGeometric(secondaryScale * (scale + 1), scale).iterator();
 
-    /**
-     * Returns a randomly-generated {@code BinaryFraction} greater than or equal to {@code a}. A higher {@code scale}
-     * corresponds to a higher mantissa bit size and a higher {@code secondaryScale} corresponds to a higher exponent
-     * bit size, but the exact relationship is not simple to describe.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
-     *  <li>{@code a} cannot be null.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a {@code BinaryFraction} greater than or equal to {@code a}
-     */
-    public @NotNull BinaryFraction nextFromRangeUp(@NotNull BinaryFraction a) {
-        return nextBinaryFraction().abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent());
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BinaryFraction next() {
+                BigInteger mantissa = ms.next();
+                if (mantissa.equals(BigInteger.ZERO)) {
+                    return BinaryFraction.ZERO;
+                } else {
+                    int exponent = ss.next();
+                    return BinaryFraction.of(mantissa.setBit(0), exponent);
+                }
+            }
+        };
     }
 
     /**
@@ -2225,14 +1605,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> rangeUp(@NotNull BinaryFraction a) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        return fromSupplier(() -> nextFromRangeUp(a));
+        return map(
+                bf -> bf.abs().add(BinaryFraction.of(a.getMantissa())).shiftLeft(a.getExponent()),
+                binaryFractions()
+        );
     }
 
     /**
@@ -2250,75 +1626,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> rangeDown(@NotNull BinaryFraction a) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
         return map(BinaryFraction::negate, rangeUp(a.negate()));
-    }
-
-    /**
-     * <p>Returns a {@code BinaryFraction} between {@code a} and {@code b}, inclusive.</p>
-     *
-     * <p>Every interval with {@code BinaryFraction} bounds may be broken up into equal blocks whose length is a power
-     * of 2. Consider the subdivision with the largest possible block size. We can call points that lie on the
-     * boundaries between blocks, along with the lower and upper bounds of the interval, <i>division-0</i> points.
-     * Let points within the interval that are halfway between division-0 points be called <i>division-1</i> points;
-     * points halfway between division-0 or division-1 points <i>division-2</i> points; and so on. The
-     * {@code BinaryFraction}s returned by this method have divisions chosen from a geometric distribution with mean
-     * {@code scale}. The distribution of {@code BinaryFraction}s is approximately uniform.</p>
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale. The scale cannot be {@code Integer.MAX_VALUE}.</li>
-     *  <li>{@code a} may be any {@code BinaryFraction}.</li>
-     *  <li>{@code b} may be any {@code BinaryFraction}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing
-     *  {@code BinaryFraction}s.</li>
-     * </ul>
-     *
-     * Length is infinite if a≤b, 0 otherwise
-     *
-     * @param a the inclusive lower bound of the generated elements
-     * @param b the inclusive upper bound of the generated elements
-     * @return approximately uniformly-distributed {@code BinaryFraction}s between {@code a} and {@code b}, inclusive
-     */
-    public @NotNull BinaryFraction nextFromRange(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
-        if (a.equals(b)) return a;
-        if (gt(a, b)) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
-                    ".");
-        }
-        BinaryFraction difference = b.subtract(a);
-        int division = nextNaturalIntGeometric();
-        if (division == 0) {
-            return BinaryFraction.of(
-                    nextFromRange(BigInteger.ZERO, difference.getMantissa()),
-                    difference.getExponent()
-            ).add(a);
-        } else {
-            BinaryFraction fraction = BinaryFraction.of(
-                    nextFromRange(
-                            BigInteger.ZERO,
-                            BigInteger.ONE.shiftLeft(division - 1).subtract(BigInteger.ONE)
-                    ).shiftLeft(1).add(BigInteger.ONE),
-                    -division
-            );
-            return fraction.add(
-                    BinaryFraction.of(
-                            nextFromRange(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE))
-                    )
-            ).shiftLeft(difference.getExponent()).add(a);
-        }
     }
 
     /**
@@ -2355,8 +1663,39 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale == Integer.MAX_VALUE) {
             throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
         }
+        if (a.equals(b)) return repeat(a);
         if (gt(a, b)) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRange(a, b));
+        BinaryFraction difference = b.subtract(a);
+        return () -> new NoRemoveIterator<BinaryFraction>() {
+            private @NotNull final Iterator<Integer> is = naturalIntegersGeometric().iterator();
+            private @NotNull final Iterator<BigInteger> is2 =
+                    range(BigInteger.ZERO, difference.getMantissa()).iterator();
+            private @NotNull final Iterator<BigInteger> is3 =
+                    range(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE)).iterator();
+            private @NotNull final Map<Integer, Iterator<BigInteger>> isMap = new HashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BinaryFraction next() {
+                int i = is.next();
+                if (i == 0) {
+                    return BinaryFraction.of(is2.next(), difference.getExponent()).add(a);
+                } else {
+                    Iterator<BigInteger> is4 = isMap.get(i);
+                    if (is4 == null) {
+                        is4 = range(BigInteger.ZERO, BigInteger.ONE.shiftLeft(i - 1).subtract(BigInteger.ONE))
+                                .iterator();
+                        isMap.put(i, is4);
+                    }
+                    BinaryFraction fraction = BinaryFraction.of(is4.next().shiftLeft(1).add(BigInteger.ONE), -i);
+                    return fraction.add(BinaryFraction.of(is3.next())).shiftLeft(difference.getExponent()).add(a);
+                }
+            }
+        };
     }
 
     /**
@@ -2393,26 +1732,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code float} from a uniform distribution among {@code float}s, including
-     * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result may be any {@code float}.</li>
-     * </ul>
-     *
-     * @return a {@code float}
-     */
-    public float nextFloat() {
-        while (true) {
-            int floatBits = prng.nextInt();
-            float f = Float.intBitsToFloat(floatBits);
-            //only generate the canonical NaN
-            if (!Float.isNaN(f) || floatBits == Float.floatToIntBits(Float.NaN)) return f;
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Float}s from a uniform distribution among {@code Float}s,
      * {@code NaN}, positive and negative zeros, {@code Infinity}, and {@code -Infinity}. Does not support removal.
      *
@@ -2420,7 +1739,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> floats() {
-        return fromSupplier(this::nextFloat);
+        return filterInfinite(
+                f -> !Float.isNaN(f) || Float.floatToIntBits(f) == Float.floatToIntBits(Float.NaN),
+                map(Float::intBitsToFloat, integers())
+        );
     }
 
     /**
@@ -2464,45 +1786,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
-        return () -> new NoRemoveIterator<Double>() {
-            private final @NotNull Iterator<Long> longs = longs().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public Double next() {
-                while (true) {
-                    long longBits = longs.next();
-                    double d = Double.longBitsToDouble(longBits);
-                    //only generate the canonical NaN
-                    if (!Double.isNaN(d) || longBits == Double.doubleToLongBits(Double.NaN)) return d;
-                }
-            }
-        };
-    }
-
-    /**
-     * Returns a randomly-generated positive finite {@code float}, as if a real were sampled from a uniform
-     * distribution between {@code Float.MIN_VALUE} and {@code Float.MAX_VALUE} and then rounded to the nearest
-     * {@code float}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive and finite.</li>
-     * </ul>
-     *
-     * @return a positive, finite {@code float}
-     */
-    public float nextPositiveFloatUniform() {
-        BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_FLOAT);
-        Pair<Float, Float> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
-        ).floatRange();
-        return nextBoolean() ? range.a : range.b;
+        return filterInfinite(
+                d -> !Double.isNaN(d) || Double.doubleToLongBits(d) == Double.doubleToLongBits(Double.NaN),
+                map(Double::longBitsToDouble, longs())
+        );
     }
 
     /**
@@ -2513,8 +1800,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Float> positiveFloatsUniform() {
-        return fromSupplier(this::nextPositiveFloatUniform);
+    public
+    @NotNull
+    Iterable<Float> positiveFloatsUniform() {
+        return zipWith(
+                (i, b) -> {
+                    Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
+                            .floatRange();
+                    return b ? range.a : range.b;
+                },
+                range(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_FLOAT),
+                booleans()
+        );
     }
 
     /**
@@ -2530,23 +1827,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated nonzero finite {@code float}, as if a real were sampled from a uniform
-     * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MAX_VALUE}, rounded to the nearest
-     * {@code float}, and resampled if zero.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is nonzero and finite.</li>
-     * </ul>
-     *
-     * @return a nonzero, finite {@code float}
-     */
-    public float nextNonzeroFloatUniform() {
-        float f = nextPositiveFloatUniform();
-        return nextBoolean() ? f : -f;
-    }
-
-    /**
      * An {@code Iterable} that generates all nonzero finite {@code Float}s, as if reals were sampled from a uniform
      * distribution between {@code -Float.MAX_VALUE} and {@code -Float.MIN_VALUE}, rounded to the nearest
      * {@code Float}s, and resampled if zero. Does not support removal.
@@ -2555,30 +1835,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> nonzeroFloatsUniform() {
-        return fromSupplier(this::nextNonzeroFloatUniform);
-    }
-
-    /**
-     * Returns a randomly-generated finite {@code float}, as if a real were sampled from a uniform distribution between
-     * {@code -Float.MAX_VALUE} and {@code Float.MAX_VALUE} and then rounded to the nearest {@code float}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @return a finite, not-negative-zero {@code float}
-     */
-    public float nextFloatUniform() {
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(),
-                FloatingPointUtils.SCALED_UP_MAX_FLOAT
-        );
-        Pair<Float, Float> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
-        ).floatRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
+        return zipWith((f, b) -> b ? f : -f, positiveFloatsUniform(), booleans());
     }
 
     /**
@@ -2590,28 +1847,15 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> floatsUniform() {
-        return fromSupplier(this::nextFloatUniform);
-    }
-
-    /**
-     * Returns a randomly-generated positive finite {@code double}, as if a real were sampled from a uniform
-     * distribution between {@code Double.MIN_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest
-     * {@code double}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is positive and finite.</li>
-     * </ul>
-     *
-     * @return a positive, finite {@code double}
-     */
-    public double nextPositiveDoubleUniform() {
-        BigInteger scaled = nextFromRange(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_DOUBLE);
-        Pair<Double, Double> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
-        ).doubleRange();
-        return nextBoolean() ? range.a : range.b;
+        return zipWith(
+                (b, i) -> {
+                    Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
+                            .floatRange();
+                    return b ? range.a : range.b;
+                },
+                booleans(),
+                range(FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(), FloatingPointUtils.SCALED_UP_MAX_FLOAT)
+        );
     }
 
     /**
@@ -2622,8 +1866,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     @Override
-    public @NotNull Iterable<Double> positiveDoublesUniform() {
-        return fromSupplier(this::nextPositiveDoubleUniform);
+    public
+    @NotNull
+    Iterable<Double> positiveDoublesUniform() {
+        return zipWith(
+                (i, b) -> {
+                    Pair<Double, Double> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
+                            .doubleRange();
+                    return b ? range.a : range.b;
+                },
+                range(BigInteger.ONE, FloatingPointUtils.SCALED_UP_MAX_DOUBLE),
+                booleans()
+        );
     }
 
     /**
@@ -2639,23 +1893,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated nonzero finite {@code double}, as if a real were sampled from a uniform
-     * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MAX_VALUE}, rounded to the nearest
-     * {@code double}, and resampled if zero.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is nonzero and finite.</li>
-     * </ul>
-     *
-     * @return a nonzero, finite {@code double}
-     */
-    public double nextNonzeroDoubleUniform() {
-        double d = nextPositiveDoubleUniform();
-        return nextBoolean() ? d : -d;
-    }
-
-    /**
      * An {@code Iterable} that generates all nonzero finite {@code Double}s, as if reals were sampled from a uniform
      * distribution between {@code -Double.MAX_VALUE} and {@code -Double.MIN_VALUE}, rounded to the nearest
      * {@code Double}s, and resampled if zero. Does not support removal.
@@ -2664,30 +1901,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> nonzeroDoublesUniform() {
-        return fromSupplier(this::nextNonzeroDoubleUniform);
-    }
-
-    /**
-     * Returns a randomly-generated finite {@code double}, as if a real were sampled from a uniform distribution
-     * between {@code -Double.MAX_VALUE} and {@code Double.MAX_VALUE} and then rounded to the nearest {@code double}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @return a finite, not-negative-zero {@code double}
-     */
-    public double nextDoubleUniform() {
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.SCALED_UP_MAX_DOUBLE.negate(),
-                FloatingPointUtils.SCALED_UP_MAX_DOUBLE
-        );
-        Pair<Double, Double> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
-        ).doubleRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
+        return zipWith((d, b) -> b ? d : -d, positiveDoublesUniform(), booleans());
     }
 
     /**
@@ -2699,7 +1913,15 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> doublesUniform() {
-        return fromSupplier(this::nextDoubleUniform);
+        return zipWith(
+                (i, b) -> {
+                    Pair<Double, Double> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
+                            .doubleRange();
+                    return b ? range.a : range.b;
+                },
+                range(FloatingPointUtils.SCALED_UP_MAX_DOUBLE.negate(), FloatingPointUtils.SCALED_UP_MAX_DOUBLE),
+                booleans()
+        );
     }
 
     /**
@@ -2791,31 +2013,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code double} greater than or equal to {@code a} from a uniform distribution among
-     * {@code double}s. If a≤0, either positive or negative zero may be returned.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>The result is not {@code NaN}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code double}
-     * @return a {@code double} greater than or equal to {@code a}
-     */
-    public double nextFromRangeUp(double a) {
-        long oa = FloatingPointUtils.toOrderedRepresentation(a);
-        if (oa <= 0L) {
-            long n = nextFromRange(oa - 1, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1);
-            return n == oa - 1 ? -0.0 : FloatingPointUtils.doubleFromOrderedRepresentation(n);
-        } else {
-            return FloatingPointUtils.doubleFromOrderedRepresentation(
-                    nextFromRange(oa, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1)
-            );
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Double}s greater than or equal to {@code a} from a uniform
      * distribution among {@code Double}s. If a≤0, both positive and negative zeros may be generated. Does not support
      * removal.
@@ -2834,10 +2031,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> rangeUp(double a) {
-        if (Double.isNaN(a)) {
-            throw new ArithmeticException("a cannot be NaN.");
+        long oa = FloatingPointUtils.toOrderedRepresentation(a);
+        if (oa <= 0L) {
+            return map(
+                    n -> n == oa - 1 ? -0.0 : FloatingPointUtils.doubleFromOrderedRepresentation(n),
+                    range(oa - 1, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1)
+            );
+        } else {
+            return map(
+                    FloatingPointUtils::doubleFromOrderedRepresentation,
+                    range(oa, FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1)
+            );
         }
-        return fromSupplier(() -> nextFromRangeUp(a));
     }
 
     /**
@@ -2863,34 +2068,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code double} between {@code a} and {@code b}, inclusive, from a uniform
-     * distribution among {@code double}s. If a≤0≤b, either positive or negative zero may be returned.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} cannot be {@code NaN}.</li>
-     *  <li>{@code b} cannot be {@code NaN}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
-     *  for this condition.</li>
-     *  <li>The result is not {@code NaN}.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code double}
-     * @param b the inclusive upper bound of the generated {@code double}
-     * @return a {@code double} between {@code a} and {@code b}, inclusive
-     */
-    public double nextFromRange(double a, double b) {
-        long oa = FloatingPointUtils.toOrderedRepresentation(a);
-        long ob = FloatingPointUtils.toOrderedRepresentation(b);
-        if (oa <= 0L && 0L <= ob) {
-            long n = nextFromRange(oa - 1, ob);
-            return n == oa - 1 ? -0.0 : FloatingPointUtils.doubleFromOrderedRepresentation(n);
-        } else {
-            return FloatingPointUtils.doubleFromOrderedRepresentation(nextFromRange(oa, ob));
-        }
-    }
-
-    /**
      * An {@code Iterable} that generates all {@code Double}s between {@code a} and {@code b}, inclusive, from a
      * uniform distribution among {@code Double}s. If a≤0≤b, either positive or negative zero may be returned. If
      * {@code a}{@literal >}{@code b}, an empty {@code Iterable} is returned. Does not support removal.
@@ -2911,43 +2088,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> range(double a, double b) {
-        if (Double.isNaN(a)) {
-            throw new ArithmeticException("a cannot be NaN.");
+        long oa = FloatingPointUtils.toOrderedRepresentation(a);
+        long ob = FloatingPointUtils.toOrderedRepresentation(b);
+        if (oa <= 0L && 0L <= ob) {
+            return map(
+                    n -> n == oa - 1 ? -0.0f : FloatingPointUtils.doubleFromOrderedRepresentation(n),
+                    range(oa - 1, ob)
+            );
+        } else {
+            return map(FloatingPointUtils::doubleFromOrderedRepresentation, range(oa, ob));
         }
-        if (Double.isNaN(b)) {
-            throw new ArithmeticException("b cannot be NaN.");
-        }
-        if (a > b) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRange(a, b));
-    }
-
-    /**
-     * Returns a randomly-generated {@code float} greater than or equal to {@code a}, as if a real were sampled from a
-     * uniform distribution between {@code a} and {@code Float.MAX_VALUE} and then rounded to the nearest
-     * {@code float}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} must be finite.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code float}
-     * @return a {@code float} greater than or equal to {@code a}
-     */
-    public float nextFromRangeUpUniform(float a) {
-        if (!Float.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.scaleUp(a).get(),
-                FloatingPointUtils.SCALED_UP_MAX_FLOAT
-        );
-        Pair<Float, Float> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
-        ).floatRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     /**
@@ -2964,11 +2114,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    public @NotNull Iterable<Float> rangeUpUniform(float a) {
-        if (!Float.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        return fromSupplier(() -> nextFromRangeUpUniform(a));
+    public
+    @NotNull
+    Iterable<Float> rangeUpUniform(float a) {
+        return zipWith(
+                (i, b) -> {
+                    Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
+                            .floatRange();
+                    return b ? range.a : range.b;
+                },
+                range(FloatingPointUtils.scaleUp(a).get(), FloatingPointUtils.SCALED_UP_MAX_FLOAT),
+                booleans()
+        );
     }
 
     /**
@@ -2987,41 +2144,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public @NotNull Iterable<Float> rangeDownUniform(float a) {
         return map(f -> -f, rangeUpUniform(-a));
-    }
-
-    /**
-     * Returns a randomly-generated {@code float} between {@code a} and {@code b}, inclusive, as if a real were sampled
-     * from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest {@code float}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} must be finite.</li>
-     *  <li>{@code b} must be finite.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
-     *  for this condition.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code float}
-     * @param b the inclusive upper bound of the generated {@code float}
-     * @return a {@code float} between {@code a} and {@code b}, inclusive
-     */
-    public float nextFromRangeUniform(float a, float b) {
-        if (!Float.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        if (!Float.isFinite(b)) {
-            throw new ArithmeticException("b must be finite.");
-        }
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.scaleUp(a).get(),
-                FloatingPointUtils.scaleUp(b).get()
-        );
-        Pair<Float, Float> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
-        ).floatRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     /**
@@ -3052,36 +2174,17 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new ArithmeticException("b must be finite.");
         }
         if (a > b) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRangeUniform(a, b));
-    }
-
-    /**
-     * Returns a randomly-generated {@code double} greater than or equal to {@code a}, as if a real were sampled from a
-     * uniform distribution between {@code a} and {@code Double.MAX_VALUE} and then rounded to the nearest
-     * {@code double}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} must be finite.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code double}
-     * @return a {@code double} greater than or equal to {@code a}
-     */
-    public double nextFromRangeUpUniform(double a) {
-        if (!Double.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.scaleUp(a).get(),
-                FloatingPointUtils.SCALED_UP_MAX_DOUBLE
+        return zipWith(
+                (i, s) -> {
+                    Pair<Float, Float> range = BinaryFraction.of(
+                            i,
+                            FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT
+                    ).floatRange();
+                    return s ? range.a : range.b;
+                },
+                range(FloatingPointUtils.scaleUp(a).get(), FloatingPointUtils.scaleUp(b).get()),
+                booleans()
         );
-        Pair<Double, Double> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
-        ).doubleRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     /**
@@ -3098,11 +2201,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    public @NotNull Iterable<Double> rangeUpUniform(double a) {
-        if (!Double.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        return fromSupplier(() -> nextFromRangeUpUniform(a));
+    public
+    @NotNull
+    Iterable<Double> rangeUpUniform(double a) {
+        return zipWith(
+                (i, b) -> {
+                    Pair<Double, Double> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
+                            .doubleRange();
+                    return b ? range.a : range.b;
+                },
+                range(FloatingPointUtils.scaleUp(a).get(), FloatingPointUtils.SCALED_UP_MAX_DOUBLE),
+                booleans()
+        );
     }
 
     /**
@@ -3121,42 +2231,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     public @NotNull Iterable<Double> rangeDownUniform(double a) {
         return map(d -> -d, rangeUpUniform(-a));
-    }
-
-    /**
-     * Returns a randomly-generated {@code double} between {@code a} and {@code b}, inclusive, as if a real were
-     * sampled from a uniform distribution between {@code a} and {@code b} and then rounded to the nearest
-     * {@code double}.
-     *
-     * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code a} must be finite.</li>
-     *  <li>{@code b} must be finite.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}; positive and negative zeros are considered to be equal
-     *  for this condition.</li>
-     *  <li>The result is finite and not negative zero.</li>
-     * </ul>
-     *
-     * @param a the inclusive lower bound of the generated {@code double}
-     * @param b the inclusive upper bound of the generated {@code double}
-     * @return a {@code double} between {@code a} and {@code b}, inclusive
-     */
-    public double nextFromRangeUniform(double a, double b) {
-        if (!Double.isFinite(a)) {
-            throw new ArithmeticException("a must be finite.");
-        }
-        if (!Double.isFinite(b)) {
-            throw new ArithmeticException("b must be finite.");
-        }
-        BigInteger scaled = nextFromRange(
-                FloatingPointUtils.scaleUp(a).get(),
-                FloatingPointUtils.scaleUp(b).get()
-        );
-        Pair<Double, Double> range = BinaryFraction.of(
-                scaled,
-                FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
-        ).doubleRange();
-        return FloatingPointUtils.absNegativeZeros(nextBoolean() ? range.a : range.b);
     }
 
     /**
@@ -3187,7 +2261,17 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new ArithmeticException("b must be finite.");
         }
         if (a > b) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRangeUniform(a, b));
+        return zipWith(
+                (i, s) -> {
+                    Pair<Double, Double> range = BinaryFraction.of(
+                            i,
+                            FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT
+                    ).doubleRange();
+                    return s ? range.a : range.b;
+                },
+                range(FloatingPointUtils.scaleUp(a).get(), FloatingPointUtils.scaleUp(b).get()),
+                booleans()
+        );
     }
 
     /**
@@ -3207,7 +2291,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b), pairs(positiveBigIntegers(),
-                        withScale(secondaryScale).integersGeometric())
+                withScale(secondaryScale).integersGeometric())
         );
     }
 
@@ -3274,34 +2358,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated positive canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
-     * positive {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
-     * distribution with mean {@code secondaryScale}, and its sign is chosen uniformly.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>The result is positive and canonical.</li>
-     * </ul>
-     *
-     * @return a positive canonical {@code BigDecimal}
-     */
-    public @NotNull BigDecimal nextPositiveCanonicalBigDecimal() {
-        int scale = withScale(secondaryScale).nextNaturalIntGeometric();
-        BigInteger unscaled;
-        if (scale == 0) {
-            unscaled = nextPositiveBigInteger();
-        } else {
-            int unscaledBitSize = nextPositiveIntGeometric();
-            do {
-                unscaled = nextBigIntegerPow2(unscaledBitSize);
-                unscaled = unscaled.setBit(unscaledBitSize - 1);
-            } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
-        }
-        return new BigDecimal(unscaled, scale);
-    }
-
-    /**
      * An {@code Iterable} that generates all positive canonical {@code BigDecimal}s. The unscaled-value bit size is
      * chosen from a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all
      * positive {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric
@@ -3324,7 +2380,33 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        return fromSupplier(this::nextPositiveCanonicalBigDecimal);
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private final @NotNull Iterator<BigInteger> is1 = positiveBigIntegers().iterator();
+            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> is3 = withScale(secondaryScale).naturalIntegersGeometric()
+                    .iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigDecimal next() {
+                int bdScale = is3.next();
+                BigInteger unscaled;
+                if (bdScale == 0) {
+                    unscaled = is1.next();
+                } else {
+                    int unscaledBitSize = is2.next();
+                    do {
+                        unscaled = nextBigIntegerPow2(unscaledBitSize);
+                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                    } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+                }
+                return new BigDecimal(unscaled, bdScale);
+            }
+        };
     }
 
     /**
@@ -3347,23 +2429,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated nonzero canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
-     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
-     * with mean {@code secondaryScale}, and its sign is chosen uniformly.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>The result is nonzero and canonical.</li>
-     * </ul>
-     *
-     * @return a nonzero canonical {@code BigDecimal}
-     */
-    public @NotNull BigDecimal nextNonzeroCanonicalBigDecimal() {
-        return nextBoolean() ? nextPositiveCanonicalBigDecimal() : nextPositiveCanonicalBigDecimal().negate();
-    }
-
-    /**
      * An {@code Iterable} that generates all nonzero canonical {@code BigDecimal}s. The unscaled-value bit size is
      * chosen from a geometric distribution with mean {@code scale}, and then the mantissa is chosen uniformly from all
      * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
@@ -3379,46 +2444,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> nonzeroCanonicalBigDecimals() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        return fromSupplier(this::nextNonzeroCanonicalBigDecimal);
-    }
-
-    /**
-     * Returns a randomly-generated canonical {@code BigDecimal}. The unscaled-value bit size is chosen from a
-     * geometric distribution with mean {@code scale}, and then the unscaled value is chosen uniformly from all
-     * {@code BigInteger}s with that bit size. The absolute value of the scale is chosen from a geometric distribution
-     * with mean {@code secondaryScale}, and its sign is chosen uniformly. Finally, the sign of the
-     * {@code BigDecimal} itself is chosen uniformly.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>The result is not canonical.</li>
-     * </ul>
-     *
-     * @return a canonical {@code BigDecimal}
-     */
-    public @NotNull BigDecimal nextCanonicalBigDecimal() {
-        int bdScale = withScale(secondaryScale).nextNaturalIntGeometric();
-        BigInteger unscaled;
-        if (bdScale == 0) {
-            if (scale < 2) {
-                throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + bdScale);
-            }
-            unscaled = nextNaturalBigInteger();
-        } else {
-            int unscaledBitSize = nextPositiveIntGeometric();
-            do {
-                unscaled = nextBigIntegerPow2(unscaledBitSize);
-                unscaled = unscaled.setBit(unscaledBitSize - 1);
-            } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
-        }
-        return new BigDecimal(nextBoolean() ? unscaled : unscaled.negate(), bdScale);
+        return zipWith((bd, b) -> b ? bd : bd.negate(), positiveCanonicalBigDecimals(), booleans());
     }
 
     /**
@@ -3444,7 +2470,34 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
-        return fromSupplier(this::nextCanonicalBigDecimal);
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private final @NotNull Iterator<Boolean> bs = booleans().iterator();
+            private final @NotNull Iterator<BigInteger> is1 = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> is3 = withScale(secondaryScale).naturalIntegersGeometric()
+                    .iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigDecimal next() {
+                int bdScale = is3.next();
+                BigInteger unscaled;
+                if (bdScale == 0) {
+                    unscaled = is1.next();
+                } else {
+                    int unscaledBitSize = is2.next();
+                    do {
+                        unscaled = nextBigIntegerPow2(unscaledBitSize);
+                        unscaled = unscaled.setBit(unscaledBitSize - 1);
+                    } while (unscaled.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+                }
+                return new BigDecimal(bs.next() ? unscaled : unscaled.negate(), bdScale);
+            }
+        };
     }
 
     /**
@@ -3461,18 +2514,38 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param pow an {@code int}
      * @return a canonical {@code BigDecimal} between 0 and 10<sup>{@code pow}</sup>, inclusive
      */
-    private @NotNull BigDecimal nextZeroToPowerOfTenCanonicalBigDecimal(int pow) {
-        int normalizedScale = nextNaturalIntGeometric();
-        if (normalizedScale == 0) {
-            return nextBoolean() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
-        } else {
-            BigInteger limit = BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE);
-            BigInteger digits;
-            do {
-                digits = nextFromRange(BigInteger.ONE, limit);
-            } while (digits.mod(BigInteger.TEN).equals(BigInteger.ZERO));
-            return new BigDecimal(digits, normalizedScale - pow);
-        }
+    //todo fix docs
+    private @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private final @NotNull Iterator<Boolean> bs = booleans().iterator();
+            private final @NotNull Iterator<Integer> is = naturalIntegersGeometric().iterator();
+            private final @NotNull Map<Integer, Iterator<BigInteger>> isMap = new HashMap<>();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigDecimal next() {
+                int normalizedScale = is.next();
+                if (normalizedScale == 0) {
+                    return bs.next() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
+                } else {
+                    Iterator<BigInteger> ds = isMap.get(normalizedScale);
+                    if (ds == null) {
+                        ds = range(BigInteger.ONE, BigInteger.TEN.pow(normalizedScale).subtract(BigInteger.ONE))
+                                .iterator();
+                        isMap.put(normalizedScale, ds);
+                    }
+                    BigInteger digits;
+                    do {
+                        digits = ds.next();
+                    } while (digits.mod(BigInteger.TEN).equals(BigInteger.ZERO));
+                    return new BigDecimal(digits, normalizedScale - pow);
+                }
+            }
+        };
     }
 
     /**
@@ -3485,33 +2558,32 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is not null.</li>
      * </ul>
      *
-     * @param bd a {@code BigDecimal}
+     * @param bds a {@code BigDecimal}
      * @return a {@code BigDecimal} whose canonical form is {@code bd}
      */
-    private @NotNull BigDecimal uncanonicalize(@NotNull BigDecimal bd) {
-        if (bd.equals(BigDecimal.ZERO)) {
-            return new BigDecimal(BigInteger.ZERO, nextIntGeometric());
-        } else {
-            bd = bd.stripTrailingZeros();
-            return BigDecimalUtils.setPrecision(bd, nextNaturalIntGeometric() + bd.precision());
-        }
-    }
+    //todo fix docs
+    private @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> bds) {
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private final @NotNull Iterator<BigDecimal> bdi = bds.iterator();
+            private final @NotNull Iterator<Integer> integersGeometric = integersGeometric().iterator();
+            private final @NotNull Iterator<Integer> naturalIntegersGeometric = naturalIntegersGeometric().iterator();
 
-    /**
-     * Returns a randomly-generated {@code BigDecimal} greater than or equal to {@code a}. A higher {@code scale}
-     * corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher
-     * unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>{@code a} cannot be null.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a {@code BigDecimal} greater than or equal to {@code a}
-     */
-    public @NotNull BigDecimal nextFromRangeUp(@NotNull BigDecimal a) {
-        return withScale(secondaryScale).uncanonicalize(nextFromRangeUpCanonical(a));
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public BigDecimal next() {
+                BigDecimal bd = bdi.next();
+                if (bd.equals(BigDecimal.ZERO)) {
+                    return new BigDecimal(BigInteger.ZERO, integersGeometric.next());
+                } else {
+                    bd = bd.stripTrailingZeros();
+                    return BigDecimalUtils.setPrecision(bd, naturalIntegersGeometric.next() + bd.precision());
+                }
+            }
+        };
     }
 
     /**
@@ -3530,14 +2602,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUp(@NotNull BigDecimal a) {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        return fromSupplier(() -> nextFromRangeUp(a));
+        return withScale(secondaryScale).uncanonicalize(rangeUpCanonical(a));
     }
 
     /**
@@ -3557,29 +2622,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> rangeDown(@NotNull BigDecimal a) {
         return map(BigDecimal::negate, rangeUp(a.negate()));
-    }
-
-    /**
-     * Returns a {@code BigDecimal} between {@code a} and {@code b}, inclusive. A higher {@code scale} corresponds to a
-     * higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher unscaled-value bit
-     * size and a higher scale, but the exact relationship is not simple to describe.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
-     *  <li>{@code a} may be any {@code BigDecimal}.</li>
-     *  <li>{@code b} may be any {@code BigDecimal}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
-     * </ul>
-     *
-     * Length is infinite if a≤b, 0 otherwise
-     *
-     * @param a the inclusive lower bound of the generated elements
-     * @param b the inclusive upper bound of the generated elements
-     * @return {@code BigDecimal}s between {@code a} and {@code b}, inclusive
-     */
-    public @NotNull BigDecimal nextFromRange(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        return withScale(secondaryScale).uncanonicalize(nextFromRangeCanonical(a, b));
     }
 
     /**
@@ -3610,28 +2652,7 @@ public final strictfp class RandomProvider extends IterableProvider {
                     secondaryScale);
         }
         if (gt(a, b)) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRange(a, b));
-    }
-
-    /**
-     * Returns a randomly-generated canonical {@code BigDecimal} greater than or equal to {@code a}. A higher
-     * {@code scale} corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to
-     * a higher scale, but the exact relationship is not simple to describe.
-     *
-     * <ul>
-     *  <li>{@code this} must have a scale of at least 2 and a positive secondary scale.</li>
-     *  <li>{@code a} cannot be null.</li>
-     *  <li>The result is not null.</li>
-     * </ul>
-     *
-     * @return a canonical {@code BigDecimal} greater than or equal to {@code a}
-     */
-    public @NotNull BigDecimal nextFromRangeUpCanonical(@NotNull BigDecimal a) {
-        BigDecimal nonNegative;
-        do {
-            nonNegative = nextCanonicalBigDecimal();
-        } while (nonNegative.signum() == -1);
-        return BigDecimalUtils.canonicalize(a.add(nonNegative));
+        return withScale(secondaryScale).uncanonicalize(rangeCanonical(a, b));
     }
 
     /**
@@ -3649,14 +2670,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> rangeUpCanonical(@NotNull BigDecimal a) {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        return fromSupplier(() -> nextFromRangeUpCanonical(a));
+        return map(
+                c -> BigDecimalUtils.canonicalize(a.add(c)),
+                filterInfinite(bd -> bd.signum() != -1, canonicalBigDecimals())
+        );
     }
 
     /**
@@ -3675,49 +2692,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<BigDecimal> rangeDownCanonical(@NotNull BigDecimal a) {
         return map(BigDecimal::negate, rangeUpCanonical(a.negate()));
-    }
-
-    /**
-     * Returns a canonical {@code BigDecimal} between {@code a} and {@code b}, inclusive. A higher {@code scale}
-     * corresponds to a higher unscaled-value bit size and a higher {@code secondaryScale} corresponds to a higher
-     * unscaled-value bit size and a higher scale, but the exact relationship is not simple to describe.
-     *
-     * <ul>
-     *  <li>{@code this} must have a positive scale and a positive secondary scale.</li>
-     *  <li>{@code a} may be any {@code BigDecimal}.</li>
-     *  <li>{@code b} may be any {@code BigDecimal}.</li>
-     *  <li>{@code a} must be less than or equal to {@code b}.</li>
-     *  <li>The result is empty, or an infinite, non-removable {@code Iterable} containing canonical
-     *  {@code BigDecimal}s.</li>
-     * </ul>
-     *
-     * Length is infinite if a≤b, 0 otherwise
-     *
-     * @param a the inclusive lower bound of the generated elements
-     * @param b the inclusive upper bound of the generated elements
-     * @return canonical {@code BigDecimal}s between {@code a} and {@code b}, inclusive
-     */
-    public @NotNull BigDecimal nextFromRangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
-        if (eq(a, b)) return BigDecimalUtils.canonicalize(a);
-        if (gt(a, b)) {
-            throw new IllegalArgumentException("a must be less than or equal to b. a is " + a + " and b is " + b +
-                    ".");
-        }
-        BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
-        int pow = BigDecimalUtils.ceilingLog10(difference);
-        RandomProvider scaled = withScale(secondaryScale);
-        BigDecimal next;
-        do {
-            next = scaled.nextZeroToPowerOfTenCanonicalBigDecimal(pow);
-        } while (gt(next, difference));
-        return BigDecimalUtils.canonicalize(a.add(next));
     }
 
     /**
@@ -3749,13 +2723,23 @@ public final strictfp class RandomProvider extends IterableProvider {
                     secondaryScale);
         }
         if (gt(a, b)) return Collections.emptyList();
-        return fromSupplier(() -> nextFromRangeCanonical(a, b));
+        if (eq(a, b)) return repeat(BigDecimalUtils.canonicalize(a));
+        BigDecimal difference = BigDecimalUtils.canonicalize(b.subtract(a));
+        return map(
+                c -> BigDecimalUtils.canonicalize(a.add(c)),
+                filterInfinite(
+                        bd -> le(bd, difference),
+                        withScale(secondaryScale)
+                                .zeroToPowerOfTenCanonicalBigDecimals(BigDecimalUtils.ceilingLog10(difference))
+                )
+        );
     }
 
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<T>() {
-            private final @NotNull Iterator<T> it = xs.iterator();
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<Integer> is = range(1, scale).iterator();
 
             @Override
             public boolean hasNext() {
@@ -3764,7 +2748,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public T next() {
-                return nextFromRange(1, scale) == 1 ? x : it.next();
+                return is.next() == 1 ? x : xsi.next();
             }
         };
     }
@@ -4116,15 +3100,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     public void validate() {
         prng.validate();
         assertEquals(this, seed.size(), IsaacPRNG.SIZE);
-        for (Map.Entry<Pair<Integer, Integer>, RandomProvider> entry : dependents.entrySet()) {
-            Pair<Integer, Integer> key = entry.getKey();
-            RandomProvider value = entry.getValue();
-            assertNotNull(this, key);
-            assertNotNull(this, key.a);
-            assertNotNull(this, key.b);
-            assertNotNull(this, value);
-            assertTrue(this, prng == value.prng);
-            value.validate();
+        for (RandomProvider dependent : dependents) {
+            assertNotNull(this, dependent);
+            assertTrue(this, prng == dependent.prng);
+            dependent.validate();
         }
     }
 }
