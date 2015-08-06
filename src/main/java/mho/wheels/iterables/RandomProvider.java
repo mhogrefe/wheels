@@ -76,7 +76,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * consisting of {@code scale} and {@code secondaryScale}, respectively. Whenever {@code this}
      * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
      */
-     //todo fix docs
+    //todo fix docs
     private @NotNull List<RandomProvider> dependents;
 
     /**
@@ -273,7 +273,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is not null.</li>
      * </ul>
      */
-     //todo docs
+    //todo docs
     @Override
     public void reset() {
         resetHelper(new IsaacPRNG(seed), this);
