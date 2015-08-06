@@ -1084,390 +1084,390 @@ public strictfp class RandomProviderTest {
         range_char_char_helper('a', 'A', "");
     }
 
-//    private static void geometricHelper(
-//            @NotNull Iterable<Integer> xs,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean
-//    ) {
-//        List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-//        aeqit(take(TINY_LIMIT, sample), output);
-//        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
-//        aeq(meanOfIntegers(sample), sampleMean);
-//    }
-//
-//    private static void positiveIntegersGeometric_helper(
-//            int mean,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean
-//    ) {
-//        geometricHelper(P.withScale(mean).positiveIntegersGeometric(), output, topSampleCount, sampleMean);
-//        P.reset();
-//    }
-//
-//    private static void positiveIntegersGeometric_fail_helper(int mean) {
-//        try {
-//            P.withScale(mean).positiveIntegersGeometric();
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testPositiveIntegersGeometric() {
-//        positiveIntegersGeometric_helper(
-//                2,
-//                "[4, 3, 10, 3, 3, 1, 2, 4, 1, 1, 3, 3, 3, 1, 3, 1, 1, 2, 2, 1]",
-//                "{1=499125, 2=250897, 3=124849, 4=62518, 5=31407, 6=15634, 7=7825, 8=3926, 9=1896, 10=956}",
-//                2.0008359999800347
-//        );
-//        positiveIntegersGeometric_helper(
-//                3,
-//                "[5, 6, 6, 5, 3, 6, 1, 2, 3, 2, 4, 7, 2, 3, 1, 2, 1, 2, 1, 4]",
-//                "{1=333813, 2=221150, 3=148025, 4=98992, 5=66270, 6=43747, 7=29389, 8=19567, 9=12958, 10=8571}",
-//                3.002096999989928
-//        );
-//        positiveIntegersGeometric_helper(
-//                4,
-//                "[7, 10, 7, 7, 4, 10, 1, 3, 3, 2, 7, 8, 2, 3, 1, 2, 1, 2, 1, 8]",
-//                "{1=250407, 2=187060, 3=139994, 4=105560, 5=79154, 6=58963, 7=44920, 8=33524, 9=25356, 10=18834}",
-//                4.0033679999901475
-//        );
-//        positiveIntegersGeometric_helper(
-//                5,
-//                "[5, 4, 18, 8, 3, 1, 2, 1, 2, 6, 7, 18, 6, 3, 8, 15, 1, 9, 2, 5]",
-//                "{1=200194, 2=160489, 3=127708, 4=101606, 5=82008, 6=65900, 7=52157, 8=41827, 9=33413, 10=26877}",
-//                5.004360000008482
-//        );
-//        positiveIntegersGeometric_helper(
-//                10,
-//                "[36, 10, 10, 8, 32, 21, 2, 6, 1, 18, 19, 1, 11, 9, 4, 4, 1, 2, 4, 6]",
-//                "{1=99758, 2=90376, 3=81079, 4=73085, 5=65513, 6=59012, 7=53321, 8=47369, 9=43229, 10=38339}",
-//                9.996188000005418
-//        );
-//        positiveIntegersGeometric_helper(
-//                100,
-//                "[147, 1, 65, 34, 32, 144, 35, 117, 27, 85, 9, 63, 11, 16, 1, 136, 35, 290, 126, 65]",
-//                "{1=10012, 2=9821, 3=9817, 5=9658, 4=9642, 6=9476, 7=9451, 8=9361, 10=9177, 11=9064}",
-//                99.9640719999968
-//        );
-//        positiveIntegersGeometric_fail_helper(1);
-//        positiveIntegersGeometric_fail_helper(0);
-//        positiveIntegersGeometric_fail_helper(-1);
-//    }
-//
-//    private static void negativeIntegersGeometric_helper(
-//            int mean,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean
-//    ) {
-//        geometricHelper(P.withScale(mean).negativeIntegersGeometric(), output, topSampleCount, sampleMean);
-//        P.reset();
-//    }
-//
-//    private static void negativeIntegersGeometric_fail_helper(int mean) {
-//        try {
-//            P.withScale(mean).negativeIntegersGeometric();
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testNegativeIntegersGeometric() {
-//        negativeIntegersGeometric_helper(
-//                2,
-//                "[-4, -3, -10, -3, -3, -1, -2, -4, -1, -1, -3, -3, -3, -1, -3, -1, -1, -2, -2, -1]",
-//                "{-1=499125, -2=250897, -3=124849, -4=62518, -5=31407, -6=15634, -7=7825, -8=3926, -9=1896, -10=956}",
-//                -2.0008359999800347
-//        );
-//        negativeIntegersGeometric_helper(
-//                3,
-//                "[-5, -6, -6, -5, -3, -6, -1, -2, -3, -2, -4, -7, -2, -3, -1, -2, -1, -2, -1, -4]",
-//                "{-1=333813, -2=221150, -3=148025, -4=98992, -5=66270, -6=43747, -7=29389, -8=19567, -9=12958," +
-//                " -10=8571}",
-//                -3.002096999989928
-//        );
-//        negativeIntegersGeometric_helper(
-//                4,
-//                "[-7, -10, -7, -7, -4, -10, -1, -3, -3, -2, -7, -8, -2, -3, -1, -2, -1, -2, -1, -8]",
-//                "{-1=250407, -2=187060, -3=139994, -4=105560, -5=79154, -6=58963, -7=44920, -8=33524, -9=25356," +
-//                " -10=18834}",
-//                -4.0033679999901475
-//        );
-//        negativeIntegersGeometric_helper(
-//                5,
-//                "[-5, -4, -18, -8, -3, -1, -2, -1, -2, -6, -7, -18, -6, -3, -8, -15, -1, -9, -2, -5]",
-//                "{-1=200194, -2=160489, -3=127708, -4=101606, -5=82008, -6=65900, -7=52157, -8=41827, -9=33413," +
-//                " -10=26877}",
-//                -5.004360000008482
-//        );
-//        negativeIntegersGeometric_helper(
-//                10,
-//                "[-36, -10, -10, -8, -32, -21, -2, -6, -1, -18, -19, -1, -11, -9, -4, -4, -1, -2, -4, -6]",
-//                "{-1=99758, -2=90376, -3=81079, -4=73085, -5=65513, -6=59012, -7=53321, -8=47369, -9=43229," +
-//                " -10=38339}",
-//                -9.996188000005418
-//        );
-//        negativeIntegersGeometric_helper(
-//                100,
-//                "[-147, -1, -65, -34, -32, -144, -35, -117, -27, -85, -9, -63, -11, -16, -1, -136, -35, -290, -126," +
-//                " -65]",
-//                "{-1=10012, -2=9821, -3=9817, -5=9658, -4=9642, -6=9476, -7=9451, -8=9361, -10=9177, -11=9064}",
-//                -99.9640719999968
-//        );
-//        negativeIntegersGeometric_fail_helper(1);
-//        negativeIntegersGeometric_fail_helper(0);
-//        negativeIntegersGeometric_fail_helper(-1);
-//    }
-//
-//    private static void naturalIntegersGeometric_helper(
-//            int mean,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean
-//    ) {
-//        geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, topSampleCount, sampleMean);
-//        P.reset();
-//    }
-//
-//    private static void naturalIntegersGeometric_fail_helper(int mean) {
-//        try {
-//            P.withScale(mean).naturalIntegersGeometric();
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testNaturalIntegersGeometric() {
-//        naturalIntegersGeometric_helper(
-//                1,
-//                "[3, 2, 9, 2, 2, 0, 1, 3, 0, 0, 2, 2, 2, 0, 2, 0, 0, 1, 1, 0]",
-//                "{0=499125, 1=250897, 2=124849, 3=62518, 4=31407, 5=15634, 6=7825, 7=3926, 8=1896, 9=956}",
-//                1.0008359999977228
-//        );
-//        naturalIntegersGeometric_helper(
-//                2,
-//                "[4, 5, 5, 4, 2, 5, 0, 1, 2, 1, 3, 6, 1, 2, 0, 1, 0, 1, 0, 3]",
-//                "{0=333813, 1=221150, 2=148025, 3=98992, 4=66270, 5=43747, 6=29389, 7=19567, 8=12958, 9=8571}",
-//                2.0020969999891216
-//        );
-//        naturalIntegersGeometric_helper(
-//                3,
-//                "[6, 9, 6, 6, 3, 9, 0, 2, 2, 1, 6, 7, 1, 2, 0, 1, 0, 1, 0, 7]",
-//                "{0=250407, 1=187060, 2=139994, 3=105560, 4=79154, 5=58963, 6=44920, 7=33524, 8=25356, 9=18834}",
-//                3.003367999991497
-//        );
-//        naturalIntegersGeometric_helper(
-//                4,
-//                "[4, 3, 17, 7, 2, 0, 1, 0, 1, 5, 6, 17, 5, 2, 7, 14, 0, 8, 1, 4]",
-//                "{0=200194, 1=160489, 2=127708, 3=101606, 4=82008, 5=65900, 6=52157, 7=41827, 8=33413, 9=26877}",
-//                4.004359999991779
-//        );
-//        naturalIntegersGeometric_helper(
-//                5,
-//                "[5, 7, 23, 9, 3, 0, 1, 0, 1, 5, 8, 22, 5, 2, 7, 18, 0, 10, 1, 5]",
-//                "{0=166887, 1=139197, 2=115545, 3=96038, 4=80312, 5=66813, 6=55942, 7=46416, 8=38391, 9=32378}",
-//                5.005650000005037
-//        );
-//        naturalIntegersGeometric_helper(
-//                10,
-//                "[36, 12, 10, 8, 32, 24, 1, 7, 0, 17, 20, 0, 10, 8, 3, 4, 0, 1, 3, 6]",
-//                "{0=90519, 1=82798, 2=75630, 3=68355, 4=62062, 5=56573, 6=51318, 7=46453, 8=42422, 9=38243}",
-//                9.996028000004106
-//        );
-//        naturalIntegersGeometric_helper(
-//                100,
-//                "[149, 0, 65, 33, 31, 144, 34, 116, 26, 84, 8, 63, 10, 15, 0, 137, 36, 289, 126, 65]",
-//                "{0=9916, 2=9740, 1=9715, 4=9630, 3=9504, 5=9377, 6=9328, 7=9252, 9=9073, 8=9025}",
-//                99.96387799999758
-//        );
-//        naturalIntegersGeometric_fail_helper(0);
-//        naturalIntegersGeometric_fail_helper(-1);
-//        naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
-//    }
-//
-//    private static void nonzeroIntegersGeometric_helper(
-//            int mean,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double sampleAbsMean
-//    ) {
-//        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).nonzeroIntegersGeometric()));
-//        geometricHelper(xs, output, topSampleCount, sampleMean);
-//        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
-//        P.reset();
-//    }
-//
-//    private static void nonzeroIntegersGeometric_fail_helper(int mean) {
-//        try {
-//            P.withScale(mean).nonzeroIntegersGeometric();
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testNonzeroIntegersGeometric() {
-//        nonzeroIntegersGeometric_helper(
-//                2,
-//                "[4, 2, 9, 2, -2, 2, -3, 1, 2, 2, -2, -3, 1, 1, -1, 2, 2, -2, 1, -1]",
-//                "{1=250216, -1=249853, 2=125042, -2=125020, 3=62554, -3=62266, -4=31431, 4=31320, 5=15667, -5=15448}",
-//                0.0034480000000000253,
-//                1.9994539999798795
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                3,
-//                "[5, 5, 5, -5, 2, -6, 2, 2, 1, -4, 6, -1, -2, -2, -2, 4, -2, 7, 7, 2]",
-//                "{1=166701, -1=166029, -2=111049, 2=110952, -3=74329, 3=74260, 4=49329, -4=49314, 5=33182, -5=32740}",
-//                -0.0012719999999999216,
-//                3.00329999998982
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                4,
-//                "[7, 9, 6, -6, 3, -9, 3, 2, 1, -6, 7, -1, -2, -2, -2, 8, -4, 8, 14, 5]",
-//                "{1=125241, -1=124537, -2=93626, 2=93467, -3=70571, 3=70056, 4=53060, -4=52604, -5=39246, 5=39217}",
-//                -8.369999999999692E-4,
-//                4.00555699999019
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                5,
-//                "[5, 4, 18, 7, -3, -2, -2, 6, 6, 18, -5, -3, 8, -14, -1, -8, 1, -4, -7, -1]",
-//                "{1=100071, -1=99831, -2=80195, 2=79602, -3=64039, 3=63577, 4=51648, -4=50922, 5=41189, -5=40794}",
-//                0.004184999999999686,
-//                5.006127000008418
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                10,
-//                "[36, -9, 9, 7, -31, -20, -1, -6, 1, -18, -19, 1, -10, -8, -3, -4, -2, 4, -5, -12]",
-//                "{1=49977, -1=49798, -2=45286, 2=45037, 3=40770, -3=40176, 4=36548, -4=36321, 5=33048, -5=32530}",
-//                0.011239999999999537,
-//                9.999258000005128
-//        );
-//        nonzeroIntegersGeometric_helper(
-//                100,
-//                "[-147, 1, -64, -34, 31, -143, -35, -116, 26, 84, 8, 62, -10, -15, -136, 34, 289, -126, 64, -89]",
-//                "{-1=4973, 3=4970, 2=4962, -2=4930, 1=4908, 4=4872, -4=4839, -3=4837, 6=4820, -5=4817}",
-//                -0.14496700000000257,
-//                99.97359300000046
-//        );
-//        nonzeroIntegersGeometric_fail_helper(1);
-//        nonzeroIntegersGeometric_fail_helper(0);
-//        nonzeroIntegersGeometric_fail_helper(-1);
-//    }
-//
-//    private static void integersGeometric_helper(
-//            int mean,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean,
-//            double sampleAbsMean
-//    ) {
-//        Iterable<Integer> xs = take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).integersGeometric());
-//        geometricHelper(xs, output, topSampleCount, sampleMean);
-//        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
-//        P.reset();
-//    }
-//
-//    private static void integersGeometric_fail_helper(int mean) {
-//        try {
-//            P.withScale(mean).integersGeometric();
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
-//    @Test
-//    public void testIntegersGeometric() {
-//        integersGeometric_helper(
-//                1,
-//                "[3, 1, 8, 1, -1, 1, -2, 0, 1, 1, -1, -2, 0, 0, 0, 1, 1, -1, 0, 0]",
-//                "{0=500069, 1=125042, -1=125020, 2=62554, -2=62266, -3=31431, 3=31320, 4=15667, -4=15448, -5=7835}",
-//                0.0025060000000000906,
-//                1.0003039999976984
-//        );
-//        integersGeometric_helper(
-//                2,
-//                "[4, 4, 4, -4, 1, -5, 1, 1, 0, -3, 5, 0, -1, -1, -1, 3, -1, 6, 6, 1]",
-//                "{0=332730, -1=111049, 1=110952, -2=74329, 2=74260, 3=49329, -3=49314, 4=33182, -4=32740, 5=22195}",
-//                -0.0018900000000000037,
-//                2.002686999989137
-//        );
-//        integersGeometric_helper(
-//                3,
-//                "[6, 8, 5, -5, 2, -8, 2, 1, 0, -5, 6, 0, -1, -1, -1, 7, -3, 7, 13, 4]",
-//                "{0=249778, -1=93626, 1=93467, -2=70571, 2=70056, 3=53060, -3=52604, -4=39246, 4=39217, 5=29959}",
-//                -0.0014549999999999997,
-//                3.00388599999155
-//        );
-//        integersGeometric_helper(
-//                4,
-//                "[4, 3, 17, 6, -2, -1, -1, 5, 5, 17, -4, -2, 7, -13, 0, -7, 0, -3, -6, 0]",
-//                "{0=199902, -1=80195, 1=79602, -2=64039, 2=63577, 3=51648, -3=50922, 4=41189, -4=40794, 5=33021}",
-//                0.0036169999999999917,
-//                3.9981839999915647
-//        );
-//        integersGeometric_helper(
-//                5,
-//                "[5, 6, 22, 8, -2, -1, -1, 5, 7, 21, -4, -2, 7, -17, 0, -9, 0, -4, -7, 0]",
-//                "{0=166687, -1=69595, 1=69045, -2=57871, 2=57477, 3=48432, -3=48158, 4=40223, -4=40079, 5=33890}",
-//                0.003408000000000304,
-//                4.9993930000049955
-//        );
-//        integersGeometric_helper(
-//                10,
-//                "[36, -11, 9, 7, -31, -23, 0, -6, 0, -17, -19, 0, -9, -7, -2, -3, -1, 3, -5, -12]",
-//                "{0=90357, -1=41678, 1=41612, 2=37671, -2=37332, 3=34239, -3=34123, 4=31404, -4=30761, -5=28276}",
-//                0.010864000000000018,
-//                9.983633000004563
-//        );
-//        integersGeometric_helper(
-//                100,
-//                "[-149, 0, -64, -33, 30, -143, -34, -115, 25, 83, 7, 62, -9, -14, -137, 35, 288, -126, 64, -89]",
-//                "{0=9763, 1=4918, 2=4912, -1=4901, 3=4853, -3=4803, -4=4799, 5=4773, -2=4772, 4=4712}",
-//                -0.1466660000000059,
-//                99.86606600000295
-//        );
-//        integersGeometric_fail_helper(0);
-//        integersGeometric_fail_helper(-1);
-//        integersGeometric_fail_helper(Integer.MAX_VALUE);
-//    }
-//
-//    private static void rangeUpGeometric_helper(
-//            int mean,
-//            int a,
-//            @NotNull String output,
-//            @NotNull String topSampleCount,
-//            double sampleMean
-//    ) {
-//        geometricHelper(P.withScale(mean).rangeUpGeometric(a), output, topSampleCount, sampleMean);
-//        P.reset();
-//    }
-//
-//    private static void rangeUpGeometric_fail_helper(int mean, int a) {
-//        try {
-//            P.withScale(mean).rangeUpGeometric(a);
-//            fail();
-//        } catch (IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
-//    }
-//
+    private static void geometricHelper(
+            @NotNull Iterable<Integer> xs,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean
+    ) {
+        List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(sample), sampleMean);
+    }
+
+    private static void positiveIntegersGeometric_helper(
+            int mean,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean
+    ) {
+        geometricHelper(P.withScale(mean).positiveIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
+    }
+
+    private static void positiveIntegersGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).positiveIntegersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testPositiveIntegersGeometric() {
+        positiveIntegersGeometric_helper(
+                2,
+                "[4, 3, 10, 3, 3, 1, 2, 4, 1, 1, 3, 3, 3, 1, 3, 1, 1, 2, 2, 1]",
+                "{1=499125, 2=250897, 3=124849, 4=62518, 5=31407, 6=15634, 7=7825, 8=3926, 9=1896, 10=956}",
+                2.0008359999800347
+        );
+        positiveIntegersGeometric_helper(
+                3,
+                "[5, 6, 6, 5, 3, 6, 1, 2, 3, 2, 4, 7, 2, 3, 1, 2, 1, 2, 1, 4]",
+                "{1=333813, 2=221150, 3=148025, 4=98992, 5=66270, 6=43747, 7=29389, 8=19567, 9=12958, 10=8571}",
+                3.002096999989928
+        );
+        positiveIntegersGeometric_helper(
+                4,
+                "[7, 10, 7, 7, 4, 10, 1, 3, 3, 2, 7, 8, 2, 3, 1, 2, 1, 2, 1, 8]",
+                "{1=250407, 2=187060, 3=139994, 4=105560, 5=79154, 6=58963, 7=44920, 8=33524, 9=25356, 10=18834}",
+                4.0033679999901475
+        );
+        positiveIntegersGeometric_helper(
+                5,
+                "[5, 4, 18, 8, 3, 1, 2, 1, 2, 6, 7, 18, 6, 3, 8, 15, 1, 9, 2, 5]",
+                "{1=200194, 2=160489, 3=127708, 4=101606, 5=82008, 6=65900, 7=52157, 8=41827, 9=33413, 10=26877}",
+                5.004360000008482
+        );
+        positiveIntegersGeometric_helper(
+                10,
+                "[36, 10, 10, 8, 32, 21, 2, 6, 1, 18, 19, 1, 11, 9, 4, 4, 1, 2, 4, 6]",
+                "{1=99758, 2=90376, 3=81079, 4=73085, 5=65513, 6=59012, 7=53321, 8=47369, 9=43229, 10=38339}",
+                9.996188000005418
+        );
+        positiveIntegersGeometric_helper(
+                100,
+                "[147, 1, 65, 34, 32, 144, 35, 117, 27, 85, 9, 63, 11, 16, 1, 136, 35, 290, 126, 65]",
+                "{1=10012, 2=9821, 3=9817, 5=9658, 4=9642, 6=9476, 7=9451, 8=9361, 10=9177, 11=9064}",
+                99.9640719999968
+        );
+        positiveIntegersGeometric_fail_helper(1);
+        positiveIntegersGeometric_fail_helper(0);
+        positiveIntegersGeometric_fail_helper(-1);
+    }
+
+    private static void negativeIntegersGeometric_helper(
+            int mean,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean
+    ) {
+        geometricHelper(P.withScale(mean).negativeIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
+    }
+
+    private static void negativeIntegersGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).negativeIntegersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNegativeIntegersGeometric() {
+        negativeIntegersGeometric_helper(
+                2,
+                "[-4, -3, -10, -3, -3, -1, -2, -4, -1, -1, -3, -3, -3, -1, -3, -1, -1, -2, -2, -1]",
+                "{-1=499125, -2=250897, -3=124849, -4=62518, -5=31407, -6=15634, -7=7825, -8=3926, -9=1896, -10=956}",
+                -2.0008359999800347
+        );
+        negativeIntegersGeometric_helper(
+                3,
+                "[-5, -6, -6, -5, -3, -6, -1, -2, -3, -2, -4, -7, -2, -3, -1, -2, -1, -2, -1, -4]",
+                "{-1=333813, -2=221150, -3=148025, -4=98992, -5=66270, -6=43747, -7=29389, -8=19567, -9=12958," +
+                " -10=8571}",
+                -3.002096999989928
+        );
+        negativeIntegersGeometric_helper(
+                4,
+                "[-7, -10, -7, -7, -4, -10, -1, -3, -3, -2, -7, -8, -2, -3, -1, -2, -1, -2, -1, -8]",
+                "{-1=250407, -2=187060, -3=139994, -4=105560, -5=79154, -6=58963, -7=44920, -8=33524, -9=25356," +
+                " -10=18834}",
+                -4.0033679999901475
+        );
+        negativeIntegersGeometric_helper(
+                5,
+                "[-5, -4, -18, -8, -3, -1, -2, -1, -2, -6, -7, -18, -6, -3, -8, -15, -1, -9, -2, -5]",
+                "{-1=200194, -2=160489, -3=127708, -4=101606, -5=82008, -6=65900, -7=52157, -8=41827, -9=33413," +
+                " -10=26877}",
+                -5.004360000008482
+        );
+        negativeIntegersGeometric_helper(
+                10,
+                "[-36, -10, -10, -8, -32, -21, -2, -6, -1, -18, -19, -1, -11, -9, -4, -4, -1, -2, -4, -6]",
+                "{-1=99758, -2=90376, -3=81079, -4=73085, -5=65513, -6=59012, -7=53321, -8=47369, -9=43229," +
+                " -10=38339}",
+                -9.996188000005418
+        );
+        negativeIntegersGeometric_helper(
+                100,
+                "[-147, -1, -65, -34, -32, -144, -35, -117, -27, -85, -9, -63, -11, -16, -1, -136, -35, -290, -126," +
+                " -65]",
+                "{-1=10012, -2=9821, -3=9817, -5=9658, -4=9642, -6=9476, -7=9451, -8=9361, -10=9177, -11=9064}",
+                -99.9640719999968
+        );
+        negativeIntegersGeometric_fail_helper(1);
+        negativeIntegersGeometric_fail_helper(0);
+        negativeIntegersGeometric_fail_helper(-1);
+    }
+
+    private static void naturalIntegersGeometric_helper(
+            int mean,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean
+    ) {
+        geometricHelper(P.withScale(mean).naturalIntegersGeometric(), output, topSampleCount, sampleMean);
+        P.reset();
+    }
+
+    private static void naturalIntegersGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).naturalIntegersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNaturalIntegersGeometric() {
+        naturalIntegersGeometric_helper(
+                1,
+                "[3, 2, 9, 2, 2, 0, 1, 3, 0, 0, 2, 2, 2, 0, 2, 0, 0, 1, 1, 0]",
+                "{0=499125, 1=250897, 2=124849, 3=62518, 4=31407, 5=15634, 6=7825, 7=3926, 8=1896, 9=956}",
+                1.0008359999977228
+        );
+        naturalIntegersGeometric_helper(
+                2,
+                "[4, 5, 5, 4, 2, 5, 0, 1, 2, 1, 3, 6, 1, 2, 0, 1, 0, 1, 0, 3]",
+                "{0=333813, 1=221150, 2=148025, 3=98992, 4=66270, 5=43747, 6=29389, 7=19567, 8=12958, 9=8571}",
+                2.0020969999891216
+        );
+        naturalIntegersGeometric_helper(
+                3,
+                "[6, 9, 6, 6, 3, 9, 0, 2, 2, 1, 6, 7, 1, 2, 0, 1, 0, 1, 0, 7]",
+                "{0=250407, 1=187060, 2=139994, 3=105560, 4=79154, 5=58963, 6=44920, 7=33524, 8=25356, 9=18834}",
+                3.003367999991497
+        );
+        naturalIntegersGeometric_helper(
+                4,
+                "[4, 3, 17, 7, 2, 0, 1, 0, 1, 5, 6, 17, 5, 2, 7, 14, 0, 8, 1, 4]",
+                "{0=200194, 1=160489, 2=127708, 3=101606, 4=82008, 5=65900, 6=52157, 7=41827, 8=33413, 9=26877}",
+                4.004359999991779
+        );
+        naturalIntegersGeometric_helper(
+                5,
+                "[5, 7, 23, 9, 3, 0, 1, 0, 1, 5, 8, 22, 5, 2, 7, 18, 0, 10, 1, 5]",
+                "{0=166887, 1=139197, 2=115545, 3=96038, 4=80312, 5=66813, 6=55942, 7=46416, 8=38391, 9=32378}",
+                5.005650000005037
+        );
+        naturalIntegersGeometric_helper(
+                10,
+                "[36, 12, 10, 8, 32, 24, 1, 7, 0, 17, 20, 0, 10, 8, 3, 4, 0, 1, 3, 6]",
+                "{0=90519, 1=82798, 2=75630, 3=68355, 4=62062, 5=56573, 6=51318, 7=46453, 8=42422, 9=38243}",
+                9.996028000004106
+        );
+        naturalIntegersGeometric_helper(
+                100,
+                "[149, 0, 65, 33, 31, 144, 34, 116, 26, 84, 8, 63, 10, 15, 0, 137, 36, 289, 126, 65]",
+                "{0=9916, 2=9740, 1=9715, 4=9630, 3=9504, 5=9377, 6=9328, 7=9252, 9=9073, 8=9025}",
+                99.96387799999758
+        );
+        naturalIntegersGeometric_fail_helper(0);
+        naturalIntegersGeometric_fail_helper(-1);
+        naturalIntegersGeometric_fail_helper(Integer.MAX_VALUE);
+    }
+
+    private static void nonzeroIntegersGeometric_helper(
+            int mean,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double sampleAbsMean
+    ) {
+        List<Integer> xs = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).nonzeroIntegersGeometric()));
+        geometricHelper(xs, output, topSampleCount, sampleMean);
+        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
+        P.reset();
+    }
+
+    private static void nonzeroIntegersGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).nonzeroIntegersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testNonzeroIntegersGeometric() {
+        nonzeroIntegersGeometric_helper(
+                2,
+                "[4, 2, 9, 2, -2, 2, -3, 1, 2, 2, -2, -3, 1, 1, -1, 2, 2, -2, 1, -1]",
+                "{1=250216, -1=249853, 2=125042, -2=125020, 3=62554, -3=62266, -4=31431, 4=31320, 5=15667, -5=15448}",
+                0.0034480000000000253,
+                1.9994539999798795
+        );
+        nonzeroIntegersGeometric_helper(
+                3,
+                "[5, 5, 5, -5, 2, -6, 2, 2, 1, -4, 6, -1, -2, -2, -2, 4, -2, 7, 7, 2]",
+                "{1=166701, -1=166029, -2=111049, 2=110952, -3=74329, 3=74260, 4=49329, -4=49314, 5=33182, -5=32740}",
+                -0.0012719999999999216,
+                3.00329999998982
+        );
+        nonzeroIntegersGeometric_helper(
+                4,
+                "[7, 9, 6, -6, 3, -9, 3, 2, 1, -6, 7, -1, -2, -2, -2, 8, -4, 8, 14, 5]",
+                "{1=125241, -1=124537, -2=93626, 2=93467, -3=70571, 3=70056, 4=53060, -4=52604, -5=39246, 5=39217}",
+                -8.369999999999692E-4,
+                4.00555699999019
+        );
+        nonzeroIntegersGeometric_helper(
+                5,
+                "[5, 4, 18, 7, -3, -2, -2, 6, 6, 18, -5, -3, 8, -14, -1, -8, 1, -4, -7, -1]",
+                "{1=100071, -1=99831, -2=80195, 2=79602, -3=64039, 3=63577, 4=51648, -4=50922, 5=41189, -5=40794}",
+                0.004184999999999686,
+                5.006127000008418
+        );
+        nonzeroIntegersGeometric_helper(
+                10,
+                "[36, -9, 9, 7, -31, -20, -1, -6, 1, -18, -19, 1, -10, -8, -3, -4, -2, 4, -5, -12]",
+                "{1=49977, -1=49798, -2=45286, 2=45037, 3=40770, -3=40176, 4=36548, -4=36321, 5=33048, -5=32530}",
+                0.011239999999999537,
+                9.999258000005128
+        );
+        nonzeroIntegersGeometric_helper(
+                100,
+                "[-147, 1, -64, -34, 31, -143, -35, -116, 26, 84, 8, 62, -10, -15, -136, 34, 289, -126, 64, -89]",
+                "{-1=4973, 3=4970, 2=4962, -2=4930, 1=4908, 4=4872, -4=4839, -3=4837, 6=4820, -5=4817}",
+                -0.14496700000000257,
+                99.97359300000046
+        );
+        nonzeroIntegersGeometric_fail_helper(1);
+        nonzeroIntegersGeometric_fail_helper(0);
+        nonzeroIntegersGeometric_fail_helper(-1);
+    }
+
+    private static void integersGeometric_helper(
+            int mean,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean,
+            double sampleAbsMean
+    ) {
+        Iterable<Integer> xs = take(DEFAULT_SAMPLE_SIZE, P.withScale(mean).integersGeometric());
+        geometricHelper(xs, output, topSampleCount, sampleMean);
+        aeq(meanOfIntegers(toList(map(Math::abs, xs))), sampleAbsMean);
+        P.reset();
+    }
+
+    private static void integersGeometric_fail_helper(int mean) {
+        try {
+            P.withScale(mean).integersGeometric();
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testIntegersGeometric() {
+        integersGeometric_helper(
+                1,
+                "[3, 1, 8, 1, -1, 1, -2, 0, 1, 1, -1, -2, 0, 0, 0, 1, 1, -1, 0, 0]",
+                "{0=500069, 1=125042, -1=125020, 2=62554, -2=62266, -3=31431, 3=31320, 4=15667, -4=15448, -5=7835}",
+                0.0025060000000000906,
+                1.0003039999976984
+        );
+        integersGeometric_helper(
+                2,
+                "[4, 4, 4, -4, 1, -5, 1, 1, 0, -3, 5, 0, -1, -1, -1, 3, -1, 6, 6, 1]",
+                "{0=332730, -1=111049, 1=110952, -2=74329, 2=74260, 3=49329, -3=49314, 4=33182, -4=32740, 5=22195}",
+                -0.0018900000000000037,
+                2.002686999989137
+        );
+        integersGeometric_helper(
+                3,
+                "[6, 8, 5, -5, 2, -8, 2, 1, 0, -5, 6, 0, -1, -1, -1, 7, -3, 7, 13, 4]",
+                "{0=249778, -1=93626, 1=93467, -2=70571, 2=70056, 3=53060, -3=52604, -4=39246, 4=39217, 5=29959}",
+                -0.0014549999999999997,
+                3.00388599999155
+        );
+        integersGeometric_helper(
+                4,
+                "[4, 3, 17, 6, -2, -1, -1, 5, 5, 17, -4, -2, 7, -13, 0, -7, 0, -3, -6, 0]",
+                "{0=199902, -1=80195, 1=79602, -2=64039, 2=63577, 3=51648, -3=50922, 4=41189, -4=40794, 5=33021}",
+                0.0036169999999999917,
+                3.9981839999915647
+        );
+        integersGeometric_helper(
+                5,
+                "[5, 6, 22, 8, -2, -1, -1, 5, 7, 21, -4, -2, 7, -17, 0, -9, 0, -4, -7, 0]",
+                "{0=166687, -1=69595, 1=69045, -2=57871, 2=57477, 3=48432, -3=48158, 4=40223, -4=40079, 5=33890}",
+                0.003408000000000304,
+                4.9993930000049955
+        );
+        integersGeometric_helper(
+                10,
+                "[36, -11, 9, 7, -31, -23, 0, -6, 0, -17, -19, 0, -9, -7, -2, -3, -1, 3, -5, -12]",
+                "{0=90357, -1=41678, 1=41612, 2=37671, -2=37332, 3=34239, -3=34123, 4=31404, -4=30761, -5=28276}",
+                0.010864000000000018,
+                9.983633000004563
+        );
+        integersGeometric_helper(
+                100,
+                "[-149, 0, -64, -33, 30, -143, -34, -115, 25, 83, 7, 62, -9, -14, -137, 35, 288, -126, 64, -89]",
+                "{0=9763, 1=4918, 2=4912, -1=4901, 3=4853, -3=4803, -4=4799, 5=4773, -2=4772, 4=4712}",
+                -0.1466660000000059,
+                99.86606600000295
+        );
+        integersGeometric_fail_helper(0);
+        integersGeometric_fail_helper(-1);
+        integersGeometric_fail_helper(Integer.MAX_VALUE);
+    }
+
+    private static void rangeUpGeometric_helper(
+            int mean,
+            int a,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double sampleMean
+    ) {
+        geometricHelper(P.withScale(mean).rangeUpGeometric(a), output, topSampleCount, sampleMean);
+        P.reset();
+    }
+
+    private static void rangeUpGeometric_fail_helper(int mean, int a) {
+        try {
+            P.withScale(mean).rangeUpGeometric(a);
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
 //    @Test
 //    public void testRangeUpGeometric() {
 //        rangeUpGeometric_helper(
