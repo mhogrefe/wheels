@@ -1848,13 +1848,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<Float> floatsUniform() {
         return zipWith(
-                (b, i) -> {
+                (i, b) -> {
                     Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
                             .floatRange();
                     return b ? range.a : range.b;
                 },
-                booleans(),
-                range(FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(), FloatingPointUtils.SCALED_UP_MAX_FLOAT)
+                range(FloatingPointUtils.SCALED_UP_MAX_FLOAT.negate(), FloatingPointUtils.SCALED_UP_MAX_FLOAT),
+                booleans()
         );
     }
 
@@ -2117,6 +2117,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     public
     @NotNull
     Iterable<Float> rangeUpUniform(float a) {
+        if (!Float.isFinite(a)) {
+            throw new ArithmeticException("a must be finite. Invalid a: " + a);
+        }
         return zipWith(
                 (i, b) -> {
                     Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
@@ -2204,6 +2207,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     public
     @NotNull
     Iterable<Double> rangeUpUniform(double a) {
+        if (!Double.isFinite(a)) {
+            throw new ArithmeticException("a must be finite. Invalid a: " + a);
+        }
         return zipWith(
                 (i, b) -> {
                     Pair<Double, Double> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
