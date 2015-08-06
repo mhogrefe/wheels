@@ -1800,9 +1800,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     @Override
-    public
-    @NotNull
-    Iterable<Float> positiveFloatsUniform() {
+    public @NotNull Iterable<Float> positiveFloatsUniform() {
         return zipWith(
                 (i, b) -> {
                     Pair<Float, Float> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_FLOAT_EXPONENT)
@@ -1866,9 +1864,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * Length is infinite
      */
     @Override
-    public
-    @NotNull
-    Iterable<Double> positiveDoublesUniform() {
+    public @NotNull Iterable<Double> positiveDoublesUniform() {
         return zipWith(
                 (i, b) -> {
                     Pair<Double, Double> range = BinaryFraction.of(i, FloatingPointUtils.MIN_SUBNORMAL_DOUBLE_EXPONENT)
@@ -2114,9 +2110,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    public
-    @NotNull
-    Iterable<Float> rangeUpUniform(float a) {
+    public @NotNull Iterable<Float> rangeUpUniform(float a) {
         if (!Float.isFinite(a)) {
             throw new ArithmeticException("a must be finite. Invalid a: " + a);
         }
@@ -2204,9 +2198,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    public
-    @NotNull
-    Iterable<Double> rangeUpUniform(double a) {
+    public @NotNull Iterable<Double> rangeUpUniform(double a) {
         if (!Double.isFinite(a)) {
             throw new ArithmeticException("a must be finite. Invalid a: " + a);
         }
@@ -2800,8 +2792,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public
-    @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
+    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
