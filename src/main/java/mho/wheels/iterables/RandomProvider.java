@@ -1540,7 +1540,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> nonzeroBinaryFractions() {
-        return zipWith((s, bf) -> s ? bf : bf.negate(), booleans(), positiveBinaryFractions());
+        return zipWith((bf, b) -> b ? bf : bf.negate(), positiveBinaryFractions(), booleans());
     }
 
     /**
