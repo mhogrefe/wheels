@@ -71,12 +71,10 @@ public final strictfp class RandomProvider extends IterableProvider {
     private @NotNull IsaacPRNG prng;
 
     /**
-     * A map containing {@code RandomProvider}s that were created from {@code this} using
-     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. The key is a pair
-     * consisting of {@code scale} and {@code secondaryScale}, respectively. Whenever {@code this}
+     * A list of {@code RandomProvider}s that were created from {@code this} using
+     * {@link RandomProvider#withScale(int)} and {@link RandomProvider#withSecondaryScale(int)}. Whenever {@code this}
      * is reset with {@link RandomProvider#reset()}, the dependents are reset as well.
      */
-    //todo fix docs
     private @NotNull List<RandomProvider> dependents;
 
     /**
@@ -273,12 +271,18 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is not null.</li>
      * </ul>
      */
-    //todo docs
     @Override
     public void reset() {
         resetHelper(new IsaacPRNG(seed), this);
     }
 
+    /**
+     * A helper function for {@link RandomProvider#reset()}. Sets {@code rp}'s PRNG to {@code prng}, and do the same
+     * for all of {@code rp}'s dependents.
+     *
+     * @param prng the {@code IsaacPRNG} to reset
+     * @param rp the {@code RandomProvider} to reset
+     */
     private static void resetHelper(@NotNull IsaacPRNG prng, @NotNull RandomProvider rp) {
         rp.prng = prng;
         for (RandomProvider dependent : rp.dependents) {
@@ -1140,20 +1144,20 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated natural {@code int} from a geometric distribution with mean
-     * {@code numerator}/{@code denominator}.
+     * An {@code Iterable} that generates all natural {@code Integer}s (including 0) chosen from a geometric
+     * distribution with mean {@code numerator}/{@code denominator}. The distribution is truncated at
+     * {@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code numerator} must be positive.</li>
      *  <li>{@code denominator} must be positive.</li>
      *  <li>The sum of {@code numerator} and {@code denominator} must be less than 2<sup>31</sup>.</li>
-     *  <li>The result is non-negative.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing natural {@code Integer}s.</li>
      * </ul>
      *
-     * @return a natural {@code int}
+     * Length is infinite
      */
-    //todo fix docs
     private @NotNull Iterable<Integer> naturalIntegersGeometric(int numerator, int denominator) {
         if (numerator < 1) {
             throw new IllegalArgumentException("numerator must be positive. numerator: " + numerator);
@@ -1222,8 +1226,9 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated {@code int} whose absolute value is chosen from a geometric distribution with mean
-     * {@code numerator}/{@code denominator}, and whose sign is chosen uniformly.
+     * An {@code Iterable} that generates all {@code Integer}s whose absolute value is chosen from a geometric
+     * distribution with mean {@code numerator}/{@code denominator}, and whose sign is chosen uniformly. The
+     * distribution is truncated at ±{@code Integer.MAX_VALUE}. Does not support removal.
      *
      * <ul>
      *  <li>{@code numerator} must be positive.</li>
@@ -1232,9 +1237,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>The result is an infinite, non-removable {@code Iterable} containing {@code Integer}s.</li>
      * </ul>
      *
-     * @return a negative {@code int}
+     * Length is infinite
      */
-    //todo fix docs
     private @NotNull Iterable<Integer> integersGeometric(int numerator, int denominator) {
         return zipWith((i, b) -> b ? i : -i, naturalIntegersGeometric(numerator, denominator), booleans());
     }
@@ -2499,20 +2503,21 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Returns a randomly-generated canonical {@code BigDecimal} greater than or equal to zero and less than or equal
+     * An {@code Iterable} that generates all {@code BigDecimal}s greater than or equal to zero and less than or equal
      * to a specified power of ten. A higher {@code scale} corresponds to a larger unscaled-value bit size, but the
-     * exact relationship is not simple to describe.
+     * exact relationship is not simple to describe. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a positive scale.</li>
      *  <li>{@code pow} may be any {@code int}.</li>
-     *  <li>The result is canonical.</li>
+     *  <li>The result is an infinite, non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
      * </ul>
      *
+     * Length is infinite
+     *
      * @param pow an {@code int}
-     * @return a canonical {@code BigDecimal} between 0 and 10<sup>{@code pow}</sup>, inclusive
+     * @return canonical {@code BigDecimal}s between 0 and 10<sup>{@code pow}</sup>, inclusive
      */
-    //todo fix docs
     private @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
         return () -> new NoRemoveIterator<BigDecimal>() {
             private final @NotNull Iterator<Boolean> bs = booleans().iterator();
@@ -2547,19 +2552,21 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Given a {@code BigDecimal} x, returns a {@code BigDecimal} whose canonical form is x; this may be x itself. A
-     * higher {@code scale} corresponds to a higher precision, but the exact relationship is not simple to describe.
+     * Given an infinte {@code Iterable xs} of unique, canonical {@code BigDecimal}s, returns an {@code Iterable} whose
+     * elements are {x|{@code BigDecimalUtils.canonicalize(x)}∈{@code xs}}. A higher {@code scale} corresponds to a
+     * higher precision, but the exact relationship is not simple to describe.
      *
      * <ul>
      *  <li>{@code this} must have a positive scale.</li>
-     *  <li>{@code bd} cannot be null.</li>
-     *  <li>The result is not null.</li>
+     *  <li>{@code bds} must be infinite and consist only of canonical elements.</li>
+     *  <li>The result is infinite, and for every {@code BigDecimal} x that it contains, if
+     *  {@code BigDecimalUtils.canonicalize(}x{@code )} is y, then the result contains every {@code BigDecimal} which,
+     *  when canonicalized, yields y.</li>
      * </ul>
      *
-     * @param bds a {@code BigDecimal}
-     * @return a {@code BigDecimal} whose canonical form is {@code bd}
+     * @param bds an infinite {@code Iterable} of canonical {@code BigDecimal}s
+     * @return all {@code BigDecimal}s which, once canonicalized, belong to {@code xs}
      */
-    //todo fix docs
     private @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> bds) {
         return () -> new NoRemoveIterator<BigDecimal>() {
             private final @NotNull Iterator<BigDecimal> bdi = bds.iterator();
