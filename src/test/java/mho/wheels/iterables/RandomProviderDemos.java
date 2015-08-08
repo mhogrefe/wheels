@@ -1106,6 +1106,40 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoWithNull_cyclic() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.integers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("withNull(" + p.a + ", " + its(p.b) + ") = " + its(p.a.withNull(p.b)));
+        }
+    }
+
+    private static void demoOptionals_cyclic() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.integers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("optionals(" + p.a + ", " + its(p.b) + ") = " + its(p.a.optionals(p.b)));
+        }
+    }
+
+    private static void demoNullableOptionals_cyclic() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withNull(P.integers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +
+                    its(p.a.nullableOptionals(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
