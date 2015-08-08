@@ -2753,7 +2753,13 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public T next() {
-                return is.next() == 1 ? x : xsi.next();
+                if (is.next() == 1) {
+                    return x;
+                } else if (!xsi.hasNext()) {
+                    throw new IllegalArgumentException();
+                } else {
+                    return xsi.next();
+                }
             }
         };
     }
