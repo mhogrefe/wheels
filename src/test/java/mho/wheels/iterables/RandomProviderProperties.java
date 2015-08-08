@@ -2062,7 +2062,10 @@ public class RandomProviderProperties {
             assertEquals(t, gt(t.b, t.c), isEmpty(bds));
         }
 
-        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(P.randomProvidersDefault(), P.bigDecimals());
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
             assertTrue(p, all(bd -> eq(bd, p.b), take(TINY_LIMIT, p.a.range(p.b, p.b))));
         }
@@ -2168,8 +2171,10 @@ public class RandomProviderProperties {
             assertEquals(t, gt(t.b, t.c), isEmpty(bds));
         }
 
-        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(P.randomProvidersDefault(), P.bigDecimals());
-        //todo don't just test default RP
+        Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
+                filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
+                P.bigDecimals()
+        );
         for (Pair<RandomProvider, BigDecimal> p : take(LIMIT, ps)) {
             aeqit(p, TINY_LIMIT, p.a.rangeCanonical(p.b, p.b), repeat(BigDecimalUtils.canonicalize(p.b)));
         }
