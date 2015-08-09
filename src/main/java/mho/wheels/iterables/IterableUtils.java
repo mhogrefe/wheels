@@ -473,7 +473,7 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Byte>() {
+        return () -> new NoRemoveIterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
 
@@ -486,11 +486,6 @@ public final strictfp class IterableUtils {
             public Byte next() {
                 reachedEnd = x == b;
                 return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -514,7 +509,7 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<Short> range(short a, short b) {
         if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Short>() {
+        return () -> new NoRemoveIterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
 
@@ -527,11 +522,6 @@ public final strictfp class IterableUtils {
             public Short next() {
                 reachedEnd = x == b;
                 return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -555,7 +545,7 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<Integer> range(int a, int b) {
         if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Integer>() {
+        return () -> new NoRemoveIterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
 
@@ -568,11 +558,6 @@ public final strictfp class IterableUtils {
             public Integer next() {
                 reachedEnd = x == b;
                 return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -596,7 +581,7 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<Long> range(long a, long b) {
         if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Long>() {
+        return () -> new NoRemoveIterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
 
@@ -609,11 +594,6 @@ public final strictfp class IterableUtils {
             public Long next() {
                 reachedEnd = x == b;
                 return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -637,8 +617,8 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<BigInteger> range(@NotNull BigInteger a, @NotNull BigInteger b) {
         if (gt(a, b)) return new ArrayList<>();
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull BigInteger x = a;
             private boolean reachedEnd;
 
             @Override
@@ -652,11 +632,6 @@ public final strictfp class IterableUtils {
                 BigInteger oldX = x;
                 x = x.add(BigInteger.ONE);
                 return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -681,8 +656,8 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
         if (gt(a, b)) return new ArrayList<>();
-        return () -> new Iterator<BigDecimal>() {
-            private BigDecimal x = a;
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private @NotNull BigDecimal x = a;
             private boolean reachedEnd;
 
             @Override
@@ -696,11 +671,6 @@ public final strictfp class IterableUtils {
                 BigDecimal oldX = x;
                 x = x.add(BigDecimal.ONE);
                 return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -724,7 +694,7 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull Iterable<Character> range(char a, char b) {
         if (a > b) return new ArrayList<>();
-        return () -> new Iterator<Character>() {
+        return () -> new NoRemoveIterator<Character>() {
             private char x = a;
             private boolean reachedEnd;
 
@@ -737,11 +707,6 @@ public final strictfp class IterableUtils {
             public Character next() {
                 reachedEnd = x == b;
                 return x++;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -841,7 +806,7 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {
-        return () -> new Iterator<Byte>() {
+        return () -> new NoRemoveIterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
 
@@ -857,16 +822,11 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<Short> rangeBy(short a, short i) {
-        return () -> new Iterator<Short>() {
+        return () -> new NoRemoveIterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
 
@@ -882,16 +842,11 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<Integer> rangeBy(int a, int i) {
-        return () -> new Iterator<Integer>() {
+        return () -> new NoRemoveIterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
 
@@ -907,16 +862,11 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<Long> rangeBy(long a, long i) {
-        return () -> new Iterator<Long>() {
+        return () -> new NoRemoveIterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
 
@@ -932,17 +882,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<BigInteger> rangeBy(@NotNull BigInteger a, @NotNull BigInteger i) {
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull BigInteger x = a;
             private boolean reachedEnd;
 
             @Override
@@ -957,17 +902,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<BigDecimal> rangeBy(@NotNull BigDecimal a, @NotNull BigDecimal i) {
-        return () -> new Iterator<BigDecimal>() {
-            private BigDecimal x = a;
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private @NotNull BigDecimal x = a;
             private boolean reachedEnd;
 
             @Override
@@ -982,16 +922,11 @@ public final strictfp class IterableUtils {
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<Character> rangeBy(char a, int i) {
-        return () -> new Iterator<Character>() {
+        return () -> new NoRemoveIterator<Character>() {
             private char x = a;
             private boolean reachedEnd;
 
@@ -1006,18 +941,13 @@ public final strictfp class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
                 return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
 
     public static Iterable<Byte> rangeBy(byte a, byte i, byte b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Byte>() {
+        return () -> new NoRemoveIterator<Byte>() {
             private byte x = a;
             private boolean reachedEnd;
 
@@ -1033,17 +963,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<Short> rangeBy(short a, short i, short b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Short>() {
+        return () -> new NoRemoveIterator<Short>() {
             private short x = a;
             private boolean reachedEnd;
 
@@ -1059,17 +984,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<Integer> rangeBy(int a, int i, int b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Integer>() {
+        return () -> new NoRemoveIterator<Integer>() {
             private int x = a;
             private boolean reachedEnd;
 
@@ -1085,17 +1005,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<Long> rangeBy(long a, long i, long b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Long>() {
+        return () -> new NoRemoveIterator<Long>() {
             private long x = a;
             private boolean reachedEnd;
 
@@ -1111,18 +1026,13 @@ public final strictfp class IterableUtils {
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<BigInteger> rangeBy(BigInteger a, BigInteger i, BigInteger b) {
         if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
-        return () -> new Iterator<BigInteger>() {
-            private BigInteger x = a;
+        return () -> new NoRemoveIterator<BigInteger>() {
+            private @NotNull BigInteger x = a;
             private boolean reachedEnd;
 
             @Override
@@ -1137,18 +1047,13 @@ public final strictfp class IterableUtils {
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<BigDecimal> rangeBy(BigDecimal a, BigDecimal i, BigDecimal b) {
         if (i.signum() == 1 ? gt(a, b) : gt(b, a)) return new ArrayList<>();
-        return () -> new Iterator<BigDecimal>() {
-            private BigDecimal x = a;
+        return () -> new NoRemoveIterator<BigDecimal>() {
+            private @NotNull BigDecimal x = a;
             private boolean reachedEnd;
 
             @Override
@@ -1163,17 +1068,12 @@ public final strictfp class IterableUtils {
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
                 return oldX;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static Iterable<Character> rangeBy(char a, int i, char b) {
         if (i > 0 ? a > b : b > a) return new ArrayList<>();
-        return () -> new Iterator<Character>() {
+        return () -> new NoRemoveIterator<Character>() {
             private char x = a;
             private boolean reachedEnd;
 
@@ -1188,11 +1088,6 @@ public final strictfp class IterableUtils {
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
                 return oldX;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1217,9 +1112,9 @@ public final strictfp class IterableUtils {
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Iterable<T> cons(@Nullable T x, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
+        return () -> new NoRemoveIterator<T>() {
             private boolean readHead = false;
-            private final Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1234,11 +1129,6 @@ public final strictfp class IterableUtils {
                     readHead = true;
                     return x;
                 }
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1285,9 +1175,9 @@ public final strictfp class IterableUtils {
      * @return {@code xs} concatenated with {@code ys}
      */
     public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
-            private final Iterator<T> ysi = ys.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<T> ysi = ys.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1297,11 +1187,6 @@ public final strictfp class IterableUtils {
             @Override
             public T next() {
                 return (xsi.hasNext() ? xsi : ysi).next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1489,8 +1374,8 @@ public final strictfp class IterableUtils {
     public static @NotNull <T> Iterable<T> tail(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             throw new NoSuchElementException();
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
             {
                 xsi.next();
             }
@@ -1503,11 +1388,6 @@ public final strictfp class IterableUtils {
             @Override
             public T next() {
                 return xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1552,9 +1432,9 @@ public final strictfp class IterableUtils {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next = xsi.next();
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next = xsi.next();
 
                     @Override
                     public boolean hasNext() {
@@ -1566,11 +1446,6 @@ public final strictfp class IterableUtils {
                         T oldNext = next;
                         next = xsi.next();
                         return oldNext;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -1760,8 +1635,8 @@ public final strictfp class IterableUtils {
      * @return an {@code Iterable} containing the elements of {@code xs} transformed by {@code f}
      */
     public static @NotNull <A, B> Iterable<B> map(@NotNull Function<A, B> f, @NotNull Iterable<A> xs) {
-        return () -> new Iterator<B>() {
-            private final Iterator<A> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<B>() {
+            private final @NotNull Iterator<A> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1771,11 +1646,6 @@ public final strictfp class IterableUtils {
             @Override
             public B next() {
                 return f.apply(xsi.next());
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1875,8 +1745,8 @@ public final strictfp class IterableUtils {
      * @return an {@code Iterable} consisting of the elements of {@code xs} interspersed with {@code sep}
      */
     public static @NotNull <T> Iterable<T> intersperse(@Nullable T sep, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
             private boolean separating = false;
 
             @Override
@@ -1893,11 +1763,6 @@ public final strictfp class IterableUtils {
                     separating = true;
                     return xsi.next();
                 }
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1997,8 +1862,8 @@ public final strictfp class IterableUtils {
      * @return {@code xss}, transposed
      */
     public static @NotNull <T> Iterable<List<T>> transpose(@NotNull Iterable<Iterable<T>> xss) {
-        return () -> new Iterator<List<T>>() {
-            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -2014,11 +1879,6 @@ public final strictfp class IterableUtils {
                     }
                 }
                 return nextList;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2066,8 +1926,8 @@ public final strictfp class IterableUtils {
      * @return {@code xss}, transposed
      */
     public static @NotNull <T> Iterable<List<T>> transposeTruncating(@NotNull Iterable<Iterable<T>> xss) {
-        return () -> new Iterator<List<T>>() {
-            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -2081,11 +1941,6 @@ public final strictfp class IterableUtils {
                     nextList.add(iterator.next());
                 }
                 return nextList;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2136,8 +1991,8 @@ public final strictfp class IterableUtils {
             @Nullable T pad,
             @NotNull Iterable<Iterable<T>> xss
     ) {
-        return () -> new Iterator<Iterable<T>>() {
-            private final List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
+        return () -> new NoRemoveIterator<Iterable<T>>() {
+            private final @NotNull List<Iterator<T>> iterators = toList(map(Iterable::iterator, xss));
 
             @Override
             public boolean hasNext() {
@@ -2151,11 +2006,6 @@ public final strictfp class IterableUtils {
                     nextList.add(iterator.hasNext() ? iterator.next() : pad);
                 }
                 return nextList;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2217,9 +2067,9 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> concat(@NotNull Iterable<Iterable<T>> xss) {
-        return () -> new Iterator<T>() {
-            final Iterator<Iterable<T>> xssi = xss.iterator();
-            Iterator<T> xsi = xssi.hasNext() ? xssi.next().iterator() : null;
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<Iterable<T>> xssi = xss.iterator();
+            private @NotNull Iterator<T> xsi = xssi.hasNext() ? xssi.next().iterator() : null;
 
             @Override
             public boolean hasNext() {
@@ -2235,11 +2085,6 @@ public final strictfp class IterableUtils {
             public T next() {
                 hasNext();
                 return xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2601,9 +2446,9 @@ public final strictfp class IterableUtils {
             @Nullable B z,
             @NotNull Iterable<A> xs
     ) {
-        return () -> new Iterator<B>() {
-            private final Iterator<A> xsi = xs.iterator();
-            private B result = z;
+        return () -> new NoRemoveIterator<B>() {
+            private final @NotNull Iterator<A> xsi = xs.iterator();
+            private @Nullable B result = z;
             private boolean firstTime = true;
 
             @Override
@@ -2620,11 +2465,6 @@ public final strictfp class IterableUtils {
                     result = f.apply(result, xsi.next());
                     return result;
                 }
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2667,8 +2507,8 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> iterate(@NotNull Function<T, T> f, @Nullable T x) {
-        return () -> new Iterator<T>() {
-            private T current = x;
+        return () -> new NoRemoveIterator<T>() {
+            private @Nullable T current = x;
             private boolean firstTime = true;
 
             @Override
@@ -2685,16 +2525,11 @@ public final strictfp class IterableUtils {
                 }
                 return current;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<T> repeat(@Nullable T x) {
-        return () -> new Iterator<T>() {
+        return () -> new NoRemoveIterator<T>() {
             @Override
             public boolean hasNext() {
                 return true;
@@ -2704,16 +2539,11 @@ public final strictfp class IterableUtils {
             public T next() {
                 return x;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<T> replicate(int n, @Nullable T x) {
-        return () -> new Iterator<T>() {
+        return () -> new NoRemoveIterator<T>() {
             private int i = 0;
 
             @Override
@@ -2726,17 +2556,12 @@ public final strictfp class IterableUtils {
                 i++;
                 return x;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<T> replicate(@NotNull BigInteger n, @Nullable T x) {
-        return () -> new Iterator<T>() {
-            private BigInteger i = BigInteger.ZERO;
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull BigInteger i = BigInteger.ZERO;
 
             @Override
             public boolean hasNext() {
@@ -2747,11 +2572,6 @@ public final strictfp class IterableUtils {
             public T next() {
                 i = i.add(BigInteger.ONE);
                 return x;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2774,8 +2594,8 @@ public final strictfp class IterableUtils {
 
     public static @NotNull <T> Iterable<T> cycle(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return xs;
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2786,11 +2606,6 @@ public final strictfp class IterableUtils {
             public T next() {
                 if (!xsi.hasNext()) xsi = xs.iterator();
                 return xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2835,11 +2650,11 @@ public final strictfp class IterableUtils {
     public static @NotNull <A, B> Iterable<A> unfoldr(@NotNull Function<B, Optional<Pair<A, B>>> f, @NotNull B x) {
         return new Iterable<A>() {
             @Override
-            public Iterator<A> iterator() {
-                return new Iterator<A>() {
+            public NoRemoveIterator<A> iterator() {
+                return new NoRemoveIterator<A>() {
                     private boolean hasNext = true;
-                    private A next;
-                    private B seed = x;
+                    private @Nullable A next;
+                    private @Nullable B seed = x;
                     {
                         advance();
                     }
@@ -2865,20 +2680,15 @@ public final strictfp class IterableUtils {
                             hasNext = false;
                         }
                     }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
-                    }
                 };
             }
         };
     }
 
     public static @NotNull <T> Iterable<T> take(int n, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
+        return () -> new NoRemoveIterator<T>() {
             private int i = 0;
-            private final Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2890,18 +2700,13 @@ public final strictfp class IterableUtils {
                 i++;
                 return xsi.next();
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<T> take(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private BigInteger i = BigInteger.ZERO;
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull BigInteger i = BigInteger.ZERO;
+            private final @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2912,11 +2717,6 @@ public final strictfp class IterableUtils {
             public T next() {
                 i = i.add(BigInteger.ONE);
                 return xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2930,8 +2730,8 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> drop(int n, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
             {
                 int i = n;
                 while (xsi.hasNext()) {
@@ -2950,17 +2750,12 @@ public final strictfp class IterableUtils {
             public T next() {
                 return xsi.next();
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<T> drop(@NotNull BigInteger n, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
             {
                 BigInteger i = n;
                 while (xsi.hasNext()) {
@@ -2978,11 +2773,6 @@ public final strictfp class IterableUtils {
             @Override
             public T next() {
                 return xsi.next();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -3054,10 +2844,10 @@ public final strictfp class IterableUtils {
     public static @NotNull <T> Iterable<T> takeWhile(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next;
+            public NoRemoveIterator<T> iterator() {
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     {
                         advance();
@@ -3083,11 +2873,6 @@ public final strictfp class IterableUtils {
                             hasNext = false;
                         }
                     }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
-                    }
                 };
             }
         };
@@ -3106,10 +2891,10 @@ public final strictfp class IterableUtils {
     public static @NotNull <T> Iterable<T> stopAt(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
         return new Iterable<T>() {
             @Override
-            public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next;
+            public NoRemoveIterator<T> iterator() {
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     {
                         advance();
@@ -3137,11 +2922,6 @@ public final strictfp class IterableUtils {
                             }
                         }
                     }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
-                    }
                 };
             }
         };
@@ -3158,9 +2938,9 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> dropWhile(@NotNull Predicate<T> p, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
-            private T x;
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
+            private @Nullable T x;
             private boolean first = false;
             {
                 while (xsi.hasNext()) {
@@ -3185,11 +2965,6 @@ public final strictfp class IterableUtils {
                 } else {
                     return xsi.next();
                 }
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -3229,8 +3004,8 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<List<T>> chunk(int size, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -3246,16 +3021,11 @@ public final strictfp class IterableUtils {
                 }
                 return chunk;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull Iterable<String> chunk(int size, @NotNull String s) {
-        return () -> new Iterator<String>() {
+        return () -> new NoRemoveIterator<String>() {
             private int i = 0;
 
             @Override
@@ -3272,17 +3042,12 @@ public final strictfp class IterableUtils {
                 }
                 return sb.toString();
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static @NotNull <T> Iterable<List<T>> chunkPadded(@Nullable T pad, int size, @NotNull Iterable<T> xs) {
-        return () -> new Iterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -3296,11 +3061,6 @@ public final strictfp class IterableUtils {
                     chunk.add(xsi.hasNext() ? xsi.next() : pad);
                 }
                 return chunk;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -3328,13 +3088,13 @@ public final strictfp class IterableUtils {
     public static @NotNull <T> Iterable<Pair<T, Integer>> countAdjacent(@NotNull Iterable<T> xs) {
         return new Iterable<Pair<T, Integer>>() {
             @Override
-            public Iterator<Pair<T, Integer>> iterator() {
-                return new Iterator<Pair<T, Integer>>() {
-                    private Iterator<T> xsi = xs.iterator();
+            public NoRemoveIterator<Pair<T, Integer>> iterator() {
+                return new NoRemoveIterator<Pair<T, Integer>>() {
+                    private @NotNull Iterator<T> xsi = xs.iterator();
                     private boolean hasNext = xsi.hasNext();
                     private boolean isLast = false;
-                    private T nextX = null;
-                    private Pair<T, Integer> next = null;
+                    private @Nullable T nextX = null;
+                    private @Nullable Pair<T, Integer> next = null;
                     {
                         if (hasNext) {
                             nextX = xsi.next();
@@ -3372,11 +3132,6 @@ public final strictfp class IterableUtils {
                         } while (Objects.equals(original, nextX));
                         next = new Pair<>(original, count);
                     }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
-                    }
                 };
             }
         };
@@ -3395,9 +3150,9 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
-        return cons(new ArrayList<T>(), () -> new Iterator<List<T>>() {
-            private Iterator<T> xsi = xs.iterator();
-            private List<T> currentList = new ArrayList<>();
+        return cons(new ArrayList<T>(), () -> new NoRemoveIterator<List<T>>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
+            private @NotNull List<T> currentList = new ArrayList<>();
 
             @Override
             public boolean hasNext() {
@@ -3411,11 +3166,6 @@ public final strictfp class IterableUtils {
                 nextList.add(xsi.next());
                 currentList = nextList;
                 return currentList;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         });
     }
@@ -3469,9 +3219,9 @@ public final strictfp class IterableUtils {
     public static @NotNull <T> Iterable<List<T>> windows(int size, @NotNull Iterable<T> xs) {
         List<T> firstWindow = toList(take(size, xs));
         if (firstWindow.size() < size) return new ArrayList<>();
-        return cons(firstWindow, () -> new Iterator<List<T>>() {
-            Iterator<T> xsi = drop(size, xs).iterator();
-            List<T> previousWindow = firstWindow;
+        return cons(firstWindow, () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = drop(size, xs).iterator();
+            private @NotNull List<T> previousWindow = firstWindow;
 
             @Override
             public boolean hasNext() {
@@ -3483,20 +3233,15 @@ public final strictfp class IterableUtils {
                 previousWindow = toList(concat(tail(previousWindow), Collections.singletonList(xsi.next())));
                 return previousWindow;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         });
     }
 
     public static @NotNull Iterable<String> windows(int size, @NotNull String s) {
         String firstWindow = take(size, s);
         if (firstWindow.length() < size) return new ArrayList<>();
-        return cons(firstWindow, () -> new Iterator<String>() {
-            Iterator<Character> xsi = fromString(drop(size, s)).iterator();
-            String previousWindow = firstWindow;
+        return cons(firstWindow, () -> new NoRemoveIterator<String>() {
+            private @NotNull Iterator<Character> xsi = fromString(drop(size, s)).iterator();
+            private @NotNull String previousWindow = firstWindow;
 
             @Override
             public boolean hasNext() {
@@ -3508,11 +3253,6 @@ public final strictfp class IterableUtils {
                 previousWindow = concat(tail(previousWindow), Character.toString(xsi.next()));
                 return previousWindow;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         });
     }
 
@@ -3522,9 +3262,9 @@ public final strictfp class IterableUtils {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next = xsi.next();
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next = xsi.next();
                     private boolean lastIsNext = false;
                     {
                         if (!xsi.hasNext() && !p.test(next)) {
@@ -3549,11 +3289,6 @@ public final strictfp class IterableUtils {
                             lastIsNext = true;
                         }
                         return oldNext;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -3921,9 +3656,9 @@ public final strictfp class IterableUtils {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next;
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     {
                         advance();
@@ -3950,11 +3685,6 @@ public final strictfp class IterableUtils {
                             }
                         }
                         hasNext = false;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -4089,8 +3819,8 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> set(@NotNull Iterable<T> xs, int i, @Nullable T x) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
             private int j = 0;
 
             @Override
@@ -4115,8 +3845,8 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> Iterable<T> insert(@NotNull Iterable<T> xs, int i, @Nullable T x) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
             private int j = 0;
 
             @Override
@@ -4230,9 +3960,9 @@ public final strictfp class IterableUtils {
     }
 
     public static <A, B> Iterable<Pair<A, B>> zip(Iterable<A> as, Iterable<B> bs) {
-        return () -> new Iterator<Pair<A, B>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4243,19 +3973,14 @@ public final strictfp class IterableUtils {
             public Pair<A, B> next() {
                 return new Pair<>(asi.next(), bsi.next());
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static <A, B, C> Iterable<Triple<A, B, C>> zip3(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
-        return () -> new Iterator<Triple<A, B, C>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
+        return () -> new NoRemoveIterator<Triple<A, B, C>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4266,11 +3991,6 @@ public final strictfp class IterableUtils {
             public Triple<A, B, C> next() {
                 return new Triple<>(asi.next(), bsi.next(), csi.next());
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -4280,11 +4000,11 @@ public final strictfp class IterableUtils {
             Iterable<C> cs,
             Iterable<D> ds
     ) {
-        return () -> new Iterator<Quadruple<A, B, C, D>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
+        return () -> new NoRemoveIterator<Quadruple<A, B, C, D>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4294,11 +4014,6 @@ public final strictfp class IterableUtils {
             @Override
             public Quadruple<A, B, C, D> next() {
                 return new Quadruple<>(asi.next(), bsi.next(), csi.next(), dsi.next());
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4310,12 +4025,12 @@ public final strictfp class IterableUtils {
             Iterable<D> ds,
             Iterable<E> es
     ) {
-        return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
+        return () -> new NoRemoveIterator<Quintuple<A, B, C, D, E>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4325,11 +4040,6 @@ public final strictfp class IterableUtils {
             @Override
             public Quintuple<A, B, C, D, E> next() {
                 return new Quintuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next());
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4342,13 +4052,13 @@ public final strictfp class IterableUtils {
             Iterable<E> es,
             Iterable<F> fs
     ) {
-        return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
-            private final Iterator<F> fsi = fs.iterator();
+        return () -> new NoRemoveIterator<Sextuple<A, B, C, D, E, F>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4364,11 +4074,6 @@ public final strictfp class IterableUtils {
             public Sextuple<A, B, C, D, E, F> next() {
                 return new Sextuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next(), fsi.next());
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -4381,14 +4086,14 @@ public final strictfp class IterableUtils {
             Iterable<F> fs,
             Iterable<G> gs
     ) {
-        return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
-            private final Iterator<F> fsi = fs.iterator();
-            private final Iterator<G> gsi = gs.iterator();
+        return () -> new NoRemoveIterator<Septuple<A, B, C, D, E, F, G>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
+            private final @NotNull Iterator<G> gsi = gs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4413,18 +4118,13 @@ public final strictfp class IterableUtils {
                         gsi.next()
                 );
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     public static <A, B> Iterable<Pair<A, B>> zipPadded(A aPad, B bPad, Iterable<A> as, Iterable<B> bs) {
-        return () -> new Iterator<Pair<A, B>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4437,11 +4137,6 @@ public final strictfp class IterableUtils {
                 B b = bsi.hasNext() ? bsi.next() : bPad;
                 return new Pair<>(a, b);
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -4453,10 +4148,10 @@ public final strictfp class IterableUtils {
             Iterable<B> bs,
             Iterable<C> cs
     ) {
-        return () -> new Iterator<Triple<A, B, C>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
+        return () -> new NoRemoveIterator<Triple<A, B, C>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4469,11 +4164,6 @@ public final strictfp class IterableUtils {
                 B b = bsi.hasNext() ? bsi.next() : bPad;
                 C c = csi.hasNext() ? csi.next() : cPad;
                 return new Triple<>(a, b, c);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4488,11 +4178,11 @@ public final strictfp class IterableUtils {
             Iterable<C> cs,
             Iterable<D> ds
     ) {
-        return () -> new Iterator<Quadruple<A, B, C, D>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
+        return () -> new NoRemoveIterator<Quadruple<A, B, C, D>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4506,11 +4196,6 @@ public final strictfp class IterableUtils {
                 C c = csi.hasNext() ? csi.next() : cPad;
                 D d = dsi.hasNext() ? dsi.next() : dPad;
                 return new Quadruple<>(a, b, c, d);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4526,12 +4211,12 @@ public final strictfp class IterableUtils {
             Iterable<C> cs,
             Iterable<D> ds,
             Iterable<E> es) {
-        return () -> new Iterator<Quintuple<A, B, C, D, E>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
+        return () -> new NoRemoveIterator<Quintuple<A, B, C, D, E>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4546,11 +4231,6 @@ public final strictfp class IterableUtils {
                 D d = dsi.hasNext() ? dsi.next() : dPad;
                 E e = esi.hasNext() ? esi.next() : ePad;
                 return new Quintuple<>(a, b, c, d, e);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4568,13 +4248,13 @@ public final strictfp class IterableUtils {
             Iterable<D> ds,
             Iterable<E> es,
             Iterable<F> fs) {
-        return () -> new Iterator<Sextuple<A, B, C, D, E, F>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
-            private final Iterator<F> fsi = fs.iterator();
+        return () -> new NoRemoveIterator<Sextuple<A, B, C, D, E, F>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4596,11 +4276,6 @@ public final strictfp class IterableUtils {
                 F f = fsi.hasNext() ? fsi.next() : fPad;
                 return new Sextuple<>(a, b, c, d, e, f);
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -4619,14 +4294,14 @@ public final strictfp class IterableUtils {
             Iterable<E> es,
             Iterable<F> fs,
             Iterable<G> gs) {
-        return () -> new Iterator<Septuple<A, B, C, D, E, F, G>>() {
-            private final Iterator<A> asi = as.iterator();
-            private final Iterator<B> bsi = bs.iterator();
-            private final Iterator<C> csi = cs.iterator();
-            private final Iterator<D> dsi = ds.iterator();
-            private final Iterator<E> esi = es.iterator();
-            private final Iterator<F> fsi = fs.iterator();
-            private final Iterator<G> gsi = gs.iterator();
+        return () -> new NoRemoveIterator<Septuple<A, B, C, D, E, F, G>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
+            private final @NotNull Iterator<G> gsi = gs.iterator();
 
             @Override
             public boolean hasNext() {
@@ -4649,11 +4324,6 @@ public final strictfp class IterableUtils {
                 F f = fsi.hasNext() ? fsi.next() : fPad;
                 G g = gsi.hasNext() ? gsi.next() : gPad;
                 return new Septuple<>(a, b, c, d, e, f, g);
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -4917,9 +4587,9 @@ public final strictfp class IterableUtils {
             private Set<T> seen = new HashSet<>();
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next;
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     {
                         advance();
@@ -4947,11 +4617,6 @@ public final strictfp class IterableUtils {
                             }
                         }
                         hasNext = false;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -4994,9 +4659,9 @@ public final strictfp class IterableUtils {
         return new Iterable<T>() {
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private Iterator<T> xsi = xs.iterator();
-                    private T next;
+                return new NoRemoveIterator<T>() {
+                    private @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     private boolean seenOnce;
 
@@ -5028,11 +4693,6 @@ public final strictfp class IterableUtils {
                             seenOnce = true;
                             advance();
                         }
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -5079,11 +4739,11 @@ public final strictfp class IterableUtils {
             @NotNull Iterable<T> xs,
             @NotNull Iterable<T> ys
     ) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
-            private Iterator<T> ysi = ys.iterator();
-            private NullableOptional<T> ox = NullableOptional.empty();
-            private NullableOptional<T> oy = NullableOptional.empty();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
+            private @NotNull Iterator<T> ysi = ys.iterator();
+            private @NotNull NullableOptional<T> ox = NullableOptional.empty();
+            private @NotNull NullableOptional<T> oy = NullableOptional.empty();
 
             @Override
             public boolean hasNext() {
@@ -5125,11 +4785,6 @@ public final strictfp class IterableUtils {
                     oy = NullableOptional.empty();
                 }
                 return next;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -5186,11 +4841,11 @@ public final strictfp class IterableUtils {
             @NotNull Iterable<T> xs,
             @NotNull Iterable<T> ys
     ) {
-        return () -> new Iterator<T>() {
-            private Iterator<T> xsi = xs.iterator();
-            private Iterator<T> ysi = ys.iterator();
-            private NullableOptional<T> ox = NullableOptional.empty();
-            private NullableOptional<T> oy = NullableOptional.empty();
+        return () -> new NoRemoveIterator<T>() {
+            private @NotNull Iterator<T> xsi = xs.iterator();
+            private @NotNull Iterator<T> ysi = ys.iterator();
+            private @NotNull NullableOptional<T> ox = NullableOptional.empty();
+            private @NotNull NullableOptional<T> oy = NullableOptional.empty();
 
             @Override
             public boolean hasNext() {
@@ -5233,11 +4888,6 @@ public final strictfp class IterableUtils {
                 }
                 return next;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -5258,9 +4908,9 @@ public final strictfp class IterableUtils {
             private Set<T> seen = new HashSet<>();
             @Override
             public Iterator<T> iterator() {
-                return new Iterator<T>() {
-                    private final Iterator<T> xsi = xs.iterator();
-                    private T next;
+                return new NoRemoveIterator<T>() {
+                    private final @NotNull Iterator<T> xsi = xs.iterator();
+                    private @Nullable T next;
                     private boolean hasNext;
                     {
                         advance();
@@ -5289,11 +4939,6 @@ public final strictfp class IterableUtils {
                             }
                         }
                         hasNext = false;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }
@@ -5348,12 +4993,12 @@ public final strictfp class IterableUtils {
         return new Iterable<List<T>>() {
             @Override
             public Iterator<List<T>> iterator() {
-                return new Iterator<List<T>>() {
-                    private Iterator<T> xsi = xs.iterator();
+                return new NoRemoveIterator<List<T>>() {
+                    private @NotNull Iterator<T> xsi = xs.iterator();
                     private boolean hasNext = xsi.hasNext();
                     private boolean isLast = false;
-                    private T nextX = null;
-                    private List<T> next = null;
+                    private @Nullable T nextX = null;
+                    private @NotNull List<T> next = null;
                     {
                         if (hasNext) {
                             nextX = xsi.next();
@@ -5390,11 +5035,6 @@ public final strictfp class IterableUtils {
                             nextX = xsi.next();
                         } while (p.test(new Pair<T, T>(original, nextX)));
                         next = list;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException("cannot remove from this iterator");
                     }
                 };
             }

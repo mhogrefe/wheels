@@ -434,7 +434,7 @@ public class IntegerUtils {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new Iterator<BigInteger>() {
+        return () -> new NoRemoveIterator<BigInteger>() {
             private BigInteger remaining = n;
 
             @Override
@@ -447,11 +447,6 @@ public class IntegerUtils {
                 BigInteger digit = remaining.mod(base);
                 remaining = remaining.divide(base);
                 return digit;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

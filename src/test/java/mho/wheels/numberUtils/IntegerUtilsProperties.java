@@ -1,9 +1,6 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.RandomProvider;
+import mho.wheels.iterables.*;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
@@ -156,7 +153,7 @@ public class IntegerUtilsProperties {
     }
 
     private static @NotNull Iterable<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
-        return () -> new Iterator<Boolean>() {
+        return () -> new NoRemoveIterator<Boolean>() {
             private BigInteger remaining = n;
 
             @Override
@@ -169,11 +166,6 @@ public class IntegerUtilsProperties {
                 boolean bit = remaining.testBit(0);
                 remaining = remaining.shiftRight(1);
                 return bit;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

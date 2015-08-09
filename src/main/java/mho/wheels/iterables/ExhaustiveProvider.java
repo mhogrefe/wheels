@@ -2138,7 +2138,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
-        return () -> new Iterator<List<Integer>>() {
+        return () -> new NoRemoveIterator<List<Integer>>() {
             private List<Integer> indices = start;
 
             @Override
@@ -2173,11 +2173,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     );
                 }
                 return oldIndices;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

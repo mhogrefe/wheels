@@ -2898,7 +2898,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
-        return () -> new Iterator<List<T>>() {
+        return () -> new NoRemoveIterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
@@ -2916,18 +2916,13 @@ public final strictfp class RandomProvider extends IterableProvider {
                 }
                 return list;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
-        return () -> new Iterator<List<T>>() {
+        return () -> new NoRemoveIterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
@@ -2945,11 +2940,6 @@ public final strictfp class RandomProvider extends IterableProvider {
                 }
                 return list;
             }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
-            }
         };
     }
 
@@ -2961,7 +2951,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Collections.singletonList("");
-        return () -> new Iterator<String>() {
+        return () -> new NoRemoveIterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
@@ -2978,11 +2968,6 @@ public final strictfp class RandomProvider extends IterableProvider {
                     sb.append(csi.next());
                 }
                 return sb.toString();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -3000,7 +2985,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
         if (isEmpty(cs)) return Collections.singletonList("");
-        return () -> new Iterator<String>() {
+        return () -> new NoRemoveIterator<String>() {
             private final Iterator<Character> csi = cycle(cs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
@@ -3017,11 +3002,6 @@ public final strictfp class RandomProvider extends IterableProvider {
                     sb.append(csi.next());
                 }
                 return sb.toString();
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }

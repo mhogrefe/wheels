@@ -3,6 +3,7 @@ package mho.wheels.math;
 import mho.wheels.iterables.CachedIterable;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
@@ -1442,7 +1443,7 @@ public final class Combinatorics {
     public static @NotNull <T> Iterable<List<T>> orderedSubsequences(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             return Collections.singletonList(new ArrayList<T>());
-        return () -> new Iterator<List<T>>() {
+        return () -> new NoRemoveIterator<List<T>>() {
             private CachedIterable<T> cxs = new CachedIterable<T>(xs);
             private List<Integer> indices = new ArrayList<>();
 
@@ -1468,11 +1469,6 @@ public final class Combinatorics {
                     }
                 }
                 return subsequence;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
