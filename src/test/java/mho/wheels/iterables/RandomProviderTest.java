@@ -5,6 +5,7 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.random.IsaacPRNG;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +14,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -11822,6 +11824,74 @@ public strictfp class RandomProviderTest {
         rangeCanonical_BigDecimal_BigDecimal_helper(32, 8, "5", "3", "[]", "{}", 0.0, 0.0, 0.0);
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(0, 1, "0", "1");
         rangeCanonical_BigDecimal_BigDecimal_fail_helper(1, 0, "0", "1");
+    }
+
+    private static void withElementHelper(
+            int scale,
+            @NotNull String input,
+            @Nullable Integer element,
+            @NotNull String output,
+            double elementFrequency
+    ) {
+        Iterable<Integer> xs = P.withScale(scale).withElement(element, cycle(readIntegerListWithNulls(input)));
+        List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(meanOfIntegers(toList(map(x -> Objects.equals(x, element) ? 1 : 0, sample))), elementFrequency);
+        P.reset();
+    }
+
+    @Test
+    public void testWithElement() {
+        withElementHelper(
+                2,
+                "[1]",
+                null,
+                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1]",
+                0.4992549999935604
+        );
+        withElementHelper(
+                8,
+                "[1]",
+                null,
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                0.12480700000010415
+        );
+        withElementHelper(
+                32,
+                "[1]",
+                null,
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                0.031218000000010567
+        );
+        withElementHelper(
+                2,
+                "[null, 2, 3]",
+                10,
+                "[null, 10, 2, 3, null, 2, 3, null, 2, 10, 3, 10, 10, null, 10, 10, 2, 3, 10, null]",
+                0.4992549999935604
+        );
+        withElementHelper(
+                8,
+                "[null, 2, 3]",
+                10,
+                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2]",
+                0.12480700000010415
+        );
+        withElementHelper(
+                32,
+                "[null, 2, 3]",
+                10,
+                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2]",
+                0.031218000000010567
+        );
+        try {
+            toList(P.withElement(null, readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.withScale(1).withElement(null, cycle(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalStateException ignored) {}
     }
 
     @Test
