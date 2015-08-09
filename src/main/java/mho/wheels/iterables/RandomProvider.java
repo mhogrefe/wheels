@@ -2742,6 +2742,9 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return () -> new NoRemoveIterator<T>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
             private final @NotNull Iterator<Integer> is = range(1, scale).iterator();

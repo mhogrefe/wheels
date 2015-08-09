@@ -2222,16 +2222,28 @@ public class RandomProviderProperties {
             );
         }
 
-        Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail = P.triples(
+        Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail1 = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integers()),
                 P.lists(P.withNull(P.integers()))
         );
-        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail)) {
+        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail1)) {
             try {
                 toList(t.a.withElement(t.b, t.c));
                 fail(t);
             } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = P.triples(
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integers()),
+                P.repeatingIterables(P.withNull(P.integers()))
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail2)) {
+            try {
+                t.a.withElement(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -2248,15 +2260,26 @@ public class RandomProviderProperties {
             assertEquals(p, filteredResult, toList(take(filteredResult.size(), p.b)));
         }
 
-        Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
+        Iterable<Pair<RandomProvider, List<Integer>>> psFail1 = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.lists(P.integers())
         );
-        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail1)) {
             try {
                 toList(p.a.withNull(p.b));
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.integers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
+            try {
+                p.a.withNull(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
         }
     }
 
@@ -2283,6 +2306,17 @@ public class RandomProviderProperties {
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
+
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.integers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
+            try {
+                p.a.optionals(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
+        }
     }
 
     private static void propertiesNullableOptionals() {
@@ -2307,6 +2341,17 @@ public class RandomProviderProperties {
                 toList(p.a.nullableOptionals(p.b));
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
+                filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.integers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
+            try {
+                p.a.nullableOptionals(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
         }
     }
 
