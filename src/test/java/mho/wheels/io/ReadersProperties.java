@@ -4,41 +4,39 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.structures.Triple;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.take;
-import static mho.wheels.testing.Testing.propertiesFindInHelper;
-import static org.junit.Assert.assertEquals;
+import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties {
-    private static boolean USE_RANDOM;
     private static int LIMIT;
-
     private static IterableProvider P;
 
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+    private static void initialize(String name) {
+        P.reset();
+        System.out.println("\t\ttesting " + name + " properties...");
     }
 
     @Test
     public void testAllProperties() {
-        System.out.println("Readers properties");
-        for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
-            USE_RANDOM = useRandom;
+        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
+        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
+        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
+        System.out.println("BinaryFraction properties");
+        for (Triple<IterableProvider, Integer, String> config : configs) {
+            P = config.a;
+            LIMIT = config.b;
+            System.out.println("\ttesting " + config.c);
             propertiesReadBoolean();
             propertiesFindBooleanIn();
             propertiesReadOrdering();
@@ -69,65 +67,53 @@ public strictfp class ReadersProperties {
     }
 
     private static void propertiesReadBoolean() {
-        initialize();
-        System.out.println("\t\ttesting readBoolean(String) properties...");
-
+        initialize("readBoolean(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBoolean(s);
         }
 
         for (boolean b : take(LIMIT, P.booleans())) {
             Optional<Boolean> ob = readBoolean(Boolean.toString(b));
-            assertEquals(Boolean.toString(b), ob.get(), b);
+            assertEquals(b, ob.get(), b);
         }
     }
 
     private static void propertiesFindBooleanIn() {
-        initialize();
-        System.out.println("\t\ttesting findBooleanIn(String) properties...");
-
+        initialize("findBooleanIn(String)");
         propertiesFindInHelper(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn, b -> {});
     }
 
     private static void propertiesReadOrdering() {
-        initialize();
-        System.out.println("\t\ttesting readOrdering(String) properties...");
-
+        initialize("readOrdering(String)");
         for (String s : take(LIMIT, P.strings())) {
             readOrdering(s);
         }
 
         for (Ordering o : take(LIMIT, P.orderings())) {
             Optional<Ordering> oo = readOrdering(o.toString());
-            assertEquals(o.toString(), oo.get(), o);
+            assertEquals(o, oo.get(), o);
         }
     }
 
     private static void propertiesFindOrderingIn() {
-        initialize();
-        System.out.println("\t\ttesting findOrderingIn(String) properties...");
-
+        initialize("findOrderingIn(String)");
         propertiesFindInHelper(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn, o -> {});
     }
 
     private static void propertiesReadRoundingMode() {
-        initialize();
-        System.out.println("\t\ttesting readRoundingMode(String) properties...");
-
+        initialize("readRoundingMode(String)");
         for (String s : take(LIMIT, P.strings())) {
             readRoundingMode(s);
         }
 
         for (RoundingMode rm : take(LIMIT, P.roundingModes())) {
             Optional<RoundingMode> orm = readRoundingMode(rm.toString());
-            assertEquals(rm.toString(), orm.get(), rm);
+            assertEquals(rm, orm.get(), rm);
         }
     }
 
     private static void propertiesFindRoundingModeIn() {
-        initialize();
-        System.out.println("\t\ttesting findRoundingModeIn(String) properties...");
-
+        initialize("findRoundingModeIn(String)");
         propertiesFindInHelper(
                 LIMIT,
                 P,
@@ -139,170 +125,138 @@ public strictfp class ReadersProperties {
     }
 
     private static void propertiesReadBigInteger() {
-        initialize();
-        System.out.println("\t\ttesting readBigInteger(String) properties...");
-
+        initialize("readBigInteger(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBigInteger(s);
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             Optional<BigInteger> oi = readBigInteger(i.toString());
-            assertEquals(i.toString(), oi.get(), i);
+            assertEquals(i, oi.get(), i);
         }
     }
 
     private static void propertiesFindBigIntegerIn() {
-        initialize();
-        System.out.println("\t\ttesting findBigIntegerIn(String) properties...");
-
+        initialize("findBigIntegerIn(String)");
         propertiesFindInHelper(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn, i -> {});
     }
 
     private static void propertiesReadByte() {
-        initialize();
-        System.out.println("\t\ttesting readByte(String) properties...");
-
+        initialize("readByte(String)");
         for (String s : take(LIMIT, P.strings())) {
             readByte(s);
         }
 
         for (byte b : take(LIMIT, P.bytes())) {
             Optional<Byte> ob = readByte(Byte.toString(b));
-            assertEquals(Byte.toString(b), ob.get(), Byte.valueOf(b));
+            assertEquals(b, ob.get(), b);
         }
     }
 
     private static void propertiesFindByteIn() {
-        initialize();
-        System.out.println("\t\ttesting findByteIn(String) properties...");
-
+        initialize("findByteIn(String)");
         propertiesFindInHelper(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn, b -> {});
     }
 
     private static void propertiesReadShort() {
-        initialize();
-        System.out.println("\t\ttesting readShort(String) properties...");
-
+        initialize("readShort(String)");
         for (String s : take(LIMIT, P.strings())) {
             readShort(s);
         }
 
         for (short s : take(LIMIT, P.shorts())) {
             Optional<Short> os = readShort(Short.toString(s));
-            assertEquals(Short.toString(s), os.get(), Short.valueOf(s));
+            assertEquals(s, os.get(), s);
         }
     }
 
     private static void propertiesFindShortIn() {
-        initialize();
-        System.out.println("\t\ttesting findShortIn(String) properties...");
-
+        initialize("findShortIn(String)");
         propertiesFindInHelper(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn, s -> {});
     }
 
     private static void propertiesReadInteger() {
-        initialize();
-        System.out.println("\t\ttesting readInteger(String) properties...");
-
+        initialize("readInteger(String)");
         for (String s : take(LIMIT, P.strings())) {
             readInteger(s);
         }
 
         for (int i : take(LIMIT, P.integers())) {
             Optional<Integer> oi = readInteger(Integer.toString(i));
-            assertEquals(Integer.toString(i), oi.get().intValue(), i);
+            assertEquals(i, oi.get().intValue(), i);
         }
     }
 
     private static void propertiesFindIntegerIn() {
-        initialize();
-        System.out.println("\t\ttesting findIntegerIn(String) properties...");
-
+        initialize("findIntegerIn(String)");
         propertiesFindInHelper(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn, i -> {});
     }
 
     private static void propertiesReadLong() {
-        initialize();
-        System.out.println("\t\ttesting readLong(String) properties...");
-
+        initialize("readLong(String)");
         for (String s : take(LIMIT, P.strings())) {
             readLong(s);
         }
 
         for (long l : take(LIMIT, P.longs())) {
             Optional<Long> ol = readLong(Long.toString(l));
-            assertEquals(Long.toString(l), ol.get(), Long.valueOf(l));
+            assertEquals(l, ol.get(), l);
         }
     }
 
     private static void propertiesFindLongIn() {
-        initialize();
-        System.out.println("\t\ttesting findLongIn(String) properties...");
-
+        initialize("findLongIn(String)");
         propertiesFindInHelper(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn, l -> {});
     }
 
     private static void propertiesReadFloat() {
-        initialize();
-        System.out.println("\t\ttesting readFloat(String) properties...");
-
+        initialize("readFloat(String)");
         for (String s : take(LIMIT, P.strings())) {
             readFloat(s);
         }
 
         for (float f : take(LIMIT, P.floats())) {
             Optional<Float> of = readFloat(Float.toString(f));
-            assertEquals(Float.toString(f), of.get(), Float.valueOf(f));
+            assertEquals(f, of.get(), f);
         }
     }
 
     private static void propertiesFindFloatIn() {
-        initialize();
-        System.out.println("\t\ttesting findFloatIn(String) properties...");
-
+        initialize("findFloatIn(String)");
         propertiesFindInHelper(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn, f -> {});
     }
 
     private static void propertiesReadDouble() {
-        initialize();
-        System.out.println("\t\ttesting readDouble(String) properties...");
-
+        initialize("readDouble(String)");
         for (String s : take(LIMIT, P.strings())) {
             readDouble(s);
         }
 
         for (double d : take(LIMIT, P.doubles())) {
             Optional<Double> od = readDouble(Double.toString(d));
-            assertEquals(Double.toString(d), od.get(), Double.valueOf(d));
+            assertEquals(d, od.get(), d);
         }
     }
 
     private static void propertiesFindDoubleIn() {
-        initialize();
-        System.out.println("\t\ttesting findDoubleIn(String) properties...");
-
+        initialize("findDoubleIn(String)");
         propertiesFindInHelper(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn, d -> {});
     }
 
     private static void propertiesReadBigDecimal() {
-        initialize();
-        System.out.println("\t\ttesting readBigDecimal(String) properties...");
-
+        initialize("readBigDecimal(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBigDecimal(s);
         }
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             Optional<BigDecimal> obd = readBigDecimal(bd.toString());
-            assertEquals(bd.toString(), obd.get(), bd);
+            assertEquals(bd, obd.get(), bd);
         }
     }
 
     private static void propertiesFindBigDecimalIn() {
-        initialize();
-        System.out.println("\t\ttesting findBigDecimalIn(String) properties...");
-
+        initialize("findBigDecimalIn(String)");
         propertiesFindInHelper(
                 LIMIT,
                 P,
@@ -314,30 +268,24 @@ public strictfp class ReadersProperties {
     }
 
     private static void propertiesReadCharacter() {
-        initialize();
-        System.out.println("\t\ttesting readCharacter(String) properties...");
-
+        initialize("readCharacter(String)");
         for (String s : take(LIMIT, P.strings())) {
             readCharacter(s);
         }
 
         for (char c : take(LIMIT, P.characters())) {
             Optional<Character> oc = readCharacter(Character.toString(c));
-            assertEquals(Character.toString(c), oc.get(), Character.valueOf(c));
+            assertEquals(c, oc.get(), c);
         }
     }
 
     private static void propertiesFindCharacterIn() {
-        initialize();
-        System.out.println("\t\ttesting findCharacterIn(String) properties...");
-
+        initialize("findCharacterIn(String)");
         propertiesFindInHelper(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn, c -> {});
     }
 
     private static void propertiesReadString() {
-        initialize();
-        System.out.println("\t\ttesting readString(String) properties...");
-
+        initialize("readString(String)");
         for (String s : take(LIMIT, P.strings())) {
             Optional<String> os = readString(s);
             assertEquals(s, os.get(), s);

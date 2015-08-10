@@ -17,7 +17,8 @@ import static mho.wheels.iterables.IterableUtils.*;
 
 /**
  * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
- * exception. Instead, they return empty {@code Optional}s.
+ * exception. Instead, they return empty {@code Optional}s. Methods for finding the first occurrence of a value in a
+ * {@code String} are also provided.
  */
 public class Readers {
     /**
@@ -61,7 +62,8 @@ public class Readers {
      *
      * @param read the original read function
      * @param <T> the type of value read by {@code read}
-     * @return a function which behaves like {@code read} but doesn't throw exceptions
+     * @return a function which behaves like {@code read} but doesn't throw exceptions and only accepts {@code String}s
+     * that can be returned by {@code T}'s {@code toString} method
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Function<String, Optional<T>> genericRead(@NotNull Function<String, T> read) {
