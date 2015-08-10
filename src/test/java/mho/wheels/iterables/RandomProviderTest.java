@@ -4,6 +4,7 @@ import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.random.IsaacPRNG;
+import mho.wheels.structures.NullableOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
@@ -11,10 +12,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -11890,6 +11888,221 @@ public strictfp class RandomProviderTest {
         } catch (IllegalArgumentException ignored) {}
         try {
             P.withScale(1).withElement(null, cycle(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    private static void withNullHelper(
+            int scale,
+            @NotNull String input,
+            @NotNull String output,
+            double nullFrequency
+    ) {
+        Iterable<Integer> xs = P.withScale(scale).withNull(cycle(readIntegerListWithNulls(input)));
+        List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(meanOfIntegers(toList(map(x -> x == null ? 1 : 0, sample))), nullFrequency);
+        P.reset();
+    }
+
+    @Test
+    public void testWithNull() {
+        withNullHelper(
+                2,
+                "[1]",
+                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1]",
+                0.4992549999935604
+        );
+        withNullHelper(8, "[1]", "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]", 0.12480700000010415);
+        withNullHelper(
+                32,
+                "[1]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                0.031218000000010567
+        );
+        withNullHelper(
+                2,
+                "[1, 2, 3]",
+                "[1, null, 2, 3, 1, 2, 3, 1, 2, null, 3, null, null, 1, null, null, 2, 3, null, 1]",
+                0.4992549999935604
+        );
+        withNullHelper(
+                8,
+                "[1, 2, 3]",
+                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]",
+                0.12480700000010415
+        );
+        withNullHelper(
+                32,
+                "[1, 2, 3]",
+                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]",
+                0.031218000000010567
+        );
+        try {
+            toList(P.withNull(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.withScale(1).withNull(cycle(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    private static void optionalsHelper(
+            int scale,
+            @NotNull String input,
+            @NotNull String output,
+            double emptyFrequency
+    ) {
+        Iterable<Optional<Integer>> xs = P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input)));
+        List<Optional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
+        P.reset();
+    }
+
+    @Test
+    public void testOptionals() {
+        optionalsHelper(
+                2,
+                "[1]",
+                "[Optional[1], Optional.empty, Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
+                " Optional[1], Optional[1], Optional.empty, Optional[1], Optional.empty, Optional.empty," +
+                " Optional[1], Optional.empty, Optional.empty, Optional[1], Optional[1], Optional.empty, Optional[1]]",
+                0.4992549999935604
+        );
+        optionalsHelper(
+                8,
+                "[1]",
+                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]]",
+                0.12480700000010415
+        );
+        optionalsHelper(
+                32,
+                "[1]",
+                "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]]",
+                0.031218000000010567
+        );
+        optionalsHelper(
+                2,
+                "[1, 2, 3]",
+                "[Optional[1], Optional.empty, Optional[2], Optional[3], Optional[1], Optional[2], Optional[3]," +
+                " Optional[1], Optional[2], Optional.empty, Optional[3], Optional.empty, Optional.empty," +
+                " Optional[1], Optional.empty, Optional.empty, Optional[2], Optional[3], Optional.empty, Optional[1]]",
+                0.4992549999935604
+        );
+        optionalsHelper(
+                8,
+                "[1, 2, 3]",
+                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
+                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
+                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]]",
+                0.12480700000010415
+        );
+        optionalsHelper(
+                32,
+                "[1, 2, 3]",
+                "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
+                " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
+                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]]",
+                0.031218000000010567
+        );
+        try {
+            toList(P.optionals(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.withScale(1).optionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    private static void nullableOptionalsHelper(
+            int scale,
+            @NotNull String input,
+            @NotNull String output,
+            double emptyFrequency
+    ) {
+        Iterable<NullableOptional<Integer>> xs = P.withScale(scale)
+                .nullableOptionals(cycle(readIntegerListWithNulls(input)));
+        List<NullableOptional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
+        aeqit(take(TINY_LIMIT, sample), output);
+        aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
+        P.reset();
+    }
+
+    @Test
+    public void testNullableOptionals() {
+        nullableOptionalsHelper(
+                2,
+                "[1]",
+                "[NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional.empty," +
+                " NullableOptional.empty, NullableOptional[1], NullableOptional.empty, NullableOptional.empty," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional.empty, NullableOptional[1]]",
+                0.4992549999935604
+        );
+        nullableOptionalsHelper(
+                8,
+                "[1]",
+                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]]",
+                0.12480700000010415
+        );
+        nullableOptionalsHelper(
+                32,
+                "[1]",
+                "[NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]]",
+                0.031218000000010567
+        );
+        nullableOptionalsHelper(
+                2,
+                "[null, 2, 3]",
+                "[NullableOptional[null], NullableOptional.empty, NullableOptional[2], NullableOptional[3]," +
+                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
+                " NullableOptional[2], NullableOptional.empty, NullableOptional[3], NullableOptional.empty," +
+                " NullableOptional.empty, NullableOptional[null], NullableOptional.empty, NullableOptional.empty," +
+                " NullableOptional[2], NullableOptional[3], NullableOptional.empty, NullableOptional[null]]",
+                0.4992549999935604
+        );
+        nullableOptionalsHelper(
+                8,
+                "[null, 2, 3]",
+                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
+                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
+                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]]",
+                0.12480700000010415
+        );
+        nullableOptionalsHelper(
+                32,
+                "[null, 2, 3]",
+                "[NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
+                " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
+                " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]]",
+                0.031218000000010567
+        );
+        try {
+            toList(P.nullableOptionals(readIntegerListWithNulls("[1, 2, 3]")));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.withScale(1).nullableOptionals(cycle(readIntegerListWithNulls("[1, 2, 3]")));
             fail();
         } catch (IllegalStateException ignored) {}
     }
