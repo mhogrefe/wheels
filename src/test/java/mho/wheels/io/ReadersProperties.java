@@ -4,21 +4,28 @@ import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.structures.FiniteDomainFunction;
+import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
+import static mho.wheels.iterables.IterableUtils.map;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties {
+    private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -37,6 +44,7 @@ public strictfp class ReadersProperties {
             P = config.a;
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
+            propertiesGenericRead();
             propertiesReadBoolean();
             propertiesFindBooleanIn();
             propertiesReadOrdering();
@@ -64,6 +72,23 @@ public strictfp class ReadersProperties {
             propertiesReadString();
         }
         System.out.println("Done");
+    }
+
+    private static void propertiesGenericRead() {
+        initialize("genericRead(Function<String, T>)");
+        Iterable<Pair<Function<String, Integer>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(P.uniformSample(INTEGRAL_CHARS)), P.withNull(P.integers()))
+        );
+        for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
+            genericRead(p.a).apply(p.b);
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            String s = Integer.toString(i);
+            Function<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(s, i)));
+            assertEquals(i, genericRead(f).apply(s).get(), i);
+        }
     }
 
     private static void propertiesReadBoolean() {

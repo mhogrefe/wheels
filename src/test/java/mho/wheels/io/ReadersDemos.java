@@ -5,6 +5,7 @@ import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.function.Function;
@@ -17,12 +18,12 @@ import static mho.wheels.iterables.IterableUtils.take;
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {
     private static final boolean USE_RANDOM = false;
-    private static final String BOOLEAN_CHARS = "aeflrstu";
-    private static final String ORDERING_CHARS = "EGLQT";
-    private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
-    private static final String INTEGRAL_CHARS = "-0123456789";
-    private static final String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
-    private static final String BIG_DECIMAL_CHARS = "+-.0123456789E";
+    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String ORDERING_CHARS = "EGLQT";
+    private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
+    private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
+    private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
+    private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
     private static int LIMIT;
     private static IterableProvider P;
 
