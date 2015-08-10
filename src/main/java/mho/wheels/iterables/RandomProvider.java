@@ -2740,6 +2740,23 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Randomly inserts an element into a given infinite {@code Iterable}. The frequency of the added element is
+     * 1/{@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code x} may be any value of type {@code T}, or null.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite and non-removable.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param x an extra element
+     * @param xs an {@code Iterable}
+     * @param <T> the type of elements that {@code xs} contains
+     * @return {@code xs} with copies of {@code x} randomly inserted.
+     */
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
         if (scale < 2) {
