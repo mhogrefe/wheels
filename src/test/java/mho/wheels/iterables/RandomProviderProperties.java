@@ -2317,6 +2317,17 @@ public class RandomProviderProperties {
                 fail(p);
             } catch (IllegalStateException ignored) {}
         }
+
+        psFail2 = P.pairs(
+                filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
+                map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, P.listsWithElement(null, P.integers()))))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
+            try {
+                toList(p.a.optionals(p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
     }
 
     private static void propertiesNullableOptionals() {
