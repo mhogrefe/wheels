@@ -7,8 +7,10 @@ import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 
 import java.util.Collections;
+import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.fromString;
 import static mho.wheels.iterables.IterableUtils.take;
 
@@ -36,13 +38,12 @@ public class ReadersDemos {
 
     private static void demoGenericRead() {
         initialize();
-        Iterable<Pair<String, Integer>> ps = P.pairs(
-                P.strings(P.uniformSample(INTEGRAL_CHARS)),
-                P.withNull(P.integers())
+        Iterable<Pair<Function<String, Integer>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(P.uniformSample(INTEGRAL_CHARS)), P.withNull(P.integers()))
         );
-        for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            FiniteDomainFunction<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(p));
-            System.out.println("genericRead(" + f + ").apply(" + p.a + ") = " + genericRead(f).apply(p.a));
+        for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
+            System.out.println("genericRead(" + p.a + ").apply(" + p.b + ") = " + genericRead(p.a).apply(p.b));
         }
     }
 
