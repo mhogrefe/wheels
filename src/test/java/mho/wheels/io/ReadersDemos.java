@@ -2,17 +2,13 @@ package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.Collections;
 
 import static mho.wheels.io.Readers.*;
-import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.iterables.IterableUtils.fromString;
 import static mho.wheels.iterables.IterableUtils.take;
 
@@ -38,17 +34,15 @@ public class ReadersDemos {
         }
     }
 
-    private static void demoGenericFindIn() {
+    private static void demoGenericRead() {
         initialize();
         Iterable<Pair<String, Integer>> ps = P.pairs(
                 P.strings(P.uniformSample(INTEGRAL_CHARS)),
                 P.withNull(P.integers())
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            Map<String, Integer> m = new HashMap<>();
-            m.put(p.a, p.b);
-            FiniteDomainFunction<String, Integer> f = new FiniteDomainFunction<>(m);
-            System.out.println("genericFindIn(" + f + ").apply(" + p.a + ") = " + genericRead(f).apply(p.a));
+            FiniteDomainFunction<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(p));
+            System.out.println("genericRead(" + f + ").apply(" + p.a + ") = " + genericRead(f).apply(p.a));
         }
     }
 
