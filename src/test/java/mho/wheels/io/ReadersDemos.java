@@ -2,12 +2,14 @@ package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
@@ -36,6 +38,10 @@ public class ReadersDemos {
         }
     }
 
+    public static void main(String[] args) {
+        demoGenericFindIn_Iterable_T_String();
+    }
+
     private static void demoGenericRead() {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
@@ -44,6 +50,19 @@ public class ReadersDemos {
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
             System.out.println("genericRead(" + p.a + ").apply(" + p.b + ") = " + genericRead(p.a).apply(p.b));
+        }
+    }
+
+    private static void demoGenericFindIn_Iterable_T_String() {
+        initialize();
+        Iterable<Pair<List<Integer>, String>> ps = P.pairs(
+                filter(IterableUtils::unique, P.lists(P.integers())), //todo use unique list generator!
+                P.strings(P.uniformSample(INTEGRAL_CHARS))
+        );
+        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
+            String listString = tail(init(p.a.toString()));
+            System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
+                    genericFindIn(p.a).apply(p.b));
         }
     }
 

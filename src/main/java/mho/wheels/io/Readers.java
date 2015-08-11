@@ -80,22 +80,25 @@ public class Readers {
     }
 
     /**
-     * Given a small {@code Iterable} of values, returns a function which takes a {@code String} and returns the first
-     * occurrence of one of those values in the {@code String} as determined by the values' {@code toString} method. If
-     * two different values occur at the same index (meaning that one is a prefix of the other), the longer value is
-     * preferred. The value is returned along with the index at which it is found. If no value is found, an empty
-     * {@code Optional} is returned.
+     * Given a small {@code List} of unique values, returns a function which takes a {@code String} and returns the
+     * first occurrence of one of those values in the {@code String} as determined by the values' {@code toString}
+     * method. If two different values occur at the same index (meaning that one is a prefix of the other), the longer
+     * value is preferred. The value is returned along with the index at which it is found. If no value is found, an
+     * empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code xs} cannot contain any nulls.</li>
+     *  <li>{@code xs} cannot contain any nulls and cannot contain any duplicates.</li>
      *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without returning a null.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of values
+     * @param xs a {@code List} of values
      * @param <T> the type of the values in {@code xs}
      * @return a function which takes a {@code String} and returns the first occurrence of a value
      */
-    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull Iterable<T> xs) {
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull List<T> xs) {
+        if (!unique(xs)) {
+            throw new IllegalArgumentException("xs cannot contain any duplicates.");
+        }
         return s -> {
             Iterable<Triple<T, String, Integer>> candidates = filter(
                     u -> u.c != -1,
@@ -728,6 +731,7 @@ public class Readers {
      * @param s the input {@code String}
      * @return ({@code s}, 0)
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull Optional<Pair<String, Integer>> findStringIn(@NotNull String s) {
         return Optional.of(new Pair<>(s, 0));
     }
@@ -962,7 +966,7 @@ public class Readers {
         return s -> {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
             s = tail(init(s));
-            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+            if (s.isEmpty()) return Optional.of(new ArrayList<>());
             String[] tokens = s.split(", ");
             List<T> result = new ArrayList<>();
             int i;

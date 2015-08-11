@@ -1,5 +1,6 @@
 package mho.wheels.math;
 
+import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -151,6 +152,92 @@ public final class MathUtils {
         return x.divide(x.gcd(y)).multiply(y);
     }
 
+    /**
+     * The factorial function {@code n}!
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is a factorial.</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return {@code n}!
+     */
+    public static @NotNull BigInteger factorial(int n) {
+        if (n < 0)
+            throw new ArithmeticException("cannot take factorial of " + n);
+        return productBigInteger(range(BigInteger.ONE, BigInteger.valueOf(n)));
+    }
+
+    /**
+     * The factorial function {@code n}!
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is a factorial.</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return {@code n}!
+     */
+    public static @NotNull BigInteger factorial(@NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot take factorial of " + n);
+        return productBigInteger(range(BigInteger.ONE, n));
+    }
+
+    /**
+     * The subfactorial function !{@code n}
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is a subfactorial (rencontres number).</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return !{@code n}
+     */
+    public static @NotNull BigInteger subfactorial(int n) {
+        if (n < 0)
+            throw new ArithmeticException("cannot take subfactorial of " + n);
+        BigInteger sf = BigInteger.ONE;
+        for (int i = 1; i <= n; i++) {
+            sf = sf.multiply(BigInteger.valueOf(i));
+            if ((i & 1) == 0) {
+                sf = sf.add(BigInteger.ONE);
+            } else {
+                sf = sf.subtract(BigInteger.ONE);
+            }
+        }
+        return sf;
+    }
+
+    /**
+     * The subfactorial function !{@code n}
+     *
+     * <ul>
+     *  <li>{@code n} cannot be negative.</li>
+     *  <li>The result is a subfactorial (rencontres number).</li>
+     * </ul>
+     *
+     * @param n the argument
+     * @return !{@code n}
+     */
+    public static @NotNull BigInteger subfactorial(@NotNull BigInteger n) {
+        if (n.signum() == -1)
+            throw new ArithmeticException("cannot take subfactorial of " + n);
+        BigInteger sf = BigInteger.ONE;
+        for (BigInteger i : range(BigInteger.ONE, n)) {
+            sf = sf.multiply(i);
+            if (i.getLowestSetBit() != 0) {
+                sf = sf.add(BigInteger.ONE);
+            } else {
+                sf = sf.subtract(BigInteger.ONE);
+            }
+        }
+        return sf;
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,
@@ -285,7 +372,7 @@ public final class MathUtils {
 
     public static @NotNull List<Integer> factors(int n) {
         List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
+        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.controlledListsIncreasing(
                 toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
@@ -296,7 +383,7 @@ public final class MathUtils {
 
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
         List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = Combinatorics.controlledListsIncreasing(
+        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.controlledListsIncreasing(
                 toList(map(p -> range(0, p.b), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(

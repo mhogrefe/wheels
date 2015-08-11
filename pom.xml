@@ -42,7 +42,6 @@
                         <include>**/RandomProviderProperties.java</include>
                         <include>**/BinaryFractionTest.java</include>
                         <include>**/BinaryFractionProperties.java</include>
-                        <include>**/CombinatoricsTest.java</include>
                         <include>**/MathUtilsTest.java</include>
                         <include>**/MathUtilsProperties.java</include>
                         <include>**/BigDecimalUtilsTest.java</include>

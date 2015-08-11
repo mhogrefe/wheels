@@ -22,7 +22,6 @@ Progress
 | NoRemoveIterator           | ✔       | ✔       | ✔     | ✔     | ✔          |
 | RandomProvider             | ✘       | ✘       | ✘     | ✘     | ✘          |
 | BinaryFraction             | ✔       | ✔       | ✔     | ✔     | ✔          |
-| Combinatorics              | ✘       | ✘       | ✘     | ✘     | ✘          |
 | MathUtils                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils            | ✔       | ✔       | ✔     | ✔     | ✔          |
 | FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
