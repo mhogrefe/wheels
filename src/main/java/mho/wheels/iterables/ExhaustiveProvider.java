@@ -31,12 +31,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
 
     /**
-     * The transition between algorithms for generating lists of values. If the number of values is less than or equal
-     * to this value, we use lexicographic ordering; otherwise, Z-curve ordering.
-     */
-    private static final int MAX_SIZE_FOR_SHORT_LIST_ALG = 5;
-
-    /**
      * Disallow instantiation
      */
     private ExhaustiveProvider() {}
@@ -1856,7 +1850,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all ordered pairs of elements from {@code as} and {@code bs}
      */
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsIncreasing(
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
@@ -1885,14 +1879,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <C> the type of the third {@code Iterable}'s elements
      * @return all ordered triples of elements from {@code as}, {@code bs}, and {@code cs}
      */
-    public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesIncreasing(
+    public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
         return map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
-                pairsIncreasing(as, (Iterable<Pair<B, C>>) pairsIncreasing(bs, cs))
+                pairsLex(as, (Iterable<Pair<B, C>>) pairsLex(bs, cs))
         );
     }
 
@@ -1921,7 +1915,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @return all ordered quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
-    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesIncreasing(
+    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1929,9 +1923,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b),
-                pairsIncreasing(
-                        (Iterable<Pair<A, B>>) pairsIncreasing(as, bs),
-                        (Iterable<Pair<C, D>>) pairsIncreasing(cs, ds)
+                pairsLex(
+                        (Iterable<Pair<A, B>>) pairsLex(as, bs),
+                        (Iterable<Pair<C, D>>) pairsLex(cs, ds)
                 )
         );
     }
@@ -1965,7 +1959,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
      * {@code es}
      */
-    public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesIncreasing(
+    public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -1974,9 +1968,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Quintuple<>(p.a.a, p.a.b, p.b.a, p.b.b, p.b.c),
-                pairsIncreasing(
-                        (Iterable<Pair<A, B>>) pairsIncreasing(as, bs),
-                        (Iterable<Triple<C, D, E>>) triplesIncreasing(cs, ds, es)
+                pairsLex(
+                        (Iterable<Pair<A, B>>) pairsLex(as, bs),
+                        (Iterable<Triple<C, D, E>>) triplesLex(cs, ds, es)
                 )
         );
     }
@@ -2013,7 +2007,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
      * and {@code fs}
      */
-    public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesIncreasing(
+    public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -2023,9 +2017,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c),
-                pairsIncreasing(
-                        (Iterable<Triple<A, B, C>>) triplesIncreasing(as, bs, cs),
-                        (Iterable<Triple<D, E, F>>) triplesIncreasing(ds, es, fs)
+                pairsLex(
+                        (Iterable<Triple<A, B, C>>) triplesLex(as, bs, cs),
+                        (Iterable<Triple<D, E, F>>) triplesLex(ds, es, fs)
                 )
         );
     }
@@ -2065,7 +2059,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
      * {@code fs}, and {@code gs}
      */
-    public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesIncreasing(
+    public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
@@ -2076,9 +2070,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
-                pairsIncreasing(
-                        (Iterable<Triple<A, B, C>>) triplesIncreasing(as, bs, cs),
-                        (Iterable<Quadruple<D, E, F, G>>) quadruplesIncreasing(ds, es, fs, gs)
+                pairsLex(
+                        (Iterable<Triple<A, B, C>>) triplesLex(as, bs, cs),
+                        (Iterable<Quadruple<D, E, F, G>>) quadruplesLex(ds, es, fs, gs)
                 )
         );
     }
@@ -2103,7 +2097,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all lists of a given length created from {@code xs}
      */
-    public @NotNull <T> Iterable<List<T>> listsIncreasing(int length, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> listsLex(int length, @NotNull Iterable<T> xs) {
         if (length < 0)
             throw new IllegalArgumentException("lists must have a non-negative length");
         if (length == 0) {
@@ -2141,7 +2135,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param s the {@code String} from which characters are selected
      * @return all Strings of a given length created from {@code s}
      */
-    public @NotNull Iterable<String> stringsIncreasing(int length, @NotNull String s) {
+    public @NotNull Iterable<String> stringsLex(int length, @NotNull String s) {
         if (length < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
@@ -2180,7 +2174,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     public @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
-        return concatMap(i -> listsIncreasing(i.intValueExact(), xs), naturalBigIntegers());
+        return concatMap(i -> listsLex(i.intValueExact(), xs), naturalBigIntegers());
     }
 
     /**
@@ -2203,23 +2197,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     public @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Collections.singletonList("");
-        return concatMap(i -> stringsIncreasing(i.intValueExact(), s), naturalBigIntegers());
+        return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
     }
 
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return minSize == 0 ? Collections.singletonList(new ArrayList<>()) : new ArrayList<>();
-        return concatMap(i -> listsIncreasing(i, xs), rangeUp(minSize));
+        return concatMap(i -> listsLex(i, xs), rangeUp(minSize));
     }
 
     public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
         if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : new ArrayList<>();
-        return concatMap(i -> stringsIncreasing(i.intValueExact(), s), naturalBigIntegers());
+        return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
     }
 
-    public @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
+    public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
         if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
         if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
-        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsIncreasing(xss.get(0), xss.get(1)));
+        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), xss.get(1)));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
         for (int i = 0; i < xss.size() / 2; i++) {
@@ -2228,9 +2222,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         for (int i = xss.size() / 2; i < xss.size(); i++) {
             rightList.add(xss.get(i));
         }
-        Iterable<List<T>> leftLists = controlledListsIncreasing(leftList);
-        Iterable<List<T>> rightLists = controlledListsIncreasing(rightList);
-        return map(p -> toList(concat(p.a, p.b)), pairsIncreasing(leftLists, rightLists));
+        Iterable<List<T>> leftLists = controlledListsLex(leftList);
+        Iterable<List<T>> rightLists = controlledListsLex(rightList);
+        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, rightLists));
     }
 
     private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
@@ -3158,7 +3152,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
 
-    public @NotNull <T> Iterable<List<T>> subsetsIncreasing(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             return Collections.singletonList(new ArrayList<T>());
         return () -> new NoRemoveIterator<List<T>>() {
@@ -3191,8 +3185,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
-    public @NotNull Iterable<String> stringSubsetsIncreasing(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsetsIncreasing(fromString(s)));
+    public @NotNull Iterable<String> stringSubsetsLex(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsLex(fromString(s)));
     }
 
     public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {

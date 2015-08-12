@@ -3,7 +3,6 @@ package mho.wheels.iterables;
 import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
-import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.Ordering;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -1989,43 +1988,43 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPairsIncreasing() {
-        aeqit(P.pairsIncreasing(Arrays.asList(1, 2, 3), fromString("abc")),
+        aeqit(P.pairsLex(Arrays.asList(1, 2, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
-        aeqit(P.pairsIncreasing(Arrays.asList(1, null, 3), fromString("abc")),
+        aeqit(P.pairsLex(Arrays.asList(1, null, 3), fromString("abc")),
                 "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
-        aeqit(take(20, P.pairsIncreasing(P.naturalBigIntegers(), fromString("abc"))),
+        aeqit(take(20, P.pairsLex(P.naturalBigIntegers(), fromString("abc"))),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
                 " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
-        aeqit(P.pairsIncreasing(new ArrayList<Integer>(), fromString("abc")), "[]");
-        aeqit(P.pairsIncreasing(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        aeqit(P.pairsLex(new ArrayList<Integer>(), fromString("abc")), "[]");
+        aeqit(P.pairsLex(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
     }
 
     @Test
     public void testTriplesIncreasing() {
-        aeqit(P.triplesIncreasing(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
+        aeqit(P.triplesLex(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeqit(P.triplesIncreasing(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
+        aeqit(P.triplesLex(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
                 " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
                 " (3, c, true)]");
-        aeqit(take(20, P.triplesIncreasing(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
+        aeqit(take(20, P.triplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true)]");
-        aeqit(P.triplesIncreasing(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
+        aeqit(P.triplesLex(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
         aeqit(
-                P.triplesIncreasing(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()),
+                P.triplesLex(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()),
                 "[]"
         );
     }
 
     @Test
     public void testQuadruplesIncreasing() {
-        aeqit(P.quadruplesIncreasing(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
+        aeqit(P.quadruplesLex(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -2037,7 +2036,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
                 " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
                 " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeqit(P.quadruplesIncreasing(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
+        aeqit(P.quadruplesLex(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -2050,13 +2049,13 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
                 " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        aeqit(take(20, P.quadruplesIncreasing(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
+        aeqit(take(20, P.quadruplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
-        aeqit(P.quadruplesIncreasing(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
-        aeqit(P.quadruplesIncreasing(
+        aeqit(P.quadruplesLex(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
+        aeqit(P.quadruplesLex(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -2066,7 +2065,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testQuintuplesIncreasing() {
-        aeqit(P.quintuplesIncreasing(
+        aeqit(P.quintuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2100,7 +2099,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeqit(P.quintuplesIncreasing(
+        aeqit(P.quintuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2137,7 +2136,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeqit(take(20, P.quintuplesIncreasing(
+        aeqit(take(20, P.quintuplesLex(
                         P.naturalBigIntegers(),
                         fromString("abc"),
                         P.booleans(),
@@ -2149,14 +2148,14 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no)]");
-        aeqit(P.quintuplesIncreasing(
+        aeqit(P.quintuplesLex(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
                 P.orderings(),
                 Arrays.asList("yes", "no")
         ), "[]");
-        aeqit(P.quintuplesIncreasing(
+        aeqit(P.quintuplesLex(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -2167,7 +2166,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testSextuplesIncreasing() {
-        aeqit(P.sextuplesIncreasing(
+        aeqit(P.sextuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2247,7 +2246,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeqit(P.sextuplesIncreasing(
+        aeqit(P.sextuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2339,7 +2338,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeqit(take(20, P.sextuplesIncreasing(
+        aeqit(take(20, P.sextuplesLex(
                         P.naturalBigIntegers(),
                         fromString("abc"),
                         P.booleans(),
@@ -2354,7 +2353,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, EQ, yes, Infinity), (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity)," +
                 " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
                 " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN)]");
-        aeqit(P.sextuplesIncreasing(
+        aeqit(P.sextuplesLex(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
@@ -2362,7 +2361,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
         ), "[]");
-        aeqit(P.sextuplesIncreasing(
+        aeqit(P.sextuplesLex(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -2376,7 +2375,7 @@ public strictfp class ExhaustiveProviderTest {
     public void testSeptuplesIncreasing() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
-        aeqit(P.septuplesIncreasing(
+        aeqit(P.septuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2601,7 +2600,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeqit(P.septuplesIncreasing(
+        aeqit(P.septuplesLex(
                         (Iterable<Integer>) Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -2826,7 +2825,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeqit(take(20, P.septuplesIncreasing(
+        aeqit(take(20, P.septuplesLex(
                         P.naturalBigIntegers(),
                         fromString("abc"),
                         P.booleans(),
@@ -2845,7 +2844,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
                 " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1])]");
-        aeqit(P.septuplesIncreasing(
+        aeqit(P.septuplesLex(
                 new ArrayList<Integer>(),
                 fromString("abc"),
                 P.booleans(),
@@ -2854,7 +2853,7 @@ public strictfp class ExhaustiveProviderTest {
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 (Iterable<List<Integer>>) Arrays.asList(x, y)
         ), "[]");
-        aeqit(P.septuplesIncreasing(
+        aeqit(P.septuplesLex(
                 new ArrayList<Integer>(),
                 new ArrayList<Character>(),
                 new ArrayList<Boolean>(),
@@ -2867,60 +2866,60 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsIncreasing_int_Iterable() {
-        aeqit(P.listsIncreasing(0, Arrays.asList(1, 2, 3)), "[[]]");
-        aeqit(P.listsIncreasing(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeqit(P.listsIncreasing(2, Arrays.asList(1, 2, 3)),
+        aeqit(P.listsLex(0, Arrays.asList(1, 2, 3)), "[[]]");
+        aeqit(P.listsLex(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
+        aeqit(P.listsLex(2, Arrays.asList(1, 2, 3)),
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        aeqit(P.listsIncreasing(3, Arrays.asList(1, 2, 3)),
+        aeqit(P.listsLex(3, Arrays.asList(1, 2, 3)),
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
                 " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
                 " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
                 " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
 
-        aeqit(P.listsIncreasing(0, Arrays.asList(1, null, 3)), "[[]]");
-        aeqit(P.listsIncreasing(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
-        aeqit(P.listsIncreasing(2, Arrays.asList(1, null, 3)),
+        aeqit(P.listsLex(0, Arrays.asList(1, null, 3)), "[[]]");
+        aeqit(P.listsLex(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
+        aeqit(P.listsLex(2, Arrays.asList(1, null, 3)),
                 "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        aeqit(P.listsIncreasing(3, Arrays.asList(1, null, 3)),
+        aeqit(P.listsLex(3, Arrays.asList(1, null, 3)),
                 "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
                 " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        aeqit(P.listsIncreasing(0, new ArrayList<Integer>()), "[[]]");
-        aeqit(P.listsIncreasing(1, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsIncreasing(2, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsIncreasing(3, new ArrayList<Integer>()), "[]");
+        aeqit(P.listsLex(0, new ArrayList<Integer>()), "[[]]");
+        aeqit(P.listsLex(1, new ArrayList<Integer>()), "[]");
+        aeqit(P.listsLex(2, new ArrayList<Integer>()), "[]");
+        aeqit(P.listsLex(3, new ArrayList<Integer>()), "[]");
         try {
-            P.listsIncreasing(-1, Arrays.asList(1, 2, 3));
+            P.listsLex(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testListsIncreasing_int_String() {
-        aeqit(P.stringsIncreasing(0, "abc"), "[]");
-        aeq(length(P.stringsIncreasing(0, "abc")), 1);
-        aeqit(P.stringsIncreasing(1, "abc"), "[a, b, c]");
-        aeqit(P.stringsIncreasing(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeqit(P.stringsIncreasing(3, "abc"),
+        aeqit(P.stringsLex(0, "abc"), "[]");
+        aeq(length(P.stringsLex(0, "abc")), 1);
+        aeqit(P.stringsLex(1, "abc"), "[a, b, c]");
+        aeqit(P.stringsLex(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        aeqit(P.stringsLex(3, "abc"),
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeqit(P.stringsIncreasing(0, "a"), "[]");
-        aeqit(P.stringsIncreasing(1, "a"), "[a]");
-        aeqit(P.stringsIncreasing(2, "a"), "[aa]");
-        aeqit(P.stringsIncreasing(3, "a"), "[aaa]");
-        aeqit(P.stringsIncreasing(0, ""), "[]");
-        aeq(length(P.stringsIncreasing(0, "")), 1);
-        aeqit(P.stringsIncreasing(1, ""), "[]");
-        aeq(length(P.stringsIncreasing(1, "")), 0);
-        aeqit(P.stringsIncreasing(2, ""), "[]");
-        aeq(length(P.stringsIncreasing(2, "")), 0);
-        aeqit(P.stringsIncreasing(3, ""), "[]");
-        aeq(length(P.stringsIncreasing(3, "")), 0);
+        aeqit(P.stringsLex(0, "a"), "[]");
+        aeqit(P.stringsLex(1, "a"), "[a]");
+        aeqit(P.stringsLex(2, "a"), "[aa]");
+        aeqit(P.stringsLex(3, "a"), "[aaa]");
+        aeqit(P.stringsLex(0, ""), "[]");
+        aeq(length(P.stringsLex(0, "")), 1);
+        aeqit(P.stringsLex(1, ""), "[]");
+        aeq(length(P.stringsLex(1, "")), 0);
+        aeqit(P.stringsLex(2, ""), "[]");
+        aeq(length(P.stringsLex(2, "")), 0);
+        aeqit(P.stringsLex(3, ""), "[]");
+        aeq(length(P.stringsLex(3, "")), 0);
         try {
-            P.stringsIncreasing(-1, "");
+            P.stringsLex(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
