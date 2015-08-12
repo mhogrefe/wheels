@@ -2899,39 +2899,6 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testListsIncreasing_BigInteger_Iterable() {
-        aeqit(P.listsIncreasing(BigInteger.ZERO, Arrays.asList(1, 2, 3)), "[[]]");
-        aeqit(P.listsIncreasing(BigInteger.ONE, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeqit(P.listsIncreasing(IntegerUtils.TWO, Arrays.asList(1, 2, 3)),
-                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        aeqit(P.listsIncreasing(BigInteger.valueOf(3), Arrays.asList(1, 2, 3)),
-                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
-                " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
-                " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
-                " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
-
-        aeqit(P.listsIncreasing(0, Arrays.asList(1, null, 3)), "[[]]");
-        aeqit(P.listsIncreasing(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
-        aeqit(P.listsIncreasing(2, Arrays.asList(1, null, 3)),
-                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        aeqit(P.listsIncreasing(3, Arrays.asList(1, null, 3)),
-                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
-                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
-                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
-                " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
-                " [3, 3, 3]]");
-
-        aeqit(P.listsIncreasing(BigInteger.ZERO, new ArrayList<Integer>()), "[[]]");
-        aeqit(P.listsIncreasing(BigInteger.ONE, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsIncreasing(IntegerUtils.TWO, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsIncreasing(BigInteger.valueOf(3), new ArrayList<Integer>()), "[]");
-        try {
-            P.listsIncreasing(IntegerUtils.NEGATIVE_ONE, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
     public void testListsIncreasing_int_String() {
         aeqit(P.stringsIncreasing(0, "abc"), "[]");
         aeq(length(P.stringsIncreasing(0, "abc")), 1);
@@ -2954,34 +2921,6 @@ public strictfp class ExhaustiveProviderTest {
         aeq(length(P.stringsIncreasing(3, "")), 0);
         try {
             P.stringsIncreasing(-1, "");
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-    }
-
-    @Test
-    public void testListsIncreasing_BigInteger_String() {
-        aeqit(P.stringsIncreasing(BigInteger.ZERO, "abc"), "[]");
-        aeq(length(P.stringsIncreasing(BigInteger.ZERO, "abc")), 1);
-        aeq(length(P.stringsIncreasing(0, "abc")), 1);
-        aeqit(P.stringsIncreasing(BigInteger.ONE, "abc"), "[a, b, c]");
-        aeqit(P.stringsIncreasing(IntegerUtils.TWO, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeqit(P.stringsIncreasing(BigInteger.valueOf(3), "abc"),
-                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
-                " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeqit(P.stringsIncreasing(BigInteger.ZERO, "a"), "[]");
-        aeqit(P.stringsIncreasing(BigInteger.ONE, "a"), "[a]");
-        aeqit(P.stringsIncreasing(IntegerUtils.TWO, "a"), "[aa]");
-        aeqit(P.stringsIncreasing(BigInteger.valueOf(3), "a"), "[aaa]");
-        aeqit(P.stringsIncreasing(BigInteger.ZERO, ""), "[]");
-        aeq(length(P.stringsIncreasing(BigInteger.ZERO, "")), 1);
-        aeqit(P.stringsIncreasing(BigInteger.ONE, ""), "[]");
-        aeq(length(P.stringsIncreasing(BigInteger.ONE, "")), 0);
-        aeqit(P.stringsIncreasing(IntegerUtils.TWO, ""), "[]");
-        aeq(length(P.stringsIncreasing(IntegerUtils.TWO, "")), 0);
-        aeqit(P.stringsIncreasing(BigInteger.valueOf(3), ""), "[]");
-        aeq(length(P.stringsIncreasing(BigInteger.valueOf(3), "")), 0);
-        try {
-            P.stringsIncreasing(IntegerUtils.NEGATIVE_ONE, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

@@ -2124,46 +2124,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
-     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
-     * discouraged.
-     *
-     * <ul>
-     *  <li>{@code length} cannot be negative.</li>
-     *  <li>{@code xs} must be finite.</li>
-     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
-     *  entirely of one empty element.</li>
-     * </ul>
-     *
-     * Result length is |{@code xs}|<sup>{@code length}</sup>
-     *
-     * @param length the length of the result lists
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all lists of a given length created from {@code xs}
-     */
-    public @NotNull <T> Iterable<List<T>> listsIncreasing(@NotNull BigInteger length, @NotNull Iterable<T> xs) {
-        if (lt(length, BigInteger.ZERO))
-            throw new IllegalArgumentException("lists must have a non-negative length");
-        if (eq(length, BigInteger.ZERO)) {
-            return Collections.singletonList(new ArrayList<>());
-        }
-        Function<T, List<T>> makeSingleton = x -> {
-            List<T> list = new ArrayList<>();
-            list.add(x);
-            return list;
-        };
-        List<Iterable<List<T>>> intermediates = new ArrayList<>();
-        intermediates.add(map(makeSingleton, xs));
-        for (BigInteger i : range(BigInteger.ONE, length.subtract(BigInteger.ONE))) {
-            Iterable<List<T>> lists = last(intermediates);
-            intermediates.add(concatMap(x -> map(list -> toList((Iterable<T>) cons(x, list)), lists), xs));
-        }
-        return last(intermediates);
-    }
-
-    /**
      * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
      * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
      * {@code Iterable}. Using long {@code String} is possible but discouraged.
@@ -2201,43 +2161,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
-     * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. Using long {@code String} is possible but discouraged.
-     *
-     * <ul>
-     *  <li>{@code length} cannot be negative.</li>
-     *  <li>{@code s} is non-null.</li>
-     *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
-     *  consists entirely of one empty {@code String}.</li>
-     * </ul>
-     *
-     * Result length is |{@code s}|<sup>{@code length}</sup>
-     *
-     * @param length the length of the result {@code String}
-     * @param s the {@code String} from which characters are selected
-     * @return all Strings of a given length created from {@code s}
-     */
-    public @NotNull Iterable<String> stringsIncreasing(@NotNull BigInteger length, @NotNull String s) {
-        if (lt(length, BigInteger.ZERO))
-            throw new IllegalArgumentException("strings must have a non-negative length");
-        if (s.isEmpty()) {
-            return length.equals(BigInteger.ZERO) ? Collections.singletonList("") : new ArrayList<>();
-        }
-        if (s.length() == 1) {
-            return Collections.singletonList(replicate(length, s.charAt(0)));
-        }
-        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length.intValueExact());
-        Function<BigInteger, String> f = bi -> charsToString(
-                map(
-                        i -> s.charAt(i.intValueExact()),
-                        IntegerUtils.bigEndianDigitsPadded(length.intValueExact(), BigInteger.valueOf(s.length()), bi)
-                )
-        );
-        return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
-    }
-
-    /**
      * Returns an {@code Iterable} containing all lists with elements from a given {@code Iterable}. The lists are in
      * shortlex order; that is, shorter lists precede longer lists, and lists of the same length are ordered
      * lexicographically, matching the order given by the original {@code Iterable}. The {@code Iterable} must be
@@ -2257,7 +2180,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     public @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
-        return concatMap(i -> listsIncreasing(i, xs), naturalBigIntegers());
+        return concatMap(i -> listsIncreasing(i.intValueExact(), xs), naturalBigIntegers());
     }
 
     /**
@@ -2280,10 +2203,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     public @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Collections.singletonList("");
-        return concatMap(i -> stringsIncreasing(i, s), naturalBigIntegers());
+        return concatMap(i -> stringsIncreasing(i.intValueExact(), s), naturalBigIntegers());
     }
 
-    //todo docs
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return minSize == 0 ? Collections.singletonList(new ArrayList<>()) : new ArrayList<>();
         return concatMap(i -> listsIncreasing(i, xs), rangeUp(minSize));
@@ -2291,7 +2213,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
         if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : new ArrayList<>();
-        return concatMap(i -> stringsIncreasing(i, s), naturalBigIntegers());
+        return concatMap(i -> stringsIncreasing(i.intValueExact(), s), naturalBigIntegers());
     }
 
     public @NotNull <T> Iterable<List<T>> controlledListsIncreasing(@NotNull List<Iterable<T>> xss) {
@@ -3027,7 +2949,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull <T> Iterable<List<T>> listsGeneral(int size, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (size == 0) {
             return Collections.singletonList(new ArrayList<T>());
         }
@@ -3049,7 +2972,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull <T> Iterable<List<T>> listsGeneral(Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
             if (bi.equals(BigInteger.ZERO)) {
@@ -3063,7 +2987,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return optionalMap(f::apply, naturalBigIntegers());
     }
 
-    public @NotNull <T> Iterable<List<T>> listsAtLeastGeneral(int minSize, Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (minSize == 0) return lists(xs);
         CachedIterable<T> ii = new CachedIterable<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
@@ -3081,7 +3006,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Pair<>(list.get(0), list.get(1)), listsGeneral(2, xs));
+        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
     }
 
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
@@ -3091,7 +3016,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), listsGeneral(3, xs));
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
     }
 
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
@@ -3101,7 +3026,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), listsGeneral(4, xs));
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
     }
 
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
@@ -3113,7 +3038,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                listsGeneral(5, xs)
+                lists(5, xs)
         );
     }
 
@@ -3126,7 +3051,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(xs)) return new ArrayList<>();
         return map(
                 list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                listsGeneral(6, xs)
+                lists(6, xs)
         );
     }
 
@@ -3147,7 +3072,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         list.get(5),
                         list.get(6)
                 ),
-                listsGeneral(7, xs)
+                lists(7, xs)
         );
     }
 
@@ -3156,60 +3081,33 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
-            return listsIncreasing(size, xs);
-        } else {
-            return listsGeneral(size, xs);
-        }
-    }
-
-    @Override
-    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
-            return listsShortlexAtLeast(minSize, xs);
-        } else {
-            return listsAtLeastGeneral(minSize, xs);
-        }
-    }
-
-    @Override
-    public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        if (length(take(MAX_SIZE_FOR_SHORT_LIST_ALG + 1, xs)) < MAX_SIZE_FOR_SHORT_LIST_ALG + 1) {
-            return listsShortlex(xs);
-        } else {
-            return listsGeneral(xs);
-        }
-    }
-
-    @Override
     public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, listsGeneral(size, cs));
+        return map(IterableUtils::charsToString, lists(size, cs));
     }
 
     @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, listsAtLeastGeneral(minSize, cs));
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, cs));
     }
 
     @Override
     public @NotNull Iterable<String> strings(int size) {
-        return map(IterableUtils::charsToString, listsGeneral(size, characters()));
+        return map(IterableUtils::charsToString, lists(size, characters()));
     }
 
     @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize) {
-        return map(IterableUtils::charsToString, listsAtLeastGeneral(minSize, characters()));
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
     }
 
     @Override
     public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, listsGeneral(cs));
+        return map(IterableUtils::charsToString, lists(cs));
     }
 
     @Override
     public @NotNull Iterable<String> strings() {
-        return map(IterableUtils::charsToString, listsGeneral(characters()));
+        return map(IterableUtils::charsToString, lists(characters()));
     }
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
@@ -3260,7 +3158,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
     }
 
-    public @NotNull <T> Iterable<List<T>> orderedSubsequences(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> subsetsIncreasing(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             return Collections.singletonList(new ArrayList<T>());
         return () -> new NoRemoveIterator<List<T>>() {
@@ -3293,11 +3191,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
-    public @NotNull Iterable<String> orderedSubstrings(@NotNull String s) {
-        return map(IterableUtils::charsToString, orderedSubsequences(fromString(s)));
+    public @NotNull Iterable<String> stringSubsetsIncreasing(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsIncreasing(fromString(s)));
     }
 
-    public @NotNull <T> Iterable<List<T>> subsequences(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
                 Optional::get,
@@ -3308,8 +3206,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull Iterable<String> substrings(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsequences(fromString(s)));
+    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsets(fromString(s)));
     }
 
     /**
