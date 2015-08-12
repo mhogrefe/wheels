@@ -96,6 +96,9 @@ public class Readers {
      * @return a function which takes a {@code String} and returns the first occurrence of a value
      */
     public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull List<T> xs) {
+        if (any(x -> x == null, xs)) {
+            throw new NullPointerException("xs cannot contain any nulls.");
+        }
         if (!unique(xs)) {
             throw new IllegalArgumentException("xs cannot contain any duplicates.");
         }

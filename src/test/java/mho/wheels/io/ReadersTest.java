@@ -95,16 +95,17 @@ public class ReadersTest {
     @Test
     public void testGenericFindIn_Iterable_T_String() {
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 3, 3)).apply("there are 3 numbers").get(), "(3, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are no numbers").isPresent());
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("").isPresent());
         try {
-            genericFindIn(Arrays.asList(1, null, 3)).apply("there are 3 numbers");
+            genericFindIn(Arrays.asList(1, null, 3));
             fail();
         } catch (NullPointerException ignored) {}
-        genericFindIn(Arrays.asList(1, 1, 3)).apply("there are 3 numbers");
+        try {
+            genericFindIn(Arrays.asList(1, 1, 3));
+        } catch (IllegalArgumentException ignored) {}
 
         List<WordyIntegerWithNullToString> xs = new ArrayList<>();
         xs.add(new WordyIntegerWithNullToString(1));
