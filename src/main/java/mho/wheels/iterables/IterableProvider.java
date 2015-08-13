@@ -775,37 +775,59 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return pairs(xs);
     }
+
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return pairs(as, bs);
     }
-    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
-        return pairs(xs);
-    }
+
+    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    );
+
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return pairs(as, bs);
     }
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    );
+
+    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        return pairs(xs);
+    }
+
+    public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
+
+    public @NotNull Iterable<String> permutations(@NotNull String s) {
+        return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
+    }
+
+    public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
+
+    public abstract @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     );
+
+    public abstract @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     );
+
+    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -813,6 +835,9 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     );
+
+    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -821,6 +846,9 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     );
+
+    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -830,15 +858,116 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     );
-    public abstract @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> strings(int size);
+
     public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> strings();
+
+    public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringsAtLeast(int size);
+
+    public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> distinctStrings(int size, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> distinctStrings(int size);
+
+    public abstract @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> distinctStrings(@NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> distinctStrings();
+
+    public abstract @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> distinctStringsAtLeast(int minSize);
+
+    public abstract @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringBags(int size, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringBags(int size);
+
+    public abstract @NotNull <T> Iterable<List<T>> bags(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringBags(@NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringBags();
+
+    public abstract @NotNull <T> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringBagsAtLeast(int minSize);
+
+    public abstract @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringSubsets(int size, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringSubsets(int size);
+
+    public abstract @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringSubsets(@NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringSubsets();
+
+    public abstract @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    public abstract @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull Iterable<Character> cs);
+
+    public abstract @NotNull Iterable<String> stringSubsetsAtLeast(int minSize);
+
+    public @NotNull Iterable<String> stringsWithChar(char c, Iterable<Character> cs) {
+        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(cs), s -> range(0, s.length())));
+    }
+    public @NotNull Iterable<String> stringsWithChar(char c) {
+        return stringsWithChar(c, characters());
+    }
+
+    public @NotNull Iterable<String> stringsWithSubstrings(
+            @NotNull Iterable<String> substrings,
+            @NotNull Iterable<Character> cs
+    ) {
+        return map(
+                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
+                pairsSquareRootOrder(dependentPairs(strings(cs), s -> range(0, s.length())), substrings)
+        );
+    }
+
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
+        return stringsWithSubstrings(substrings, characters());
+    }
+
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
+        return map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, listsAtLeast(1, xs))));
+    }
+
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
         return map(p -> toList(insert(p.a, p.b, element)), dependentPairs(lists(xs), list -> range(0, list.size())));
     }
@@ -850,40 +979,6 @@ public abstract strictfp class IterableProvider {
                 p -> toList(concat(Arrays.asList(take(p.a.b, p.a.a), p.b, drop(p.a.b, p.a.a)))),
                 pairsSquareRootOrder(dependentPairs(lists(xs), list -> range(0, list.size())), subsequences)
         );
-    }
-
-    public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> strings(int size);
-    public abstract @NotNull Iterable<String> stringsAtLeast(int size);
-    public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> strings();
-    public @NotNull Iterable<String> stringsWithChar(char c, Iterable<Character> cs) {
-        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(cs), s -> range(0, s.length())));
-    }
-    public @NotNull Iterable<String> stringsWithChar(char c) {
-        return stringsWithChar(c, characters());
-    }
-    public @NotNull Iterable<String> stringsWithSubstrings(
-            @NotNull Iterable<String> substrings,
-            @NotNull Iterable<Character> cs
-    ) {
-        return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(cs), s -> range(0, s.length())), substrings)
-        );
-    }
-    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
-        return stringsWithSubstrings(substrings, characters());
-    }
-
-    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
-        return map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, listsAtLeast(1, xs))));
-    }
-
-    public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
-    public @NotNull Iterable<String> permutations(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
     }
 
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {

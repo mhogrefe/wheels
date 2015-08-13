@@ -1831,6 +1831,296 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return cons(x, xs);
     }
 
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
+    }
+
+    private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
+            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
+        CachedIterable<A> aii = new CachedIterable<>(as);
+        CachedIterable<B> bii = new CachedIterable<>(bs);
+        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
+            NullableOptional<A> optA = aii.get(p.a.intValueExact());
+            if (!optA.isPresent()) return Optional.empty();
+            NullableOptional<B> optB = bii.get(p.b.intValueExact());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<A, B> p = o.get();
+            Optional<Boolean> lastA = aii.isLast(p.a);
+            Optional<Boolean> lastB = bii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<A, B>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<A, B>>>)
+                                        map(f::apply, naturalBigIntegers())
+                        )
+                )
+        );
+    }
+
+    /**
+     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
+     * linearly but the second grows logarithmically.
+     *
+     * <ul>
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}s.</li>
+     * </ul>
+     *
+     * Result length is |{@code as}||{@code bs}|
+     *
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return pairsByFunction(IntegerUtils::logarithmicDemux, as, bs);
+    }
+
+    /**
+     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
+     * linearly but the second grows logarithmically (hence the name).
+     *
+     * <ul>
+     *  <li>{@code xs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}.</li>
+     * </ul>
+     *
+     * Result length is |{@code xs}|<sup>2</sup>
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in logarithmic order
+     */
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        CachedIterable<T> ii = new CachedIterable<>(xs);
+        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
+            NullableOptional<T> optA = ii.get(p.a.intValueExact());
+            if (!optA.isPresent()) return Optional.empty();
+            NullableOptional<T> optB = ii.get(p.b.intValueExact());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<T, T> p = o.get();
+            Optional<Boolean> lastA = ii.isLast(p.a);
+            Optional<Boolean> lastB = ii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<T, T>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<T, T>>>)
+                                        IterableUtils.map(f::apply, naturalBigIntegers())
+                        )
+                )
+        );
+    }
+
+    /**
+     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     *
+     * <ul>
+     *  <li>{@code as} is non-null.</li>
+     *  <li>{@code bs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}s.</li>
+     * </ul>
+     *
+     * Result length is |{@code as}||{@code bs}|
+     *
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in square-root order
+     */
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs
+    ) {
+        return pairsByFunction(IntegerUtils::squareRootDemux, as, bs);
+    }
+
+    /**
+     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     *
+     * <ul>
+     *  <li>{@code xs} is non-null.</li>
+     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
+     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
+     *  {@code Iterable}.</li>
+     * </ul>
+     *
+     * Result length is |{@code xs}|<sup>2</sup>
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all pairs of elements from {@code xs} in square-root order
+     */
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        CachedIterable<T> ii = new CachedIterable<>(xs);
+        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
+            Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
+            NullableOptional<T> optA = ii.get(p.a.intValueExact());
+            if (!optA.isPresent()) return Optional.empty();
+            NullableOptional<T> optB = ii.get(p.b.intValueExact());
+            if (!optB.isPresent()) return Optional.empty();
+            return Optional.of(new Pair<>(optA.get(), optB.get()));
+        };
+        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
+            if (!o.isPresent()) return false;
+            Pair<T, T> p = o.get();
+            Optional<Boolean> lastA = ii.isLast(p.a);
+            Optional<Boolean> lastB = ii.isLast(p.b);
+            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+        };
+        return map(
+                Optional::get,
+                filter(
+                        Optional<Pair<T, T>>::isPresent,
+                        stopAt(
+                                lastPair,
+                                (Iterable<Optional<Pair<T, T>>>)
+                                        IterableUtils.map(f::apply, naturalBigIntegers())
+                        )
+                )
+        );
+    }
+
+    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
+        return () -> new NoRemoveIterator<List<Integer>>() {
+            private List<Integer> indices = start;
+
+            @Override
+            public boolean hasNext() {
+                return indices != null;
+            }
+
+            @Override
+            public List<Integer> next() {
+                List<Integer> oldIndices = indices;
+                if (weaklyDecreasing(indices)) {
+                    indices = null;
+                } else {
+                    int i;
+                    int previous = -1;
+                    for (i = indices.size() - 1; i >= 0; i--) {
+                        if (indices.get(i) < previous) break;
+                        previous = indices.get(i);
+                    }
+                    i++;
+                    Iterable<Integer> prefix = take(i - 1, indices);
+                    Iterable<Integer> suffix = drop(i - 1, indices);
+                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
+                    indices = toList(
+                            concat(
+                                    (Iterable<Iterable<Integer>>) Arrays.asList(
+                                            prefix,
+                                            Collections.singletonList(pivot),
+                                            sort(delete(pivot, suffix))
+                                    )
+                            )
+                    );
+                }
+                return oldIndices;
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+        List<T> nub = toList(nub(xs));
+        Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
+        List<Integer> startingIndices = sort(map(indexMap::get, xs));
+        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
+     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
+     * discouraged.
+     *
+     * <ul>
+     *  <li>{@code length} cannot be negative.</li>
+     *  <li>{@code xs} must be finite.</li>
+     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
+     *  entirely of one empty element.</li>
+     * </ul>
+     *
+     * Result length is |{@code xs}|<sup>{@code length}</sup>
+     *
+     * @param length the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all lists of a given length created from {@code xs}
+     */
+    public @NotNull <T> Iterable<List<T>> listsLex(int length, @NotNull Iterable<T> xs) {
+        if (length < 0)
+            throw new IllegalArgumentException("lists must have a non-negative length");
+        if (length == 0) {
+            return Collections.singletonList(new ArrayList<>());
+        }
+        Function<T, List<T>> makeSingleton = x -> {
+            List<T> list = new ArrayList<>();
+            list.add(x);
+            return list;
+        };
+        List<Iterable<List<T>>> intermediates = new ArrayList<>();
+        intermediates.add(map(makeSingleton, xs));
+        for (int i = 1; i < length; i++) {
+            Iterable<List<T>> lists = last(intermediates);
+            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
+        }
+        return last(intermediates);
+    }
+
     /**
      * Given two {@code Iterable}s, returns all ordered pairs of elements from these {@code Iterable}s in increasing
      * order. The second {@code Iterable} must be finite; using a long second {@code Iterable} is possible but
@@ -2078,46 +2368,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
-     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
-     * discouraged.
-     *
-     * <ul>
-     *  <li>{@code length} cannot be negative.</li>
-     *  <li>{@code xs} must be finite.</li>
-     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
-     *  entirely of one empty element.</li>
-     * </ul>
-     *
-     * Result length is |{@code xs}|<sup>{@code length}</sup>
-     *
-     * @param length the length of the result lists
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all lists of a given length created from {@code xs}
-     */
-    public @NotNull <T> Iterable<List<T>> listsLex(int length, @NotNull Iterable<T> xs) {
-        if (length < 0)
-            throw new IllegalArgumentException("lists must have a non-negative length");
-        if (length == 0) {
-            return Collections.singletonList(new ArrayList<>());
-        }
-        Function<T, List<T>> makeSingleton = x -> {
-            List<T> list = new ArrayList<>();
-            list.add(x);
-            return list;
-        };
-        List<Iterable<List<T>>> intermediates = new ArrayList<>();
-        intermediates.add(map(makeSingleton, xs));
-        for (int i = 1; i < length; i++) {
-            Iterable<List<T>> lists = last(intermediates);
-            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
-        }
-        return last(intermediates);
-    }
-
-    /**
      * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
      * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
      * {@code Iterable}. Using long {@code String} is possible but discouraged.
@@ -2210,222 +2460,27 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
     }
 
-    public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
-        if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
-        if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
-        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), xss.get(1)));
-        List<Iterable<T>> leftList = new ArrayList<>();
-        List<Iterable<T>> rightList = new ArrayList<>();
-        for (int i = 0; i < xss.size() / 2; i++) {
-            leftList.add(xss.get(i));
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
+        if (size == 0) {
+            return Collections.singletonList(new ArrayList<T>());
         }
-        for (int i = xss.size() / 2; i < xss.size(); i++) {
-            rightList.add(xss.get(i));
-        }
-        Iterable<List<T>> leftLists = controlledListsLex(leftList);
-        Iterable<List<T>> rightLists = controlledListsLex(rightList);
-        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, rightLists));
-    }
-
-    private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
-            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
-        if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
-            NullableOptional<A> optA = aii.get(p.a.intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.b.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<A, B>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<A, B> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<A, B>>>)
-                                        map(f::apply, naturalBigIntegers())
-                        )
-                )
-        );
-    }
-
-    /**
-     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
-     * linearly but the second grows logarithmically (hence the name).
-     *
-     * <ul>
-     *  <li>{@code xs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}.</li>
-     * </ul>
-     *
-     * Result length is |{@code xs}|<sup>2</sup>
-     *
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all pairs of elements from {@code xs} in logarithmic order
-     */
-    @Override
-    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
         CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
-            NullableOptional<T> optA = ii.get(p.a.intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<T> optB = ii.get(p.b.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
+        Function<BigInteger, Optional<List<T>>> f = bi ->
+                ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, bi)));
+        Predicate<Optional<List<T>>> lastList = o -> {
             if (!o.isPresent()) return false;
-            Pair<T, T> p = o.get();
-            Optional<Boolean> lastA = ii.isLast(p.a);
-            Optional<Boolean> lastB = ii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
+            List<T> list = o.get();
+            for (T x : list) {
+                Optional<Boolean> oLastX = ii.isLast(x);
+                if (!oLastX.isPresent() || !oLastX.get()) return false;
+            }
+            return true;
         };
         return map(
                 Optional::get,
-                filter(
-                        Optional<Pair<T, T>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<T, T>>>)
-                                        IterableUtils.map(f::apply, naturalBigIntegers())
-                        )
-                )
+                filter(Optional::isPresent, stopAt(lastList, map(f::apply, naturalBigIntegers())))
         );
-    }
-
-    /**
-     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
-     * linearly but the second grows logarithmically.
-     *
-     * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}s.</li>
-     * </ul>
-     *
-     * Result length is |{@code as}||{@code bs}|
-     *
-     * @param as the {@code Iterable} from which the first components of the pairs are selected
-     * @param bs the {@code Iterable} from which the second components of the pairs are selected
-     * @param <A> the type of the first {@code Iterable}'s elements
-     * @param <B> the type of the second {@code Iterable}'s elements
-     * @return all pairs of elements from {@code as} and {@code bs} in logarithmic order
-     */
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
-        return pairsByFunction(IntegerUtils::logarithmicDemux, as, bs);
-    }
-
-    /**
-     * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
-     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
-     *
-     * <ul>
-     *  <li>{@code xs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}.</li>
-     * </ul>
-     *
-     * Result length is |{@code xs}|<sup>2</sup>
-     *
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all pairs of elements from {@code xs} in square-root order
-     */
-    @Override
-    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
-            Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
-            NullableOptional<T> optA = ii.get(p.a.intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<T> optB = ii.get(p.b.intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            return Optional.of(new Pair<>(optA.get(), optB.get()));
-        };
-        Predicate<Optional<Pair<T, T>>> lastPair = o -> {
-            if (!o.isPresent()) return false;
-            Pair<T, T> p = o.get();
-            Optional<Boolean> lastA = ii.isLast(p.a);
-            Optional<Boolean> lastB = ii.isLast(p.b);
-            return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<T, T>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<T, T>>>)
-                                        IterableUtils.map(f::apply, naturalBigIntegers())
-                        )
-                )
-        );
-    }
-
-    /**
-     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
-     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
-     *
-     * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}s.</li>
-     * </ul>
-     *
-     * Result length is |{@code as}||{@code bs}|
-     *
-     * @param as the {@code Iterable} from which the first components of the pairs are selected
-     * @param bs the {@code Iterable} from which the second components of the pairs are selected
-     * @param <A> the type of the first {@code Iterable}'s elements
-     * @param <B> the type of the second {@code Iterable}'s elements
-     * @return all pairs of elements from {@code as} and {@code bs} in square-root order
-     */
-    @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
-        return pairsByFunction(IntegerUtils::squareRootDemux, as, bs);
-    }
-
-    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    ) {
-        return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
     /**
@@ -2458,6 +2513,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 as,
                 bs
         );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
     }
 
     /**
@@ -2527,6 +2588,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         )
                 )
         );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
     }
 
     /**
@@ -2606,6 +2673,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         )
                 )
         );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
     }
 
     /**
@@ -2700,6 +2773,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                         IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
                         )
                 )
+        );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                lists(5, xs)
         );
     }
 
@@ -2814,6 +2896,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                         IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
                         )
                 )
+        );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                lists(6, xs)
         );
     }
 
@@ -2944,26 +3035,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        if (size == 0) {
-            return Collections.singletonList(new ArrayList<T>());
-        }
-        CachedIterable<T> ii = new CachedIterable<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi ->
-                ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, bi)));
-        Predicate<Optional<List<T>>> lastList = o -> {
-            if (!o.isPresent()) return false;
-            List<T> list = o.get();
-            for (T x : list) {
-                Optional<Boolean> oLastX = ii.isLast(x);
-                if (!oLastX.isPresent() || !oLastX.get()) return false;
-            }
-            return true;
-        };
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return new ArrayList<>();
         return map(
-                Optional::get,
-                filter(Optional::isPresent, stopAt(lastList, map(f::apply, naturalBigIntegers())))
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                lists(7, xs)
         );
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, lists(size, cs));
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(int size) {
+        return map(IterableUtils::charsToString, lists(size, characters()));
     }
 
     @Override
@@ -2979,6 +3074,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
         };
         return optionalMap(f::apply, naturalBigIntegers());
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
+        return map(IterableUtils::charsToString, lists(cs));
+    }
+
+    @Override
+    public @NotNull Iterable<String> strings() {
+        return map(IterableUtils::charsToString, lists(characters()));
     }
 
     @Override
@@ -2998,95 +3103,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Pair<>(list.get(0), list.get(1)), lists(2, xs));
-    }
-
-    public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return filter(p -> !p.a.equals(p.b), pairs(xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), lists(3, xs));
-    }
-
-    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
-        return filter(t -> !t.a.equals(t.b) && !t.a.equals(t.c) && !t.b.equals(t.c), triples(xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), lists(4, xs));
-    }
-
-    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
-        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quadruple.toList(q)))), quadruples(xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(
-                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
-                lists(5, xs)
-        );
-    }
-
-    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
-        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quintuple.toList(q)))), quintuples(xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(
-                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
-                lists(6, xs)
-        );
-    }
-
-    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
-        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Sextuple.toList(s)))), sextuples(xs));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return new ArrayList<>();
-        return map(
-                list -> new Septuple<>(
-                        list.get(0),
-                        list.get(1),
-                        list.get(2),
-                        list.get(3),
-                        list.get(4),
-                        list.get(5),
-                        list.get(6)
-                ),
-                lists(7, xs)
-        );
-    }
-
-    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
-        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Septuple.toList(s)))), septuples(xs));
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, lists(size, cs));
-    }
-
-    @Override
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
         return map(IterableUtils::charsToString, listsAtLeast(minSize, cs));
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(int size) {
-        return map(IterableUtils::charsToString, lists(size, characters()));
     }
 
     @Override
@@ -3094,63 +3112,84 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
     }
 
-    @Override
-    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, lists(cs));
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(int length, @NotNull Iterable<T> xs) {
+        return null;
     }
 
-    @Override
-    public @NotNull Iterable<String> strings() {
-        return map(IterableUtils::charsToString, lists(characters()));
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull Iterable<T> xs) {
+        return null;
     }
 
-    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
-        return () -> new NoRemoveIterator<List<Integer>>() {
-            private List<Integer> indices = start;
-
-            @Override
-            public boolean hasNext() {
-                return indices != null;
-            }
-
-            @Override
-            public List<Integer> next() {
-                List<Integer> oldIndices = indices;
-                if (weaklyDecreasing(indices)) {
-                    indices = null;
-                } else {
-                    int i;
-                    int previous = -1;
-                    for (i = indices.size() - 1; i >= 0; i--) {
-                        if (indices.get(i) < previous) break;
-                        previous = indices.get(i);
-                    }
-                    i++;
-                    Iterable<Integer> prefix = take(i - 1, indices);
-                    Iterable<Integer> suffix = drop(i - 1, indices);
-                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
-                    indices = toList(
-                            concat(
-                                    (Iterable<Iterable<Integer>>) Arrays.asList(
-                                            prefix,
-                                            Collections.singletonList(pivot),
-                                            sort(delete(pivot, suffix))
-                                    )
-                            )
-                    );
-                }
-                return oldIndices;
-            }
-        };
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull Iterable<T> xs) {
+        return null;
     }
 
-    @Override
-    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
-        List<T> nub = toList(nub(xs));
-        Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
-        List<Integer> startingIndices = sort(map(indexMap::get, xs));
-        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull Iterable<T> xs) {
+        return null;
     }
+
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> distinctStringsLex(int length, @NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> distinctStringsLex(@NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> distinctStringsLexAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    //todo continue with ODSVT
+
+
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
+        return filter(p -> !p.a.equals(p.b), pairs(xs));
+    }
+
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
+        return filter(t -> !t.a.equals(t.b) && !t.a.equals(t.c) && !t.b.equals(t.c), triples(xs));
+    }
+
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
+        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quadruple.toList(q)))), quadruples(xs));
+    }
+
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
+        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quintuple.toList(q)))), quintuples(xs));
+    }
+
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
+        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Sextuple.toList(s)))), sextuples(xs));
+    }
+
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
+        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Septuple.toList(s)))), septuples(xs));
+    }
+
+
+
+
 
     public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -3195,13 +3234,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 Optional::get,
                 takeWhile(
                         Optional::isPresent, map(i -> cxs.select(IntegerUtils.bits(i)),
-                        IterableUtils.rangeUp(BigInteger.ZERO))
+                                IterableUtils.rangeUp(BigInteger.ZERO))
                 )
         );
     }
 
     public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
         return map(IterableUtils::charsToString, subsets(fromString(s)));
+    }
+
+    public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
+        if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
+        if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
+        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), xss.get(1)));
+        List<Iterable<T>> leftList = new ArrayList<>();
+        List<Iterable<T>> rightList = new ArrayList<>();
+        for (int i = 0; i < xss.size() / 2; i++) {
+            leftList.add(xss.get(i));
+        }
+        for (int i = xss.size() / 2; i < xss.size(); i++) {
+            rightList.add(xss.get(i));
+        }
+        Iterable<List<T>> leftLists = controlledListsLex(leftList);
+        Iterable<List<T>> rightLists = controlledListsLex(rightList);
+        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, rightLists));
     }
 
     /**
