@@ -2293,7 +2293,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull Iterable<BigDecimal> positiveBigDecimals() {
         return map(
                 p -> new BigDecimal(p.a, p.b), pairs(positiveBigIntegers(),
-                withScale(secondaryScale).integersGeometric())
+                        withScale(secondaryScale).integersGeometric())
         );
     }
 
@@ -2784,6 +2784,7 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
@@ -2811,8 +2812,42 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+        return () -> new NoRemoveIterator<List<T>>() {
+            Random random = new Random(0x6af477d9a7e54fcaL);
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> shuffled = toList(xs);
+                Collections.shuffle(shuffled, random);
+                return shuffled;
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
+        if (size == 0) {
+            return repeat(Collections.emptyList());
+        } else {
+            return transpose(demux(size, xs));
+        }
+    }
+
+    @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(2, xs);
+        return zip(xss.get(0), xss.get(1));
     }
 
     @Override
@@ -2825,6 +2860,12 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(3, xs);
+        return zip3(xss.get(0), xss.get(1), xss.get(2));
+    }
+
+    @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2832,6 +2873,12 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<D> ds
     ) {
         return zip4(as, bs, cs, ds);
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(4, xs);
+        return zip4(xss.get(0), xss.get(1), xss.get(2), xss.get(3));
     }
 
     @Override
@@ -2846,6 +2893,12 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(5, xs);
+        return zip5(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4));
+    }
+
+    @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2855,6 +2908,12 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<F> fs
     ) {
         return zip6(as, bs, cs, ds, es, fs);
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
+        List<Iterable<T>> xss = demux(6, xs);
+        return zip6(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5));
     }
 
     @Override
@@ -2871,72 +2930,19 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(2, xs);
-        return zip(xss.get(0), xss.get(1));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(3, xs);
-        return zip3(xss.get(0), xss.get(1), xss.get(2));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(4, xs);
-        return zip4(xss.get(0), xss.get(1), xss.get(2), xss.get(3));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(5, xs);
-        return zip5(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4));
-    }
-
-    @Override
-    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(6, xs);
-        return zip6(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5));
-    }
-
-    @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(7, xs);
         return zip7(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5), xss.get(6));
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        if (size == 0) {
-            return repeat(Collections.emptyList());
-        } else {
-            return transpose(demux(size, xs));
-        }
+    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, transpose(demux(size, uniformSample(s))));
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
-        return () -> new NoRemoveIterator<List<T>>() {
-            private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public List<T> next() {
-                int size = sizes.next() + minSize;
-                List<T> list = new ArrayList<>();
-                for (int i = 0; i < size; i++) {
-                    list.add(xsi.next());
-                }
-                return list;
-            }
-        };
+    public @NotNull Iterable<String> strings(int size) {
+        return map(IterableUtils::charsToString, transpose(demux(size, characters())));
     }
 
     @Override
@@ -2964,50 +2970,11 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, transpose(demux(size, cs)));
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Collections.singletonList("");
+    public @NotNull Iterable<String> strings(@NotNull String s) {
+        if (s.isEmpty()) return Collections.singletonList("");
         return () -> new NoRemoveIterator<String>() {
-            private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public String next() {
-                int size = sizes.next() + minSize;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    sb.append(csi.next());
-                }
-                return sb.toString();
-            }
-        };
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(int size) {
-        return strings(size, characters());
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
-        return stringsAtLeast(minSize, characters());
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        if (isEmpty(cs)) return Collections.singletonList("");
-        return () -> new NoRemoveIterator<String>() {
-            private final Iterator<Character> csi = cycle(cs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Character> csi = uniformSample(s).iterator();
+            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -3028,13 +2995,33 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<String> strings() {
-        return strings(characters());
+        return () -> new NoRemoveIterator<String>() {
+            private final @NotNull Iterator<Character> csi = characters().iterator();
+            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+        };
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+    public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new NoRemoveIterator<List<T>>() {
-            Random random = new Random(0x6af477d9a7e54fcaL);
+            private final Iterator<T> xsi = cycle(xs).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -3043,11 +3030,226 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public List<T> next() {
-                List<T> shuffled = toList(xs);
-                Collections.shuffle(shuffled, random);
-                return shuffled;
+                int size = sizes.next() + minSize;
+                List<T> list = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(xsi.next());
+                }
+                return list;
             }
         };
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
+        if (s.isEmpty()) return Collections.singletonList("");
+        return () -> new NoRemoveIterator<String>() {
+            private final Iterator<Character> csi = uniformSample(s).iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next() + minSize;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+        };
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return () -> new NoRemoveIterator<String>() {
+            private final Iterator<Character> csi = characters().iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public String next() {
+                int size = sizes.next() + minSize;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < size; i++) {
+                    sb.append(csi.next());
+                }
+                return sb.toString();
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStrings(int size) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStrings(@NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStrings() {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(int size, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(int size) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(@NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags() {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets(int size) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets() {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize) {
+        return null;
     }
 
     /**

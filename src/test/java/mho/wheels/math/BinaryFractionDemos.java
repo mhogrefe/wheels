@@ -305,7 +305,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoRead_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BINARY_FRACTION_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
             System.out.println("read(" + s + ") = " + read(s));
         }
     }
@@ -319,7 +319,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoFindIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BINARY_FRACTION_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BINARY_FRACTION_CHARS))) {
             System.out.println("findIn(" + s + ") = " + findIn(s));
         }
     }

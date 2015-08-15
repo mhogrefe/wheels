@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -601,7 +600,7 @@ public strictfp class Testing {
         }
 
         if (denseInUsedCharString) {
-            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(P.uniformSample(usedChars)));
+            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(usedChars));
             for (String s : take(limit, ss)) {
                 Optional<T> ox = read.apply(s);
                 validate.accept(ox.get());

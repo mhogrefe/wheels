@@ -3052,8 +3052,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, lists(size, cs));
+    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, lists(size, fromString(s)));
     }
 
     @Override
@@ -3077,8 +3077,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, lists(cs));
+    public @NotNull Iterable<String> strings(@NotNull String s) {
+        return map(IterableUtils::charsToString, lists(fromString(s)));
     }
 
     @Override
@@ -3103,8 +3103,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs) {
-        return map(IterableUtils::charsToString, listsAtLeast(minSize, cs));
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, fromString(s)));
     }
 
     @Override
@@ -3160,36 +3160,165 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return null;
     }
 
-    //todo continue with ODSVT
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull Iterable<T> xs) {
+        return null;
+    }
 
+    public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
+        return null;
+    }
 
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
         return filter(p -> !p.a.equals(p.b), pairs(xs));
     }
 
+    @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
         return filter(t -> !t.a.equals(t.b) && !t.a.equals(t.c) && !t.b.equals(t.c), triples(xs));
     }
 
+    @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
         return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quadruple.toList(q)))), quadruples(xs));
     }
 
+    @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
         return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quintuple.toList(q)))), quintuples(xs));
     }
 
+    @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
         return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Sextuple.toList(s)))), sextuples(xs));
     }
 
+    @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
         return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Septuple.toList(s)))), septuples(xs));
     }
 
+    @Override
+    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
+        return null;
+    }
 
+    @Override
+    public @NotNull Iterable<String> distinctStrings(int size) {
+        return null;
+    }
 
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
+        return null;
+    }
 
+    @Override
+    public @NotNull Iterable<String> distinctStrings(@NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStrings() {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> bagsLex(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringBagsLex(int size, @NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> bagsShortlex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringBagsShortlex(@NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> bagsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringBagsShortlexAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(int size, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(int size) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags(@NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBags() {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize) {
+        return null;
+    }
 
     public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
@@ -3228,6 +3357,46 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, subsetsLex(fromString(s)));
     }
 
+    public @NotNull <T> Iterable<List<T>> subsetsLexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringSubsetsLexAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> subsetsShortlex(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
+        return null;
+    }
+
+    public @NotNull <T> Iterable<List<T>> subsetsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets(int size) {
+        return null;
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
         CachedIterable<T> cxs = new CachedIterable<>(xs);
         return map(
@@ -3239,8 +3408,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    @Override
     public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
         return map(IterableUtils::charsToString, subsets(fromString(s)));
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsets() {
+        return map(IterableUtils::charsToString, subsets(characters()));
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull String s) {
+        return null;
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize) {
+        return null;
     }
 
     public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {

@@ -46,7 +46,7 @@ public class ReadersDemos {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
-                P.pairs(P.strings(P.uniformSample(INTEGRAL_CHARS)), P.withNull(P.integers()))
+                P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
             System.out.println("genericRead(" + p.a + ").apply(" + p.b + ") = " + genericRead(p.a).apply(p.b));
@@ -57,7 +57,7 @@ public class ReadersDemos {
         initialize();
         Iterable<Pair<List<Integer>, String>> ps = P.pairs(
                 filter(IterableUtils::unique, P.lists(P.integers())), //todo use unique list generator!
-                P.strings(P.uniformSample(INTEGRAL_CHARS))
+                P.strings(INTEGRAL_CHARS)
         );
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
@@ -75,7 +75,7 @@ public class ReadersDemos {
 
     private static void demoReadBoolean_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BOOLEAN_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
         }
     }
@@ -89,7 +89,7 @@ public class ReadersDemos {
 
     private static void demoFindBooleanIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BOOLEAN_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("findBooleanIn(" + s + ") = " + findBooleanIn(s));
         }
     }
@@ -103,7 +103,7 @@ public class ReadersDemos {
 
     private static void demoReadOrdering_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(ORDERING_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
         }
     }
@@ -117,7 +117,7 @@ public class ReadersDemos {
 
     private static void demoFindOrderingIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(ORDERING_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
         }
     }
@@ -131,7 +131,7 @@ public class ReadersDemos {
 
     private static void demoReadRoundingMode_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(ROUNDING_MODE_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
         }
     }
@@ -145,7 +145,7 @@ public class ReadersDemos {
 
     private static void demoFindRoundingModeIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(ROUNDING_MODE_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
         }
     }
@@ -159,7 +159,7 @@ public class ReadersDemos {
 
     private static void demoReadBigInteger_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readBigInteger(" + s + ") = " + readBigInteger(s));
         }
     }
@@ -173,7 +173,7 @@ public class ReadersDemos {
 
     private static void demoFindBigIntegerIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
@@ -187,7 +187,7 @@ public class ReadersDemos {
 
     private static void demoReadByte_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readByte(" + s + ") = " + readByte(s));
         }
     }
@@ -201,7 +201,7 @@ public class ReadersDemos {
 
     private static void demoFindByteIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
         }
     }
@@ -215,7 +215,7 @@ public class ReadersDemos {
 
     private static void demoReadShort_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readShort(" + s + ") = " + readShort(s));
         }
     }
@@ -229,7 +229,7 @@ public class ReadersDemos {
 
     private static void demoFindShortIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
         }
     }
@@ -243,7 +243,7 @@ public class ReadersDemos {
 
     private static void demoReadInteger_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readInteger(" + s + ") = " + readInteger(s));
         }
     }
@@ -257,7 +257,7 @@ public class ReadersDemos {
 
     private static void demoFindIntegerIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
         }
     }
@@ -271,7 +271,7 @@ public class ReadersDemos {
 
     private static void demoReadLong_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readLong(" + s + ") = " + readLong(s));
         }
     }
@@ -285,7 +285,7 @@ public class ReadersDemos {
 
     private static void demoFindLongIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(INTEGRAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
         }
     }
@@ -299,7 +299,7 @@ public class ReadersDemos {
 
     private static void demoReadFloat_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(FLOATING_POINT_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readFloat(" + s + ") = " + readFloat(s));
         }
     }
@@ -313,7 +313,7 @@ public class ReadersDemos {
 
     private static void demoFindFloatIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(FLOATING_POINT_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
         }
     }
@@ -327,7 +327,7 @@ public class ReadersDemos {
 
     private static void demoReadDouble_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(FLOATING_POINT_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readDouble(" + s + ") = " + readDouble(s));
         }
     }
@@ -341,7 +341,7 @@ public class ReadersDemos {
 
     private static void demoFindDoubleIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(FLOATING_POINT_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
         }
     }
@@ -355,7 +355,7 @@ public class ReadersDemos {
 
     private static void demoReadBigDecimal_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BIG_DECIMAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
         }
     }
@@ -369,7 +369,7 @@ public class ReadersDemos {
 
     private static void demoFindBigDecimalIn_targeted() {
         initialize();
-        for (String s : take(LIMIT, P.strings(P.uniformSample(BIG_DECIMAL_CHARS)))) {
+        for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
         }
     }

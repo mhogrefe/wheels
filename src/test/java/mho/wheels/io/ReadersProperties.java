@@ -78,7 +78,7 @@ public strictfp class ReadersProperties {
         initialize("genericRead(Function<String, T>)");
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
-                P.pairs(P.strings(P.uniformSample(INTEGRAL_CHARS)), P.withNull(P.integers()))
+                P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
         );
         for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
             genericRead(p.a).apply(p.b);
