@@ -64,6 +64,13 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<Boolean> booleans();
 
     /**
+     * Generates {@link Ordering}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Ordering> orderingsIncreasing() {
+        return orderings();
+    }
+
+    /**
      * Generates {@link Ordering}s.
      */
     public abstract @NotNull Iterable<Ordering> orderings();
@@ -86,6 +93,34 @@ public abstract strictfp class IterableProvider {
      * @param s the source {@code String}
      */
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
+
+    /**
+     * Generates {@code Byte}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Byte> bytesIncreasing() {
+        return bytes();
+    }
+
+    /**
+     * Generates {@code Short}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Short> shortsIncreasing() {
+        return shorts();
+    }
+
+    /**
+     * Generates {@code Integer}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Integer> integersIncreasing() {
+        return integers();
+    }
+
+    /**
+     * Generates {@code Long}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Long> longsIncreasing() {
+        return longs();
+    }
 
     /**
      * Generates positive {@code Byte}s.
@@ -221,9 +256,23 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
 
     /**
+     * Generates ASCII {@code Character}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Character> asciiCharactersIncreasing() {
+        return asciiCharacters();
+    }
+
+    /**
      * Generates ASCII {@code Character}s.
      */
     public abstract @NotNull Iterable<Character> asciiCharacters();
+
+    /**
+     * Generates {@code Character}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Character> charactersIncreasing() {
+        return characters();
+    }
 
     /**
      * Generates {@code Character}s.

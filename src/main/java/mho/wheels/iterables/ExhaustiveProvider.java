@@ -50,6 +50,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 3
      */
+    @Override
     public @NotNull Iterable<Ordering> orderingsIncreasing() {
         return new NoRemoveIterable<>(Arrays.asList(LT, EQ, GT));
     }
@@ -125,6 +126,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>8</sup> = 256
      */
+    @Override
     public @NotNull Iterable<Byte> bytesIncreasing() {
         return IterableUtils.rangeUp(Byte.MIN_VALUE);
     }
@@ -134,6 +136,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>16</sup> = 65,536
      */
+    @Override
     public @NotNull Iterable<Short> shortsIncreasing() {
         return IterableUtils.rangeUp(Short.MIN_VALUE);
     }
@@ -143,6 +146,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>32</sup> = 4,294,967,296
      */
+    @Override
     public @NotNull Iterable<Integer> integersIncreasing() {
         return IterableUtils.rangeUp(Integer.MIN_VALUE);
     }
@@ -152,6 +156,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>64</sup> = 18,446,744,073,709,551,616
      */
+    @Override
     public @NotNull Iterable<Long> longsIncreasing() {
         return IterableUtils.rangeUp(Long.MIN_VALUE);
     }
@@ -412,6 +417,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>7</sup> = 128
      */
+    @Override
     public @NotNull Iterable<Character> asciiCharactersIncreasing() {
         return range((char) 0, (char) 127);
     }
@@ -443,6 +449,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Length is 2<sup>16</sup> = 65,536
      */
+    @Override
     public @NotNull Iterable<Character> charactersIncreasing() {
         return range(Character.MIN_VALUE, Character.MAX_VALUE);
     }
