@@ -820,7 +820,14 @@ public abstract strictfp class IterableProvider {
         return withElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
+    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     );

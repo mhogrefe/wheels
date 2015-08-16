@@ -93,7 +93,7 @@ public class ReadersTest {
     }
 
     @Test
-    public void testGenericFindIn_Iterable_T_String() {
+    public void testGenericFindIn_List_T() {
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");

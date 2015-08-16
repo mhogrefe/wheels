@@ -1846,6 +1846,35 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private @NotNull CachedIterable<A> as = new CachedIterable<>(xs);
+            private @NotNull Map<A, CachedIterable<B>> aToBs = new HashMap<>();
+            private @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Pair<A, B> next() {
+                Pair<Integer, Integer> index = indices.next();
+                A a = as.get(index.a).get();
+                CachedIterable<B> bs = aToBs.get(a);
+                if (bs == null) {
+                    bs = new CachedIterable<>(f.apply(a));
+                    aToBs.put(a, bs);
+                }
+                return new Pair<>(a, bs.get(index.b).get());
+            }
+        };
+    }
+
     private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
             @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
             @NotNull Iterable<A> as,

@@ -2,6 +2,7 @@ package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.FiniteDomainFunction;
@@ -20,8 +21,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
-import static mho.wheels.iterables.IterableUtils.map;
-import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class ReadersProperties {
@@ -45,6 +45,7 @@ public strictfp class ReadersProperties {
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
             propertiesGenericRead();
+            propertiesGenericFindIn_List_T();
             propertiesReadBoolean();
             propertiesFindBooleanIn();
             propertiesReadOrdering();
@@ -88,6 +89,70 @@ public strictfp class ReadersProperties {
             String s = Integer.toString(i);
             Function<String, Integer> f = new FiniteDomainFunction<>(Collections.singletonList(new Pair<>(s, i)));
             assertEquals(i, genericRead(f).apply(s).get(), i);
+        }
+    }
+
+    private static void propertiesGenericFindIn_List_T() {
+        initialize("genericFindIn(List<T>)");
+        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
+        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
+            genericFindIn(p.a).apply(p.b);
+        }
+
+        for (int i : take(LIMIT, P.integers())) {
+            assertEquals(
+                    i,
+                    genericFindIn(Collections.singletonList(i)).apply(Integer.toString(i)).get(),
+                    new Pair<>(i, 0)
+            );
+        }
+
+        //todo use subsetsWithElement
+        ps = map(
+                p -> p.b,
+                P.dependentPairsInfinite(
+                        P.integers(),
+                        i -> P.pairs(
+                                filter(IterableUtils::unique, P.listsWithElement(i, P.integers())),
+                                P.stringsWithSubstrings(Collections.singletonList(i.toString()))
+                        )
+                )
+        );
+        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
+            Optional<Pair<Integer, Integer>> oq = genericFindIn(p.a).apply(p.b);
+            Pair<Integer, Integer> q = oq.get();
+            assertNotNull(p, q.a);
+            assertNotNull(p, q.b);
+            assertTrue(p, q.b >= 0 && q.b < p.b.length());
+            String before = take(q.b, p.b);
+            Optional<Pair<Integer, Integer>> appliedBefore = genericFindIn(p.a).apply(before);
+            assertFalse(p, appliedBefore.isPresent() && appliedBefore.get().a.equals(q.a));
+            String during = q.a.toString();
+            assertTrue(p, p.b.substring(q.b).startsWith(during));
+        }
+
+        Iterable<Pair<List<Integer>, String>> psFail = P.pairs(P.listsWithElement(null, P.integers()), P.strings());
+        for (Pair<List<Integer>, String> p : take(LIMIT, psFail)) {
+            try {
+                genericFindIn(p.a).apply(p.b);
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        Iterable<List<Integer>> nonUniqueLists = nub(
+                map(
+                        p -> toList(insert(p.a, p.b.b, p.b.a)),
+                        P.dependentPairs(
+                                P.listsAtLeast(1, P.integers()),
+                                xs -> P.pairs(P.uniformSample(xs), P.range(0, xs.size()))
+                        )
+                )
+        );
+        for (Pair<List<Integer>, String> p : take(LIMIT, P.pairs(nonUniqueLists, P.strings()))) {
+            try {
+                genericFindIn(p.a).apply(p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 

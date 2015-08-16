@@ -38,10 +38,6 @@ public class ReadersDemos {
         }
     }
 
-    public static void main(String[] args) {
-        demoGenericFindIn_Iterable_T_String();
-    }
-
     private static void demoGenericRead() {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
@@ -53,12 +49,10 @@ public class ReadersDemos {
         }
     }
 
-    private static void demoGenericFindIn_Iterable_T_String() {
+    private static void demoGenericFindIn_List_T() {
         initialize();
-        Iterable<Pair<List<Integer>, String>> ps = P.pairs(
-                filter(IterableUtils::unique, P.lists(P.integers())), //todo use unique list generator!
-                P.strings(INTEGRAL_CHARS)
-        );
+        //todo use distinct lists instead
+        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
             System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
