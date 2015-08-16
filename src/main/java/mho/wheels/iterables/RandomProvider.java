@@ -2947,7 +2947,6 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new NoRemoveIterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
@@ -2971,7 +2970,6 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull Iterable<String> strings(@NotNull String s) {
-        if (s.isEmpty()) return Collections.singletonList("");
         return () -> new NoRemoveIterator<String>() {
             private final @NotNull Iterator<Character> csi = uniformSample(s).iterator();
             private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
@@ -3224,17 +3222,63 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
-        return null;
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final Iterator<T> xsi = xs.iterator();
+            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next();
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < size) {
+                    set.add(xsi.next());
+                }
+                return toList(set);
+            }
+        };
     }
 
     @Override
-    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
-        return null;
+    public @NotNull <T> Iterable<List<T>> subsetsLimited(int maxSize, @NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final Iterator<T> xsi = xs.iterator();
+            private final Iterator<Integer> sizes = filter(i -> i <= maxSize, naturalIntegersGeometric()).iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next();
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < size) {
+                    set.add(xsi.next());
+                }
+                return toList(set);
+            }
+        };
     }
 
     @Override
-    public @NotNull Iterable<String> stringSubsets() {
-        return null;
+    public @NotNull <T> Iterable<List<T>> subsetsUniform(@NotNull List<T> xs) {
+        return () -> new NoRemoveIterator<List<T>>() {
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                return toList(select(booleans(), xs));
+            }
+        };
     }
 
     @Override

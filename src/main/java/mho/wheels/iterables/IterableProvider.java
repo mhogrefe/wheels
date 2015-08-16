@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -933,9 +932,21 @@ public abstract strictfp class IterableProvider {
 
     public abstract @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> stringSubsets(@NotNull String s);
+    public @NotNull <T> Iterable<List<T>> subsetsLimited(int maxSize, @NotNull Iterable<T> xs) {
+        return subsets(xs);
+    }
 
-    public abstract @NotNull Iterable<String> stringSubsets();
+    public @NotNull <T> Iterable<List<T>> subsetsUniform(@NotNull List<T> xs) {
+        return subsetsLimited(xs.size(), uniformSample(xs));
+    }
+
+    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsUniform(toList(fromString(s))));
+    }
+
+    public @NotNull Iterable<String> stringSubsets() {
+        return map(IterableUtils::charsToString, subsetsLimited(1 << 16, characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs);
 

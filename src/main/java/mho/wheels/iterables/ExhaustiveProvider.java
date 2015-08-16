@@ -3409,16 +3409,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsets(fromString(s)));
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsets() {
-        return map(IterableUtils::charsToString, subsets(characters()));
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }

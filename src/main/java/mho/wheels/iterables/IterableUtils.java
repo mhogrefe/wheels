@@ -4624,16 +4624,11 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull String nub(@NotNull String s) {
-        Set<Character> seen = new HashSet<>();
-        StringBuilder sb = new StringBuilder();
+        Set<Character> set = new LinkedHashSet<>();
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (!seen.contains(c)) {
-                seen.add(c);
-                sb.append(c);
-            }
+            set.add(s.charAt(i));
         }
-        return sb.toString();
+        return charsToString(set);
     }
 
     public static <T> boolean unique(@NotNull Iterable<T> xs) {
