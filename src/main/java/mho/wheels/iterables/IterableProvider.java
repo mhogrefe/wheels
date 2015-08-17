@@ -821,6 +821,14 @@ public abstract strictfp class IterableProvider {
         return withElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
     }
 
+    /**
+     * Generates pairs of values where the second value depends on the first.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the first slot
+     */
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
@@ -828,6 +836,15 @@ public abstract strictfp class IterableProvider {
         return dependentPairsInfinite(xs, f);
     }
 
+    /**
+     * Generates pairs of values where the second value depends on the first. Every first value must be associated with
+     * an infinite number of possible second values.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an infinite {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the first slot
+     */
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
