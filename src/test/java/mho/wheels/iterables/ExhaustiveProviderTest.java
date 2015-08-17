@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -1984,6 +1985,32 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(P.nullableOptionals(Arrays.asList(1, 2, 3)),
                 "[NullableOptional.empty, NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
         aeqit(P.nullableOptionals(Collections.emptyList()), "[NullableOptional.empty]");
+    }
+
+    @Test
+    public void testDependentPairs() {
+        Function<Integer, Iterable<String>> f = i -> {
+            switch (i) {
+                case 0: return repeat("beep");
+                case 1: return Collections.emptyList();
+                case 2: return Arrays.asList("a", "b", "c");
+                case 3: return Collections.singletonList("foo");
+            }
+            throw new IllegalArgumentException();
+        };
+        aeqitLimit(TINY_LIMIT, P.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
+                "[(3, foo), (2, a), (2, b), (2, c), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
+                " (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
+                " (0, beep), (0, beep), ...]");
+
+        aeqit(P.dependentPairs(Collections.emptyList(), f), "[]");
+
+        aeqitLimit(TINY_LIMIT, P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
+
+        try {
+        toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
+            fail();
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
