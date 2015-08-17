@@ -3476,6 +3476,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, rightLists));
     }
 
+    @Override
+    public @NotNull Iterable<String> substrings(@NotNull String s) {
+        return nub(super.substrings(s));
+    }
+
     /**
      * Determines whether {@code this} is equal to {@code that}. This implementation is the same as in
      * {@link java.lang.Object#equals}, but repeated here for clarity.

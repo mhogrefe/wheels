@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -1039,6 +1040,7 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
         return map(p -> toList(insert(p.a, p.b, element)), dependentPairs(lists(xs), list -> range(0, list.size())));
     }
+
     public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
             @NotNull Iterable<Iterable<T>> subsequences,
             @NotNull Iterable<T> xs
@@ -1046,6 +1048,17 @@ public abstract strictfp class IterableProvider {
         return map(
                 p -> toList(concat(Arrays.asList(take(p.a.b, p.a.a), p.b, drop(p.a.b, p.a.a)))),
                 pairsSquareRootOrder(dependentPairs(lists(xs), list -> range(0, list.size())), subsequences)
+        );
+    }
+
+    public @NotNull <K, V> Iterable<Map<K, V>> maps(@NotNull List<K> ks, Iterable<V> vs) {
+        return map(xs -> toMap(zip(ks, xs)), lists(ks.size(), vs));
+    }
+
+    public @NotNull Iterable<String> substrings(@NotNull String s) {
+        return map(
+                q -> s.substring(q.a, q.b),
+                filter(p -> p.a <= p.b, pairs(range(0, s.length() - 1), range(0, s.length())))
         );
     }
 

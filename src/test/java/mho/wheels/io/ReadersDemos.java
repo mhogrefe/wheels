@@ -6,10 +6,12 @@ import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
@@ -18,7 +20,7 @@ import static mho.wheels.iterables.IterableUtils.take;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {
-    private static final boolean USE_RANDOM = false;
+    private static final boolean USE_RANDOM = true;
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
@@ -26,6 +28,7 @@ public class ReadersDemos {
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
     private static int LIMIT;
+    private static final int TINY_LIMIT = 100;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -36,6 +39,10 @@ public class ReadersDemos {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
         }
+    }
+
+    public static void main(String[] args) {
+        demoGenericFindIn_Function_String_Optional_T();
     }
 
     private static void demoGenericRead() {
@@ -54,6 +61,25 @@ public class ReadersDemos {
         //todo use distinct lists instead
         Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
+            String listString = tail(init(p.a.toString()));
+            System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
+                    genericFindIn(p.a).apply(p.b));
+        }
+    }
+
+    private static void demoGenericFindIn_Function_String_Optional_T() {
+        initialize();
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(p.b), p.a),
+                P.dependentPairsInfinite(
+                        P.withScale(8).stringsAtLeast(1, INTEGRAL_CHARS),
+                        s -> P.maps(
+                                toList(filter(t -> !t.isEmpty(), ExhaustiveProvider.INSTANCE.substrings(s))),
+                                P.optionals(P.integers())
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(TINY_LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
             System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
                     genericFindIn(p.a).apply(p.b));

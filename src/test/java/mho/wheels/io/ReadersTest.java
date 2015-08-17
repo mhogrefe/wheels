@@ -138,7 +138,7 @@ public class ReadersTest {
     }
 
     @Test
-    public void testGenericFindIn_Function_T_Optional_T_String() {
+    public void testGenericFindIn_Function_String_Optional_T_String() {
         Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
             if (s.equals("one")) return Optional.of(new WordyInteger(1));
             if (s.equals("two")) return Optional.of(new WordyInteger(2));
