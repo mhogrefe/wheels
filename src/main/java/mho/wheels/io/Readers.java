@@ -126,6 +126,24 @@ public class Readers {
         };
     }
 
+    /**
+     * Given a function {@code read} which takes a {@code String} and returns an optional value of type {@code T},
+     * returns a function which finds the first occurrence of a value of {@code T}, according to {@code read}. If there
+     * is a tie for the first occurrence, the value of {@code T} with the longest corresponding {@code String} is
+     * selected. The output is an optional {@code Pair}. if nothing can be found, the result is empty; otherwise, the
+     * first element of the pair is the value found and the second is the index at which it was found.
+     *
+     * <ul>
+     *  <li>{@code read} cannot be null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s}, terminates and does not return null (this condition is not checked for every
+     *  substring).</li>
+     * </ul>
+     *
+     * @param read a function which reads a {@code String} as a value
+     * @param <T> the type of value being searched for
+     * @return a function which takes a {@code String} and returns the first occurrence of a value
+     */
     public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(
             @NotNull Function<String, Optional<T>> read
     ) {
@@ -155,7 +173,7 @@ public class Readers {
      *  possibly contain. (This precondition is not checked.)</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result must be called on {@code String}s {@code s} such that {@code read} always terminates and never
-     *  returns a null on any substring of {@code s}. (This precondition is not checked for every substring.)</li>
+     *  returns a null on any substring of {@code s} (this precondition is not checked for every substring).</li>
      * </ul>
      *
      * @param read a function which converts a {@code String} to a value.
