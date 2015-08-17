@@ -1852,9 +1852,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
-            private @NotNull CachedIterable<A> as = new CachedIterable<>(xs);
-            private @NotNull Map<A, CachedIterable<B>> aToBs = new HashMap<>();
-            private @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
+            private final @NotNull CachedIterable<A> as = new CachedIterable<>(xs);
+            private final @NotNull Map<A, CachedIterable<B>> aToBs = new HashMap<>();
+            private final @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
 
             @Override
             public boolean hasNext() {
@@ -1862,7 +1862,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             }
 
             @Override
-            public Pair<A, B> next() {
+            public @NotNull Pair<A, B> next() {
                 Pair<Integer, Integer> index = indices.next();
                 A a = as.get(index.a).get();
                 CachedIterable<B> bs = aToBs.get(a);
@@ -2071,30 +2071,30 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
         return () -> new NoRemoveIterator<List<Integer>>() {
-            private List<Integer> indices = start;
+            private @NotNull Optional<List<Integer>> indices = Optional.of(start);
 
             @Override
             public boolean hasNext() {
-                return indices != null;
+                return indices.isPresent();
             }
 
             @Override
-            public List<Integer> next() {
-                List<Integer> oldIndices = indices;
-                if (weaklyDecreasing(indices)) {
-                    indices = null;
+            public @NotNull List<Integer> next() {
+                List<Integer> oldIndices = indices.get();
+                if (weaklyDecreasing(indices.get())) {
+                    indices = Optional.empty();
                 } else {
                     int i;
                     int previous = -1;
-                    for (i = indices.size() - 1; i >= 0; i--) {
-                        if (indices.get(i) < previous) break;
-                        previous = indices.get(i);
+                    for (i = indices.get().size() - 1; i >= 0; i--) {
+                        if (indices.get().get(i) < previous) break;
+                        previous = indices.get().get(i);
                     }
                     i++;
-                    Iterable<Integer> prefix = take(i - 1, indices);
-                    Iterable<Integer> suffix = drop(i - 1, indices);
+                    Iterable<Integer> prefix = take(i - 1, indices.get());
+                    Iterable<Integer> suffix = drop(i - 1, indices.get());
                     int pivot = minimum(filter(x -> x > head(suffix), suffix));
-                    indices = toList(
+                    indices = Optional.of(toList(
                             concat(
                                     (Iterable<Iterable<Integer>>) Arrays.asList(
                                             prefix,
@@ -2102,7 +2102,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                             sort(delete(pivot, suffix))
                                     )
                             )
-                    );
+                    ));
                 }
                 return oldIndices;
             }
