@@ -1,11 +1,14 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -347,6 +350,32 @@ public class ExhaustiveProviderDemos {
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
+        }
+    }
+
+    private static void demoDependentPairs_finite() {
+        initialize();
+        IterableProvider PS = P.withScale(4);
+        Iterable<Pair<List<Integer>, Function<Integer, Iterable<Integer>>>> ps = nub(
+                P.dependentPairsInfinite(
+                        PS.lists(P.integers()),
+                        xs -> map(
+                                xss -> new FiniteDomainFunction<>(toMap(zip(xs, xss))),
+                                all(x -> x == 0, xs) ?
+                                        repeat(
+                                                toList(
+                                                        replicate(
+                                                                xs.size(),
+                                                                (Iterable<Integer>) Collections.<Integer>emptyList()
+                                                        )
+                                                )
+                                        ) :
+                                        P.lists(xs.size(), map(is -> (Iterable<Integer>) is, PS.lists(P.integers())))
+                        )
+                )
+        );
+        for (Pair<List<Integer>, Function<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            System.out.println("dependentPairs(" + p.a + ", " + p.b + ") = " + its(EP.dependentPairs(p.a, p.b)));
         }
     }
 }
