@@ -1838,6 +1838,26 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return cons(x, xs);
     }
 
+    /**
+     * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
+     * possible first value to a list of possible second values. For each first value, the second values are listed
+     * consecutively. If all the input lists are unique, the output pairs are unique as well. This method is similar to
+     * {@link ExhaustiveProvider#dependentPairsInfinite(Iterable, Function)}, but with different conditions on the
+     * arguments.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results, except
+     *  possibly the result when applied to the last element of {@code xs} (if it exists) must be finite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}.
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
             @NotNull Iterable<A> xs,
