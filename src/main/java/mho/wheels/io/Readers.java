@@ -185,6 +185,7 @@ public class Readers {
             @NotNull Function<String, Optional<T>> read,
             @NotNull String usedChars
     ) {
+        Function<String, Optional<Pair<T, Integer>>> findIn = genericFindIn(read);
         return s -> {
             if (isEmpty(s)) return Optional.empty();
             Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
@@ -195,7 +196,6 @@ public class Readers {
             } else {
                 mask = cycle(Arrays.asList(false, true));
             }
-            Function<String, Optional<Pair<T, Integer>>> findIn = genericFindIn(read);
             for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
                 Optional<Pair<T, Integer>> oResult = findIn.apply(p.a);
                 if (oResult.isPresent()) {
