@@ -6,8 +6,9 @@ import mho.wheels.structures.Pair;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -18,6 +19,7 @@ public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int SMALL_LIMIT = 1000;
+    private static final int TINY_LIMIT = 100;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -356,26 +358,50 @@ public class ExhaustiveProviderDemos {
     private static void demoDependentPairs_finite() {
         initialize();
         IterableProvider PS = P.withScale(4);
-        Iterable<Pair<List<Integer>, Function<Integer, Iterable<Integer>>>> ps = nub(
-                P.dependentPairsInfinite(
-                        PS.lists(P.integers()),
-                        xs -> map(
-                                xss -> new FiniteDomainFunction<>(toMap(zip(xs, xss))),
-                                all(x -> x == 0, xs) ?
-                                        repeat(
-                                                toList(
-                                                        replicate(
-                                                                xs.size(),
-                                                                (Iterable<Integer>) Collections.<Integer>emptyList()
-                                                        )
-                                                )
-                                        ) :
-                                        P.lists(xs.size(), map(is -> (Iterable<Integer>) is, PS.lists(P.integers())))
+        Iterable<Pair<List<Integer>, Function<Integer, Iterable<Integer>>>> ps = P.dependentPairsInfinite(
+                PS.lists(P.integers()),
+                xs -> xs.isEmpty() ?
+                        repeat(new FiniteDomainFunction<>(new HashMap<>())) :
+                        map(
+                                FiniteDomainFunction::new,
+                                PS.maps(xs, map(is -> (Iterable<Integer>) is, PS.lists(P.integers())))
                         )
-                )
         );
+        if (P instanceof ExhaustiveProvider) {
+            ps = nub(ps);
+        }
         for (Pair<List<Integer>, Function<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             System.out.println("dependentPairs(" + p.a + ", " + p.b + ") = " + its(EP.dependentPairs(p.a, p.b)));
+        }
+    }
+
+    private static void demoDependentPairs_infinite() {
+        initialize();
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new HashMap<>());
+            } else {
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+            }
+        };
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>, Pair<Iterable<Integer>,
+                Function<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+                );
+        for (Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+            System.out.println("dependentPairsInfinite(" + its(p.a) + ", " + p.b + ") = " +
+                    its(EP.dependentPairs(p.a, p.b)));
         }
     }
 }
