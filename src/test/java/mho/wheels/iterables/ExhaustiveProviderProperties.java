@@ -3,6 +3,7 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -11,10 +12,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -144,6 +143,7 @@ public class ExhaustiveProviderProperties {
             propertiesOptionals();
             propertiesNonEmptyNullableOptionals();
             propertiesNullableOptionals();
+            propertiesDependentPairs();
         }
         System.out.println("Done");
     }
@@ -964,7 +964,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesWithNull() {
-        initialize("withNull(Iterable<Integer>)");
+        initialize("withNull(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
             testNoRemove(withNull);
@@ -985,7 +985,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesNonEmptyOptionals() {
-        initialize("nonEmptyOptionals(Iterable<Integer>)");
+        initialize("nonEmptyOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(neos);
@@ -1001,7 +1001,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesOptionals() {
-        initialize("optionals(Iterable<Integer>)");
+        initialize("optionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
             testNoRemove(os);
@@ -1022,7 +1022,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesNonEmptyNullableOptionals() {
-        initialize("nonEmptyNullableOptionals(Iterable<Integer>)");
+        initialize("nonEmptyNullableOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(nenos);
@@ -1042,7 +1042,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesNullableOptionals() {
-        initialize("nullableOptionals(Iterable<Integer>)");
+        initialize("nullableOptionals(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
             testNoRemove(nos);
@@ -1063,6 +1063,58 @@ public class ExhaustiveProviderProperties {
             assertFalse(xs, head(nos).isPresent());
             assertTrue(xs, all(NullableOptional::isPresent, take(TINY_LIMIT, tail(nos))));
             aeqit(xs, TINY_LIMIT, map(NullableOptional::get, tail(nos)), xs);
+        }
+    }
+
+    private static void propertiesDependentPairs() {
+        initialize("dependentPairs(Iterable<A>, Function<A, Iterable<B>>)");
+        IterableProvider PS = P.withScale(4);
+        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = P.dependentPairsInfinite(
+                PS.lists(P.integers()),
+                xs -> xs.isEmpty() ?
+                        repeat(new FiniteDomainFunction<>(new HashMap<>())) :
+                        map(
+                                FiniteDomainFunction::new,
+                                PS.maps(xs, map(is -> (Iterable<Integer>) is, PS.lists(P.integers())))
+                        )
+        );
+        if (P instanceof ExhaustiveProvider) {
+            ps = nub(ps);
+        }
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
+            testNoRemove(pairs);
+            assertTrue(p, all(q -> q != null, pairs));
+            assertTrue(p, isSubsetOf(map(q -> q.a, pairs), p.a));
+            assertTrue(p, isSubsetOf(map(q -> q.b, pairs), concat(p.b.range())));
+            assertEquals(p, length(pairs), sumInteger(map(i -> length(p.b.apply(i)), p.a)));
+        }
+
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new HashMap<>());
+            } else {
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+            }
+        };
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps2 = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps2)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
         }
     }
 }

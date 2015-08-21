@@ -398,7 +398,7 @@ public class ExhaustiveProviderDemos {
         Iterable<Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>>> ps = map(
                 g,
                 nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
-                );
+        );
         for (Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
             System.out.println("dependentPairs(" + its(p.a) + ", " + p.b + ") = " + its(EP.dependentPairs(p.a, p.b)));
         }
