@@ -8,10 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -2008,9 +2005,37 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLimit(TINY_LIMIT, P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
 
         try {
-        toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
+            toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
             fail();
         } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testDependentPairsInfinite() {
+        Function<Integer, Iterable<String>> f = i -> {
+            switch (i) {
+                case 0: return repeat("beep");
+                case 1: return cycle(Arrays.asList("a", "b"));
+            }
+            throw new IllegalArgumentException();
+        };
+        aeqitLimit(TINY_LIMIT, P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
+                "[(1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b)," +
+                " (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep)," +
+                " (0, beep), ...]");
+
+        try {
+            toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
+            fail();
+        } catch (NullPointerException ignored) {}
+
+        try {
+            toList(P.dependentPairsInfinite(Arrays.asList(0, 1), f));
+        } catch (NoSuchElementException ignored) {}
+
+        try {
+            toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a")));
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test

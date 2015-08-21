@@ -1116,5 +1116,7 @@ public class ExhaustiveProviderProperties {
             testNoRemove(TINY_LIMIT, pairs);
             assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
         }
+
+        //todo test uniqueness
     }
 }
