@@ -1842,8 +1842,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
      * possible first value to a list of possible second values. For each first value, the second values are listed
      * consecutively. If all the input lists are unique, the output pairs are unique as well. This method is similar to
-     * {@link ExhaustiveProvider#dependentPairsInfinite(Iterable, Function)}, but with different conditions on the
-     * arguments.
+     * {@link ExhaustiveProvider#dependentPairsInfinite(Iterable<A>, Function<A, B>)}, but with different conditions on
+     * the arguments.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -1866,6 +1866,26 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
+    /**
+     * Generates all pairs of values, given an infinite list of possible first values of the pairs, and a function
+     * mapping each possible first value to an infinite list of possible second values. The pairs are traversed along a
+     * Z-curve. If all the input lists are unique, the output pairs are unique as well. This method is similar to
+     * {@link ExhaustiveProvider#dependentPairs(Iterable<A>, Function<A, B>)}, but with different conditions on the
+     * arguments.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}.
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
             @NotNull Iterable<A> xs,
