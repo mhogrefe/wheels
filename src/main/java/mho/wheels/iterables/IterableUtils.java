@@ -2502,7 +2502,8 @@ public final strictfp class IterableUtils {
     public static @NotNull <X, Y, ACC> Pair<ACC, List<Y>> mapAccumR(
             @NotNull BiFunction<ACC, X, Pair<ACC, Y>> f,
             @Nullable ACC s,
-            @NotNull Iterable<X> xs) {
+            @NotNull Iterable<X> xs
+    ) {
         return mapAccumL(f, s, reverse(xs));
     }
 

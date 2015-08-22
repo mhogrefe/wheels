@@ -56,6 +56,12 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
         return domainSize() == rangeSize();
     }
 
+    public @NotNull Map<A, B> asMap() {
+        Map<A, B> copy = new HashMap<>();
+        copy.putAll(map);
+        return copy;
+    }
+
     @Override
     public boolean equals(Object o) {
         return this == o || o != null && getClass() == o.getClass() && map.equals(((FiniteDomainFunction) o).map);

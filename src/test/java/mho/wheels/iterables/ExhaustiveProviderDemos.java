@@ -403,4 +403,32 @@ public class ExhaustiveProviderDemos {
             System.out.println("dependentPairs(" + its(p.a) + ", " + p.b + ") = " + its(EP.dependentPairs(p.a, p.b)));
         }
     }
+
+    private static void demoDependentPairsInfinite() {
+        initialize();
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
+                m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+        );
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+            String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
+            System.out.println("dependentPairsInfinite(" + its(p.a) + ", " + niceFunction + ") = " +
+                    its(EP.dependentPairsInfinite(p.a, p.b)));
+        }
+    }
 }

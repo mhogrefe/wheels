@@ -800,33 +800,33 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
         if (s.equals("0")) return Optional.of(ZERO);
         if (s.equals("1")) return Optional.of(ONE);
         return Readers.genericRead(
-            t -> {
-                int leftShiftIndex = s.indexOf(" << ");
-                if (leftShiftIndex != -1) {
-                    Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, leftShiftIndex));
-                    if (!oMantissa.isPresent()) return null;
-                    Optional<Integer> oExponent = Readers.readInteger(s.substring(leftShiftIndex + 4));
-                    if (!oExponent.isPresent()) return null;
-                    return of(oMantissa.get(), oExponent.get());
-                }
-                int rightShiftIndex = s.indexOf(" >> ");
-                if (rightShiftIndex != -1) {
-                    Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, rightShiftIndex));
-                    if (!oMantissa.isPresent()) return null;
-                    String exponentSubstring = s.substring(rightShiftIndex + 4);
-                    int exponent;
-                    if (exponentSubstring.equals(NEGATIVE_MIN_INTEGER)) {
-                        exponent = Integer.MIN_VALUE;
-                    } else {
-                        Optional<Integer> oExponent = Readers.readInteger(exponentSubstring);
+                t -> {
+                    int leftShiftIndex = s.indexOf(" << ");
+                    if (leftShiftIndex != -1) {
+                        Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, leftShiftIndex));
+                        if (!oMantissa.isPresent()) return null;
+                        Optional<Integer> oExponent = Readers.readInteger(s.substring(leftShiftIndex + 4));
                         if (!oExponent.isPresent()) return null;
-                        exponent = -oExponent.get();
+                        return of(oMantissa.get(), oExponent.get());
                     }
-                    return of(oMantissa.get(), exponent);
+                    int rightShiftIndex = s.indexOf(" >> ");
+                    if (rightShiftIndex != -1) {
+                        Optional<BigInteger> oMantissa = Readers.readBigInteger(s.substring(0, rightShiftIndex));
+                        if (!oMantissa.isPresent()) return null;
+                        String exponentSubstring = s.substring(rightShiftIndex + 4);
+                        int exponent;
+                        if (exponentSubstring.equals(NEGATIVE_MIN_INTEGER)) {
+                            exponent = Integer.MIN_VALUE;
+                        } else {
+                            Optional<Integer> oExponent = Readers.readInteger(exponentSubstring);
+                            if (!oExponent.isPresent()) return null;
+                            exponent = -oExponent.get();
+                        }
+                        return of(oMantissa.get(), exponent);
+                    }
+                    Optional<BigInteger> oMantissa = Readers.readBigInteger(s);
+                    return oMantissa.isPresent() ? of(oMantissa.get()) : null;
                 }
-                Optional<BigInteger> oMantissa = Readers.readBigInteger(s);
-                return oMantissa.isPresent() ? of(oMantissa.get()) : null;
-            }
         ).apply(s);
     }
 
