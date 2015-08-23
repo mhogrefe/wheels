@@ -2745,6 +2745,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * 1/{@code scale}. Does not support removal.
      *
      * <ul>
+     *  <li>{@code this} must have a scale of at least 2.</li>
      *  <li>{@code x} may be any value of type {@code T}, or null.</li>
      *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite and non-removable.</li>
@@ -2755,7 +2756,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param x an extra element
      * @param xs an {@code Iterable}
      * @param <T> the type of elements that {@code xs} contains
-     * @return {@code xs} with copies of {@code x} randomly inserted.
+     * @return {@code xs} with copies of {@code x} randomly inserted
      */
     @Override
     public @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs) {
@@ -2784,6 +2785,24 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Generates all pairs of values, given a list of possible first values of the pairs, and a function mapping each
+     * possible first value to a list of possible second values.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
             @NotNull Iterable<A> xs,
