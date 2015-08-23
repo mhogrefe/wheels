@@ -180,22 +180,26 @@ public class ExhaustiveProviderProperties {
     private static void propertiesBooleans() {
         initializeConstant("booleans()");
         biggerTest(EP, EP.booleans(), b -> true);
+        testHasNext(EP.booleans());
     }
 
     private static void propertiesOrderingsIncreasing() {
         initializeConstant("orderingsIncreasing()");
         biggerTest(EP, EP.orderingsIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.orderingsIncreasing()));
+        testHasNext(EP.orderingsIncreasing());
     }
 
     private static void propertiesOrderings() {
         initializeConstant("orderings()");
         biggerTest(EP, EP.orderings(), b -> true);
+        testHasNext(EP.orderings());
     }
 
     private static void propertiesRoundingModes() {
         initializeConstant("roundingModes()");
         biggerTest(EP, EP.roundingModes(), b -> true);
+        testHasNext(EP.roundingModes());
     }
 
     private static void propertiesUniformSample_Iterable() {
@@ -204,6 +208,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Integer> js = EP.uniformSample(is);
             aeqit(is, is, js);
             testNoRemove(js);
+            testHasNext(js);
         }
     }
 
@@ -213,6 +218,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Character> cs = EP.uniformSample(s);
             assertEquals(s, s, charsToString(cs));
             testNoRemove(cs);
+            testHasNext(cs);
         }
     }
 
@@ -220,12 +226,14 @@ public class ExhaustiveProviderProperties {
         initializeConstant("bytesIncreasing()");
         biggerTest(EP, EP.bytesIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.bytesIncreasing()));
+        testHasNext(EP.bytesIncreasing());
     }
 
     private static void propertiesShortsIncreasing() {
         initializeConstant("shortsIncreasing()");
         biggerTest(EP, EP.shortsIncreasing(), b -> true);
         assertTrue(EP, increasing(EP.shortsIncreasing()));
+        testHasNext(EP.shortsIncreasing());
     }
 
     private static void propertiesIntegersIncreasing() {
@@ -244,12 +252,14 @@ public class ExhaustiveProviderProperties {
         initializeConstant("positiveBytes()");
         biggerTest(EP, EP.positiveBytes(), b -> b > 0);
         assertTrue(EP, increasing(EP.positiveBytes()));
+        testHasNext(EP.positiveBytes());
     }
 
     private static void propertiesPositiveShorts() {
         initializeConstant("positiveShorts()");
         biggerTest(EP, EP.positiveShorts(), s -> s > 0);
         assertTrue(EP, increasing(EP.positiveShorts()));
+        testHasNext(EP.positiveShorts());
     }
 
     private static void propertiesPositiveIntegers() {
@@ -274,12 +284,14 @@ public class ExhaustiveProviderProperties {
         initializeConstant("negativeBytes()");
         biggerTest(EP, EP.negativeBytes(), b -> b < 0);
         assertTrue(EP, decreasing(EP.negativeBytes()));
+        testHasNext(EP.negativeBytes());
     }
 
     private static void propertiesNegativeShorts() {
         initializeConstant("negativeShorts()");
         biggerTest(EP, EP.negativeShorts(), s -> s < 0);
         assertTrue(EP, decreasing(EP.negativeShorts()));
+        testHasNext(EP.negativeShorts());
     }
 
     private static void propertiesNegativeIntegers() {
@@ -305,6 +317,7 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.nonzeroBytes(), b -> b != 0);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroBytes())));
+        testHasNext(EP.nonzeroBytes());
     }
 
     private static void propertiesNonzeroShorts() {
@@ -312,6 +325,7 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.nonzeroShorts(), s -> s != 0);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.nonzeroShorts())));
+        testHasNext(EP.nonzeroShorts());
     }
 
     private static void propertiesNonzeroIntegers() {
@@ -338,12 +352,14 @@ public class ExhaustiveProviderProperties {
         initializeConstant("naturalBytes()");
         biggerTest(EP, EP.naturalBytes(), b -> b >= 0);
         assertTrue(EP, increasing(EP.naturalBytes()));
+        testHasNext(EP.naturalBytes());
     }
 
     private static void propertiesNaturalShorts() {
         initializeConstant("naturalShorts()");
         biggerTest(EP, EP.naturalShorts(), s -> s >= 0);
         assertTrue(EP, increasing(EP.naturalShorts()));
+        testHasNext(EP.naturalShorts());
     }
 
     private static void propertiesNaturalIntegers() {
@@ -369,6 +385,7 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.bytes(), b -> true);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.bytes())));
+        testHasNext(EP.bytes());
     }
 
     private static void propertiesShorts() {
@@ -376,6 +393,7 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.shorts(), s -> true);
         //noinspection RedundantCast
         assertTrue(EP, weaklyIncreasing((Iterable<Integer>) map(Math::abs, EP.shorts())));
+        testHasNext(EP.shorts());
     }
 
     private static void propertiesIntegers() {
@@ -402,22 +420,26 @@ public class ExhaustiveProviderProperties {
         initializeConstant("asciiCharactersIncreasing()");
         biggerTest(EP, EP.asciiCharactersIncreasing(), i -> i < 128);
         assertTrue(EP, increasing(EP.asciiCharactersIncreasing()));
+        testHasNext(EP.asciiCharactersIncreasing());
     }
 
     private static void propertiesAsciiCharacters() {
         initializeConstant("asciiCharacters()");
         biggerTest(EP, EP.asciiCharacters(), i -> i < 128);
+        testHasNext(EP.asciiCharacters());
     }
 
     private static void propertiesCharactersIncreasing() {
         initializeConstant("charactersIncreasing()");
         biggerTest(EP, EP.charactersIncreasing(), i -> true);
         assertTrue(EP, increasing(take(LARGE_LIMIT, EP.charactersIncreasing())));
+        testHasNext(EP.charactersIncreasing());
     }
 
     private static void propertiesCharacters() {
         initializeConstant("characters()");
         biggerTest(EP, EP.characters(), i -> true);
+        testHasNext(EP.characters());
     }
 
     private static void propertiesRangeUp_byte() {
@@ -426,6 +448,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Byte> bs = EP.rangeUp(b);
             assertTrue(b, all(c -> c != null, bs));
             testNoRemove(bs);
+            testHasNext(bs);
             assertEquals(b, length(bs), (1 << 7) - b);
             assertTrue(b, unique(bs));
             assertTrue(b, all(c -> c >= b, bs));
@@ -441,6 +464,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(s, ss, t -> t >= s);
             //noinspection RedundantCast
             assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            if (Short.MAX_VALUE - s < 1 << 8) {
+                testHasNext(ss);
+            }
         }
     }
 
@@ -451,6 +477,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(i, is, j -> j >= i);
             //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
+            if ((long) Integer.MAX_VALUE - i < 1L << 8) {
+                testHasNext(is);
+            }
         }
     }
 
@@ -461,6 +490,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(l, ls, m -> m >= l);
             //noinspection RedundantCast
             assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
+            if (lt(BigInteger.valueOf(Long.MAX_VALUE).subtract(BigInteger.valueOf(l)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
         }
     }
 
@@ -479,6 +511,9 @@ public class ExhaustiveProviderProperties {
             Iterable<Character> cs = EP.rangeUp(c);
             simpleTest(nicePrint(c), cs, d -> d >= c);
             assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
+            if (Character.MAX_VALUE - c < 1 << 8) {
+                testHasNext(cs);
+            }
         }
     }
 
@@ -493,6 +528,7 @@ public class ExhaustiveProviderProperties {
             assertTrue(b, all(c -> c <= b, bs));
             //noinspection RedundantCast
             assertTrue(b, weaklyIncreasing((Iterable<Integer>) map(Math::abs, bs)));
+            testHasNext(bs);
         }
     }
 
@@ -503,6 +539,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(s, ss, t -> t <= s);
             //noinspection RedundantCast
             assertTrue(s, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
+            if (s - Short.MIN_VALUE < 1 << 8) {
+                testHasNext(ss);
+            }
         }
     }
 
@@ -513,6 +552,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(i, is, j -> j <= i);
             //noinspection RedundantCast
             assertTrue(i, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, is))));
+            if ((long) i - Integer.MIN_VALUE < 1L << 8) {
+                testHasNext(is);
+            }
         }
     }
 
@@ -523,6 +565,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(l, ls, m -> m <= l);
             //noinspection RedundantCast
             assertTrue(l, weaklyIncreasing((Iterable<Long>) map(Math::abs, take(TINY_LIMIT, ls))));
+            if (lt(BigInteger.valueOf(l).subtract(BigInteger.valueOf(Long.MIN_VALUE)), BigInteger.valueOf(1 << 8))) {
+                testHasNext(ls);
+            }
         }
     }
 
@@ -541,6 +586,9 @@ public class ExhaustiveProviderProperties {
             Iterable<Character> cs = EP.rangeDown(c);
             simpleTest(c, cs, d -> d <= c);
             assertTrue(nicePrint(c), increasing(take(TINY_LIMIT, cs)));
+            if (c < 1 << 8) {
+                testHasNext(cs);
+            }
         }
     }
 
@@ -550,6 +598,7 @@ public class ExhaustiveProviderProperties {
             Iterable<Byte> bs = EP.range(p.a, p.b);
             assertTrue(p, all(b -> b != null, bs));
             testNoRemove(bs);
+            testHasNext(bs);
             assertEquals(p, length(bs), p.a > p.b ? 0 : p.b - p.a + 1);
             assertTrue(p, unique(bs));
             assertTrue(p, all(b -> b >= p.a && b <= p.b, bs));
@@ -573,6 +622,9 @@ public class ExhaustiveProviderProperties {
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, take(TINY_LIMIT, ss))));
             assertEquals(p, p.a > p.b, isEmpty(ss));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(ss);
+            }
         }
 
         for (short s : take(LIMIT, P.shorts())) {
@@ -591,6 +643,9 @@ public class ExhaustiveProviderProperties {
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Integer>) map(Math::abs, tis)));
             assertEquals(p, p.a > p.b, isEmpty(is));
+            if ((long) p.b - p.a < 1L << 8) {
+                testHasNext(is);
+            }
         }
 
         for (int i : take(LIMIT, P.integers())) {
@@ -609,6 +664,9 @@ public class ExhaustiveProviderProperties {
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
             assertEquals(p, p.a > p.b, isEmpty(ls));
+            if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1L << 8))) {
+                testHasNext(ls);
+            }
         }
 
         for (long l : take(LIMIT, P.longs())) {
@@ -626,6 +684,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
             assertTrue(p, weaklyIncreasing(map(BigInteger::abs, tis)));
             assertEquals(p, gt(p.a, p.b), isEmpty(is));
+            if (lt(p.b.subtract(p.a), BigInteger.valueOf(1L << 8))) {
+                testHasNext(is);
+            }
         }
 
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
@@ -641,6 +702,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(p, cs, c -> c >= p.a && c <= p.b);
             assertTrue(p, increasing(tcs));
             assertEquals(p, p.a > p.b, isEmpty(cs));
+            if (p.b - p.a < 1 << 8) {
+                testHasNext(cs);
+            }
         }
 
         for (char c : take(LIMIT, P.characters())) {
@@ -699,6 +763,9 @@ public class ExhaustiveProviderProperties {
             simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
             take(TINY_LIMIT, EP.range(p.a, p.b)).forEach(BinaryFraction::validate);
+            if (ge(p.a, p.b)) {
+                testHasNext(bfs);
+            }
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
@@ -746,6 +813,7 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.doubles(), d -> true);
     }
 
+    //todo testHasNext
     private static void propertiesRangeUp_float() {
         initialize("rangeUp(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
@@ -1131,7 +1199,7 @@ public class ExhaustiveProviderProperties {
             try {
                 toList(EP.dependentPairs(p.a, p.b));
                 fail(p);
-            } catch (NullPointerException ignored) {}
+            } catch (IllegalArgumentException ignored) {}
         }
 
         //todo test uniqueness

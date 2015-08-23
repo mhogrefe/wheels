@@ -484,6 +484,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Byte next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x == b;
                 return x++;
             }
@@ -520,6 +523,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Short next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x == b;
                 return x++;
             }
@@ -556,6 +562,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Integer next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x == b;
                 return x++;
             }
@@ -592,6 +601,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Long next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x == b;
                 return x++;
             }
@@ -628,6 +640,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigInteger next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x.equals(b);
                 BigInteger oldX = x;
                 x = x.add(BigInteger.ONE);
@@ -667,6 +682,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigDecimal next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = gt(x.add(BigDecimal.ONE), b);
                 BigDecimal oldX = x;
                 x = x.add(BigDecimal.ONE);
@@ -705,6 +723,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Character next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 reachedEnd = x == b;
                 return x++;
             }
@@ -817,6 +838,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Byte next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 byte oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
@@ -837,6 +861,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Short next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 short oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
@@ -857,6 +884,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Integer next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 int oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
@@ -877,6 +907,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Long next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 long oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
@@ -897,6 +930,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigInteger next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 BigInteger oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
@@ -917,6 +953,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigDecimal next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 BigDecimal oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? lt(x, a) : gt(x, a);
@@ -937,6 +976,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Character next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 char oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? x < a : x > a;
@@ -958,6 +1000,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Byte next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 byte oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
@@ -979,6 +1024,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Short next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 short oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
@@ -1000,6 +1048,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Integer next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 int oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
@@ -1021,6 +1072,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Long next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 long oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
@@ -1042,6 +1096,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigInteger next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 BigInteger oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
@@ -1063,6 +1120,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public BigDecimal next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 BigDecimal oldX = x;
                 x = x.add(i);
                 reachedEnd = i.signum() == 1 ? gt(x, b) : lt(x, b);
@@ -1084,6 +1144,9 @@ public final strictfp class IterableUtils {
 
             @Override
             public Character next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 char oldX = x;
                 x += i;
                 reachedEnd = i > 0 ? (x > b || x < a) : (x < b || x > a);
