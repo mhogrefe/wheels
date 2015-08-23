@@ -1842,8 +1842,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Generates all pairs of values, given an {@code Iterable} of possible first values of the pairs, and a function
      * mapping each possible first value to an {@code Iterable} of possible second values. For each first value, the
      * second values are listed consecutively. If all the input lists are unique, the output pairs are unique as well.
-     * This method is similar to {@link ExhaustiveProvider#dependentPairsInfinite(Iterable<A>, Function<A, B>)}, but
-     * with different conditions on the arguments.
+     * This method is similar to {@link ExhaustiveProvider#dependentPairsInfinite(Iterable, Function)}, but with
+     * different conditions on the arguments.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -1870,7 +1870,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
      * function mapping each possible first value to an infinite {@code Iterable} of possible second values. The pairs
      * are traversed along a Z-curve. If all the input lists are unique, the output pairs are unique as well. This
-     * method is similar to {@link ExhaustiveProvider#dependentPairs(Iterable<A>, Function<A, B>)}, but with different
+     * method is similar to {@link ExhaustiveProvider#dependentPairs(Iterable, Function)} , but with different
      * conditions on the arguments.
      *
      * <ul>
