@@ -12108,6 +12108,30 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
+    public void dependentPairsInfiniteHelper() {
+        aeqitLimit(
+                TINY_LIMIT,
+                P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
+                "[(2, dv), (2, wv), (4, nsef), (1, y), (5, ytpjg), (2, ic), (5, ughld), (5, agwdm), (3, ucn)," +
+                " (2, py), (1, u), (3, wyy), (1, o), (1, v), (4, sapd), (4, wvrq), (1, x), (3, kcw), (3, zgw)," +
+                " (1, b), ...]"
+        );
+        P.reset();
+
+        try {
+            toList(P.dependentPairsInfinite(P.range(1, 5), i -> null));
+            fail();
+        } catch (NullPointerException ignored) {}
+
+//        toList(
+//                P.dependentPairsInfinite(
+//                        ExhaustiveProvider.INSTANCE.range(1, 5),
+//                        i -> P.strings(i, charsToString(range('a', 'z')))
+//                )
+//        );
+    }
+
+    @Test
     public void testEquals() {
         List<RandomProvider> xs = Arrays.asList(
                 RandomProvider.example(),

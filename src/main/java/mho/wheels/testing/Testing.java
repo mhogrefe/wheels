@@ -427,6 +427,17 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void testHasNext(@NotNull Iterable<T> xs) {
+        Iterator<T> it = xs.iterator();
+        while (it.hasNext()) {
+            it.next();
+        }
+        try {
+            it.next();
+            fail(xs);
+        } catch (Exception ignored) {}
+    }
+
     public static @NotNull <T> String its(@NotNull Iterable<T> xs) {
         return IterableUtils.toString(TINY_LIMIT, xs);
     }
@@ -551,6 +562,7 @@ public strictfp class Testing {
             Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
             aeqit(lxs, deltas, reversed);
             testNoRemove(TINY_LIMIT, deltas);
+            testHasNext(deltas);
         }
 
         for (A x : take(limit, xs)) {
