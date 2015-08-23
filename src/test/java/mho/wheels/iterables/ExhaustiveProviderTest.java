@@ -2031,10 +2031,12 @@ public strictfp class ExhaustiveProviderTest {
 
         try {
             toList(P.dependentPairsInfinite(Arrays.asList(0, 1), f));
+            fail();
         } catch (NoSuchElementException ignored) {}
 
         try {
             toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a")));
+            fail();
         } catch (NoSuchElementException ignored) {}
     }
 

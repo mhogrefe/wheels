@@ -62,6 +62,13 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
         return copy;
     }
 
+    public @NotNull FiniteDomainFunction<A, B> set(A key, B value) {
+        Map<A, B> copy = new HashMap<>();
+        copy.putAll(map);
+        copy.put(key, value);
+        return new FiniteDomainFunction<>(copy);
+    }
+
     @Override
     public boolean equals(Object o) {
         return this == o || o != null && getClass() == o.getClass() && map.equals(((FiniteDomainFunction) o).map);
