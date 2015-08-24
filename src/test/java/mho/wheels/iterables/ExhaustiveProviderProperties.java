@@ -1029,7 +1029,6 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    //todo test hasNext
     private static void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
@@ -1077,6 +1076,7 @@ public class ExhaustiveProviderProperties {
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
             testNoRemove(withNull);
+            testHasNext(withNull);
             assertFalse(xs, isEmpty(withNull));
             assertNull(xs, head(withNull));
             assertTrue(xs, all(i -> i != null, tail(withNull)));
@@ -1098,6 +1098,7 @@ public class ExhaustiveProviderProperties {
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(neos);
+            testHasNext(neos);
             assertEquals(xs, xs.size(), length(neos));
             inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
         }
@@ -1114,6 +1115,7 @@ public class ExhaustiveProviderProperties {
         for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
             testNoRemove(os);
+            testHasNext(os);
             assertFalse(xs, isEmpty(os));
             assertFalse(xs, head(os).isPresent());
             assertTrue(xs, all(Optional::isPresent, tail(os)));
@@ -1135,6 +1137,7 @@ public class ExhaustiveProviderProperties {
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(nenos);
+            testHasNext(nenos);
             assertEquals(xs, xs.size(), length(nenos));
             inverses(
                     EP::nonEmptyNullableOptionals,
@@ -1155,6 +1158,7 @@ public class ExhaustiveProviderProperties {
         for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
             testNoRemove(nos);
+            testHasNext(nos);
             assertFalse(xs, isEmpty(nos));
             assertFalse(xs, head(nos).isPresent());
             assertTrue(xs, all(NullableOptional::isPresent, tail(nos)));
@@ -1193,6 +1197,7 @@ public class ExhaustiveProviderProperties {
         for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
             testNoRemove(pairs);
+            testHasNext(pairs);
             assertTrue(p, all(q -> q != null, pairs));
             assertTrue(p, isSubsetOf(map(q -> q.a, pairs), p.a));
             assertTrue(p, isSubsetOf(map(q -> q.b, pairs), concat(p.b.range())));
