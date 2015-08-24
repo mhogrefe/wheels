@@ -664,7 +664,7 @@ public class ExhaustiveProviderProperties {
             //noinspection RedundantCast
             assertTrue(p, weaklyIncreasing((Iterable<Long>) map(Math::abs, tls)));
             assertEquals(p, p.a > p.b, isEmpty(ls));
-            if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1L << 8))) {
+            if (lt(BigInteger.valueOf(p.b).subtract(BigInteger.valueOf(p.a)), BigInteger.valueOf(1 << 8))) {
                 testHasNext(ls);
             }
         }
@@ -684,7 +684,7 @@ public class ExhaustiveProviderProperties {
             simpleTest(p, is, i -> ge(i, p.a) && le(i, p.b));
             assertTrue(p, weaklyIncreasing(map(BigInteger::abs, tis)));
             assertEquals(p, gt(p.a, p.b), isEmpty(is));
-            if (lt(p.b.subtract(p.a), BigInteger.valueOf(1L << 8))) {
+            if (lt(p.b.subtract(p.a), BigInteger.valueOf(1 << 8))) {
                 testHasNext(is);
             }
         }
@@ -813,7 +813,6 @@ public class ExhaustiveProviderProperties {
         biggerTest(EP, EP.doubles(), d -> true);
     }
 
-    //todo testHasNext
     private static void propertiesRangeUp_float() {
         initialize("rangeUp(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
@@ -825,6 +824,10 @@ public class ExhaustiveProviderProperties {
                     g -> !Float.isNaN(g) &&
                             ge(FloatingPointUtils.absNegativeZeros(g), FloatingPointUtils.absNegativeZeros(f))
             );
+            if ((long) FloatingPointUtils.toOrderedRepresentation(Float.POSITIVE_INFINITY) -
+                    FloatingPointUtils.toOrderedRepresentation(f) < 1L << 8) {
+                testHasNext(fs);
+            }
         }
     }
 
@@ -839,6 +842,10 @@ public class ExhaustiveProviderProperties {
                     g -> !Float.isNaN(g) &&
                             le(FloatingPointUtils.absNegativeZeros(g), FloatingPointUtils.absNegativeZeros(f))
             );
+            if ((long) FloatingPointUtils.toOrderedRepresentation(f) -
+                    FloatingPointUtils.toOrderedRepresentation(Float.NEGATIVE_INFINITY) < 1L << 8) {
+                testHasNext(fs);
+            }
         }
     }
 
@@ -857,6 +864,10 @@ public class ExhaustiveProviderProperties {
                          le(FloatingPointUtils.absNegativeZeros(f), q.b) ///
             );
             assertEquals(p, gt(q.a, q.b), isEmpty(fs));
+            if ((long) FloatingPointUtils.toOrderedRepresentation(p.b) -
+                    FloatingPointUtils.toOrderedRepresentation(p.a) < 1L << 8) {
+                testHasNext(fs);
+            }
         }
 
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g) && g != 0.0f, P.floats()))) {
@@ -883,6 +894,14 @@ public class ExhaustiveProviderProperties {
                     e -> !Double.isNaN(e) &&
                             ge(FloatingPointUtils.absNegativeZeros(e), FloatingPointUtils.absNegativeZeros(d))
             );
+            boolean condition = lt(
+                    BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(Double.POSITIVE_INFINITY))
+                            .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(d))),
+                    BigInteger.valueOf(1 << 8)
+            );
+            if (condition) {
+                testHasNext(ds);
+            }
         }
     }
 
@@ -897,6 +916,18 @@ public class ExhaustiveProviderProperties {
                     e -> !Double.isNaN(e) &&
                             le(FloatingPointUtils.absNegativeZeros(e), FloatingPointUtils.absNegativeZeros(d))
             );
+            boolean condition = lt(
+                    BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(d))
+                            .subtract(
+                                    BigInteger.valueOf(
+                                            FloatingPointUtils.toOrderedRepresentation(Double.NEGATIVE_INFINITY)
+                                    )
+                            ),
+                    BigInteger.valueOf(1 << 8)
+            );
+            if (condition) {
+                testHasNext(ds);
+            }
         }
     }
 
@@ -915,6 +946,14 @@ public class ExhaustiveProviderProperties {
                          le(FloatingPointUtils.absNegativeZeros(f), q.b) ///
             );
             assertEquals(p, gt(q.a, q.b), isEmpty(ds));
+            boolean condition = lt(
+                    BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(p.b))
+                            .subtract(BigInteger.valueOf(FloatingPointUtils.toOrderedRepresentation(p.a))),
+                    BigInteger.valueOf(1 << 8)
+            );
+            if (condition) {
+                testHasNext(ds);
+            }
         }
 
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e) && e != 0.0, P.floats()))) {
@@ -990,6 +1029,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
+    //todo test hasNext
     private static void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
         for (Pair<BigDecimal, BigDecimal> p : take(LIMIT, P.pairs(P.bigDecimals()))) {
