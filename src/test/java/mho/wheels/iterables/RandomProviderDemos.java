@@ -2,12 +2,15 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.random.IsaacPRNG;
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
@@ -1137,6 +1140,46 @@ public class RandomProviderDemos {
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +
                     its(p.a.nullableOptionals(p.b)));
+        }
+    }
+
+    private static void demoDependentPairsInfinite() {
+        initialize();
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
+                m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+        );
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Triple<RandomProvider, Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ts = map(
+                p -> new Triple<>(p.a, p.b.a, p.b.b),
+                P.pairs(
+                        P.randomProvidersDefault(),
+                        map(
+                                g,
+                                nub(
+                                        P.dependentPairsInfinite(
+                                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))),
+                                                f
+                                        )
+                                )
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> t :
+                take(TINY_LIMIT, ts)) {
+            String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(t.c.asMap()))).toString();
+            System.out.println("dependentPairsInfinite(" + t.a + ", " + its(t.b) + ", " + niceFunction + ") = " +
+                    its(t.a.dependentPairsInfinite(t.b, t.c)));
         }
     }
 
