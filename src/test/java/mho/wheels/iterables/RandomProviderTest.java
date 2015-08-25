@@ -12108,7 +12108,7 @@ public strictfp class RandomProviderTest {
     }
 
     @Test
-    public void dependentPairsInfiniteHelper() {
+    public void dependentPairsInfiniteTest() {
         aeqitLimit(
                 TINY_LIMIT,
                 P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
@@ -12123,12 +12123,25 @@ public strictfp class RandomProviderTest {
             fail();
         } catch (NullPointerException ignored) {}
 
-//        toList(
-//                P.dependentPairsInfinite(
-//                        ExhaustiveProvider.INSTANCE.range(1, 5),
-//                        i -> P.strings(i, charsToString(range('a', 'z')))
-//                )
-//        );
+        try {
+            toList(
+                    P.dependentPairsInfinite(
+                            ExhaustiveProvider.INSTANCE.range(1, 5),
+                            i -> P.strings(i, charsToString(range('a', 'z')))
+                    )
+            );
+            fail();
+        } catch (NoSuchElementException ignored) {}
+
+        try {
+            toList(
+                    P.dependentPairsInfinite(
+                            range(1, 5),
+                            i -> P.strings(i, charsToString(range('a', 'z')))
+                    )
+            );
+            fail();
+        } catch (NoSuchElementException ignored) {}
     }
 
     @Test
