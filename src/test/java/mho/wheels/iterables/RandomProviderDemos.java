@@ -1145,6 +1145,7 @@ public class RandomProviderDemos {
 
     private static void demoDependentPairsInfinite() {
         initialize();
+        RandomProvider RP = RandomProvider.example();
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
                 m -> !all(p -> isEmpty(p.b), fromMap(m)),
@@ -1167,7 +1168,7 @@ public class RandomProviderDemos {
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
             System.out.println("dependentPairsInfinite(" + RandomProvider.example() + its(p.a) + ", " + niceFunction +
-                    ") = " + its(RandomProvider.example().dependentPairsInfinite(p.a, p.b)));
+                    ") = " + its(RP.dependentPairsInfinite(p.a, p.b)));
         }
     }
 

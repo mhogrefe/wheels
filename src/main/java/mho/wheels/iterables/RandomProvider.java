@@ -2810,6 +2810,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
             private @NotNull Iterator<A> xsi = xs.iterator();
+            private @NotNull Map<A, Iterator<B>> aToBs = new HashMap<>();
 
             @Override
             public boolean hasNext() {
@@ -2818,8 +2819,13 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public Pair<A, B> next() {
-                A x = xsi.next();
-                return new Pair<>(x, f.apply(x).iterator().next());
+                A a = xsi.next();
+                Iterator<B> bs = aToBs.get(a);
+                if (bs == null) {
+                    bs = f.apply(a).iterator();
+                    aToBs.put(a, bs);
+                }
+                return new Pair<>(a, bs.next());
             }
         };
     }

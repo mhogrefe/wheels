@@ -5,6 +5,7 @@ import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
+import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
@@ -164,6 +165,7 @@ public class RandomProviderProperties {
             propertiesWithNull();
             propertiesOptionals();
             propertiesNullableOptionals();
+            propertiesDependentPairsInfinite();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2364,6 +2366,90 @@ public class RandomProviderProperties {
                 fail(p);
             } catch (IllegalStateException ignored) {}
         }
+    }
+
+    private static void propertiesDependentPairsInfinite() {
+        initialize("dependentPairsInfinite(Iterable<A>, Function<A, Iterable<B>>)");
+        RandomProvider RP = RandomProvider.example();
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
+                m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+        );
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = RP.dependentPairsInfinite(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
+                p -> p.b,
+                P.dependentPairs(
+                        filterInfinite(r -> r.b.domainSize() != 0, ps),
+                        q -> map(k -> new Pair<>(q.a, q.b.set(k, null)), P.uniformSample(toList(q.b.domain())))
+                )
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(RP.dependentPairsInfinite(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new HashMap<>());
+            } else {
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+            }
+        };
+        g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
+            try {
+                toList(RP.dependentPairsInfinite(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail3 = map(
+                p -> new Pair<>(
+                        p.a,
+                        new FiniteDomainFunction<>(toMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b))))
+                ),
+                nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integers()), f))
+        );
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
+            try {
+                toList(RP.dependentPairsInfinite(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        //todo test uniqueness
     }
 
     private static void propertiesEquals() {

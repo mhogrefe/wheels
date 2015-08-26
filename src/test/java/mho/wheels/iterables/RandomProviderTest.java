@@ -12112,9 +12112,9 @@ public strictfp class RandomProviderTest {
         aeqitLimit(
                 TINY_LIMIT,
                 P.dependentPairsInfinite(P.range(1, 5), i -> P.strings(i, charsToString(range('a', 'z')))),
-                "[(2, dv), (2, wv), (4, nsef), (1, y), (5, ytpjg), (2, ic), (5, ughld), (5, agwdm), (3, ucn)," +
-                " (2, py), (1, u), (3, wyy), (1, o), (1, v), (4, sapd), (4, wvrq), (1, x), (3, kcw), (3, zgw)," +
-                " (1, b), ...]"
+                "[(2, dv), (2, fr), (2, vk), (3, hem), (3, edf), (1, y), (3, wki), (3, ljo), (4, fwll), (3, jvp)," +
+                " (3, wgh), (5, ggvgn), (5, cggwo), (2, xn), (1, e), (2, zj), (1, o), (5, ijmsc), (3, gyl)," +
+                " (4, rsrl), ...]"
         );
         P.reset();
 
