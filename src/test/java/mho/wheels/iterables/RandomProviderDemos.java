@@ -1160,26 +1160,14 @@ public class RandomProviderDemos {
             );
             return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
         };
-        Iterable<Triple<RandomProvider, Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ts = map(
-                p -> new Triple<>(p.a, p.b.a, p.b.b),
-                P.pairs(
-                        P.randomProvidersDefault(),
-                        map(
-                                g,
-                                nub(
-                                        P.dependentPairsInfinite(
-                                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))),
-                                                f
-                                        )
-                                )
-                        )
-                )
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
         );
-        for (Triple<RandomProvider, Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> t :
-                take(TINY_LIMIT, ts)) {
-            String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(t.c.asMap()))).toString();
-            System.out.println("dependentPairsInfinite(" + t.a + ", " + its(t.b) + ", " + niceFunction + ") = " +
-                    its(t.a.dependentPairsInfinite(t.b, t.c)));
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+            String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
+            System.out.println("dependentPairsInfinite(" + RandomProvider.example() + its(p.a) + ", " + niceFunction +
+                    ") = " + its(RandomProvider.example().dependentPairsInfinite(p.a, p.b)));
         }
     }
 
