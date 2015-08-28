@@ -2042,79 +2042,126 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
-        aeqit(P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (1, c), (3, a), (2, b), (4, a), (1, d)," +
-                " (3, b), (2, c), (4, b), (3, c), (2, d), (4, c), (3, d), (4, d)]");
-        aeqit(P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d)," +
-                " (null, b), (2, c), (4, b), (null, c), (2, d), (4, c), (null, d), (4, d)]");
-        aeqit(P.pairsLogarithmicOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
-        aeqit(P.pairsLogarithmicOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
-        aeqit(take(20, P.pairsLogarithmicOrder(P.naturalBigIntegers(), fromString("abcd"))),
-                "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b)," +
-                " (5, a), (1, c), (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a)]");
-        aeqit(take(20, P.pairsLogarithmicOrder(fromString("abcd"), P.naturalBigIntegers())),
-                "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2)," +
-                " (d, 1), (a, 4), (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6)]");
-        aeqit(take(20, P.pairsLogarithmicOrder(P.positiveBigIntegers(), P.negativeBigIntegers())),
-                "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2)," +
-                " (6, -1), (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3)]");
+        aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (1, c), (3, a), (2, b), (4, a), (1, d), (3, b), (2, c), (4, b), (3, c)," +
+                " (2, d), (4, c), (3, d), (4, d)]"
+        );
+        aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d), (null, b), (2, c), (4, b)," +
+                " (null, c), (2, d), (4, c), (null, d), (4, d)]"
+        );
+        aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsLogarithmicOrder(P.naturalBigIntegers(), fromString("abcd")),
+                "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b), (5, a), (1, c)," +
+                " (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsLogarithmicOrder(fromString("abcd"), P.naturalBigIntegers()),
+                "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2), (d, 1), (a, 4)," +
+                " (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsLogarithmicOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
+                "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2), (6, -1)," +
+                " (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3), ...]"
+        );
     }
 
     @Test
     public void testPairsLogarithmicOrder_Iterable() {
-        aeqit(P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
-                "[(1, 1), (1, 2), (2, 1), (1, 3), (3, 1), (2, 2), (4, 1), (1, 4)," +
-                " (3, 2), (2, 3), (4, 2), (3, 3), (2, 4), (4, 3), (3, 4), (4, 4)]");
-        aeqit(P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
-                "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4)," +
-                " (null, 2), (2, null), (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]");
-        aeqit(P.pairsLogarithmicOrder(new ArrayList<Integer>()), "[]");
-        aeqit(take(20, P.pairsLogarithmicOrder(P.naturalBigIntegers())),
-                "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1)," +
-                " (5, 0), (1, 2), (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2)]");
-        aeqit(take(20, P.pairsLogarithmicOrder((Iterable<BigInteger>) cons(null, P.naturalBigIntegers()))),
+        aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
+                "[(1, 1), (1, 2), (2, 1), (1, 3), (3, 1), (2, 2), (4, 1), (1, 4), (3, 2), (2, 3), (4, 2), (3, 3)," +
+                " (2, 4), (4, 3), (3, 4), (4, 4)]"
+        );
+        aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
+                "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4), (null, 2), (2, null)," +
+                " (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]"
+        );
+        aeqit(P.pairsLogarithmicOrder(Collections.emptyList()), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsLogarithmicOrder(P.naturalBigIntegers()),
+                "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1), (5, 0), (1, 2)," +
+                " (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsLogarithmicOrder(cons(null, P.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
                 " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
-                " (1, 1)]");
+                " (1, 1), ...]"
+        );
     }
 
     @Test
     public void testPairsSquareRootOrder_Iterable_Iterable() {
-        aeqit(P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b)," +
-                " (1, c), (1, d), (2, c), (2, d), (3, c), (3, d), (4, c), (4, d)]");
-        aeqit(P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (null, a), (null, b), (4, a), (4, b)," +
-                " (1, c), (1, d), (2, c), (2, d), (null, c), (null, d), (4, c), (4, d)]");
-        aeqit(P.pairsSquareRootOrder(new ArrayList<Integer>(), fromString("abcd")), "[]");
-        aeqit(P.pairsSquareRootOrder(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
-        aeqit(take(20, P.pairsSquareRootOrder(P.naturalBigIntegers(), fromString("abcd"))),
-                "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d)," +
-                " (1, c), (1, d), (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
-        aeqit(take(20, P.pairsSquareRootOrder(fromString("abcd"), P.naturalBigIntegers())),
-                "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3)," +
-                " (b, 2), (b, 3), (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
-        aeqit(take(20, P.pairsSquareRootOrder(P.positiveBigIntegers(), P.negativeBigIntegers())),
-                "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4)," +
-                " (2, -3), (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2)]");
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
+                " (3, c), (3, d), (4, c), (4, d)]"
+        );
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (null, a), (null, b), (4, a), (4, b), (1, c), (1, d), (2, c)," +
+                " (2, d), (null, c), (null, d), (4, c), (4, d)]"
+        );
+        aeqit(P.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(P.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsSquareRootOrder(P.naturalBigIntegers(), fromString("abcd")),
+                "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d), (1, c), (1, d)," +
+                " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsSquareRootOrder(fromString("abcd"), P.naturalBigIntegers()),
+                "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3), (b, 2), (b, 3)," +
+                " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsSquareRootOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
+                "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4), (2, -3)," +
+                " (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2), ...]"
+        );
     }
 
     @Test
     public void testPairsSquareRootOrder_Iterable() {
-        aeqit(P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2)," +
-                " (1, 3), (1, 4), (2, 3), (2, 4), (3, 3), (3, 4), (4, 3), (4, 4)]");
-        aeqit(P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
-                "[(1, 1), (1, 2), (2, 1), (2, 2), (null, 1), (null, 2), (4, 1), (4, 2)," +
-                " (1, null), (1, 4), (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]");
-        aeqit(P.pairsSquareRootOrder(new ArrayList<Integer>()), "[]");
-        aeqit(take(20, P.pairsSquareRootOrder(P.naturalBigIntegers())),
-                "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3)," +
-                " (1, 2), (1, 3), (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1)]");
-        aeqit(take(20, P.pairsSquareRootOrder((Iterable<BigInteger>) cons(null, P.naturalBigIntegers()))),
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2), (1, 3), (1, 4), (2, 3), (2, 4)," +
+                " (3, 3), (3, 4), (4, 3), (4, 4)]"
+        );
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (null, 1), (null, 2), (4, 1), (4, 2), (1, null), (1, 4)," +
+                " (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]"
+        );
+        aeqit(P.pairsSquareRootOrder(Collections.emptyList()), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsSquareRootOrder(P.naturalBigIntegers()),
+                "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3), (1, 2), (1, 3)," +
+                " (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1), ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.pairsSquareRootOrder(cons(null, P.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (0, 0), (1, null), (1, 0), (2, null), (2, 0), (null, 1)," +
-                " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)]");
+                " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)," +
+                " ...]"
+        );
     }
 
     @Test
@@ -2140,10 +2187,10 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        aeqit(P.listsLex(0, new ArrayList<Integer>()), "[[]]");
-        aeqit(P.listsLex(1, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsLex(2, new ArrayList<Integer>()), "[]");
-        aeqit(P.listsLex(3, new ArrayList<Integer>()), "[]");
+        aeqit(P.listsLex(0, Collections.emptyList()), "[[]]");
+        aeqit(P.listsLex(1, Collections.emptyList()), "[]");
+        aeqit(P.listsLex(2, Collections.emptyList()), "[]");
+        aeqit(P.listsLex(3, Collections.emptyList()), "[]");
         try {
             P.listsLex(-1, Arrays.asList(1, 2, 3));
             fail();
@@ -2159,8 +2206,8 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(take(20, P.pairsLex(P.naturalBigIntegers(), fromString("abc"))),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
                 " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
-        aeqit(P.pairsLex(new ArrayList<Integer>(), fromString("abc")), "[]");
-        aeqit(P.pairsLex(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+        aeqit(P.pairsLex(Collections.emptyList(), fromString("abc")), "[]");
+        aeqit(P.pairsLex(Collections.emptyList(), Collections.emptyList()), "[]");
     }
 
     @Test
