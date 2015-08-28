@@ -431,4 +431,38 @@ public class ExhaustiveProviderDemos {
                     its(EP.dependentPairsInfinite(p.a, p.b)));
         }
     }
+
+    private static void demoPairsLogarithmicOrder_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(P.integersGeometric()));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("pairsLogarithmicOrder(" + p.a + ", " + p.b + ") = " +
+                    its(EP.pairsLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private static void demoPairsLogarithmicOrder_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.withScale(4).repeatingIterables(P.integersGeometric())
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("pairsLogarithmicOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
+                    its(EP.pairsLogarithmicOrder(p.a, p.b)));
+        }
+    }
+
+    private static void demoPairsLogarithmicOrder_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("pairsLogarithmicOrder(" + xs + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+        }
+    }
+
+    private static void demoPairsLogarithmicOrder_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+            System.out.println("pairsLogarithmicOrder(" + xs + ") = " + its(EP.pairsLogarithmicOrder(xs)));
+        }
+    }
 }
