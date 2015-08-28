@@ -2172,18 +2172,26 @@ public final strictfp class IterableUtils {
         return sb.toString();
     }
 
+    public static @NotNull <A> Iterable<A> optionalFilter(@NotNull Iterable<Optional<A>> xs) {
+        return map(Optional::get, filter(Optional::isPresent, xs));
+    }
+
+    public static @NotNull <A> Iterable<A> nullableOptionalFilter(@NotNull Iterable<NullableOptional<A>> xs) {
+        return map(NullableOptional::get, filter(NullableOptional::isPresent, xs));
+    }
+
     public static @NotNull <A, B> Iterable<B> optionalMap(
             @NotNull Function<A, Optional<B>> f,
             @NotNull Iterable<A> xs
     ) {
-        return map(Optional::get, filter(Optional::isPresent, map(f, xs)));
+        return optionalFilter(map(f, xs));
     }
 
     public static @NotNull <A, B> Iterable<B> nullableOptionalMap(
             @NotNull Function<A, NullableOptional<B>> f,
             @NotNull Iterable<A> xs
     ) {
-        return map(NullableOptional::get, filter(NullableOptional::isPresent, map(f, xs)));
+        return nullableOptionalFilter(map(f, xs));
     }
 
     public static boolean and(@NotNull Iterable<Boolean> xs) {

@@ -1852,6 +1852,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is non-removable and does not contain nulls.</li>
      * </ul>
      *
+     * Length is finite iff {@code f.apply(last(xs))} is finite
+     *
      * @param xs an {@code Iterable} of values
      * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
      * @param <A> the type of values in the first slot
@@ -1870,7 +1872,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
      * function mapping each possible first value to an infinite {@code Iterable} of possible second values. The pairs
      * are traversed along a Z-curve. If all the input lists are unique, the output pairs are unique as well. This
-     * method is similar to {@link ExhaustiveProvider#dependentPairs(Iterable, Function)} , but with different
+     * method is similar to {@link ExhaustiveProvider#dependentPairs(Iterable, Function)}, but with different
      * conditions on the arguments.
      *
      * <ul>
@@ -1879,6 +1881,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  infinite.</li>
      *  <li>The result is non-removable and does not contain nulls.</li>
      * </ul>
+     *
+     * Length is infinite
      *
      * @param xs an {@code Iterable} of values
      * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
@@ -1915,6 +1919,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Generates all possible pairs of values where the first element is selected from one {@code Iterable} and the
+     * second element from another. There are many possible orderings of pairs; to make the ordering unique, you
+     * can specify an unpairing function–a bijective function from natural {@code BigInteger}s to pairs of natural
+     * {@code BigInteger}s.
+     *
+     * <ul>
+     *  <li>{@code unpairingFunction} must bijectively map natural {@code BigInteger}s to pairs of natural
+     *  {@code BigInteger}s.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is nonremovable, contains no repetitions, and is the cartesian product of two sets.</li>
+     * </ul>
+     *
+     * Length is |{@code as}||{@code bs}|
+     *
+     * @param unpairingFunction a bijection ℕ→ℕ×ℕ
+     * @param as the {@code Iterable} from which the first components of the pairs are selected
+     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return all pairs of elements from {@code as} and {@code bs} in an order determined by {@code unpairingFunction}
+     */
     private @NotNull <A, B> Iterable<Pair<A, B>> pairsByFunction(
             @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
             @NotNull Iterable<A> as,
@@ -1938,17 +1965,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             Optional<Boolean> lastB = bii.isLast(p.b);
             return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
         };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<A, B>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<A, B>>>)
-                                        map(f::apply, naturalBigIntegers())
-                        )
-                )
-        );
+        return optionalFilter(stopAt(lastPair, map(f, naturalBigIntegers())));
     }
 
     /**
@@ -1960,11 +1977,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code bs} is non-null.</li>
      *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}s.</li>
+     *  {@link IntegerUtils#logarithmicDemux(BigInteger)} and interpreting the resulting pairs as indices into the
+     *  original {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}|
+     * Length is |{@code as}||{@code bs}|
      *
      * @param as the {@code Iterable} from which the first components of the pairs are selected
      * @param bs the {@code Iterable} from which the second components of the pairs are selected
@@ -1988,11 +2005,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code xs} is non-null.</li>
      *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.logarithmicDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}.</li>
+     *  {@link IntegerUtils#logarithmicDemux(BigInteger)} and interpreting the resulting pairs as indices into the
+     *  original {@code Iterable}.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|<sup>2</sup>
+     * Length is |{@code xs}|<sup>2</sup>
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
@@ -2017,17 +2034,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             Optional<Boolean> lastB = ii.isLast(p.b);
             return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
         };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<T, T>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<T, T>>>)
-                                        IterableUtils.map(f::apply, naturalBigIntegers())
-                        )
-                )
-        );
+        return optionalFilter(stopAt(lastPair, IterableUtils.map(f, naturalBigIntegers())));
     }
 
     /**
@@ -2039,11 +2046,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code bs} is non-null.</li>
      *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}s.</li>
+     *  {@link IntegerUtils#squareRootDemux(BigInteger)} and interpreting the resulting pairs as indices into the
+     *  original {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}|
+     * Length is |{@code as}||{@code bs}|
      *
      * @param as the {@code Iterable} from which the first components of the pairs are selected
      * @param bs the {@code Iterable} from which the second components of the pairs are selected
@@ -2067,11 +2074,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code xs} is non-null.</li>
      *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
      *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
-     *  {@code BasicMath.squareRootDemux} and interpreting the resulting pairs as indices into the original
-     *  {@code Iterable}.</li>
+     *  {@link IntegerUtils#squareRootDemux(BigInteger)} and interpreting the resulting pairs as indices into the
+     *  original {@code Iterable}.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|<sup>2</sup>
+     * Length is |{@code xs}|<sup>2</sup>
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
@@ -2096,17 +2103,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             Optional<Boolean> lastB = ii.isLast(p.b);
             return lastA.isPresent() && lastB.isPresent() && lastA.get() && lastB.get();
         };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Pair<T, T>>::isPresent,
-                        stopAt(
-                                lastPair,
-                                (Iterable<Optional<Pair<T, T>>>)
-                                        IterableUtils.map(f::apply, naturalBigIntegers())
-                        )
-                )
-        );
+        return optionalFilter(stopAt(lastPair, IterableUtils.map(f, naturalBigIntegers())));
     }
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
@@ -2555,7 +2552,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
         return map(
                 Optional::get,
-                filter(Optional::isPresent, stopAt(lastList, map(f::apply, naturalBigIntegers())))
+                filter(Optional::isPresent, stopAt(lastList, map(f, naturalBigIntegers())))
         );
     }
 
@@ -3149,7 +3146,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             int size = sizeIndex.b.intValueExact() + 1;
             return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
         };
-        return optionalMap(f::apply, naturalBigIntegers());
+        return optionalMap(f, naturalBigIntegers());
     }
 
     @Override
@@ -3175,7 +3172,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             int size = sizeIndex.b.intValueExact() + minSize;
             return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
         };
-        return optionalMap(f::apply, naturalBigIntegers());
+        return optionalMap(f, naturalBigIntegers());
     }
 
     @Override
