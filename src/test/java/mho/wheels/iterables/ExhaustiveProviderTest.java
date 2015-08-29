@@ -2048,6 +2048,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (2, d), (4, c), (3, d), (4, d)]"
         );
         aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (1, c), (2, a), (2, b), (4, a), (1, d), (2, b), (2, c), (4, b), (2, c)," +
+                " (2, d), (4, c), (2, d), (4, d)]"
+        );
+        aeqit(
                 P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d), (null, b), (2, c), (4, b)," +
                 " (null, c), (2, d), (4, c), (null, d), (4, d)]"
@@ -2082,6 +2087,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (2, 4), (4, 3), (3, 4), (4, 4)]"
         );
         aeqit(
+                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4)),
+                "[(1, 1), (1, 2), (2, 1), (1, 2), (2, 1), (2, 2), (4, 1), (1, 4), (2, 2), (2, 2), (4, 2), (2, 2)," +
+                " (2, 4), (4, 2), (2, 4), (4, 4)]"
+        );
+        aeqit(
                 P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
                 "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4), (null, 2), (2, null)," +
                 " (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]"
@@ -2108,6 +2118,11 @@ public strictfp class ExhaustiveProviderTest {
                 P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
                 " (3, c), (3, d), (4, c), (4, d)]"
+        );
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+                "[(1, a), (1, b), (2, a), (2, b), (2, a), (2, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
+                " (2, c), (2, d), (4, c), (4, d)]"
         );
         aeqit(
                 P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
@@ -2142,6 +2157,11 @@ public strictfp class ExhaustiveProviderTest {
                 P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2), (1, 3), (1, 4), (2, 3), (2, 4)," +
                 " (3, 3), (3, 4), (4, 3), (4, 4)]"
+        );
+        aeqit(
+                P.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4)),
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (2, 1), (2, 2), (4, 1), (4, 2), (1, 2), (1, 4), (2, 2), (2, 4)," +
+                " (2, 2), (2, 4), (4, 2), (4, 4)]"
         );
         aeqit(
                 P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
