@@ -12,7 +12,6 @@ public class CachedIterator<T> {
     private final @NotNull List<T> cache;
     private @NotNull Optional<Integer> size;
     private boolean checkUniqueness;
-    private @NotNull Optional<T> duplicate;
     private @NotNull Set<T> set;
 
     public CachedIterator(@NotNull Iterable<T> iterable, boolean checkUniqueness) {
@@ -20,7 +19,6 @@ public class CachedIterator<T> {
         cache = new ArrayList<>();
         size = Optional.empty();
         this.checkUniqueness = checkUniqueness;
-        duplicate = Optional.empty();
         set = new HashSet<>();
     }
 
@@ -41,16 +39,12 @@ public class CachedIterator<T> {
     private void advance() {
         T next = iterator.next();
         if (checkUniqueness && !set.add(next)) {
-            duplicate = Optional.of(next);
+            throw new IllegalStateException("iterator cannot contain duplicates. Duplicate: " + next);
         }
         cache.add(next);
         if (!iterator.hasNext()) {
             size = Optional.of(cache.size());
         }
-    }
-
-    public @NotNull Optional<T> duplicate() {
-        return duplicate;
     }
 
     public @NotNull NullableOptional<T> get(@NotNull BigInteger i) {

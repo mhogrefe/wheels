@@ -1955,16 +1955,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
             NullableOptional<A> optA = aii.get(p.a.intValueExact());
-            if (aii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("as cannot contain duplicates. Duplicate: " +
-                        aii.duplicate().get());
-            }
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.b.intValueExact());
-            if (bii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("bs cannot contain duplicates. Duplicate: " +
-                        bii.duplicate().get());
-            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
@@ -2035,13 +2027,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
-            if (ii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
-            }
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
-            if (ii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
-            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
@@ -2111,14 +2097,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
-            if (ii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
-            }
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
-            if (ii.duplicate().isPresent()) {
-                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
-            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
