@@ -238,6 +238,16 @@ public final class MathUtils {
         return sf;
     }
 
+    public static @NotNull BigInteger numberOfArrangementsOfASet(int n) {
+        BigInteger bigN = BigInteger.valueOf(n);
+        return sumBigInteger(
+                map(
+                        k -> productBigInteger(range(k.add(BigInteger.ONE), bigN)),
+                        range(BigInteger.ZERO, BigInteger.valueOf(n))
+                )
+        );
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,

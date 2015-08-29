@@ -11,11 +11,21 @@ public class CachedIterable<T> {
     private final @NotNull Iterator<T> iterator;
     private final @NotNull List<T> cache;
     private @NotNull Optional<Integer> size;
+    private boolean checkUniqueness;
+    private @NotNull Optional<T> duplicate;
+    private @NotNull Set<T> set;
 
-    public CachedIterable(@NotNull Iterable<T> iterable) {
+    public CachedIterable(@NotNull Iterable<T> iterable, boolean checkUniqueness) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
         size = Optional.empty();
+        this.checkUniqueness = checkUniqueness;
+        duplicate = Optional.empty();
+        set = new HashSet<>();
+    }
+
+    public CachedIterable(@NotNull Iterable<T> iterable) {
+        this(iterable, false);
     }
 
     public @NotNull NullableOptional<T> get(int i) {
@@ -23,9 +33,24 @@ public class CachedIterable<T> {
             if (!iterator.hasNext()) {
                 return NullableOptional.empty();
             }
-            cache.add(iterator.next());
+            advance();
         }
         return NullableOptional.of(cache.get(i));
+    }
+
+    private void advance() {
+        T next = iterator.next();
+        if (checkUniqueness && !set.add(next)) {
+            duplicate = Optional.of(next);
+        }
+        cache.add(next);
+        if (!iterator.hasNext()) {
+            size = Optional.of(cache.size());
+        }
+    }
+
+    public @NotNull Optional<T> duplicate() {
+        return duplicate;
     }
 
     public @NotNull NullableOptional<T> get(@NotNull BigInteger i) {
@@ -60,10 +85,14 @@ public class CachedIterable<T> {
         return Optional.of(elements);
     }
 
+    public @NotNull Optional<Integer> knownSize() {
+        return size;
+    }
+
     public int size() {
         if (size.isPresent()) return size.get();
         while (iterator.hasNext()) {
-            cache.add(iterator.next());
+            advance();
         }
         size = Optional.of(cache.size());
         return size.get();

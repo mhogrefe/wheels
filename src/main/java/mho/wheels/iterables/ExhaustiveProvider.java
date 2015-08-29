@@ -18,6 +18,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.range;
 import static mho.wheels.ordering.Ordering.*;
 
 /**
@@ -1923,14 +1924,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Generates all possible pairs of values where the first element is selected from one {@code Iterable} and the
      * second element from another. There are many possible orderings of pairs; to make the ordering unique, you
      * can specify an unpairing function–a bijective function from natural {@code BigInteger}s to pairs of natural
-     * {@code BigInteger}s.
+     * {@code BigInteger}s. The two {@code Iterable}s must not include duplicates. Does not support removal.
      *
      * <ul>
      *  <li>{@code unpairingFunction} must bijectively map natural {@code BigInteger}s to pairs of natural
      *  {@code BigInteger}s.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>The result is nonremovable, contains no repetitions, and is the cartesian product of two sets.</li>
+     *  <li>{@code as} cannot contain duplicates.</li>
+     *  <li>{@code bs} cannot contain duplicates.</li>
+     *  <li>The result is non-removable, contains no repetitions, and is the cartesian product of two sets.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}|
@@ -1948,13 +1949,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
+        CachedIterable<A> aii = new CachedIterable<>(as, true);
+        CachedIterable<B> bii = new CachedIterable<>(bs, true);
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
             NullableOptional<A> optA = aii.get(p.a.intValueExact());
+            if (aii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("as cannot contain duplicates. Duplicate: " +
+                        aii.duplicate().get());
+            }
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<B> optB = bii.get(p.b.intValueExact());
+            if (bii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("bs cannot contain duplicates. Duplicate: " +
+                        bii.duplicate().get());
+            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
@@ -1970,13 +1979,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
-     * linearly but the second grows logarithmically.
+     * linearly but the second grows logarithmically. The {@code Iterable}s may not include duplicates. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <li>{@code as} cannot contain duplicates.</li>
+     *  <li>{@code bs} cannot contain duplicates.</li>
+     *  <li>The result is a unique, non-removable {@code Iterable} containing all pairs of elements taken from two
+     *  {@code Iterable}s. The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
      *  {@link IntegerUtils#logarithmicDemux(BigInteger)} and interpreting the resulting pairs as indices into the
      *  original {@code Iterable}s.</li>
      * </ul>
@@ -1999,12 +2009,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
-     * linearly but the second grows logarithmically (hence the name).
+     * linearly but the second grows logarithmically (hence the name). The input {@code Iterable} may not include
+     * duplicates. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <li>{@code xs} cannot contain duplicates.</li>
+     *  <li>The result is a unique, non-removable {@code Iterable} containing all pairs of elements taken from some
+     *  {@code Iterable}. The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
      *  {@link IntegerUtils#logarithmicDemux(BigInteger)} and interpreting the resulting pairs as indices into the
      *  original {@code Iterable}.</li>
      * </ul>
@@ -2018,12 +2029,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs, true);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
             if (!optA.isPresent()) return Optional.empty();
+            if (ii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
+            }
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
+            if (ii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
+            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
@@ -2039,13 +2056,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns all pairs of elements taken from two {@code Iterable}s in such a way that the first component grows
-     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>). The {@code Iterable}s may not include
+     * duplicates. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <li>{@code as} cannot contain duplicates.</li>
+     *  <li>{@code bs} cannot contain duplicates.</li>
+     *  <li>The result is a unique, non-removable {@code Iterable} containing all pairs of elements taken from two
+     *  {@code Iterable}s. The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
      *  {@link IntegerUtils#squareRootDemux(BigInteger)} and interpreting the resulting pairs as indices into the
      *  original {@code Iterable}s.</li>
      * </ul>
@@ -2068,12 +2086,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns all pairs of elements taken from one {@code Iterable}s in such a way that the first component grows
-     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>).
+     * as O(n<sup>2/3</sup>) but the second grows as O(n<sup>1/3</sup>). The input {@code Iterable} may not include
+     * duplicates. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from some {@code Iterable}.
-     *  The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
+     *  <li>{@code xs} cannot contain duplicates.</li>
+     *  <li>The result is a unique, non-removable {@code Iterable} containing all pairs of elements taken from some
+     *  {@code Iterable}. The ordering of these elements is determined by mapping the sequence 0, 1, 2, ... by
      *  {@link IntegerUtils#squareRootDemux(BigInteger)} and interpreting the resulting pairs as indices into the
      *  original {@code Iterable}.</li>
      * </ul>
@@ -2087,12 +2106,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs);
+        CachedIterable<T> ii = new CachedIterable<>(xs, true);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
+            if (ii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
+            }
             if (!optA.isPresent()) return Optional.empty();
             NullableOptional<T> optB = ii.get(p.b.intValueExact());
+            if (ii.duplicate().isPresent()) {
+                throw new IllegalArgumentException("xs cannot contain duplicates. Duplicate: " + ii.duplicate().get());
+            }
             if (!optB.isPresent()) return Optional.empty();
             return Optional.of(new Pair<>(optA.get(), optB.get()));
         };
@@ -3234,7 +3259,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull Iterable<T> xs) {
-        return null;
+        int n = length(xs);
+        return filter(IterableUtils::unique, takeWhile(ys -> ys.size() <= n, listsShortlex(xs)));
     }
 
     public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
@@ -3296,7 +3322,53 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
-        return null;
+        if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull CachedIterable<T> cxs = new CachedIterable<>(xs);
+            private final @NotNull Iterator<List<Integer>> xsi = lists(naturalIntegers()).iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+
+            @Override
+            public boolean hasNext() {
+                return !outputSize.isPresent() || lt(index, outputSize.get());
+            }
+
+            @Override
+            public List<T> next() {
+                outer:
+                while (true) {
+                    List<T> list = new ArrayList<>();
+                    Set<T> seen = new HashSet<>();
+                    List<Integer> indices = xsi.next();
+                    for (int index : indices) {
+                        int j = 0;
+                        T x;
+                        do {
+                            NullableOptional<T> ox = cxs.get(j);
+                            if (!ox.isPresent()) continue outer;
+                            x = ox.get();
+                            j++;
+                        } while (seen.contains(x));
+                        for (int i = 0; i < index; i++) {
+                            do {
+                                NullableOptional<T> ox = cxs.get(j);
+                                if (!ox.isPresent()) continue outer;
+                                x = ox.get();
+                                j++;
+                            } while (seen.contains(x));
+                        }
+                        list.add(x);
+                        seen.add(x);
+                    }
+                    if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
+                        outputSize = Optional.of(MathUtils.numberOfArrangementsOfASet(cxs.knownSize().get()));
+                    }
+                    index = index.add(BigInteger.ONE);
+                    return list;
+                }
+            }
+        };
     }
 
     @Override

@@ -139,11 +139,12 @@ public strictfp class ReadersProperties {
             } catch (NullPointerException ignored) {}
         }
 
+        //todo use distinct lists
         Iterable<List<Integer>> nonUniqueLists = nub(
                 map(
                         p -> toList(insert(p.a, p.b.b, p.b.a)),
                         P.dependentPairs(
-                                P.listsAtLeast(1, P.integers()),
+                                filter(IterableUtils::unique, P.listsAtLeast(1, P.integers())),
                                 xs -> P.pairs(P.uniformSample(xs), P.range(0, xs.size()))
                         )
                 )

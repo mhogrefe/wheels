@@ -2007,7 +2007,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -2027,7 +2027,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         try {
             toList(P.dependentPairsInfinite(Arrays.asList(0, 1), f));

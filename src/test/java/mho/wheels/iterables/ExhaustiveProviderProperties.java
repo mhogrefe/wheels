@@ -1244,7 +1244,7 @@ public class ExhaustiveProviderProperties {
             try {
                 toList(EP.dependentPairs(p.a, p.b));
                 fail(p);
-            } catch (IllegalArgumentException ignored) {}
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
 
         //todo test uniqueness

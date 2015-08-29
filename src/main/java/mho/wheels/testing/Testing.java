@@ -7,6 +7,7 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
@@ -251,7 +252,7 @@ public strictfp class Testing {
         assertEquals(x, f.andThen(f).apply(x), x);
     }
 
-    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @NotNull A x) {
+    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
         assertEquals(x, f.andThen(g).apply(x), x);
     }
 
@@ -336,14 +337,14 @@ public strictfp class Testing {
 
         ip.reset();
         iq.reset();
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairsLex(fxs.apply(ip), fxs.apply(iq)))) {
             symmetric(Object::equals, p);
         }
 
         ip.reset();
         iq.reset();
         ir.reset();
-        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
+        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triplesLex(
                 fxs.apply(ip),
                 fxs.apply(iq),
                 fxs.apply(ir)
