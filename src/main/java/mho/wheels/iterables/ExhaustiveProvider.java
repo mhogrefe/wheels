@@ -1678,7 +1678,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all {@code BigDecimal}s which, once canonicalized, belong to {@code xs}
      */
     private static @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> xs) {
-        CachedIterable<Integer> integers = new CachedIterable<>(INSTANCE.integers());
+        CachedIterator<Integer> integers = new CachedIterator<>(INSTANCE.integers());
         return map(
                 p -> p.a.equals(BigDecimal.ZERO) ?
                         new BigDecimal(BigInteger.ZERO, integers.get(p.b).get()) :
@@ -1897,8 +1897,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
-            private final @NotNull CachedIterable<A> as = new CachedIterable<>(xs);
-            private final @NotNull Map<A, CachedIterable<B>> aToBs = new HashMap<>();
+            private final @NotNull
+            CachedIterator<A> as = new CachedIterator<>(xs);
+            private final @NotNull Map<A, CachedIterator<B>> aToBs = new HashMap<>();
             private final @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
 
             @Override
@@ -1910,9 +1911,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<A, B> next() {
                 Pair<Integer, Integer> index = indices.next();
                 A a = as.get(index.a).get();
-                CachedIterable<B> bs = aToBs.get(a);
+                CachedIterator<B> bs = aToBs.get(a);
                 if (bs == null) {
-                    bs = new CachedIterable<>(f.apply(a));
+                    bs = new CachedIterator<>(f.apply(a));
                     aToBs.put(a, bs);
                 }
                 return new Pair<>(a, bs.get(index.b).get());
@@ -1949,8 +1950,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         if (isEmpty(as) || isEmpty(bs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as, true);
-        CachedIterable<B> bii = new CachedIterable<>(bs, true);
+        CachedIterator<A> aii = new CachedIterator<>(as, true);
+        CachedIterator<B> bii = new CachedIterator<>(bs, true);
         Function<BigInteger, Optional<Pair<A, B>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = unpairingFunction.apply(bi);
             NullableOptional<A> optA = aii.get(p.a.intValueExact());
@@ -2029,7 +2030,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs, true);
+        CachedIterator<T> ii = new CachedIterator<>(xs, true);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
@@ -2106,7 +2107,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
-        CachedIterable<T> ii = new CachedIterable<>(xs, true);
+        CachedIterator<T> ii = new CachedIterator<>(xs, true);
         Function<BigInteger, Optional<Pair<T, T>>> f = bi -> {
             Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(bi);
             NullableOptional<T> optA = ii.get(p.a.intValueExact());
@@ -2563,7 +2564,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (size == 0) {
             return Collections.singletonList(new ArrayList<T>());
         }
-        CachedIterable<T> ii = new CachedIterable<>(xs);
+        CachedIterator<T> ii = new CachedIterator<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi ->
                 ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, bi)));
         Predicate<Optional<List<T>>> lastList = o -> {
@@ -2649,9 +2650,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
+        CachedIterator<A> aii = new CachedIterator<>(as);
+        CachedIterator<B> bii = new CachedIterator<>(bs);
+        CachedIterator<C> cii = new CachedIterator<>(cs);
         Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
             List<BigInteger> p = IntegerUtils.demux(3, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
@@ -2728,10 +2729,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<D> ds
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
+        CachedIterator<A> aii = new CachedIterator<>(as);
+        CachedIterator<B> bii = new CachedIterator<>(bs);
+        CachedIterator<C> cii = new CachedIterator<>(cs);
+        CachedIterator<D> dii = new CachedIterator<>(ds);
         Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
             List<BigInteger> p = IntegerUtils.demux(4, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
@@ -2817,11 +2818,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<E> es
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
+        CachedIterator<A> aii = new CachedIterator<>(as);
+        CachedIterator<B> bii = new CachedIterator<>(bs);
+        CachedIterator<C> cii = new CachedIterator<>(cs);
+        CachedIterator<D> dii = new CachedIterator<>(ds);
+        CachedIterator<E> eii = new CachedIterator<>(es);
         Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
             List<BigInteger> p = IntegerUtils.demux(5, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
@@ -2933,12 +2934,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         isEmpty(es) ||
                         isEmpty(fs)
                 ) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
-        CachedIterable<F> fii = new CachedIterable<>(fs);
+        CachedIterator<A> aii = new CachedIterator<>(as);
+        CachedIterator<B> bii = new CachedIterator<>(bs);
+        CachedIterator<C> cii = new CachedIterator<>(cs);
+        CachedIterator<D> dii = new CachedIterator<>(ds);
+        CachedIterator<E> eii = new CachedIterator<>(es);
+        CachedIterator<F> fii = new CachedIterator<>(fs);
         Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
             List<BigInteger> p = IntegerUtils.demux(6, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
@@ -3061,13 +3062,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         isEmpty(fs) ||
                         isEmpty(gs)
                 ) return new ArrayList<>();
-        CachedIterable<A> aii = new CachedIterable<>(as);
-        CachedIterable<B> bii = new CachedIterable<>(bs);
-        CachedIterable<C> cii = new CachedIterable<>(cs);
-        CachedIterable<D> dii = new CachedIterable<>(ds);
-        CachedIterable<E> eii = new CachedIterable<>(es);
-        CachedIterable<F> fii = new CachedIterable<>(fs);
-        CachedIterable<G> gii = new CachedIterable<>(gs);
+        CachedIterator<A> aii = new CachedIterator<>(as);
+        CachedIterator<B> bii = new CachedIterator<>(bs);
+        CachedIterator<C> cii = new CachedIterator<>(cs);
+        CachedIterator<D> dii = new CachedIterator<>(ds);
+        CachedIterator<E> eii = new CachedIterator<>(es);
+        CachedIterator<F> fii = new CachedIterator<>(fs);
+        CachedIterator<G> gii = new CachedIterator<>(gs);
         Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
             List<BigInteger> p = IntegerUtils.demux(7, bi);
             NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
@@ -3161,7 +3162,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        CachedIterable<T> ii = new CachedIterable<>(xs);
+        CachedIterator<T> ii = new CachedIterator<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
             if (bi.equals(BigInteger.ZERO)) {
                 return Optional.of(new ArrayList<T>());
@@ -3187,7 +3188,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (minSize == 0) return lists(xs);
-        CachedIterable<T> ii = new CachedIterable<>(xs);
+        CachedIterator<T> ii = new CachedIterator<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {
             if (bi.equals(BigInteger.ZERO)) {
                 return Optional.<List<T>>empty();
@@ -3324,7 +3325,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
         return () -> new NoRemoveIterator<List<T>>() {
-            private final @NotNull CachedIterable<T> cxs = new CachedIterable<>(xs);
+            private final @NotNull
+            CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<List<Integer>> xsi = lists(naturalIntegers()).iterator();
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private @NotNull BigInteger index = BigInteger.ZERO;
@@ -3469,7 +3471,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(xs))
             return Collections.singletonList(new ArrayList<T>());
         return () -> new NoRemoveIterator<List<T>>() {
-            private CachedIterable<T> cxs = new CachedIterable<T>(xs);
+            private CachedIterator<T> cxs = new CachedIterator<T>(xs);
             private List<Integer> indices = new ArrayList<>();
 
             @Override
@@ -3543,7 +3545,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
-        CachedIterable<T> cxs = new CachedIterable<>(xs);
+        CachedIterator<T> cxs = new CachedIterator<>(xs);
         return map(
                 Optional::get,
                 takeWhile(

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigInteger;
 import java.util.*;
 
-public class CachedIterable<T> {
+public class CachedIterator<T> {
     private final @NotNull Iterator<T> iterator;
     private final @NotNull List<T> cache;
     private @NotNull Optional<Integer> size;
@@ -15,7 +15,7 @@ public class CachedIterable<T> {
     private @NotNull Optional<T> duplicate;
     private @NotNull Set<T> set;
 
-    public CachedIterable(@NotNull Iterable<T> iterable, boolean checkUniqueness) {
+    public CachedIterator(@NotNull Iterable<T> iterable, boolean checkUniqueness) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
         size = Optional.empty();
@@ -24,7 +24,7 @@ public class CachedIterable<T> {
         set = new HashSet<>();
     }
 
-    public CachedIterable(@NotNull Iterable<T> iterable) {
+    public CachedIterator(@NotNull Iterable<T> iterable) {
         this(iterable, false);
     }
 
