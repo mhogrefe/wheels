@@ -1955,14 +1955,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
 
             @Override
             public boolean hasNext() {
-                return !outputSize.isPresent() || lt(index, outputSize.get());
+                return !reachedEnd;
             }
 
             @Override
             public Pair<A, B> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
                     NullableOptional<A> oa = cas.get(indices.a.intValueExact());
@@ -1976,6 +1980,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         );
                     }
                     index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
                     return new Pair<>(oa.get(), ob.get());
                 }
             }
@@ -2013,14 +2020,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
 
             @Override
             public boolean hasNext() {
-                return !outputSize.isPresent() || lt(index, outputSize.get());
+                return !reachedEnd;
             }
 
             @Override
             public Pair<T, T> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
                     NullableOptional<T> oa = cxs.get(indices.a.intValueExact());
@@ -2031,6 +2042,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         outputSize = Optional.of(BigInteger.valueOf(cxs.knownSize().get()).pow(2));
                     }
                     index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
                     return new Pair<>(oa.get(), ob.get());
                 }
             }
@@ -3338,14 +3352,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull Iterator<List<Integer>> xsi = lists(naturalIntegers()).iterator();
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
 
             @Override
             public boolean hasNext() {
-                return !outputSize.isPresent() || lt(index, outputSize.get());
+                return !reachedEnd;
             }
 
             @Override
             public List<T> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
                 outer:
                 while (true) {
                     List<T> list = new ArrayList<>();
@@ -3375,6 +3393,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         outputSize = Optional.of(MathUtils.numberOfArrangementsOfASet(cxs.knownSize().get()));
                     }
                     index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
                     return list;
                 }
             }

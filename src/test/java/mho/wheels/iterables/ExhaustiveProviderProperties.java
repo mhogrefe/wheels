@@ -23,6 +23,7 @@ import static mho.wheels.testing.Testing.*;
 public class ExhaustiveProviderProperties {
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int LARGE_LIMIT = 10000;
+    private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
@@ -145,6 +146,7 @@ public class ExhaustiveProviderProperties {
             propertiesNullableOptionals();
             propertiesDependentPairs();
             propertiesDependentPairsInfinite();
+//            propertiesPairsLogarithmicOrder_Iterable_Iterable();
         }
         System.out.println("Done");
     }
@@ -1331,5 +1333,27 @@ public class ExhaustiveProviderProperties {
         }
 
         //todo test uniqueness
+    }
+
+    private static void propertiesPairsLogarithmicOrder_Iterable_Iterable() {
+        initialize("pairsLogarithmicOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(P.integersGeometric()));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println(p);
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
+            testNoRemove(pairs);
+            if (!lengthAtLeast(SMALL_LIMIT, pairs)) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairList = toList(pairs);
+                for (Pair<Integer, Integer> p2 : pairList) {
+                    assertTrue(p, p.a.contains(p2.a));
+                    assertTrue(p, p.b.contains(p2.b));
+                }
+                assertEquals(p, length(pairList), p.a.size() * p.b.size());
+                if (pairList.size() != 0) {
+                    assertEquals(p, last(pairList), new Pair<>(last(p.a), last(p.b)));
+                }
+            }
+        }
     }
 }
