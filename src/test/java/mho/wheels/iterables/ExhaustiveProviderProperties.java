@@ -23,7 +23,6 @@ import static mho.wheels.testing.Testing.*;
 public class ExhaustiveProviderProperties {
     private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int LARGE_LIMIT = 10000;
-    private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
@@ -146,7 +145,10 @@ public class ExhaustiveProviderProperties {
             propertiesNullableOptionals();
             propertiesDependentPairs();
             propertiesDependentPairsInfinite();
-//            propertiesPairsLogarithmicOrder_Iterable_Iterable();
+            propertiesPairsLogarithmicOrder_Iterable_Iterable();
+            propertiesPairsLogarithmicOrder_Iterable();
+            propertiesPairsSquareRootOrder_Iterable_Iterable();
+            propertiesPairsSquareRootOrder_Iterable();
         }
         System.out.println("Done");
     }
@@ -1337,23 +1339,186 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesPairsLogarithmicOrder_Iterable_Iterable() {
         initialize("pairsLogarithmicOrder(Iterable<A>, Iterable<B>)");
-        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(P.integersGeometric()));
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.integersGeometric()),
+                filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).lists(P.integersGeometric()))
+        );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
-            System.out.println(p);
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
             testNoRemove(pairs);
-            if (!lengthAtLeast(SMALL_LIMIT, pairs)) {
-                testHasNext(pairs);
-                List<Pair<Integer, Integer>> pairList = toList(pairs);
-                for (Pair<Integer, Integer> p2 : pairList) {
-                    assertTrue(p, p.a.contains(p2.a));
-                    assertTrue(p, p.b.contains(p2.b));
-                }
-                assertEquals(p, length(pairList), p.a.size() * p.b.size());
-                if (pairList.size() != 0) {
-                    assertEquals(p, last(pairList), new Pair<>(last(p.a), last(p.b)));
-                }
+            testHasNext(pairs);
+            List<Pair<Integer, Integer>> pairList = toList(pairs);
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(p, p.a.contains(p2.a));
+                assertTrue(p, p.b.contains(p2.b));
             }
+            assertEquals(p, length(pairList), p.a.size() * p.b.size());
+            if (pairList.size() != 0) {
+                assertEquals(p, last(pairList), new Pair<>(last(p.a), last(p.b)));
+            }
+        }
+
+        ps = P.pairs(
+                P.withScale(4).distinctLists(P.integersGeometric()),
+                filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.pairsLogarithmicOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.withScale(4).repeatingIterables(P.integersGeometric())
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(p, elem(p2.a, p.a));
+                assertTrue(p, elem(p2.b, p.b));
+            }
+        }
+
+        ps2 = P.pairs(
+                map(
+                        is -> scanl1((x, y) -> x + y, is),
+                        P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
+                )
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(p.a, p.b))));
+        }
+    }
+
+    private static void propertiesPairsLogarithmicOrder_Iterable() {
+        initialize("pairsLogarithmicOrder(Iterable<T>)");
+        Iterable<List<Integer>> iss = filterInfinite(
+                xs -> xs.size() < TINY_LIMIT,
+                P.withScale(4).lists(P.integersGeometric())
+        );
+        for (List<Integer> is : take(LIMIT, iss)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(is);
+            testNoRemove(pairs);
+            testHasNext(pairs);
+            List<Pair<Integer, Integer>> pairList = toList(pairs);
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(is, is.contains(p2.a));
+                assertTrue(is, is.contains(p2.b));
+            }
+            assertEquals(is, length(pairList), is.size() * is.size());
+            if (pairList.size() != 0) {
+                assertEquals(is, last(pairList), new Pair<>(last(is), last(is)));
+            }
+        }
+
+        iss = filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).distinctLists(P.integersGeometric()));
+        for (List<Integer> is : take(LIMIT, iss)) {
+            assertTrue(is, unique(EP.pairsLogarithmicOrder(is)));
+        }
+
+        for (Iterable<Integer> is : take(LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(is);
+            testNoRemove(TINY_LIMIT, pairs);
+            List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(is, elem(p2.a, is));
+                assertTrue(is, elem(p2.b, is));
+            }
+        }
+
+        Iterable<Iterable<Integer>> iss2 = map(
+                is -> scanl1((x, y) -> x + y, is),
+                P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
+        );
+        for (Iterable<Integer> is : take(LIMIT, iss2)) {
+            assertTrue(is, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(is))));
+        }
+    }
+
+    private static void propertiesPairsSquareRootOrder_Iterable_Iterable() {
+        initialize("pairsSquareRootOrder(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(P.integersGeometric()));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(p.a, p.b);
+            testNoRemove(pairs);
+            testHasNext(pairs);
+            List<Pair<Integer, Integer>> pairList = toList(pairs);
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(p, p.a.contains(p2.a));
+                assertTrue(p, p.b.contains(p2.b));
+            }
+            assertEquals(p, length(pairList), p.a.size() * p.b.size());
+            if (pairList.size() != 0) {
+                assertEquals(p, last(pairList), new Pair<>(last(p.a), last(p.b)));
+            }
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.integersGeometric()));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.pairsSquareRootOrder(p.a, p.b)));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.withScale(4).repeatingIterables(P.integersGeometric())
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(p, elem(p2.a, p.a));
+                assertTrue(p, elem(p2.b, p.b));
+            }
+        }
+
+        ps2 = P.pairs(
+                map(
+                        is -> scanl1((x, y) -> x + y, is),
+                        P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
+                )
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(p.a, p.b))));
+        }
+    }
+
+    private static void propertiesPairsSquareRootOrder_Iterable() {
+        initialize("pairsSquareRootOrder(Iterable<T>)");
+        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
+            testNoRemove(pairs);
+            testHasNext(pairs);
+            List<Pair<Integer, Integer>> pairList = toList(pairs);
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(is, is.contains(p2.a));
+                assertTrue(is, is.contains(p2.b));
+            }
+            assertEquals(is, length(pairList), is.size() * is.size());
+            if (pairList.size() != 0) {
+                assertEquals(is, last(pairList), new Pair<>(last(is), last(is)));
+            }
+        }
+
+        for (List<Integer> is : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            assertTrue(is, unique(EP.pairsSquareRootOrder(is)));
+        }
+
+        for (Iterable<Integer> is : take(LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
+            testNoRemove(TINY_LIMIT, pairs);
+            List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p2 : pairList) {
+                assertTrue(is, elem(p2.a, is));
+                assertTrue(is, elem(p2.b, is));
+            }
+        }
+
+        Iterable<Iterable<Integer>> iss2 = map(
+                is -> scanl1((x, y) -> x + y, is),
+                P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
+        );
+        for (Iterable<Integer> is : take(LIMIT, iss2)) {
+            assertTrue(is, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(is))));
         }
     }
 }
