@@ -208,7 +208,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
-        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
             Iterable<Integer> js = EP.uniformSample(is);
             aeqit(is, is, js);
             testNoRemove(js);
@@ -1077,7 +1077,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesWithNull() {
         initialize("withNull(Iterable<T>)");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
             testNoRemove(withNull);
             testHasNext(withNull);
@@ -1087,7 +1087,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::withNull, (Iterable<Integer> wn) -> toList(tail(wn)), xs);
         }
 
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             Iterable<Integer> withNull = EP.withNull(xs);
             testNoRemove(TINY_LIMIT, withNull);
             assertFalse(xs, isEmpty(withNull));
@@ -1099,7 +1099,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesNonEmptyOptionals() {
         initialize("nonEmptyOptionals(Iterable<T>)");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(neos);
             testHasNext(neos);
@@ -1107,7 +1107,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::nonEmptyOptionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, ys)), xs);
         }
 
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             Iterable<Optional<Integer>> neos = EP.nonEmptyOptionals(xs);
             testNoRemove(TINY_LIMIT, neos);
             aeqit(xs, TINY_LIMIT, map(Optional::get, neos), xs);
@@ -1116,7 +1116,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesOptionals() {
         initialize("optionals(Iterable<T>)");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
             testNoRemove(os);
             testHasNext(os);
@@ -1126,7 +1126,7 @@ public class ExhaustiveProviderProperties {
             inverses(EP::optionals, (Iterable<Optional<Integer>> ys) -> toList(map(Optional::get, tail(ys))), xs);
         }
 
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             Iterable<Optional<Integer>> os = EP.optionals(xs);
             testNoRemove(TINY_LIMIT, os);
             assertFalse(xs, isEmpty(os));
@@ -1138,7 +1138,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesNonEmptyNullableOptionals() {
         initialize("nonEmptyNullableOptionals(Iterable<T>)");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(nenos);
             testHasNext(nenos);
@@ -1150,7 +1150,7 @@ public class ExhaustiveProviderProperties {
             );
         }
 
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nenos = EP.nonEmptyNullableOptionals(xs);
             testNoRemove(TINY_LIMIT, nenos);
             aeqit(xs, TINY_LIMIT, map(NullableOptional::get, nenos), xs);
@@ -1159,7 +1159,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesNullableOptionals() {
         initialize("nullableOptionals(Iterable<T>)");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
             testNoRemove(nos);
             testHasNext(nos);
@@ -1173,7 +1173,7 @@ public class ExhaustiveProviderProperties {
             );
         }
 
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.withNull(P.integersGeometric())))) {
             Iterable<NullableOptional<Integer>> nos = EP.nullableOptionals(xs);
             testNoRemove(TINY_LIMIT, nos);
             assertFalse(xs, isEmpty(nos));

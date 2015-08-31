@@ -35,7 +35,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoUniformSample_Iterable() {
         initialize();
-        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
             String listString = tail(init(is.toString()));
             System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
         }
@@ -281,14 +281,14 @@ public class ExhaustiveProviderDemos {
 
     private static void demoWithNull_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             System.out.println("withNull(" + xs + ") = " + its(EP.withNull(xs)));
         }
     }
 
     private static void demoWithNull_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
         }
@@ -296,14 +296,14 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNonEmptyOptionals_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             System.out.println("nonEmptyOptionals(" + xs + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
     }
 
     private static void demoNonEmptyOptionals_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
@@ -311,14 +311,14 @@ public class ExhaustiveProviderDemos {
 
     private static void demoOptionals_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
             System.out.println("optionals(" + xs + ") = " + its(EP.optionals(xs)));
         }
     }
 
     private static void demoOptionals_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
         }
@@ -326,14 +326,15 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNonEmptyNullableOptionals_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             System.out.println("nonEmptyNullableOptionals(" + xs + ") = " + its(EP.nonEmptyNullableOptionals(xs)));
         }
     }
 
     private static void demoNonEmptyNullableOptionals_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
+        Iterable<Iterable<Integer>> xss = P.repeatingIterables(P.withNull(P.integersGeometric()));
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
@@ -342,14 +343,15 @@ public class ExhaustiveProviderDemos {
 
     private static void demoNullableOptionals_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             System.out.println("nullableOptionals(" + xs + ") = " + its(EP.nullableOptionals(xs)));
         }
     }
 
     private static void demoNullableOptionals_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integers())))) {
+        Iterable<Iterable<Integer>> xss = P.repeatingIterables(P.withNull(P.integersGeometric()));
+        for (Iterable<Integer> xs : take(LIMIT, xss)) {
             String xsString = tail(init(its(xs)));
             System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
         }
@@ -375,7 +377,7 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoDependentPairs_infinite() {
+    private static void demoDependentPairs_cyclic() {
         initialize();
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> {
@@ -441,11 +443,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsLogarithmicOrder_Iterable_Iterable_infinite() {
+    private static void demoPairsLogarithmicOrder_Iterable_Iterable_cyclic() {
         initialize();
-        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
-                P.withScale(4).repeatingIterables(P.integersGeometric())
-        );
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(P.repeatingIterables(P.integersGeometric()));
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("pairsLogarithmicOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
                     its(EP.pairsLogarithmicOrder(p.a, p.b)));
@@ -459,9 +459,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsLogarithmicOrder_Iterable_infinite() {
+    private static void demoPairsLogarithmicOrder_Iterable_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             System.out.println("pairsLogarithmicOrder(" + its(xs) + ") = " + its(EP.pairsLogarithmicOrder(xs)));
         }
     }
@@ -475,11 +475,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsSquareRootOrder_Iterable_Iterable_infinite() {
+    private static void demoPairsSquareRootOrder_Iterable_Iterable_cyclic() {
         initialize();
-        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
-                P.withScale(4).repeatingIterables(P.integersGeometric())
-        );
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(P.repeatingIterables(P.integersGeometric()));
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("pairsSquareRootOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
                     its(EP.pairsSquareRootOrder(p.a, p.b)));
@@ -493,9 +491,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsSquareRootOrder_Iterable_infinite() {
+    private static void demoPairsSquareRootOrder_Iterable_cyclic() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integersGeometric()))) {
             System.out.println("pairsSquareRootOrder(" + its(xs) + ") = " + its(EP.pairsSquareRootOrder(xs)));
         }
     }
