@@ -35,7 +35,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoUniformSample_Iterable() {
         initialize();
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             String listString = tail(init(is.toString()));
             System.out.println("uniformSample(" + listString + ") = " + its(EP.uniformSample(is)));
         }

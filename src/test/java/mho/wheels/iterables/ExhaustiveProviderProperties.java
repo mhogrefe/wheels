@@ -208,7 +208,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
-        for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integers())))) {
+        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Integer> js = EP.uniformSample(is);
             aeqit(is, is, js);
             testNoRemove(js);
