@@ -2172,20 +2172,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     index = BigInteger.ONE;
                     return list;
                 }
-                List<Integer> next = toList(list);
-                int k = next.size() - 2;
-                while (next.get(k) >= next.get(k + 1)) k--;
-                int m = next.size() - 1;
-                while (m > k && next.get(k) >= next.get(m)) m--;
-                Collections.swap(next, k, m);
+                list = toList(list);
+                int k = list.size() - 2;
+                while (list.get(k) >= list.get(k + 1)) k--;
+                int m = list.size() - 1;
+                while (m > k && list.get(k) >= list.get(m)) m--;
+                Collections.swap(list, k, m);
                 int i = k + 1;
-                int j = next.size() - 1;
+                int j = list.size() - 1;
                 while (i < j) {
-                    Collections.swap(next, i, j);
+                    Collections.swap(list, i, j);
                     i++;
                     j--;
                 }
-                list = next;
                 index = index.add(BigInteger.ONE);
                 return list;
             }
