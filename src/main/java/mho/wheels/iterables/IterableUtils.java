@@ -112,6 +112,10 @@ public final strictfp class IterableUtils {
         return list;
     }
 
+    public static @NotNull <T> List<T> toList(@NotNull List<T> xs) {
+        return new ArrayList<>(xs);
+    }
+
     /**
      * Converts an {@code Iterable} to a {@code List}. Only works for finite {@code Iterable}s.
      *
@@ -3223,8 +3227,12 @@ public final strictfp class IterableUtils {
 
     public static @NotNull <T> Iterable<List<T>> inits(@NotNull Iterable<T> xs) {
         return cons(new ArrayList<T>(), () -> new NoRemoveIterator<List<T>>() {
-            private @NotNull Iterator<T> xsi = xs.iterator();
-            private @NotNull List<T> currentList = new ArrayList<>();
+            private
+            @NotNull
+            Iterator<T> xsi = xs.iterator();
+            private
+            @NotNull
+            List<T> currentList = new ArrayList<>();
 
             @Override
             public boolean hasNext() {

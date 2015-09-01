@@ -2157,40 +2157,37 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
         return () -> new NoRemoveIterator<List<Integer>>() {
-            private @NotNull Optional<List<Integer>> indices = Optional.of(start);
+            private final @NotNull BigInteger outputSize = MathUtils.permutationCount(start);
+            private @NotNull List<Integer> list = toList(start);
+            private @NotNull BigInteger index = BigInteger.ZERO;
 
             @Override
             public boolean hasNext() {
-                return indices.isPresent();
+                return lt(index, outputSize);
             }
 
             @Override
-            public @NotNull List<Integer> next() {
-                List<Integer> oldIndices = indices.get();
-                if (weaklyDecreasing(indices.get())) {
-                    indices = Optional.empty();
-                } else {
-                    int i;
-                    int previous = -1;
-                    for (i = indices.get().size() - 1; i >= 0; i--) {
-                        if (indices.get().get(i) < previous) break;
-                        previous = indices.get().get(i);
-                    }
-                    i++;
-                    Iterable<Integer> prefix = take(i - 1, indices.get());
-                    Iterable<Integer> suffix = drop(i - 1, indices.get());
-                    int pivot = minimum(filter(x -> x > head(suffix), suffix));
-                    indices = Optional.of(toList(
-                            concat(
-                                    (Iterable<Iterable<Integer>>) Arrays.asList(
-                                            prefix,
-                                            Collections.singletonList(pivot),
-                                            sort(delete(pivot, suffix))
-                                    )
-                            )
-                    ));
+            public List<Integer> next() {
+                if (index.equals(BigInteger.ZERO)) {
+                    index = BigInteger.ONE;
+                    return list;
                 }
-                return oldIndices;
+                List<Integer> next = toList(list);
+                int k = next.size() - 2;
+                while (next.get(k) >= next.get(k + 1)) k--;
+                int m = next.size() - 1;
+                while (m > k && next.get(k) >= next.get(m)) m--;
+                Collections.swap(next, k, m);
+                int i = k + 1;
+                int j = next.size() - 1;
+                while (i < j) {
+                    Collections.swap(next, i, j);
+                    i++;
+                    j--;
+                }
+                list = next;
+                index = index.add(BigInteger.ONE);
+                return list;
             }
         };
     }
