@@ -5108,6 +5108,19 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<Pair<T, Integer>> frequencies(@NotNull Iterable<T> xs) {
+        Map<T, Integer> frequencies = new LinkedHashMap<>();
+        for (T x : xs) {
+            Integer frequency = frequencies.get(x);
+            if (frequency == null) {
+                frequency = 0;
+            }
+            frequency++;
+            frequencies.put(x, frequency);
+        }
+        return fromMap(frequencies);
+    }
+
     public static @NotNull Iterable<String> group(
             @NotNull Predicate<Pair<Character, Character>> p,
             @NotNull String s

@@ -248,6 +248,16 @@ public final class MathUtils {
         );
     }
 
+    public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
+        BigInteger result = factorial(xs.size());
+        for (BigInteger divisor : map(f -> factorial(f.b), frequencies(xs))) {
+            if (!divisor.equals(BigInteger.ONE)) {
+                result = result.divide(divisor);
+            }
+        }
+        return result;
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,
