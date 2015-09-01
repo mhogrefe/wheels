@@ -1,8 +1,10 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
+import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
+import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -147,8 +149,10 @@ public class ExhaustiveProviderProperties {
             propertiesDependentPairsInfinite();
             propertiesPairsLogarithmicOrder_Iterable_Iterable();
             propertiesPairsLogarithmicOrder_Iterable();
+            compareImplementationsPairsLogarithmicOrder_Iterable();
             propertiesPairsSquareRootOrder_Iterable_Iterable();
             propertiesPairsSquareRootOrder_Iterable();
+            compareImplementationsPairsSquareRootOrder_Iterable();
         }
         System.out.println("Done");
     }
@@ -1208,6 +1212,22 @@ public class ExhaustiveProviderProperties {
             assertEquals(p, length(pairs), sumInteger(map(i -> length(p.b.apply(i)), p.a)));
         }
 
+        ps = P.dependentPairsInfinite(
+                PS.distinctLists(P.integers()),
+                xs -> xs.isEmpty() ?
+                        repeat(new FiniteDomainFunction<>(new HashMap<>())) :
+                        map(
+                                FiniteDomainFunction::new,
+                                PS.maps(xs, map(is -> (Iterable<Integer>) is, PS.distinctLists(P.integers())))
+                        )
+        );
+        if (P instanceof ExhaustiveProvider) {
+            ps = nub(ps);
+        }
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(EP.dependentPairs(p.a, p.b)));
+        }
+
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> {
             if (xs.isEmpty()) {
                 return repeat(new HashMap<>());
@@ -1227,7 +1247,7 @@ public class ExhaustiveProviderProperties {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps2 = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
         );
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairs(p.a, p.b);
@@ -1250,8 +1270,6 @@ public class ExhaustiveProviderProperties {
                 fail(p);
             } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
-
-        //todo test uniqueness
     }
 
     private static void propertiesDependentPairsInfinite() {
@@ -1311,7 +1329,7 @@ public class ExhaustiveProviderProperties {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
         );
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
             try {
@@ -1333,8 +1351,6 @@ public class ExhaustiveProviderProperties {
                 fail(p);
             } catch (NoSuchElementException ignored) {}
         }
-
-        //todo test uniqueness
     }
 
     private static void propertiesPairsLogarithmicOrder_Iterable_Iterable() {
@@ -1388,6 +1404,23 @@ public class ExhaustiveProviderProperties {
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             assertTrue(p, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(p.a, p.b))));
         }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
+                    P.naturalIntegers(),
+                    EP.pairsLogarithmicOrder(P.naturalIntegers(), P.naturalIntegers())
+            );
+            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
+                assertTrue(p, p.b.a < p.a / 2 + 1);
+                assertTrue(p, p.b.b < IntegerUtils.ceilingLog2(p.a + 2));
+            }
+        }
+    }
+
+    private static @NotNull List<Pair<Integer, Integer>> pairsLogarithmicOrder_Iterable_simplest(
+            @NotNull List<Integer> xs
+    ) {
+        return toList(EP.pairsLogarithmicOrder(xs, xs));
     }
 
     private static void propertiesPairsLogarithmicOrder_Iterable() {
@@ -1401,6 +1434,7 @@ public class ExhaustiveProviderProperties {
             testNoRemove(pairs);
             testHasNext(pairs);
             List<Pair<Integer, Integer>> pairList = toList(pairs);
+            assertEquals(is, pairList, pairsLogarithmicOrder_Iterable_simplest(is));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(is, is.contains(p2.a));
                 assertTrue(is, is.contains(p2.b));
@@ -1433,6 +1467,28 @@ public class ExhaustiveProviderProperties {
         for (Iterable<Integer> is : take(LIMIT, iss2)) {
             assertTrue(is, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(is))));
         }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
+                    P.naturalIntegers(),
+                    EP.pairsLogarithmicOrder(P.naturalIntegers())
+            );
+            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
+                assertTrue(p, p.b.a < p.a / 2 + 1);
+                assertTrue(p, p.b.b < IntegerUtils.ceilingLog2(p.a + 2));
+            }
+        }
+    }
+
+    private static void compareImplementationsPairsLogarithmicOrder_Iterable() {
+        Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", ExhaustiveProviderProperties::pairsLogarithmicOrder_Iterable_simplest);
+        functions.put("standard", xs -> toList(EP.pairsLogarithmicOrder(xs)));
+        Iterable<List<Integer>> iss = filterInfinite(
+                xs -> xs.size() < TINY_LIMIT,
+                P.withScale(4).lists(P.integersGeometric())
+        );
+        compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
     private static void propertiesPairsSquareRootOrder_Iterable_Iterable() {
@@ -1480,6 +1536,31 @@ public class ExhaustiveProviderProperties {
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             assertTrue(p, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(p.a, p.b))));
         }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
+                    P.naturalIntegers(),
+                    EP.pairsSquareRootOrder(P.naturalIntegers(), P.naturalIntegers())
+            );
+            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
+                assertTrue(
+                        p,
+                        p.b.a < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a).pow(2))
+                                .intValueExact() * 2 + 1
+                );
+                assertTrue(
+                        p,
+                        p.b.b < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a))
+                                .intValueExact() * 2 + 1
+                );
+            }
+        }
+    }
+
+    private static @NotNull List<Pair<Integer, Integer>> pairsSquareRootOrder_Iterable_simplest(
+            @NotNull List<Integer> xs
+    ) {
+        return toList(EP.pairsSquareRootOrder(xs, xs));
     }
 
     private static void propertiesPairsSquareRootOrder_Iterable() {
@@ -1489,6 +1570,7 @@ public class ExhaustiveProviderProperties {
             testNoRemove(pairs);
             testHasNext(pairs);
             List<Pair<Integer, Integer>> pairList = toList(pairs);
+            assertEquals(is, pairList, pairsSquareRootOrder_Iterable_simplest(is));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(is, is.contains(p2.a));
                 assertTrue(is, is.contains(p2.b));
@@ -1520,5 +1602,32 @@ public class ExhaustiveProviderProperties {
         for (Iterable<Integer> is : take(LIMIT, iss2)) {
             assertTrue(is, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(is))));
         }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
+                    P.naturalIntegers(),
+                    EP.pairsSquareRootOrder(P.naturalIntegers())
+            );
+            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
+                assertTrue(
+                        p,
+                        p.b.a < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a).pow(2))
+                                .intValueExact() * 2 + 1
+                );
+                assertTrue(
+                        p,
+                        p.b.b < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a))
+                                .intValueExact() * 2 + 1
+                );
+            }
+        }
+    }
+
+    private static void compareImplementationsPairsSquareRootOrder_Iterable() {
+        Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", ExhaustiveProviderProperties::pairsSquareRootOrder_Iterable_simplest);
+        functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
+        Iterable<List<Integer>> iss = P.withScale(4).lists(P.integersGeometric());
+        compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions);
     }
 }

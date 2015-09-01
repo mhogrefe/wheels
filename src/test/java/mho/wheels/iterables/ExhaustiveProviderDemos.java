@@ -361,12 +361,12 @@ public class ExhaustiveProviderDemos {
         initialize();
         IterableProvider PS = P.withScale(4);
         Iterable<Pair<List<Integer>, Function<Integer, Iterable<Integer>>>> ps = P.dependentPairsInfinite(
-                PS.lists(P.integers()),
+                PS.lists(P.integersGeometric()),
                 xs -> xs.isEmpty() ?
                         repeat(new FiniteDomainFunction<>(new HashMap<>())) :
                         map(
                                 FiniteDomainFunction::new,
-                                PS.maps(xs, map(is -> (Iterable<Integer>) is, PS.lists(P.integers())))
+                                PS.maps(xs, map(is -> (Iterable<Integer>) is, PS.lists(P.integersGeometric())))
                         )
         );
         if (P instanceof ExhaustiveProvider) {
@@ -384,7 +384,7 @@ public class ExhaustiveProviderDemos {
             if (xs.isEmpty()) {
                 return repeat(new HashMap<>());
             } else {
-                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integersGeometric())));
             }
         };
         Function<
@@ -399,9 +399,14 @@ public class ExhaustiveProviderDemos {
         };
         Iterable<Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>>> ps = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+                nub(
+                        P.dependentPairsInfinite(
+                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.positiveIntegersGeometric()))),
+                                f
+                        )
+                )
         );
-        for (Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Iterable<Integer>, Function<Integer, Iterable<Integer>>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("dependentPairs(" + its(p.a) + ", " + p.b + ") = " + its(EP.dependentPairs(p.a, p.b)));
         }
     }
@@ -411,7 +416,7 @@ public class ExhaustiveProviderDemos {
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
                 m -> !all(p -> isEmpty(p.b), fromMap(m)),
-                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
         );
         Function<
                 Pair<List<Integer>, Map<Integer, List<Integer>>>,
@@ -425,9 +430,14 @@ public class ExhaustiveProviderDemos {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+                nub(
+                        P.dependentPairsInfinite(
+                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric()))),
+                                f
+                        )
+                )
         );
-        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(SMALL_LIMIT, ps)) {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
             System.out.println("dependentPairsInfinite(" + its(p.a) + ", " + niceFunction + ") = " +
                     its(EP.dependentPairsInfinite(p.a, p.b)));
