@@ -2185,6 +2185,45 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testPermutations() {
+        aeqit(P.permutations(Collections.emptyList()), "[[]]");
+        aeqit(P.permutations(Collections.singletonList(5)), "[[5]]");
+        aeqit(P.permutations(Arrays.asList(1, 2)), "[[1, 2], [2, 1]]");
+        aeqit(P.permutations(Arrays.asList(1, 2, 3)),
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        aeqit(P.permutations(Arrays.asList(1, 2, 3, 4)),
+                "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
+                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
+                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
+                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
+        aeqit(P.permutations(Arrays.asList(1, 2, 2, 4)),
+                "[[1, 2, 2, 4], [1, 2, 4, 2], [1, 4, 2, 2], [2, 1, 2, 4], [2, 1, 4, 2], [2, 2, 1, 4], [2, 2, 4, 1]," +
+                " [2, 4, 1, 2], [2, 4, 2, 1], [4, 1, 2, 2], [4, 2, 1, 2], [4, 2, 2, 1]]");
+        aeqit(P.permutations(Arrays.asList(2, 2, 2, 2)), "[[2, 2, 2, 2]]");
+        aeqit(P.permutations(Arrays.asList(3, 1, 4, 1)),
+                "[[3, 1, 1, 4], [3, 1, 4, 1], [3, 4, 1, 1], [1, 3, 1, 4], [1, 3, 4, 1], [1, 1, 3, 4], [1, 1, 4, 3]," +
+                " [1, 4, 3, 1], [1, 4, 1, 3], [4, 3, 1, 1], [4, 1, 3, 1], [4, 1, 1, 3]]");
+        aeqit(P.permutations(Arrays.asList(3, 1, null, 1)),
+                "[[3, 1, 1, null], [3, 1, null, 1], [3, null, 1, 1], [1, 3, 1, null], [1, 3, null, 1]," +
+                " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3], [null, 3, 1, 1]," +
+                " [null, 1, 3, 1], [null, 1, 1, 3]]");
+    }
+
+    @Test
+    public void testStringPermutations() {
+        aeqit(P.stringPermutations(""), "[]");
+        aeqit(P.stringPermutations("a"), "[a]");
+        aeqit(P.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
+        aeqit(P.stringPermutations("foo"), "[foo, ofo, oof]");
+        aeqit(P.stringPermutations("hello"),
+                "[hello, helol, heoll, hlelo, hleol, hlleo, hlloe, hloel, hlole, hoell, holel, holle, ehllo, ehlol," +
+                " eholl, elhlo, elhol, ellho, elloh, elohl, elolh, eohll, eolhl, eollh, lhelo, lheol, lhleo, lhloe," +
+                " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
+                " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
+                " olehl, olelh, ollhe, olleh]");
+    }
+
+    @Test
     public void testListsLex_int_Iterable() {
         aeqit(P.listsLex(0, Arrays.asList(1, 2, 3)), "[[]]");
         aeqit(P.listsLex(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
