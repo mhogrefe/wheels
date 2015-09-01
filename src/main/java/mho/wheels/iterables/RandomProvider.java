@@ -2809,8 +2809,8 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
-            private @NotNull Iterator<A> xsi = xs.iterator();
-            private @NotNull Map<A, Iterator<B>> aToBs = new HashMap<>();
+            private final @NotNull Iterator<A> xsi = xs.iterator();
+            private final @NotNull Map<A, Iterator<B>> aToBs = new HashMap<>();
 
             @Override
             public boolean hasNext() {

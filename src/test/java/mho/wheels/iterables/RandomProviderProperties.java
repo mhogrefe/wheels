@@ -2377,7 +2377,7 @@ public class RandomProviderProperties {
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
                 m -> !all(p -> isEmpty(p.b), fromMap(m)),
-                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
         );
         Function<
                 Pair<List<Integer>, Map<Integer, List<Integer>>>,
@@ -2391,7 +2391,12 @@ public class RandomProviderProperties {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+                nub(
+                        P.dependentPairsInfinite(
+                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric()))),
+                                f
+                        )
+                )
         );
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = RP.dependentPairsInfinite(p.a, p.b);
@@ -2417,7 +2422,7 @@ public class RandomProviderProperties {
             if (xs.isEmpty()) {
                 return repeat(new HashMap<>());
             } else {
-                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integersGeometric())));
             }
         };
         g = p -> {
@@ -2429,7 +2434,7 @@ public class RandomProviderProperties {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integers()))), f))
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.lists(P.integersGeometric()))), f))
         );
         for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
             try {
@@ -2443,7 +2448,7 @@ public class RandomProviderProperties {
                         p.a,
                         new FiniteDomainFunction<>(toMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b))))
                 ),
-                nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integers()), f))
+                nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integersGeometric()), f))
         );
         for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
             try {
@@ -2451,8 +2456,6 @@ public class RandomProviderProperties {
                 fail(p);
             } catch (NoSuchElementException ignored) {}
         }
-
-        //todo test uniqueness
     }
 
     private static void propertiesEquals() {

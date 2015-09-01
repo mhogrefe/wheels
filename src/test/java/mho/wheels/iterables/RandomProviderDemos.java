@@ -1149,7 +1149,7 @@ public class RandomProviderDemos {
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
                 m -> !all(p -> isEmpty(p.b), fromMap(m)),
-                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
         );
         Function<
                 Pair<List<Integer>, Map<Integer, List<Integer>>>,
@@ -1163,12 +1163,17 @@ public class RandomProviderDemos {
         };
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
                 g,
-                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+                nub(
+                        P.dependentPairsInfinite(
+                                nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric()))),
+                                f
+                        )
+                )
         );
-        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
-            System.out.println("dependentPairsInfinite(" + RandomProvider.example() + its(p.a) + ", " + niceFunction +
-                    ") = " + its(RP.dependentPairsInfinite(p.a, p.b)));
+            System.out.println("dependentPairsInfinite(" + RandomProvider.example() + ", " + its(p.a) + ", " +
+                    niceFunction + ") = " + its(RP.dependentPairsInfinite(p.a, p.b)));
         }
     }
 
