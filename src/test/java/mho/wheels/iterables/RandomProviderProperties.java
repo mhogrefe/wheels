@@ -358,7 +358,7 @@ public class RandomProviderProperties {
         initialize("uniformSample(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
-                P.lists(P.withNull(P.integers()))
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.uniformSample(p.b);

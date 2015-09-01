@@ -138,7 +138,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
-                P.lists(P.withNull(P.integers()))
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("uniformSample(" + p.a + ", " + p.b.toString() + ") = " + its(p.a.uniformSample(p.b)));
