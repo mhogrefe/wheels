@@ -9,13 +9,14 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 
 import static mho.wheels.iterables.IterableUtils.filterInfinite;
+import static mho.wheels.iterables.IterableUtils.map;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.math.BinaryFraction.of;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class BinaryFractionBenchmarks {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static final @NotNull
     String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static int LIMIT;
@@ -31,10 +32,6 @@ public class BinaryFractionBenchmarks {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
         }
-    }
-
-    public static void main(String[] args) {
-        benchmarkOf_double();
     }
 
     private static void benchmarkGetMantissa() {
@@ -129,6 +126,74 @@ public class BinaryFractionBenchmarks {
                 take(LIMIT, P.doubles()),
                 BinaryFraction::of,
                 d -> Double.toString(d).length()
+        );
+    }
+
+    private static void benchmarkBigDecimalValue() {
+        initialize();
+        benchmark(
+                "bigDecimalValue() by mantissa bit length",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::bigDecimalValue,
+                bf -> bf.getMantissa().bitLength()
+        );
+        System.out.println();
+        benchmark(
+                "bigDecimalValue() by exponent",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::bigDecimalValue,
+                bf -> Math.abs(bf.getExponent())
+        );
+    }
+
+    private static void benchmarkFloatRange() {
+        initialize();
+        benchmark(
+                "floatRange() by mantissa bit length",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::floatRange,
+                bf -> bf.getMantissa().bitLength()
+        );
+        System.out.println();
+        benchmark(
+                "floatRange() by exponent",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::floatRange,
+                bf -> Math.abs(bf.getExponent())
+        );
+    }
+
+    private static void benchmarkDoubleRange() {
+        initialize();
+        benchmark(
+                "doubleRange() by mantissa bit length",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::doubleRange,
+                bf -> bf.getMantissa().bitLength()
+        );
+        System.out.println();
+        benchmark(
+                "doubleRange() by exponent",
+                take(LIMIT, P.binaryFractions()),
+                BinaryFraction::doubleRange,
+                bf -> Math.abs(bf.getExponent())
+        );
+    }
+
+    private static void benchmarkBigIntegerValueExact() {
+        initialize();
+        benchmark(
+                "bigIntegerValueExact() by mantissa bit length",
+                take(LIMIT, map(BinaryFraction::of, P.bigIntegers())),
+                BinaryFraction::bigIntegerValueExact,
+                bf -> bf.getMantissa().bitLength()
+        );
+        System.out.println();
+        benchmark(
+                "bigIntegerValueExact() by exponent",
+                take(LIMIT, map(BinaryFraction::of, P.bigIntegers())),
+                BinaryFraction::bigIntegerValueExact,
+                bf -> Math.abs(bf.getExponent())
         );
     }
 }
