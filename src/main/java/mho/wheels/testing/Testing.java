@@ -679,4 +679,39 @@ public strictfp class Testing {
             assertEquals(x, ox.get(), x);
         }
     }
+
+    public static <A, B> void benchmark(
+            @NotNull String method,
+            @NotNull Iterable<A> inputs,
+            @NotNull Function<A, B> function,
+            @NotNull Function<A, Integer> sizeFunction
+    ) {
+        benchmark(method, inputs, function, Object::toString, sizeFunction);
+    }
+
+    public static <A, B> void benchmark(
+            @NotNull String method,
+            @NotNull Iterable<A> inputs,
+            @NotNull Function<A, B> function,
+            @NotNull Function<A, String> display,
+            @NotNull Function<A, Integer> sizeFunction
+    ) {
+        System.out.println("benchmarking " + method + "...");
+        Map<Integer, Pair<A, Long>> worstCases = new TreeMap<>();
+        for (A input : inputs) {
+            long time = System.nanoTime();
+            function.apply(input);
+            time = System.nanoTime() - time;
+            int size = sizeFunction.apply(input);
+            Pair<A, Long> worstCase = worstCases.get(size);
+            if (worstCase == null || time > worstCase.b) {
+                worstCase = new Pair<>(input, time);
+                worstCases.put(size, worstCase);
+            }
+        }
+        for (Map.Entry<Integer, Pair<A, Long>> worstCase : worstCases.entrySet()) {
+            System.out.println(worstCase.getKey() + "\t" + display.apply(worstCase.getValue().a) + "\t" +
+                    ((double) worstCase.getValue().b) / 1e9);
+        }
+    }
 }
