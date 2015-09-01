@@ -2210,8 +2210,8 @@ public class RandomProviderProperties {
         initialize("withElement(Integer, Iterable<Integer>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.withNull(P.integers()),
-                P.repeatingIterables(P.withNull(P.integers()))
+                P.withNull(P.integersGeometric()),
+                P.repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
             List<Integer> withElement = toList(take(TINY_LIMIT, t.a.withElement(t.b, t.c)));
@@ -2226,8 +2226,8 @@ public class RandomProviderProperties {
 
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail1 = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.withNull(P.integers()),
-                P.lists(P.withNull(P.integers()))
+                P.withNull(P.integersGeometric()),
+                P.lists(P.withNull(P.integersGeometric()))
         );
         for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail1)) {
             try {
@@ -2238,8 +2238,8 @@ public class RandomProviderProperties {
 
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = P.triples(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
-                P.withNull(P.integers()),
-                P.repeatingIterables(P.withNull(P.integers()))
+                P.withNull(P.integersGeometric()),
+                P.repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail2)) {
             try {
@@ -2253,7 +2253,7 @@ public class RandomProviderProperties {
         initialize("withNull(Iterable<Integer>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Integer> withNull = toList(take(TINY_LIMIT, p.a.withNull(p.b)));
@@ -2264,7 +2264,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail1 = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.lists(P.integers())
+                P.lists(P.integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail1)) {
             try {
@@ -2275,7 +2275,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
@@ -2289,7 +2289,7 @@ public class RandomProviderProperties {
         initialize("optionals(Iterable<Integer>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Optional<Integer>> os = toList(take(TINY_LIMIT, p.a.optionals(p.b)));
@@ -2300,7 +2300,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.lists(P.integers())
+                P.lists(P.integersGeometric())
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
             try {
@@ -2311,7 +2311,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
@@ -2322,7 +2322,10 @@ public class RandomProviderProperties {
 
         psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, P.listsWithElement(null, P.integers()))))
+                map(
+                        IterableUtils::cycle,
+                        nub(map(IterableUtils::unrepeat, P.listsWithElement(null, P.integersGeometric())))
+                )
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
@@ -2336,7 +2339,7 @@ public class RandomProviderProperties {
         initialize("nullableOptionals(Iterable<Integer>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withNull(P.integers()))
+                P.repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<NullableOptional<Integer>> os = toList(take(TINY_LIMIT, p.a.nullableOptionals(p.b)));
@@ -2347,7 +2350,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.lists(P.withNull(P.integers()))
+                P.lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
             try {
@@ -2358,7 +2361,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
