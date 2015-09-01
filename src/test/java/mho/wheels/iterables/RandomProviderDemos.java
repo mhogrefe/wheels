@@ -1100,8 +1100,8 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.withNull(P.integers()),
-                P.repeatingIterables(P.withNull(P.integers()))
+                P.withNull(P.integersGeometric()),
+                P.repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
@@ -1113,7 +1113,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("withNull(" + p.a + ", " + its(p.b) + ") = " + its(p.a.withNull(p.b)));
@@ -1124,7 +1124,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integers())
+                P.repeatingIterables(P.integersGeometric())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("optionals(" + p.a + ", " + its(p.b) + ") = " + its(p.a.optionals(p.b)));
@@ -1135,7 +1135,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withNull(P.integers()))
+                P.repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +
