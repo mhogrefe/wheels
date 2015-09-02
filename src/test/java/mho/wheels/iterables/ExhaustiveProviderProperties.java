@@ -1357,7 +1357,7 @@ public class ExhaustiveProviderProperties {
         initialize("pairsLogarithmicOrder(Iterable<A>, Iterable<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.integersGeometric()),
-                filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).lists(P.integersGeometric()))
+                filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))
         );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
@@ -1376,14 +1376,17 @@ public class ExhaustiveProviderProperties {
 
         ps = P.pairs(
                 P.withScale(4).distinctLists(P.integersGeometric()),
-                filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))
+                filterInfinite(
+                        xs -> xs.size() < TINY_LIMIT,
+                        P.withScale(4).distinctLists(P.withNull(P.integersGeometric()))
+                )
         );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
             assertTrue(p, unique(EP.pairsLogarithmicOrder(p.a, p.b)));
         }
 
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
-                P.withScale(4).repeatingIterables(P.integersGeometric())
+                P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
@@ -1427,7 +1430,7 @@ public class ExhaustiveProviderProperties {
         initialize("pairsLogarithmicOrder(Iterable<T>)");
         Iterable<List<Integer>> iss = filterInfinite(
                 xs -> xs.size() < TINY_LIMIT,
-                P.withScale(4).lists(P.integersGeometric())
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (List<Integer> is : take(LIMIT, iss)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(is);
@@ -1445,7 +1448,10 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        iss = filterInfinite(xs -> xs.size() < TINY_LIMIT, P.withScale(4).distinctLists(P.integersGeometric()));
+        iss = filterInfinite(
+                xs -> xs.size() < TINY_LIMIT,
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric()))
+        );
         for (List<Integer> is : take(LIMIT, iss)) {
             assertTrue(is, unique(EP.pairsLogarithmicOrder(is)));
         }
@@ -1486,14 +1492,16 @@ public class ExhaustiveProviderProperties {
         functions.put("standard", xs -> toList(EP.pairsLogarithmicOrder(xs)));
         Iterable<List<Integer>> iss = filterInfinite(
                 xs -> xs.size() < TINY_LIMIT,
-                P.withScale(4).lists(P.integersGeometric())
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         compareImplementations("pairsLogarithmicOrder(Iterable<T>)", take(LIMIT, iss), functions);
     }
 
     private static void propertiesPairsSquareRootOrder_Iterable_Iterable() {
         initialize("pairsSquareRootOrder(Iterable<A>, Iterable<B>)");
-        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(P.integersGeometric()));
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(p.a, p.b);
             testNoRemove(pairs);
@@ -1509,13 +1517,13 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        ps = P.pairs(P.withScale(4).distinctLists(P.integersGeometric()));
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
             assertTrue(p, unique(EP.pairsSquareRootOrder(p.a, p.b)));
         }
 
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
-                P.withScale(4).repeatingIterables(P.integersGeometric())
+                P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(p.a, p.b);
@@ -1565,7 +1573,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesPairsSquareRootOrder_Iterable() {
         initialize("pairsSquareRootOrder(Iterable<T>)");
-        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+        for (List<Integer> is : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
             testNoRemove(pairs);
             testHasNext(pairs);
@@ -1581,11 +1589,12 @@ public class ExhaustiveProviderProperties {
             }
         }
 
-        for (List<Integer> is : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+        for (List<Integer> is : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
             assertTrue(is, unique(EP.pairsSquareRootOrder(is)));
         }
 
-        for (Iterable<Integer> is : take(LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+        Iterable<Iterable<Integer>> iss = P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()));
+        for (Iterable<Integer> is : take(LIMIT, iss)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
             testNoRemove(TINY_LIMIT, pairs);
             List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
