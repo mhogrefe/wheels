@@ -27,6 +27,7 @@ Progress
 | FloatingPointUtils         | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IntegerUtils               | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator              | ✔       | ✔       | ✘     | ✘     | ✘          |
+| ListBasedComparator        | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator   | ✔       | ✔       | ✘     | ✘     | ✘          |
 | Ordering                   | ✔       | ✘       | ✘     | ✘     | ✘          |
