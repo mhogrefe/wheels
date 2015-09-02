@@ -681,37 +681,68 @@ public strictfp class Testing {
     }
 
     public static <A, B> void benchmark(
+            int trialCount,
             @NotNull String method,
             @NotNull Iterable<A> inputs,
             @NotNull Function<A, B> function,
-            @NotNull Function<A, Integer> sizeFunction
+            @NotNull Function<A, List<Integer>> sizeFunction
     ) {
-        benchmark(method, inputs, function, Object::toString, sizeFunction);
+        benchmark(trialCount, method, inputs, function, Object::toString, sizeFunction);
     }
 
     public static <A, B> void benchmark(
+            int trialCount,
             @NotNull String method,
             @NotNull Iterable<A> inputs,
             @NotNull Function<A, B> function,
             @NotNull Function<A, String> display,
-            @NotNull Function<A, Integer> sizeFunction
+            @NotNull Function<A, List<Integer>> sizeFunction
     ) {
         System.out.println("benchmarking " + method + "...");
-        Map<Integer, Pair<A, Long>> worstCases = new TreeMap<>();
+        List<Map<Integer, Pair<A, Long>>> worstCasesList = new ArrayList<>();
         for (A input : inputs) {
-            long time = System.nanoTime();
-            function.apply(input);
-            time = System.nanoTime() - time;
-            int size = sizeFunction.apply(input);
-            Pair<A, Long> worstCase = worstCases.get(size);
-            if (worstCase == null || time > worstCase.b) {
-                worstCase = new Pair<>(input, time);
-                worstCases.put(size, worstCase);
+            long[] trials = new long[trialCount];
+            for (int i = 0; i < trialCount; i++) {
+                long trialTime = System.nanoTime();
+                function.apply(input);
+                trials[i] = System.nanoTime() - trialTime;
+            }
+            long time = median(trials);
+            List<Integer> sizes = sizeFunction.apply(input);
+            if (worstCasesList.isEmpty()) {
+                for (int i = 0; i < sizes.size(); i++) {
+                    worstCasesList.add(new TreeMap<>());
+                }
+            }
+            for (int i = 0; i < sizes.size(); i++) {
+                Map<Integer, Pair<A, Long>> worstCases = worstCasesList.get(i);
+                Pair<A, Long> worstCase = worstCases.get(sizes.get(i));
+                if (worstCase == null || time > worstCase.b) {
+                    worstCase = new Pair<>(input, time);
+                    worstCases.put(sizes.get(i), worstCase);
+                }
             }
         }
-        for (Map.Entry<Integer, Pair<A, Long>> worstCase : worstCases.entrySet()) {
-            System.out.println(worstCase.getKey() + "\t" + display.apply(worstCase.getValue().a) + "\t" +
-                    ((double) worstCase.getValue().b) / 1e9);
+        for (Map<Integer, Pair<A, Long>> worstCases : worstCasesList) {
+            for (Map.Entry<Integer, Pair<A, Long>> worstCase : worstCases.entrySet()) {
+                System.out.println(worstCase.getKey() + "\t" + display.apply(worstCase.getValue().a) + "\t" +
+                        ((double) worstCase.getValue().b) / 1e9);
+            }
+            System.out.println();
         }
+    }
+
+    private static long median(long[] xs) {
+        Arrays.sort(xs);
+        int mid = xs.length / 2;
+        return (xs.length & 1) == 1 ? xs[mid] : (xs[mid - 1] + xs[mid]) / 2;
+    }
+
+    private static long sum(long[] xs) {
+        long result = 0;
+        for (long x : xs) {
+            result += x;
+        }
+        return result;
     }
 }
