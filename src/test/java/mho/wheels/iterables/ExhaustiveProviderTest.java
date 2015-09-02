@@ -2207,6 +2207,14 @@ public strictfp class ExhaustiveProviderTest {
                 "[[3, 1, 1, null], [3, 1, null, 1], [3, null, 1, 1], [1, 3, 1, null], [1, 3, null, 1]," +
                 " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3], [null, 3, 1, 1]," +
                 " [null, 1, 3, 1], [null, 1, 1, 3]]");
+        aeqitLimit(TINY_LIMIT, P.permutations(toList(IterableUtils.range(1, 10))),
+                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10, 9], [1, 2, 3, 4, 5, 6, 7, 9, 8, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 9, 10, 8], [1, 2, 3, 4, 5, 6, 7, 10, 8, 9], [1, 2, 3, 4, 5, 6, 7, 10, 9, 8]," +
+                " [1, 2, 3, 4, 5, 6, 8, 7, 9, 10], [1, 2, 3, 4, 5, 6, 8, 7, 10, 9], [1, 2, 3, 4, 5, 6, 8, 9, 7, 10]," +
+                " [1, 2, 3, 4, 5, 6, 8, 9, 10, 7], [1, 2, 3, 4, 5, 6, 8, 10, 7, 9], [1, 2, 3, 4, 5, 6, 8, 10, 9, 7]," +
+                " [1, 2, 3, 4, 5, 6, 9, 7, 8, 10], [1, 2, 3, 4, 5, 6, 9, 7, 10, 8], [1, 2, 3, 4, 5, 6, 9, 8, 7, 10]," +
+                " [1, 2, 3, 4, 5, 6, 9, 8, 10, 7], [1, 2, 3, 4, 5, 6, 9, 10, 7, 8], [1, 2, 3, 4, 5, 6, 9, 10, 8, 7]," +
+                " [1, 2, 3, 4, 5, 6, 10, 7, 8, 9], [1, 2, 3, 4, 5, 6, 10, 7, 9, 8], ...]");
     }
 
     @Test
@@ -2221,6 +2229,10 @@ public strictfp class ExhaustiveProviderTest {
                 " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
                 " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
                 " olehl, olelh, ollhe, olleh]");
+        aeqitLimit(TINY_LIMIT, P.stringPermutations("Mississippi"),
+                "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
+                " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
+                " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
     }
 
     @Test
