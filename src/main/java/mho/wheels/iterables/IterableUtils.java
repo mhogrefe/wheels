@@ -1780,14 +1780,9 @@ public final strictfp class IterableUtils {
      */
     public static @NotNull String reverse(@NotNull String s) {
         char[] reversed = new char[s.length()];
-        for (int i = 0; i < s.length() / 2; i++) {
-            int j = s.length() - i - 1;
-            reversed[i] = s.charAt(j);
-            reversed[j] = s.charAt(i);
-        }
-        if ((s.length() & 1) == 1) {
-            int i = s.length() / 2;
-            reversed[i] = s.charAt(i);
+        int length = s.length();
+        for (int i = 0; i < length; i++) {
+            reversed[i] = s.charAt(length - i - 1);
         }
         return new String(reversed);
     }
