@@ -851,6 +851,15 @@ public abstract strictfp class IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     );
 
+    /**
+     * Generates pairs of elements where the first component grows linearly but the second grows logarithmically (if
+     * applicable).
+     *
+     * @param as the source of values in the first slot
+     * @param bs the source of values in the second slot
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
@@ -858,10 +867,26 @@ public abstract strictfp class IterableProvider {
         return pairs(as, bs);
     }
 
+    /**
+     * Generates pairs of elements where the first component grows linearly but the second grows logarithmically (if
+     * applicable).
+     *
+     * @param xs the source of values
+     * @param <T> the type of values in the both slots of the result pairs
+     */
     public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return pairs(xs);
     }
 
+    /**
+     * Generates pairs of elements where the first component grows as O(n<sup>2/3</sup>) but the second grows as
+     * O(n<sup>1/3</sup>).
+     *
+     * @param as the source of values in the first slot
+     * @param bs the source of values in the second slot
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
@@ -869,12 +894,30 @@ public abstract strictfp class IterableProvider {
         return pairs(as, bs);
     }
 
+    /**
+     * Generates pairs of elements where the first component grows as O(n<sup>2/3</sup>) but the second grows as
+     * O(n<sup>1/3</sup>).
+     *
+     * @param xs the source of values
+     * @param <T> the type of values in the both slots of the result pairs
+     */
     public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
         return pairs(xs);
     }
 
+    /**
+     * Generates all permutations of a {@code List}.
+     *
+     * @param xs a list of elements
+     * @param <T> the type of values in the permutations
+     */
     public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
 
+    /**
+     * Generates all permutations of a {@code String}.
+     *
+     * @param s a {@code String}
+     */
     public @NotNull Iterable<String> stringPermutations(@NotNull String s) {
         return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
     }

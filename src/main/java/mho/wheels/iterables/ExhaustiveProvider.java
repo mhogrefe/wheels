@@ -2155,6 +2155,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return pairsByFunction(IntegerUtils::squareRootDemux, xs);
     }
 
+    /**
+     * Given a list of non-negative integers in weakly increasing order, returns all distinct permutations of these
+     * integers in lexicographic order.
+     *
+     * <ul>
+     *  <li>{@code start} must be weakly increasing and can only contain non-negative integers.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers, contains no repetitions, and is
+     *  the complete set of permutations of some list.</li>
+     * </ul>
+     *
+     * Length is the number of distinct permutations of {@code start}
+     *
+     * @param start a lexicographically smallest permutation
+     * @return all permutations of {@code start}
+     */
     private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
         return () -> new NoRemoveIterator<List<Integer>>() {
             private final @NotNull BigInteger outputSize = MathUtils.permutationCount(start);
@@ -2191,6 +2206,22 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing every distinct permutation of a list. The result is ordered
+     * lexicographically, preserving the order in the initial list.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is lexicographically increasing with respect to some order on {@code T}, contains no
+     *  repetitions, and is the complete set of permutations of some list.</li>
+     * </ul>
+     *
+     * Length is the number of distinct permutations of {@code start}
+     *
+     * @param xs a list of elements
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all distinct permutations of {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
         List<T> nub = toList(nub(xs));
