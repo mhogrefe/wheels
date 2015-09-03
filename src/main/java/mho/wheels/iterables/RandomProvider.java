@@ -2850,6 +2850,11 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (size == 0) {
             return repeat(Collections.emptyList());

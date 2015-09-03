@@ -922,6 +922,16 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, permutationsFinite(toList(fromString(s))));
     }
 
+    /**
+     * Generates permutations of an {@code Iterable}. If the {@code Iterable} is finite, all permutations are
+     * generated; if it is infinite, the only permutations that are generated are those that can generated from the
+     * identity with a finite number of swaps.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the permutations
+     */
+    public abstract @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs);
+
     public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
 
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);

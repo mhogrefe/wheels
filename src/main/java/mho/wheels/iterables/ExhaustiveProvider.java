@@ -2230,6 +2230,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(map(nub::get, is)), finitePermutationIndices(startingIndices));
     }
 
+    @Override
+    public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
     /**
      * Returns an {@code Iterable} containing all lists of a given length with elements from a given
      * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
