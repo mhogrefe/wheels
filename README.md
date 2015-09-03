@@ -30,6 +30,7 @@ Progress
 | ListBasedComparator        | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator         | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator   | ✔       | ✔       | ✘     | ✘     | ✘          |
+| WithNullComparator         | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Ordering                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | IsaacPRNG                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Either                     | ✘       | ✘       | ✘     | ✘     | ✘          |

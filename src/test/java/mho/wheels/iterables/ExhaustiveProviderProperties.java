@@ -5,6 +5,9 @@ import mho.wheels.math.MathUtils;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.numberUtils.IntegerUtils;
+import mho.wheels.ordering.comparators.LexComparator;
+import mho.wheels.ordering.comparators.ListBasedComparator;
+import mho.wheels.ordering.comparators.WithNullComparator;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
@@ -153,6 +156,8 @@ public class ExhaustiveProviderProperties {
             propertiesPairsSquareRootOrder_Iterable_Iterable();
             propertiesPairsSquareRootOrder_Iterable();
             compareImplementationsPairsSquareRootOrder_Iterable();
+            propertiesPermutationsFinite();
+            propertiesStringPermutations();
         }
         System.out.println("Done");
     }
@@ -1638,5 +1643,52 @@ public class ExhaustiveProviderProperties {
         functions.put("standard", xs -> toList(EP.pairsSquareRootOrder(xs)));
         Iterable<List<Integer>> iss = P.withScale(4).lists(P.integersGeometric());
         compareImplementations("pairsSquareRootOrder(Iterable<T>)", take(LIMIT, iss), functions);
+    }
+
+    private static void propertiesPermutationsFinite() {
+        initialize("permutationsFinite(List<T>)");
+        Comparator<Integer> comparator = new WithNullComparator<>();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> permutations = EP.permutationsFinite(xs);
+            testNoRemove(TINY_LIMIT, permutations);
+            if (xs.size() < 10) {
+                testHasNext(permutations);
+                List<List<Integer>> permutationsList = toList(permutations);
+                assertEquals(xs, permutationsList.size(), MathUtils.permutationCount(xs).intValueExact());
+                List<Integer> sorted = sort(comparator, xs);
+                assertTrue(xs, all(p -> sort(comparator, p).equals(sorted), permutationsList));
+                assertTrue(xs, unique(permutationsList));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(xs)),
+                                map(ys -> ((Iterable<Integer>) ys), permutationsList)
+                        )
+                );
+            }
+        }
+    }
+
+    private static void propertiesStringPermutations() {
+        initialize("stringPermutations(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> permutations = EP.stringPermutations(s);
+            testNoRemove(TINY_LIMIT, permutations);
+            if (s.length() < 10) {
+                testHasNext(permutations);
+                List<String> permutationsList = toList(permutations);
+                assertEquals(s, permutationsList.size(), MathUtils.permutationCount(toList(s)).intValueExact());
+                String sorted = sort(s);
+                assertTrue(s, all(p -> sort(p).equals(sorted), permutationsList));
+                assertTrue(s, unique(permutationsList));
+                assertTrue(
+                        s,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(toList(s))),
+                                map(IterableUtils::fromString, permutationsList)
+                        )
+                );
+            }
+        }
     }
 }
