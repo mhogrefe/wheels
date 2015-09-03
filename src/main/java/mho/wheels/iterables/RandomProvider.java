@@ -2830,11 +2830,17 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    public <T> void shuffle(@NotNull List<T> xs) {
+        int limit = xs.size() - 1;
+        for (int i = 0; i < limit; i++) {
+            int j = head(range(i, limit));
+            Collections.swap(xs, i, j);
+        }
+    }
+
     @Override
     public @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
-            Random random = new Random(0x6af477d9a7e54fcaL);
-
             @Override
             public boolean hasNext() {
                 return true;
@@ -2842,16 +2848,45 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public List<T> next() {
-                List<T> shuffled = toList(xs);
-                Collections.shuffle(shuffled, random);
-                return shuffled;
+                List<T> copy = toList(xs);
+                shuffle(copy);
+                return copy;
             }
         };
     }
 
     @Override
     public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
-        return null;
+        return () -> new NoRemoveIterator<Iterable<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Iterable<T> next() {
+                outer:
+                while (true) {
+                    int prefixSize = prefixSizes.next();
+                    if (cxs.knownSize().isPresent() && cxs.knownSize().get() > prefixSize) {
+                        continue;
+                    }
+                    List<T> prefix = new ArrayList<>();
+                    for (int i = 0; i < prefixSize; i++) {
+                        NullableOptional<T> x = cxs.get(i);
+                        if (!x.isPresent()) {
+                            continue outer;
+                        }
+                        prefix.add(x.get());
+                    }
+                    shuffle(prefix);
+                    return concat(prefix, drop(prefixSize, xs));
+                }
+            }
+        };
     }
 
     @Override
