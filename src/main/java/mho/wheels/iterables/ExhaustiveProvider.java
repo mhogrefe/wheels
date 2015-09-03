@@ -1963,7 +1963,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             }
 
             @Override
-            public Pair<A, B> next() {
+            public @NotNull Pair<A, B> next() {
                 if (reachedEnd) {
                     throw new NoSuchElementException();
                 }
@@ -2028,7 +2028,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             }
 
             @Override
-            public Pair<T, T> next() {
+            public @NotNull Pair<T, T> next() {
                 if (reachedEnd) {
                     throw new NoSuchElementException();
                 }
@@ -2182,7 +2182,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             }
 
             @Override
-            public List<Integer> next() {
+            public @NotNull List<Integer> next() {
                 if (index.equals(BigInteger.ZERO)) {
                     index = BigInteger.ONE;
                     return list;
@@ -2230,6 +2230,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(map(nub::get, is)), finitePermutationIndices(startingIndices));
     }
 
+    /**
+     * Returns an {@code Iterable} containing every permutation of an {@code Iterable}. If the {@code Iterable} is
+     * finite, all permutations are generated; if it is infinite, then only permutations that are equal to the identity
+     * except in a finite prefix are generated. Unlike {@link ExhaustiveProvider#permutationsFinite(List)}, this method
+     * may return an {@code Iterable} with duplicate elements.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of the given {@code Iterable}'s elements
+     */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<Iterable<T>>() {
@@ -2246,7 +2255,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             }
 
             @Override
-            public Iterable<T> next() {
+            public @NotNull Iterable<T> next() {
                 if (reachedEnd) {
                     throw new NoSuchElementException();
                 }
