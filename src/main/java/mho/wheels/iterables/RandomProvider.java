@@ -42,12 +42,13 @@ public final strictfp class RandomProvider extends IterableProvider {
     /**
      * A list of all {@code Ordering}s.
      */
-    private static final List<Ordering> ORDERINGS = toList(ExhaustiveProvider.INSTANCE.orderings());
+    private static final @NotNull List<Ordering> ORDERINGS = toList(ExhaustiveProvider.INSTANCE.orderings());
 
     /**
      * A list of all {@code RoundingMode}s.
      */
-    private static final List<RoundingMode> ROUNDING_MODES = toList(ExhaustiveProvider.INSTANCE.roundingModes());
+    private static final @NotNull List<RoundingMode> ROUNDING_MODES =
+            toList(ExhaustiveProvider.INSTANCE.roundingModes());
 
     /**
      * The default value of {@code scale}.
@@ -319,7 +320,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Integer next() {
+            public @NotNull Integer next() {
                 return prng.nextInt();
             }
         };
@@ -1098,7 +1099,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Integer next() {
+            public @NotNull Integer next() {
                 int i;
                 int j = 0;
                 do {
@@ -1179,7 +1180,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Integer next() {
+            public @NotNull Integer next() {
                 int i;
                 int j = 0;
                 do {
@@ -1356,7 +1357,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigInteger next() {
+            public @NotNull BigInteger next() {
                 int size = is.next();
                 if (size == 0) return BigInteger.ZERO;
                 return nextBigIntegerPow2(size).setBit(size - 1);
@@ -1437,7 +1438,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigInteger next() {
+            public @NotNull BigInteger next() {
                 int size = is.next();
                 BigInteger i;
                 if (size != absBitLength) {
@@ -1582,7 +1583,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BinaryFraction next() {
+            public @NotNull BinaryFraction next() {
                 BigInteger mantissa = ms.next();
                 if (mantissa.equals(BigInteger.ZERO)) {
                     return BinaryFraction.ZERO;
@@ -1684,7 +1685,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BinaryFraction next() {
+            public @NotNull BinaryFraction next() {
                 int i = is.next();
                 if (i == 0) {
                     return BinaryFraction.of(is2.next(), difference.getExponent()).add(a);
@@ -2394,7 +2395,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigDecimal next() {
+            public @NotNull BigDecimal next() {
                 int bdScale = is3.next();
                 BigInteger unscaled;
                 if (bdScale == 0) {
@@ -2485,7 +2486,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigDecimal next() {
+            public @NotNull BigDecimal next() {
                 int bdScale = is3.next();
                 BigInteger unscaled;
                 if (bdScale == 0) {
@@ -2530,7 +2531,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigDecimal next() {
+            public @NotNull BigDecimal next() {
                 int normalizedScale = is.next();
                 if (normalizedScale == 0) {
                     return bs.next() ? BigDecimal.ONE.movePointRight(pow) : BigDecimal.ZERO;
@@ -2579,7 +2580,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public BigDecimal next() {
+            public @NotNull BigDecimal next() {
                 BigDecimal bd = bdi.next();
                 if (bd.equals(BigDecimal.ZERO)) {
                     return new BigDecimal(BigInteger.ZERO, integersGeometric.next());
@@ -2818,7 +2819,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Pair<A, B> next() {
+            public @NotNull Pair<A, B> next() {
                 A a = xsi.next();
                 Iterator<B> bs = aToBs.get(a);
                 if (bs == null) {
@@ -2830,6 +2831,18 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Shuffles a {@code List} in place using the Fisher-Yates algorithm. If the list's elements are unique, every
+     * permutation is an equally likely outcome.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * @param xs the {@code List} to be shuffled
+     * @param <T> the type of the {@code List}'s elements
+     */
     public <T> void shuffle(@NotNull List<T> xs) {
         int limit = xs.size() - 1;
         for (int i = 0; i < limit; i++) {
@@ -2847,7 +2860,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 List<T> copy = toList(xs);
                 shuffle(copy);
                 return copy;
@@ -2856,7 +2869,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric().iterator();
@@ -2867,7 +2880,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public Iterable<T> next() {
+            public @NotNull Iterable<T> next() {
                 outer:
                 while (true) {
                     int prefixSize = prefixSizes.next();
@@ -3016,7 +3029,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 int size = sizes.next();
                 List<T> list = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
@@ -3039,7 +3052,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public String next() {
+            public @NotNull String next() {
                 int size = sizes.next();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < size; i++) {
@@ -3062,7 +3075,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public String next() {
+            public @NotNull String next() {
                 int size = sizes.next();
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < size; i++) {
@@ -3086,7 +3099,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 int size = sizes.next() + minSize;
                 List<T> list = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
@@ -3110,7 +3123,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public String next() {
+            public @NotNull String next() {
                 int size = sizes.next() + minSize;
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < size; i++) {
@@ -3133,7 +3146,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public String next() {
+            public @NotNull String next() {
                 int size = sizes.next() + minSize;
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < size; i++) {
@@ -3291,7 +3304,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 int size = sizes.next();
                 Set<T> set = new LinkedHashSet<>();
                 while (set.size() < size) {
@@ -3314,7 +3327,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 int size = sizes.next();
                 Set<T> set = new LinkedHashSet<>();
                 while (set.size() < size) {
@@ -3334,7 +3347,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             }
 
             @Override
-            public List<T> next() {
+            public @NotNull List<T> next() {
                 return toList(select(booleans(), xs));
             }
         };

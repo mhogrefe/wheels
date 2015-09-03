@@ -2231,7 +2231,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
