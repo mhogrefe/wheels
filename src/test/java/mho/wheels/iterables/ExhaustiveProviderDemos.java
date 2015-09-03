@@ -536,4 +536,22 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringPermutations(s))));
         }
     }
+
+    private static void demoPrefixPermutations_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            String listString = tail(init(xs.toString()));
+            System.out.println("prefixPermutations(" + listString + ") = " +
+                    its(map(Testing::its, EP.prefixPermutations(xs))));
+        }
+    }
+
+    private static void demoPrefixPermutations_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(TINY_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            String listString = tail(init(its(xs)));
+            System.out.println("prefixPermutations(" + listString + ") = " +
+                    its(map(Testing::its, EP.prefixPermutations(xs))));
+        }
+    }
 }
