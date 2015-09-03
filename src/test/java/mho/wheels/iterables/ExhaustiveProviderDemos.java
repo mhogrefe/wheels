@@ -521,11 +521,11 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPermutations() {
+    private static void demoPermutationsFinite() {
         initialize();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             String listString = tail(init(xs.toString()));
-            System.out.println("permutations(" + listString + ") = " + its(EP.permutations(xs)));
+            System.out.println("permutationsFinite(" + listString + ") = " + its(EP.permutationsFinite(xs)));
         }
     }
 

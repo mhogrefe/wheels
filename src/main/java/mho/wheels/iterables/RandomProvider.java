@@ -2831,7 +2831,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+    public @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
             Random random = new Random(0x6af477d9a7e54fcaL);
 

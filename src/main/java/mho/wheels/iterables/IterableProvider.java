@@ -911,7 +911,7 @@ public abstract strictfp class IterableProvider {
      * @param xs a list of elements
      * @param <T> the type of values in the permutations
      */
-    public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
+    public abstract @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs);
 
     /**
      * Generates all permutations of a {@code String}.
@@ -919,7 +919,7 @@ public abstract strictfp class IterableProvider {
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> stringPermutations(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
+        return map(IterableUtils::charsToString, permutationsFinite(toList(fromString(s))));
     }
 
     public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);

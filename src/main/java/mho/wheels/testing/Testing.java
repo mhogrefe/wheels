@@ -526,7 +526,7 @@ public strictfp class Testing {
         if (commutativeAndAssociative) {
             Iterable<Pair<List<T>, List<T>>> ps = filter(
                     q -> !q.a.equals(q.b),
-                    P.dependentPairs(P.lists(xs), P::permutations)
+                    P.dependentPairs(P.lists(xs), P::permutationsFinite)
             );
             for (Pair<List<T>, List<T>> p : take(limit, ps)) {
                 assertEquals(p, listF.apply(p.a), listF.apply(p.b));

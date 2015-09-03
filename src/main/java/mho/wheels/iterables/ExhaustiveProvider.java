@@ -2170,7 +2170,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param start a lexicographically smallest permutation
      * @return all permutations of {@code start}
      */
-    private static @NotNull Iterable<List<Integer>> permutationIndices(@NotNull List<Integer> start) {
+    private static @NotNull Iterable<List<Integer>> finitePermutationIndices(@NotNull List<Integer> start) {
         return () -> new NoRemoveIterator<List<Integer>>() {
             private final @NotNull BigInteger outputSize = MathUtils.permutationCount(start);
             private @NotNull List<Integer> list = toList(start);
@@ -2223,11 +2223,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all distinct permutations of {@code xs}
      */
     @Override
-    public @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs) {
+    public @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs) {
         List<T> nub = toList(nub(xs));
         Map<T, Integer> indexMap = toMap(zip(nub, IterableUtils.rangeUp(0)));
         List<Integer> startingIndices = sort(map(indexMap::get, xs));
-        return map(is -> toList(map(nub::get, is)), permutationIndices(startingIndices));
+        return map(is -> toList(map(nub::get, is)), finitePermutationIndices(startingIndices));
     }
 
     /**
