@@ -2236,11 +2236,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * except in a finite prefix are generated. Unlike {@link ExhaustiveProvider#permutationsFinite(List)}, this method
      * may return an {@code Iterable} with duplicate elements.
      *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the set of permutations of some {@code Iterable} such that each permutation differs from
+     *  {@code xs} in a finite prefix.</li>
+     * </ul>
+     *
      * @param xs an {@code Iterable} of elements
      * @param <T> the type of the given {@code Iterable}'s elements
      */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(2, xs)) return Collections.singletonList(xs);
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
