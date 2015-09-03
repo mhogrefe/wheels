@@ -707,7 +707,7 @@ public strictfp class Testing {
                 function.apply(input);
                 trials[i] = System.nanoTime() - trialTime;
             }
-            long time = median(trials);
+            long time = middleMean(trials);
             List<Integer> sizes = sizeFunction.apply(input);
             if (worstCasesList.isEmpty()) {
                 for (int i = 0; i < sizes.size(); i++) {
@@ -744,5 +744,17 @@ public strictfp class Testing {
             result += x;
         }
         return result;
+    }
+
+    private static long middleMean(long[] xs) {
+        if (xs.length == 1) return xs[0];
+        Arrays.sort(xs);
+        int a = xs.length / 4;
+        int b = xs.length * 3 / 4;
+        long sum = 0;
+        for (int i = a; i <= b; i++) {
+            sum += xs[i];
+        }
+        return sum / (b - a + 1);
     }
 }
