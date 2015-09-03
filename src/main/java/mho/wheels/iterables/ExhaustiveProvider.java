@@ -2232,7 +2232,52 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<Iterable<T>> permutations(@NotNull Iterable<T> xs) {
-        return null;
+        return () -> new NoRemoveIterator<Iterable<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private Iterator<List<Integer>> prefixIndices;
+            private int prefixLength = 0;
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public Iterable<T> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                if (prefixIndices == null || !prefixIndices.hasNext()) {
+                    updatePrefixIndices();
+                }
+                Iterable<T> permutation = concat(cxs.get(prefixIndices.next()).get(), drop(prefixLength, xs));
+                if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
+                    outputSize = Optional.of(MathUtils.factorial(cxs.knownSize().get()));
+                }
+                index = index.add(BigInteger.ONE);
+                if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                    reachedEnd = true;
+                }
+                return permutation;
+            }
+
+            private void updatePrefixIndices() {
+                if (prefixIndices == null) {
+                    prefixLength = 0;
+                } else if (prefixLength == 0) {
+                    prefixLength = 2;
+                } else {
+                    prefixLength++;
+                }
+                prefixIndices = filter(
+                        is -> is.isEmpty() || last(is) != prefixLength - 1,
+                        finitePermutationIndices(toList(IterableUtils.range(0, prefixLength - 1)))
+                ).iterator();
+            }
+        };
     }
 
     /**
