@@ -1652,8 +1652,11 @@ public class ExhaustiveProviderProperties {
             Iterable<List<Integer>> permutations = EP.permutationsFinite(xs);
             testNoRemove(TINY_LIMIT, permutations);
             if (xs.size() < 10) {
+                Comparator<Integer> xsComparator = new ListBasedComparator<>(xs);
                 testHasNext(permutations);
                 List<List<Integer>> permutationsList = toList(permutations);
+                assertEquals(xs, head(permutationsList), sort(xsComparator, xs));
+                assertEquals(xs, last(permutationsList), reverse(sort(xsComparator, xs)));
                 assertEquals(xs, permutationsList.size(), MathUtils.permutationCount(xs).intValueExact());
                 List<Integer> sorted = sort(comparator, xs);
                 assertTrue(xs, all(p -> sort(comparator, p).equals(sorted), permutationsList));
@@ -1661,7 +1664,7 @@ public class ExhaustiveProviderProperties {
                 assertTrue(
                         xs,
                         increasing(
-                                new LexComparator<>(new ListBasedComparator<>(xs)),
+                                new LexComparator<>(xsComparator),
                                 map(ys -> ((Iterable<Integer>) ys), permutationsList)
                         )
                 );
@@ -1675,18 +1678,18 @@ public class ExhaustiveProviderProperties {
             Iterable<String> permutations = EP.stringPermutations(s);
             testNoRemove(TINY_LIMIT, permutations);
             if (s.length() < 10) {
+                Comparator<Character> sComparator = new ListBasedComparator<>(toList(s));
                 testHasNext(permutations);
                 List<String> permutationsList = toList(permutations);
+                assertEquals(s, head(permutationsList), sort(sComparator, s));
+                assertEquals(s, last(permutationsList), reverse(sort(sComparator, s)));
                 assertEquals(s, permutationsList.size(), MathUtils.permutationCount(toList(s)).intValueExact());
                 String sorted = sort(s);
                 assertTrue(s, all(p -> sort(p).equals(sorted), permutationsList));
                 assertTrue(s, unique(permutationsList));
                 assertTrue(
                         s,
-                        increasing(
-                                new LexComparator<>(new ListBasedComparator<>(toList(s))),
-                                map(IterableUtils::fromString, permutationsList)
-                        )
+                        increasing(new LexComparator<>(sComparator), map(IterableUtils::fromString, permutationsList))
                 );
             }
         }
