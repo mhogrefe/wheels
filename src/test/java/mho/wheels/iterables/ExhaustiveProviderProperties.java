@@ -158,6 +158,7 @@ public class ExhaustiveProviderProperties {
             compareImplementationsPairsSquareRootOrder_Iterable();
             propertiesPermutationsFinite();
             propertiesStringPermutations();
+            propertiesPrefixPermutations();
         }
         System.out.println("Done");
     }
@@ -1691,6 +1692,41 @@ public class ExhaustiveProviderProperties {
                         s,
                         increasing(new LexComparator<>(sComparator), map(IterableUtils::fromString, permutationsList))
                 );
+            }
+        }
+    }
+
+    private static void propertiesPrefixPermutations() {
+        initialize("prefixPermutations(Iterable<T>)");
+        Comparator<Integer> comparator = new WithNullComparator<>();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Iterable<Integer>> permutations = EP.prefixPermutations(xs);
+            testNoRemove(TINY_LIMIT, permutations);
+            if (xs.size() < 10) {
+                testHasNext(permutations);
+                List<Iterable<Integer>> permutationsList = toList(permutations);
+                assertEquals(xs, toList(head(permutationsList)), xs);
+                assertEquals(xs, toList(last(permutationsList)), reverse(xs));
+                assertEquals(xs, permutationsList.size(), MathUtils.factorial(xs.size()).intValueExact());
+                List<Integer> sorted = sort(comparator, xs);
+                assertTrue(xs, all(p -> sort(comparator, p).equals(sorted), permutationsList));
+                for (Iterable<Integer> is : take(TINY_LIMIT, permutationsList)) {
+                    testNoRemove(is);
+                    testHasNext(is);
+                }
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Iterable<Integer>> permutations = EP.prefixPermutations(xs);
+            List<Integer> smallXs = toList(take(TINY_LIMIT, xs));
+            testNoRemove(TINY_LIMIT, permutations);
+            List<Iterable<Integer>> permutationsList = toList(take(TINY_LIMIT, permutations));
+            assertEquals(its(xs), toList(take(TINY_LIMIT, head(permutationsList))), smallXs);
+            assertEquals(its(xs), permutationsList.size(), TINY_LIMIT);
+            for (Iterable<Integer> is : permutationsList) {
+                testNoRemove(TINY_LIMIT, is);
+                assertTrue(its(is), unique(take(TINY_LIMIT, is)));
             }
         }
     }

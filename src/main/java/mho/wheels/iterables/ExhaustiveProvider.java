@@ -2247,7 +2247,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
-        if (!lengthAtLeast(2, xs)) return Collections.singletonList(xs);
+        if (!lengthAtLeast(2, xs)) return Collections.singletonList(new NoRemoveIterable<>(xs));
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
