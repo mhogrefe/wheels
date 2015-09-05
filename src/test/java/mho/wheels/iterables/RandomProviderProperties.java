@@ -4,6 +4,7 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
+import mho.wheels.ordering.comparators.ListBasedComparator;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
@@ -166,6 +167,7 @@ public class RandomProviderProperties {
             propertiesOptionals();
             propertiesNullableOptionals();
             propertiesDependentPairsInfinite();
+            propertiesShuffle();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2455,6 +2457,20 @@ public class RandomProviderProperties {
                 toList(RP.dependentPairsInfinite(p.a, p.b));
                 fail(p);
             } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static void propertiesShuffle() {
+        initialize("shuffle(List<T>)");
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            List<Integer> shuffled = toList(p.b);
+            p.a.shuffle(shuffled);
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            assertEquals(p, sort(comparator, p.b), sort(comparator, shuffled));
         }
     }
 

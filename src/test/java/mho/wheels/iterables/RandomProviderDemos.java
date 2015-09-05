@@ -1184,9 +1184,9 @@ public class RandomProviderDemos {
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
-            List<Integer> copy = toList(p.b);
-            p.a.shuffle(copy);
-            System.out.println("shuffle(" + p.a + ", " + p.b + ") => " + copy);
+            List<Integer> shuffled = toList(p.b);
+            p.a.shuffle(shuffled);
+            System.out.println("shuffle(" + p.a + ", " + p.b + ") => " + shuffled);
         }
     }
 
