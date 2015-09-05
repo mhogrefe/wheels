@@ -102,7 +102,7 @@ public class RandomProviderDemos {
             head(rp.integers());
             RandomProvider beforeReset = rp.deepCopy();
             rp.reset();
-            System.out.println("reset(" + beforeReset + ") = " + rp);
+            System.out.println("reset(" + beforeReset + ") => " + rp);
         }
     }
 
@@ -1174,6 +1174,19 @@ public class RandomProviderDemos {
             String niceFunction = toMap(map(q -> new Pair<>(q.a, its(q.b)), fromMap(p.b.asMap()))).toString();
             System.out.println("dependentPairsInfinite(" + RandomProvider.example() + ", " + its(p.a) + ", " +
                     niceFunction + ") = " + its(RP.dependentPairsInfinite(p.a, p.b)));
+        }
+    }
+
+    private static void demoShuffle() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            List<Integer> copy = toList(p.b);
+            p.a.shuffle(copy);
+            System.out.println("shuffle(" + p.a + ", " + p.b + ") => " + copy);
         }
     }
 
