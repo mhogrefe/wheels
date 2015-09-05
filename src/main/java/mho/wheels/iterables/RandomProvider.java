@@ -2795,7 +2795,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code xs} must be infinite.</li>
      *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
      *  infinite.</li>
-     *  <li>The result is non-removable and does not contain nulls.</li>
+     *  <li>The result is infinite, non-removable and does not contain nulls.</li>
      * </ul>
      *
      * @param xs an {@code Iterable} of values
@@ -2851,6 +2851,21 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates permutations of a list. If the list's elements are unique, every permutation
+     * is an equally likely outcome. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and consists of permutations of a {@code List}.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs a list of elements
+     * @param <T> the type of the given {@code List}'s elements
+     * @return permutations of {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
