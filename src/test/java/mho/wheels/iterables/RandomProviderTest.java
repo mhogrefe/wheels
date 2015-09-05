@@ -12136,12 +12136,37 @@ public strictfp class RandomProviderTest {
         try {
             toList(
                     P.dependentPairsInfinite(
-                            range(1, 5),
-                            i -> P.strings(i, charsToString(range('a', 'z')))
+                            P.range(1, 5),
+                            i -> ExhaustiveProvider.INSTANCE.range('a', 'z')
                     )
             );
             fail();
         } catch (NoSuchElementException ignored) {}
+    }
+
+    private static void shuffleHelper(@NotNull String input, @NotNull String output) {
+        shuffleHelper(readIntegerListWithNulls(input), output);
+    }
+
+    private static void shuffleHelper(@NotNull List<Integer> input, @NotNull String output) {
+        List<Integer> xs = toList(input);
+        P.shuffle(xs);
+        aeqit(xs, output);
+        P.reset();
+    }
+
+    @Test
+    public void testShuffle() {
+        shuffleHelper("[]", "[]");
+        shuffleHelper("[5]", "[5]");
+        shuffleHelper("[1, 2]", "[2, 1]");
+        shuffleHelper("[1, 2, 3]", "[2, 1, 3]");
+        shuffleHelper("[1, 2, 3, 4]", "[2, 4, 1, 3]");
+        shuffleHelper("[1, 2, 2, 4]", "[2, 4, 1, 2]");
+        shuffleHelper("[2, 2, 2, 2]", "[2, 2, 2, 2]");
+        shuffleHelper("[3, 1, 4, 1]", "[1, 1, 3, 4]");
+        shuffleHelper("[3, 1, null, 1]", "[1, 1, 3, null]");
+        shuffleHelper(toList(IterableUtils.range(1, 10)), "[10, 4, 1, 9, 8, 7, 5, 2, 3, 6]");
     }
 
     @Test

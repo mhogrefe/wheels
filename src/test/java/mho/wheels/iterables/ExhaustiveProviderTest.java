@@ -2185,30 +2185,41 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void permutationsFiniteHelper(@NotNull String input, @NotNull String output) {
+        aeqit(map(Testing::its, P.permutationsFinite(readIntegerListWithNulls(input))), output);
+    }
+
+    private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
+        aeqit(map(Testing::its, P.permutationsFinite(input)), output);
+    }
+
+    private static void permutationsFiniteHelper(int limit, @NotNull List<Integer> input, @NotNull String output) {
+        aeqitLimit(limit, map(Testing::its, P.permutationsFinite(input)), output);
+    }
+
     @Test
     public void testPermutationsFinite() {
-        aeqit(P.permutationsFinite(Collections.emptyList()), "[[]]");
-        aeqit(P.permutationsFinite(Collections.singletonList(5)), "[[5]]");
-        aeqit(P.permutationsFinite(Arrays.asList(1, 2)), "[[1, 2], [2, 1]]");
-        aeqit(P.permutationsFinite(Arrays.asList(1, 2, 3)),
-                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        aeqit(P.permutationsFinite(Arrays.asList(1, 2, 3, 4)),
+        permutationsFiniteHelper("[]", "[[]]");
+        permutationsFiniteHelper("[5]", "[[5]]");
+        permutationsFiniteHelper("[1, 2]", "[[1, 2], [2, 1]]");
+        permutationsFiniteHelper("[1, 2, 3]", "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        permutationsFiniteHelper("[1, 2, 3, 4]",
                 "[[1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
                 " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
                 " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
                 " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
-        aeqit(P.permutationsFinite(Arrays.asList(1, 2, 2, 4)),
+        permutationsFiniteHelper("[1, 2, 2, 4]",
                 "[[1, 2, 2, 4], [1, 2, 4, 2], [1, 4, 2, 2], [2, 1, 2, 4], [2, 1, 4, 2], [2, 2, 1, 4], [2, 2, 4, 1]," +
                 " [2, 4, 1, 2], [2, 4, 2, 1], [4, 1, 2, 2], [4, 2, 1, 2], [4, 2, 2, 1]]");
-        aeqit(P.permutationsFinite(Arrays.asList(2, 2, 2, 2)), "[[2, 2, 2, 2]]");
-        aeqit(P.permutationsFinite(Arrays.asList(3, 1, 4, 1)),
+        permutationsFiniteHelper("[2, 2, 2, 2]", "[[2, 2, 2, 2]]");
+        permutationsFiniteHelper("[3, 1, 4, 1]",
                 "[[3, 1, 1, 4], [3, 1, 4, 1], [3, 4, 1, 1], [1, 3, 1, 4], [1, 3, 4, 1], [1, 1, 3, 4], [1, 1, 4, 3]," +
                 " [1, 4, 3, 1], [1, 4, 1, 3], [4, 3, 1, 1], [4, 1, 3, 1], [4, 1, 1, 3]]");
-        aeqit(P.permutationsFinite(Arrays.asList(3, 1, null, 1)),
+        permutationsFiniteHelper("[3, 1, null, 1]",
                 "[[3, 1, 1, null], [3, 1, null, 1], [3, null, 1, 1], [1, 3, 1, null], [1, 3, null, 1]," +
                 " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3], [null, 3, 1, 1]," +
                 " [null, 1, 3, 1], [null, 1, 1, 3]]");
-        aeqitLimit(TINY_LIMIT, P.permutationsFinite(toList(IterableUtils.range(1, 10))),
+        permutationsFiniteHelper(TINY_LIMIT, toList(IterableUtils.range(1, 10)),
                 "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10, 9], [1, 2, 3, 4, 5, 6, 7, 9, 8, 10]," +
                 " [1, 2, 3, 4, 5, 6, 7, 9, 10, 8], [1, 2, 3, 4, 5, 6, 7, 10, 8, 9], [1, 2, 3, 4, 5, 6, 7, 10, 9, 8]," +
                 " [1, 2, 3, 4, 5, 6, 8, 7, 9, 10], [1, 2, 3, 4, 5, 6, 8, 7, 10, 9], [1, 2, 3, 4, 5, 6, 8, 9, 7, 10]," +
