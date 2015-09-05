@@ -28,7 +28,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     /**
      * The single instance of this class.
      */
-    public static final ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
+    public static final @NotNull ExhaustiveProvider INSTANCE = new ExhaustiveProvider();
 
     /**
      * Disallow instantiation
@@ -2241,6 +2241,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is the set of permutations of some {@code Iterable} such that each permutation differs from
      *  {@code xs} in a finite prefix.</li>
      * </ul>
+     *
+     * Length is |{@code xs}|!
      *
      * @param xs an {@code Iterable} of elements
      * @param <T> the type of the given {@code Iterable}'s elements
