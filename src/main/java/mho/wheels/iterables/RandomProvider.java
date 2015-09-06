@@ -3179,7 +3179,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return null;
+        return filter(p -> !Objects.equals(p.a, p.b), pairs(xs));
     }
 
     @Override

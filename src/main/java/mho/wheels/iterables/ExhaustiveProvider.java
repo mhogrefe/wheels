@@ -3401,7 +3401,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return filter(p -> !p.a.equals(p.b), pairs(xs));
+        return filter(p -> !Objects.equals(p.a, p.b), pairs(xs));
     }
 
     @Override

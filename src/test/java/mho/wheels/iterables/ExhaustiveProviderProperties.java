@@ -1671,6 +1671,22 @@ public class ExhaustiveProviderProperties {
                 );
             }
         }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integersGeometric()))) {
+            assertEquals(
+                    i,
+                    toList(EP.permutationsFinite(Collections.singletonList(i))),
+                    Collections.singletonList(Collections.singletonList(i))
+            );
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.distinctPairs(P.withNull(P.integersGeometric())))) {
+            assertEquals(
+                    p,
+                    toList(EP.permutationsFinite(Arrays.asList(p.a, p.b))),
+                    Arrays.asList(Arrays.asList(p.a, p.b), Arrays.asList(p.b, p.a))
+            );
+        }
     }
 
     private static void propertiesStringPermutations() {
@@ -1694,6 +1710,17 @@ public class ExhaustiveProviderProperties {
                 );
             }
         }
+
+        for (char c : take(LIMIT, P.characters())) {
+            String s = Character.toString(c);
+            assertEquals(c, toList(EP.stringPermutations(s)), Collections.singletonList(s));
+        }
+
+        for (Pair<Character, Character> p : take(LIMIT, P.distinctPairs(P.characters()))) {
+            String s = charsToString(Arrays.asList(p.a, p.b));
+            String t = charsToString(Arrays.asList(p.b, p.a));
+            assertEquals(p, toList(EP.stringPermutations(s)), Arrays.asList(s, t));
+        }
     }
 
     private static void propertiesPrefixPermutations() {
@@ -1715,6 +1742,32 @@ public class ExhaustiveProviderProperties {
                     testHasNext(is);
                 }
             }
+        }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integersGeometric()))) {
+            assertEquals(
+                    i,
+                    toList(
+                            (Iterable<List<Integer>>) map(
+                                    IterableUtils::toList,
+                                    EP.prefixPermutations(Collections.singletonList(i))
+                            )
+                    ),
+                    Collections.singletonList(Collections.singletonList(i))
+            );
+        }
+
+        for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.withNull(P.integersGeometric())))) {
+            assertEquals(
+                    p,
+                    toList(
+                            (Iterable<List<Integer>>) map(
+                                    IterableUtils::toList,
+                                    EP.prefixPermutations(Arrays.asList(p.a, p.b))
+                            )
+                    ),
+                    Arrays.asList(Arrays.asList(p.a, p.b), Arrays.asList(p.b, p.a))
+            );
         }
 
         for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {

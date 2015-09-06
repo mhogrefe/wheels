@@ -128,7 +128,7 @@ public strictfp class Testing {
     }
 
     private static void failNotEquals(Object message, Object expected, Object actual) {
-        fail(format(message.toString(), expected, actual));
+        fail(format(Objects.toString(message), expected, actual));
     }
 
     static String format(String message, Object expected, Object actual) {
