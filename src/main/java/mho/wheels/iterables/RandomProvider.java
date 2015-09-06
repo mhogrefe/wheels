@@ -2832,8 +2832,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * Shuffles a {@code List} in place using the Fisher-Yates algorithm. If the list's elements are unique, every
-     * permutation is an equally likely outcome.
+     * Shuffles a {@code List} in place using the Fisher-Yates algorithm. Every permutation is an equally likely
+     * outcome.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -2852,8 +2852,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates permutations of a list. If the list's elements are unique, every permutation
-     * is an equally likely outcome. Does not support removal.
+     * An {@code Iterable} that generates permutations of a list. Every permutation is an equally likely outcome. Does
+     * not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>

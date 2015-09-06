@@ -2229,6 +2229,24 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 2, 3, 4, 5, 6, 10, 7, 8, 9], [1, 2, 3, 4, 5, 6, 10, 7, 9, 8], ...]");
     }
 
+    @Test
+    public void testStringPermutations() {
+        aeqit(P.stringPermutations(""), "[]");
+        aeqit(P.stringPermutations("a"), "[a]");
+        aeqit(P.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
+        aeqit(P.stringPermutations("foo"), "[foo, ofo, oof]");
+        aeqit(P.stringPermutations("hello"),
+                "[hello, helol, heoll, hlelo, hleol, hlleo, hlloe, hloel, hlole, hoell, holel, holle, ehllo, ehlol," +
+                " eholl, elhlo, elhol, ellho, elloh, elohl, elolh, eohll, eolhl, eollh, lhelo, lheol, lhleo, lhloe," +
+                " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
+                " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
+                " olehl, olelh, ollhe, olleh]");
+        aeqitLimit(TINY_LIMIT, P.stringPermutations("Mississippi"),
+                "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
+                " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
+                " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
+    }
+
     private static void prefixPermutationsHelper(@NotNull String input, @NotNull String output) {
         aeqit(map(Testing::its, P.prefixPermutations(readIntegerList(input))), output);
     }
@@ -2323,24 +2341,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]");
-    }
-
-    @Test
-    public void testStringPermutations() {
-        aeqit(P.stringPermutations(""), "[]");
-        aeqit(P.stringPermutations("a"), "[a]");
-        aeqit(P.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
-        aeqit(P.stringPermutations("foo"), "[foo, ofo, oof]");
-        aeqit(P.stringPermutations("hello"),
-                "[hello, helol, heoll, hlelo, hleol, hlleo, hlloe, hloel, hlole, hoell, holel, holle, ehllo, ehlol," +
-                " eholl, elhlo, elhol, ellho, elloh, elohl, elolh, eohll, eolhl, eollh, lhelo, lheol, lhleo, lhloe," +
-                " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
-                " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
-                " olehl, olelh, ollhe, olleh]");
-        aeqitLimit(TINY_LIMIT, P.stringPermutations("Mississippi"),
-                "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
-                " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
-                " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
     }
 
     @Test
