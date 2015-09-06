@@ -168,6 +168,8 @@ public class RandomProviderProperties {
             propertiesNullableOptionals();
             propertiesDependentPairsInfinite();
             propertiesShuffle();
+            propertiesPermutationsFinite();
+            propertiesStringPermutations();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2471,6 +2473,52 @@ public class RandomProviderProperties {
             p.a.shuffle(shuffled);
             Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
             assertEquals(p, sort(comparator, p.b), sort(comparator, shuffled));
+        }
+    }
+
+    private static void propertiesPermutationsFinite() {
+        initialize("permutationsFinite(List<T>)");
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            List<Integer> sorted = sort(comparator, p.b);
+            simpleTest(p.a, p.a.permutationsFinite(p.b), xs -> sort(comparator, xs).equals(sorted));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            List<Integer> xs = Collections.emptyList();
+            aeqit(rp, TINY_LIMIT, rp.permutationsFinite(xs), repeat(xs));
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> ps2 = P.pairs(
+                P.randomProvidersDefault(),
+                P.withNull(P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps2)) {
+            List<Integer> xs = Collections.singletonList(p.b);
+            aeqit(p, TINY_LIMIT, p.a.permutationsFinite(xs), repeat(xs));
+        }
+    }
+
+    private static void propertiesStringPermutations() {
+        initialize("stringPermutations(String)");
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
+        for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
+            Comparator<Character> comparator = new ListBasedComparator<>(toList(p.b));
+            String sorted = sort(comparator, p.b);
+            simpleTest(p.a, p.a.stringPermutations(p.b), xs -> sort(comparator, xs).equals(sorted));
+        }
+
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            aeqit(rp, TINY_LIMIT, rp.stringPermutations(""), repeat(""));
+        }
+
+        for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.characters()))) {
+            String s = Character.toString(p.b);
+            aeqit(p, TINY_LIMIT, p.a.stringPermutations(s), repeat(s));
         }
     }
 
