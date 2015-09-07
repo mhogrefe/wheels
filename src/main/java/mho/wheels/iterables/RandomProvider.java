@@ -2836,6 +2836,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * outcome.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>The result is not null.</li>
      * </ul>
@@ -2852,10 +2853,11 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates permutations of a list. Every permutation is an equally likely outcome. Does
-     * not support removal.
+     * An {@code Iterable} that generates permutations of a {@code List}. Every permutation is an equally likely
+     * outcome. Does not support removal.
      *
      * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>The result is infinite, non-removable, and consists of permutations of a {@code List}.</li>
      * </ul>
@@ -2883,6 +2885,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates permutations of an {@code Iterable}. If the {@code Iterable} is finite, all
+     * permutations can be generated; if it is infinite, then only permutations that are equal to the identity except
+     * in a finite prefix can be generated. Unlike {@link RandomProvider#permutationsFinite(List)}, this method will
+     * generally not return an {@code Iterable} where every permutation occurs with equal probability.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and consists of permutations of some {@code Iterable} such that each
+     *  permutation differs from {@code xs} in a finite prefix.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return permutations of {@code xs} which differ from {@code xs} in some finite prefix
+     */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<Iterable<T>>() {
