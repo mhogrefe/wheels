@@ -5,6 +5,8 @@ import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.Testing;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,6 +33,10 @@ public class RandomProviderDemos {
             P = ExhaustiveProvider.INSTANCE;
             LIMIT = 10000;
         }
+    }
+
+    public static void main(String[] args) {
+        demoPrefixPermutations_infinite();
     }
 
     private static void demoConstructor() {
@@ -1206,6 +1212,30 @@ public class RandomProviderDemos {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringPermutations(" + p.a + ", " + p.b + ") = " + its(p.a.stringPermutations(p.b)));
+        }
+    }
+
+    private static void demoPrefixPermutations_finite() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("prefixPermutations(" + p.a + ", " + p.b + ") = " +
+                    its(map(IterableUtils::toList, p.a.prefixPermutations(p.b))));
+        }
+    }
+
+    private static void demoPrefixPermutations_infinite() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(TINY_LIMIT, ps)) {
+            System.out.println("prefixPermutations(" + p.a + ", " + its(p.b) + ") = " +
+                    its(map(Testing::its, p.a.prefixPermutations(p.b))));
         }
     }
 
