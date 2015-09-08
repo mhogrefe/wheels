@@ -287,9 +287,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoWithNull_cyclic() {
+    private static void demoWithNull_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("withNull(" + xsString + ") = " + its(EP.withNull(xs)));
         }
@@ -302,9 +302,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoNonEmptyOptionals_cyclic() {
+    private static void demoNonEmptyOptionals_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyOptionals(" + xsString + ") = " + its(EP.nonEmptyOptionals(xs)));
         }
@@ -317,9 +317,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoOptionals_cyclic() {
+    private static void demoOptionals_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
             String xsString = tail(init(its(xs)));
             System.out.println("optionals(" + xsString + ") = " + its(EP.optionals(xs)));
         }
@@ -332,10 +332,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoNonEmptyNullableOptionals_cyclic() {
+    private static void demoNonEmptyNullableOptionals_infinite() {
         initialize();
-        Iterable<Iterable<Integer>> xss = P.repeatingIterables(P.withNull(P.integersGeometric()));
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nonEmptyNullableOptionals(" + xsString + ") = " +
                     its(EP.nonEmptyNullableOptionals(xs)));
@@ -349,10 +348,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoNullableOptionals_cyclic() {
+    private static void demoNullableOptionals_infinite() {
         initialize();
-        Iterable<Iterable<Integer>> xss = P.repeatingIterables(P.withNull(P.integersGeometric()));
-        for (Iterable<Integer> xs : take(LIMIT, xss)) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("nullableOptionals(" + xsString + ") = " + its(EP.nullableOptionals(xs)));
         }
