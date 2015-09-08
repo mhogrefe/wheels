@@ -25,6 +25,7 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class RandomProviderProperties {
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
     private static final int TINY_LIMIT = 20;
     private static int LIMIT;
@@ -170,6 +171,7 @@ public class RandomProviderProperties {
             propertiesShuffle();
             propertiesPermutationsFinite();
             propertiesStringPermutations();
+            propertiesPrefixPermutations();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2519,6 +2521,56 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Character> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.characters()))) {
             String s = Character.toString(p.b);
             aeqit(p, TINY_LIMIT, p.a.stringPermutations(s), repeat(s));
+        }
+    }
+
+    private static void propertiesPrefixPermutations() {
+        initialize("prefixPermutations(Iterable<T>)");
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            Comparator<Integer> comparator = new ListBasedComparator<>(p.b);
+            List<Integer> sorted = sort(comparator, p.b);
+            simpleTest(p.a, p.a.prefixPermutations(p.b), xs -> sort(comparator, toList(xs)).equals(sorted));
+        }
+
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            List<Integer> xs = Collections.emptyList();
+            aeqit(rp, TINY_LIMIT, map(IterableUtils::toList, rp.prefixPermutations(xs)), repeat(xs));
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> ps2 = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integersGeometric())
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps2)) {
+            List<Integer> xs = Collections.singletonList(p.b);
+            aeqit(p, TINY_LIMIT, map(IterableUtils::toList, p.a.prefixPermutations(xs)), repeat(xs));
+        }
+
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps3 = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps3)) {
+            toList(take(TINY_LIMIT, p.a.prefixPermutations(p.b)));
+        }
+
+        Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() < 1, P.randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.prefixPermutations(p.b));
+                fail(p);
+            } catch (IllegalStateException ignored) {}
         }
     }
 

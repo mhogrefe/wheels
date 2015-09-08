@@ -2909,7 +2909,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return repeat(Collections.emptyList());
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
+        if (!lengthAtLeast(2, xs)) return repeat(new NoRemoveIterable<>(xs));
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric().iterator();

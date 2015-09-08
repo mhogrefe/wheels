@@ -20,6 +20,7 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 100;
