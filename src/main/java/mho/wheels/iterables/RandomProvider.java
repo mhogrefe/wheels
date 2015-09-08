@@ -2906,6 +2906,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return repeat(Collections.emptyList());
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric().iterator();
