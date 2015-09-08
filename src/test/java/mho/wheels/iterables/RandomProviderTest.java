@@ -12347,6 +12347,16 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void prefixPermutations_fail_helper(int scale, @NotNull String input) {
+        try {
+            toList(P.withScale(scale).prefixPermutations(readIntegerListWithNulls(input)));
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
     @Test
     public void testPrefixPermutations() {
         prefixPermutations_helper(
@@ -12808,6 +12818,8 @@ public strictfp class RandomProviderTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]",
                 "{[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]=1000000}"
         );
+        prefixPermutations_fail_helper(0, "[1, 2, 3]");
+        prefixPermutations_fail_helper(-1, "[1, 2, 3]");
     }
 
     @Test

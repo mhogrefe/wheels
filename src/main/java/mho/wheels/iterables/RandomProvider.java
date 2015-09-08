@@ -1141,6 +1141,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Integer> naturalIntegersGeometric() {
+        if (scale < 1) {
+            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
+        }
         return map(i -> i - 1, withScale(scale + 1).positiveIntegersGeometric());
     }
 
@@ -2892,7 +2895,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * generally not return an {@code Iterable} where every permutation occurs with equal probability.
      *
      * <ul>
-     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code this} must have a positive scale.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>The result is infinite, non-removable, and consists of permutations of some {@code Iterable} such that each
      *  permutation differs from {@code xs} in a finite prefix.</li>
