@@ -2559,7 +2559,10 @@ public class RandomProviderProperties {
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps3)) {
-            toList(take(TINY_LIMIT, p.a.prefixPermutations(p.b)));
+            simpleTest(p.a, p.a.prefixPermutations(p.b), xs -> true);
+            for (Iterable<Integer> xs : take(TINY_LIMIT, p.a.prefixPermutations(p.b))) {
+                simpleTestWithNulls(p.a, xs, x -> true);
+            }
         }
 
         Iterable<Pair<RandomProvider, List<Integer>>> psFail = P.pairs(
