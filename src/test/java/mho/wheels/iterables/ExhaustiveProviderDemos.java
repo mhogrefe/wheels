@@ -454,10 +454,10 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsLogarithmicOrder_Iterable_Iterable_cyclic() {
+    private static void demoPairsLogarithmicOrder_Iterable_Iterable_infinite() {
         initialize();
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
-                P.repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("pairsLogarithmicOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
@@ -473,9 +473,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsLogarithmicOrder_Iterable_cyclic() {
+    private static void demoPairsLogarithmicOrder_Iterable_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integersGeometric())))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             String listString = tail(init(its(xs)));
             System.out.println("pairsLogarithmicOrder(" + listString + ") = " + its(EP.pairsLogarithmicOrder(xs)));
         }
@@ -492,10 +492,10 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsSquareRootOrder_Iterable_Iterable_cyclic() {
+    private static void demoPairsSquareRootOrder_Iterable_Iterable_infinite() {
         initialize();
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
-                P.repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("pairsSquareRootOrder(" + its(p.a) + ", " + its(p.b) + ") = " +
@@ -511,9 +511,9 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoPairsSquareRootOrder_Iterable_cyclic() {
+    private static void demoPairsSquareRootOrder_Iterable_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.withNull(P.integersGeometric())))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             String listString = tail(init(its(xs)));
             System.out.println("pairsSquareRootOrder(" + listString + ") = " + its(EP.pairsSquareRootOrder(xs)));
         }

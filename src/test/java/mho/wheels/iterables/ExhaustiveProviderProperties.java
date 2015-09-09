@@ -1392,26 +1392,17 @@ public class ExhaustiveProviderProperties {
         }
 
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
-                P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(p, elem(p2.a, p.a));
                 assertTrue(p, elem(p2.b, p.b));
             }
-        }
-
-        ps2 = P.pairs(
-                map(
-                        is -> scanl1((x, y) -> x + y, is),
-                        P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
-                )
-        );
-        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
-            assertTrue(p, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(p.a, p.b))));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -1462,22 +1453,15 @@ public class ExhaustiveProviderProperties {
             assertTrue(is, unique(EP.pairsLogarithmicOrder(is)));
         }
 
-        for (Iterable<Integer> is : take(LIMIT, P.withScale(4).repeatingIterables(P.integersGeometric()))) {
+        for (Iterable<Integer> is : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsLogarithmicOrder(is);
             testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(is, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(is, elem(p2.a, is));
                 assertTrue(is, elem(p2.b, is));
             }
-        }
-
-        Iterable<Iterable<Integer>> iss2 = map(
-                is -> scanl1((x, y) -> x + y, is),
-                P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
-        );
-        for (Iterable<Integer> is : take(LIMIT, iss2)) {
-            assertTrue(is, unique(take(TINY_LIMIT, EP.pairsLogarithmicOrder(is))));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -1529,26 +1513,17 @@ public class ExhaustiveProviderProperties {
         }
 
         Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
-                P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(p.a, p.b);
             testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(p, elem(p2.a, p.a));
                 assertTrue(p, elem(p2.b, p.b));
             }
-        }
-
-        ps2 = P.pairs(
-                map(
-                        is -> scanl1((x, y) -> x + y, is),
-                        P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
-                )
-        );
-        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
-            assertTrue(p, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(p.a, p.b))));
         }
 
         if (P instanceof ExhaustiveProvider) {
@@ -1599,23 +1574,15 @@ public class ExhaustiveProviderProperties {
             assertTrue(is, unique(EP.pairsSquareRootOrder(is)));
         }
 
-        Iterable<Iterable<Integer>> iss = P.withScale(4).repeatingIterables(P.withNull(P.integersGeometric()));
-        for (Iterable<Integer> is : take(LIMIT, iss)) {
+        for (Iterable<Integer> is : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             Iterable<Pair<Integer, Integer>> pairs = EP.pairsSquareRootOrder(is);
             testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(is, unique(take(TINY_LIMIT, pairs)));
             List<Pair<Integer, Integer>> pairList = toList(take(TINY_LIMIT, pairs));
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(is, elem(p2.a, is));
                 assertTrue(is, elem(p2.b, is));
             }
-        }
-
-        Iterable<Iterable<Integer>> iss2 = map(
-                is -> scanl1((x, y) -> x + y, is),
-                P.withScale(4).repeatingIterables(P.positiveIntegersGeometric())
-        );
-        for (Iterable<Integer> is : take(LIMIT, iss2)) {
-            assertTrue(is, unique(take(TINY_LIMIT, EP.pairsSquareRootOrder(is))));
         }
 
         if (P instanceof ExhaustiveProvider) {
