@@ -21,6 +21,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 public strictfp class Testing {
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int TINY_LIMIT = 20;
     private static final int SMALL_LIMIT = 128;
 
@@ -352,19 +353,14 @@ public strictfp class Testing {
 
         ip.reset();
         iq.reset();
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairsLex(fxs.apply(ip), fxs.apply(iq)))) {
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
             symmetric(Object::equals, p);
         }
 
         ip.reset();
         iq.reset();
         ir.reset();
-        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triplesLex(
-                fxs.apply(ip),
-                fxs.apply(iq),
-                fxs.apply(ir)
-        );
-        for (Triple<T, T, T> t : take(limit, ts)) {
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
             transitive(Object::equals, t);
         }
     }
@@ -397,7 +393,7 @@ public strictfp class Testing {
 
         ip.reset();
         iq.reset();
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
             int compare = p.a.compareTo(p.b);
             assertTrue(p, compare == 0 || compare == 1 || compare == -1);
             antiSymmetric(Ordering::le, p);
@@ -408,12 +404,7 @@ public strictfp class Testing {
         ip.reset();
         iq.reset();
         ir.reset();
-        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
-                fxs.apply(ip),
-                fxs.apply(iq),
-                fxs.apply(ir)
-        );
-        for (Triple<T, T, T> t : take(limit, ts)) {
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
             transitive(Ordering::le, t);
         }
     }
@@ -552,18 +543,20 @@ public strictfp class Testing {
     public static <A, B> void propertiesDeltaHelper(
             int limit,
             @NotNull IterableProvider P,
+            @NotNull Iterable<A> exs,
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
             @NotNull Function<Iterable<A>, Iterable<B>> deltaF,
             @NotNull Consumer<B> validate
     ) {
-        propertiesDeltaHelperClean(limit, P, xs, negate, subtract, deltaF, validate, x -> x);
+        propertiesDeltaHelperClean(limit, P, exs, xs, negate, subtract, deltaF, validate, x -> x);
     }
 
     public static <A, B> void propertiesDeltaHelperClean(
             int limit,
             @NotNull IterableProvider P,
+            @NotNull Iterable<A> exs,
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
@@ -593,7 +586,7 @@ public strictfp class Testing {
             );
         }
 
-        for (Iterable<A> ixs : take(limit, P.repeatingIterables(xs))) {
+        for (Iterable<A> ixs : take(limit, EP.prefixPermutations(exs))) {
             Iterable<B> deltas = deltaF.apply(ixs);
             List<B> deltaPrefix = toList(take(TINY_LIMIT, deltas));
             deltaPrefix.forEach(validate);

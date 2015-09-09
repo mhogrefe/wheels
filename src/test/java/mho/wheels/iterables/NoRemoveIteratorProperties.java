@@ -1,6 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.structures.Triple;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import static mho.wheels.testing.Testing.*;
 import static mho.wheels.testing.Testing.assertEquals;
 
 public class NoRemoveIteratorProperties {
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static int LIMIT;
     private static final int TINY_LIMIT = 20;
     private static IterableProvider P;
@@ -31,17 +33,15 @@ public class NoRemoveIteratorProperties {
             P = config.a;
             LIMIT = config.b;
             System.out.println("\ttesting " + config.c);
-            propertiesConstructor_finite();
-            propertiesConstructor_cyclic();
-            propertiesRemove_finite();
-            propertiesRemove_cyclic();
+            propertiesConstructor();
+            propertiesRemove();
         }
         System.out.println("Done");
     }
 
-    private static void propertiesConstructor_finite() {
-        initialize("NoRemoveIterator() [finite]");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+    private static void propertiesConstructor() {
+        initialize("NoRemoveIterator()");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private int i = 0;
 
@@ -57,13 +57,10 @@ public class NoRemoveIteratorProperties {
             };
             assertEquals(xs, toList(() -> it), xs);
         }
-    }
 
-    private static void propertiesConstructor_cyclic() {
-        initialize("NoRemoveIterator() [cyclic]");
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
-                private Iterator<Integer> iterator = xs.iterator();
+                private final @NotNull Iterator<Integer> iterator = xs.iterator();
 
                 @Override
                 public boolean hasNext() {
@@ -79,9 +76,9 @@ public class NoRemoveIteratorProperties {
         }
     }
 
-    private static void propertiesRemove_finite() {
-        initialize("remove() [finite]");
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+    private static void propertiesRemove() {
+        initialize("remove()");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private int i = 0;
 
@@ -97,13 +94,10 @@ public class NoRemoveIteratorProperties {
             };
             testNoRemove(TINY_LIMIT, () -> it);
         }
-    }
 
-    private static void propertiesRemove_cyclic() {
-        initialize("remove() [cyclic]");
-        for (Iterable<Integer> xs : take(LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
-                private Iterator<Integer> iterator = xs.iterator();
+                private final @NotNull Iterator<Integer> iterator = xs.iterator();
 
                 @Override
                 public boolean hasNext() {

@@ -22,8 +22,9 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionProperties {
-    private static int LIMIT;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
+    private static int LIMIT;
     private static IterableProvider P;
 
     private static void initialize(String name) {
@@ -658,6 +659,7 @@ public strictfp class BinaryFractionProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.binaryFractions(),
                 P.binaryFractions(),
                 BinaryFraction::negate,
                 BinaryFraction::subtract,

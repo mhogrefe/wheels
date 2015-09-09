@@ -4,6 +4,7 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.testing.Testing;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -18,7 +19,7 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("UnusedDeclaration")
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
-    private static final ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 100;
     private static int LIMIT;

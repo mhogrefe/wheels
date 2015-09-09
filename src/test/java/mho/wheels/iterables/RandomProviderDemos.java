@@ -36,10 +36,6 @@ public class RandomProviderDemos {
         }
     }
 
-    public static void main(String[] args) {
-        demoPrefixPermutations_infinite();
-    }
-
     private static void demoConstructor() {
         initialize();
         for (Void v : take(LIMIT, repeat((Void) null))) {
@@ -1103,12 +1099,12 @@ public class RandomProviderDemos {
         }
     }
 
-    private static void demoWithElement_cyclic() {
+    private static void demoWithElement() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.integers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
@@ -1116,33 +1112,33 @@ public class RandomProviderDemos {
         }
     }
 
-    private static void demoWithNull_cyclic() {
+    private static void demoWithNull() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integersGeometric())
+                P.prefixPermutations(EP.integers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("withNull(" + p.a + ", " + its(p.b) + ") = " + its(p.a.withNull(p.b)));
         }
     }
 
-    private static void demoOptionals_cyclic() {
+    private static void demoOptionals() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.integersGeometric())
+                P.prefixPermutations(EP.integers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("optionals(" + p.a + ", " + its(p.b) + ") = " + its(p.a.optionals(p.b)));
         }
     }
 
-    private static void demoNullableOptionals_cyclic() {
+    private static void demoNullableOptionals() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withNull(P.integersGeometric()))
+                P.prefixPermutations(EP.withNull(EP.integers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +

@@ -1,5 +1,7 @@
 package mho.wheels.iterables;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("UnusedDeclaration")
 public class NoRemoveIteratorDemos {
     private static final boolean USE_RANDOM = false;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
@@ -25,7 +28,7 @@ public class NoRemoveIteratorDemos {
 
     private static void demoConstructor_finite() {
         initialize();
-        for (List<Integer> xs : take(LIMIT, P.lists(P.integers()))) {
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private int i = 0;
 
@@ -43,9 +46,9 @@ public class NoRemoveIteratorDemos {
         }
     }
 
-    private static void demoConstructor_cyclic() {
+    private static void demoConstructor_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.repeatingIterables(P.integers()))) {
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.integers())))) {
             NoRemoveIterator<Integer> it = new NoRemoveIterator<Integer>() {
                 private Iterator<Integer> iterator = xs.iterator();
 

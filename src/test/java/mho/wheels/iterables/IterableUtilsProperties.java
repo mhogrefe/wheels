@@ -19,6 +19,7 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class IterableUtilsProperties {
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static boolean USE_RANDOM;
     private static int LIMIT;
 
@@ -334,6 +335,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.bytes(),
                 P.bytes(),
                 b -> (byte) -b,
                 (x, y) -> (byte) (x - y),
@@ -349,6 +351,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.shorts(),
                 P.shorts(),
                 s -> (short) -s,
                 (x, y) -> (short) (x - y),
@@ -361,14 +364,32 @@ public strictfp class IterableUtilsProperties {
         initialize();
         System.out.println("\t\ttesting deltaInteger(Iterable<Integer>) properties...");
 
-        propertiesDeltaHelper(LIMIT, P, P.integers(), i -> -i, (x, y) -> x - y, IterableUtils::deltaInteger, i -> {});
+        propertiesDeltaHelper(
+                LIMIT,
+                P,
+                EP.integers(),
+                P.integers(),
+                i -> -i,
+                (x, y) -> x - y,
+                IterableUtils::deltaInteger,
+                i -> {}
+        );
     }
 
     private static void propertiesDeltaLong() {
         initialize();
         System.out.println("\t\ttesting deltaLong(Iterable<Long>) properties...");
 
-        propertiesDeltaHelper(LIMIT, P, P.longs(), l -> -l, (x, y) -> x - y, IterableUtils::deltaLong, l -> {});
+        propertiesDeltaHelper(
+                LIMIT,
+                P,
+                EP.longs(),
+                P.longs(),
+                l -> -l,
+                (x, y) -> x - y,
+                IterableUtils::deltaLong,
+                l -> {}
+        );
     }
 
     private static void propertiesDeltaBigInteger() {
@@ -378,6 +399,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.bigIntegers(),
                 P.bigIntegers(),
                 BigInteger::negate,
                 BigInteger::subtract,
@@ -393,6 +415,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.bigDecimals(),
                 P.bigDecimals(),
                 BigDecimal::negate,
                 BigDecimal::subtract,
@@ -408,6 +431,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelperClean(
                 LIMIT,
                 P,
+                EP.floats(),
                 P.floats(),
                 f -> -f,
                 (x, y) -> x - y,
@@ -427,6 +451,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelperClean(
                 LIMIT,
                 P,
+                EP.doubles(),
                 P.doubles(),
                 d -> -d,
                 (x, y) -> x - y,
@@ -446,6 +471,7 @@ public strictfp class IterableUtilsProperties {
         propertiesDeltaHelper(
                 LIMIT,
                 P,
+                EP.characters(),
                 P.characters(),
                 i -> -i,
                 (x, y) -> x - y,
