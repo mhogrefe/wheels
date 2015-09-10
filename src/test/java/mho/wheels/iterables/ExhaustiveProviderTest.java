@@ -2189,10 +2189,6 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(map(Testing::its, P.permutationsFinite(readIntegerListWithNulls(input))), output);
     }
 
-    private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
-        aeqit(map(Testing::its, P.permutationsFinite(input)), output);
-    }
-
     private static void permutationsFiniteHelper(int limit, @NotNull List<Integer> input, @NotNull String output) {
         aeqitLimit(limit, map(Testing::its, P.permutationsFinite(input)), output);
     }
@@ -2405,9 +2401,9 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true)]");
-        aeqit(P.triplesLex(new ArrayList<Integer>(), fromString("abc"), P.booleans()), "[]");
+        aeqit(P.triplesLex(Collections.emptyList(), fromString("abc"), P.booleans()), "[]");
         aeqit(
-                P.triplesLex(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()),
+                P.triplesLex(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
                 "[]"
         );
     }
@@ -2444,19 +2440,23 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
-        aeqit(P.quadruplesLex(new ArrayList<Integer>(), fromString("abc"), P.booleans(), P.orderings()), "[]");
-        aeqit(P.quadruplesLex(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>()
-        ), "[]");
+        aeqit(P.quadruplesLex(Collections.emptyList(), fromString("abc"), P.booleans(), P.orderings()), "[]");
+        aeqit(
+                P.quadruplesLex(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
     }
 
     @Test
     public void testQuintuplesLex() {
-        aeqit(P.quintuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+        aeqit(
+                P.quintuplesLex(
+                        Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
@@ -2489,8 +2489,9 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeqit(P.quintuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+        aeqit(
+                P.quintuplesLex(
+                        Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
@@ -2526,38 +2527,49 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeqit(take(20, P.quintuplesLex(
-                        P.naturalBigIntegers(),
-                        fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no")
-                )),
+        aeqit(
+                take(
+                        20,
+                        P.quintuplesLex(
+                                P.naturalBigIntegers(),
+                                fromString("abc"),
+                                P.booleans(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no")
+                        )
+                ),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
                 " (0, a, false, GT, yes), (0, a, false, GT, no), (0, a, true, EQ, yes), (0, a, true, EQ, no)," +
                 " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no)]");
-        aeqit(P.quintuplesLex(
-                new ArrayList<Integer>(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no")
-        ), "[]");
-        aeqit(P.quintuplesLex(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>()
-        ), "[]");
+        aeqit(
+                P.quintuplesLex(
+                        Collections.emptyList(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no")
+                ),
+                "[]"
+        );
+        aeqit(
+                P.quintuplesLex(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
     }
 
     @Test
     public void testSextuplesLex() {
-        aeqit(P.sextuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+        aeqit(
+                P.sextuplesLex(
+                        Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
@@ -2636,8 +2648,9 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeqit(P.sextuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+        aeqit(
+                P.sextuplesLex(
+                        Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
@@ -2728,14 +2741,18 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, EQ, no, NaN), (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN)," +
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeqit(take(20, P.sextuplesLex(
-                        P.naturalBigIntegers(),
-                        fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no"),
-                        (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                )),
+        aeqit(
+                take(
+                        20,
+                        P.sextuplesLex(
+                                P.naturalBigIntegers(),
+                                fromString("abc"),
+                                P.booleans(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                        )
+                ),
                 "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
                 " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
                 " (0, a, false, LT, no, Infinity), (0, a, false, LT, no, NaN), (0, a, false, GT, yes, Infinity)," +
@@ -2743,36 +2760,43 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, EQ, yes, Infinity), (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity)," +
                 " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
                 " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN)]");
-        aeqit(P.sextuplesLex(
-                new ArrayList<Integer>(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-        ), "[]");
-        aeqit(P.sextuplesLex(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>(),
-                new ArrayList<Float>()
-        ), "[]");
+        aeqit(
+                P.sextuplesLex(
+                        Collections.emptyList(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                ),
+                "[]"
+        );
+        aeqit(
+                P.sextuplesLex(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
     }
 
     @Test
     public void testSeptuplesLex() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
-        aeqit(P.septuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+        aeqit(
+                P.septuplesLex(
+                        Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        (Iterable<List<Integer>>) Arrays.asList(x, y)
+                        Arrays.asList(x, y)
                 ),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
@@ -2990,14 +3014,15 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeqit(P.septuplesLex(
-                        (Iterable<Integer>) Arrays.asList(1, null, 3),
+        aeqit(
+                P.septuplesLex(
+                        Arrays.asList(1, null, 3),
                         fromString("abc"),
                         P.booleans(),
                         P.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        (Iterable<List<Integer>>) Arrays.asList(x, y)
+                        Arrays.asList(x, y)
                 ),
                 "[(1, a, false, EQ, yes, Infinity, [1, 0]), (1, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (1, a, false, EQ, yes, NaN, [1, 0]), (1, a, false, EQ, yes, NaN, [0, 1])," +
@@ -3215,15 +3240,19 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeqit(take(20, P.septuplesLex(
-                        P.naturalBigIntegers(),
-                        fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no"),
-                        (Iterable<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        (Iterable<List<Integer>>) Arrays.asList(x, y)
-                )),
+        aeqit(
+                take(
+                        20,
+                        P.septuplesLex(
+                                P.naturalBigIntegers(),
+                                fromString("abc"),
+                                P.booleans(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                                Arrays.asList(x, y)
+                        )
+                ),
                 "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
                 " (0, a, false, EQ, no, Infinity, [1, 0]), (0, a, false, EQ, no, Infinity, [0, 1])," +
@@ -3234,24 +3263,30 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
                 " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1])]");
-        aeqit(P.septuplesLex(
-                new ArrayList<Integer>(),
-                fromString("abc"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                (Iterable<List<Integer>>) Arrays.asList(x, y)
-        ), "[]");
-        aeqit(P.septuplesLex(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>(),
-                new ArrayList<Float>(),
-                new ArrayList<List<Integer>>()
-        ), "[]");
+        aeqit(
+                P.septuplesLex(
+                        Collections.emptyList(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        Arrays.asList(x, y)
+                ),
+                "[]"
+        );
+        aeqit(
+                P.septuplesLex(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
     }
 
     @Test
