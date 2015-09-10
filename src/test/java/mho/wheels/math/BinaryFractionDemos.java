@@ -18,6 +18,7 @@ import static mho.wheels.testing.Testing.nicePrint;
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class BinaryFractionDemos {
     private static final boolean USE_RANDOM = false;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
@@ -247,7 +248,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoDelta_infinite_Iterable() {
         initialize();
-        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.repeatingIterables(P.binaryFractions()))) {
+        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bfs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(bfs)));
         }
