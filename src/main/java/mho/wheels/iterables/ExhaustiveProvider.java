@@ -2313,15 +2313,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Result length is |{@code xs}|<sup>{@code length}</sup>
      *
-     * @param length the length of the result lists
+     * @param size the length of the result lists
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all lists of a given length created from {@code xs}
      */
-    public @NotNull <T> Iterable<List<T>> listsLex(int length, @NotNull Iterable<T> xs) {
-        if (length < 0)
+    @Override
+    public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull Iterable<T> xs) {
+        if (size < 0)
             throw new IllegalArgumentException("lists must have a non-negative length");
-        if (length == 0) {
+        if (size == 0) {
             return Collections.singletonList(new ArrayList<>());
         }
         Function<T, List<T>> makeSingleton = x -> {
@@ -2331,7 +2332,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
         List<Iterable<List<T>>> intermediates = new ArrayList<>();
         intermediates.add(map(makeSingleton, xs));
-        for (int i = 1; i < length; i++) {
+        for (int i = 1; i < size; i++) {
             Iterable<List<T>> lists = last(intermediates);
             intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
         }
@@ -2357,10 +2358,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @return all ordered pairs of elements from {@code as} and {@code bs}
      */
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs
-    ) {
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return concatMap(p -> zip(repeat(p.a), p.b), zip(as, repeat(bs)));
     }
 
@@ -2386,6 +2385,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <C> the type of the third {@code Iterable}'s elements
      * @return all ordered triples of elements from {@code as}, {@code bs}, and {@code cs}
      */
+    @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2422,6 +2422,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @return all ordered quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
+    @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2466,6 +2467,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
      * {@code es}
      */
+    @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2514,6 +2516,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
      * and {@code fs}
      */
+    @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2566,6 +2569,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
      * {@code fs}, and {@code gs}
      */
+    @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesLex(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -2598,24 +2602,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Result length is |{@code s}|<sup>{@code length}</sup>
      *
-     * @param length the length of the result {@code String}
+     * @param size the length of the result {@code String}
      * @param s the {@code String} from which characters are selected
      * @return all Strings of a given length created from {@code s}
      */
-    public @NotNull Iterable<String> stringsLex(int length, @NotNull String s) {
-        if (length < 0)
+    @Override
+    public @NotNull Iterable<String> stringsLex(int size, @NotNull String s) {
+        if (size < 0)
             throw new IllegalArgumentException("strings must have a non-negative length");
         if (s.isEmpty()) {
-            return length == 0 ? Collections.singletonList("") : new ArrayList<>();
+            return size == 0 ? Collections.singletonList("") : new ArrayList<>();
         }
         if (s.length() == 1) {
-            return Collections.singletonList(replicate(length, s.charAt(0)));
+            return Collections.singletonList(replicate(size, s.charAt(0)));
         }
-        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(length);
+        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(size);
         Function<BigInteger, String> f = bi -> charsToString(
                 map(
                         i -> s.charAt(i.intValueExact()),
-                        IntegerUtils.bigEndianDigitsPadded(length, BigInteger.valueOf(s.length()), bi)
+                        IntegerUtils.bigEndianDigitsPadded(size, BigInteger.valueOf(s.length()), bi)
                 )
         );
         return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
