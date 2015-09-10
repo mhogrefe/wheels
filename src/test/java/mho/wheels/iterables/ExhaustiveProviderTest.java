@@ -2381,6 +2381,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(take(20, P.pairsLex(P.naturalBigIntegers(), fromString("abc"))),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a)," +
                 " (3, b), (3, c), (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b)]");
+        aeqit(P.pairsLex(P.naturalBigIntegers(), Collections.emptyList()), "[]");
         aeqit(P.pairsLex(Collections.emptyList(), fromString("abc")), "[]");
         aeqit(P.pairsLex(Collections.emptyList(), Collections.emptyList()), "[]");
     }
@@ -2401,6 +2402,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true)]");
+        aeqit(P.triplesLex(P.naturalBigIntegers(), fromString("abc"), Collections.emptyList()), "[]");
         aeqit(P.triplesLex(Collections.emptyList(), fromString("abc"), P.booleans()), "[]");
         aeqit(
                 P.triplesLex(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
@@ -2440,6 +2442,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
+        aeqit(P.quadruplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans(), Collections.emptyList()), "[]");
         aeqit(P.quadruplesLex(Collections.emptyList(), fromString("abc"), P.booleans(), P.orderings()), "[]");
         aeqit(
                 P.quadruplesLex(
@@ -2543,6 +2546,16 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, LT, yes), (0, a, true, LT, no), (0, a, true, GT, yes), (0, a, true, GT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no)]");
+        aeqit(
+                P.quintuplesLex(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
         aeqit(
                 P.quintuplesLex(
                         Collections.emptyList(),
@@ -2760,6 +2773,17 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, EQ, yes, Infinity), (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity)," +
                 " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
                 " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN)]");
+        aeqit(
+                P.sextuplesLex(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
         aeqit(
                 P.sextuplesLex(
                         Collections.emptyList(),
@@ -3263,6 +3287,18 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
                 " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1])]");
+        aeqit(
+                P.septuplesLex(
+                        P.naturalBigIntegers(),
+                        fromString("abc"),
+                        P.booleans(),
+                        P.orderings(),
+                        Arrays.asList("yes", "no"),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
         aeqit(
                 P.septuplesLex(
                         Collections.emptyList(),

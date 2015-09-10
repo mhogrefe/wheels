@@ -2380,6 +2380,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+        if (isEmpty(bs)) return Collections.emptyList();
         return concatMap(p -> zip(repeat(p.a), p.b), zip(as, repeat(bs)));
     }
 

@@ -3,6 +3,8 @@ package mho.wheels.iterables;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.structures.Quadruple;
+import mho.wheels.structures.Triple;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
@@ -551,6 +553,89 @@ public class ExhaustiveProviderDemos {
             String listString = tail(init(its(xs)));
             System.out.println("prefixPermutations(" + listString + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
+        }
+    }
+
+    private static void demoListsLex_int_Iterable() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("listsLex(" + p.b + ", " + p.a + ") = " + its(EP.listsLex(p.b, p.a)));
+        }
+    }
+
+    private static void demoPairsLex_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("pairsLex(" + p.a + ", " + p.b + ") = " + its(EP.pairsLex(p.a, p.b)));
+        }
+    }
+
+    private static void demoPairsLex_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, List<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Iterable<Integer>, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("pairsLex(" + its(p.a) + ", " + p.b + ") = " + its(EP.pairsLex(p.a, p.b)));
+        }
+    }
+
+    private static void demoTriplesLex_finite() {
+        initialize();
+        Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("triplesLex(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(EP.triplesLex(t.a, t.b, t.c)));
+        }
+    }
+
+    private static void demoTriplesLex_infinite() {
+        initialize();
+        Iterable<List<Integer>> finiteArgs = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Triple<Iterable<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                finiteArgs,
+                finiteArgs
+        );
+        for (Triple<Iterable<Integer>, List<Integer>, List<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("triplesLex(" + its(t.a) + ", " + t.b + ", " + t.c + ") = " +
+                    its(EP.triplesLex(t.a, t.b, t.c)));
+        }
+    }
+
+    private static void demoQuadruplesLex_finite() {
+        initialize();
+        Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+            System.out.println("quadruplesLex(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
+                    its(EP.quadruplesLex(q.a, q.b, q.c, q.d)));
+        }
+    }
+
+    private static void demoQuadruplesLex_infinite() {
+        initialize();
+        Iterable<List<Integer>> finiteArgs = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Quadruple<Iterable<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                finiteArgs,
+                finiteArgs,
+                finiteArgs
+        );
+        for (Quadruple<Iterable<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+            System.out.println("quadruplesLex(" + its(q.a) + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
+                    its(EP.quadruplesLex(q.a, q.b, q.c, q.d)));
         }
     }
 }
