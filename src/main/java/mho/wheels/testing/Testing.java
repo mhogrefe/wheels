@@ -184,27 +184,12 @@ public strictfp class Testing {
         for (Map.Entry<String, Function<A, B>> entry : functions.entrySet()) {
             Function<A, B> function = entry.getValue();
             long totalTime = 0;
-            Map<Long, List<A>> inverseTimeMap = new TreeMap<>();
             for (A input : inputs) {
                 long time = System.nanoTime();
                 function.apply(input);
-                time = System.nanoTime() - time;
-                totalTime += time;
-                List<A> inputsForTime = inverseTimeMap.get(-time);
-                if (inputsForTime == null) {
-                    inputsForTime = new ArrayList<>();
-                    inverseTimeMap.put(-time, inputsForTime);
-                }
-                inputsForTime.add(input);
+                totalTime += (System.nanoTime() - time);
             }
             System.out.println("\t\t\t" + entry.getKey() + ": " + ((double) totalTime) / 1e9 + " s");
-            Iterable<Pair<Long, A>> longest = take(
-                    5,
-                    concatMap(p -> map(x -> new Pair<>(p.a, x), p.b), fromMap(inverseTimeMap))
-            );
-            for (Pair<Long, A> p : longest) {
-                System.out.println("\t\t\t\t" + ((double) -p.a) / 1e9 + ": " + p.b);
-            }
         }
     }
 
