@@ -2299,10 +2299,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code Iterable} containing all lists of a given length with elements from a given
-     * {@code Iterable}. The lists are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. The {@code Iterable} must be finite; using a long {@code Iterable} is possible but
-     * discouraged.
+     * Returns an {@code Iterable} containing all {@code List}s of a given length with elements from a given
+     * {@code Iterable}. The {@code List}s are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. The {@code Iterable} must be finite. Does not support removal.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
@@ -2311,7 +2310,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  entirely of one empty element.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|<sup>{@code size}</sup>
+     * Length is |{@code xs}|<sup>{@code size}</sup>
      *
      * @param size the length of the result lists
      * @param xs the {@code Iterable} from which elements are selected
@@ -2361,17 +2360,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given two {@code Iterable}s, returns all ordered pairs of elements from these {@code Iterable}s in increasing
-     * order. The second {@code Iterable} must be finite; using a long second {@code Iterable} is possible but
-     * discouraged.
+     * Given two {@code Iterable}s, returns all {@code Pair}s of elements from these {@code Iterable}s. The
+     * {@code Pair}s are ordered lexicographically, matching the order given by the original {@code Iterable}s. The
+     * second {@code Iterable} must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>The result is the Cartesian product of two finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}|
+     * Length is |{@code as}||{@code bs}|
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2385,18 +2384,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given three {@code Iterable}s, returns all ordered triples of elements from these {@code Iterable}s in
-     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
-     * position but the first is possible but discouraged.
+     * Given three {@code Iterable}s, returns all ordered {@code Triple}s of elements from these {@code Iterable}s. The
+     * {@code Triple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s. All
+     * {@code Iterable}s but the first must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>The result is the Cartesian product of three finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}|
+     * Length is |{@code as}||{@code bs}||{@code cs}|
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2416,19 +2415,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given four {@code Iterable}s, returns all ordered quadruples of elements from these {@code Iterable}s in
-     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
-     * position but the first is possible but discouraged.
+     * Given four {@code Iterable}s, returns all {@code Quadruple}s of elements from these {@code Iterable}s. The
+     * {@code Quadruple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * All {@code Iterable}s but the first must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
      *  <li>The result is the Cartesian product of four finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2451,12 +2450,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given five {@code Iterable}s, returns all ordered quintuples of elements from these {@code Iterable}s in
-     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
-     * position but the first is possible but discouraged.
+     * Given five {@code Iterable}s, returns all {@code Quintuple}s of elements from these {@code Iterable}s. The
+     * {@code Quintuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * All {@code Iterable}s but the first must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
@@ -2464,7 +2463,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is the Cartesian product of five finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2494,12 +2493,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given six {@code Iterable}s, returns all ordered sextuples of elements from these {@code Iterable}s in
-     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
-     * position but the first is possible but discouraged.
+     * Given six {@code Iterable}s, returns all {@code Sextuple}s of elements from these {@code Iterable}s. The
+     * {@code Sextuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * All {@code Iterable}s but the first must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
@@ -2508,7 +2507,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is the Cartesian product of six finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2541,12 +2540,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Given seven {@code Iterable}s, returns all ordered septuples of elements from these {@code Iterable}s in
-     * increasing order. All {@code Iterable}s but the first must be finite; using long {@code Iterable}s in any
-     * position but the first is possible but discouraged.
+     * Given seven {@code Iterable}s, returns all {@code Septuple}s of elements from these {@code Iterable}s. The
+     * {@code Septuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * All {@code Iterable}s but the first must be finite. Does not support removal.
      *
      * <ul>
-     *  <li>{@code as} must be non-null.</li>
+     *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
@@ -2556,7 +2555,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is the Cartesian product of seven finite {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}
      *
      * @param as the first {@code Iterable}
      * @param bs the second {@code Iterable}
@@ -2594,16 +2593,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     /**
      * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
      * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. Using long {@code String} is possible but discouraged.
+     * {@code Iterable}. Does not support removal.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
-     *  <li>{@code s} is non-null.</li>
+     *  <li>{@code s} cannot be null.</li>
      *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
      *  consists entirely of one empty {@code String}.</li>
      * </ul>
      *
-     * Result length is |{@code s}|<sup>{@code size}</sup>
+     * Length is |{@code s}|<sup>{@code size}</sup>
      *
      * @param size the length of the result {@code String}
      * @param s the {@code String} from which characters are selected
