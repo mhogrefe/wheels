@@ -2328,10 +2328,7 @@ public class RandomProviderProperties {
 
         psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                map(
-                        IterableUtils::cycle,
-                        nub(map(IterableUtils::unrepeat, P.listsWithElement(null, P.integersGeometric())))
-                )
+                P.prefixPermutations(EP.withNull(EP.integers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
