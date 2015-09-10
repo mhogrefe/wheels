@@ -2412,10 +2412,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
-        return map(
-                p -> new Triple<>(p.a, p.b.a, p.b.b),
-                pairsLex(as, (Iterable<Pair<B, C>>) pairsLex(bs, cs))
-        );
+        return map(p -> new Triple<>(p.a, p.b.a, p.b.b), pairsLex(as, pairsLex(bs, cs)));
     }
 
     /**
@@ -2450,13 +2447,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     ) {
-        return map(
-                p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b),
-                pairsLex(
-                        (Iterable<Pair<A, B>>) pairsLex(as, bs),
-                        (Iterable<Pair<C, D>>) pairsLex(cs, ds)
-                )
-        );
+        return map(p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b), pairsLex(pairsLex(as, bs), pairsLex(cs, ds)));
     }
 
     /**
@@ -2498,10 +2489,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Quintuple<>(p.a.a, p.a.b, p.b.a, p.b.b, p.b.c),
-                pairsLex(
-                        (Iterable<Pair<A, B>>) pairsLex(as, bs),
-                        (Iterable<Triple<C, D, E>>) triplesLex(cs, ds, es)
-                )
+                pairsLex(pairsLex(as, bs), triplesLex(cs, ds, es))
         );
     }
 
@@ -2548,10 +2536,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c),
-                pairsLex(
-                        (Iterable<Triple<A, B, C>>) triplesLex(as, bs, cs),
-                        (Iterable<Triple<D, E, F>>) triplesLex(ds, es, fs)
-                )
+                pairsLex(triplesLex(as, bs, cs), triplesLex(ds, es, fs))
         );
     }
 
@@ -2602,10 +2587,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return map(
                 p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
-                pairsLex(
-                        (Iterable<Triple<A, B, C>>) triplesLex(as, bs, cs),
-                        (Iterable<Quadruple<D, E, F, G>>) quadruplesLex(ds, es, fs, gs)
-                )
+                pairsLex(triplesLex(as, bs, cs), quadruplesLex(ds, es, fs, gs))
         );
     }
 
@@ -2615,13 +2597,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code Iterable}. Using long {@code String} is possible but discouraged.
      *
      * <ul>
-     *  <li>{@code length} cannot be negative.</li>
+     *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code s} is non-null.</li>
      *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
      *  consists entirely of one empty {@code String}.</li>
      * </ul>
      *
-     * Result length is |{@code s}|<sup>{@code length}</sup>
+     * Result length is |{@code s}|<sup>{@code size}</sup>
      *
      * @param size the length of the result {@code String}
      * @param s the {@code String} from which characters are selected
@@ -2629,22 +2611,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<String> stringsLex(int size, @NotNull String s) {
-        if (size < 0)
-            throw new IllegalArgumentException("strings must have a non-negative length");
-        if (s.isEmpty()) {
-            return size == 0 ? Collections.singletonList("") : new ArrayList<>();
-        }
-        if (s.length() == 1) {
-            return Collections.singletonList(replicate(size, s.charAt(0)));
-        }
-        BigInteger totalLength = BigInteger.valueOf(s.length()).pow(size);
-        Function<BigInteger, String> f = bi -> charsToString(
-                map(
-                        i -> s.charAt(i.intValueExact()),
-                        IntegerUtils.bigEndianDigitsPadded(size, BigInteger.valueOf(s.length()), bi)
-                )
-        );
-        return map(f, range(BigInteger.ZERO, totalLength.subtract(BigInteger.ONE)));
+        return map(IterableUtils::charsToString, listsLex(size, fromString(s)));
     }
 
     /**
