@@ -2305,13 +2305,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * discouraged.
      *
      * <ul>
-     *  <li>{@code length} cannot be negative.</li>
+     *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code xs} must be finite.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
      * </ul>
      *
-     * Result length is |{@code xs}|<sup>{@code length}</sup>
+     * Result length is |{@code xs}|<sup>{@code size}</sup>
      *
      * @param size the length of the result lists
      * @param xs the {@code Iterable} from which elements are selected
@@ -2320,23 +2320,44 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull Iterable<T> xs) {
-        if (size < 0)
-            throw new IllegalArgumentException("lists must have a non-negative length");
-        if (size == 0) {
-            return Collections.singletonList(new ArrayList<>());
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
         }
-        Function<T, List<T>> makeSingleton = x -> {
-            List<T> list = new ArrayList<>();
-            list.add(x);
-            return list;
+        List<T> xsList = toList(xs);
+        int xsSize = xsList.size();
+        BigInteger outputSize = BigInteger.valueOf(xsSize).pow(size);
+        return () -> new NoRemoveIterator<List<T>>() {
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private @NotNull List<Integer> indices = toList(replicate(size, 0));
+            private boolean reachedEnd = outputSize.equals(BigInteger.ZERO);
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public List<T> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                if (!index.equals(BigInteger.ZERO)) {
+                    for (int i = size - 1; i >= 0; i--) {
+                        int j = indices.get(i);
+                        if (j == xsSize - 1) {
+                            indices.set(i, 0);
+                        } else {
+                            indices.set(i, j + 1);
+                            break;
+                        }
+                    }
+                }
+                List<T> list = toList(map(xsList::get, indices));
+                index = index.add(BigInteger.ONE);
+                reachedEnd = index.equals(outputSize);
+                return list;
+            }
         };
-        List<Iterable<List<T>>> intermediates = new ArrayList<>();
-        intermediates.add(map(makeSingleton, xs));
-        for (int i = 1; i < size; i++) {
-            Iterable<List<T>> lists = last(intermediates);
-            intermediates.add(concatMap(x -> map(list -> toList(cons(x, list)), lists), xs));
-        }
-        return last(intermediates);
     }
 
     /**
