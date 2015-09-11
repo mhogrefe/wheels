@@ -1,10 +1,7 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.structures.FiniteDomainFunction;
-import mho.wheels.structures.Pair;
-import mho.wheels.structures.Quadruple;
-import mho.wheels.structures.Triple;
+import mho.wheels.structures.*;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
@@ -636,6 +633,193 @@ public class ExhaustiveProviderDemos {
         for (Quadruple<Iterable<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
             System.out.println("quadruplesLex(" + its(q.a) + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
                     its(EP.quadruplesLex(q.a, q.b, q.c, q.d)));
+        }
+    }
+
+    private static void demoQuintuplesLex_finite() {
+        initialize();
+        Iterable<Quintuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> qs = P.quintuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Quintuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > q : take(SMALL_LIMIT, qs)) {
+            System.out.println("quintuplesLex(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ", " + q.e + ") = " +
+                    its(EP.quintuplesLex(q.a, q.b, q.c, q.d, q.e)));
+        }
+    }
+
+    private static void demoQuintuplesLex_infinite() {
+        initialize();
+        Iterable<List<Integer>> finiteArgs = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Quintuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> qs = P.quintuples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs
+        );
+        for (Quintuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > q : take(SMALL_LIMIT, qs)) {
+            System.out.println(
+                    "quintuplesLex(" + its(q.a) + ", " + q.b + ", " + q.c + ", " + q.d + ", " + q.e + ") = " +
+                    its(EP.quintuplesLex(q.a, q.b, q.c, q.d, q.e))
+            );
+        }
+    }
+
+    private static void demoSextuplesLex_finite() {
+        initialize();
+        Iterable<Sextuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.sextuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Sextuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println(
+                    "sextuplesLex(" + s.a + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f + ") = " +
+                    its(EP.sextuplesLex(s.a, s.b, s.c, s.d, s.e, s.f))
+            );
+        }
+    }
+
+    private static void demoSextuplesLex_infinite() {
+        initialize();
+        Iterable<List<Integer>> finiteArgs = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Sextuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.sextuples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs
+        );
+        for (Sextuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println(
+                    "sextuplesLex(" +
+                    its(s.a) + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f + ") = " +
+                    its(EP.sextuplesLex(s.a, s.b, s.c, s.d, s.e, s.f))
+            );
+        }
+    }
+
+    private static void demoSeptuplesLex_finite() {
+        initialize();
+        Iterable<Septuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.septuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Septuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println(
+                    "septuplesLex(" +
+                    s.a + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f + ", " + s.g + ") = " +
+                    its(EP.septuplesLex(s.a, s.b, s.c, s.d, s.e, s.f, s.g))
+            );
+        }
+    }
+
+    private static void demoSeptuplesLex_infinite() {
+        initialize();
+        Iterable<List<Integer>> finiteArgs = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Septuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.septuples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs,
+                finiteArgs
+        );
+        for (Septuple<
+                Iterable<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println(
+                    "septuplesLex(" +
+                    its(s.a) + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f + ", " + s.g + ") = " +
+                    its(EP.septuplesLex(s.a, s.b, s.c, s.d, s.e, s.f, s.g))
+            );
+        }
+    }
+
+    private static void demoStringsLex_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsLex(p.b, p.a))));
         }
     }
 }
