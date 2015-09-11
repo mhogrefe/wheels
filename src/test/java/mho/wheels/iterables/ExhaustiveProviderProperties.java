@@ -159,6 +159,8 @@ public class ExhaustiveProviderProperties {
             propertiesPermutationsFinite();
             propertiesStringPermutations();
             propertiesPrefixPermutations();
+            propertiesListsLex_int_Iterable();
+            compareImplementationsListsLex_int_Iterable();
         }
         System.out.println("Done");
     }
@@ -1749,5 +1751,86 @@ public class ExhaustiveProviderProperties {
                 assertTrue(its(is), unique(take(TINY_LIMIT, is)));
             }
         }
+    }
+
+    private static @NotNull List<List<Integer>> listsLex_int_Iterable_alt(
+            int size, @NotNull List<Integer> xs
+    ) {
+        int xsSize = xs.size();
+        switch (xsSize) {
+            case 0:
+                return size == 0 ? Collections.singletonList(Collections.emptyList()) : Collections.emptyList();
+            case 1:
+                return Collections.singletonList(toList(replicate(size, xs.get(0))));
+            default:
+                BigInteger base = BigInteger.valueOf(xsSize);
+                return toList(
+                        map(
+                                i -> toList(
+                                        map(
+                                                d -> xs.get(d.intValueExact()),
+                                                IntegerUtils.bigEndianDigitsPadded(size, base, i)
+                                        )
+                                ),
+                                range(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
+                        )
+                );
+        }
+    }
+
+    private static void propertiesListsLex_int_Iterable() {
+        initialize("listsLex(int, Iterable<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.listsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = BigInteger.valueOf(p.a.size()).pow(p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                assertEquals(p, listsLex_int_Iterable_alt(p.b, p.a), listsList);
+                if (!p.a.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
+                    assertEquals(p, last(listsList), toList(replicate(p.b, last(p.a))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.listsLex(p.b, p.a);
+            BigInteger listsLength = BigInteger.valueOf(p.a.size()).pow(p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                Comparator<Integer> xsComparator = new ListBasedComparator<>(p.a);
+                List<List<Integer>> listsList = toList(lists);
+                assertTrue(p, unique(lists));
+                assertTrue(
+                        p,
+                        increasing(new LexComparator<>(xsComparator), map(ys -> ((Iterable<Integer>) ys), listsList))
+                );
+            }
+        }
+    }
+
+    private static void compareImplementationsListsLex_int_Iterable() {
+        Map<String, Function<Pair<List<Integer>, Integer>, List<List<Integer>>>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> listsLex_int_Iterable_alt(p.b, p.a));
+        functions.put("standard", p -> toList(EP.listsLex(p.b, p.a)));
+        Iterable<Pair<List<Integer>, Integer>> ps = filterInfinite(
+                p -> lt(BigInteger.valueOf(p.a.size()).pow(p.b), BigInteger.valueOf(LIMIT)),
+                P.pairsLogarithmicOrder(
+                        P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        compareImplementations("listsLex(int, Iterable<T>)", take(LIMIT, ps), functions);
     }
 }

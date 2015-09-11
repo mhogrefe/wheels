@@ -2341,6 +2341,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsLex_int_Iterable() {
+        aeqit(P.listsLex(0, Collections.emptyList()), "[[]]");
         aeqit(P.listsLex(0, Arrays.asList(1, 2, 3)), "[[]]");
         aeqit(P.listsLex(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
         aeqit(P.listsLex(2, Arrays.asList(1, 2, 3)),
