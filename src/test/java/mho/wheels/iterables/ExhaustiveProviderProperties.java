@@ -8,10 +8,7 @@ import mho.wheels.numberUtils.IntegerUtils;
 import mho.wheels.ordering.comparators.LexComparator;
 import mho.wheels.ordering.comparators.ListBasedComparator;
 import mho.wheels.ordering.comparators.WithNullComparator;
-import mho.wheels.structures.FiniteDomainFunction;
-import mho.wheels.structures.NullableOptional;
-import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
+import mho.wheels.structures.*;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -161,6 +158,9 @@ public class ExhaustiveProviderProperties {
             propertiesPrefixPermutations();
             propertiesListsLex_int_Iterable();
             compareImplementationsListsLex_int_Iterable();
+            propertiesPairsLex();
+            propertiesTriplesLex();
+            propertiesQuadruplesLex();
         }
         System.out.println("Done");
     }
@@ -1806,15 +1806,16 @@ public class ExhaustiveProviderProperties {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
-            Iterable<List<Integer>> lists = EP.listsLex(p.b, p.a);
             BigInteger listsLength = BigInteger.valueOf(p.a.size()).pow(p.b);
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
-                Comparator<Integer> xsComparator = new ListBasedComparator<>(p.a);
-                List<List<Integer>> listsList = toList(lists);
-                assertTrue(p, unique(lists));
+                List<List<Integer>> listsList = toList(EP.listsLex(p.b, p.a));
+                assertTrue(p, unique(listsList));
                 assertTrue(
                         p,
-                        increasing(new LexComparator<>(xsComparator), map(ys -> ((Iterable<Integer>) ys), listsList))
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(p.a)),
+                                map(ys -> ((Iterable<Integer>) ys), listsList)
+                        )
                 );
             }
         }
@@ -1832,5 +1833,134 @@ public class ExhaustiveProviderProperties {
                 )
         );
         compareImplementations("listsLex(int, Iterable<T>)", take(LIMIT, ps), functions);
+    }
+
+    private static void propertiesPairsLex() {
+        initialize("pairsLex(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairsLex(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            BigInteger pairsLength = BigInteger.valueOf(p.a.size()).multiply(BigInteger.valueOf(p.b.size()));
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairsList = toList(pairs);
+                if (!p.a.isEmpty() && !p.b.isEmpty()) {
+                    assertEquals(p, head(pairsList), new Pair<>(head(p.a), head(p.b)));
+                    assertEquals(p, last(pairsList), new Pair<>(last(p.a), last(p.b)));
+                }
+                assertEquals(p, pairsList.size(), pairsLength.intValueExact());
+                assertTrue(p, all(i -> elem(i, p.a), map(q -> q.a, pairsList)));
+                assertTrue(p, all(i -> elem(i, p.b), map(q -> q.b, pairsList)));
+            }
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            BigInteger pairsLength = BigInteger.valueOf(p.a.size()).multiply(BigInteger.valueOf(p.b.size()));
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                List<Pair<Integer, Integer>> pairsList = toList(EP.pairsLex(p.a, p.b));
+                assertTrue(p, unique(pairsList));
+                Comparator<Pair<Integer, Integer>> comparator = new Pair.PairComparator<>(
+                        new ListBasedComparator<>(p.a),
+                        new ListBasedComparator<>(p.b)
+                );
+                assertTrue(p, increasing(comparator, pairsList));
+            }
+        }
+    }
+
+    private static void propertiesTriplesLex() {
+        initialize("triplesLex(Iterable<A>, Iterable<B>, Iterable<C>)");
+        Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(LIMIT, ts)) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.triplesLex(t.a, t.b, t.c);
+            testNoRemove(TINY_LIMIT, triples);
+            BigInteger triplesLength = BigInteger.valueOf(t.a.size())
+                    .multiply(BigInteger.valueOf(t.b.size()))
+                    .multiply(BigInteger.valueOf(t.c.size()));
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(triples);
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
+                if (!t.a.isEmpty() && !t.b.isEmpty() && !t.c.isEmpty()) {
+                    assertEquals(t, head(triplesList), new Triple<>(head(t.a), head(t.b), head(t.c)));
+                    assertEquals(t, last(triplesList), new Triple<>(last(t.a), last(t.b), last(t.c)));
+                }
+                assertEquals(t, triplesList.size(), triplesLength.intValueExact());
+                assertTrue(t, all(i -> elem(i, t.a), map(u -> u.a, triplesList)));
+                assertTrue(t, all(i -> elem(i, t.b), map(u -> u.b, triplesList)));
+                assertTrue(t, all(i -> elem(i, t.c), map(u -> u.c, triplesList)));
+            }
+        }
+
+        ts = P.triples(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(LIMIT, ts)) {
+            BigInteger triplesLength = BigInteger.valueOf(t.a.size())
+                    .multiply(BigInteger.valueOf(t.b.size()))
+                    .multiply(BigInteger.valueOf(t.c.size()));
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.triplesLex(t.a, t.b, t.c));
+                assertTrue(t, unique(triplesList));
+                Comparator<Triple<Integer, Integer, Integer>> comparator = new Triple.TripleComparator<>(
+                        new ListBasedComparator<>(t.a),
+                        new ListBasedComparator<>(t.b),
+                        new ListBasedComparator<>(t.c)
+                );
+                assertTrue(t, increasing(comparator, triplesList));
+            }
+        }
+    }
+
+    private static void propertiesQuadruplesLex() {
+        initialize("quadruplesLex(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>)");
+        Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(LIMIT, qs)) {
+            Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.quadruplesLex(q.a, q.b, q.c, q.d);
+            testNoRemove(TINY_LIMIT, quadruples);
+            BigInteger quadruplesLength = BigInteger.valueOf(q.a.size())
+                    .multiply(BigInteger.valueOf(q.b.size()))
+                    .multiply(BigInteger.valueOf(q.c.size()))
+                    .multiply(BigInteger.valueOf(q.d.size()));
+            if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(quadruples);
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
+                if (!q.a.isEmpty() && !q.b.isEmpty() && !q.c.isEmpty() && !q.d.isEmpty()) {
+                    assertEquals(q, head(quadruplesList), new Quadruple<>(head(q.a), head(q.b), head(q.c), head(q.d)));
+                    assertEquals(q, last(quadruplesList), new Quadruple<>(last(q.a), last(q.b), last(q.c), last(q.d)));
+                }
+                assertEquals(q, quadruplesList.size(), quadruplesLength.intValueExact());
+                assertTrue(q, all(i -> elem(i, q.a), map(r -> r.a, quadruplesList)));
+                assertTrue(q, all(i -> elem(i, q.b), map(r -> r.b, quadruplesList)));
+                assertTrue(q, all(i -> elem(i, q.c), map(r -> r.c, quadruplesList)));
+                assertTrue(q, all(i -> elem(i, q.d), map(r -> r.d, quadruplesList)));
+            }
+        }
+
+        qs = P.quadruples(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(LIMIT, qs)) {
+            BigInteger triplesLength = BigInteger.valueOf(q.a.size())
+                    .multiply(BigInteger.valueOf(q.b.size()))
+                    .multiply(BigInteger.valueOf(q.c.size()))
+                    .multiply(BigInteger.valueOf(q.d.size()));
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList =
+                        toList(EP.quadruplesLex(q.a, q.b, q.c, q.d));
+                assertTrue(q, unique(quadruplesList));
+                Comparator<Quadruple<Integer, Integer, Integer, Integer>> comparator =
+                        new Quadruple.QuadrupleComparator<>(
+                                new ListBasedComparator<>(q.a),
+                                new ListBasedComparator<>(q.b),
+                                new ListBasedComparator<>(q.c),
+                                new ListBasedComparator<>(q.d)
+                        );
+                assertTrue(q, increasing(comparator, quadruplesList));
+            }
+        }
     }
 }
