@@ -164,6 +164,8 @@ public class ExhaustiveProviderProperties {
             propertiesQuintuplesLex();
             propertiesSextuplesLex();
             propertiesSeptuplesLex();
+            propertiesStringsLex_int_String();
+            compareImplementationsStringsLex_int_String();
         }
         System.out.println("Done");
     }
@@ -2542,5 +2544,87 @@ public class ExhaustiveProviderProperties {
             );
             assertTrue(s, unique(septuplesList));
         }
+    }
+
+    private static @NotNull List<String> stringsLex_int_String_alt(
+            int size, @NotNull String s
+    ) {
+        int sLength = s.length();
+        switch (sLength) {
+            case 0:
+                return size == 0 ? Collections.singletonList("") : Collections.emptyList();
+            case 1:
+                return Collections.singletonList(replicate(size, s.charAt(0)));
+            default:
+                BigInteger base = BigInteger.valueOf(sLength);
+                return toList(
+                        map(
+                                i -> charsToString(
+                                        map(
+                                                d -> s.charAt(d.intValueExact()),
+                                                IntegerUtils.bigEndianDigitsPadded(size, base, i)
+                                        )
+                                ),
+                                range(BigInteger.ZERO, base.pow(size).subtract(BigInteger.ONE))
+                        )
+                );
+        }
+    }
+
+    private static void propertiesStringsLex_int_String() {
+        initialize("stringsLex(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = BigInteger.valueOf(p.a.length()).pow(p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                assertEquals(p, stringsLex_int_String_alt(p.b, p.a), stringsList);
+                if (!p.a.isEmpty()) {
+                    assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+                    assertEquals(p, last(stringsList), replicate(p.b, last(p.a)));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctStrings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = BigInteger.valueOf(p.a.length()).pow(p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringsLex(p.b, p.a));
+                assertTrue(p, unique(stringsList));
+                assertTrue(
+                        p,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(toList(p.a))),
+                                map(IterableUtils::toList, stringsList)
+                        )
+                );
+            }
+        }
+    }
+
+    private static void compareImplementationsStringsLex_int_String() {
+        Map<String, Function<Pair<String, Integer>, List<String>>> functions = new LinkedHashMap<>();
+        functions.put("alt", p -> stringsLex_int_String_alt(p.b, p.a));
+        functions.put("standard", p -> toList(EP.stringsLex(p.b, p.a)));
+        Iterable<Pair<String, Integer>> ps = filterInfinite(
+                p -> lt(BigInteger.valueOf(p.a.length()).pow(p.b), BigInteger.valueOf(LIMIT)),
+                P.pairsLogarithmicOrder(
+                        P.withScale(4).strings(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        compareImplementations("stringsLex(int, String)", take(LIMIT, ps), functions);
     }
 }

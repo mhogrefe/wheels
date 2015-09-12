@@ -3496,11 +3496,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> distinctStrings() {
-        return null;
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }

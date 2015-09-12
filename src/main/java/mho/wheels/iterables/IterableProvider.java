@@ -1088,7 +1088,9 @@ public abstract strictfp class IterableProvider {
 
     public abstract @NotNull Iterable<String> distinctStrings(@NotNull String s);
 
-    public abstract @NotNull Iterable<String> distinctStrings();
+    public Iterable<String> distinctStrings() {
+        return map(IterableUtils::charsToString, distinctLists(characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs);
 
