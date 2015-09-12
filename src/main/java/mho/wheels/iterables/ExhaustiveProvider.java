@@ -2593,8 +2593,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
-     * {@code Iterable}. The {@code String}s are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. Does not support removal.
+     * {@code String}. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code String}. Does not support removal.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
