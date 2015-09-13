@@ -822,4 +822,43 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringsLex(p.b, p.a))));
         }
     }
+
+    private static void demoListsShortlex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("listsShortlex(" + xs + ") = " + its(EP.listsShortlex(xs)));
+        }
+    }
+
+    private static void demoStringsShortlex() {
+        initialize();
+        for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
+            System.out.println("stringsShortlex(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsShortlex(s))));
+        }
+    }
+
+    private static void demoListsShortlexAtLeast() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(TINY_LIMIT, ps)) {
+            System.out.println("listsShortlexAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.listsShortlexAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoStringsShortlexAtLeast() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(TINY_LIMIT, ps)) {
+            System.out.println("stringsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsShortlexAtLeast(p.b, p.a))));
+        }
+    }
 }
