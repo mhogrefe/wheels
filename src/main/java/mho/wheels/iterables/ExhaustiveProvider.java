@@ -2615,25 +2615,27 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns an {@code Iterable} containing all lists with elements from a given {@code Iterable}. The lists are in
-     * shortlex order; that is, shorter lists precede longer lists, and lists of the same length are ordered
-     * lexicographically, matching the order given by the original {@code Iterable}. The {@code Iterable} must be
-     * finite; using a long {@code Iterable} is possible but discouraged.
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code Iterable}. The
+     * {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer {@code List}s, and
+     * {@code List}s of the same length are ordered lexicographically, matching the order given by the original
+     * {@code Iterable}. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} must be finite.</li>
-     *  <li>The result either consists of a single empty list, or is infinite. It is in shortlex order (according to
-     *  some ordering of its elements) and contains every list of elements drawn from some sequence.</li>
+     *  <li>The result either consists of a single empty {@code List}, or is infinite. It is in shortlex order
+     *  (according to some ordering of its elements) and contains every {@code List} of elements drawn from some
+     *  sequence.</li>
      * </ul>
      *
      * Result length is 1 if {@code xs} is empty, infinite otherwise
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all lists created from {@code xs}
+     * @return all {@code List}s created from {@code xs}
      */
+    @Override
     public @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return concatMap(i -> listsLex(i.intValueExact(), xs), naturalBigIntegers());
     }
 
@@ -2641,7 +2643,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Returns an {@code Iterable} containing all {@code String}s with characters from a given {@code String}. The
      * {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer {@code String}s, and
      * {@code String}s of the same length are ordered lexicographically, matching the order given by the original
-     * {@code String}. Using a long {@code String} is possible but discouraged.
+     * {@code String}. Does not support removal.
      *
      * <ul>
      *  <li>{@code s} must be non-null.</li>
@@ -2655,18 +2657,66 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param s the {@code String} from which characters are selected
      * @return all {@code String}s created from {@code s}
      */
+    @Override
     public @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
         if (isEmpty(s)) return Collections.singletonList("");
         return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
+     * {@code Iterable}. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
+     * {@code List}s, and {@code List}s of the same length are ordered lexicographically, matching the order given by
+     * the original {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} must be finite.</li>
+     *  <li>The result either consists of a single empty {@code List}, or is infinite. It is in shortlex order
+     *  (according to some ordering of its elements) and contains every {@code List} (with a length greater than or
+     *  equal to some minimum) of elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * Result length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all {@code List}s created from {@code xs}
+     */
+    @Override
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return minSize == 0 ? Collections.singletonList(new ArrayList<>()) : new ArrayList<>();
+        if (isEmpty(xs)) return minSize == 0 ?
+                Collections.singletonList(Collections.emptyList()) :
+                Collections.emptyList();
         return concatMap(i -> listsLex(i, xs), rangeUp(minSize));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s with a minimum size with characters from a given
+     * {@code String}. The {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer
+     * {@code String}s, and {@code String}s of the same length are ordered lexicographically, matching the order given
+     * by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result either consists of a single empty {@code String}, or is infinite. It is in shortlex order
+     *  (according to some ordering of its characters) and contains every {@code String} (with a length greater than or
+     *  equal to some minimum) of characters drawn from some sequence.</li>
+     * </ul>
+     *
+     * Result length is 0 if {@code s} is empty and {@code minSize} is greater than 0, 1 if {@code s} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which elements are selected
+     * @return all {@code String}s created from {@code s}
+     */
+    @Override
     public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
-        if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : new ArrayList<>();
+        if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : Collections.emptyList();
         return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
     }
 

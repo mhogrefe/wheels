@@ -933,8 +933,8 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs);
 
     /**
-     * Generates all {@code List}s of a given size containing elements from a given {@code Iterable}. The elements are
-     * ordered lexicographically, matching the order given by the original {@code Iterable}.
+     * Generates all {@code List}s of a given size containing elements from a given {@code Iterable}. The {@code List}s
+     * are ordered lexicographically, matching the order given by the original {@code Iterable}.
      *
      * @param size the length of each of the generated {@code List}s
      * @param xs a {@code List} of elements
@@ -1083,14 +1083,60 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
-     * Generates all {@code String}s of a given size containing elements from a given {@code String}. The elements are
-     * ordered lexicographically, matching the order given by the original {@code String}.
+     * Generates all {@code String}s of a given size containing characters from a given {@code String}. The
+     * {@code String}s are ordered lexicographically, matching the order given by the original {@code String}.
      *
      * @param size the length of each of the generated {@code String}s
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> stringsLex(int size, @NotNull String s) {
         return strings(size, s);
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code Iterable}. The {@code List}s are ordered in
+     * shortlex order (by length, then lexicographically), matching the order given by the original {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
+        return lists(xs);
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String}. The {@code String}s are ordered
+     * in shortlex order (by length, then lexicographically), matching the order given by the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
+        return strings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable}. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the order given by the
+     * original {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return listsAtLeast(minSize, xs);
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String}. The
+     * {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the order given by
+     * the original {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
+        return stringsAtLeast(minSize, s);
     }
 
     public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
