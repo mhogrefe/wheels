@@ -2339,34 +2339,42 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]");
     }
 
+    private static void listsLex_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.listsLex(size, readIntegerListWithNulls(input)), output);
+    }
+
     @Test
     public void testListsLex_int_Iterable() {
-        aeqit(P.listsLex(0, Collections.emptyList()), "[[]]");
-        aeqit(P.listsLex(0, Arrays.asList(1, 2, 3)), "[[]]");
-        aeqit(P.listsLex(1, Arrays.asList(1, 2, 3)), "[[1], [2], [3]]");
-        aeqit(P.listsLex(2, Arrays.asList(1, 2, 3)),
+        listsLex_int_Iterable_helper(0, "[]", "[[]]");
+        listsLex_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
+        listsLex_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        listsLex_int_Iterable_helper(2, "[1, 2, 3]",
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        aeqit(P.listsLex(3, Arrays.asList(1, 2, 3)),
+        listsLex_int_Iterable_helper(3, "[1, 2, 3]",
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2]," +
                 " [1, 3, 3], [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1]," +
                 " [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3]," +
                 " [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
 
-        aeqit(P.listsLex(0, Arrays.asList(1, null, 3)), "[[]]");
-        aeqit(P.listsLex(1, Arrays.asList(1, null, 3)), "[[1], [null], [3]]");
-        aeqit(P.listsLex(2, Arrays.asList(1, null, 3)),
+        listsLex_int_Iterable_helper(0, "[1, null, 3]", "[[]]");
+        listsLex_int_Iterable_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
+        listsLex_int_Iterable_helper(2, "[1, null, 3]",
                 "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        aeqit(P.listsLex(3, Arrays.asList(1, null, 3)),
+        listsLex_int_Iterable_helper(3, "[1, null, 3]",
                 "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
                 " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        aeqit(P.listsLex(0, Collections.emptyList()), "[[]]");
-        aeqit(P.listsLex(1, Collections.emptyList()), "[]");
-        aeqit(P.listsLex(2, Collections.emptyList()), "[]");
-        aeqit(P.listsLex(3, Collections.emptyList()), "[]");
+        listsLex_int_Iterable_helper(0, "[]", "[[]]");
+        listsLex_int_Iterable_helper(1, "[]", "[]");
+        listsLex_int_Iterable_helper(2, "[]", "[]");
+        listsLex_int_Iterable_helper(3, "[]", "[]");
+        try {
+            P.listsLex(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
         try {
             P.listsLex(-1, Arrays.asList(1, 2, 3));
             fail();
@@ -3326,47 +3334,164 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void stringsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.stringsLex(size, input), output);
+    }
+
     @Test
     public void testStringsLex_int_String() {
-        aeqit(P.stringsLex(0, "abc"), "[]");
+        stringsLex_int_String_helper(0, "abc", "[]");
         aeq(length(P.stringsLex(0, "abc")), 1);
-        aeqit(P.stringsLex(1, "abc"), "[a, b, c]");
-        aeqit(P.stringsLex(2, "abc"), "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        aeqit(P.stringsLex(3, "abc"),
+        stringsLex_int_String_helper(1, "abc", "[a, b, c]");
+        stringsLex_int_String_helper(2, "abc", "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        stringsLex_int_String_helper(3, "abc",
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba," +
                 " bbb, bbc, bca, bcb, bcc, caa, cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        aeqit(P.stringsLex(0, "a"), "[]");
-        aeqit(P.stringsLex(1, "a"), "[a]");
-        aeqit(P.stringsLex(2, "a"), "[aa]");
-        aeqit(P.stringsLex(3, "a"), "[aaa]");
-        aeqit(P.stringsLex(0, ""), "[]");
+        stringsLex_int_String_helper(0, "a", "[]");
+        stringsLex_int_String_helper(1, "a", "[a]");
+        stringsLex_int_String_helper(2, "a", "[aa]");
+        stringsLex_int_String_helper(3, "a", "[aaa]");
+        stringsLex_int_String_helper(0, "", "[]");
         aeq(length(P.stringsLex(0, "")), 1);
-        aeqit(P.stringsLex(1, ""), "[]");
+        stringsLex_int_String_helper(1, "", "[]");
         aeq(length(P.stringsLex(1, "")), 0);
-        aeqit(P.stringsLex(2, ""), "[]");
+        stringsLex_int_String_helper(2, "", "[]");
         aeq(length(P.stringsLex(2, "")), 0);
-        aeqit(P.stringsLex(3, ""), "[]");
+        stringsLex_int_String_helper(3, "", "[]");
         aeq(length(P.stringsLex(3, "")), 0);
         try {
             P.stringsLex(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringsLex(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testListsShortlex() {
-        aeqit(take(20, P.listsShortlex(Arrays.asList(1, 2, 3))),
-                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2]," +
-                " [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1]]");
-        aeqit(P.listsShortlex(new ArrayList<Integer>()), "[[]]");
+        aeqitLimit(TINY_LIMIT, P.listsShortlex(Arrays.asList(1, 2, 3)),
+                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
+                " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
+        aeqitLimit(TINY_LIMIT, P.listsShortlex(Arrays.asList(1, 2, 2, 3)),
+                "[[], [1], [2], [2], [3], [1, 1], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 2], [2, 3], [2, 1]," +
+                " [2, 2], [2, 2], [2, 3], [3, 1], [3, 2], [3, 2], ...]");
+        aeqit(P.listsShortlex(Collections.emptyList()), "[[]]");
     }
 
     @Test
     public void testStringsShortlex() {
-        aeqit(take(20, P.stringsShortlex("abc")),
-                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca]");
+        aeqitLimit(TINY_LIMIT, P.stringsShortlex("abc"),
+                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
+        aeqitLimit(TINY_LIMIT, P.stringsShortlex("abbc"),
+                "[, a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, ...]");
         aeqit(P.stringsShortlex(""), "[]");
         aeq(length(P.stringsShortlex("")), 1);
+    }
+
+    private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testListsShortlexAtLeast() {
+        listsShortlexAtLeast_helper(0, "[]", "[[]]");
+        listsShortlexAtLeast_helper(0, "[1, 2, 3]",
+                "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
+                " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
+        listsShortlexAtLeast_helper(1, "[1, 2, 3]",
+                "[[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3], [1, 1, 1]," +
+                " [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], ...]");
+        listsShortlexAtLeast_helper(2, "[1, 2, 3]",
+                "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3], [1, 1, 1], [1, 1, 2]," +
+                " [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2]," +
+                " ...]");
+        listsShortlexAtLeast_helper(3, "[1, 2, 3]",
+                "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3]," +
+                " [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3]," +
+                " [3, 1, 1], [3, 1, 2], ...]");
+
+        listsShortlexAtLeast_helper(0, "[1, null, 3]",
+                "[[], [1], [null], [3], [1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1]," +
+                " [3, null], [3, 3], [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null]," +
+                " [1, null, 3], [1, 3, 1], ...]");
+        listsShortlexAtLeast_helper(1, "[1, null, 3]",
+                "[[1], [null], [3], [1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1]," +
+                " [3, null], [3, 3], [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null]," +
+                " [1, null, 3], [1, 3, 1], [1, 3, null], ...]");
+        listsShortlexAtLeast_helper(2, "[1, null, 3]",
+                "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]," +
+                " [1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
+                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], ...]");
+        listsShortlexAtLeast_helper(3, "[1, null, 3]",
+                "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
+                " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
+                " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
+                " [3, 1, null], ...]");
+
+        listsShortlexAtLeast_helper(0, "[]", "[[]]");
+        listsShortlexAtLeast_helper(1, "[]", "[]");
+        listsShortlexAtLeast_helper(2, "[]", "[]");
+        listsShortlexAtLeast_helper(3, "[]", "[]");
+        try {
+            P.listsShortlexAtLeast(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.listsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void stringsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsShortlexAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testStringsShortlexAtLeast() {
+        stringsShortlexAtLeast_helper(0, "abc",
+                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
+        stringsShortlexAtLeast_helper(1, "abc",
+                "[a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, ...]");
+        stringsShortlexAtLeast_helper(2, "abc",
+                "[aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, ...]");
+        stringsShortlexAtLeast_helper(3, "abc",
+                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
+                " cab, ...]");
+        stringsShortlexAtLeast_helper(0, "a",
+                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
+        stringsShortlexAtLeast_helper(1, "a",
+                "[a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsShortlexAtLeast_helper(2, "a",
+                "[aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
+                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsShortlexAtLeast_helper(3, "a",
+                "[aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
+                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsShortlexAtLeast_helper(0, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
+        stringsShortlexAtLeast_helper(1, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
+        stringsShortlexAtLeast_helper(2, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
+        stringsShortlexAtLeast_helper(3, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
+        try {
+            P.stringsShortlexAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringsShortlexAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test

@@ -2687,10 +2687,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         if (isEmpty(xs)) return minSize == 0 ?
                 Collections.singletonList(Collections.emptyList()) :
                 Collections.emptyList();
-        return concatMap(i -> listsLex(i, xs), rangeUp(minSize));
+        return concatMap(i -> listsLex(i.intValueExact(), xs), rangeUp(BigInteger.valueOf(minSize)));
     }
 
     /**
@@ -2716,8 +2719,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         if (isEmpty(s)) return minSize == 0 ? Collections.singletonList("") : Collections.emptyList();
-        return concatMap(i -> stringsLex(i.intValueExact(), s), naturalBigIntegers());
+        return concatMap(i -> stringsLex(i.intValueExact(), s), rangeUp(BigInteger.valueOf(minSize)));
     }
 
     @Override
