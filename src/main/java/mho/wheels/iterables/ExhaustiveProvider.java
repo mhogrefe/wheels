@@ -3318,16 +3318,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
-        return map(IterableUtils::charsToString, lists(size, fromString(s)));
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(int size) {
-        return map(IterableUtils::charsToString, lists(size, characters()));
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         CachedIterator<T> ii = new CachedIterator<>(xs);
         Function<BigInteger, Optional<List<T>>> f = bi -> {

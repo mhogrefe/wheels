@@ -3051,16 +3051,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
-        return map(IterableUtils::charsToString, transpose(demux(size, uniformSample(s))));
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(int size) {
-        return map(IterableUtils::charsToString, transpose(demux(size, characters())));
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
             private final Iterator<T> xsi = cycle(xs).iterator();
