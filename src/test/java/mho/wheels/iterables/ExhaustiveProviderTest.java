@@ -3,7 +3,6 @@ package mho.wheels.iterables;
 import mho.wheels.io.Readers;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
-import mho.wheels.ordering.Ordering;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
@@ -3596,22 +3595,22 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairs() {
         aeqit(P.pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d)," +
-                " (3, a), (3, b), (4, a), (4, b), (3, c), (3, d), (4, c), (4, d)]");
+                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (3, a), (3, b), (4, a), (4, b)," +
+                " (3, c), (3, d), (4, c), (4, d)]");
         aeqit(P.pairs(Arrays.asList(1, 2, null, 4), fromString("abcd")),
-                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d)," +
-                " (null, a), (null, b), (4, a), (4, b), (null, c), (null, d), (4, c), (4, d)]");
-        aeqit(P.pairs(new ArrayList<Integer>(), fromString("abcd")), "[]");
-        aeqit(P.pairs(new ArrayList<Integer>(), new ArrayList<Character>()), "[]");
+                "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (null, a), (null, b), (4, a)," +
+                " (4, b), (null, c), (null, d), (4, c), (4, d)]");
+        aeqit(P.pairs(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(P.pairs(Collections.emptyList(), Collections.emptyList()), "[]");
         aeqit(take(20, P.pairs(P.naturalBigIntegers(), fromString("abcd"))),
-                "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b)," +
-                " (3, a), (3, b), (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
+                "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b), (3, a), (3, b)," +
+                " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b)]");
         aeqit(take(20, P.pairs(fromString("abcd"), P.naturalBigIntegers())),
-                "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1)," +
-                " (d, 0), (d, 1), (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
+                "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1), (d, 0), (d, 1)," +
+                " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5)]");
         aeqit(take(20, P.pairs(P.positiveBigIntegers(), P.negativeBigIntegers())),
-                "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2)," +
-                " (4, -1), (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
+                "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2), (4, -1)," +
+                " (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
     }
 
     @Test
@@ -3627,8 +3626,8 @@ public strictfp class ExhaustiveProviderTest {
                 " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
                 " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
                 " (4, c, true), (4, d, false), (4, d, true)]");
-        aeqit(P.triples(new ArrayList<Integer>(), fromString("abcd"), P.booleans()), "[]");
-        aeqit(P.triples(new ArrayList<Integer>(), new ArrayList<Character>(), new ArrayList<Boolean>()), "[]");
+        aeqit(P.triples(Collections.emptyList(), fromString("abcd"), P.booleans()), "[]");
+        aeqit(P.triples(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()), "[]");
         aeqit(take(20, P.triples(P.naturalBigIntegers(), fromString("abcd"), P.booleans())),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
                 " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
@@ -3681,13 +3680,16 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, EQ), (4, d, true, LT), (null, c, false, GT), (null, c, true, GT)," +
                 " (null, d, false, GT), (null, d, true, GT), (4, c, false, GT), (4, c, true, GT), (4, d, false, GT)," +
                 " (4, d, true, GT)]");
-        aeqit(P.quadruples(new ArrayList<Integer>(), fromString("abcd"), P.booleans(), P.orderings()), "[]");
-        aeqit(P.quadruples(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>()
-        ), "[]");
+        aeqit(P.quadruples(Collections.emptyList(), fromString("abcd"), P.booleans(), P.orderings()), "[]");
+        aeqit(
+                P.quadruples(
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList(),
+                    Collections.emptyList()
+                ),
+                "[]"
+        );
         aeqit(take(20, P.quadruples(P.naturalBigIntegers(), fromString("abcd"), P.booleans(), P.orderings())),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, true, EQ), (0, a, true, LT), (0, b, false, EQ)," +
                 " (0, b, false, LT), (0, b, true, EQ), (0, b, true, LT), (1, a, false, EQ), (1, a, false, LT)," +
@@ -3707,7 +3709,8 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testQuintuples() {
-        aeqit(P.quintuples(
+        aeqit(
+                P.quintuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -3740,8 +3743,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, b, false, GT, yes), (3, b, false, GT, no), (3, b, true, GT, yes), (3, b, true, GT, no)," +
                 " (3, c, false, EQ, yes), (3, c, false, EQ, no), (3, c, false, LT, yes), (3, c, false, LT, no)," +
                 " (3, c, true, EQ, yes), (3, c, true, EQ, no), (3, c, true, LT, yes), (3, c, true, LT, no)," +
-                " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
-        aeqit(P.quintuples(
+                " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]"
+        );
+        aeqit(
+                P.quintuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
                         P.booleans(),
@@ -3799,62 +3804,85 @@ public strictfp class ExhaustiveProviderTest {
                 " (null, c, true, GT, yes), (null, c, true, GT, no), (null, d, false, GT, yes)," +
                 " (null, d, false, GT, no), (null, d, true, GT, yes), (null, d, true, GT, no)," +
                 " (4, c, false, GT, yes), (4, c, false, GT, no), (4, c, true, GT, yes), (4, c, true, GT, no)," +
-                " (4, d, false, GT, yes), (4, d, false, GT, no), (4, d, true, GT, yes), (4, d, true, GT, no)]");
-        aeqit(P.quintuples(
-                new ArrayList<Integer>(),
+                " (4, d, false, GT, yes), (4, d, false, GT, no), (4, d, true, GT, yes), (4, d, true, GT, no)]"
+        );
+        aeqit(
+                P.quintuples(
+                Collections.emptyList(),
                 fromString("abcd"),
                 P.booleans(),
                 P.orderings(),
                 Arrays.asList("yes", "no")
-        ), "[]");
-        aeqit(P.quintuples(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>()
-        ), "[]");
-        aeqit(take(20, P.quintuples(
+                ),
+                "[]"
+        );
+        aeqit(
+                P.quintuples(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.quintuples(
                         P.naturalBigIntegers(),
                         fromString("abcd"),
                         P.booleans(),
                         P.orderings(),
                         Arrays.asList("yes", "no")
-                )),
+                        )
+                ),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
                 " (0, a, true, EQ, yes), (0, a, true, EQ, no), (0, a, true, LT, yes), (0, a, true, LT, no)," +
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, true, EQ, yes), (0, b, true, EQ, no), (0, b, true, LT, yes), (0, b, true, LT, no)," +
-                " (1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)]");
-        aeqit(take(20, P.quintuples(
-                        fromString("abcd"),
-                        P.booleans(),
-                        P.naturalBigIntegers(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no")
-                )),
+                " (1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.quintuples(
+                                fromString("abcd"),
+                                P.booleans(),
+                                P.naturalBigIntegers(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no")
+                        )
+                ),
                 "[(a, false, 0, EQ, yes), (a, false, 0, EQ, no), (a, false, 0, LT, yes), (a, false, 0, LT, no)," +
                 " (a, false, 1, EQ, yes), (a, false, 1, EQ, no), (a, false, 1, LT, yes), (a, false, 1, LT, no)," +
                 " (a, true, 0, EQ, yes), (a, true, 0, EQ, no), (a, true, 0, LT, yes), (a, true, 0, LT, no)," +
                 " (a, true, 1, EQ, yes), (a, true, 1, EQ, no), (a, true, 1, LT, yes), (a, true, 1, LT, no)," +
-                " (b, false, 0, EQ, yes), (b, false, 0, EQ, no), (b, false, 0, LT, yes), (b, false, 0, LT, no)]");
-        aeqit(take(20, P.quintuples(
-                        P.positiveBigIntegers(),
-                        P.negativeBigIntegers(),
-                        P.characters(),
-                        P.strings(),
-                        P.floats()
-                )),
+                " (b, false, 0, EQ, yes), (b, false, 0, EQ, no), (b, false, 0, LT, yes), (b, false, 0, LT, no)]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.quintuples(
+                                P.positiveBigIntegers(),
+                                P.negativeBigIntegers(),
+                                P.characters(),
+                                P.strings(),
+                                P.floats()
+                        )
+                ),
                 "[(1, -1, a, , NaN), (1, -1, a, , Infinity), (1, -1, a, a, NaN), (1, -1, a, a, Infinity)," +
                 " (1, -1, b, , NaN), (1, -1, b, , Infinity), (1, -1, b, a, NaN), (1, -1, b, a, Infinity)," +
                 " (1, -2, a, , NaN), (1, -2, a, , Infinity), (1, -2, a, a, NaN), (1, -2, a, a, Infinity)," +
                 " (1, -2, b, , NaN), (1, -2, b, , Infinity), (1, -2, b, a, NaN), (1, -2, b, a, Infinity)," +
-                " (2, -1, a, , NaN), (2, -1, a, , Infinity), (2, -1, a, a, NaN), (2, -1, a, a, Infinity)]");
+                " (2, -1, a, , NaN), (2, -1, a, , Infinity), (2, -1, a, a, NaN), (2, -1, a, a, Infinity)]"
+        );
     }
 
     @Test
     public void testSextuples() {
-        aeqit(P.sextuples(
+        aeqit(
+                P.sextuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -3933,8 +3961,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, LT, yes, Infinity), (3, c, true, LT, yes, NaN), (3, c, true, LT, no, Infinity)," +
                 " (3, c, true, LT, no, NaN), (3, c, false, GT, yes, Infinity), (3, c, false, GT, yes, NaN)," +
                 " (3, c, false, GT, no, Infinity), (3, c, false, GT, no, NaN), (3, c, true, GT, yes, Infinity)," +
-                " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
-        aeqit(P.sextuples(
+                " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]"
+        );
+        aeqit(
+                P.sextuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
                         P.booleans(),
@@ -4083,75 +4113,98 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, c, true, GT, yes, Infinity), (4, c, true, GT, yes, NaN), (4, c, true, GT, no, Infinity)," +
                 " (4, c, true, GT, no, NaN), (4, d, false, GT, yes, Infinity), (4, d, false, GT, yes, NaN)," +
                 " (4, d, false, GT, no, Infinity), (4, d, false, GT, no, NaN), (4, d, true, GT, yes, Infinity)," +
-                " (4, d, true, GT, yes, NaN), (4, d, true, GT, no, Infinity), (4, d, true, GT, no, NaN)]");
-        aeqit(P.sextuples(
-                new ArrayList<Integer>(),
-                fromString("abcd"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-        ), "[]");
-        aeqit(P.sextuples(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>(),
-                new ArrayList<Float>()
-        ), "[]");
-        aeqit(take(20, P.sextuples(
-                        P.naturalBigIntegers(),
+                " (4, d, true, GT, yes, NaN), (4, d, true, GT, no, Infinity), (4, d, true, GT, no, NaN)]"
+        );
+        aeqit(
+                P.sextuples(
+                        Collections.emptyList(),
                         fromString("abcd"),
                         P.booleans(),
                         P.orderings(),
                         Arrays.asList("yes", "no"),
-                        (List<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                )),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                ),
+                "[]"
+        );
+        aeqit(
+                P.sextuples(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.sextuples(
+                                P.naturalBigIntegers(),
+                                fromString("abcd"),
+                                P.booleans(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                        )
+                ),
                 "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
                 " (0, a, false, EQ, no, NaN), (0, a, false, LT, yes, Infinity), (0, a, false, LT, yes, NaN)," +
                 " (0, a, false, LT, no, Infinity), (0, a, false, LT, no, NaN), (0, a, true, EQ, yes, Infinity)," +
                 " (0, a, true, EQ, yes, NaN), (0, a, true, EQ, no, Infinity), (0, a, true, EQ, no, NaN)," +
                 " (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN), (0, a, true, LT, no, Infinity)," +
                 " (0, a, true, LT, no, NaN), (0, b, false, EQ, yes, Infinity), (0, b, false, EQ, yes, NaN)," +
-                " (0, b, false, EQ, no, Infinity), (0, b, false, EQ, no, NaN)]");
-        aeqit(take(20, P.sextuples(
-                        fromString("abcd"),
-                        P.booleans(),
-                        P.naturalBigIntegers(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
-                )),
+                " (0, b, false, EQ, no, Infinity), (0, b, false, EQ, no, NaN)]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.sextuples(
+                                fromString("abcd"),
+                                P.booleans(),
+                                P.naturalBigIntegers(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
+                        )
+                ),
                 "[(a, false, 0, EQ, yes, Infinity), (a, false, 0, EQ, yes, NaN), (a, false, 0, EQ, no, Infinity)," +
                 " (a, false, 0, EQ, no, NaN), (a, false, 0, LT, yes, Infinity), (a, false, 0, LT, yes, NaN)," +
                 " (a, false, 0, LT, no, Infinity), (a, false, 0, LT, no, NaN), (a, false, 1, EQ, yes, Infinity)," +
                 " (a, false, 1, EQ, yes, NaN), (a, false, 1, EQ, no, Infinity), (a, false, 1, EQ, no, NaN)," +
                 " (a, false, 1, LT, yes, Infinity), (a, false, 1, LT, yes, NaN), (a, false, 1, LT, no, Infinity)," +
                 " (a, false, 1, LT, no, NaN), (a, true, 0, EQ, yes, Infinity), (a, true, 0, EQ, yes, NaN)," +
-                " (a, true, 0, EQ, no, Infinity), (a, true, 0, EQ, no, NaN)]");
-        aeqit(take(20, P.sextuples(
-                        P.positiveBigIntegers(),
-                        P.negativeBigIntegers(),
-                        P.characters(),
-                        P.strings(),
-                        P.floats(),
-                        P.lists(P.integers())
-                )),
+                " (a, true, 0, EQ, no, Infinity), (a, true, 0, EQ, no, NaN)]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.sextuples(
+                                P.positiveBigIntegers(),
+                                P.negativeBigIntegers(),
+                                P.characters(),
+                                P.strings(),
+                                P.floats(),
+                                P.lists(P.integers())
+                        )
+                ),
                 "[(1, -1, a, , NaN, []), (1, -1, a, , NaN, [0]), (1, -1, a, , Infinity, [])," +
                 " (1, -1, a, , Infinity, [0]), (1, -1, a, a, NaN, []), (1, -1, a, a, NaN, [0])," +
                 " (1, -1, a, a, Infinity, []), (1, -1, a, a, Infinity, [0]), (1, -1, b, , NaN, [])," +
                 " (1, -1, b, , NaN, [0]), (1, -1, b, , Infinity, []), (1, -1, b, , Infinity, [0])," +
                 " (1, -1, b, a, NaN, []), (1, -1, b, a, NaN, [0]), (1, -1, b, a, Infinity, [])," +
                 " (1, -1, b, a, Infinity, [0]), (1, -2, a, , NaN, []), (1, -2, a, , NaN, [0])," +
-                " (1, -2, a, , Infinity, []), (1, -2, a, , Infinity, [0])]");
+                " (1, -2, a, , Infinity, []), (1, -2, a, , Infinity, [0])]"
+        );
     }
 
     @Test
     public void testSeptuples() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
-        aeqit(P.septuples(
+        aeqit(
+                P.septuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
                         P.booleans(),
@@ -4375,8 +4428,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, Infinity, [1, 0]), (3, c, true, GT, yes, Infinity, [0, 1])," +
                 " (3, c, true, GT, yes, NaN, [1, 0]), (3, c, true, GT, yes, NaN, [0, 1])," +
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
-                " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
-        aeqit(P.septuples(
+                " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]"
+        );
+        aeqit(
+                P.septuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
                         P.booleans(),
@@ -4768,34 +4823,45 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, GT, yes, Infinity, [1, 0]), (4, d, true, GT, yes, Infinity, [0, 1])," +
                 " (4, d, true, GT, yes, NaN, [1, 0]), (4, d, true, GT, yes, NaN, [0, 1])," +
                 " (4, d, true, GT, no, Infinity, [1, 0]), (4, d, true, GT, no, Infinity, [0, 1])," +
-                " (4, d, true, GT, no, NaN, [1, 0]), (4, d, true, GT, no, NaN, [0, 1])]");
-        aeqit(P.septuples(
-                new ArrayList<Integer>(),
-                fromString("abcd"),
-                P.booleans(),
-                P.orderings(),
-                Arrays.asList("yes", "no"),
-                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                Arrays.asList(x, y)
-        ), "[]");
-        aeqit(P.septuples(
-                new ArrayList<Integer>(),
-                new ArrayList<Character>(),
-                new ArrayList<Boolean>(),
-                new ArrayList<Ordering>(),
-                new ArrayList<String>(),
-                new ArrayList<Float>(),
-                new ArrayList<List<Integer>>()
-        ), "[]");
-        aeqit(take(20, P.septuples(
-                        P.naturalBigIntegers(),
+                " (4, d, true, GT, no, NaN, [1, 0]), (4, d, true, GT, no, NaN, [0, 1])]"
+        );
+        aeqit(
+                P.septuples(
+                        Collections.emptyList(),
                         fromString("abcd"),
                         P.booleans(),
                         P.orderings(),
                         Arrays.asList("yes", "no"),
-                        (List<Float>) Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
-                )),
+                ),
+                "[]"
+        );
+        aeqit(
+                P.septuples(
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                "[]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.septuples(
+                                P.naturalBigIntegers(),
+                                fromString("abcd"),
+                                P.booleans(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                                Arrays.asList(x, y)
+                        )
+                ),
                 "[(0, a, false, EQ, yes, Infinity, [1, 0]), (0, a, false, EQ, yes, Infinity, [0, 1])," +
                 " (0, a, false, EQ, yes, NaN, [1, 0]), (0, a, false, EQ, yes, NaN, [0, 1])," +
                 " (0, a, false, EQ, no, Infinity, [1, 0]), (0, a, false, EQ, no, Infinity, [0, 1])," +
@@ -4805,16 +4871,21 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, LT, no, Infinity, [1, 0]), (0, a, false, LT, no, Infinity, [0, 1])," +
                 " (0, a, false, LT, no, NaN, [1, 0]), (0, a, false, LT, no, NaN, [0, 1])," +
                 " (0, a, true, EQ, yes, Infinity, [1, 0]), (0, a, true, EQ, yes, Infinity, [0, 1])," +
-                " (0, a, true, EQ, yes, NaN, [1, 0]), (0, a, true, EQ, yes, NaN, [0, 1])]");
-        aeqit(take(20, P.septuples(
-                        fromString("abcd"),
-                        P.booleans(),
-                        P.naturalBigIntegers(),
-                        P.orderings(),
-                        Arrays.asList("yes", "no"),
-                        Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
-                        Arrays.asList(x, y)
-                )),
+                " (0, a, true, EQ, yes, NaN, [1, 0]), (0, a, true, EQ, yes, NaN, [0, 1])]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.septuples(
+                                fromString("abcd"),
+                                P.booleans(),
+                                P.naturalBigIntegers(),
+                                P.orderings(),
+                                Arrays.asList("yes", "no"),
+                                Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
+                                Arrays.asList(x, y)
+                        )
+                ),
                 "[(a, false, 0, EQ, yes, Infinity, [1, 0]), (a, false, 0, EQ, yes, Infinity, [0, 1])," +
                 " (a, false, 0, EQ, yes, NaN, [1, 0]), (a, false, 0, EQ, yes, NaN, [0, 1])," +
                 " (a, false, 0, EQ, no, Infinity, [1, 0]), (a, false, 0, EQ, no, Infinity, [0, 1])," +
@@ -4824,23 +4895,29 @@ public strictfp class ExhaustiveProviderTest {
                 " (a, false, 0, LT, no, Infinity, [1, 0]), (a, false, 0, LT, no, Infinity, [0, 1])," +
                 " (a, false, 0, LT, no, NaN, [1, 0]), (a, false, 0, LT, no, NaN, [0, 1])," +
                 " (a, false, 1, EQ, yes, Infinity, [1, 0]), (a, false, 1, EQ, yes, Infinity, [0, 1])," +
-                " (a, false, 1, EQ, yes, NaN, [1, 0]), (a, false, 1, EQ, yes, NaN, [0, 1])]");
-        aeqit(take(20, P.septuples(
-                        P.positiveBigIntegers(),
-                        P.negativeBigIntegers(),
-                        P.characters(),
-                        P.strings(),
-                        P.floats(),
-                        P.lists(P.integers()),
-                        P.bigDecimals()
-                )),
+                " (a, false, 1, EQ, yes, NaN, [1, 0]), (a, false, 1, EQ, yes, NaN, [0, 1])]"
+        );
+        aeqit(
+                take(
+                        20,
+                        P.septuples(
+                                P.positiveBigIntegers(),
+                                P.negativeBigIntegers(),
+                                P.characters(),
+                                P.strings(),
+                                P.floats(),
+                                P.lists(P.integers()),
+                                P.bigDecimals()
+                        )
+                ),
                 "[(1, -1, a, , NaN, [], 0), (1, -1, a, , NaN, [], 0.0), (1, -1, a, , NaN, [0], 0)," +
                 " (1, -1, a, , NaN, [0], 0.0), (1, -1, a, , Infinity, [], 0), (1, -1, a, , Infinity, [], 0.0)," +
                 " (1, -1, a, , Infinity, [0], 0), (1, -1, a, , Infinity, [0], 0.0), (1, -1, a, a, NaN, [], 0)," +
                 " (1, -1, a, a, NaN, [], 0.0), (1, -1, a, a, NaN, [0], 0), (1, -1, a, a, NaN, [0], 0.0)," +
                 " (1, -1, a, a, Infinity, [], 0), (1, -1, a, a, Infinity, [], 0.0), (1, -1, a, a, Infinity, [0], 0)," +
                 " (1, -1, a, a, Infinity, [0], 0.0), (1, -1, b, , NaN, [], 0), (1, -1, b, , NaN, [], 0.0)," +
-                " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0)]");
+                " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0)]"
+        );
     }
 
     @Test
