@@ -2367,7 +2367,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
-     *  <li>The result is the Cartesian product of two finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of two {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}|
@@ -2376,7 +2376,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param bs the second {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
-     * @return all ordered pairs of elements from {@code as} and {@code bs}
+     * @return all ordered {@code Pair}s of elements from {@code as} and {@code bs}
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
@@ -2393,7 +2393,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code as} cannot be null.</li>
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
-     *  <li>The result is the Cartesian product of three finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of three {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}||{@code cs}|
@@ -2404,7 +2404,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
-     * @return all ordered triples of elements from {@code as}, {@code bs}, and {@code cs}
+     * @return all ordered {@code Triple}s of elements from {@code as}, {@code bs}, and {@code cs}
      */
     @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesLex(
@@ -2425,7 +2425,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code bs} must be finite.</li>
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
-     *  <li>The result is the Cartesian product of four finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of four {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
@@ -2438,7 +2438,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
      * @param <D> the type of the fourth {@code Iterable}'s elements
-     * @return all ordered quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
+     * @return all ordered {@code Quadruple}s of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
     @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesLex(
@@ -2461,7 +2461,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code cs} must be finite.</li>
      *  <li>{@code ds} must be finite.</li>
      *  <li>{@code es} must be finite.</li>
-     *  <li>The result is the Cartesian product of five finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of five {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
@@ -2476,7 +2476,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <C> the type of the third {@code Iterable}'s elements
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @param <E> the type of the fifth {@code Iterable}'s elements
-     * @return all ordered quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
+     * @return all ordered {@code Quintuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
      * {@code es}
      */
     @Override
@@ -2505,7 +2505,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code ds} must be finite.</li>
      *  <li>{@code es} must be finite.</li>
      *  <li>{@code fs} must be finite.</li>
-     *  <li>The result is the Cartesian product of six finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of six {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
@@ -2522,8 +2522,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @param <E> the type of the fifth {@code Iterable}'s elements
      * @param <F> the type of the sixth {@code Iterable}'s elements
-     * @return all ordered sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
-     * and {@code fs}
+     * @return all ordered {@code Sextuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds},
+     * {@code es}, and {@code fs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesLex(
@@ -2553,7 +2553,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code es} must be finite.</li>
      *  <li>{@code fs} must be finite.</li>
      *  <li>{@code gs} must be finite.</li>
-     *  <li>The result is the Cartesian product of seven finite {@code Iterable}s.</li>
+     *  <li>The result is the Cartesian product of seven {@code Iterable}s.</li>
      * </ul>
      *
      * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}
@@ -2572,8 +2572,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <E> the type of the fifth {@code Iterable}'s elements
      * @param <F> the type of the sixth {@code Iterable}'s elements
      * @param <G> the type of the seventh {@code Iterable}'s elements
-     * @return all ordered septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
-     * {@code fs}, and {@code gs}
+     * @return all ordered {@code Septuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds},
+     * {@code es}, {@code fs}, and {@code gs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesLex(
@@ -2726,6 +2726,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(i -> stringsLex(i.intValueExact(), s), rangeUp(BigInteger.valueOf(minSize)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code List}s of a given length with elements from a given
+     * {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>All of the result's elements have the same length. None are empty, unless the result consists entirely of
+     *  one empty element.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>{@code size}</sup>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all lists of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.emptyList();
@@ -2769,24 +2787,22 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all pairs of elements taken from two {@code Iterable}s in such a way that both components grow as the
-     * square root of the number of pairs iterated.
+     * Given two {@code Iterable}s, returns all {@code Pair}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all pairs of elements taken from two {@code Iterable}s.
-     *  The elements are ordered by following a Z-curve through the pair space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is the Cartesian product of two {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}|
+     * Length is |{@code as}||{@code bs}|
      *
-     * @param as the {@code Iterable} from which the first components of the pairs are selected
-     * @param bs the {@code Iterable} from which the second components of the pairs are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
-     * @return all pairs of elements from {@code as} and {@code bs}
+     * @return all ordered {@code Pair}s of elements from {@code as} and {@code bs}
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
@@ -2800,6 +2816,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Pair}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian square of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>2</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -2807,27 +2837,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all triples of elements taken from three {@code Iterable}s in such a way that all components grow as
-     * the cube root of the number of triples iterated.
+     * Given three {@code Iterable}s, returns all {@code Triple}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>{@code cs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all triples of elements taken from three {@code Iterable}s.
-     *  The elements are ordered by following a Z-curve through the triple space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>The result is the Cartesian product of three {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}|
+     * Length is |{@code as}||{@code bs}||{@code cs}|
      *
-     * @param as the {@code Iterable} from which the first components of the triples are selected
-     * @param bs the {@code Iterable} from which the second components of the triples are selected
-     * @param cs the {@code Iterable} from which the third components of the triples are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
-     * @return all triples of elements from {@code as}, {@code bs}, and {@code cs}
+     * @return all ordered {@code Triple}s of elements from {@code as}, {@code bs}, and {@code cs}
      */
     @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
@@ -2884,6 +2912,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns all {@code Triple}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian cube of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>3</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -2891,30 +2933,28 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all quadruples of elements taken from four {@code Iterable}s in such a way that all components grow as
-     * the fourth root of the number of quadruples iterated.
+     * Given four {@code Iterable}s, returns all {@code Quadruple}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>{@code cs} is non-null.</li>
-     *  <li>{@code ds} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all quadruples of elements taken from four
-     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the quadruple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>The result is the Cartesian product of four {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}|
      *
-     * @param as the {@code Iterable} from which the first components of the quadruples are selected
-     * @param bs the {@code Iterable} from which the second components of the quadruples are selected
-     * @param cs the {@code Iterable} from which the third components of the quadruples are selected
-     * @param ds the {@code Iterable} from which the fourth components of the quadruples are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
      * @param <D> the type of the fourth {@code Iterable}'s elements
-     * @return all quadruples of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
+     * @return all ordered {@code Quadruple}s of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
      */
     @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
@@ -2977,6 +3017,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns all {@code Quadruple}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian fourth power of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>4</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -2984,33 +3038,32 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all quintuples of elements taken from five {@code Iterable}s in such a way that all components grow as
-     * the fifth root of the number of quintuples iterated.
+     * Given five {@code Iterable}s, returns all {@code Quintuple}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>{@code cs} is non-null.</li>
-     *  <li>{@code ds} is non-null.</li>
-     *  <li>{@code es} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all quintuples of elements taken from five
-     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the quintuple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>The result is the Cartesian product of five {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}|
      *
-     * @param as the {@code Iterable} from which the first components of the quintuples are selected
-     * @param bs the {@code Iterable} from which the second components of the quintuples are selected
-     * @param cs the {@code Iterable} from which the third components of the quintuples are selected
-     * @param ds the {@code Iterable} from which the fourth components of the quintuples are selected
-     * @param es the {@code Iterable} from which the fifth components of the quintuples are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @param <E> the type of the fifth {@code Iterable}'s elements
-     * @return all quintuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and {@code es}
+     * @return all ordered {@code Quintuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
+     * {@code es}
      */
     @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
@@ -3079,6 +3132,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns all {@code Quintuple}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian fifth power of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>5</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -3089,37 +3156,35 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all sextuples of elements taken from six {@code Iterable}s in such a way that all components grow as
-     * the sixth root of the number of sextuples iterated.
+     * Given six {@code Iterable}s, returns all {@code Sextuple}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>{@code cs} is non-null.</li>
-     *  <li>{@code ds} is non-null.</li>
-     *  <li>{@code es} is non-null.</li>
-     *  <li>{@code fs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all sextuples of elements taken from six {@code Iterable}s.
-     *  The elements are ordered by following a Z-curve through the sextuple space. The curve is computed by
-     *  un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
+     *  <li>The result is the Cartesian product of six {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}|
      *
-     * @param as the {@code Iterable} from which the first components of the sextuples are selected
-     * @param bs the {@code Iterable} from which the second components of the sextuples are selected
-     * @param cs the {@code Iterable} from which the third components of the sextuples are selected
-     * @param ds the {@code Iterable} from which the fourth components of the sextuples are selected
-     * @param es the {@code Iterable} from which the fifth components of the sextuples are selected
-     * @param fs the {@code Iterable} from which the sixth components of the sextuples are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
      * @param <D> the type of the fourth {@code Iterable}'s elements
      * @param <E> the type of the fifth {@code Iterable}'s elements
      * @param <F> the type of the sixth {@code Iterable}'s elements
-     * @return all sextuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es}, and
-     * {@code fs}
+     * @return all ordered {@code Sextuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds},
+     * {@code es}, and {@code fs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
@@ -3195,6 +3260,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns all {@code Sextuple}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian sixth power of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>6</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
@@ -3205,31 +3284,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all septuples of elements taken from seven {@code Iterable}s in such a way that all components grow as
-     * the seventh root of the number of septuples iterated.
+     * Given seven {@code Iterable}s, returns all {@code Septuple}s of elements from these {@code Iterable}s. Does not
+     * support removal.
      *
      * <ul>
-     *  <li>{@code as} is non-null.</li>
-     *  <li>{@code bs} is non-null.</li>
-     *  <li>{@code cs} is non-null.</li>
-     *  <li>{@code ds} is non-null.</li>
-     *  <li>{@code es} is non-null.</li>
-     *  <li>{@code fs} is non-null.</li>
-     *  <li>{@code gs} is non-null.</li>
-     *  <li>The result is an {@code Iterable} containing all septuples of elements taken from seven
-     *  {@code Iterable}s. The elements are ordered by following a Z-curve through the septuple space. The curve is
-     *  computed by un-interleaving bits of successive integers.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
+     *  <li>{@code gs} cannot be null.</li>
+     *  <li>The result is the Cartesian product of seven {@code Iterable}s.</li>
      * </ul>
      *
-     * Result length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}|
+     * Length is |{@code as}||{@code bs}||{@code cs}||{@code ds}||{@code es}||{@code fs}||{@code gs}|
      *
-     * @param as the {@code Iterable} from which the first components of the septuples are selected
-     * @param bs the {@code Iterable} from which the second components of the septuples are selected
-     * @param cs the {@code Iterable} from which the third components of the septuples are selected
-     * @param ds the {@code Iterable} from which the fourth components of the septuples are selected
-     * @param es the {@code Iterable} from which the fifth components of the septuples are selected
-     * @param fs the {@code Iterable} from which the sixth components of the septuples are selected
-     * @param gs the {@code Iterable} from which the seventh components of the septuples are selected
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param gs the seventh {@code Iterable}
      * @param <A> the type of the first {@code Iterable}'s elements
      * @param <B> the type of the second {@code Iterable}'s elements
      * @param <C> the type of the third {@code Iterable}'s elements
@@ -3237,8 +3314,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param <E> the type of the fifth {@code Iterable}'s elements
      * @param <F> the type of the sixth {@code Iterable}'s elements
      * @param <G> the type of the seventh {@code Iterable}'s elements
-     * @return all septuples of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
-     * {@code fs}, and {@code gs}
+     * @return all ordered {@code Septuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds},
+     * {@code es}, {@code fs}, and {@code gs}
      */
     @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
@@ -3320,6 +3397,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns all {@code Septuple}s of elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is the Cartesian seventh power of an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is |{@code xs}|<sup>7</sup>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all ordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return new ArrayList<>();
