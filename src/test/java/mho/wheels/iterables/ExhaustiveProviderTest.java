@@ -3594,7 +3594,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testPairs() {
+    public void testPairs_Iterable_Iterable() {
         aeqit(P.pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (3, a), (3, b), (4, a), (4, b)," +
                 " (3, c), (3, d), (4, c), (4, d)]");
@@ -3614,8 +3614,30 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6)]");
     }
 
+    private static void testPairs_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.pairs(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testPairs_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.pairs(input), output);
+    }
+
     @Test
-    public void testTriples() {
+    public void testPairs_Iterable() {
+        testPairs_Iterable_helper("[]", "[]");
+        testPairs_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 1), (3, 2), (4, 1), (4, 2)," +
+                " (3, 3), (3, 4), (4, 3), (4, 4)]");
+        testPairs_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1), (1, 2), (2, 1), (2, 2), (1, null), (1, 4), (2, null), (2, 4), (null, 1), (null, 2)," +
+                " (4, 1), (4, 2), (null, null), (null, 4), (4, null), (4, 4)]");
+        testPairs_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
+                " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
+    }
+
+    @Test
+    public void testTriples_Iterable_Iterable_Iterable() {
         aeqit(P.triples(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
@@ -3645,8 +3667,33 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, -3, a), (1, -3, b), (1, -4, a), (1, -4, b)]");
     }
 
+    private static void testTriples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.triples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testTriples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.triples(input), output);
+    }
+
     @Test
-    public void testQuadruples() {
+    public void testTriples_Iterable() {
+        testTriples_Iterable_helper("[]", "[]");
+        testTriples_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2), (1, 1, 3)," +
+                " (1, 1, 4), (1, 2, 3), (1, 2, 4), (2, 1, 3), (2, 1, 4), (2, 2, 3), (2, 2, 4), (1, 3, 1), (1, 3, 2)," +
+                " (1, 4, 1), (1, 4, 2), ...]");
+        testTriples_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2)," +
+                " (1, 1, null), (1, 1, 4), (1, 2, null), (1, 2, 4), (2, 1, null), (2, 1, 4), (2, 2, null)," +
+                " (2, 2, 4), (1, null, 1), (1, null, 2), (1, 4, 1), (1, 4, 2), ...]");
+        testTriples_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1), (0, 0, 2)," +
+                " (0, 0, 3), (0, 1, 2), (0, 1, 3), (1, 0, 2), (1, 0, 3), (1, 1, 2), (1, 1, 3), (0, 2, 0), (0, 2, 1)," +
+                " (0, 3, 0), (0, 3, 1), ...]");
+    }
+
+    @Test
+    public void testQuadruples_Iterable_Iterable_Iterable_Iterable() {
         aeqit(P.quadruples(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
                 " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
@@ -3706,6 +3753,31 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, -2, b, ), (1, -2, b, a), (2, -1, a, ), (2, -1, a, a), (2, -1, b, ), (2, -1, b, a)," +
                 " (2, -2, a, ), (2, -2, a, a), (2, -2, b, ), (2, -2, b, a), (1, -1, a, aa), (1, -1, a, b)," +
                 " (1, -1, b, aa), (1, -1, b, b)]");
+    }
+
+    private static void testQuadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.quadruples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testQuadruples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.quadruples(input), output);
+    }
+
+    @Test
+    public void testQuadruples_Iterable() {
+        testQuadruples_Iterable_helper("[]", "[]");
+        testQuadruples_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
+                " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
+                " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, 3), (1, 1, 1, 4), (1, 1, 2, 3), (1, 1, 2, 4), ...]");
+        testQuadruples_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
+                " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
+                " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, null), (1, 1, 1, 4), (1, 1, 2, null), (1, 1, 2, 4), ...]");
+        testQuadruples_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0, 0, 0), (0, 0, 0, 1), (0, 0, 1, 0), (0, 0, 1, 1), (0, 1, 0, 0), (0, 1, 0, 1), (0, 1, 1, 0)," +
+                " (0, 1, 1, 1), (1, 0, 0, 0), (1, 0, 0, 1), (1, 0, 1, 0), (1, 0, 1, 1), (1, 1, 0, 0), (1, 1, 0, 1)," +
+                " (1, 1, 1, 0), (1, 1, 1, 1), (0, 0, 0, 2), (0, 0, 0, 3), (0, 0, 1, 2), (0, 0, 1, 3), ...]");
     }
 
     @Test
