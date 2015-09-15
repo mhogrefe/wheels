@@ -2746,6 +2746,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        }
+        if (size == 0) return Collections.singletonList(Collections.emptyList());
         if (isEmpty(xs)) return Collections.emptyList();
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
