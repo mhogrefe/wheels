@@ -1839,6 +1839,17 @@ public class ExhaustiveProviderProperties {
             testHasNext(xss);
             assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
         }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.listsLex(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private static void compareImplementationsListsLex_int_Iterable() {
@@ -2640,6 +2651,17 @@ public class ExhaustiveProviderProperties {
             testHasNext(ss);
             assertEquals(s, toList(ss), Collections.singletonList(""));
         }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringsLex(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private static void compareImplementationsStringsLex_int_String() {
@@ -2734,6 +2756,17 @@ public class ExhaustiveProviderProperties {
             testHasNext(xss);
             assertEquals(i, toList(xss), Collections.emptyList());
         }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.listsShortlexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private static void propertiesStringsShortlexAtLeast() {
@@ -2767,6 +2800,17 @@ public class ExhaustiveProviderProperties {
             Iterable<String> ss = EP.stringsShortlexAtLeast(i, "");
             testHasNext(ss);
             assertEquals(i, toList(ss), Collections.emptyList());
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringsShortlexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }

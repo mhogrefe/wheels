@@ -2728,25 +2728,44 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        if (size == 0) {
-            return Collections.singletonList(new ArrayList<T>());
-        }
-        CachedIterator<T> ii = new CachedIterator<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi ->
-                ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, bi)));
-        Predicate<Optional<List<T>>> lastList = o -> {
-            if (!o.isPresent()) return false;
-            List<T> list = o.get();
-            for (T x : list) {
-                Optional<Boolean> oLastX = ii.isLast(x);
-                if (!oLastX.isPresent() || !oLastX.get()) return false;
+        if (isEmpty(xs)) return Collections.emptyList();
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
             }
-            return true;
+
+            @Override
+            public @NotNull List<T> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                outer:
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(size, is.next());
+                    List<T> list = new ArrayList<>();
+                    for (BigInteger index : indices) {
+                        NullableOptional<T> ox = cxs.get(index.intValueExact());
+                        if (!ox.isPresent()) continue outer;
+                        list.add(ox.get());
+                    }
+                    if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
+                        outputSize = Optional.of(BigInteger.valueOf(cxs.knownSize().get()).pow(size));
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return list;
+                }
+            }
         };
-        return map(
-                Optional::get,
-                filter(Optional::isPresent, stopAt(lastList, map(f, naturalBigIntegers())))
-        );
     }
 
     /**
@@ -2816,44 +2835,53 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return new ArrayList<>();
-        CachedIterator<A> aii = new CachedIterator<>(as);
-        CachedIterator<B> bii = new CachedIterator<>(bs);
-        CachedIterator<C> cii = new CachedIterator<>(cs);
-        Function<BigInteger, Optional<Triple<A, B, C>>> f = bi -> {
-            List<BigInteger> p = IntegerUtils.demux(3, bi);
-            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
-            if (!optC.isPresent()) return Optional.empty();
-            return Optional.of(new Triple<>(optA.get(), optB.get(), optC.get()));
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return Collections.emptyList();
+        return () -> new NoRemoveIterator<Triple<A, B, C>>() {
+            private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
+            private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
+            private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull Triple<A, B, C> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(3, is.next());
+                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    if (!oa.isPresent()) continue;
+                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    if (!ob.isPresent()) continue;
+                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    if (!oc.isPresent()) continue;
+                    if (!outputSize.isPresent() &&
+                            cas.knownSize().isPresent() &&
+                            cbs.knownSize().isPresent() &&
+                            ccs.knownSize().isPresent()
+                    ) {
+                        outputSize = Optional.of(
+                                BigInteger.valueOf(cas.knownSize().get())
+                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                        );
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return new Triple<>(oa.get(), ob.get(), oc.get());
+                }
+            }
         };
-        Predicate<Optional<Triple<A, B, C>>> lastTriple = o -> {
-            if (!o.isPresent()) return false;
-            Triple<A, B, C> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Triple<A, B, C>>::isPresent,
-                        stopAt(
-                                lastTriple,
-                                (Iterable<Optional<Triple<A, B, C>>>)
-                                        IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
     }
 
     @Override
@@ -2895,50 +2923,58 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return new ArrayList<>();
-        CachedIterator<A> aii = new CachedIterator<>(as);
-        CachedIterator<B> bii = new CachedIterator<>(bs);
-        CachedIterator<C> cii = new CachedIterator<>(cs);
-        CachedIterator<D> dii = new CachedIterator<>(ds);
-        Function<BigInteger, Optional<Quadruple<A, B, C, D>>> f = bi -> {
-            List<BigInteger> p = IntegerUtils.demux(4, bi);
-            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
-            if (!optC.isPresent()) return Optional.empty();
-            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
-            if (!optD.isPresent()) return Optional.empty();
-            return Optional.of(new Quadruple<A, B, C, D>(optA.get(), optB.get(), optC.get(), optD.get()));
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return Collections.emptyList();
+        return () -> new NoRemoveIterator<Quadruple<A, B, C, D>>() {
+            private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
+            private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
+            private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
+            private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull Quadruple<A, B, C, D> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(4, is.next());
+                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    if (!oa.isPresent()) continue;
+                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    if (!ob.isPresent()) continue;
+                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    if (!oc.isPresent()) continue;
+                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    if (!od.isPresent()) continue;
+                    if (!outputSize.isPresent() &&
+                            cas.knownSize().isPresent() &&
+                            cbs.knownSize().isPresent() &&
+                            ccs.knownSize().isPresent() &&
+                            cds.knownSize().isPresent()
+                    ) {
+                        outputSize = Optional.of(
+                                BigInteger.valueOf(cas.knownSize().get())
+                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                        );
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return new Quadruple<>(oa.get(), ob.get(), oc.get(), od.get());
+                }
+            }
         };
-        Predicate<Optional<Quadruple<A, B, C, D>>> lastQuadruple = o -> {
-            if (!o.isPresent()) return false;
-            Quadruple<A, B, C, D> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Quadruple<A, B, C, D>>::isPresent,
-                        stopAt(
-                                lastQuadruple,
-                                (Iterable<Optional<Quadruple<A, B, C, D>>>)
-                                        IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
     }
 
     @Override
@@ -2984,62 +3020,63 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     ) {
-        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return new ArrayList<>();
-        CachedIterator<A> aii = new CachedIterator<>(as);
-        CachedIterator<B> bii = new CachedIterator<>(bs);
-        CachedIterator<C> cii = new CachedIterator<>(cs);
-        CachedIterator<D> dii = new CachedIterator<>(ds);
-        CachedIterator<E> eii = new CachedIterator<>(es);
-        Function<BigInteger, Optional<Quintuple<A, B, C, D, E>>> f = bi -> {
-            List<BigInteger> p = IntegerUtils.demux(5, bi);
-            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
-            if (!optC.isPresent()) return Optional.empty();
-            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
-            if (!optD.isPresent()) return Optional.empty();
-            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
-            if (!optE.isPresent()) return Optional.empty();
-            return Optional.of(new Quintuple<A, B, C, D, E>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get()
-            ));
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return Collections.emptyList();
+        return () -> new NoRemoveIterator<Quintuple<A, B, C, D, E>>() {
+            private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
+            private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
+            private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
+            private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
+            private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull Quintuple<A, B, C, D, E> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(5, is.next());
+                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    if (!oa.isPresent()) continue;
+                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    if (!ob.isPresent()) continue;
+                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    if (!oc.isPresent()) continue;
+                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    if (!od.isPresent()) continue;
+                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    if (!oe.isPresent()) continue;
+                    if (!outputSize.isPresent() &&
+                            cas.knownSize().isPresent() &&
+                            cbs.knownSize().isPresent() &&
+                            ccs.knownSize().isPresent() &&
+                            cds.knownSize().isPresent() &&
+                            ces.knownSize().isPresent()
+                    ) {
+                        outputSize = Optional.of(
+                                BigInteger.valueOf(cas.knownSize().get())
+                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ces.knownSize().get()))
+                        );
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return new Quintuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get());
+                }
+            }
         };
-        Predicate<Optional<Quintuple<A, B, C, D, E>>> lastQuintuple = o -> {
-            if (!o.isPresent()) return false;
-            Quintuple<A, B, C, D, E> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Quintuple<A, B, C, D, E>>::isPresent,
-                        stopAt(
-                                lastQuintuple,
-                                (Iterable<Optional<Quintuple<A, B, C, D, E>>>)
-                                        IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
     }
 
     @Override
@@ -3093,76 +3130,69 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     ) {
-        if (
-                isEmpty(as) ||
-                        isEmpty(bs) ||
-                        isEmpty(cs) ||
-                        isEmpty(ds) ||
-                        isEmpty(es) ||
-                        isEmpty(fs)
-                ) return new ArrayList<>();
-        CachedIterator<A> aii = new CachedIterator<>(as);
-        CachedIterator<B> bii = new CachedIterator<>(bs);
-        CachedIterator<C> cii = new CachedIterator<>(cs);
-        CachedIterator<D> dii = new CachedIterator<>(ds);
-        CachedIterator<E> eii = new CachedIterator<>(es);
-        CachedIterator<F> fii = new CachedIterator<>(fs);
-        Function<BigInteger, Optional<Sextuple<A, B, C, D, E, F>>> f = bi -> {
-            List<BigInteger> p = IntegerUtils.demux(6, bi);
-            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
-            if (!optC.isPresent()) return Optional.empty();
-            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
-            if (!optD.isPresent()) return Optional.empty();
-            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
-            if (!optE.isPresent()) return Optional.empty();
-            NullableOptional<F> optF = fii.get(p.get(5).intValueExact());
-            if (!optF.isPresent()) return Optional.empty();
-            return Optional.of(new Sextuple<A, B, C, D, E, F>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get(),
-                    optF.get()
-            ));
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs))
+                return Collections.emptyList();
+        return () -> new NoRemoveIterator<Sextuple<A, B, C, D, E, F>>() {
+            private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
+            private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
+            private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
+            private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
+            private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
+            private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull Sextuple<A, B, C, D, E, F> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(6, is.next());
+                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    if (!oa.isPresent()) continue;
+                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    if (!ob.isPresent()) continue;
+                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    if (!oc.isPresent()) continue;
+                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    if (!od.isPresent()) continue;
+                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    if (!oe.isPresent()) continue;
+                    NullableOptional<F> of = cfs.get(indices.get(5).intValueExact());
+                    if (!of.isPresent()) continue;
+                    if (!outputSize.isPresent() &&
+                            cas.knownSize().isPresent() &&
+                            cbs.knownSize().isPresent() &&
+                            ccs.knownSize().isPresent() &&
+                            cds.knownSize().isPresent() &&
+                            ces.knownSize().isPresent() &&
+                            cfs.knownSize().isPresent()
+                    ) {
+                        outputSize = Optional.of(
+                                BigInteger.valueOf(cas.knownSize().get())
+                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ces.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cfs.knownSize().get()))
+                        );
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return new Sextuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get());
+                }
+            }
         };
-        Predicate<Optional<Sextuple<A, B, C, D, E, F>>> lastSextuple = o -> {
-            if (!o.isPresent()) return false;
-            Sextuple<A, B, C, D, E, F> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            Optional<Boolean> lastF = fii.isLast(p.f);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastF.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get() &&
-                    lastF.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Sextuple<A, B, C, D, E, F>>::isPresent,
-                        stopAt(
-                                lastSextuple,
-                                (Iterable<Optional<Sextuple<A, B, C, D, E, F>>>)
-                                        IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
     }
 
     @Override
@@ -3220,84 +3250,74 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     ) {
-        if (
-                isEmpty(as) ||
-                        isEmpty(bs) ||
-                        isEmpty(cs) ||
-                        isEmpty(ds) ||
-                        isEmpty(es) ||
-                        isEmpty(fs) ||
-                        isEmpty(gs)
-                ) return new ArrayList<>();
-        CachedIterator<A> aii = new CachedIterator<>(as);
-        CachedIterator<B> bii = new CachedIterator<>(bs);
-        CachedIterator<C> cii = new CachedIterator<>(cs);
-        CachedIterator<D> dii = new CachedIterator<>(ds);
-        CachedIterator<E> eii = new CachedIterator<>(es);
-        CachedIterator<F> fii = new CachedIterator<>(fs);
-        CachedIterator<G> gii = new CachedIterator<>(gs);
-        Function<BigInteger, Optional<Septuple<A, B, C, D, E, F, G>>> f = bi -> {
-            List<BigInteger> p = IntegerUtils.demux(7, bi);
-            NullableOptional<A> optA = aii.get(p.get(0).intValueExact());
-            if (!optA.isPresent()) return Optional.empty();
-            NullableOptional<B> optB = bii.get(p.get(1).intValueExact());
-            if (!optB.isPresent()) return Optional.empty();
-            NullableOptional<C> optC = cii.get(p.get(2).intValueExact());
-            if (!optC.isPresent()) return Optional.empty();
-            NullableOptional<D> optD = dii.get(p.get(3).intValueExact());
-            if (!optD.isPresent()) return Optional.empty();
-            NullableOptional<E> optE = eii.get(p.get(4).intValueExact());
-            if (!optE.isPresent()) return Optional.empty();
-            NullableOptional<F> optF = fii.get(p.get(5).intValueExact());
-            if (!optF.isPresent()) return Optional.empty();
-            NullableOptional<G> optG = gii.get(p.get(6).intValueExact());
-            if (!optG.isPresent()) return Optional.empty();
-            return Optional.of(new Septuple<A, B, C, D, E, F, G>(
-                    optA.get(),
-                    optB.get(),
-                    optC.get(),
-                    optD.get(),
-                    optE.get(),
-                    optF.get(),
-                    optG.get()
-            ));
+        if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs) || isEmpty(gs))
+                return Collections.emptyList();
+        return () -> new NoRemoveIterator<Septuple<A, B, C, D, E, F, G>>() {
+            private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
+            private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
+            private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
+            private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
+            private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
+            private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
+            private final @NotNull CachedIterator<G> cgs = new CachedIterator<>(gs);
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
+            private @NotNull BigInteger index = BigInteger.ZERO;
+            private boolean reachedEnd = false;
+
+            @Override
+            public boolean hasNext() {
+                return !reachedEnd;
+            }
+
+            @Override
+            public @NotNull Septuple<A, B, C, D, E, F, G> next() {
+                if (reachedEnd) {
+                    throw new NoSuchElementException();
+                }
+                while (true) {
+                    List<BigInteger> indices = IntegerUtils.demux(7, is.next());
+                    NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
+                    if (!oa.isPresent()) continue;
+                    NullableOptional<B> ob = cbs.get(indices.get(1).intValueExact());
+                    if (!ob.isPresent()) continue;
+                    NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
+                    if (!oc.isPresent()) continue;
+                    NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
+                    if (!od.isPresent()) continue;
+                    NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
+                    if (!oe.isPresent()) continue;
+                    NullableOptional<F> of = cfs.get(indices.get(5).intValueExact());
+                    if (!of.isPresent()) continue;
+                    NullableOptional<G> og = cgs.get(indices.get(6).intValueExact());
+                    if (!og.isPresent()) continue;
+                    if (!outputSize.isPresent() &&
+                            cas.knownSize().isPresent() &&
+                            cbs.knownSize().isPresent() &&
+                            ccs.knownSize().isPresent() &&
+                            cds.knownSize().isPresent() &&
+                            ces.knownSize().isPresent() &&
+                            cfs.knownSize().isPresent() &&
+                            cgs.knownSize().isPresent()
+                    ) {
+                        outputSize = Optional.of(
+                                BigInteger.valueOf(cas.knownSize().get())
+                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                .multiply(BigInteger.valueOf(ces.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cfs.knownSize().get()))
+                                .multiply(BigInteger.valueOf(cgs.knownSize().get()))
+                        );
+                    }
+                    index = index.add(BigInteger.ONE);
+                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
+                        reachedEnd = true;
+                    }
+                    return new Septuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get(), og.get());
+                }
+            }
         };
-        Predicate<Optional<Septuple<A, B, C, D, E, F, G>>> lastSeptuple = o -> {
-            if (!o.isPresent()) return false;
-            Septuple<A, B, C, D, E, F, G> p = o.get();
-            Optional<Boolean> lastA = aii.isLast(p.a);
-            Optional<Boolean> lastB = bii.isLast(p.b);
-            Optional<Boolean> lastC = cii.isLast(p.c);
-            Optional<Boolean> lastD = dii.isLast(p.d);
-            Optional<Boolean> lastE = eii.isLast(p.e);
-            Optional<Boolean> lastF = fii.isLast(p.f);
-            Optional<Boolean> lastG = gii.isLast(p.g);
-            return lastA.isPresent() &&
-                    lastB.isPresent() &&
-                    lastC.isPresent() &&
-                    lastD.isPresent() &&
-                    lastE.isPresent() &&
-                    lastF.isPresent() &&
-                    lastG.isPresent() &&
-                    lastA.get() &&
-                    lastB.get() &&
-                    lastC.get() &&
-                    lastD.get() &&
-                    lastE.get() &&
-                    lastF.get() &&
-                    lastG.get();
-        };
-        return map(
-                Optional::get,
-                filter(
-                        Optional<Septuple<A, B, C, D, E, F, G>>::isPresent,
-                        stopAt(
-                                lastSeptuple,
-                                (Iterable<Optional<Septuple<A, B, C, D, E, F, G>>>)
-                                        IterableUtils.map(bi -> f.apply(bi), naturalBigIntegers())
-                        )
-                )
-        );
     }
 
     @Override
