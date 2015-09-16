@@ -1896,8 +1896,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
-            private final @NotNull
-            CachedIterator<A> as = new CachedIterator<>(xs);
+            private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
             private final @NotNull Map<A, CachedIterator<B>> aToBs = new HashMap<>();
             private final @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
 
@@ -1949,39 +1948,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         if (isEmpty(as) || isEmpty(bs)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<Pair<A, B>>() {
+        return () -> new EventuallyKnownSizeIterator<Pair<A,B>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Pair<A, B> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Pair<A, B> advance() {
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
                     NullableOptional<A> oa = cas.get(indices.a.intValueExact());
                     if (!oa.isPresent()) continue;
                     NullableOptional<B> ob = cbs.get(indices.b.intValueExact());
                     if (!ob.isPresent()) continue;
-                    if (!outputSize.isPresent() && cas.knownSize().isPresent() && cbs.knownSize().isPresent()) {
-                        outputSize = Optional.of(
+                    if (!outputSizeKnown() && cas.knownSize().isPresent() && cbs.knownSize().isPresent()) {
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
                                         .multiply(BigInteger.valueOf(cbs.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Pair<>(oa.get(), ob.get());
                 }
@@ -2015,35 +1999,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<T> xs
     ) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<Pair<T, T>>() {
+        return () -> new EventuallyKnownSizeIterator<Pair<T,T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Pair<T, T> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Pair<T, T> advance() {
                 while (true) {
                     Pair<BigInteger, BigInteger> indices = unpairingFunction.apply(is.next());
                     NullableOptional<T> oa = cxs.get(indices.a.intValueExact());
                     if (!oa.isPresent()) continue;
                     NullableOptional<T> ob = cxs.get(indices.b.intValueExact());
                     if (!ob.isPresent()) continue;
-                    if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
-                        outputSize = Optional.of(BigInteger.valueOf(cxs.knownSize().get()).pow(2));
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
+                    if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                        setOutputSize(BigInteger.valueOf(cxs.knownSize().get()).pow(2));
                     }
                     return new Pair<>(oa.get(), ob.get());
                 }
@@ -2171,20 +2140,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all permutations of {@code start}
      */
     private static @NotNull Iterable<List<Integer>> finitePermutationIndices(@NotNull List<Integer> start) {
-        return () -> new NoRemoveIterator<List<Integer>>() {
-            private final @NotNull BigInteger outputSize = MathUtils.permutationCount(start);
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private @NotNull List<Integer> list = toList(start);
-            private @NotNull BigInteger index = BigInteger.ZERO;
-
-            @Override
-            public boolean hasNext() {
-                return lt(index, outputSize);
+            private boolean first = true;
+            {
+                setOutputSize(MathUtils.permutationCount(start));
             }
 
             @Override
-            public @NotNull List<Integer> next() {
-                if (index.equals(BigInteger.ZERO)) {
-                    index = BigInteger.ONE;
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
                     return list;
                 }
                 list = toList(list);
@@ -2200,7 +2166,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     i++;
                     j--;
                 }
-                index = index.add(BigInteger.ONE);
                 return list;
             }
         };
@@ -2250,34 +2215,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs) {
         if (!lengthAtLeast(2, xs)) return Collections.singletonList(new NoRemoveIterable<>(xs));
-        return () -> new NoRemoveIterator<Iterable<T>>() {
+        return () -> new EventuallyKnownSizeIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private Iterator<List<Integer>> prefixIndices;
             private int prefixLength = 0;
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Iterable<T> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Iterable<T> advance() {
                 if (prefixIndices == null || !prefixIndices.hasNext()) {
                     updatePrefixIndices();
                 }
                 Iterable<T> permutation = concat(cxs.get(prefixIndices.next()).get(), drop(prefixLength, xs));
-                if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
-                    outputSize = Optional.of(MathUtils.factorial(cxs.knownSize().get()));
-                }
-                index = index.add(BigInteger.ONE);
-                if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                    reachedEnd = true;
+                if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                    setOutputSize(MathUtils.factorial(cxs.knownSize().get()));
                 }
                 return permutation;
             }
@@ -2300,12 +2250,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns an {@code Iterable} containing all {@code List}s of a given length with elements from a given
-     * {@code Iterable}. The {@code List}s are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. The {@code Iterable} must be finite. Does not support removal.
+     * {@code List}. The {@code List}s are ordered lexicographically, matching the order given by the original
+     * {@code List}. Does not support removal.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
-     *  <li>{@code xs} must be finite.</li>
+     *  <li>{@code xs} cannot be null.</li>
      *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
      *  entirely of one empty element.</li>
      * </ul>
@@ -2313,34 +2263,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Length is |{@code xs}|<sup>{@code size}</sup>
      *
      * @param size the length of the result lists
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all lists of a given length created from {@code xs}
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s of a given length created from {@code xs}
      */
     @Override
-    public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull List<T> xs) {
         if (size < 0) {
             throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
         }
-        List<T> xsList = toList(xs);
-        int xsSize = xsList.size();
-        BigInteger outputSize = BigInteger.valueOf(xsSize).pow(size);
-        return () -> new NoRemoveIterator<List<T>>() {
-            private @NotNull BigInteger index = BigInteger.ZERO;
+        List<T> copy = toList(xs);
+        int xsSize = copy.size();
+        return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private @NotNull List<Integer> indices = toList(replicate(size, 0));
-            private boolean reachedEnd = outputSize.equals(BigInteger.ZERO);
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
+            private boolean first = true;
+            {
+                setOutputSize(BigInteger.valueOf(xsSize).pow(size));
             }
 
             @Override
-            public List<T> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                if (!index.equals(BigInteger.ZERO)) {
+            public List<T> advance() {
+                if (first) {
+                    first = false;
+                } else {
                     for (int i = size - 1; i >= 0; i--) {
                         int j = indices.get(i);
                         if (j == xsSize - 1) {
@@ -2351,9 +2296,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         }
                     }
                 }
-                List<T> list = toList(map(xsList::get, indices));
-                index = index.add(BigInteger.ONE);
-                reachedEnd = index.equals(outputSize);
+                List<T> list = toList(map(copy::get, indices));
                 return list;
             }
         };
@@ -2366,7 +2309,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
      *  <li>The result is the Cartesian product of two {@code Iterable}s.</li>
      * </ul>
      *
@@ -2379,7 +2322,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all ordered {@code Pair}s of elements from {@code as} and {@code bs}
      */
     @Override
-    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull List<B> bs) {
         if (isEmpty(bs)) return Collections.emptyList();
         return concatMap(p -> zip(repeat(p.a), p.b), zip(as, repeat(bs)));
     }
@@ -2391,8 +2334,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
-     *  <li>{@code cs} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
      *  <li>The result is the Cartesian product of three {@code Iterable}s.</li>
      * </ul>
      *
@@ -2409,10 +2352,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesLex(
             @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs
+            @NotNull List<B> bs,
+            @NotNull List<C> cs
     ) {
-        return map(p -> new Triple<>(p.a, p.b.a, p.b.b), pairsLex(as, pairsLex(bs, cs)));
+        return map(p -> new Triple<>(p.a.a, p.a.b, p.b), pairsLex(pairsLex(as, bs), cs));
     }
 
     /**
@@ -2422,9 +2365,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
-     *  <li>{@code cs} must be finite.</li>
-     *  <li>{@code ds} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
      *  <li>The result is the Cartesian product of four {@code Iterable}s.</li>
      * </ul>
      *
@@ -2443,11 +2386,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesLex(
             @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs,
-            @NotNull Iterable<D> ds
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds
     ) {
-        return map(p -> new Quadruple<>(p.a.a, p.a.b, p.b.a, p.b.b), pairsLex(pairsLex(as, bs), pairsLex(cs, ds)));
+        return map(p -> new Quadruple<>(p.a.a, p.a.b, p.a.c, p.b), pairsLex(triplesLex(as, bs, cs), ds));
     }
 
     /**
@@ -2457,10 +2400,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
-     *  <li>{@code cs} must be finite.</li>
-     *  <li>{@code ds} must be finite.</li>
-     *  <li>{@code es} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
      *  <li>The result is the Cartesian product of five {@code Iterable}s.</li>
      * </ul>
      *
@@ -2482,14 +2425,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesLex(
             @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs,
-            @NotNull Iterable<D> ds,
-            @NotNull Iterable<E> es
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es
     ) {
         return map(
-                p -> new Quintuple<>(p.a.a, p.a.b, p.b.a, p.b.b, p.b.c),
-                pairsLex(pairsLex(as, bs), triplesLex(cs, ds, es))
+                p -> new Quintuple<>(p.a.a, p.a.b, p.a.c, p.a.d, p.b),
+                pairsLex(quadruplesLex(as, bs, cs, ds), es)
         );
     }
 
@@ -2500,11 +2443,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
-     *  <li>{@code cs} must be finite.</li>
-     *  <li>{@code ds} must be finite.</li>
-     *  <li>{@code es} must be finite.</li>
-     *  <li>{@code fs} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
      *  <li>The result is the Cartesian product of six {@code Iterable}s.</li>
      * </ul>
      *
@@ -2528,15 +2471,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesLex(
             @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs,
-            @NotNull Iterable<D> ds,
-            @NotNull Iterable<E> es,
-            @NotNull Iterable<F> fs
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es,
+            @NotNull List<F> fs
     ) {
         return map(
-                p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c),
-                pairsLex(triplesLex(as, bs, cs), triplesLex(ds, es, fs))
+                p -> new Sextuple<>(p.a.a, p.a.b, p.a.c, p.a.d, p.a.e, p.b),
+                pairsLex(quintuplesLex(as, bs, cs, ds, es), fs)
         );
     }
 
@@ -2547,12 +2490,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} must be finite.</li>
-     *  <li>{@code cs} must be finite.</li>
-     *  <li>{@code ds} must be finite.</li>
-     *  <li>{@code es} must be finite.</li>
-     *  <li>{@code fs} must be finite.</li>
-     *  <li>{@code gs} must be finite.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
+     *  <li>{@code gs} cannot be null.</li>
      *  <li>The result is the Cartesian product of seven {@code Iterable}s.</li>
      * </ul>
      *
@@ -2578,16 +2521,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesLex(
             @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs,
-            @NotNull Iterable<D> ds,
-            @NotNull Iterable<E> es,
-            @NotNull Iterable<F> fs,
-            @NotNull Iterable<G> gs
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es,
+            @NotNull List<F> fs,
+            @NotNull List<G> gs
     ) {
         return map(
-                p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.b.a, p.b.b, p.b.c, p.b.d),
-                pairsLex(triplesLex(as, bs, cs), quadruplesLex(ds, es, fs, gs))
+                p -> new Septuple<>(p.a.a, p.a.b, p.a.c, p.a.d, p.a.e, p.a.f, p.b),
+                pairsLex(sextuplesLex(as, bs, cs, ds, es, fs), gs)
         );
     }
 
@@ -2611,17 +2554,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<String> stringsLex(int size, @NotNull String s) {
-        return map(IterableUtils::charsToString, listsLex(size, fromString(s)));
+        return map(IterableUtils::charsToString, listsLex(size, toList(fromString(s))));
     }
 
     /**
-     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code Iterable}. The
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code List}. The
      * {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer {@code List}s, and
      * {@code List}s of the same length are ordered lexicographically, matching the order given by the original
-     * {@code Iterable}. Does not support removal.
+     * {@code List}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code xs} must be finite.</li>
+     *  <li>{@code xs} cannot be null.</li>
      *  <li>The result either consists of a single empty {@code List}, or is infinite. It is in shortlex order
      *  (according to some ordering of its elements) and contains every {@code List} of elements drawn from some
      *  sequence.</li>
@@ -2629,12 +2572,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * Result length is 1 if {@code xs} is empty, infinite otherwise
      *
-     * @param xs the {@code Iterable} from which elements are selected
-     * @param <T> the type of the given {@code Iterable}'s elements
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
      * @return all {@code List}s created from {@code xs}
      */
     @Override
-    public @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> listsShortlex(@NotNull List<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return concatMap(i -> listsLex(i.intValueExact(), xs), naturalBigIntegers());
     }
@@ -2665,9 +2608,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
-     * {@code Iterable}. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
+     * {@code List}. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
      * {@code List}s, and {@code List}s of the same length are ordered lexicographically, matching the order given by
-     * the original {@code Iterable}. Does not support removal.
+     * the original {@code List}. Does not support removal.
      *
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
@@ -2681,12 +2624,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code minSize} is 0, and infinite otherwise
      *
      * @param minSize the minimum length of the result {@code List}s
-     * @param xs the {@code Iterable} from which elements are selected
+     * @param xs the {@code List} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
      * @return all {@code List}s created from {@code xs}
      */
     @Override
-    public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
         if (minSize < 0) {
             throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
         }
@@ -2751,23 +2694,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         if (size == 0) return Collections.singletonList(Collections.emptyList());
         if (isEmpty(xs)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<List<T>>() {
+        return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull List<T> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull List<T> advance() {
                 outer:
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(size, is.next());
@@ -2777,12 +2709,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         if (!ox.isPresent()) continue outer;
                         list.add(ox.get());
                     }
-                    if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
-                        outputSize = Optional.of(BigInteger.valueOf(cxs.knownSize().get()).pow(size));
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
+                    if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                        setOutputSize(BigInteger.valueOf(cxs.knownSize().get()).pow(size));
                     }
                     return list;
                 }
@@ -2868,25 +2796,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<Triple<A, B, C>>() {
+        return () -> new EventuallyKnownSizeIterator<Triple<A,B,C>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Triple<A, B, C> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Triple<A, B, C> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(3, is.next());
                     NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
@@ -2895,20 +2812,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     if (!ob.isPresent()) continue;
                     NullableOptional<C> oc = ccs.get(indices.get(2).intValueExact());
                     if (!oc.isPresent()) continue;
-                    if (!outputSize.isPresent() &&
+                    if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
                             cbs.knownSize().isPresent() &&
                             ccs.knownSize().isPresent()
                     ) {
-                        outputSize = Optional.of(
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
-                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ccs.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Triple<>(oa.get(), ob.get(), oc.get());
                 }
@@ -2968,26 +2881,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<D> ds
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<Quadruple<A, B, C, D>>() {
+        return () -> new EventuallyKnownSizeIterator<Quadruple<A,B,C,D>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
             private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Quadruple<A, B, C, D> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Quadruple<A, B, C, D> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(4, is.next());
                     NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
@@ -2998,22 +2900,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     if (!oc.isPresent()) continue;
                     NullableOptional<D> od = cds.get(indices.get(3).intValueExact());
                     if (!od.isPresent()) continue;
-                    if (!outputSize.isPresent() &&
+                    if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
                             cbs.knownSize().isPresent() &&
                             ccs.knownSize().isPresent() &&
                             cds.knownSize().isPresent()
                     ) {
-                        outputSize = Optional.of(
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
-                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cds.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Quadruple<>(oa.get(), ob.get(), oc.get(), od.get());
                 }
@@ -3078,27 +2976,16 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<E> es
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return Collections.emptyList();
-        return () -> new NoRemoveIterator<Quintuple<A, B, C, D, E>>() {
+        return () -> new EventuallyKnownSizeIterator<Quintuple<A,B,C,D,E>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
             private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
             private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Quintuple<A, B, C, D, E> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Quintuple<A, B, C, D, E> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(5, is.next());
                     NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
@@ -3111,24 +2998,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     if (!od.isPresent()) continue;
                     NullableOptional<E> oe = ces.get(indices.get(4).intValueExact());
                     if (!oe.isPresent()) continue;
-                    if (!outputSize.isPresent() &&
+                    if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
                             cbs.knownSize().isPresent() &&
                             ccs.knownSize().isPresent() &&
                             cds.knownSize().isPresent() &&
                             ces.knownSize().isPresent()
                     ) {
-                        outputSize = Optional.of(
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
-                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ces.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ces.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Quintuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get());
                 }
@@ -3201,7 +3084,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs))
                 return Collections.emptyList();
-        return () -> new NoRemoveIterator<Sextuple<A, B, C, D, E, F>>() {
+        return () -> new EventuallyKnownSizeIterator<Sextuple<A,B,C,D,E,F>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -3209,20 +3092,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
             private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Sextuple<A, B, C, D, E, F> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Sextuple<A, B, C, D, E, F> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(6, is.next());
                     NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
@@ -3237,7 +3109,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     if (!oe.isPresent()) continue;
                     NullableOptional<F> of = cfs.get(indices.get(5).intValueExact());
                     if (!of.isPresent()) continue;
-                    if (!outputSize.isPresent() &&
+                    if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
                             cbs.knownSize().isPresent() &&
                             ccs.knownSize().isPresent() &&
@@ -3245,18 +3117,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                             ces.knownSize().isPresent() &&
                             cfs.knownSize().isPresent()
                     ) {
-                        outputSize = Optional.of(
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
-                                .multiply(BigInteger.valueOf(cbs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ccs.knownSize().get()))
-                                .multiply(BigInteger.valueOf(cds.knownSize().get()))
-                                .multiply(BigInteger.valueOf(ces.knownSize().get()))
-                                .multiply(BigInteger.valueOf(cfs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cbs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ccs.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cds.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(ces.knownSize().get()))
+                                        .multiply(BigInteger.valueOf(cfs.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Sextuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get());
                 }
@@ -3333,7 +3201,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs) || isEmpty(gs))
                 return Collections.emptyList();
-        return () -> new NoRemoveIterator<Septuple<A, B, C, D, E, F, G>>() {
+        return () -> new EventuallyKnownSizeIterator<Septuple<A,B,C,D,E,F,G>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -3342,20 +3210,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
             private final @NotNull CachedIterator<G> cgs = new CachedIterator<>(gs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
 
             @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public @NotNull Septuple<A, B, C, D, E, F, G> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
+            public @NotNull Septuple<A, B, C, D, E, F, G> advance() {
                 while (true) {
                     List<BigInteger> indices = IntegerUtils.demux(7, is.next());
                     NullableOptional<A> oa = cas.get(indices.get(0).intValueExact());
@@ -3372,7 +3229,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     if (!of.isPresent()) continue;
                     NullableOptional<G> og = cgs.get(indices.get(6).intValueExact());
                     if (!og.isPresent()) continue;
-                    if (!outputSize.isPresent() &&
+                    if (!outputSizeKnown() &&
                             cas.knownSize().isPresent() &&
                             cbs.knownSize().isPresent() &&
                             ccs.knownSize().isPresent() &&
@@ -3381,7 +3238,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                             cfs.knownSize().isPresent() &&
                             cgs.knownSize().isPresent()
                     ) {
-                        outputSize = Optional.of(
+                        setOutputSize(
                                 BigInteger.valueOf(cas.knownSize().get())
                                 .multiply(BigInteger.valueOf(cbs.knownSize().get()))
                                 .multiply(BigInteger.valueOf(ccs.knownSize().get()))
@@ -3390,10 +3247,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                 .multiply(BigInteger.valueOf(cfs.knownSize().get()))
                                 .multiply(BigInteger.valueOf(cgs.knownSize().get()))
                         );
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
                     }
                     return new Septuple<>(oa.get(), ob.get(), oc.get(), od.get(), oe.get(), of.get(), og.get());
                 }
@@ -3531,7 +3384,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return null;
     }
 
-    public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
         int n = length(xs);
         return filter(IterableUtils::unique, takeWhile(ys -> ys.size() <= n, listsShortlex(xs)));
     }
@@ -3846,7 +3699,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
         if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
         if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
-        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), xss.get(1)));
+        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), toList(xss.get(1))));
         List<Iterable<T>> leftList = new ArrayList<>();
         List<Iterable<T>> rightList = new ArrayList<>();
         for (int i = 0; i < xss.size() / 2; i++) {
@@ -3857,7 +3710,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         Iterable<List<T>> leftLists = controlledListsLex(leftList);
         Iterable<List<T>> rightLists = controlledListsLex(rightList);
-        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, rightLists));
+        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, toList(rightLists)));
     }
 
     @Override
