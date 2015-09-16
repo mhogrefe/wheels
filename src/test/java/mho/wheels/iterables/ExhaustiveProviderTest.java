@@ -3830,7 +3830,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testQuintuples() {
+    public void testQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
         aeqit(
                 P.quintuples(
                         Arrays.asList(1, 2, 3),
@@ -4001,8 +4001,36 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void testQuintuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.quintuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testQuintuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.quintuples(input), output);
+    }
+
     @Test
-    public void testSextuples() {
+    public void testQuintuples_Iterable() {
+        testQuintuples_Iterable_helper("[]", "[]");
+        testQuintuples_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
+                " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
+                " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
+                " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
+        testQuintuples_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
+                " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
+                " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
+                " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
+        testQuintuples_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0, 0, 0, 0), (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), (0, 0, 0, 1, 1), (0, 0, 1, 0, 0)," +
+                " (0, 0, 1, 0, 1), (0, 0, 1, 1, 0), (0, 0, 1, 1, 1), (0, 1, 0, 0, 0), (0, 1, 0, 0, 1)," +
+                " (0, 1, 0, 1, 0), (0, 1, 0, 1, 1), (0, 1, 1, 0, 0), (0, 1, 1, 0, 1), (0, 1, 1, 1, 0)," +
+                " (0, 1, 1, 1, 1), (1, 0, 0, 0, 0), (1, 0, 0, 0, 1), (1, 0, 0, 1, 0), (1, 0, 0, 1, 1), ...]");
+    }
+
+    @Test
+    public void testSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         aeqit(
                 P.sextuples(
                         Arrays.asList(1, 2, 3),
@@ -4321,8 +4349,39 @@ public strictfp class ExhaustiveProviderTest {
         );
     }
 
+    private static void testSextuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.sextuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testSextuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.sextuples(input), output);
+    }
+
     @Test
-    public void testSeptuples() {
+    public void testSextuples_Iterable() {
+        testSextuples_Iterable_helper("[]", "[]");
+        testSextuples_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
+                " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
+                " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
+                " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
+                " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
+        testSextuples_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
+                " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
+                " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
+                " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
+                " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
+        testSextuples_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 1, 1)," +
+                " (0, 0, 0, 1, 0, 0), (0, 0, 0, 1, 0, 1), (0, 0, 0, 1, 1, 0), (0, 0, 0, 1, 1, 1)," +
+                " (0, 0, 1, 0, 0, 0), (0, 0, 1, 0, 0, 1), (0, 0, 1, 0, 1, 0), (0, 0, 1, 0, 1, 1)," +
+                " (0, 0, 1, 1, 0, 0), (0, 0, 1, 1, 0, 1), (0, 0, 1, 1, 1, 0), (0, 0, 1, 1, 1, 1)," +
+                " (0, 1, 0, 0, 0, 0), (0, 1, 0, 0, 0, 1), (0, 1, 0, 0, 1, 0), (0, 1, 0, 0, 1, 1), ...]");
+    }
+
+    @Test
+    public void testSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
         aeqit(
@@ -5040,6 +5099,72 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, -1, a, a, Infinity, [0], 0.0), (1, -1, b, , NaN, [], 0), (1, -1, b, , NaN, [], 0.0)," +
                 " (1, -1, b, , NaN, [0], 0), (1, -1, b, , NaN, [0], 0.0)]"
         );
+    }
+
+    private static void testSeptuples_Iterable_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.septuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void testSeptuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.septuples(input), output);
+    }
+
+    @Test
+    public void testSeptuples_Iterable() {
+        testSeptuples_Iterable_helper("[]", "[]");
+        testSeptuples_Iterable_helper("[1, 2, 3, 4]",
+                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
+                " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
+                " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
+                " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
+                " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
+        testSeptuples_Iterable_helper("[1, 2, null, 4]",
+                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
+                " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
+                " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
+                " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
+                " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
+        testSeptuples_Iterable_helper(P.naturalIntegers(),
+                "[(0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 0, 1, 1)," +
+                " (0, 0, 0, 0, 1, 0, 0), (0, 0, 0, 0, 1, 0, 1), (0, 0, 0, 0, 1, 1, 0), (0, 0, 0, 0, 1, 1, 1)," +
+                " (0, 0, 0, 1, 0, 0, 0), (0, 0, 0, 1, 0, 0, 1), (0, 0, 0, 1, 0, 1, 0), (0, 0, 0, 1, 0, 1, 1)," +
+                " (0, 0, 0, 1, 1, 0, 0), (0, 0, 0, 1, 1, 0, 1), (0, 0, 0, 1, 1, 1, 0), (0, 0, 0, 1, 1, 1, 1)," +
+                " (0, 0, 1, 0, 0, 0, 0), (0, 0, 1, 0, 0, 0, 1), (0, 0, 1, 0, 0, 1, 0), (0, 0, 1, 0, 0, 1, 1), ...]");
+    }
+
+    private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.strings(size, input), output);
+    }
+
+    @Test
+    public void testStrings_int_String() {
+        strings_int_String_helper(0, "abc", "[]");
+        aeq(length(P.strings(0, "abc")), 1);
+        strings_int_String_helper(1, "abc", "[a, b, c]");
+        strings_int_String_helper(2, "abc", "[aa, ab, ba, bb, ac, bc, ca, cb, cc]");
+        strings_int_String_helper(3, "abc",
+                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, abc, bac, bbc, aca, acb, bca, bcb, acc, bcc, caa," +
+                " cab, cba, cbb, cac, cbc, cca, ccb, ccc]");
+        strings_int_String_helper(0, "a", "[]");
+        strings_int_String_helper(1, "a", "[a]");
+        strings_int_String_helper(2, "a", "[aa]");
+        strings_int_String_helper(3, "a", "[aaa]");
+        strings_int_String_helper(0, "", "[]");
+        aeq(length(P.strings(0, "")), 1);
+        strings_int_String_helper(1, "", "[]");
+        aeq(length(P.strings(1, "")), 0);
+        strings_int_String_helper(2, "", "[]");
+        aeq(length(P.strings(2, "")), 0);
+        strings_int_String_helper(3, "", "[]");
+        aeq(length(P.strings(3, "")), 0);
+        try {
+            P.strings(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.strings(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
