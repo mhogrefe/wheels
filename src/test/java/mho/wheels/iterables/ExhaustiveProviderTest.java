@@ -2425,75 +2425,108 @@ public strictfp class ExhaustiveProviderTest {
         pairsLex_helper(Collections.emptyList(), Collections.emptyList(), "[]");
     }
 
-//    @Test
-//    public void testTriplesLex() {
-//        aeqit(P.triplesLex(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
-//                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-//                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
-//                " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-//        aeqit(P.triplesLex(Arrays.asList(1, null, 3), fromString("abc"), P.booleans()),
-//                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-//                " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
-//                " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
-//                " (3, c, true)]");
-//        aeqit(take(20, P.triplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans())),
-//                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
-//                " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
-//                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
-//                " (3, a, false), (3, a, true)]");
-//        aeqit(P.triplesLex(P.naturalBigIntegers(), fromString("abc"), Collections.emptyList()), "[]");
-//        aeqit(P.triplesLex(Collections.emptyList(), fromString("abc"), P.booleans()), "[]");
-//        aeqit(
-//                P.triplesLex(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
-//                "[]"
-//        );
-//    }
-//
-//    @Test
-//    public void testQuadruplesLex() {
-//        aeqit(P.quadruplesLex(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
-//                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
-//                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
-//                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
-//                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (2, a, false, EQ), (2, a, false, LT)," +
-//                " (2, a, false, GT), (2, a, true, EQ), (2, a, true, LT), (2, a, true, GT), (2, b, false, EQ)," +
-//                " (2, b, false, LT), (2, b, false, GT), (2, b, true, EQ), (2, b, true, LT), (2, b, true, GT)," +
-//                " (2, c, false, EQ), (2, c, false, LT), (2, c, false, GT), (2, c, true, EQ), (2, c, true, LT)," +
-//                " (2, c, true, GT), (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ)," +
-//                " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
-//                " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
-//                " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-//        aeqit(P.quadruplesLex(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings()),
-//                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
-//                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
-//                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
-//                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (null, a, false, EQ), (null, a, false, LT)," +
-//                " (null, a, false, GT), (null, a, true, EQ), (null, a, true, LT), (null, a, true, GT)," +
-//                " (null, b, false, EQ), (null, b, false, LT), (null, b, false, GT), (null, b, true, EQ)," +
-//                " (null, b, true, LT), (null, b, true, GT), (null, c, false, EQ), (null, c, false, LT)," +
-//                " (null, c, false, GT), (null, c, true, EQ), (null, c, true, LT), (null, c, true, GT)," +
-//                " (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ), (3, a, true, LT)," +
-//                " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
-//                " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
-//                " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-//        aeqit(take(20, P.quadruplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings())),
-//                "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
-//                " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
-//                " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
-//                " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT)]");
-//        aeqit(P.quadruplesLex(P.naturalBigIntegers(), fromString("abc"), P.booleans(), Collections.emptyList()), "[]");
-//        aeqit(P.quadruplesLex(Collections.emptyList(), fromString("abc"), P.booleans(), P.orderings()), "[]");
-//        aeqit(
-//                P.quadruplesLex(
-//                        Collections.emptyList(),
-//                        Collections.emptyList(),
-//                        Collections.emptyList(),
-//                        Collections.emptyList()
-//                ),
-//                "[]"
-//        );
-//    }
-//
+    private static <A, B, C> void triplesLex_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull String output
+    ) {
+        aeqit(P.triplesLex(as, toList(bs), toList(cs)), output);
+    }
+
+    private static <A, B, C> void triplesLex_helper_limit(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.triplesLex(as, toList(bs), toList(cs)), output);
+    }
+
+    @Test
+    public void testTriplesLex() {
+        triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(),
+                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
+                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
+                " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
+        triplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(),
+                "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
+                " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
+                " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
+                " (3, c, true)]");
+        triplesLex_helper_limit(P.naturalBigIntegers(), fromString("abc"), P.booleans(),
+                "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
+                " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
+                " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
+                " (3, a, false), (3, a, true), ...]");
+        triplesLex_helper(P.naturalBigIntegers(), fromString("abc"), Collections.emptyList(), "[]");
+        triplesLex_helper(Collections.emptyList(), fromString("abc"), P.booleans(), "[]");
+        triplesLex_helper(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), "[]");
+    }
+
+    private static <A, B, C, D> void quadruplesLex_helper(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull String output
+    ) {
+        aeqit(P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+    }
+
+    private static <A, B, C, D> void quadruplesLex_helper_limit(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+    }
+
+    @Test
+    public void testQuadruplesLex() {
+        quadruplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings(),
+                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
+                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
+                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
+                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (2, a, false, EQ), (2, a, false, LT)," +
+                " (2, a, false, GT), (2, a, true, EQ), (2, a, true, LT), (2, a, true, GT), (2, b, false, EQ)," +
+                " (2, b, false, LT), (2, b, false, GT), (2, b, true, EQ), (2, b, true, LT), (2, b, true, GT)," +
+                " (2, c, false, EQ), (2, c, false, LT), (2, c, false, GT), (2, c, true, EQ), (2, c, true, LT)," +
+                " (2, c, true, GT), (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ)," +
+                " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
+                " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
+                " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
+        quadruplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings(),
+                "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
+                " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
+                " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
+                " (1, c, true, EQ), (1, c, true, LT), (1, c, true, GT), (null, a, false, EQ), (null, a, false, LT)," +
+                " (null, a, false, GT), (null, a, true, EQ), (null, a, true, LT), (null, a, true, GT)," +
+                " (null, b, false, EQ), (null, b, false, LT), (null, b, false, GT), (null, b, true, EQ)," +
+                " (null, b, true, LT), (null, b, true, GT), (null, c, false, EQ), (null, c, false, LT)," +
+                " (null, c, false, GT), (null, c, true, EQ), (null, c, true, LT), (null, c, true, GT)," +
+                " (3, a, false, EQ), (3, a, false, LT), (3, a, false, GT), (3, a, true, EQ), (3, a, true, LT)," +
+                " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
+                " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
+                " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
+        quadruplesLex_helper_limit(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings(),
+                "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
+                " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
+                " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
+                " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT), ...]");
+        quadruplesLex_helper(P.naturalBigIntegers(), fromString("abc"), P.booleans(), Collections.emptyList(), "[]");
+        quadruplesLex_helper(Collections.emptyList(), fromString("abc"), P.booleans(), P.orderings(), "[]");
+        quadruplesLex_helper(
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                Collections.emptyList(),
+                "[]"
+        );
+    }
+
 //    @Test
 //    public void testQuintuplesLex() {
 //        aeqit(
