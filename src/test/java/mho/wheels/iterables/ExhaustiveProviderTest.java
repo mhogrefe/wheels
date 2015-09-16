@@ -5198,6 +5198,26 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void strings_String_helper(int size, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.strings(size), output);
+    }
+
+    @Test
+    public void testStrings_String() {
+        strings_String_helper(0, "[]");
+        aeq(length(P.strings(0)), 1);
+        strings_String_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
+        strings_String_helper(2,
+                "[aa, ab, ba, bb, ac, ad, bc, bd, ca, cb, da, db, cc, cd, dc, dd, ae, af, be, bf, ...]");
+        strings_String_helper(3,
+                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, aad, abc, abd, bac, bad, bbc, bbd, aca, acb, ada," +
+                " adb, ...]");
+        try {
+            P.strings(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
