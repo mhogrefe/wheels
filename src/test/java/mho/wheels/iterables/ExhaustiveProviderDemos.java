@@ -1187,4 +1187,23 @@ public class ExhaustiveProviderDemos {
             System.out.println("septuples(" + its(xs) + ") = " + its(EP.septuples(xs)));
         }
     }
+
+    private static void demoStrings_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("strings(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.strings(p.b, p.a))));
+        }
+    }
+
+    private static void demoStrings_String() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("strings(" + i + ") = " + its(map(Testing::nicePrint, EP.strings(i))));
+        }
+    }
 }
