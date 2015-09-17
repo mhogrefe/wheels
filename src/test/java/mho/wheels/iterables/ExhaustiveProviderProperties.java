@@ -168,6 +168,13 @@ public class ExhaustiveProviderProperties {
             propertiesStringsShortlex();
             propertiesListsShortlexAtLeast();
             propertiesStringsShortlexAtLeast();
+            propertiesLists_int_Iterable();
+            propertiesPairs_Iterable_Iterable();
+            propertiesPairs_Iterable();
+            compareImplementationsPairs_Iterable();
+            propertiesTriples_Iterable_Iterable_Iterable();
+            propertiesTriples_Iterable();
+            compareImplementationsTriples_Iterable();
         }
         System.out.println("Done");
     }
@@ -1413,17 +1420,6 @@ public class ExhaustiveProviderProperties {
                 assertTrue(p, elem(p2.b, p.b));
             }
         }
-
-        if (P instanceof ExhaustiveProvider) {
-            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
-                    P.naturalIntegers(),
-                    EP.pairsLogarithmicOrder(P.naturalIntegers(), P.naturalIntegers())
-            );
-            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
-                assertTrue(p, p.b.a < p.a / 2 + 1);
-                assertTrue(p, p.b.b < IntegerUtils.ceilingLog2(p.a + 2));
-            }
-        }
     }
 
     private static @NotNull List<Pair<Integer, Integer>> pairsLogarithmicOrder_Iterable_simplest(
@@ -1532,25 +1528,6 @@ public class ExhaustiveProviderProperties {
             for (Pair<Integer, Integer> p2 : pairList) {
                 assertTrue(p, elem(p2.a, p.a));
                 assertTrue(p, elem(p2.b, p.b));
-            }
-        }
-
-        if (P instanceof ExhaustiveProvider) {
-            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
-                    P.naturalIntegers(),
-                    EP.pairsSquareRootOrder(P.naturalIntegers(), P.naturalIntegers())
-            );
-            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
-                assertTrue(
-                        p,
-                        p.b.a < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a).pow(2))
-                                .intValueExact() * 2 + 1
-                );
-                assertTrue(
-                        p,
-                        p.b.b < MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(p.a))
-                                .intValueExact() * 2 + 1
-                );
             }
         }
     }
@@ -1867,7 +1844,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesPairsLex() {
-        initialize("pairsLex(Iterable<A>, Iterable<B>)");
+        initialize("pairsLex(Iterable<A>, List<B>)");
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -1928,7 +1905,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesTriplesLex() {
-        initialize("triplesLex(Iterable<A>, Iterable<B>, Iterable<C>)");
+        initialize("triplesLex(Iterable<A>, List<B>, List<C>)");
         Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -1998,7 +1975,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesQuadruplesLex() {
-        initialize("quadruplesLex(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>)");
+        initialize("quadruplesLex(Iterable<A>, List<B>, List<C>, List<D>)");
         Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
@@ -2081,7 +2058,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesQuintuplesLex() {
-        initialize("quintuplesLex(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>)");
+        initialize("quintuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>)");
         Iterable<Quintuple<
                 List<Integer>,
                 List<Integer>,
@@ -2222,7 +2199,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesSextuplesLex() {
-        initialize("sexuplesLex(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>, Iterable<F>)");
+        initialize("sexuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>)");
         Iterable<Sextuple<
                 List<Integer>,
                 List<Integer>,
@@ -2389,8 +2366,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesSeptuplesLex() {
-        initialize("septuplesLex(Iterable<A>, Iterable<B>, Iterable<C>, Iterable<D>, Iterable<E>, Iterable<F>," +
-                " Iterable<G>)");
+        initialize("septuplesLex(Iterable<A>, List<B>, List<C>, List<D>, List<E>, List<F>, List<G>)");
         Iterable<Septuple<
                 List<Integer>,
                 List<Integer>,
@@ -2812,5 +2788,314 @@ public class ExhaustiveProviderProperties {
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private static void propertiesLists_int_Iterable() {
+        initialize("lists(int, Iterable<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.lists(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = BigInteger.valueOf(p.a.size()).pow(p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!p.a.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
+                    assertEquals(p, last(listsList), toList(replicate(p.b, last(p.a))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = BigInteger.valueOf(p.a.size()).pow(p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                assertTrue(p, unique(toList(EP.lists(p.b, p.a))));
+            }
+        }
+
+        Iterable<Pair<Iterable<Integer>, Integer>> ps2 = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(LIMIT, ps2)) {
+            Iterable<List<Integer>> lists = EP.lists(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
+            }
+            assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+            assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            assertTrue(p, unique(listsList));
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<List<Integer>> xss = EP.lists(i, Collections.emptyList());
+            testHasNext(xss);
+            assertEquals(i, toList(xss), Collections.emptyList());
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> xss = EP.lists(0, xs);
+            testHasNext(xss);
+            assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.lists(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesPairs_Iterable_Iterable() {
+        initialize("pairs(Iterable<A>, Iterable<B>)");
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairs(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            BigInteger pairsLength = BigInteger.valueOf(p.a.size()).multiply(BigInteger.valueOf(p.b.size()));
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairsList = toList(pairs);
+                if (!p.a.isEmpty() && !p.b.isEmpty()) {
+                    assertEquals(p, head(pairsList), new Pair<>(head(p.a), head(p.b)));
+                    assertEquals(p, last(pairsList), new Pair<>(last(p.a), last(p.b)));
+                }
+                assertEquals(p, pairsList.size(), pairsLength.intValueExact());
+                assertTrue(p, all(i -> elem(i, p.a), map(q -> q.a, pairsList)));
+                assertTrue(p, all(i -> elem(i, p.b), map(q -> q.b, pairsList)));
+            }
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            BigInteger pairsLength = BigInteger.valueOf(p.a.size()).multiply(BigInteger.valueOf(p.b.size()));
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                List<Pair<Integer, Integer>> pairsList = toList(EP.pairs(p.a, p.b));
+                assertTrue(p, unique(pairsList));
+            }
+        }
+
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairs(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            List<Pair<Integer, Integer>> pairsList = toList(take(TINY_LIMIT, pairs));
+            if (!isEmpty(p.a) && !isEmpty(p.b)) {
+                assertEquals(p, head(pairsList), new Pair<>(head(p.a), head(p.b)));
+            }
+            assertTrue(p, all(i -> elem(i, p.a), map(q -> q.a, pairsList)));
+            assertTrue(p, all(i -> elem(i, p.b), map(q -> q.b, pairsList)));
+            assertTrue(p, unique(pairsList));
+        }
+    }
+
+    private static @NotNull List<Pair<Integer, Integer>> pairs_Iterable_simplest(@NotNull List<Integer> xs) {
+        return toList(EP.pairs(xs, xs));
+    }
+
+    private static void propertiesPairs_Iterable() {
+        initialize("pairs(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairs(xs);
+            testNoRemove(TINY_LIMIT, pairs);
+            BigInteger pairsLength = BigInteger.valueOf(xs.size()).pow(2);
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairsList = toList(pairs);
+                assertEquals(xs, pairsList, pairs_Iterable_simplest(xs));
+                if (!xs.isEmpty()) {
+                    assertEquals(xs, head(pairsList), new Pair<>(head(xs), head(xs)));
+                    assertEquals(xs, last(pairsList), new Pair<>(last(xs), last(xs)));
+                }
+                assertEquals(xs, pairsList.size(), pairsLength.intValueExact());
+                assertTrue(xs, all(i -> elem(i, xs), map(p -> p.a, pairsList)));
+                assertTrue(xs, all(i -> elem(i, xs), map(p -> p.b, pairsList)));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            assertTrue(xs, unique(EP.pairs(xs)));
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.pairs(xs);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(xs, unique(take(TINY_LIMIT, pairs)));
+            List<Pair<Integer, Integer>> pairsList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p : pairsList) {
+                assertTrue(xs, elem(p.a, xs));
+                assertTrue(xs, elem(p.b, xs));
+            }
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Pair<Integer, Integer>>> ps3 = zip(
+                    P.naturalIntegers(),
+                    EP.pairs(P.naturalIntegers())
+            );
+            for (Pair<Integer, Pair<Integer, Integer>> p : take(LIMIT, ps3)) {
+                int root = MathUtils.ceilingRoot(IntegerUtils.TWO, BigInteger.valueOf(p.a)).intValueExact() * 2 + 1;
+                assertTrue(p, p.b.a < root);
+                assertTrue(p, p.b.b < root);
+            }
+        }
+    }
+
+    private static void compareImplementationsPairs_Iterable() {
+        Map<String, Function<List<Integer>, List<Pair<Integer, Integer>>>> functions = new LinkedHashMap<>();
+        functions.put("simplest", ExhaustiveProviderProperties::pairs_Iterable_simplest);
+        functions.put("standard", xs -> toList(EP.pairs(xs)));
+        Iterable<List<Integer>> iss = filterInfinite(
+                xs -> xs.size() < TINY_LIMIT,
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        compareImplementations("pairs(Iterable<T>)", take(LIMIT, iss), functions);
+    }
+
+    private static void propertiesTriples_Iterable_Iterable_Iterable() {
+        initialize("pairs(Iterable<A>, Iterable<B>, Iterable<C>)");
+        Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(LIMIT, ts)) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.triples(t.a, t.b, t.c);
+            testNoRemove(TINY_LIMIT, triples);
+            BigInteger triplesLength = BigInteger.valueOf(t.a.size())
+                    .multiply(BigInteger.valueOf(t.b.size()))
+                    .multiply(BigInteger.valueOf(t.c.size()));
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(triples);
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
+                if (!t.a.isEmpty() && !t.b.isEmpty() && !t.c.isEmpty()) {
+                    assertEquals(t, head(triplesList), new Triple<>(head(t.a), head(t.b), head(t.c)));
+                    assertEquals(t, last(triplesList), new Triple<>(last(t.a), last(t.b), last(t.c)));
+                }
+                assertEquals(t, triplesList.size(), triplesLength.intValueExact());
+                assertTrue(t, all(i -> elem(i, t.a), map(u -> u.a, triplesList)));
+                assertTrue(t, all(i -> elem(i, t.b), map(u -> u.b, triplesList)));
+                assertTrue(t, all(i -> elem(i, t.c), map(u -> u.c, triplesList)));
+            }
+        }
+
+        ts = P.triples(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(LIMIT, ts)) {
+            BigInteger triplesLength = BigInteger.valueOf(t.a.size())
+                    .multiply(BigInteger.valueOf(t.b.size()))
+                    .multiply(BigInteger.valueOf(t.c.size()));
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.triples(t.a, t.b, t.c));
+                assertTrue(t, unique(triplesList));
+            }
+        }
+
+        Iterable<Triple<Iterable<Integer>, Iterable<Integer>, Iterable<Integer>>> ts2 = P.triples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<Iterable<Integer>, Iterable<Integer>, Iterable<Integer>> t : take(LIMIT, ts2)) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.triples(t.a, t.b, t.c);
+            testNoRemove(TINY_LIMIT, triples);
+            List<Triple<Integer, Integer, Integer>> triplesList = toList(take(TINY_LIMIT, triples));
+            if (!isEmpty(t.a) && !isEmpty(t.b) && !isEmpty(t.c)) {
+                assertEquals(t, head(triplesList), new Triple<>(head(t.a), head(t.b), head(t.c)));
+            }
+            assertTrue(t, all(i -> elem(i, t.a), map(u -> u.a, triplesList)));
+            assertTrue(t, all(i -> elem(i, t.b), map(u -> u.b, triplesList)));
+            assertTrue(t, all(i -> elem(i, t.c), map(u -> u.c, triplesList)));
+            assertTrue(t, unique(triplesList));
+        }
+    }
+
+    private static @NotNull List<Triple<Integer, Integer, Integer>> triples_Iterable_simplest(
+            @NotNull List<Integer> xs
+    ) {
+        return toList(EP.triples(xs, xs, xs));
+    }
+
+    private static void propertiesTriples_Iterable() {
+        initialize("triples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.triples(xs);
+            testNoRemove(TINY_LIMIT, triples);
+            BigInteger triplesLength = BigInteger.valueOf(xs.size()).pow(3);
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(triples);
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
+                assertEquals(xs, triplesList, triples_Iterable_simplest(xs));
+                if (!xs.isEmpty()) {
+                    assertEquals(xs, head(triplesList), new Triple<>(head(xs), head(xs), head(xs)));
+                    assertEquals(xs, last(triplesList), new Triple<>(last(xs), last(xs), last(xs)));
+                }
+                assertEquals(xs, triplesList.size(), triplesLength.intValueExact());
+                assertTrue(xs, all(i -> elem(i, xs), map(t -> t.a, triplesList)));
+                assertTrue(xs, all(i -> elem(i, xs), map(t -> t.b, triplesList)));
+                assertTrue(xs, all(i -> elem(i, xs), map(t -> t.c, triplesList)));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            assertTrue(xs, unique(EP.triples(xs)));
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.triples(xs);
+            testNoRemove(TINY_LIMIT, triples);
+            assertTrue(xs, unique(take(TINY_LIMIT, triples)));
+            List<Triple<Integer, Integer, Integer>> triplesList = toList(take(TINY_LIMIT, triples));
+            for (Triple<Integer, Integer, Integer> t : triplesList) {
+                assertTrue(xs, elem(t.a, xs));
+                assertTrue(xs, elem(t.b, xs));
+                assertTrue(xs, elem(t.c, xs));
+            }
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Pair<Integer, Triple<Integer, Integer, Integer>>> ts = zip(
+                    P.naturalIntegers(),
+                    EP.triples(P.naturalIntegers())
+            );
+            for (Pair<Integer, Triple<Integer, Integer, Integer>> t : take(LIMIT, ts)) {
+                int root = MathUtils.ceilingRoot(BigInteger.valueOf(3), BigInteger.valueOf(t.a))
+                        .intValueExact() * 2 + 1;
+                assertTrue(t, t.b.a < root);
+                assertTrue(t, t.b.b < root);
+                assertTrue(t, t.b.c < root);
+            }
+        }
+    }
+
+    private static void compareImplementationsTriples_Iterable() {
+        Map<
+                String,
+                Function<List<Integer>, List<Triple<Integer, Integer, Integer>>>
+        > functions = new LinkedHashMap<>();
+        functions.put("simplest", ExhaustiveProviderProperties::triples_Iterable_simplest);
+        functions.put("standard", xs -> toList(EP.triples(xs)));
+        Iterable<List<Integer>> iss = filterInfinite(
+                xs -> xs.size() < TINY_LIMIT,
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        compareImplementations("triples(Iterable<T>)", take(LIMIT, iss), functions);
     }
 }
