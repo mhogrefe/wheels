@@ -1323,7 +1323,7 @@ public abstract strictfp class IterableProvider {
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> strings(int size, @NotNull String s) {
-        return map(IterableUtils::charsToString, lists(size, fromString(s)));
+        return map(IterableUtils::charsToString, lists(size, uniformSample(s)));
     }
 
     /**

@@ -861,4 +861,330 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringsShortlexAtLeast(p.b, p.a))));
         }
     }
+
+    private static void demoLists_int_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("lists(" + p.b + ", " + p.a + ") = " + its(EP.lists(p.b, p.a)));
+        }
+    }
+
+    private static void demoLists_int_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("lists(" + p.b + ", " + its(p.a) + ") = " + its(EP.lists(p.b, p.a)));
+        }
+    }
+
+    private static void demoPairs_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("pairs(" + p.a + ", " + p.b + ") = " + its(EP.pairs(p.a, p.b)));
+        }
+    }
+
+    private static void demoPairs_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Iterable<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("pairs(" + its(p.a) + ", " + its(p.b) + ") = " + its(EP.pairs(p.a, p.b)));
+        }
+    }
+
+    private static void demoPairs_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("pairs(" + xs + ") = " + its(EP.pairs(xs)));
+        }
+    }
+
+    private static void demoPairs_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("pairs(" + its(xs) + ") = " + its(EP.pairs(xs)));
+        }
+    }
+
+    private static void demoTriples_Iterable_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Triple<List<Integer>, List<Integer>, List<Integer>>> ts = P.triples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Triple<List<Integer>, List<Integer>, List<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("triples(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(EP.triples(t.a, t.b, t.c)));
+        }
+    }
+
+    private static void demoTriples_Iterable_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Triple<Iterable<Integer>, Iterable<Integer>, Iterable<Integer>>> ts = P.triples(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<Iterable<Integer>, Iterable<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("triples(" + its(t.a) + ", " + its(t.b) + ", " + its(t.c) + ") = " +
+                    its(EP.triples(t.a, t.b, t.c)));
+        }
+    }
+
+    private static void demoTriples_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("triples(" + xs + ") = " + its(EP.triples(xs)));
+        }
+    }
+
+    private static void demoTriples_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("triples(" + its(xs) + ") = " + its(EP.triples(xs)));
+        }
+    }
+
+    private static void demoQuadruples_Iterable_Iterable_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>>> qs = P.quadruples(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Quadruple<List<Integer>, List<Integer>, List<Integer>, List<Integer>> q : take(SMALL_LIMIT, qs)) {
+            System.out.println("quadruples(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ") = " +
+                    its(EP.quadruples(q.a, q.b, q.c, q.d)));
+        }
+    }
+
+    private static void demoQuadruples_Iterable_Iterable_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Quadruple<Iterable<Integer>, Iterable<Integer>, Iterable<Integer>, Iterable<Integer>>> qs =
+                P.quadruples(
+                        P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+                );
+        for (Quadruple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        > q : take(SMALL_LIMIT, qs)) {
+            System.out.println(
+                    "quadruples(" + its(q.a) + ", " + its(q.b) + ", " + its(q.c) + ", " + its(q.d) + ") = " +
+                    its(EP.quadruples(q.a, q.b, q.c, q.d)));
+        }
+    }
+
+    private static void demoQuadruples_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("quadruples(" + xs + ") = " + its(EP.quadruples(xs)));
+        }
+    }
+
+    private static void demoQuadruples_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("quadruples(" + its(xs) + ") = " + its(EP.quadruples(xs)));
+        }
+    }
+
+    private static void demoQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Quintuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> qs = P.quintuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Quintuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > q : take(SMALL_LIMIT, qs)) {
+            System.out.println("quintuples(" + q.a + ", " + q.b + ", " + q.c + ", " + q.d + ", " + q.e + ") = " +
+                    its(EP.quintuples(q.a, q.b, q.c, q.d, q.e)));
+        }
+    }
+
+    private static void demoQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Quintuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        >> qs =
+                P.quintuples(
+                        P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+                );
+        for (Quintuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        > q : take(SMALL_LIMIT, qs)) {
+            System.out.println(
+                    "quintuples(" + its(q.a) + ", " + its(q.b) + ", " + its(q.c) + ", " + its(q.d) + ", " + its(q.e) +
+                    ") = " + its(EP.quintuples(q.a, q.b, q.c, q.d, q.e)));
+        }
+    }
+
+    private static void demoQuintuples_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("quintuples(" + xs + ") = " + its(EP.quintuples(xs)));
+        }
+    }
+
+    private static void demoQuintuples_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("quintuples(" + its(xs) + ") = " + its(EP.quintuples(xs)));
+        }
+    }
+
+    private static void demoSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Sextuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.sextuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Sextuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println("sextuples(" + s.a + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f +
+                    ") = " + its(EP.sextuples(s.a, s.b, s.c, s.d, s.e, s.f)));
+        }
+    }
+
+    private static void demoSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Sextuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        >> ss =
+                P.sextuples(
+                        P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+                );
+        for (Sextuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println(
+                    "sextuples(" + its(s.a) + ", " + its(s.b) + ", " + its(s.c) + ", " + its(s.d) + ", " + its(s.e) +
+                    ", " + its(s.f) + ") = " + its(EP.sextuples(s.a, s.b, s.c, s.d, s.e, s.f)));
+        }
+    }
+
+    private static void demoSextuples_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("sextuples(" + xs + ") = " + its(EP.sextuples(xs)));
+        }
+    }
+
+    private static void demoSextuples_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("sextuples(" + its(xs) + ") = " + its(EP.sextuples(xs)));
+        }
+    }
+
+    private static void demoSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_finite() {
+        initialize();
+        Iterable<Septuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        >> ss = P.septuples(P.withScale(4).lists(P.withNull(P.integersGeometric())));
+        for (Septuple<
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>,
+                List<Integer>
+        > s : take(SMALL_LIMIT, ss)) {
+            System.out.println("septuples(" + s.a + ", " + s.b + ", " + s.c + ", " + s.d + ", " + s.e + ", " + s.f +
+                    ", " + s.g + ") = " + its(EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g)));
+        }
+    }
+
+    private static void demoSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_infinite() {
+        initialize();
+        Iterable<Septuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        >> ss =
+                P.septuples(
+                        P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+                );
+        for (Septuple<
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>,
+                Iterable<Integer>
+        > s : take(TINY_LIMIT, ss)) {
+            System.out.println(
+                    "septuples(" + its(s.a) + ", " + its(s.b) + ", " + its(s.c) + ", " + its(s.d) + ", " + its(s.e) +
+                    ", " + its(s.f) + ", " + its(s.g) + ") = " + its(EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g)));
+        }
+    }
+
+    private static void demoSeptuples_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("septuples(" + xs + ") = " + its(EP.septuples(xs)));
+        }
+    }
+
+    private static void demoSeptuples_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("septuples(" + its(xs) + ") = " + its(EP.septuples(xs)));
+        }
+    }
 }

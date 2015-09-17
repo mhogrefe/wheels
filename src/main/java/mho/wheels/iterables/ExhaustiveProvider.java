@@ -15,7 +15,6 @@ import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
@@ -1948,7 +1947,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         if (isEmpty(as) || isEmpty(bs)) return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Pair<A,B>>() {
+        return () -> new EventuallyKnownSizeIterator<Pair<A, B>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
@@ -1999,7 +1998,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<T> xs
     ) {
         if (isEmpty(xs)) return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Pair<T,T>>() {
+        return () -> new EventuallyKnownSizeIterator<Pair<T, T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
 
@@ -2296,8 +2295,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         }
                     }
                 }
-                List<T> list = toList(map(copy::get, indices));
-                return list;
+                return toList(map(copy::get, indices));
             }
         };
     }
@@ -2796,7 +2794,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Triple<A,B,C>>() {
+        return () -> new EventuallyKnownSizeIterator<Triple<A, B, C>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -2881,7 +2879,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<D> ds
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Quadruple<A,B,C,D>>() {
+        return () -> new EventuallyKnownSizeIterator<Quadruple<A, B, C, D>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -2976,7 +2974,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<E> es
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Quintuple<A,B,C,D,E>>() {
+        return () -> new EventuallyKnownSizeIterator<Quintuple<A, B, C, D, E>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -3084,7 +3082,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs))
                 return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Sextuple<A,B,C,D,E,F>>() {
+        return () -> new EventuallyKnownSizeIterator<Sextuple<A, B, C, D, E, F>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
@@ -3201,7 +3199,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs) || isEmpty(gs))
                 return Collections.emptyList();
-        return () -> new EventuallyKnownSizeIterator<Septuple<A,B,C,D,E,F,G>>() {
+        return () -> new EventuallyKnownSizeIterator<Septuple<A, B, C, D, E, F, G>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
