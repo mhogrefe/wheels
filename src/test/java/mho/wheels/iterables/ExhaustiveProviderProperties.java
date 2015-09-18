@@ -188,6 +188,8 @@ public class ExhaustiveProviderProperties {
             propertiesSeptuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable();
             propertiesSeptuples_Iterable();
             compareImplementationsSeptuples_Iterable();
+            propertiesStrings_int_String();
+            propertiesStrings_int();
         }
         System.out.println("Done");
     }
@@ -3924,5 +3926,83 @@ public class ExhaustiveProviderProperties {
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         compareImplementations("septuples(Iterable<T>)", take(SMALL_LIMIT, iss), functions);
+    }
+
+    private static void propertiesStrings_int_String() {
+        initialize("strings(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.strings(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = BigInteger.valueOf(p.a.length()).pow(p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!p.a.isEmpty()) {
+                    assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+                    assertEquals(p, last(stringsList), replicate(p.b, last(p.a)));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(s -> s.length() == p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctStrings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = BigInteger.valueOf(p.a.length()).pow(p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.strings(p.b, p.a));
+                assertTrue(p, unique(stringsList));
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<String> ss = EP.strings(i, "");
+            testHasNext(ss);
+            assertEquals(i, toList(ss), Collections.emptyList());
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> ss = EP.strings(0, s);
+            testHasNext(ss);
+            assertEquals(s, toList(ss), Collections.singletonList(""));
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.strings(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStrings_int() {
+        initialize("strings(int)");
+        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            Iterable<String> strings = EP.strings(i);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(i, head(stringsList), charsToString(replicate(i, head(EP.characters()))));
+            assertTrue(i, all(s -> s.length() == i, stringsList));
+            assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(LIMIT, P.withScale(4).negativeIntegersGeometric())) {
+            try {
+                EP.strings(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 }
