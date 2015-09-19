@@ -2945,6 +2945,24 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s of a given length with elements from a given
+     * {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements have the same length.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
         if (size == 0) {
@@ -2954,17 +2972,74 @@ public final strictfp class RandomProvider extends IterableProvider {
         }
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Pair}s of elements from two {@code Iterable}s. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @return ordered {@code Pair}s of elements from {@code as} and {@code bs}
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
         return zip(as, bs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Pair}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(2, xs);
         return zip(xss.get(0), xss.get(1));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Triple}s of elements from three {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @return ordered {@code Triple}s of elements from {@code as}, {@code bs}, and {@code cs}
+     */
     @Override
     public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
@@ -2974,12 +3049,53 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zip3(as, bs, cs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Triple}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(3, xs);
         return zip3(xss.get(0), xss.get(1), xss.get(2));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quadruple}s of elements from four {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @return ordered {@code Quadruple}s of elements from {@code as}, {@code bs}, {@code cs}, and {@code ds}
+     */
     @Override
     public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
@@ -2990,12 +3106,57 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zip4(as, bs, cs, ds);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quadruple}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(4, xs);
         return zip4(xss.get(0), xss.get(1), xss.get(2), xss.get(3));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quintuple}s of elements from five {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @return ordered {@code Quintuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, and
+     * {@code es}
+     */
     @Override
     public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
@@ -3007,12 +3168,60 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zip5(as, bs, cs, ds, es);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quintuple}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(5, xs);
         return zip5(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Sextuple}s of elements from six {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @return ordered {@code Sextuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * and {@code fs}
+     */
     @Override
     public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
@@ -3025,12 +3234,63 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zip6(as, bs, cs, ds, es, fs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Sextuple}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(6, xs);
         return zip6(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5));
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Septuple}s of elements from seven {@code Iterable}s. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code as} cannot be null.</li>
+     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code fs} cannot be null.</li>
+     *  <li>{@code gs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param gs the seventh {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     * @return ordered {@code Septuple}s of elements from {@code as}, {@code bs}, {@code cs}, {@code ds}, {@code es},
+     * {@code fs}, and {@code gs}
+     */
     @Override
     public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
@@ -3044,6 +3304,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return zip7(as, bs, cs, ds, es, fs, gs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Septuple}s of elements from an {@code Iterable}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
         List<Iterable<T>> xss = demux(7, xs);
