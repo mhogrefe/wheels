@@ -2953,6 +2953,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code xs} cannot be null.</li>
+     *  <li>If {@code size} is nonzero, {@code xs} cannot be empty.</li>
      *  <li>The result is infinite, non-removable, and all of its elements have the same length.</li>
      * </ul>
      *
@@ -2968,6 +2969,10 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (size == 0) {
             return repeat(Collections.emptyList());
         } else {
+            if (isEmpty(xs)) {
+                throw new IllegalArgumentException("If size is nonzero, xs cannot be empty. size is " + size +
+                        " and xs is empty.");
+            }
             return transpose(demux(size, xs));
         }
     }

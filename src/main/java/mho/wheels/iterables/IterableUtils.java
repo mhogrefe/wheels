@@ -3658,6 +3658,9 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull <T> List<Iterable<T>> demux(int size, @NotNull Iterable<T> xs) {
+        if (size < 1) {
+            throw new IllegalArgumentException();
+        }
         List<Iterable<T>> demuxed = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(
@@ -3670,6 +3673,9 @@ public final strictfp class IterableUtils {
     }
 
     public static @NotNull List<String> demux(int size, @NotNull String s) {
+        if (size < 1) {
+            throw new IllegalArgumentException();
+        }
         List<String> demuxed = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             Iterable<Boolean> mask = concat(

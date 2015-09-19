@@ -3599,6 +3599,9 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testLists_int_Iterable() {
         lists_int_Iterable_helper(0, "[]", "[[]]");
+        lists_int_Iterable_helper(1, "[]", "[]");
+        lists_int_Iterable_helper(2, "[]", "[]");
+        lists_int_Iterable_helper(3, "[]", "[]");
 
         lists_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
         lists_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
@@ -3659,10 +3662,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
                 " [1, 1, 1], [1, 1, 1], ...]");
 
-        lists_int_Iterable_helper(0, "[]", "[[]]");
-        lists_int_Iterable_helper(1, "[]", "[]");
-        lists_int_Iterable_helper(2, "[]", "[]");
-        lists_int_Iterable_helper(3, "[]", "[]");
         try {
             P.lists(-1, Collections.emptyList());
             fail();
@@ -5169,6 +5168,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStrings_int_String() {
+        strings_int_String_helper(0, "", "[]");
+        aeq(length(P.strings(0, "")), 1);
+        strings_int_String_helper(1, "", "[]");
+        aeq(length(P.strings(1, "")), 0);
+        strings_int_String_helper(2, "", "[]");
+        aeq(length(P.strings(2, "")), 0);
+        strings_int_String_helper(3, "", "[]");
+        aeq(length(P.strings(3, "")), 0);
         strings_int_String_helper(0, "abc", "[]");
         aeq(length(P.strings(0, "abc")), 1);
         strings_int_String_helper(1, "abc", "[a, b, c]");
@@ -5180,14 +5187,6 @@ public strictfp class ExhaustiveProviderTest {
         strings_int_String_helper(1, "a", "[a]");
         strings_int_String_helper(2, "a", "[aa]");
         strings_int_String_helper(3, "a", "[aaa]");
-        strings_int_String_helper(0, "", "[]");
-        aeq(length(P.strings(0, "")), 1);
-        strings_int_String_helper(1, "", "[]");
-        aeq(length(P.strings(1, "")), 0);
-        strings_int_String_helper(2, "", "[]");
-        aeq(length(P.strings(2, "")), 0);
-        strings_int_String_helper(3, "", "[]");
-        aeq(length(P.strings(3, "")), 0);
         try {
             P.strings(-1, "");
             fail();
