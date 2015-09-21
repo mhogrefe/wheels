@@ -5,7 +5,6 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.NullableOptional;
-import mho.wheels.structures.Pair;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
