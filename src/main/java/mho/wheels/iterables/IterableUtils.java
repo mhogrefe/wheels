@@ -3095,6 +3095,130 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<List<T>> chunkInfinite(int size, @NotNull Iterable<T> xs) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        }
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                List<T> list = new ArrayList<>();
+                for (int i = 0; i < size; i++) {
+                    list.add(xsi.next());
+                }
+                return list;
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Pair<T, T>> chunkPairsInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Pair<T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Pair<T, T> next() {
+                return new Pair<>(xsi.next(), xsi.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Triple<T, T, T>> chunkTriplesInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Triple<T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Triple<T, T, T> next() {
+                return new Triple<>(xsi.next(), xsi.next(), xsi.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> chunkQuadruplesInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Quadruple<T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quadruple<T, T, T, T> next() {
+                return new Quadruple<>(xsi.next(), xsi.next(), xsi.next(), xsi.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> chunkQuintuplesInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Quintuple<T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quintuple<T, T, T, T, T> next() {
+                return new Quintuple<>(xsi.next(), xsi.next(), xsi.next(), xsi.next(), xsi.next());
+            }
+        };
+    }
+
+    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> chunkSextuplesInfinite(
+            @NotNull Iterable<A> as,
+            @NotNull Iterable<B> bs,
+            @NotNull Iterable<C> cs,
+            @NotNull Iterable<D> ds,
+            @NotNull Iterable<E> es,
+            @NotNull Iterable<F> fs
+    ) {
+        return zip6Infinite(as, bs, cs, ds, es, fs);
+    }
+
+    public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> chunkSeptuplesInfinite(
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<Septuple<T, T, T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Septuple<T, T, T, T, T, T, T> next() {
+                return new Septuple<>(
+                        xsi.next(),
+                        xsi.next(),
+                        xsi.next(),
+                        xsi.next(),
+                        xsi.next(),
+                        xsi.next(),
+                        xsi.next()
+                );
+            }
+        };
+    }
+
     public static @NotNull Iterable<String> chunk(int size, @NotNull String s) {
         return () -> new NoRemoveIterator<String>() {
             private int i = 0;
@@ -3295,8 +3419,12 @@ public final strictfp class IterableUtils {
         List<T> firstWindow = toList(take(size, xs));
         if (firstWindow.size() < size) return new ArrayList<>();
         return cons(firstWindow, () -> new NoRemoveIterator<List<T>>() {
-            private final @NotNull Iterator<T> xsi = drop(size, xs).iterator();
-            private @NotNull List<T> previousWindow = firstWindow;
+            private final
+            @NotNull
+            Iterator<T> xsi = drop(size, xs).iterator();
+            private
+            @NotNull
+            List<T> previousWindow = firstWindow;
 
             @Override
             public boolean hasNext() {
@@ -3315,8 +3443,12 @@ public final strictfp class IterableUtils {
         String firstWindow = take(size, s);
         if (firstWindow.length() < size) return new ArrayList<>();
         return cons(firstWindow, () -> new NoRemoveIterator<String>() {
-            private @NotNull Iterator<Character> xsi = fromString(drop(size, s)).iterator();
-            private @NotNull String previousWindow = firstWindow;
+            private
+            @NotNull
+            Iterator<Character> xsi = fromString(drop(size, s)).iterator();
+            private
+            @NotNull
+            String previousWindow = firstWindow;
 
             @Override
             public boolean hasNext() {
@@ -4185,6 +4317,157 @@ public final strictfp class IterableUtils {
                         esi.hasNext() &&
                         fsi.hasNext() &&
                         gsi.hasNext();
+            }
+
+            @Override
+            public Septuple<A, B, C, D, E, F, G> next() {
+                return new Septuple<>(
+                        asi.next(),
+                        bsi.next(),
+                        csi.next(),
+                        dsi.next(),
+                        esi.next(),
+                        fsi.next(),
+                        gsi.next()
+                );
+            }
+        };
+    }
+
+    public static <A, B> Iterable<Pair<A, B>> zipInfinite(Iterable<A> as, Iterable<B> bs) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Pair<A, B> next() {
+                return new Pair<>(asi.next(), bsi.next());
+            }
+        };
+    }
+
+    public static <A, B, C> Iterable<Triple<A, B, C>> zip3Infinite(Iterable<A> as, Iterable<B> bs, Iterable<C> cs) {
+        return () -> new NoRemoveIterator<Triple<A, B, C>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Triple<A, B, C> next() {
+                return new Triple<>(asi.next(), bsi.next(), csi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D> Iterable<Quadruple<A, B, C, D>> zip4Infinite(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds
+    ) {
+        return () -> new NoRemoveIterator<Quadruple<A, B, C, D>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quadruple<A, B, C, D> next() {
+                return new Quadruple<>(asi.next(), bsi.next(), csi.next(), dsi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> zip5Infinite(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es
+    ) {
+        return () -> new NoRemoveIterator<Quintuple<A, B, C, D, E>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quintuple<A, B, C, D, E> next() {
+                return new Quintuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> zip6Infinite(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs
+    ) {
+        return () -> new NoRemoveIterator<Sextuple<A, B, C, D, E, F>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Sextuple<A, B, C, D, E, F> next() {
+                return new Sextuple<>(asi.next(), bsi.next(), csi.next(), dsi.next(), esi.next(), fsi.next());
+            }
+        };
+    }
+
+    public static <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> zip7Infinite(
+            Iterable<A> as,
+            Iterable<B> bs,
+            Iterable<C> cs,
+            Iterable<D> ds,
+            Iterable<E> es,
+            Iterable<F> fs,
+            Iterable<G> gs
+    ) {
+        return () -> new NoRemoveIterator<Septuple<A, B, C, D, E, F, G>>() {
+            private final @NotNull Iterator<A> asi = as.iterator();
+            private final @NotNull Iterator<B> bsi = bs.iterator();
+            private final @NotNull Iterator<C> csi = cs.iterator();
+            private final @NotNull Iterator<D> dsi = ds.iterator();
+            private final @NotNull Iterator<E> esi = es.iterator();
+            private final @NotNull Iterator<F> fsi = fs.iterator();
+            private final @NotNull Iterator<G> gsi = gs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
             }
 
             @Override

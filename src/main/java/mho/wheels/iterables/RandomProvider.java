@@ -2952,8 +2952,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code size} cannot be negative.</li>
-     *  <li>{@code xs} cannot be null.</li>
-     *  <li>If {@code size} is nonzero, {@code xs} cannot be empty.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and all of its elements have the same length.</li>
      * </ul>
      *
@@ -2966,15 +2965,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs) {
-        if (size == 0) {
-            return repeat(Collections.emptyList());
-        } else {
-            if (isEmpty(xs)) {
-                throw new IllegalArgumentException("If size is nonzero, xs cannot be empty. size is " + size +
-                        " and xs is empty.");
-            }
-            return transpose(demux(size, xs));
-        }
+        return chunkInfinite(size, xs);
     }
 
     /**
@@ -2983,8 +2974,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -2998,7 +2989,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs) {
-        return zip(as, bs);
+        return zipInfinite(as, bs);
     }
 
     /**
@@ -3007,7 +2998,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3019,8 +3010,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(2, xs);
-        return zip(xss.get(0), xss.get(1));
+        return chunkPairsInfinite(xs);
     }
 
     /**
@@ -3029,9 +3019,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>{@code cs} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>{@code cs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3051,7 +3041,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     ) {
-        return zip3(as, bs, cs);
+        return zip3Infinite(as, bs, cs);
     }
 
     /**
@@ -3060,7 +3050,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3072,8 +3062,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(3, xs);
-        return zip3(xss.get(0), xss.get(1), xss.get(2));
+        return chunkTriplesInfinite(xs);
     }
 
     /**
@@ -3082,10 +3071,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>{@code cs} cannot be null.</li>
-     *  <li>{@code ds} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>{@code cs} must be infinite.</li>
+     *  <li>{@code ds} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3108,7 +3097,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     ) {
-        return zip4(as, bs, cs, ds);
+        return zip4Infinite(as, bs, cs, ds);
     }
 
     /**
@@ -3117,7 +3106,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3129,8 +3118,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(4, xs);
-        return zip4(xss.get(0), xss.get(1), xss.get(2), xss.get(3));
+        chunkQuadruplesInfinite(xs);
     }
 
     /**
@@ -3139,11 +3127,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>{@code cs} cannot be null.</li>
-     *  <li>{@code ds} cannot be null.</li>
-     *  <li>{@code es} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>{@code cs} must be infinite.</li>
+     *  <li>{@code ds} must be infinite.</li>
+     *  <li>{@code es} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3170,7 +3158,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     ) {
-        return zip5(as, bs, cs, ds, es);
+        return zip5Infinite(as, bs, cs, ds, es);
     }
 
     /**
@@ -3179,7 +3167,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3191,8 +3179,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(5, xs);
-        return zip5(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4));
+        return chunkQuintuplesInfinite(xs);
     }
 
     /**
@@ -3201,12 +3188,12 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>{@code cs} cannot be null.</li>
-     *  <li>{@code ds} cannot be null.</li>
-     *  <li>{@code es} cannot be null.</li>
-     *  <li>{@code fs} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>{@code cs} must be infinite.</li>
+     *  <li>{@code ds} must be infinite.</li>
+     *  <li>{@code es} must be infinite.</li>
+     *  <li>{@code fs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3236,7 +3223,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     ) {
-        return zip6(as, bs, cs, ds, es, fs);
+        return zip6Infinite(as, bs, cs, ds, es, fs);
     }
 
     /**
@@ -3245,7 +3232,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3257,8 +3244,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(6, xs);
-        return zip6(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5));
+        return chunkSextuplesInfinite(xs);
     }
 
     /**
@@ -3267,13 +3253,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code as} cannot be null.</li>
-     *  <li>{@code bs} cannot be null.</li>
-     *  <li>{@code cs} cannot be null.</li>
-     *  <li>{@code ds} cannot be null.</li>
-     *  <li>{@code es} cannot be null.</li>
-     *  <li>{@code fs} cannot be null.</li>
-     *  <li>{@code gs} cannot be null.</li>
+     *  <li>{@code as} must be infinite.</li>
+     *  <li>{@code bs} must be infinite.</li>
+     *  <li>{@code cs} must be infinite.</li>
+     *  <li>{@code ds} must be infinite.</li>
+     *  <li>{@code es} must be infinite.</li>
+     *  <li>{@code fs} must be infinite.</li>
+     *  <li>{@code gs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3306,7 +3292,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     ) {
-        return zip7(as, bs, cs, ds, es, fs, gs);
+        return zip7Infinite(as, bs, cs, ds, es, fs, gs);
     }
 
     /**
@@ -3315,7 +3301,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} must be infinite.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls.</li>
      * </ul>
      *
@@ -3327,8 +3313,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs) {
-        List<Iterable<T>> xss = demux(7, xs);
-        return zip7(xss.get(0), xss.get(1), xss.get(2), xss.get(3), xss.get(4), xss.get(5), xss.get(6));
+        return chunkSeptuplesInfinite(xs);
     }
 
     @Override
