@@ -250,22 +250,40 @@ public strictfp class RandomProviderTest {
         P.reset();
     }
 
+    private static void uniformSample_Iterable_fail_helper(@NotNull String xs) {
+        try {
+            P.uniformSample(readIntegerListWithNulls(xs));
+        } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
     @Test
     public void testUniformSample_Iterable() {
         uniformSample_Iterable_helper(
                 "[3, 1, 4, 1]",
                 "[1, 1, 1, 4, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 4, ...]"
         );
-        uniformSample_Iterable_helper("[]", "[]");
         uniformSample_Iterable_helper(
                 "[3, 1, null, 1]",
                 "[1, 1, 1, null, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, null, ...]"
         );
+        uniformSample_Iterable_fail_helper("[]");
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
-        P.reset();
         aeqcs(P.uniformSample(s), output);
+        P.reset();
+    }
+
+    private static void uniformSample_String_fail_helper(@NotNull String s) {
+        try {
+            P.uniformSample(s);
+        } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
@@ -275,7 +293,7 @@ public strictfp class RandomProviderTest {
                 "eellhlelheeooleollleoololohllollllholhhlhhohllllehelollehllllllleolleolelehelllohoohelllllehllllolo" +
                 "llloellhhllloollohohlllohollo"
         );
-        uniformSample_String_helper("", "");
+        uniformSample_String_fail_helper("");
     }
 
     @Test
@@ -12820,6 +12838,162 @@ public strictfp class RandomProviderTest {
         );
         prefixPermutations_fail_helper(0, "[1, 2, 3]");
         prefixPermutations_fail_helper(-1, "[1, 2, 3]");
+    }
+
+    private static void strings_int_Iterable_helper(
+            int size,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.strings(size, input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void strings_int_Iterable_fail_helper(int size, @NotNull String input) {
+        try {
+            P.strings(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStrings_int_String() {
+        strings_int_Iterable_helper(0, "a", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_Iterable_helper(
+                1,
+                "a",
+                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
+                "{a=1000000}"
+        );
+        strings_int_Iterable_helper(
+                2,
+                "a",
+                "[aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, ...]",
+                "{aa=1000000}"
+        );
+        strings_int_Iterable_helper(
+                3,
+                "a",
+                "[aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa," +
+                " aaa, ...]",
+                "{aaa=1000000}"
+        );
+        strings_int_Iterable_helper(0, "abc", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_Iterable_helper(
+                1,
+                "abc",
+                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
+                "{c=333615, b=333313, a=333072}"
+        );
+        strings_int_Iterable_helper(
+                2,
+                "abc",
+                "[bb, cb, ab, bb, bb, ab, bc, bc, ac, bb, ca, cb, ac, bc, cb, aa, ca, bc, ab, ac, ...]",
+                "{cb=111390, bc=111322, ca=111219, aa=111121, ba=111088, cc=111028, ab=111012, bb=110943, ac=110877}"
+        );
+        strings_int_Iterable_helper(
+                3,
+                "abc",
+                "[bbc, bab, bbb, bab, bcb, cac, bbc, acb, acb, ccb, aac, abc, aba, cbc, acc, cbc, cab, acc, aac," +
+                " aac, ...]",
+                "{aaa=37441, bbb=37355, cac=37327, bcb=37306, cbc=37273, cba=37236, cca=37231, ccc=37214, bca=37158," +
+                " aab=37136}"
+        );
+        strings_int_Iterable_helper(0, "abbc", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_Iterable_helper(
+                1,
+                "abbc",
+                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
+                "{b=499640, c=250298, a=250062}"
+        );
+        strings_int_Iterable_helper(
+                2,
+                "abbc",
+                "[bb, cb, bc, ab, bc, cb, cb, cb, ab, bb, cb, ba, cb, bc, bb, ab, cb, ac, cb, cb, ...]",
+                "{bb=250376, bc=124904, cb=124818, ab=124686, ba=124685, ac=62739, cc=62694, aa=62656, ca=62442}"
+        );
+        strings_int_Iterable_helper(
+                3,
+                "abbc",
+                "[bbc, bbc, abb, ccb, cbc, bab, bbc, bba, cbb, cbb, abc, bac, cbc, bbb, cba, abc, abb, aba, ccb," +
+                " bcb, ...]",
+                "{bbb=125202, cbb=62727, bba=62625, bbc=62606, abb=62481, bab=62386, bcb=62173, acb=31470," +
+                " bcc=31464, cbc=31441}"
+        );
+        strings_int_Iterable_helper(0, "Mississippi", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_Iterable_helper(
+                1,
+                "Mississippi",
+                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
+                "{s=363979, i=363703, p=181581, M=90737}"
+        );
+        strings_int_Iterable_helper(
+                2,
+                "Mississippi",
+                "[pp, ss, sp, ss, ii, ss, sp, si, si, ss, si, pi, is, si, pi, ss, ss, is, Ms, is, ...]",
+                "{ss=132606, si=132473, is=132392, ii=131960, ps=66316, sp=66221, ip=66050, pi=65612, Mi=33235," +
+                " pp=33071}"
+        );
+        strings_int_Iterable_helper(
+                3,
+                "Mississippi",
+                "[pps, ssp, ssi, iss, sps, isi, sss, ipi, iss, ipi, sss, sis, Msi, sss, ssi, sip, iMp, ipp, ips," +
+                " ssi, ...]",
+                "{sss=48687, sis=48297, ssi=48283, iis=48220, sii=48107, iii=48048, iss=47940, isi=47797, psi=24274," +
+                " pss=24260}"
+        );
+        strings_int_Iterable_fail_helper(0, "");
+        strings_int_Iterable_fail_helper(-1, "abc");
+    }
+
+    private static void strings_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, map(Testing::nicePrint, P.strings(size))));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void strings_int_fail_helper(int size) {
+        try {
+            P.strings(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStrings_int() {
+        strings_int_helper(0, "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_helper(
+                1,
+                "[嘩, 퇉, 馃, \\u2df2, ε, 䊿, \\u2538, \\u31e5, 髽, 肣, \\uf6ff, ﳑ, 赧, \\ue215, \\u17f3, \\udd75, 껸," +
+                " \\udd15, 몱, ﲦ, ...]",
+                "{\\uf1b2=36, 撢=35, આ=34, 퉃=34, \\27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
+        );
+        strings_int_helper(
+                2,
+                "[嘩퇉, 馃\\u2df2, ε䊿, \\u2538\\u31e5, 髽肣, \\uf6ffﳑ, 赧\\ue215, \\u17f3\\udd75, 껸\\udd15, 몱ﲦ, 䯏ϡ," +
+                " 罖\\u19dc, 刿ㄾ, 䲵箿, 偵恾, \u1B1CK, 㵏ꏹ, 缄㩷, \u2D3F읾, 纫\\ufe2d, ...]",
+                "{\\uf310틺=2, 緑\\ue709=2, 㑰\\uf5be=2, \\ue429菧=2, \\uf480\\u23c0=2, \u2CC8고=2, 㜛땹=2," +
+                " \\ue283捿=2, \\ua8ed\u2C04=2, 楮譂=2}"
+        );
+        strings_int_helper(
+                3,
+                "[嘩퇉馃, \\u2df2ε䊿, \\u2538\\u31e5髽, 肣\\uf6ffﳑ, 赧\\ue215\\u17f3, \\udd75껸\\udd15, 몱ﲦ䯏," +
+                " ϡ罖\\u19dc, 刿ㄾ䲵, 箿偵恾, \u1B1CK㵏, ꏹ缄㩷, \u2D3F읾纫, \\ufe2d㗂䝲, \\uf207갩힜, 坤琖\\u2a43," +
+                " 퉌\\uea45\\ue352, 蕤餥䉀, \\u2b63\\uf637鸂, 鸅误輮, ...]",
+                "{嘩퇉馃=1, \\u2df2ε䊿=1, \\u2538\\u31e5髽=1, 肣\\uf6ffﳑ=1, 赧\\ue215\\u17f3=1, \\udd75껸\\udd15=1," +
+                " 몱ﲦ䯏=1, ϡ罖\\u19dc=1, 刿ㄾ䲵=1, 箿偵恾=1}"
+        );
+        strings_int_fail_helper(-1);
     }
 
     @Test

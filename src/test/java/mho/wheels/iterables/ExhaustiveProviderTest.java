@@ -3432,19 +3432,12 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(P.stringsLex(size, input), output);
     }
 
+    private static void stringsLex_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsLex(size, input), output);
+    }
+
     @Test
     public void testStringsLex_int_String() {
-        stringsLex_int_String_helper(0, "abc", "[]");
-        aeq(length(P.stringsLex(0, "abc")), 1);
-        stringsLex_int_String_helper(1, "abc", "[a, b, c]");
-        stringsLex_int_String_helper(2, "abc", "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
-        stringsLex_int_String_helper(3, "abc",
-                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
-                " cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
-        stringsLex_int_String_helper(0, "a", "[]");
-        stringsLex_int_String_helper(1, "a", "[a]");
-        stringsLex_int_String_helper(2, "a", "[aa]");
-        stringsLex_int_String_helper(3, "a", "[aaa]");
         stringsLex_int_String_helper(0, "", "[]");
         aeq(length(P.stringsLex(0, "")), 1);
         stringsLex_int_String_helper(1, "", "[]");
@@ -3453,6 +3446,34 @@ public strictfp class ExhaustiveProviderTest {
         aeq(length(P.stringsLex(2, "")), 0);
         stringsLex_int_String_helper(3, "", "[]");
         aeq(length(P.stringsLex(3, "")), 0);
+        stringsLex_int_String_helper(0, "a", "[]");
+        stringsLex_int_String_helper(1, "a", "[a]");
+        stringsLex_int_String_helper(2, "a", "[aa]");
+        stringsLex_int_String_helper(3, "a", "[aaa]");
+        stringsLex_int_String_helper(0, "abc", "[]");
+        aeq(length(P.stringsLex(0, "abc")), 1);
+        stringsLex_int_String_helper(1, "abc", "[a, b, c]");
+        stringsLex_int_String_helper(2, "abc", "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
+        stringsLex_int_String_helper(3, "abc",
+                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
+                " cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
+        stringsLex_int_String_helper(0, "abbc", "[]");
+        aeq(length(P.stringsLex(0, "abbc")), 1);
+        stringsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
+        stringsLex_int_String_helper(2, "abbc", "[aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc]");
+        stringsLex_int_String_helper(3, "abbc",
+                "[aaa, aab, aab, aac, aba, abb, abb, abc, aba, abb, abb, abc, aca, acb, acb, acc, baa, bab, bab," +
+                " bac, bba, bbb, bbb, bbc, bba, bbb, bbb, bbc, bca, bcb, bcb, bcc, baa, bab, bab, bac, bba, bbb," +
+                " bbb, bbc, bba, bbb, bbb, bbc, bca, bcb, bcb, bcc, caa, cab, cab, cac, cba, cbb, cbb, cbc, cba," +
+                " cbb, cbb, cbc, cca, ccb, ccb, ccc]");
+        stringsLex_int_String_helper_limit(0, "Mississippi", "[]");
+        aeq(length(P.stringsLex(0, "Mississippi")), 1);
+        stringsLex_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
+        stringsLex_int_String_helper_limit(2, "Mississippi",
+                "[MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, ii, is, is, ii, is, is, ii, ip, ...]");
+        stringsLex_int_String_helper_limit(3, "Mississippi",
+                "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
+                " Mip, ...]");
         try {
             P.stringsLex(-1, "");
             fail();
@@ -5166,6 +5187,10 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(P.strings(size, input), output);
     }
 
+    private static void strings_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.strings(size, input), output);
+    }
+
     @Test
     public void testStrings_int_String() {
         strings_int_String_helper(0, "", "[]");
@@ -5178,15 +5203,32 @@ public strictfp class ExhaustiveProviderTest {
         aeq(length(P.strings(3, "")), 0);
         strings_int_String_helper(0, "abc", "[]");
         aeq(length(P.strings(0, "abc")), 1);
+        strings_int_String_helper(0, "a", "[]");
+        strings_int_String_helper(1, "a", "[a]");
+        strings_int_String_helper(2, "a", "[aa]");
+        strings_int_String_helper(3, "a", "[aaa]");
         strings_int_String_helper(1, "abc", "[a, b, c]");
         strings_int_String_helper(2, "abc", "[aa, ab, ba, bb, ac, bc, ca, cb, cc]");
         strings_int_String_helper(3, "abc",
                 "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, abc, bac, bbc, aca, acb, bca, bcb, acc, bcc, caa," +
                 " cab, cba, cbb, cac, cbc, cca, ccb, ccc]");
-        strings_int_String_helper(0, "a", "[]");
-        strings_int_String_helper(1, "a", "[a]");
-        strings_int_String_helper(2, "a", "[aa]");
-        strings_int_String_helper(3, "a", "[aaa]");
+        strings_int_String_helper(0, "abbc", "[]");
+        aeq(length(P.strings(0, "abbc")), 1);
+        strings_int_String_helper(1, "abbc", "[a, b, b, c]");
+        strings_int_String_helper(2, "abbc", "[aa, ab, ba, bb, ab, ac, bb, bc, ba, bb, ca, cb, bb, bc, cb, cc]");
+        strings_int_String_helper(3, "abbc",
+                "[aaa, aab, aba, abb, baa, bab, bba, bbb, aab, aac, abb, abc, bab, bac, bbb, bbc, aba, abb, aca," +
+                " acb, bba, bbb, bca, bcb, abb, abc, acb, acc, bbb, bbc, bcb, bcc, baa, bab, bba, bbb, caa, cab," +
+                " cba, cbb, bab, bac, bbb, bbc, cab, cac, cbb, cbc, bba, bbb, bca, bcb, cba, cbb, cca, ccb, bbb," +
+                " bbc, bcb, bcc, cbb, cbc, ccb, ccc]");
+        strings_int_String_helper(0, "Mississippi", "[]");
+        aeq(length(P.strings(0, "Mississippi")), 1);
+        strings_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
+        strings_int_String_helper_limit(2, "Mississippi",
+                "[MM, Mi, iM, ii, Ms, Ms, is, is, sM, si, sM, si, ss, ss, ss, ss, Mi, Ms, ii, is, ...]");
+        strings_int_String_helper_limit(3, "Mississippi",
+                "[MMM, MMi, MiM, Mii, iMM, iMi, iiM, iii, MMs, MMs, Mis, Mis, iMs, iMs, iis, iis, MsM, Msi, MsM," +
+                " Msi, ...]");
         try {
             P.strings(-1, "");
             fail();

@@ -505,11 +505,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be empty.</li>
      *  <li>The result is non-removable and either empty or infinite.</li>
      * </ul>
      *
-     * Length is 0 if {@code xs} is empty, infinite otherwise
+     * Length is infinite
      *
      * @param xs the source list
      * @param <T> the type of {@code xs}'s elements
@@ -517,7 +517,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<T> uniformSample(@NotNull List<T> xs) {
-        return xs.isEmpty() ? Collections.emptyList() : map(xs::get, integersBounded(xs.size()));
+        if (xs.isEmpty()) {
+            throw new IllegalArgumentException("xs cannot be empty");
+        }
+        return map(xs::get, integersBounded(xs.size()));
     }
 
     /**
@@ -525,18 +528,21 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code s} cannot be empty.</li>
      *  <li>The result is an empty or infinite non-removable {@code Iterable} containing {@code Character}s.</li>
      * </ul>
      *
-     * Length is 0 if {@code s} is empty, infinite otherwise
+     * Length is infinite
      *
      * @param s the source {@code String}
      * @return uniformly-distributed {@code Character}s from {@code s}
      */
     @Override
     public @NotNull Iterable<Character> uniformSample(@NotNull String s) {
-        return s.isEmpty() ? Collections.emptyList() : map(s::charAt, integersBounded(s.length()));
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException("s cannot be empty");
+        }
+        return map(s::charAt, integersBounded(s.length()));
     }
 
     /**
@@ -3118,7 +3124,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs) {
-        chunkQuadruplesInfinite(xs);
+        return chunkQuadruplesInfinite(xs);
     }
 
     /**

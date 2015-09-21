@@ -3182,15 +3182,20 @@ public final strictfp class IterableUtils {
         };
     }
 
-    public static @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> chunkSextuplesInfinite(
-            @NotNull Iterable<A> as,
-            @NotNull Iterable<B> bs,
-            @NotNull Iterable<C> cs,
-            @NotNull Iterable<D> ds,
-            @NotNull Iterable<E> es,
-            @NotNull Iterable<F> fs
-    ) {
-        return zip6Infinite(as, bs, cs, ds, es, fs);
+    public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> chunkSextuplesInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Sextuple<T, T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Sextuple<T, T, T, T, T, T> next() {
+                return new Sextuple<>(xsi.next(), xsi.next(), xsi.next(), xsi.next(), xsi.next(), xsi.next());
+            }
+        };
     }
 
     public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> chunkSeptuplesInfinite(
