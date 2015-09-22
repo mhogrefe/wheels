@@ -1335,10 +1335,24 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, lists(size, characters()));
     }
 
+    /**
+     * Generates all {@code List}s of a containing elements from a given {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code String}s of a containing characters from a given {@code String}.
+     *
+     * @param s a {@code String}
+     */
     public abstract @NotNull Iterable<String> strings(@NotNull String s);
 
+    /**
+     * Generates all {@code String}s.
+     */
     public abstract @NotNull Iterable<String> strings();
 
     public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
