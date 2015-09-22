@@ -2012,6 +2012,10 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfinite() {
+        aeqitLimit(TINY_LIMIT, P.dependentPairsInfinite(P.naturalBigIntegers(), i -> P.naturalBigIntegers()),
+                "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
+                " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
+
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
@@ -2042,6 +2046,16 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfiniteLogarithmicOrder() {
+        aeqitLimit(
+                TINY_LIMIT,
+                P.dependentPairsInfiniteLogarithmicOrder(
+                        P.naturalBigIntegers(),
+                        i -> P.naturalBigIntegers()
+                ),
+                "[(0, 0), (1, 0), (0, 1), (2, 0), (0, 2), (1, 1), (0, 3), (3, 0), (0, 4), (1, 2), (0, 5), (2, 1)," +
+                " (0, 6), (1, 3), (0, 7), (4, 0), (0, 8), (1, 4), (0, 9), (2, 2), ...]"
+        );
+
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
@@ -2076,6 +2090,16 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfiniteSquareRootOrder() {
+        aeqitLimit(
+                TINY_LIMIT,
+                P.dependentPairsInfiniteSquareRootOrder(
+                        P.naturalBigIntegers(),
+                        i -> P.naturalBigIntegers()
+                ),
+                "[(0, 0), (1, 0), (0, 1), (1, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 0), (3, 0), (2, 1), (3, 1)," +
+                " (2, 2), (3, 2), (2, 3), (3, 3), (0, 4), (1, 4), (0, 5), (1, 5), ...]"
+        );
+
         Function<Integer, Iterable<String>> f = i -> {
             switch (i) {
                 case 0: return repeat("beep");
