@@ -141,7 +141,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
-                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+                P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("uniformSample(" + p.a + ", " + p.b.toString() + ") = " + its(p.a.uniformSample(p.b)));
@@ -150,7 +150,7 @@ public class RandomProviderDemos {
 
     private static void demoUniformSample_String() {
         initialize();
-        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.strings());
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1));
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("uniformSample(" + p.a + ", " +  nicePrint(p.b) + ") = " +
                     cits(p.a.uniformSample(p.b)));

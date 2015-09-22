@@ -364,21 +364,35 @@ public class RandomProviderProperties {
         initialize("uniformSample(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
-                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+                P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
             Iterable<Integer> is = p.a.uniformSample(p.b);
             simpleTestWithNulls(p.a, is, p.b::contains);
             assertEquals(is, isEmpty(is), p.b.isEmpty());
         }
+
+        for (RandomProvider rp : take(LIMIT,P.randomProvidersDefault())) {
+            try {
+                rp.uniformSample(Collections.emptyList());
+                fail(rp);
+            } catch (IllegalArgumentException ignored) {}
+        }
     }
 
     private static void propertiesUniformSample_String() {
         initialize("uniformSample(String)");
-        for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.strings()))) {
+        for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1)))) {
             Iterable<Character> cs = p.a.uniformSample(p.b);
             simpleTest(p.a, cs, c -> elem(c, cs));
             assertEquals(cs, isEmpty(cs), p.b.isEmpty());
+        }
+
+        for (RandomProvider rp : take(LIMIT,P.randomProvidersDefault())) {
+            try {
+                rp.uniformSample("");
+                fail(rp);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
