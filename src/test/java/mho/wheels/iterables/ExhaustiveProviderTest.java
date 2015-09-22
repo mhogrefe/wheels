@@ -2041,6 +2041,75 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testDependentPairsInfiniteLogarithmicOrder() {
+        Function<Integer, Iterable<String>> f = i -> {
+            switch (i) {
+                case 0: return repeat("beep");
+                case 1: return cycle(Arrays.asList("a", "b"));
+            }
+            throw new IllegalArgumentException();
+        };
+        aeqitLimit(TINY_LIMIT, P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
+                "[(1, a), (0, beep), (1, b), (1, a), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
+                " (1, b), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, a), (0, beep), (1, b), (1, a), ...]");
+
+        try {
+            toList(P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+
+        try {
+            toList(P.dependentPairsInfiniteLogarithmicOrder(Arrays.asList(0, 1), f));
+            fail();
+        } catch (NoSuchElementException ignored) {}
+
+        try {
+            toList(
+                    P.dependentPairsInfiniteLogarithmicOrder(
+                            cycle(Arrays.asList(1, 0)),
+                            i -> Collections.singletonList("a")
+                    )
+            );
+            fail();
+        } catch (NoSuchElementException ignored) {}
+    }
+
+    @Test
+    public void testDependentPairsInfiniteSquareRootOrder() {
+        Function<Integer, Iterable<String>> f = i -> {
+            switch (i) {
+                case 0: return repeat("beep");
+                case 1: return cycle(Arrays.asList("a", "b"));
+            }
+            throw new IllegalArgumentException();
+        };
+        aeqitLimit(TINY_LIMIT, P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
+                "[(1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
+                " (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
+                " ...]");
+
+        try {
+            toList(P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), i -> null));
+            fail();
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
+
+        try {
+            toList(P.dependentPairsInfiniteSquareRootOrder(Arrays.asList(0, 1), f));
+            fail();
+        } catch (NoSuchElementException ignored) {}
+
+        try {
+            toList(
+                    P.dependentPairsInfiniteSquareRootOrder(
+                            cycle(Arrays.asList(1, 0)),
+                            i -> Collections.singletonList("a")
+                    )
+            );
+            fail();
+        } catch (NoSuchElementException ignored) {}
+    }
+
+    @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
         aeqit(
                 P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
