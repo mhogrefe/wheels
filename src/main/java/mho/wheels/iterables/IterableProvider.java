@@ -851,6 +851,20 @@ public abstract strictfp class IterableProvider {
             @NotNull Function<A, Iterable<B>> f
     );
 
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteLogarithmicOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteSquareRootOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
     /**
      * Generates pairs of elements where the first component grows linearly but the second grows logarithmically (if
      * applicable).
@@ -1348,18 +1362,26 @@ public abstract strictfp class IterableProvider {
      *
      * @param s a {@code String}
      */
-    public abstract @NotNull Iterable<String> strings(@NotNull String s);
+    public @NotNull Iterable<String> strings(@NotNull String s) {
+        return map(IterableUtils::charsToString, lists(uniformSample(s)));
+    }
 
     /**
      * Generates all {@code String}s.
      */
-    public abstract @NotNull Iterable<String> strings();
+    public @NotNull Iterable<String> strings() {
+        return map(IterableUtils::charsToString, lists(characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s);
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, uniformSample(s)));
+    }
 
-    public abstract @NotNull Iterable<String> stringsAtLeast(int size);
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
 

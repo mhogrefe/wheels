@@ -3346,52 +3346,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> strings(@NotNull String s) {
-        return () -> new NoRemoveIterator<String>() {
-            private final @NotNull Iterator<Character> csi = uniformSample(s).iterator();
-            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull String next() {
-                int size = sizes.next();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    sb.append(csi.next());
-                }
-                return sb.toString();
-            }
-        };
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings() {
-        return () -> new NoRemoveIterator<String>() {
-            private final @NotNull Iterator<Character> csi = characters().iterator();
-            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull String next() {
-                int size = sizes.next();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    sb.append(csi.next());
-                }
-                return sb.toString();
-            }
-        };
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new NoRemoveIterator<List<T>>() {
@@ -3411,53 +3365,6 @@ public final strictfp class RandomProvider extends IterableProvider {
                     list.add(xsi.next());
                 }
                 return list;
-            }
-        };
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
-        if (s.isEmpty()) return Collections.singletonList("");
-        return () -> new NoRemoveIterator<String>() {
-            private final Iterator<Character> csi = uniformSample(s).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull String next() {
-                int size = sizes.next() + minSize;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    sb.append(csi.next());
-                }
-                return sb.toString();
-            }
-        };
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
-        return () -> new NoRemoveIterator<String>() {
-            private final Iterator<Character> csi = characters().iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull String next() {
-                int size = sizes.next() + minSize;
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < size; i++) {
-                    sb.append(csi.next());
-                }
-                return sb.toString();
             }
         };
     }

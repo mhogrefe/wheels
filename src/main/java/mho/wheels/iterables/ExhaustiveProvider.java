@@ -1357,7 +1357,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                                 BigInteger.valueOf((long) FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT -
                                         FloatingPointUtils.toOrderedRepresentation(a) + 1),
                                 p -> p.a.equals(p.b), map(BinaryFraction::floatRange,
-                                rangeUp(BinaryFraction.of(a).get()))
+                                        rangeUp(BinaryFraction.of(a).get()))
                         )
                 )
         );
@@ -1867,6 +1867,36 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
+    //todo docs and test
+    private @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
+            @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return () -> new NoRemoveIterator<Pair<A, B>>() {
+            private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
+            private final @NotNull Map<A, CachedIterator<B>> aToBs = new HashMap<>();
+            private final @NotNull Iterator<BigInteger> indices = naturalBigIntegers().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public @NotNull Pair<A, B> next() {
+                Pair<BigInteger, BigInteger> index = unpairingFunction.apply(indices.next());
+                A a = as.get(index.a).get();
+                CachedIterator<B> bs = aToBs.get(a);
+                if (bs == null) {
+                    bs = new CachedIterator<>(f.apply(a));
+                    aToBs.put(a, bs);
+                }
+                return new Pair<>(a, bs.get(index.b).get());
+            }
+        };
+    }
+
     /**
      * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
      * function mapping each possible first value to an infinite {@code Iterable} of possible second values. The pairs
@@ -1894,28 +1924,44 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
-        return () -> new NoRemoveIterator<Pair<A, B>>() {
-            private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
-            private final @NotNull Map<A, CachedIterator<B>> aToBs = new HashMap<>();
-            private final @NotNull Iterator<Pair<Integer, Integer>> indices = pairs(naturalIntegers()).iterator();
+        return dependentPairsInfinite(
+                bi -> {
+                    List<BigInteger> list = IntegerUtils.demux(2, bi);
+                    return new Pair<>(list.get(0), list.get(1));
+                },
+                xs,
+                f
+        );
+    }
 
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteLogarithmicOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(
+                i -> {
+                    Pair<BigInteger, BigInteger> p = IntegerUtils.logarithmicDemux(i);
+                    return new Pair<>(p.b, p.a);
+                },
+                xs,
+                f
+        );
+    }
 
-            @Override
-            public @NotNull Pair<A, B> next() {
-                Pair<Integer, Integer> index = indices.next();
-                A a = as.get(index.a).get();
-                CachedIterator<B> bs = aToBs.get(a);
-                if (bs == null) {
-                    bs = new CachedIterator<>(f.apply(a));
-                    aToBs.put(a, bs);
-                }
-                return new Pair<>(a, bs.get(index.b).get());
-            }
-        };
+    @Override
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteSquareRootOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(
+                i -> {
+                    Pair<BigInteger, BigInteger> p = IntegerUtils.squareRootDemux(i);
+                    return new Pair<>(p.b, p.a);
+                },
+                xs,
+                f
+        );
     }
 
     /**
@@ -3285,53 +3331,28 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
-        CachedIterator<T> ii = new CachedIterator<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi -> {
-            if (bi.equals(BigInteger.ZERO)) {
-                return Optional.of(new ArrayList<T>());
-            }
-            bi = bi.subtract(BigInteger.ONE);
-            Pair<BigInteger, BigInteger> sizeIndex = IntegerUtils.logarithmicDemux(bi);
-            int size = sizeIndex.b.intValueExact() + 1;
-            return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
-        };
-        return optionalMap(f, naturalBigIntegers());
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings(@NotNull String s) {
-        return map(IterableUtils::charsToString, lists(fromString(s)));
-    }
-
-    @Override
-    public @NotNull Iterable<String> strings() {
-        return map(IterableUtils::charsToString, lists(characters()));
+        return cons(
+                Collections.emptyList(),
+                map(
+                        p -> p.b,
+                        dependentPairsInfiniteLogarithmicOrder(
+                                positiveBigIntegers(),
+                                i -> lists(i.intValueExact(), xs)
+                        )
+                )
+        );
     }
 
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (minSize == 0) return lists(xs);
-        CachedIterator<T> ii = new CachedIterator<>(xs);
-        Function<BigInteger, Optional<List<T>>> f = bi -> {
-            if (bi.equals(BigInteger.ZERO)) {
-                return Optional.<List<T>>empty();
-            }
-            bi = bi.subtract(BigInteger.ONE);
-            Pair<BigInteger, BigInteger> sizeIndex = IntegerUtils.logarithmicDemux(bi);
-            int size = sizeIndex.b.intValueExact() + minSize;
-            return ii.get(map(BigInteger::intValueExact, IntegerUtils.demux(size, sizeIndex.a)));
-        };
-        return optionalMap(f, naturalBigIntegers());
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
-        return map(IterableUtils::charsToString, listsAtLeast(minSize, fromString(s)));
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
-        return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
+        return map(
+                p -> p.b,
+                dependentPairsInfiniteLogarithmicOrder(
+                        rangeUp(BigInteger.valueOf(minSize)),
+                        i -> lists(i.intValueExact(), xs)
+                )
+        );
     }
 
     public @NotNull <T> Iterable<List<T>> distinctListsLex(int length, @NotNull Iterable<T> xs) {
