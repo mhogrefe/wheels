@@ -1236,6 +1236,33 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoStrings_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, String, Integer>> ts = map(
+                p -> new Triple<>(p.a, p.b.a, p.b.b),
+                P.pairs(
+                        P.randomProvidersDefault(),
+                        P.pairsLogarithmicOrder(P.stringsAtLeast(1), P.withScale(4).naturalIntegersGeometric())
+                )
+        );
+        for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("strings(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
+                    its(map(Testing::nicePrint, t.a.strings(t.c, t.b))));
+        }
+    }
+
+    private static void demoStrings_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
+                P.randomProvidersDefault(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("strings(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.strings(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
