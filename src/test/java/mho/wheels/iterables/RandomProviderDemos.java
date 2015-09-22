@@ -1242,7 +1242,10 @@ public class RandomProviderDemos {
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
                 P.pairs(
                         P.randomProvidersDefault(),
-                        P.pairsLogarithmicOrder(P.stringsAtLeast(1), P.withScale(4).naturalIntegersGeometric())
+                        P.pairsLogarithmicOrder(
+                                P.withScale(4).stringsAtLeast(1),
+                                P.withScale(4).naturalIntegersGeometric()
+                        )
                 )
         );
         for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
