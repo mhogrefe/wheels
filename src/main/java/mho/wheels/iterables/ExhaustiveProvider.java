@@ -1961,7 +1961,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Generates all pairs of values in such a way that the first component grows linearly but the second grows
+     * Generates all pairs of values in such a way that the second value grows linearly, but the first grows
      * logarithmically, given an infinite {@code Iterable} of possible first values of the pairs, and a function
      * mapping each possible first value to an infinite {@code Iterable} of possible second values. If all the input
      * lists are unique, the output pairs are unique as well. This method is similar to
@@ -1998,7 +1998,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Generates all pairs of values in such a way that the first component grows as O(n<sup>2/3</sup>) but the second
+     * Generates all pairs of values in such a way that the second value grows as O(n<sup>2/3</sup>), but the first
      * grows as O(n<sup>1/3</sup>), given an infinite {@code Iterable} of possible first values of the pairs, and a
      * function mapping each possible first value to an infinite {@code Iterable} of possible second values. If all the
      * input lists are unique, the output pairs are unique as well. This method is similar to
