@@ -146,6 +146,8 @@ public class ExhaustiveProviderProperties {
             propertiesNullableOptionals();
             propertiesDependentPairs();
             propertiesDependentPairsInfinite();
+            propertiesDependentPairsInfiniteLogarithmicOrder();
+            propertiesDependentPairsInfiniteSquareRootOrder();
             propertiesPairsLogarithmicOrder_Iterable_Iterable();
             propertiesPairsLogarithmicOrder_Iterable();
             compareImplementationsPairsLogarithmicOrder_Iterable();
@@ -1336,6 +1338,15 @@ public class ExhaustiveProviderProperties {
             assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
         }
 
+        if (P instanceof ExhaustiveProvider) {
+            aeqit(
+                    "",
+                    LIMIT,
+                    EP.pairs(EP.naturalBigIntegers()),
+                    EP.dependentPairsInfinite(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers())
+            );
+        }
+
         Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
                 p -> p.b,
                 P.dependentPairs(
@@ -1385,6 +1396,200 @@ public class ExhaustiveProviderProperties {
         for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
             try {
                 toList(EP.dependentPairsInfinite(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static void propertiesDependentPairsInfiniteLogarithmicOrder() {
+        initialize("dependentPairsInfiniteLogarithmicOrder(Iterable<A>, Function<A, Iterable<B>>)");
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
+                m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+        );
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairsInfiniteLogarithmicOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            aeqit(
+                    "",
+                    LIMIT,
+                    map(p -> new Pair<>(p.b, p.a), EP.pairsLogarithmicOrder(EP.naturalBigIntegers())),
+                    EP.dependentPairsInfiniteLogarithmicOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers())
+            );
+        }
+
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psSmaller = map(
+                g,
+                nub(
+                        P.dependentPairsInfinite(
+                                nub(
+                                        map(
+                                                IterableUtils::unrepeat,
+                                                filterInfinite(xs -> xs.size() < 5, P.listsAtLeast(1, P.integers()))
+                                        )
+                                ),
+                                f
+                        )
+                )
+        );
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
+                p -> p.b,
+                P.dependentPairs(
+                        filterInfinite(r -> r.b.domainSize() != 0, psSmaller),
+                        q -> map(k -> new Pair<>(q.a, q.b.set(k, null)), P.uniformSample(toList(q.b.domain())))
+                )
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(EP.dependentPairsInfiniteLogarithmicOrder(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new HashMap<>());
+            } else {
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+            }
+        };
+        g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
+            try {
+                toList(EP.dependentPairsInfiniteLogarithmicOrder(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail3 = map(
+                p -> new Pair<>(
+                        p.a,
+                        new FiniteDomainFunction<>(toMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b))))
+                ),
+                nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integers()), f))
+        );
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
+            try {
+                toList(EP.dependentPairsInfiniteLogarithmicOrder(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static void propertiesDependentPairsInfiniteSquareRootOrder() {
+        initialize("dependentPairsInfiniteSquareRootOrder(Iterable<A>, Function<A, Iterable<B>>)");
+        IterableProvider PS = P.withScale(4);
+        Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
+                m -> !all(p -> isEmpty(p.b), fromMap(m)),
+                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers())))
+        );
+        Function<
+                Pair<List<Integer>, Map<Integer, List<Integer>>>,
+                Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>
+        > g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, cycle(e.b)), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> ps = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, ps)) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.dependentPairsInfiniteSquareRootOrder(p.a, p.b);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(p, all(q -> q != null, take(TINY_LIMIT, pairs)));
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            aeqit(
+                    "",
+                    LIMIT,
+                    map(p -> new Pair<>(p.b, p.a), EP.pairsSquareRootOrder(EP.naturalBigIntegers())),
+                    EP.dependentPairsInfiniteSquareRootOrder(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers())
+            );
+        }
+
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail = map(
+                p -> p.b,
+                P.dependentPairs(
+                        filterInfinite(r -> r.b.domainSize() != 0, ps),
+                        q -> map(k -> new Pair<>(q.a, q.b.set(k, null)), P.uniformSample(toList(q.b.domain())))
+                )
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(EP.dependentPairsInfiniteSquareRootOrder(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        f = xs -> {
+            if (xs.isEmpty()) {
+                return repeat(new HashMap<>());
+            } else {
+                return filter(m -> !all(p -> isEmpty(p.b), fromMap(m)), PS.maps(xs, PS.lists(P.integers())));
+            }
+        };
+        g = p -> {
+            Iterable<Pair<Integer, List<Integer>>> values = fromMap(p.b);
+            Map<Integer, Iterable<Integer>> transformedValues = toMap(
+                    map(e -> new Pair<>(e.a, (Iterable<Integer>) e.b), values)
+            );
+            return new Pair<>(cycle(p.a), new FiniteDomainFunction<>(transformedValues));
+        };
+        Iterable<Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail2 = map(
+                g,
+                nub(P.dependentPairsInfinite(nub(map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integers()))), f))
+        );
+        for (Pair<Iterable<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail2)) {
+            try {
+                toList(EP.dependentPairsInfiniteSquareRootOrder(p.a, p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>>> psFail3 = map(
+                p -> new Pair<>(
+                        p.a,
+                        new FiniteDomainFunction<>(toMap(map(e -> new Pair<>(e.a, cycle(e.b)), fromMap(p.b))))
+                ),
+                nub(P.dependentPairsInfinite(PS.listsAtLeast(1, P.integers()), f))
+        );
+        for (Pair<List<Integer>, FiniteDomainFunction<Integer, Iterable<Integer>>> p : take(LIMIT, psFail3)) {
+            try {
+                toList(EP.dependentPairsInfiniteSquareRootOrder(p.a, p.b));
                 fail(p);
             } catch (NoSuchElementException ignored) {}
         }
