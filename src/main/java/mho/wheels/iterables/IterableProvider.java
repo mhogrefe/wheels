@@ -1394,12 +1394,30 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, lists(characters()));
     }
 
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
     public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
         return map(IterableUtils::charsToString, listsAtLeast(minSize, uniformSample(s)));
     }
 
+    /**
+     * Generates all {@code String}s with a minimum size.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     */
     public @NotNull Iterable<String> stringsAtLeast(int minSize) {
         return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
     }
