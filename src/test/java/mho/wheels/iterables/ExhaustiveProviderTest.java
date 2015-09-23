@@ -2064,8 +2064,8 @@ public strictfp class ExhaustiveProviderTest {
             throw new IllegalArgumentException();
         };
         aeqitLimit(TINY_LIMIT, P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
-                "[(1, a), (0, beep), (1, b), (1, a), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
-                " (1, b), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, a), (0, beep), (1, b), (1, a), ...]");
+                "[(1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
+                " (1, a), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (1, b), ...]");
 
         try {
             toList(P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));

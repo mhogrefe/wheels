@@ -17,6 +17,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.ceilingLog;
 import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.numberUtils.IntegerUtils.demux;
+import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.ge;
 import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
@@ -2233,6 +2234,8 @@ public class IntegerUtilsProperties {
             assertNotEquals(p, p.a.signum(), -1);
             assertNotEquals(p, p.b.signum(), -1);
             assertEquals(p, logarithmicMux(p.a, p.b), i);
+            assertTrue(p, lt(i, logarithmicMux(p.a.add(BigInteger.ONE), p.b)));
+            assertTrue(p, lt(i, logarithmicMux(p.a, p.b.add(BigInteger.ONE))));
         }
 
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
@@ -2251,6 +2254,8 @@ public class IntegerUtilsProperties {
             BigInteger i = squareRootMux(p.a, p.b);
             assertNotEquals(p, i.signum(), -1);
             assertEquals(p, squareRootDemux(i), p);
+            assertTrue(p, lt(i, squareRootMux(p.a.add(BigInteger.ONE), p.b)));
+            assertTrue(p, lt(i, squareRootMux(p.a, p.b.add(BigInteger.ONE))));
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers()))) {
@@ -2295,6 +2300,9 @@ public class IntegerUtilsProperties {
             BigInteger i = IntegerUtils.mux(is);
             assertNotEquals(is, i.signum(), -1);
             assertEquals(is, demux(is.size(), i), is);
+            for (int j = 0; j < is.size(); j++) {
+                assertTrue(is, lt(i, mux(toList(set(is, j, is.get(j).add(BigInteger.ONE))))));
+            }
         }
 
         for (List<BigInteger> is : take(LIMIT, P.listsWithElement(null, P.naturalBigIntegers()))) {

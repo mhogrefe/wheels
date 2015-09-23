@@ -1867,7 +1867,33 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(x -> map(y -> new Pair<>(x, y), f.apply(x)), xs);
     }
 
-    //todo docs and test
+    /**
+     * Generates all pairs of values, given an infinite {@code Iterable} of possible first values of the pairs, and a
+     * function mapping each possible first value to an infinite {@code Iterable} of possible second values. There are
+     * many possible orderings of pairs; to make the ordering unique, you can specify an unpairing function–a bijective
+     * function from natural {@code BigInteger}s to pairs of natural {@code BigInteger}s. If all the input lists are
+     * unique, the output pairs are unique as well. This method is similar to
+     * {@link ExhaustiveProvider#dependentPairs(Iterable, Function)}, but with different conditions on the arguments.
+     *
+     * <ul>
+     *  <li>{@code unpairingFunction} must bijectively map natural {@code BigInteger}s to pairs of natural
+     *  {@code BigInteger}s, and also must have the property
+     *  {@code unpairingFunction}<sup>–1</sup>(a, b){@literal <}{@code unpairingFunction}<sup>–1</sup>(a, b+1)</li> for
+     *  all natural a, b.
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
     private @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
             @NotNull Function<BigInteger, Pair<BigInteger, BigInteger>> unpairingFunction,
             @NotNull Iterable<A> xs,
@@ -1875,7 +1901,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         return () -> new NoRemoveIterator<Pair<A, B>>() {
             private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
-            private final @NotNull Map<A, CachedIterator<B>> aToBs = new HashMap<>();
+            private final @NotNull Map<A, Iterator<B>> aToBs = new HashMap<>();
             private final @NotNull Iterator<BigInteger> indices = naturalBigIntegers().iterator();
 
             @Override
@@ -1887,12 +1913,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             public @NotNull Pair<A, B> next() {
                 Pair<BigInteger, BigInteger> index = unpairingFunction.apply(indices.next());
                 A a = as.get(index.a).get();
-                CachedIterator<B> bs = aToBs.get(a);
+                Iterator<B> bs = aToBs.get(a);
                 if (bs == null) {
-                    bs = new CachedIterator<>(f.apply(a));
+                    bs = f.apply(a).iterator();
                     aToBs.put(a, bs);
                 }
-                return new Pair<>(a, bs.get(index.b).get());
+                return new Pair<>(a, bs.next());
             }
         };
     }
@@ -1934,6 +1960,28 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Generates all pairs of values in such a way that the first component grows linearly but the second grows
+     * logarithmically, given an infinite {@code Iterable} of possible first values of the pairs, and a function
+     * mapping each possible first value to an infinite {@code Iterable} of possible second values. If all the input
+     * lists are unique, the output pairs are unique as well. This method is similar to
+     * {@link ExhaustiveProvider#dependentPairs(Iterable, Function)}, but with different conditions on the arguments.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteLogarithmicOrder(
             @NotNull Iterable<A> xs,
@@ -1949,6 +1997,28 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Generates all pairs of values in such a way that the first component grows as O(n<sup>2/3</sup>) but the second
+     * grows as O(n<sup>1/3</sup>), given an infinite {@code Iterable} of possible first values of the pairs, and a
+     * function mapping each possible first value to an infinite {@code Iterable} of possible second values. If all the
+     * input lists are unique, the output pairs are unique as well. This method is similar to
+     * {@link ExhaustiveProvider#dependentPairs(Iterable, Function)}, but with different conditions on the arguments.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
+     *  infinite.</li>
+     *  <li>The result is non-removable and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     * @return all possible pairs of values specified by {@code xs} and {@code f}
+     */
     @Override
     public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteSquareRootOrder(
             @NotNull Iterable<A> xs,
@@ -3333,11 +3403,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return cons(
                 Collections.emptyList(),
-                map(
+                optionalMap(
                         p -> p.b,
                         dependentPairsInfiniteLogarithmicOrder(
                                 positiveBigIntegers(),
-                                i -> lists(i.intValueExact(), xs)
+                                i -> concat(nonEmptyOptionals(lists(i.intValueExact(), xs)), repeat(Optional.empty()))
                         )
                 )
         );
@@ -3346,11 +3416,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (minSize == 0) return lists(xs);
-        return map(
+        return optionalMap(
                 p -> p.b,
                 dependentPairsInfiniteLogarithmicOrder(
                         rangeUp(BigInteger.valueOf(minSize)),
-                        i -> lists(i.intValueExact(), xs)
+                        i -> concat(nonEmptyOptionals(lists(i.intValueExact(), xs)), repeat(Optional.empty()))
                 )
         );
     }
