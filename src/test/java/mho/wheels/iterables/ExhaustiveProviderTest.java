@@ -2431,29 +2431,29 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...], ...]");
     }
 
-    private static void listsLex_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
+    private static void listsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
         aeqit(P.listsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     @Test
-    public void testListsLex_int_Iterable() {
-        listsLex_int_Iterable_helper(0, "[]", "[[]]");
+    public void testListsLex_int_List() {
+        listsLex_int_List_helper(0, "[]", "[[]]");
 
-        listsLex_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
-        listsLex_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        listsLex_int_Iterable_helper(2, "[1, 2, 3]",
+        listsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
+        listsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        listsLex_int_List_helper(2, "[1, 2, 3]",
                 "[[1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]]");
-        listsLex_int_Iterable_helper(3, "[1, 2, 3]",
+        listsLex_int_List_helper(3, "[1, 2, 3]",
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3]," +
                 " [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3]," +
                 " [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
 
-        listsLex_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
-        listsLex_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        listsLex_int_Iterable_helper(2, "[1, 2, 2, 3]",
+        listsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
+        listsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        listsLex_int_List_helper(2, "[1, 2, 2, 3]",
                 "[[1, 1], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 2], [2, 3], [2, 1], [2, 2], [2, 2], [2, 3]," +
                 " [3, 1], [3, 2], [3, 2], [3, 3]]");
-        listsLex_int_Iterable_helper(3, "[1, 2, 2, 3]",
+        listsLex_int_List_helper(3, "[1, 2, 2, 3]",
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 2], [1, 2, 3], [1, 2, 1]," +
                 " [1, 2, 2], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 2], [1, 3, 3], [2, 1, 1], [2, 1, 2]," +
                 " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 2], [2, 2, 3], [2, 2, 1], [2, 2, 2], [2, 2, 2]," +
@@ -2463,21 +2463,21 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 2, 2], [3, 2, 3], [3, 2, 1], [3, 2, 2], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 2]," +
                 " [3, 3, 3]]");
 
-        listsLex_int_Iterable_helper(0, "[1, null, 3]", "[[]]");
-        listsLex_int_Iterable_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
-        listsLex_int_Iterable_helper(2, "[1, null, 3]",
+        listsLex_int_List_helper(0, "[1, null, 3]", "[[]]");
+        listsLex_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
+        listsLex_int_List_helper(2, "[1, null, 3]",
                 "[[1, 1], [1, null], [1, 3], [null, 1], [null, null], [null, 3], [3, 1], [3, null], [3, 3]]");
-        listsLex_int_Iterable_helper(3, "[1, null, 3]",
+        listsLex_int_List_helper(3, "[1, null, 3]",
                 "[[1, 1, 1], [1, 1, null], [1, 1, 3], [1, null, 1], [1, null, null], [1, null, 3], [1, 3, 1]," +
                 " [1, 3, null], [1, 3, 3], [null, 1, 1], [null, 1, null], [null, 1, 3], [null, null, 1]," +
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        listsLex_int_Iterable_helper(0, "[]", "[[]]");
-        listsLex_int_Iterable_helper(1, "[]", "[]");
-        listsLex_int_Iterable_helper(2, "[]", "[]");
-        listsLex_int_Iterable_helper(3, "[]", "[]");
+        listsLex_int_List_helper(0, "[]", "[[]]");
+        listsLex_int_List_helper(1, "[]", "[]");
+        listsLex_int_List_helper(2, "[]", "[]");
+        listsLex_int_List_helper(3, "[]", "[]");
         try {
             P.listsLex(-1, Collections.emptyList());
             fail();
@@ -3579,23 +3579,29 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsShortlex() {
+        aeqit(P.listsShortlex(Collections.emptyList()), "[[]]");
         aeqitLimit(TINY_LIMIT, P.listsShortlex(Arrays.asList(1, 2, 3)),
                 "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
                 " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
         aeqitLimit(TINY_LIMIT, P.listsShortlex(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [2], [2], [3], [1, 1], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 2], [2, 3], [2, 1]," +
                 " [2, 2], [2, 2], [2, 3], [3, 1], [3, 2], [3, 2], ...]");
-        aeqit(P.listsShortlex(Collections.emptyList()), "[[]]");
     }
 
     @Test
     public void testStringsShortlex() {
+        aeqit(P.stringsShortlex(""), "[]");
+        aeq(length(P.stringsShortlex("")), 1);
+        aeqitLimit(TINY_LIMIT, P.stringsShortlex("a"),
+                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
         aeqitLimit(TINY_LIMIT, P.stringsShortlex("abc"),
                 "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
         aeqitLimit(TINY_LIMIT, P.stringsShortlex("abbc"),
                 "[, a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, ...]");
-        aeqit(P.stringsShortlex(""), "[]");
-        aeq(length(P.stringsShortlex("")), 1);
+        aeqitLimit(TINY_LIMIT, P.stringsShortlex("Mississippi"),
+                "[, M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, ...]");
     }
 
     private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -3605,6 +3611,10 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testListsShortlexAtLeast() {
         listsShortlexAtLeast_helper(0, "[]", "[[]]");
+        listsShortlexAtLeast_helper(1, "[]", "[]");
+        listsShortlexAtLeast_helper(2, "[]", "[]");
+        listsShortlexAtLeast_helper(3, "[]", "[]");
+
         listsShortlexAtLeast_helper(0, "[1, 2, 3]",
                 "[[], [1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 3]," +
                 " [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], ...]");
@@ -3638,10 +3648,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], ...]");
 
-        listsShortlexAtLeast_helper(0, "[]", "[[]]");
-        listsShortlexAtLeast_helper(1, "[]", "[]");
-        listsShortlexAtLeast_helper(2, "[]", "[]");
-        listsShortlexAtLeast_helper(3, "[]", "[]");
         try {
             P.listsShortlexAtLeast(-1, Collections.emptyList());
             fail();
@@ -3658,15 +3664,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsShortlexAtLeast() {
-        stringsShortlexAtLeast_helper(0, "abc",
-                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
-        stringsShortlexAtLeast_helper(1, "abc",
-                "[a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, ...]");
-        stringsShortlexAtLeast_helper(2, "abc",
-                "[aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, ...]");
-        stringsShortlexAtLeast_helper(3, "abc",
-                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
-                " cab, ...]");
+        stringsShortlexAtLeast_helper(0, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
+        stringsShortlexAtLeast_helper(1, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
+        stringsShortlexAtLeast_helper(2, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
+        stringsShortlexAtLeast_helper(3, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
         stringsShortlexAtLeast_helper(0, "a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -3684,14 +3689,33 @@ public strictfp class ExhaustiveProviderTest {
                 " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaaaaaa, ...]");
-        stringsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
-        stringsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
-        stringsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
-        stringsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
+        stringsShortlexAtLeast_helper(0, "abc",
+                "[, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, ...]");
+        stringsShortlexAtLeast_helper(1, "abc",
+                "[a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, ...]");
+        stringsShortlexAtLeast_helper(2, "abc",
+                "[aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, ...]");
+        stringsShortlexAtLeast_helper(3, "abc",
+                "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
+                " cab, ...]");
+        stringsShortlexAtLeast_helper(0, "abbc",
+                "[, a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, ...]");
+        stringsShortlexAtLeast_helper(1, "abbc",
+                "[a, b, b, c, aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc, ...]");
+        stringsShortlexAtLeast_helper(2, "abbc",
+                "[aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc, aaa, aab, aab, aac, ...]");
+        stringsShortlexAtLeast_helper(3, "abbc",
+                "[aaa, aab, aab, aac, aba, abb, abb, abc, aba, abb, abb, abc, aca, acb, acb, acc, baa, bab, bab," +
+                " bac, ...]");
+        stringsShortlexAtLeast_helper(0, "Mississippi",
+                "[, M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, ...]");
+        stringsShortlexAtLeast_helper(1, "Mississippi",
+                "[M, i, s, s, i, s, s, i, p, p, i, MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
+        stringsShortlexAtLeast_helper(2, "Mississippi",
+                "[MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, ii, is, is, ii, is, is, ii, ip, ...]");
+        stringsShortlexAtLeast_helper(3, "Mississippi",
+                "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
+                " Mip, ...]");
         try {
             P.stringsShortlexAtLeast(-1, "");
             fail();
@@ -5337,7 +5361,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testStrings_String() {
+    public void testStrings_int() {
         strings_String_helper(0, "[]");
         aeq(length(P.strings(0)), 1);
         strings_String_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
@@ -5348,6 +5372,228 @@ public strictfp class ExhaustiveProviderTest {
                 " adb, ...]");
         try {
             P.strings(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
+    public void testLists_Iterable() {
+        aeqit(P.lists(Collections.emptyList()), "[[]]");
+        aeqitLimit(TINY_LIMIT, P.lists(Arrays.asList(1, 2, 3)),
+                "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
+                " [1, 1, 1, 1, 1, 1], ...]");
+        aeqitLimit(TINY_LIMIT, P.lists(Arrays.asList(1, 2, 2, 3)),
+                "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
+        aeqitLimit(TINY_LIMIT, P.lists(P.naturalIntegers()),
+                "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
+                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
+        aeqitLimit(TINY_LIMIT, P.lists(repeat(1)),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+    }
+
+    @Test
+    public void testStrings_String() {
+        aeqit(P.strings(""), "[]");
+        aeq(length(P.strings("")), 1);
+        aeqitLimit(TINY_LIMIT, P.strings("a"),
+                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
+        aeqitLimit(TINY_LIMIT, P.strings("abc"),
+                "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
+        aeqitLimit(TINY_LIMIT, P.strings("abbc"),
+                "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
+        aeqitLimit(TINY_LIMIT, P.strings("Mississippi"),
+                "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
+    }
+
+    @Test
+    public void testStrings() {
+        aeqitLimit(TINY_LIMIT, P.strings(),
+                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
+    }
+
+    private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.listsAtLeast(minSize, input), output);
+    }
+
+    private static void listsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        listsAtLeast_helper(minSize, readIntegerListWithNulls(input), output);
+    }
+
+    @Test
+    public void testListsAtLeast() {
+        listsAtLeast_helper(0, "[]", "[[]]");
+        listsAtLeast_helper(1, "[]", "[]");
+        listsAtLeast_helper(2, "[]", "[]");
+        listsAtLeast_helper(3, "[]", "[]");
+
+        listsAtLeast_helper(0, "[1, 2, 3]",
+                "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
+                " [1, 1, 1, 1, 1, 1], ...]");
+        listsAtLeast_helper(1, "[1, 2, 3]",
+                "[[1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
+                " [1, 1, 1, 1, 1, 1], [3, 3], ...]");
+        listsAtLeast_helper(2, "[1, 2, 3]",
+                "[[1, 1], [1, 1, 1], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2], [1, 1, 1, 1, 1], [1, 3]," +
+                " [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2], [1, 1, 1, 1, 1, 1], [3, 3], [2, 1, 1]," +
+                " [1, 1, 2, 1], [2, 1, 2], ...]");
+        listsAtLeast_helper(3, "[1, 2, 3]",
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 2], [1, 1, 1, 1, 1], [1, 2, 1], [1, 1, 1, 2], [1, 2, 2]," +
+                " [1, 1, 1, 1, 1, 1], [2, 1, 1], [1, 1, 2, 1], [2, 1, 2], [1, 1, 1, 1, 2], [2, 2, 1], [1, 1, 2, 2]," +
+                " [2, 2, 2], [1, 1, 1, 1, 1, 1, 1], [1, 1, 3], [1, 2, 1, 1], [1, 2, 3], [1, 1, 1, 2, 1], ...]");
+
+        listsAtLeast_helper(0, "[1, null, 3]",
+                "[[], [1], [1, 1], [null], [1, 1, 1], [3], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null]," +
+                " [null, null], [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1]," +
+                " [1, null, null], [3, null], [1, 1, 1, 1, 1, 1], ...]");
+        listsAtLeast_helper(1, "[1, null, 3]",
+                "[[1], [1, 1], [null], [1, 1, 1], [3], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null]," +
+                " [null, null], [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1]," +
+                " [1, null, null], [3, null], [1, 1, 1, 1, 1, 1], [3, 3], ...]");
+        listsAtLeast_helper(2, "[1, null, 3]",
+                "[[1, 1], [1, 1, 1], [1, null], [1, 1, 1, 1], [null, 1], [1, 1, null], [null, null]," +
+                " [1, 1, 1, 1, 1], [1, 3], [1, null, 1], [null, 3], [1, 1, 1, null], [3, 1], [1, null, null]," +
+                " [3, null], [1, 1, 1, 1, 1, 1], [3, 3], [null, 1, 1], [1, 1, null, 1], [null, 1, null], ...]");
+        listsAtLeast_helper(3, "[1, null, 3]",
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, null], [1, 1, 1, 1, 1], [1, null, 1], [1, 1, 1, null]," +
+                " [1, null, null], [1, 1, 1, 1, 1, 1], [null, 1, 1], [1, 1, null, 1], [null, 1, null]," +
+                " [1, 1, 1, 1, null], [null, null, 1], [1, 1, null, null], [null, null, null]," +
+                " [1, 1, 1, 1, 1, 1, 1], [1, 1, 3], [1, null, 1, 1], [1, null, 3], [1, 1, 1, null, 1], ...]");
+
+        listsAtLeast_helper(0, P.naturalIntegers(),
+                "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
+                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
+        listsAtLeast_helper(1, P.naturalIntegers(),
+                "[[0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
+                " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], [0, 1, 0], ...]");
+        listsAtLeast_helper(2, P.naturalIntegers(),
+                "[[0, 0], [0, 0, 0], [0, 1], [0, 0, 0, 0], [1, 0], [0, 0, 1], [1, 1], [0, 0, 0, 0, 0], [0, 2]," +
+                " [0, 1, 0], [0, 3], [0, 0, 0, 1], [1, 2], [0, 1, 1], [1, 3], [0, 0, 0, 0, 0, 0], [2, 0], [1, 0, 0]," +
+                " [2, 1], [0, 0, 1, 0], ...]");
+        listsAtLeast_helper(3, P.naturalIntegers(),
+                "[[0, 0, 0], [0, 0, 0, 0], [0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 0], [0, 0, 0, 1], [0, 1, 1]," +
+                " [0, 0, 0, 0, 0, 0], [1, 0, 0], [0, 0, 1, 0], [1, 0, 1], [0, 0, 0, 0, 1], [1, 1, 0], [0, 0, 1, 1]," +
+                " [1, 1, 1], [0, 0, 0, 0, 0, 0, 0], [0, 0, 2], [0, 1, 0, 0], [0, 0, 3], [0, 0, 0, 1, 0], ...]");
+
+        listsAtLeast_helper(0, repeat(1),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        listsAtLeast_helper(1, repeat(1),
+                "[[1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], ...]");
+        listsAtLeast_helper(2, repeat(1),
+                "[[1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [1, 1]," +
+                " [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1], [1, 1], [1, 1, 1]," +
+                " [1, 1], [1, 1, 1, 1], ...]");
+        listsAtLeast_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
+
+        try {
+            P.listsAtLeast(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.listsAtLeast(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void stringsAtLeast_String_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testStringsAtLeast_String() {
+        stringsAtLeast_String_helper(0, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
+        stringsAtLeast_String_helper(1, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
+        stringsAtLeast_String_helper(2, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
+        stringsAtLeast_String_helper(3, "", "[]");
+        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
+        stringsAtLeast_String_helper(0, "a",
+                "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
+        stringsAtLeast_String_helper(1, "a",
+                "[a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
+                " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsAtLeast_String_helper(2, "a",
+                "[aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
+                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsAtLeast_String_helper(3, "a",
+                "[aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa, aaaaaaaaaaaa," +
+                " aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaaaaaa, ...]");
+        stringsAtLeast_String_helper(0, "abc",
+                "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
+        stringsAtLeast_String_helper(1, "abc",
+                "[a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, cc, ...]");
+        stringsAtLeast_String_helper(2, "abc",
+                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, cc, baa, aaba, bab," +
+                " ...]");
+        stringsAtLeast_String_helper(3, "abc",
+                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
+                " aac, abaa, abc, aaaba, ...]");
+        stringsAtLeast_String_helper(0, "abbc",
+                "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
+        stringsAtLeast_String_helper(1, "abbc",
+                "[a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, aaaaaa, ...]");
+        stringsAtLeast_String_helper(2, "abbc",
+                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, aaaaaa, ba, baa, bb, aaba," +
+                " ...]");
+        stringsAtLeast_String_helper(3, "abbc",
+                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
+                " aab, abaa, aac, aaaba, ...]");
+        stringsAtLeast_String_helper(0, "Mississippi",
+                "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
+        stringsAtLeast_String_helper(1, "Mississippi",
+                "[M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, MiM, ...]");
+        stringsAtLeast_String_helper(2, "Mississippi",
+                "[MM, MMM, Mi, MMMM, iM, MMi, ii, MMMMM, Ms, MiM, Ms, MMMi, is, Mii, is, MMMMMM, sM, iMM, si, MMiM," +
+                " ...]");
+        stringsAtLeast_String_helper(3, "Mississippi",
+                "[MMM, MMMM, MMi, MMMMM, MiM, MMMi, Mii, MMMMMM, iMM, MMiM, iMi, MMMMi, iiM, MMii, iii, MMMMMMM," +
+                " MMs, MiMM, MMs, MMMiM, ...]");
+        try {
+            P.stringsAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringsAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void stringsAtLeast_helper(int minSize, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsAtLeast(minSize), output);
+    }
+
+    @Test
+    public void testStringsAtLeast() {
+        stringsAtLeast_helper(0, "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
+        stringsAtLeast_helper(1,
+                "[a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, aba, ...]");
+        stringsAtLeast_helper(2,
+                "[aa, aaa, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, ad, aaab, bc, abb, bd, aaaaaa, ca, baa, cb, aaba," +
+                " ...]");
+        stringsAtLeast_helper(3,
+                "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
+                " aac, abaa, aad, aaaba, ...]");
+        try {
+            P.stringsAtLeast(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }

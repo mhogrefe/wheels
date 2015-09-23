@@ -3417,6 +3417,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return cons(
                 Collections.emptyList(),
                 optionalMap(
@@ -3450,7 +3451,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         if (minSize == 0) return lists(xs);
+        if (isEmpty(xs)) return Collections.emptyList();
         return optionalMap(
                 p -> p.b,
                 dependentPairsInfiniteLogarithmicOrder(
