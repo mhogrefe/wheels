@@ -2728,7 +2728,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
-     *  <li>{@code xs} must be finite.</li>
+     *  <li>{@code xs} cannot be null.</li>
      *  <li>The result either consists of a single empty {@code List}, or is infinite. It is in shortlex order
      *  (according to some ordering of its elements) and contains every {@code List} (with a length greater than or
      *  equal to some minimum) of elements drawn from some sequence.</li>
@@ -3399,6 +3399,22 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code List}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result either consists of a single empty {@code List}, or is infinite. It contains every {@code List}
+     *  of elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * Result length is 1 if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return cons(
@@ -3413,6 +3429,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
+     * {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result either consists of a single empty {@code List}, or is infinite. It contains every {@code List}
+     *  (with a length greater than or equal to some minimum) of elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * Result length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all {@code List}s created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (minSize == 0) return lists(xs);
