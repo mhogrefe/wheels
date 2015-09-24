@@ -3322,6 +3322,36 @@ public final strictfp class RandomProvider extends IterableProvider {
         return chunkSeptuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code String}s of a given length with characters from a given
+     * {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>If {@code s} is empty, {@code size} must be 0.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements have the same length.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param size the length of the result {@code String}s
+     * @param s the {@code String} from which characters are selected
+     * @return {@code String}s of a given length created from {@code s}
+     */
+    @Override
+    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
+        if (s.isEmpty()) {
+            if (size == 0) {
+                return repeat("");
+            } else {
+                throw new IllegalArgumentException("If s is empty, size must be 0. Invalid size: " + size);
+            }
+        }
+        return super.strings(size, s);
+    }
+
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {

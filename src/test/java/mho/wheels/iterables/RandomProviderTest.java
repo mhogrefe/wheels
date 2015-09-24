@@ -12863,6 +12863,7 @@ public strictfp class RandomProviderTest {
 
     @Test
     public void testStrings_int_String() {
+        strings_int_Iterable_helper(0, "", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
         strings_int_Iterable_helper(0, "a", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
         strings_int_Iterable_helper(
                 1,
@@ -12947,7 +12948,7 @@ public strictfp class RandomProviderTest {
                 "{sss=48687, sis=48297, ssi=48283, iis=48220, sii=48107, iii=48048, iss=47940, isi=47797, psi=24274," +
                 " pss=24260}"
         );
-        strings_int_Iterable_fail_helper(0, "");
+        strings_int_Iterable_fail_helper(1, "");
         strings_int_Iterable_fail_helper(-1, "abc");
     }
 
