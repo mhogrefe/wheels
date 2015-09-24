@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 // @formatter:off
+//todo test lists with single elements
 public strictfp class ExhaustiveProviderTest {
     private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
     private static final int TINY_LIMIT = 20;

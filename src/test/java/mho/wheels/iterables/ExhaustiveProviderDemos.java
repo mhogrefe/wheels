@@ -16,6 +16,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
+//todo make list and string sizes smaller (change in props too)
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
@@ -1266,10 +1267,72 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoStrings_String() {
+    private static void demoStrings_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("strings(" + i + ") = " + its(map(Testing::nicePrint, EP.strings(i))));
+        }
+    }
+
+    private static void demoLists_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("lists(" + xs + ") = " + its(EP.lists(xs)));
+        }
+    }
+
+    private static void demoLists_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("lists(" + its(xs) + ") = " + its(EP.lists(xs)));
+        }
+    }
+
+    private static void demoStrings_String() {
+        initialize();
+        for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
+            System.out.println("strings(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.strings(s))));
+        }
+    }
+
+    private static void demoListsAtLeast_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsAtLeast(" + p.b + ", " + p.a + ") = " + its(EP.listsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoListsAtLeast_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsAtLeast(" + p.b + ", " + its(p.a) + ") = " + its(EP.listsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoStringsAtLeast_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsAtLeast(p.b, p.a))));
+        }
+    }
+
+    private static void demoStringsAtLeast_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("stringsAtLeast(" + i + ") = " + its(map(Testing::nicePrint, EP.stringsAtLeast(i))));
         }
     }
 }

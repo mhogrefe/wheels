@@ -3418,6 +3418,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
+        if (!lengthAtLeast(2, xs)) {
+            T x = head(xs);
+            return iterate(ys -> toList(cons(x, ys)), Collections.emptyList());
+        }
         return cons(
                 Collections.emptyList(),
                 optionalMap(
@@ -3456,6 +3460,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         if (minSize == 0) return lists(xs);
         if (isEmpty(xs)) return Collections.emptyList();
+        if (!lengthAtLeast(2, xs)) {
+            T x = head(xs);
+            return iterate(ys -> toList(cons(x, ys)), toList(replicate(minSize, x)));
+        }
         return optionalMap(
                 p -> p.b,
                 dependentPairsInfiniteLogarithmicOrder(
