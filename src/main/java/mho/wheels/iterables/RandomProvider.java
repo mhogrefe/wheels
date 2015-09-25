@@ -3377,7 +3377,6 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
             private final @NotNull Iterator<Integer> sizes = rangeUpGeometric(minSize).iterator();
