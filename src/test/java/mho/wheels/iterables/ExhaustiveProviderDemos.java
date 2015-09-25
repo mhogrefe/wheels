@@ -16,7 +16,6 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
-//todo make list and string sizes smaller (change in props too)
 public class ExhaustiveProviderDemos {
     private static final boolean USE_RANDOM = false;
     private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
@@ -909,9 +908,9 @@ public class ExhaustiveProviderDemos {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
-                P.naturalIntegersGeometric()
+                P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<List<Integer>, Integer> p : take(TINY_LIMIT, ps)) {
+        for (Pair<List<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("listsShortlexAtLeast(" + p.b + ", " + p.a + ") = " +
                     its(EP.listsShortlexAtLeast(p.b, p.a)));
         }
@@ -921,9 +920,9 @@ public class ExhaustiveProviderDemos {
         initialize();
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
-                P.naturalIntegersGeometric()
+                P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<String, Integer> p : take(TINY_LIMIT, ps)) {
+        for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
                     its(map(Testing::nicePrint, EP.stringsShortlexAtLeast(p.b, p.a))));
         }
