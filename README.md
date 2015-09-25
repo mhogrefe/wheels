@@ -11,6 +11,7 @@ Progress
 
 | Class                       | Methods | JavaDoc | Tests | Demos | Properties |
 |:--------------------------- |:-------:|:-------:|:-----:|:-----:|:----------:|
+| ConcurrencyUtils            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | Readers                     | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextInput                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
