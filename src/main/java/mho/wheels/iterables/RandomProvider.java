@@ -3355,8 +3355,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
-            private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
 
             @Override
             public boolean hasNext() {
@@ -3379,8 +3379,8 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return () -> new NoRemoveIterator<List<T>>() {
-            private final Iterator<T> xsi = cycle(xs).iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<Integer> sizes = rangeUpGeometric(minSize).iterator();
 
             @Override
             public boolean hasNext() {
@@ -3389,7 +3389,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
             @Override
             public @NotNull List<T> next() {
-                int size = sizes.next() + minSize;
+                int size = sizes.next();
                 List<T> list = new ArrayList<>();
                 for (int i = 0; i < size; i++) {
                     list.add(xsi.next());
