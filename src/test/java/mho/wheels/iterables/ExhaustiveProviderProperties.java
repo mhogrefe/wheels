@@ -34,7 +34,8 @@ public class ExhaustiveProviderProperties {
 
     private static void initialize(String name) {
         P.reset();
-        System.out.println("\t\ttesting " + name + " properties...");
+        System.out.print('\t');
+        initializeConstant(name);
     }
 
     @Test
@@ -97,6 +98,7 @@ public class ExhaustiveProviderProperties {
         propertiesNegativeCanonicalBigDecimals();
         propertiesNonzeroCanonicalBigDecimals();
         propertiesCanonicalBigDecimals();
+        propertiesStrings();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -157,8 +159,8 @@ public class ExhaustiveProviderProperties {
             propertiesPermutationsFinite();
             propertiesStringPermutations();
             propertiesPrefixPermutations();
-            propertiesListsLex_int_Iterable();
-            compareImplementationsListsLex_int_Iterable();
+            propertiesListsLex_int_List();
+            compareImplementationsListsLex_int_List();
             propertiesPairsLex();
             propertiesTriplesLex();
             propertiesQuadruplesLex();
@@ -192,6 +194,11 @@ public class ExhaustiveProviderProperties {
             compareImplementationsSeptuples_Iterable();
             propertiesStrings_int_String();
             propertiesStrings_int();
+            propertiesLists();
+            propertiesStrings_String();
+            propertiesListsAtLeast();
+            propertiesStringsAtLeast_int_String();
+            propertiesStringsAtLeast_int();
         }
         System.out.println("Done");
     }
@@ -1982,8 +1989,8 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesListsLex_int_Iterable() {
-        initialize("listsLex(int, Iterable<T>)");
+    private static void propertiesListsLex_int_List() {
+        initialize("listsLex(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
                 P.withScale(4).naturalIntegersGeometric()
@@ -2049,7 +2056,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void compareImplementationsListsLex_int_Iterable() {
+    private static void compareImplementationsListsLex_int_List() {
         Map<String, Function<Pair<List<Integer>, Integer>, List<List<Integer>>>> functions = new LinkedHashMap<>();
         functions.put("alt", p -> listsLex_int_Iterable_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.listsLex(p.b, p.a)));
@@ -2060,7 +2067,7 @@ public class ExhaustiveProviderProperties {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        compareImplementations("listsLex(int, Iterable<T>)", take(LIMIT, ps), functions);
+        compareImplementations("listsLex(int, List<T>)", take(LIMIT, ps), functions);
     }
 
     private static void propertiesPairsLex() {
@@ -2875,7 +2882,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesListsShortlex() {
-        initialize("listsShortlex(Iterable<T>)");
+        initialize("listsShortlex(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.listsShortlex(xs);
             testNoRemove(TINY_LIMIT, lists);
@@ -2915,7 +2922,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesListsShortlexAtLeast() {
-        initialize("listsShortlexAtLeast(int, Iterable<T>)");
+        initialize("listsShortlexAtLeast(int, List<T>)");
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
                 P.withScale(4).naturalIntegersGeometric()
@@ -4206,6 +4213,172 @@ public class ExhaustiveProviderProperties {
         for (int i : take(LIMIT, P.withScale(4).negativeIntegersGeometric())) {
             try {
                 EP.strings(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesLists() {
+        initialize("lists(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> lists = EP.lists(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            assertEquals(xs, head(listsList), Collections.emptyList());
+            assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.listsShortlex(xs)));
+            assertTrue(xs, unique(listsList));
+        }
+
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<List<Integer>> lists = EP.lists(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            assertEquals(xs, head(listsList), Collections.emptyList());
+            assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+            assertTrue(xs, unique(listsList));
+        }
+    }
+
+    private static void propertiesStrings_String() {
+        initialize("strings(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> strings = EP.strings(s);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(s, head(stringsList), "");
+            assertTrue(s, all(t -> isSubsetOf(t, s), stringsList));
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            List<String> stringsList = toList(take(TINY_LIMIT, EP.strings(s)));
+            assertTrue(s, unique(stringsList));
+        }
+    }
+
+    private static void propertiesStrings() {
+        initializeConstant("strings()");
+        biggerTest(EP, EP.strings(), s -> true);
+    }
+
+    private static void propertiesListsAtLeast() {
+        initialize("listsAtLeast(int, Iterable<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.listsAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
+            }
+            assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+            assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.listsShortlexAtLeast(p.b, p.a)));
+            assertTrue(p, unique(listsList));
+        }
+
+        Iterable<Pair<Iterable<Integer>, Integer>> ps2 = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps2)) {
+            Iterable<List<Integer>> lists = EP.listsAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            if (!isEmpty(p.a)) {
+                assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
+            }
+            assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+            assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
+            assertTrue(p, unique(listsList));
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<List<Integer>> xss = EP.listsAtLeast(i, Collections.emptyList());
+            testHasNext(xss);
+            assertEquals(i, toList(xss), Collections.emptyList());
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.listsAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsAtLeast_int_String() {
+        initialize("stringsAtLeast(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringsAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            if (!p.a.isEmpty()) {
+                assertEquals(p, head(stringsList), replicate(p.b, head(p.a)));
+            }
+            assertTrue(p, all(s -> isSubsetOf(s, p.a), stringsList));
+            assertTrue(p, all(s -> s.length() >= p.b, stringsList));
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            List<String> stringsList = toList(take(TINY_LIMIT, EP.stringsAtLeast(p.b, p.a)));
+            assertTrue(p, unique(stringsList));
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<String> ss = EP.stringsAtLeast(i, "");
+            testHasNext(ss);
+            assertEquals(i, toList(ss), Collections.emptyList());
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringsAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsAtLeast_int() {
+        initialize("stringsAtLeast(int)");
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            Iterable<String> strings = EP.stringsAtLeast(i);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(i, head(stringsList), charsToString(replicate(i, head(EP.characters()))));
+            assertTrue(i, all(s -> s.length() >= i, stringsList));
+            assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(LIMIT, P.negativeIntegers())) {
+            try {
+                EP.stringsAtLeast(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }
