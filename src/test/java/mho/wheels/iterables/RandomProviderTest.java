@@ -13333,7 +13333,7 @@ public strictfp class RandomProviderTest {
     ) {
         List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).strings(input)));
         aeqitLimit(TINY_LIMIT, sample, output);
-        aeq(topSampleCount(DEFAULT_TOP_COUNT, toList(map(Testing::nicePrint, sample))), topSampleCount);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
         aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
         P.reset();
     }
@@ -14076,6 +14076,256 @@ public strictfp class RandomProviderTest {
         listsAtLeast_fail_helper(5, 3, Arrays.asList(1, 2, 3));
         listsAtLeast_fail_helper(5, 5, P.integers());
         listsAtLeast_fail_helper(4, 5, P.integers());
+    }
+
+    private static void stringsAtLeast_int_String_helper(
+            int scale,
+            int minSize,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsAtLeast(minSize, input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringsAtLeast_int_String_fail_helper(int scale, int minSize, @NotNull String input) {
+        try {
+            toList(P.withScale(scale).stringsAtLeast(minSize, input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringsAtLeast_int_String() {
+        stringsAtLeast_int_String_helper(
+                2,
+                1,
+                "a",
+                "[aaaa, aaaaaaaaa, aaaa, a, aa, a, aaa, a, a, aa, a, aa, aa, a, a, a, a, a, a, a, ...]",
+                "{a=500269, aa=249809, aaa=124830, aaaa=62682, aaaaa=31195, aaaaaa=15549, aaaaaaa=7831," +
+                " aaaaaaaa=3938, aaaaaaaaa=2013, aaaaaaaaaa=951}",
+                1.999585999979838
+        );
+        stringsAtLeast_int_String_helper(
+                5,
+                3,
+                "a",
+                "[aaaaaaa, aaaa, aaaaa, aaaa, aaaaaaaa, aaa, aaaaa, aaaaa, aaa, aaaa, aaaa, aaa, aaaaaaa, aaaaaaa," +
+                " aaaaaaaaaa, aaa, aaaaaaaa, aaa, aaa, aaaaaa, ...]",
+                "{aaa=332475, aaaa=222950, aaaaa=148435, aaaaaa=98386, aaaaaaa=65648, aaaaaaaa=43847," +
+                " aaaaaaaaa=29430, aaaaaaaaaa=19567, aaaaaaaaaaa=13014, aaaaaaaaaaaa=8771}",
+                5.00315899999616
+        );
+        stringsAtLeast_int_String_helper(
+                32,
+                8,
+                "a",
+                "[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaa, aaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaa, aaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaa, aaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
+                " aaaaaaaa, aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaa," +
+                " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaa, ...]",
+                "{aaaaaaaa=40181, aaaaaaaaa=38543, aaaaaaaaaa=37070, aaaaaaaaaaa=35343, aaaaaaaaaaaa=33943," +
+                " aaaaaaaaaaaaa=32305, aaaaaaaaaaaaaa=31206, aaaaaaaaaaaaaaa=29856, aaaaaaaaaaaaaaaa=28774" +
+                ", aaaaaaaaaaaaaaaaa=27718}",
+                32.008717000021356
+        );
+        stringsAtLeast_int_String_helper(
+                2,
+                1,
+                "abc",
+                "[babb, bbcbcacb, acb, c, cba, c, bc, b, c, acc, b, c, b, c, a, c, a, a, c, ba, ...]",
+                "{b=167156, c=166869, a=166251, bc=28319, ac=27831, bb=27782, ca=27773, aa=27761, ab=27704, cb=27683}",
+                1.9993039999798474
+        );
+        stringsAtLeast_int_String_helper(
+                5,
+                3,
+                "abc",
+                "[bbbbbab, cbbcacb, cbc, acabc, bac, cccbc, bacc, aca, caa, bbaccb, bcbcbcb, bab, bccaacaaa," +
+                " cbcacccabbc, bcbc, cac, accb, aaa, ccaaccaa, bac, ...]",
+                "{bcc=12598, bca=12517, cca=12472, baa=12457, cbc=12442, acc=12437, ccb=12420, aaa=12412, cab=12392" +
+                ", cac=12372}",
+                5.003739999996368
+        );
+        stringsAtLeast_int_String_helper(
+                32,
+                8,
+                "abc",
+                "[cbcacccbccabaccaacaacaaccbabbaccbccbcabcbcbcbaba, ccbccccbacbcacccabbccabcbc, cacbaacc," +
+                " aaccbccacc, cccbaacbbacbcbacbcaca, cabaabbaccaabaaa, caacbcabccbaccaccabbbbbab, aacbbcabbbaab," +
+                " aacaaccaccacccbc," +
+                " bbbcbbbcccbccabaabaaccacbacbacaccbbaaabbacbaacbaaacbbabbacaaabcbbccbbcccbbaaaacbbabbacccc," +
+                " bbbcbaccbacabccbabcabbaccbbbccaaccbacabc, cbcacbaacbccacbaabcbacbbcbbabcbcb," +
+                " bbaaaabcbcabcbbccbcbacbababacbcccabcacbababaccababacbaa, aacaccbcbacbaacabaaabacbcbbabaa," +
+                " acaabbaacabcbaccbbcabc, aacababbaccbcbccbbabbaccccbabcaaccbbcaaabbbc," +
+                " ccabbccbaccbabaaacbcbcaaabbcabccaacc, bcbcccbbb, aaccaccbbcbabcabaabbbccbabbaaba, bbbacacab, ...]",
+                "{ccabbcaa=16, accccaaa=15, aaacbcaa=15, cbcccbbc=15, acabbabb=15, bacaaabc=15, abbbbcbb=14," +
+                " aabbabab=14, abcbcaba=14, cbacaccb=14}",
+                32.010685000021894
+        );
+        stringsAtLeast_int_String_helper(
+                2,
+                1,
+                "abbc",
+                "[bcab, bbbcbbacb, abcb, c, cb, b, abc, b, a, cc, b, ab, bb, b, b, b, a, b, a, a, ...]",
+                "{b=249789, c=125444, a=125036, bb=62887, bc=31371, cb=31153, ab=31119, ba=30818, aa=15774, ac=15648}",
+                1.999585999979838
+        );
+        stringsAtLeast_int_String_helper(
+                5,
+                3,
+                "abbc",
+                "[bbccbcb, bbbc, cbbcb, bcba, abcabbab, ccb, bcbbb, babba, baa, abcb, bcbc, bbb, bbccccb, ccccbac," +
+                " bbccbaabaa, bbb, cbbccbcc, bbb, bcc, bbbbca, ...]",
+                "{bbb=41560, bbc=20918, abb=20798, bcb=20791, bab=20753, cbb=20552, bba=20519, bbbb=14169," +
+                " abc=10717, aba=10620}",
+                5.00315899999616
+        );
+        stringsAtLeast_int_String_helper(
+                32,
+                8,
+                "abbc",
+                "[ccbbcbabcbbbbbababbaabaabaabcbcccbabcbcabbbbbcbb, bbccccbc, bbbcbbcccbbbacbbccbccabbbabccbbbabb," +
+                " babcbcaab, aacbccbbbbca, bbbbaabbbabbbbabbbababb, babaabcbabcbaacb, abbbbbab, baccabbbccabbbbacbb," +
+                " bcbacbbb, acccccacbbbcbabbcba, caacbacabbabcbabbbb," +
+                " bcbbbbbbbbbcbbcbabaabaabbabbcabbababbbccbaaabbabbcacacbbaaabbbabbabaaabccbcccbbbbbbbbbbbaa," +
+                " bcbbbcbabbbcababbccbbabbabbcabbcbcbcbbbccaabbbabcabcbccc, bbbabbaabbbbabbacabbbabbccbbbbc," +
+                " bcbbbcba, bbcaaccaacbbbbaccbbbcbbbcbcbbabbacbababbbbbacbbabbacbc, cbabacbbacab," +
+                " aababcbbbbabcbacacbcabaaababbb, bbcbcabbbbbccc, ...]",
+                "{bbbbbbbb=155, bbbbbbba=97, bbbbbcbb=93, babbbbbb=87, bbbbbbbbb=83, bbcbbbbb=80, bbbcbbbb=79," +
+                " bcbbbbbb=78, bbabbbbb=77, bbbbbbcb=73}",
+                32.008717000021356
+        );
+        stringsAtLeast_int_String_helper(
+                2,
+                1,
+                "Mississippi",
+                "[spss, sisisss, i, iss, iss, s, i, si, s, ss, i, ip, iM, i, p, i, s, s, psss, s, ...]",
+                "{i=182168, s=181773, p=91352, M=45380, si=33041, ii=32991, is=32976, ss=32971, sp=16706, pi=16449}",
+                1.9990949999798069
+        );
+        stringsAtLeast_int_String_helper(
+                5,
+                3,
+                "Mississippi",
+                "[ssiisss, sis, ssipi, issssisM, sssisi, iMp, pips, psssi, ssssss, isiisis, psiiips, iMs," +
+                " siisisisis, iisMs, isi, isi, MMss, sspsisi, sMii, spis, ...]",
+                "{sss=16261, sis=16159, iii=16155, iss=16050, ssi=16043, iis=16002, isi=15947, sii=15643, sip=8121" +
+                ", spi=8107}",
+                5.003636999996235
+        );
+        stringsAtLeast_int_String_helper(
+                32,
+                8,
+                "Mississippi",
+                "[sisssssisipiMpippipsssiMpsssispsMssssssssssspisi, spisssssppsiisisisisiiis, sMisiiis, Msssssssss," +
+                " iipspisspspsiisipipsM, iiiispspi, ippssspsM, sMpsiMssisssMspssi, iiiipsssiMipiiMp," +
+                " issMiisMsiMssispsi," +
+                " iipsspsissisisMipMpissiiMspispiiMMiipiiiMsisisMppssipispipisssspssssissipMpsisiisppiii," +
+                " siississpiMMiiiipsippssisissiiiMipsiiipspisp, isipMpssissipssMpssiMiiip," +
+                " ssiipisisispipisssspissisiippssssssiisMsisssMsMsissMipiss, iiispsiiispiMipsiisiMsiisiis," +
+                " MsiMisissMiisp, pipppMspsisiisMispssiipspiMisisMpiiisissississppisii, ssMsspisispissMpsiss," +
+                " piisssssppispipiiiiiis, iisiisspispsiiisMip, ...]",
+                "{isssssss=23, siiiisss=22, sssiisss=22, sisisiii=21, ssssisii=21, iisssiss=21, ssissisi=20," +
+                " isiisisi=20, sissiisi=20, iisiissi=20}",
+                32.00263800002314
+        );
+        stringsAtLeast_int_String_fail_helper(5, 3, "");
+        stringsAtLeast_int_String_fail_helper(5, 5, "abc");
+        stringsAtLeast_int_String_fail_helper(4, 5, "abc");
+    }
+
+    private static void stringsAtLeast_int_helper(
+            int scale,
+            int minSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsAtLeast(minSize)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringsAtLeast_int_fail_helper(int scale, int minSize) {
+        try {
+            toList(P.withScale(scale).stringsAtLeast(minSize));
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringsAtLeast_int() {
+        stringsAtLeast_int_helper(
+                2,
+                1,
+                "[ε䊿\u2538\u31e5, \udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏ꏹ, 㩷, 纫\ufe2d, 䝲, 坤琖\u2a43, \uea45, 蕤," +
+                " \u2b63\uf637, 鸅, \uee1c\u33b2, ᅺ됽, 䇺, \ue9fd, 㖊, \uaaf0, 覚, 䱸, \u2e24, ...]",
+                "{瓫=24, 簐=22, 듑=22, 瀯=21, \uf3e9=21, 䝞=21, 抷=20, 䒢=20, Ẑ=20, 텁=20}",
+                1.999585999979838
+        );
+        stringsAtLeast_int_helper(
+                5,
+                3,
+                "[\u31e5髽肣\uf6ffﳑ赧\ue215, \udd15몱ﲦ䯏, 刿ㄾ䲵箿偵, K㵏ꏹ缄, 坤琖\u2a43퉌\uea45\ue352蕤餥," +
+                " \u2b63\uf637鸂, \u33b2酓캆ᅺ됽, \ue9fd\u2aec㖊짎\uaaf0, 覚돘䱸, \uf878ሮܓ鄒, 尩굿\uecf5ꪻ, \ue8b2빮빅," +
+                " 瀵컦刓嗏\u3353\ue2d3\ud805, 䫯噋\uf36fꌻ躁\ue87c홃, 壙\udd82픫鼧\u061a\u2e94穨㽖ﶼ䥔, 糦嗮\uf329," +
+                " ꯃ慚총\u0e77\uf36bB㽿\u2a57, \udec6ꅪ\udcc6, \u337d萋\u0d5b, 쪡詪쀝\u1366\uf21bᵠ, ...]",
+                "{\u31e5髽肣\uf6ffﳑ赧\ue215=1, \udd15몱ﲦ䯏=1, 刿ㄾ䲵箿偵=1, K㵏ꏹ缄=1, 坤琖\u2a43퉌\uea45\ue352蕤餥=1," +
+                " \u2b63\uf637鸂=1, \u33b2酓캆ᅺ됽=1, \ue9fd\u2aec㖊짎\uaaf0=1, 覚돘䱸=1, \uf878ሮܓ鄒=1}",
+                5.00315899999616
+        );
+        stringsAtLeast_int_helper(
+                32,
+                8,
+                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
+                "띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f㱉泦, 瀵컦刓嗏\u3353\ue2d3\ud805ឃ," +
+                " 糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6\u0964\u337d萋\u0d5b詵\ud8ca" +
+                "䍾徜쪡詪, 駆퉐庺\u2293\ued0d䴻ꎤ槔横, 䃼匀낛띆ﱓ㝏ᯖ\uea55\ue9c6儖䦣\u202c," +
+                " ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ叙繲\uefc8嶂췴䔾턞, \uab6e䝀㥑\u2e64년믱젯䁅偘滞\ue89bᖒ㿘燔ꎿ趵," +
+                " 㙴ᶙ䁩聂ꃖꐲ\udc58\u26f2, 쳮陜阏顓\u2320쓎狙쟒㕯뚗\u32b0頵\u2606ꎚ궥婜쇻ᅒ댲, 旞\u2613\u19de\u0618戯韕똽\u25ad," +
+                " 죴\u0d47㚏帇퀯\uebc7晸犋鈖ꤥ쿕\u0f1b\u2eea\uf800ᓑ濙䢗瞁퓰," +
+                " 梏\u2684\ue40c\u2b83葆а팗풬궺쥶ꎠ뗢撻뵪\u21c0羾놂쒞沅," +
+                " 헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍\u2af8운\u2026桶뼄ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞" +
+                "\ue531칗ᳯ\u073d飰\ue480\ua6f4\u19b1\u1739箴\ued1a쀁\ua7af탰\u3243\u4df4\u2a33䨺\ud845㼰館㾸侒叵\uf351鳸" +
+                "뾁냥ꯈ\u1aba呼\u0b8c䦼鳙柿쥇顆乃\ude93쁳\u0aa9蕕챲閦\ue10d嬵\uecdaꜢஆ挑쑹窀糘," +
+                " 甍뮣民皑\u291e秳ʵ솄퍆芦瀉벧\u2e50滎\u25a0爑\u1fce廏놿\u07aa\udde1頔臙ㆲ\uee84㢍䒉藟㗨詂ܒ嘟ᰁ謳䒁\u17cb" +
+                "\u0875멖\uecda㙿\ua837稔뇐\uee3aۮ\uf6cd\ue22c\u2fbe톋艸操샣墺貗\u1c47\uf2ff," +
+                " 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭\uda6cᎳ\ua9f4쉙嘂\uf6a5䜐禎\u0529K쬋壵\ue61e쵕ᶑ\uf04f," +
+                " ᬱ뭇昺玉뾂炣虹㨘," +
+                " 씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7익Ᏺ㥥㖃ど츪퇢㴯ᚅ\u1deb齞杁鱼欎䌕렔횋葑䎌쯹笨\udd06\ude35鲦頒Ϯ懜焣担戎" +
+                "몔\ue47a串\u0c00\ue59b聾ﶯ," +
+                " \u2153\uf7cdꜰ耕詴茟\u0482쵕ꏠ\ud847\uef98쾭," +
+                " 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0cec巶먛㺱\udbf4蠛玌疟ᒚⴓ\u2818\u2b5d\ud85cⲄ뤀\u0361ꚸ璎祍忢," +
+                " 좲햽퐗僮眏겴\uf5e2霺ⱊȢ\ue41d\u2f43뜓軷, ...]",
+                "{\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
+                "띯\ue5cb\ua7b1聆尩굿\uecf5ꪻ疜\ue8b2빮빅\ue2da䟆\ue78f㱉泦=1, 瀵컦刓嗏\u3353\ue2d3\ud805ឃ=1," +
+                " 糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6\u0964\u337d萋\u0d5b詵\ud8ca" +
+                "䍾徜쪡詪=1," +
+                " 駆퉐庺\u2293\ued0d䴻ꎤ槔横=1, 䃼匀낛띆ﱓ㝏ᯖ\uea55\ue9c6儖䦣\u202c=1," +
+                " ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ叙繲\uefc8嶂췴䔾턞=1," +
+                " \uab6e䝀㥑\u2e64년믱젯䁅偘滞\ue89bᖒ㿘燔ꎿ趵=1, 㙴ᶙ䁩聂ꃖꐲ\udc58\u26f2=1," +
+                " 쳮陜阏顓\u2320쓎狙쟒㕯뚗\u32b0頵\u2606ꎚ궥婜쇻ᅒ댲=1, 旞\u2613\u19de\u0618戯韕똽\u25ad=1}",
+                32.008717000021356
+        );
+        stringsAtLeast_int_fail_helper(5, 5);
+        stringsAtLeast_int_fail_helper(4, 5);
     }
 
     @Test
