@@ -174,6 +174,7 @@ public class RandomProviderProperties {
             propertiesPrefixPermutations();
             propertiesStrings_int_String();
             propertiesStrings_int();
+            propertiesLists();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2661,6 +2662,32 @@ public class RandomProviderProperties {
                 p.a.strings(p.b);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesLists() {
+        initialize("lists(Iterable<T>)");
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.lists(p.b), is -> true);
+        }
+
+        Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                P.withScale(4).listsAtLeast(1, P.withNull(P.withScale(4).integersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
+            simpleTest(p.a, p.a.lists(p.a.uniformSample(p.b)), is -> isSubsetOf(is, p.b));
+        }
+
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
+            try {
+                toList(p.a.lists(p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
         }
     }
 
