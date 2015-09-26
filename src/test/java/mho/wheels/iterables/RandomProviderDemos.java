@@ -1266,6 +1266,87 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoLists() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("lists(" + p.a + ", " + its(p.b) + ") = " + its(p.a.lists(p.b)));
+        }
+    }
+
+    private static void demoStrings_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("strings(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, p.a.strings(p.b))));
+        }
+    }
+
+    private static void demoStrings() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("strings(" + rp + ") = " + its(map(Testing::nicePrint, rp.strings())));
+        }
+    }
+
+    private static void demoListsAtLeast() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filter(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).positiveIntegersGeometric(),
+                        P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("listsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.listsAtLeast(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringsAtLeast_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, String>> ts = filter(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).positiveIntegersGeometric(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.stringsAtLeast(t.b, t.c))));
+        }
+    }
+
+    private static void demoStringsAtLeast_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).positiveIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringsAtLeast(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringsAtLeast(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
