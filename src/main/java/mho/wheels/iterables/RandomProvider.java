@@ -3352,6 +3352,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return super.strings(size, s);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s with elements from a given {@code Iterable}. The mean
+     * length of the {@code List}s is {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and none of its elements are null.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
@@ -3375,6 +3391,25 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s with a minimum length and with elements from a given
+     * {@code Iterable}. The mean length of the {@code List}s is {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code this} must have a {@code scale} at least 1 greater than {@code minSize}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and none of its elements are null.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
