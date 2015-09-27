@@ -20,7 +20,7 @@ import static mho.wheels.ordering.Ordering.*;
 /**
  * Methods for generating and manipulating {@link Iterable}s. The equivalents of every function in Haskell's
  * {@code Data.List} module may be found here (except for {@code permutations} and {@code subsequences}, which are in
- * {@link mho.wheels.math.Combinatorics}).
+ * {@link IterableProvider}).
  */
 public final strictfp class IterableUtils {
     /**
@@ -455,7 +455,7 @@ public final strictfp class IterableUtils {
                     Collections.singletonList(Double.POSITIVE_INFINITY);
         }
         Iterable<Double> ds = map(BigDecimal::doubleValue, rangeUp(BigDecimal.valueOf(a)));
-        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)) : ds;
+        return FloatingPointUtils.isNegativeZero(a) ? cons(-0.0, tail(ds)) : ds;
     }
 
     /**
@@ -827,7 +827,7 @@ public final strictfp class IterableUtils {
                 BigDecimal::doubleValue,
                 range(new BigDecimal(Double.toString(a)), new BigDecimal(Double.toString(b)))
         );
-        return FloatingPointUtils.isNegativeZero(Double.valueOf(a)) ? cons(-0.0, tail(ds)): ds;
+        return FloatingPointUtils.isNegativeZero(a) ? cons(-0.0, tail(ds)): ds;
     }
 
     public static @NotNull Iterable<Byte> rangeBy(byte a, byte i) {

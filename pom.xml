@@ -38,7 +38,9 @@
                         <include>**/IterableUtilsProperties.java</include>
                         <include>**/NoRemoveIteratorTest.java</include>
                         <include>**/NoRemoveIteratorProperties.java</include>
-                        <include>**/RandomProviderTest.java</include>
+                        <include>**/randomProvider/BasicTest.java</include>
+                        <include>**/randomProvider/CompoundTest.java</include>
+                        <include>**/randomProvider/NonIntegerNumericsTest.java</include>
                         <include>**/RandomProviderProperties.java</include>
                         <include>**/BinaryFractionTest.java</include>
                         <include>**/BinaryFractionProperties.java</include>

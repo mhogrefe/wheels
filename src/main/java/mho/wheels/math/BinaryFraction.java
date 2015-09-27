@@ -91,12 +91,12 @@ public strictfp class BinaryFraction implements Comparable<BinaryFraction> {
      * If {@code this} is 0, then 0; otherwise, the unique odd integer equal to {@code this} times an integer power of
      * 2
      */
-    private @NotNull BigInteger mantissa;
+    private final @NotNull BigInteger mantissa;
 
     /**
      * log<sub>2</sub>({@code this}/{@code mantissa})
      */
-    private int exponent;
+    private final int exponent;
 
     /**
      * Private constructor; assumes arguments are valid.

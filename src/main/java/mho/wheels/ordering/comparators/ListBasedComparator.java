@@ -13,8 +13,7 @@ public class ListBasedComparator<T> implements Comparator<T> {
     public ListBasedComparator(@NotNull List<T> list) {
         indexMap = new HashMap<>();
         int j = 0;
-        for (int i = 0; i < list.size(); i++) {
-            T x = list.get(i);
+        for (T x : list) {
             if (!indexMap.containsKey(x)) {
                 indexMap.put(x, j);
                 j++;

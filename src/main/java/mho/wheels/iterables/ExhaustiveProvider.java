@@ -2390,7 +2390,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         List<T> copy = toList(xs);
         int xsSize = copy.size();
         return () -> new EventuallyKnownSizeIterator<List<T>>() {
-            private @NotNull List<Integer> indices = toList(replicate(size, 0));
+            private final @NotNull List<Integer> indices = toList(replicate(size, 0));
             private boolean first = true;
             {
                 setOutputSize(BigInteger.valueOf(xsSize).pow(size));
@@ -3732,10 +3732,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
-            return Collections.singletonList(new ArrayList<T>());
+            return Collections.singletonList(new ArrayList<>());
         return () -> new NoRemoveIterator<List<T>>() {
-            private CachedIterator<T> cxs = new CachedIterator<T>(xs);
-            private List<Integer> indices = new ArrayList<>();
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private @NotNull List<Integer> indices = new ArrayList<>();
 
             @Override
             public boolean hasNext() {
@@ -3834,7 +3834,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
-        if (xss.size() == 0) return Collections.singletonList(new ArrayList<T>());
+        if (xss.size() == 0) return Collections.singletonList(new ArrayList<>());
         if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
         if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), toList(xss.get(1))));
         List<Iterable<T>> leftList = new ArrayList<>();

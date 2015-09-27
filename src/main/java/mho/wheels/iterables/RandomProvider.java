@@ -1097,7 +1097,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
         }
         return () -> new NoRemoveIterator<Integer>() {
-            private @NotNull Iterator<Integer> is = integersBounded(scale).iterator();
+            private final @NotNull Iterator<Integer> is = integersBounded(scale).iterator();
 
             @Override
             public boolean hasNext() {
