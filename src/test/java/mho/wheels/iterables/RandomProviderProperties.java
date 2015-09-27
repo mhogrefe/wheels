@@ -2626,7 +2626,8 @@ public class RandomProviderProperties {
             aeqit(t, TINY_LIMIT, t.a.strings(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue())));
         }
 
-        for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.naturalIntegers()))) {
+        Iterable<Pair<RandomProvider, Integer>> psFail = P.pairs(P.randomProvidersDefault(), P.positiveIntegers());
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
             try {
                 p.a.strings(p.b, "");
                 fail(p);
