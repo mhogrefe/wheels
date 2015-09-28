@@ -3495,8 +3495,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     int index = list.get(i);
                     for (int j = index + 1; j < elementCount; j++) {
                         if (taken.contains(j)) continue;
-                        taken.remove(index);
                         list.set(i, j);
+                        taken.remove(index);
                         taken.add(j);
                         int k = i + 1;
                         for (int m = 0; m < elementCount && k < size; m++) {
