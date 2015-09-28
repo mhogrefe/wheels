@@ -2256,7 +2256,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     private static @NotNull Iterable<List<Integer>> finitePermutationIndices(@NotNull List<Integer> start) {
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
-            private @NotNull List<Integer> list = toList(start);
+            private final @NotNull List<Integer> list = toList(start);
             private boolean first = true;
             {
                 setOutputSize(MathUtils.permutationCount(start));
@@ -2268,7 +2268,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     first = false;
                     return list;
                 }
-                list = toList(list);
                 int k = list.size() - 2;
                 while (list.get(k) >= list.get(k + 1)) k--;
                 int m = list.size() - 1;
@@ -3473,44 +3472,106 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    @Override
-    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull Iterable<T> xs) {
-        return null;
+    private static @NotNull Iterable<List<Integer>> distinctListIndices(int size, int elementCount) {
+        BigInteger outputSize = MathUtils.fallingFactorial(BigInteger.valueOf(elementCount), size);
+        Iterable<Integer> range = IterableUtils.range(0, size - 1);
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(range);
+            private final @NotNull Set<Integer> taken;
+            private boolean first = true;
+            {
+                taken = new HashSet<>();
+                taken.addAll(list);
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                }
+                for (int i = size - 1; i >= 0; i--) {
+                    int index = list.get(i);
+                    for (int j = index + 1; j < elementCount; j++) {
+                        if (taken.contains(j)) continue;
+                        taken.remove(index);
+                        list.set(i, j);
+                        taken.add(j);
+                        int k = i + 1;
+                        for (int m = 0; m < elementCount && k < size; m++) {
+                            if (taken.contains(m)) continue;
+                            list.set(k, m);
+                            taken.add(m);
+                            k++;
+                        }
+                        return list;
+                    }
+                    taken.remove(index);
+                }
+                throw new IllegalStateException();
+            }
+        };
     }
 
     @Override
-    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
+        return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
     }
 
     @Override
-    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
+        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctListsLex(2, xs));
     }
 
     @Override
-    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctListsLex(3, xs));
     }
 
     @Override
-    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
+        return map(
+                list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)),
+                distinctListsLex(4, xs)
+        );
     }
 
     @Override
-    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                distinctListsLex(5, xs)
+        );
     }
 
     @Override
-    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                distinctListsLex(6, xs)
+        );
+    }
+
+    @Override
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                distinctListsLex(7, xs)
+        );
     }
 
     @Override
     public @NotNull Iterable<String> distinctStringsLex(int size, @NotNull String s) {
-        return null;
+        return map(IterableUtils::charsToString, distinctListsLex(size, toList(fromString(s))));
     }
 
     public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull Iterable<T> xs) {

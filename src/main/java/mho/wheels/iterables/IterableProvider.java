@@ -1430,73 +1430,73 @@ public abstract strictfp class IterableProvider {
      * @param xs a {@code List} of elements
      * @param <T> the type of values in the {@code List}s
      */
-    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
         return distinctLists(size, xs);
     }
 
     /**
-     * Generates all {@code Pair}s of elements from an {@code Iterable} with no repetitions. The {@code Pair}s are
-     * ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Pair}s of elements from a {@code List} with no repetitions. The {@code Pair}s are ordered
+     * lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
         return distinctPairs(xs);
     }
 
     /**
-     * Generates all {@code Triple}s of elements from an {@code Iterable} with no repetitions. The {@code Triple}s are
-     * ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Triple}s of elements from a {@code List} with no repetitions. The {@code Triple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
         return distinctTriples(xs);
     }
 
     /**
-     * Generates all {@code Quadruple}s of elements from an {@code Iterable} with no repetitions. The
-     * {@code Quadruple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Quadruple}s of elements from a {@code List} with no repetitions. The {@code Quadruple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
         return distinctQuadruples(xs);
     }
 
     /**
-     * Generates all {@code Quintuple}s of elements from an {@code Iterable} with no repetitions. The
-     * {@code Quintuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Quintuple}s of elements from a {@code List} with no repetitions. The {@code Quintuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
         return distinctQuintuples(xs);
     }
 
     /**
-     * Generates all {@code Sextuple}s of elements from an {@code Iterable} with no repetitions. The {@code Sextuple}s
-     * are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Sextuple}s of elements from a {@code List} with no repetitions. The {@code Sextuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
         return distinctSextuples(xs);
     }
 
     /**
-     * Generates all {@code Septuple}s of elements from an {@code Iterable} with no repetitions. The {@code Septuple}s
-     * are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     * Generates all {@code Septuple}s of elements from a {@code List} with no repetitions. The {@code Septuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      */
-    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull Iterable<T> xs) {
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
         return distinctSeptuples(xs);
     }
 
