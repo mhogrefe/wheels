@@ -1899,10 +1899,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<A> xs,
             @NotNull Function<A, Iterable<B>> f
     ) {
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new NoRemoveIterator<Pair<A, B>>() {
             private final @NotNull CachedIterator<A> as = new CachedIterator<>(xs);
             private final @NotNull Map<A, Iterator<B>> aToBs = new HashMap<>();
-            private final @NotNull Iterator<BigInteger> indices = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> indices = naturalBigIntegers.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2063,10 +2064,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<B> bs
     ) {
         if (isEmpty(as) || isEmpty(bs)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Pair<A, B>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Pair<A, B> advance() {
@@ -2114,9 +2116,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<T> xs
     ) {
         if (isEmpty(xs)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Pair<T, T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Pair<T, T> advance() {
@@ -2255,11 +2258,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @return all permutations of {@code start}
      */
     private static @NotNull Iterable<List<Integer>> finitePermutationIndices(@NotNull List<Integer> start) {
+        BigInteger outputSize = MathUtils.permutationCount(start);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
-            private final @NotNull List<Integer> list = toList(start);
+            private @NotNull List<Integer> list = toList(start);
             private boolean first = true;
             {
-                setOutputSize(MathUtils.permutationCount(start));
+                setOutputSize(outputSize);
             }
 
             @Override
@@ -2268,6 +2272,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     first = false;
                     return list;
                 }
+                list = toList(list);
                 int k = list.size() - 2;
                 while (list.get(k) >= list.get(k + 1)) k--;
                 int m = list.size() - 1;
@@ -2388,11 +2393,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         List<T> copy = toList(xs);
         int xsSize = copy.size();
+        BigInteger outputSize = BigInteger.valueOf(xsSize).pow(size);
         return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private final @NotNull List<Integer> indices = toList(replicate(size, 0));
             private boolean first = true;
             {
-                setOutputSize(BigInteger.valueOf(xsSize).pow(size));
+                setOutputSize(outputSize);
             }
 
             @Override
@@ -2807,9 +2813,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         if (size == 0) return Collections.singletonList(Collections.emptyList());
         if (isEmpty(xs)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull List<T> advance() {
@@ -2909,11 +2916,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<C> cs
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Triple<A, B, C>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Triple<A, B, C> advance() {
@@ -2994,12 +3002,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<D> ds
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Quadruple<A, B, C, D>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
             private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Quadruple<A, B, C, D> advance() {
@@ -3089,13 +3098,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<E> es
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es)) return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Quintuple<A, B, C, D, E>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
             private final @NotNull CachedIterator<C> ccs = new CachedIterator<>(cs);
             private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
             private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Quintuple<A, B, C, D, E> advance() {
@@ -3197,6 +3207,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs))
                 return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Sextuple<A, B, C, D, E, F>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
@@ -3204,7 +3215,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull CachedIterator<D> cds = new CachedIterator<>(ds);
             private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
             private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Sextuple<A, B, C, D, E, F> advance() {
@@ -3314,6 +3325,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     ) {
         if (isEmpty(as) || isEmpty(bs) || isEmpty(cs) || isEmpty(ds) || isEmpty(es) || isEmpty(fs) || isEmpty(gs))
                 return Collections.emptyList();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
         return () -> new EventuallyKnownSizeIterator<Septuple<A, B, C, D, E, F, G>>() {
             private final @NotNull CachedIterator<A> cas = new CachedIterator<>(as);
             private final @NotNull CachedIterator<B> cbs = new CachedIterator<>(bs);
@@ -3322,7 +3334,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull CachedIterator<E> ces = new CachedIterator<>(es);
             private final @NotNull CachedIterator<F> cfs = new CachedIterator<>(fs);
             private final @NotNull CachedIterator<G> cgs = new CachedIterator<>(gs);
-            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers().iterator();
+            private final @NotNull Iterator<BigInteger> is = naturalBigIntegers.iterator();
 
             @Override
             public @NotNull Septuple<A, B, C, D, E, F, G> advance() {
@@ -3518,11 +3530,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
         if (size < 0) {
             throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
-        } else if (size == xs.size()) {
-            return permutationsFinite(xs);
-        } else {
-            return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
         }
+        return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
     }
 
     @Override
@@ -3661,9 +3670,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
+        Iterable<List<Integer>> lists = lists(naturalIntegers());
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private final @NotNull Iterator<List<Integer>> xsi = lists(naturalIntegers()).iterator();
+            private final @NotNull Iterator<List<Integer>> xsi = lists.iterator();
             private @NotNull Optional<BigInteger> outputSize = Optional.empty();
             private @NotNull BigInteger index = BigInteger.ZERO;
             private boolean reachedEnd = false;
