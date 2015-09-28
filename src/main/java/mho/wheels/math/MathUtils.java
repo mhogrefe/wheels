@@ -258,6 +258,10 @@ public final class MathUtils {
         return result;
     }
 
+    public static @NotNull BigInteger fallingFactorial(@NotNull BigInteger x, int n) {
+        return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,
