@@ -3901,6 +3901,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairs_Iterable() {
         testPairs_Iterable_helper("[]", "[]");
+        testPairs_Iterable_helper("[5]", "[(5, 5)]");
         testPairs_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 1), (3, 2), (4, 1), (4, 2)," +
                 " (3, 3), (3, 4), (4, 3), (4, 4)]");
@@ -3954,6 +3955,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testTriples_Iterable() {
         testTriples_Iterable_helper("[]", "[]");
+        testTriples_Iterable_helper("[5]", "[(5, 5, 5)]");
         testTriples_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2), (1, 1, 3)," +
                 " (1, 1, 4), (1, 2, 3), (1, 2, 4), (2, 1, 3), (2, 1, 4), (2, 2, 3), (2, 2, 4), (1, 3, 1), (1, 3, 2)," +
@@ -4042,6 +4044,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testQuadruples_Iterable() {
         testQuadruples_Iterable_helper("[]", "[]");
+        testQuadruples_Iterable_helper("[5]", "[(5, 5, 5, 5)]");
         testQuadruples_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
                 " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
@@ -4239,6 +4242,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testQuintuples_Iterable() {
         testQuintuples_Iterable_helper("[]", "[]");
+        testQuintuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5)]");
         testQuintuples_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 2), (1, 1, 1, 2, 1), (1, 1, 1, 2, 2), (1, 1, 2, 1, 1)," +
                 " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
@@ -4587,6 +4591,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testSextuples_Iterable() {
         testSextuples_Iterable_helper("[]", "[]");
+        testSextuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5, 5)]");
         testSextuples_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 2, 2)," +
                 " (1, 1, 1, 2, 1, 1), (1, 1, 1, 2, 1, 2), (1, 1, 1, 2, 2, 1), (1, 1, 1, 2, 2, 2)," +
@@ -5339,6 +5344,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testSeptuples_Iterable() {
         testSeptuples_Iterable_helper("[]", "[]");
+        testSeptuples_Iterable_helper("[5]", "[(5, 5, 5, 5, 5, 5, 5)]");
         testSeptuples_Iterable_helper("[1, 2, 3, 4]",
                 "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 2), (1, 1, 1, 1, 1, 2, 1), (1, 1, 1, 1, 1, 2, 2)," +
                 " (1, 1, 1, 1, 2, 1, 1), (1, 1, 1, 1, 2, 1, 2), (1, 1, 1, 1, 2, 2, 1), (1, 1, 1, 1, 2, 2, 2)," +
@@ -5753,6 +5759,39 @@ public strictfp class ExhaustiveProviderTest {
             P.distinctListsLex(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void testDistinctPairsLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctPairsLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctPairsLex() {
+        testDistinctPairsLex_helper("[]", "[]");
+        testDistinctPairsLex_helper("[5]", "[]");
+        testDistinctPairsLex_helper("[1, 2, 3, 4]",
+                "[(1, 2), (1, 3), (1, 4), (2, 1), (2, 3), (2, 4), (3, 1), (3, 2), (3, 4), (4, 1), (4, 2), (4, 3)]");
+        testDistinctPairsLex_helper("[1, 2, null, 4]",
+                "[(1, 2), (1, null), (1, 4), (2, 1), (2, null), (2, 4), (null, 1), (null, 2), (null, 4), (4, 1)," +
+                " (4, 2), (4, null)]");
+    }
+
+    private static void testDistinctTriplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctTriplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctTriplesLex() {
+        testDistinctTriplesLex_helper("[]", "[]");
+        testDistinctTriplesLex_helper("[5]", "[]");
+        testDistinctTriplesLex_helper("[1, 2, 3, 4]",
+                "[(1, 2, 3), (1, 2, 4), (1, 3, 2), (1, 3, 4), (1, 4, 2), (1, 4, 3), (2, 1, 3), (2, 1, 4), (2, 3, 1)," +
+                " (2, 3, 4), (2, 4, 1), (2, 4, 3), (3, 1, 2), (3, 1, 4), (3, 2, 1), (3, 2, 4), (3, 4, 1), (3, 4, 2)," +
+                " (4, 1, 2), (4, 1, 3), ...]");
+        testDistinctTriplesLex_helper("[1, 2, null, 4]",
+                "[(1, 2, null), (1, 2, 4), (1, null, 2), (1, null, 4), (1, 4, 2), (1, 4, null), (2, 1, null)," +
+                " (2, 1, 4), (2, null, 1), (2, null, 4), (2, 4, 1), (2, 4, null), (null, 1, 2), (null, 1, 4)," +
+                " (null, 2, 1), (null, 2, 4), (null, 4, 1), (null, 4, 2), (4, 1, 2), (4, 1, null), ...]");
     }
 
     @Test
