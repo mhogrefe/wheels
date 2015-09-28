@@ -3516,7 +3516,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
-        return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        } else if (size == xs.size()) {
+            return permutationsFinite(xs);
+        } else {
+            return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
+        }
     }
 
     @Override

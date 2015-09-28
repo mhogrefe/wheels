@@ -2438,12 +2438,10 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testListsLex_int_List() {
         listsLex_int_List_helper(0, "[]", "[[]]");
-
         listsLex_int_List_helper(0, "[5]", "[[]]");
         listsLex_int_List_helper(1, "[5]", "[[5]]");
         listsLex_int_List_helper(2, "[5]", "[[5, 5]]");
         listsLex_int_List_helper(3, "[5]", "[[5, 5, 5]]");
-
         listsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
         listsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
         listsLex_int_List_helper(2, "[1, 2, 3]",
@@ -2452,7 +2450,6 @@ public strictfp class ExhaustiveProviderTest {
                 "[[1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 1], [1, 2, 2], [1, 2, 3], [1, 3, 1], [1, 3, 2], [1, 3, 3]," +
                 " [2, 1, 1], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 2], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 3, 3]," +
                 " [3, 1, 1], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 3]]");
-
         listsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
         listsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
         listsLex_int_List_helper(2, "[1, 2, 2, 3]",
@@ -2467,7 +2464,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [2, 3, 2], [2, 3, 2], [2, 3, 3], [3, 1, 1], [3, 1, 2], [3, 1, 2], [3, 1, 3], [3, 2, 1], [3, 2, 2]," +
                 " [3, 2, 2], [3, 2, 3], [3, 2, 1], [3, 2, 2], [3, 2, 2], [3, 2, 3], [3, 3, 1], [3, 3, 2], [3, 3, 2]," +
                 " [3, 3, 3]]");
-
         listsLex_int_List_helper(0, "[1, null, 3]", "[[]]");
         listsLex_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
         listsLex_int_List_helper(2, "[1, null, 3]",
@@ -2478,7 +2474,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [null, null, null], [null, null, 3], [null, 3, 1], [null, 3, null], [null, 3, 3], [3, 1, 1]," +
                 " [3, 1, null], [3, 1, 3], [3, null, 1], [3, null, null], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
-
         listsLex_int_List_helper(0, "[]", "[[]]");
         listsLex_int_List_helper(1, "[]", "[]");
         listsLex_int_List_helper(2, "[]", "[]");
@@ -5712,6 +5707,50 @@ public strictfp class ExhaustiveProviderTest {
                 " aac, abaa, aad, aaaba, ...]");
         try {
             P.stringsAtLeast(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctListsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctListsLex(size, readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctListsLex_int_List() {
+        distinctListsLex_int_List_helper(0, "[]", "[[]]");
+        distinctListsLex_int_List_helper(0, "[5]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[5]", "[[5]]");
+        distinctListsLex_int_List_helper(2, "[5]", "[]");
+        distinctListsLex_int_List_helper(3, "[5]", "[]");
+        distinctListsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        distinctListsLex_int_List_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]");
+        distinctListsLex_int_List_helper(3, "[1, 2, 3]",
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        distinctListsLex_int_List_helper(2, "[1, 2, 2, 3]",
+                "[[1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3], [3, 1], [3, 2], [3, 2]]");
+        distinctListsLex_int_List_helper(3, "[1, 2, 2, 3]",
+                "[[1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
+                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2]," +
+                " [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2]]");
+        distinctListsLex_int_List_helper(0, "[1, null, 3]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
+        distinctListsLex_int_List_helper(2, "[1, null, 3]",
+                "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
+        distinctListsLex_int_List_helper(3, "[1, null, 3]",
+                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsLex_int_List_helper(0, "[]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[]", "[]");
+        distinctListsLex_int_List_helper(2, "[]", "[]");
+        distinctListsLex_int_List_helper(3, "[]", "[]");
+        try {
+            P.distinctListsLex(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctListsLex(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
