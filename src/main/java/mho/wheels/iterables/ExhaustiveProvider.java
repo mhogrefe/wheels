@@ -3473,35 +3473,43 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull <T> Iterable<List<T>> distinctListsLex(int length, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull Iterable<T> xs) {
         return null;
     }
 
-    public @NotNull Iterable<String> distinctStringsLex(int length, @NotNull String s) {
+    @Override
+    public @NotNull Iterable<String> distinctStringsLex(int size, @NotNull String s) {
         return null;
     }
 
