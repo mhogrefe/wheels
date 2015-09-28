@@ -1096,8 +1096,9 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale < 2) {
             throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
         }
+        Iterable<Integer> integersBounded = integersBounded(scale);
         return () -> new NoRemoveIterator<Integer>() {
-            private final @NotNull Iterator<Integer> is = integersBounded(scale).iterator();
+            private final @NotNull Iterator<Integer> is = integersBounded.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1180,8 +1181,9 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("The sum of numerator and denominator must be less than 2^31." +
                     " numerator is " + numerator + " and denominator is " + denominator + ".");
         }
+        Iterable<Integer> integersBounded = integersBounded((int) sum);
         return () -> new NoRemoveIterator<Integer>() {
-            private final @NotNull Iterator<Integer> is = integersBounded((int) sum).iterator();
+            private final @NotNull Iterator<Integer> is = integersBounded.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1351,14 +1353,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigInteger> naturalBigIntegers() {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
+        Iterable<Integer> naturalBigIntegers = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> is = naturalBigIntegers.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1424,6 +1421,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
+    //todo extract Iterables
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
@@ -3412,9 +3410,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        Iterable<Integer> rangeUpGeometric = rangeUpGeometric(minSize);
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
-            private final @NotNull Iterator<Integer> sizes = rangeUpGeometric(minSize).iterator();
+            private final @NotNull Iterator<Integer> sizes = rangeUpGeometric.iterator();
 
             @Override
             public boolean hasNext() {

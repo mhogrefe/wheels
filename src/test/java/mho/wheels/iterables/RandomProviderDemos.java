@@ -1306,7 +1306,7 @@ public class RandomProviderDemos {
                 t -> t.a.getScale() > t.b,
                 P.triples(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                        P.withScale(4).positiveIntegersGeometric(),
+                        P.withScale(4).naturalIntegersGeometric(),
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
         );
@@ -1322,7 +1322,7 @@ public class RandomProviderDemos {
                 t -> t.a.getScale() > t.b,
                 P.triples(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                        P.withScale(4).positiveIntegersGeometric(),
+                        P.withScale(4).naturalIntegersGeometric(),
                         P.withScale(4).stringsAtLeast(1)
                 )
         );
@@ -1338,7 +1338,7 @@ public class RandomProviderDemos {
                 p -> p.a.getScale() > p.b,
                 P.pairs(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                        P.withScale(4).positiveIntegersGeometric()
+                        P.withScale(4).naturalIntegersGeometric()
                 )
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
