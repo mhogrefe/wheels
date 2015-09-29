@@ -5828,6 +5828,174 @@ public strictfp class ExhaustiveProviderTest {
                 " (null, 2, 1), (null, 2, 4), (null, 4, 1), (null, 4, 2), (4, 1, 2), (4, 1, null), ...]");
     }
 
+    private static void testDistinctQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuadruplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctQuadruplesLex() {
+        testDistinctQuadruplesLex_helper("[]", "[]");
+        testDistinctQuadruplesLex_helper("[5]", "[]");
+        testDistinctQuadruplesLex_helper("[1, 2, 3, 4]",
+                "[(1, 2, 3, 4), (1, 2, 4, 3), (1, 3, 2, 4), (1, 3, 4, 2), (1, 4, 2, 3), (1, 4, 3, 2), (2, 1, 3, 4)," +
+                " (2, 1, 4, 3), (2, 3, 1, 4), (2, 3, 4, 1), (2, 4, 1, 3), (2, 4, 3, 1), (3, 1, 2, 4), (3, 1, 4, 2)," +
+                " (3, 2, 1, 4), (3, 2, 4, 1), (3, 4, 1, 2), (3, 4, 2, 1), (4, 1, 2, 3), (4, 1, 3, 2), ...]");
+        testDistinctQuadruplesLex_helper("[1, 2, 2, 4]",
+                "[(1, 2, 2, 4), (1, 2, 4, 2), (1, 2, 2, 4), (1, 2, 4, 2), (1, 4, 2, 2), (1, 4, 2, 2), (2, 1, 2, 4)," +
+                " (2, 1, 4, 2), (2, 2, 1, 4), (2, 2, 4, 1), (2, 4, 1, 2), (2, 4, 2, 1), (2, 1, 2, 4), (2, 1, 4, 2)," +
+                " (2, 2, 1, 4), (2, 2, 4, 1), (2, 4, 1, 2), (2, 4, 2, 1), (4, 1, 2, 2), (4, 1, 2, 2), ...]");
+        testDistinctQuadruplesLex_helper("[1, 2, null, 4]",
+                "[(1, 2, null, 4), (1, 2, 4, null), (1, null, 2, 4), (1, null, 4, 2), (1, 4, 2, null)," +
+                " (1, 4, null, 2), (2, 1, null, 4), (2, 1, 4, null), (2, null, 1, 4), (2, null, 4, 1)," +
+                " (2, 4, 1, null), (2, 4, null, 1), (null, 1, 2, 4), (null, 1, 4, 2), (null, 2, 1, 4)," +
+                " (null, 2, 4, 1), (null, 4, 1, 2), (null, 4, 2, 1), (4, 1, 2, null), (4, 1, null, 2), ...]");
+    }
+
+    private static void testDistinctQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuintuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctQuintuplesLex() {
+        testDistinctQuintuplesLex_helper("[]", "[]");
+        testDistinctQuintuplesLex_helper("[5]", "[]");
+        testDistinctQuintuplesLex_helper("[1, 2, 3, 4]", "[]");
+        testDistinctQuintuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 4, 7), (1, 2, 3, 4, 8), (1, 2, 3, 5, 4)," +
+                " (1, 2, 3, 5, 6), (1, 2, 3, 5, 7), (1, 2, 3, 5, 8), (1, 2, 3, 6, 4), (1, 2, 3, 6, 5)," +
+                " (1, 2, 3, 6, 7), (1, 2, 3, 6, 8), (1, 2, 3, 7, 4), (1, 2, 3, 7, 5), (1, 2, 3, 7, 6)," +
+                " (1, 2, 3, 7, 8), (1, 2, 3, 8, 4), (1, 2, 3, 8, 5), (1, 2, 3, 8, 6), (1, 2, 3, 8, 7), ...]");
+        testDistinctQuintuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 4, 7), (1, 2, 2, 4, 8), (1, 2, 2, 5, 4)," +
+                " (1, 2, 2, 5, 6), (1, 2, 2, 5, 7), (1, 2, 2, 5, 8), (1, 2, 2, 6, 4), (1, 2, 2, 6, 5)," +
+                " (1, 2, 2, 6, 7), (1, 2, 2, 6, 8), (1, 2, 2, 7, 4), (1, 2, 2, 7, 5), (1, 2, 2, 7, 6)," +
+                " (1, 2, 2, 7, 8), (1, 2, 2, 8, 4), (1, 2, 2, 8, 5), (1, 2, 2, 8, 6), (1, 2, 2, 8, 7), ...]");
+        testDistinctQuintuplesLex_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5), (1, 2, null, 4, 6), (1, 2, null, 4, 7), (1, 2, null, 4, 8)," +
+                " (1, 2, null, 5, 4), (1, 2, null, 5, 6), (1, 2, null, 5, 7), (1, 2, null, 5, 8)," +
+                " (1, 2, null, 6, 4), (1, 2, null, 6, 5), (1, 2, null, 6, 7), (1, 2, null, 6, 8)," +
+                " (1, 2, null, 7, 4), (1, 2, null, 7, 5), (1, 2, null, 7, 6), (1, 2, null, 7, 8)," +
+                " (1, 2, null, 8, 4), (1, 2, null, 8, 5), (1, 2, null, 8, 6), (1, 2, null, 8, 7), ...]");
+    }
+
+    private static void testDistinctSextuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSextuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctSextuplesLex() {
+        testDistinctSextuplesLex_helper("[]", "[]");
+        testDistinctSextuplesLex_helper("[5]", "[]");
+        testDistinctSextuplesLex_helper("[1, 2, 3, 4]", "[]");
+        testDistinctSextuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 5, 8), (1, 2, 3, 4, 6, 5)," +
+                " (1, 2, 3, 4, 6, 7), (1, 2, 3, 4, 6, 8), (1, 2, 3, 4, 7, 5), (1, 2, 3, 4, 7, 6)," +
+                " (1, 2, 3, 4, 7, 8), (1, 2, 3, 4, 8, 5), (1, 2, 3, 4, 8, 6), (1, 2, 3, 4, 8, 7)," +
+                " (1, 2, 3, 5, 4, 6), (1, 2, 3, 5, 4, 7), (1, 2, 3, 5, 4, 8), (1, 2, 3, 5, 6, 4)," +
+                " (1, 2, 3, 5, 6, 7), (1, 2, 3, 5, 6, 8), (1, 2, 3, 5, 7, 4), (1, 2, 3, 5, 7, 6), ...]");
+        testDistinctSextuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 5, 8), (1, 2, 2, 4, 6, 5)," +
+                " (1, 2, 2, 4, 6, 7), (1, 2, 2, 4, 6, 8), (1, 2, 2, 4, 7, 5), (1, 2, 2, 4, 7, 6)," +
+                " (1, 2, 2, 4, 7, 8), (1, 2, 2, 4, 8, 5), (1, 2, 2, 4, 8, 6), (1, 2, 2, 4, 8, 7)," +
+                " (1, 2, 2, 5, 4, 6), (1, 2, 2, 5, 4, 7), (1, 2, 2, 5, 4, 8), (1, 2, 2, 5, 6, 4)," +
+                " (1, 2, 2, 5, 6, 7), (1, 2, 2, 5, 6, 8), (1, 2, 2, 5, 7, 4), (1, 2, 2, 5, 7, 6), ...]");
+        testDistinctSextuplesLex_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5, 6), (1, 2, null, 4, 5, 7), (1, 2, null, 4, 5, 8), (1, 2, null, 4, 6, 5)," +
+                " (1, 2, null, 4, 6, 7), (1, 2, null, 4, 6, 8), (1, 2, null, 4, 7, 5), (1, 2, null, 4, 7, 6)," +
+                " (1, 2, null, 4, 7, 8), (1, 2, null, 4, 8, 5), (1, 2, null, 4, 8, 6), (1, 2, null, 4, 8, 7)," +
+                " (1, 2, null, 5, 4, 6), (1, 2, null, 5, 4, 7), (1, 2, null, 5, 4, 8), (1, 2, null, 5, 6, 4)," +
+                " (1, 2, null, 5, 6, 7), (1, 2, null, 5, 6, 8), (1, 2, null, 5, 7, 4), (1, 2, null, 5, 7, 6), ...]");
+    }
+
+    private static void testDistinctSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSeptuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctSeptuplesLex() {
+        testDistinctSeptuplesLex_helper("[]", "[]");
+        testDistinctSeptuplesLex_helper("[5]", "[]");
+        testDistinctSeptuplesLex_helper("[1, 2, 3, 4]", "[]");
+        testDistinctSeptuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 6), (1, 2, 3, 4, 5, 7, 8)," +
+                " (1, 2, 3, 4, 5, 8, 6), (1, 2, 3, 4, 5, 8, 7), (1, 2, 3, 4, 6, 5, 7), (1, 2, 3, 4, 6, 5, 8)," +
+                " (1, 2, 3, 4, 6, 7, 5), (1, 2, 3, 4, 6, 7, 8), (1, 2, 3, 4, 6, 8, 5), (1, 2, 3, 4, 6, 8, 7)," +
+                " (1, 2, 3, 4, 7, 5, 6), (1, 2, 3, 4, 7, 5, 8), (1, 2, 3, 4, 7, 6, 5), (1, 2, 3, 4, 7, 6, 8)," +
+                " (1, 2, 3, 4, 7, 8, 5), (1, 2, 3, 4, 7, 8, 6), (1, 2, 3, 4, 8, 5, 6), (1, 2, 3, 4, 8, 5, 7), ...]");
+        testDistinctSeptuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 6), (1, 2, 2, 4, 5, 7, 8)," +
+                " (1, 2, 2, 4, 5, 8, 6), (1, 2, 2, 4, 5, 8, 7), (1, 2, 2, 4, 6, 5, 7), (1, 2, 2, 4, 6, 5, 8)," +
+                " (1, 2, 2, 4, 6, 7, 5), (1, 2, 2, 4, 6, 7, 8), (1, 2, 2, 4, 6, 8, 5), (1, 2, 2, 4, 6, 8, 7)," +
+                " (1, 2, 2, 4, 7, 5, 6), (1, 2, 2, 4, 7, 5, 8), (1, 2, 2, 4, 7, 6, 5), (1, 2, 2, 4, 7, 6, 8)," +
+                " (1, 2, 2, 4, 7, 8, 5), (1, 2, 2, 4, 7, 8, 6), (1, 2, 2, 4, 8, 5, 6), (1, 2, 2, 4, 8, 5, 7), ...]");
+        testDistinctSeptuplesLex_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5, 6, 7), (1, 2, null, 4, 5, 6, 8), (1, 2, null, 4, 5, 7, 6)," +
+                " (1, 2, null, 4, 5, 7, 8), (1, 2, null, 4, 5, 8, 6), (1, 2, null, 4, 5, 8, 7)," +
+                " (1, 2, null, 4, 6, 5, 7), (1, 2, null, 4, 6, 5, 8), (1, 2, null, 4, 6, 7, 5)," +
+                " (1, 2, null, 4, 6, 7, 8), (1, 2, null, 4, 6, 8, 5), (1, 2, null, 4, 6, 8, 7)," +
+                " (1, 2, null, 4, 7, 5, 6), (1, 2, null, 4, 7, 5, 8), (1, 2, null, 4, 7, 6, 5)," +
+                " (1, 2, null, 4, 7, 6, 8), (1, 2, null, 4, 7, 8, 5), (1, 2, null, 4, 7, 8, 6)," +
+                " (1, 2, null, 4, 8, 5, 6), (1, 2, null, 4, 8, 5, 7), ...]");
+    }
+
+    private static void distinctStringsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctStringsLex(size, input), output);
+    }
+
+    private static void distinctStringsLex_int_String_helper_limit(
+            int size,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctStringsLex(size, input), output);
+    }
+
+    @Test
+    public void testDistinctStringsLex_int_String() {
+        distinctStringsLex_int_String_helper(0, "", "[]");
+        aeq(length(P.distinctStringsLex(0, "")), 1);
+        distinctStringsLex_int_String_helper(1, "", "[]");
+        aeq(length(P.distinctStringsLex(1, "")), 0);
+        distinctStringsLex_int_String_helper(2, "", "[]");
+        aeq(length(P.distinctStringsLex(2, "")), 0);
+        distinctStringsLex_int_String_helper(3, "", "[]");
+        aeq(length(P.distinctStringsLex(3, "")), 0);
+        distinctStringsLex_int_String_helper(0, "a", "[]");
+        distinctStringsLex_int_String_helper(1, "a", "[a]");
+        distinctStringsLex_int_String_helper(2, "a", "[]");
+        aeq(length(P.distinctStringsLex(2, "a")), 0);
+        distinctStringsLex_int_String_helper(3, "a", "[]");
+        aeq(length(P.distinctStringsLex(3, "a")), 0);
+        distinctStringsLex_int_String_helper(0, "abc", "[]");
+        aeq(length(P.distinctStringsLex(0, "abc")), 1);
+        distinctStringsLex_int_String_helper(1, "abc", "[a, b, c]");
+        distinctStringsLex_int_String_helper(2, "abc", "[ab, ac, ba, bc, ca, cb]");
+        distinctStringsLex_int_String_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
+        distinctStringsLex_int_String_helper(0, "abbc", "[]");
+        aeq(length(P.distinctStringsLex(0, "abbc")), 1);
+        distinctStringsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
+        distinctStringsLex_int_String_helper(2, "abbc", "[ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb]");
+        distinctStringsLex_int_String_helper(3, "abbc",
+                "[abb, abc, abb, abc, acb, acb, bab, bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab," +
+                " cab, cba, cbb, cba, cbb]");
+        distinctStringsLex_int_String_helper_limit(0, "Mississippi", "[]");
+        aeq(length(P.distinctStringsLex(0, "Mississippi")), 1);
+        distinctStringsLex_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
+        distinctStringsLex_int_String_helper_limit(2, "Mississippi",
+                "[Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, is, is, ii, is, is, ii, ip, ip, ii, ...]");
+        distinctStringsLex_int_String_helper_limit(3, "Mississippi",
+                "[Mis, Mis, Mii, Mis, Mis, Mii, Mip, Mip, Mii, Msi, Mss, Msi, Mss, Mss, Msi, Msp, Msp, Msi, Msi," +
+                " Mss, ...]");
+        try {
+            P.distinctStringsLex(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctStringsLex(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
