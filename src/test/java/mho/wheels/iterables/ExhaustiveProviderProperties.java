@@ -199,6 +199,7 @@ public class ExhaustiveProviderProperties {
             propertiesListsAtLeast();
             propertiesStringsAtLeast_int_String();
             propertiesStringsAtLeast_int();
+            propertiesDistinctListsLex_int_List();
         }
         System.out.println("Done");
     }
@@ -1964,7 +1965,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static @NotNull List<List<Integer>> listsLex_int_Iterable_alt(
+    private static @NotNull List<List<Integer>> listsLex_int_List_alt(
             int size, @NotNull List<Integer> xs
     ) {
         int xsSize = xs.size();
@@ -2002,7 +2003,7 @@ public class ExhaustiveProviderProperties {
             if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
                 testHasNext(lists);
                 List<List<Integer>> listsList = toList(lists);
-                assertEquals(p, listsLex_int_Iterable_alt(p.b, p.a), listsList);
+                assertEquals(p, listsLex_int_List_alt(p.b, p.a), listsList);
                 if (!p.a.isEmpty()) {
                     assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
                     assertEquals(p, last(listsList), toList(replicate(p.b, last(p.a))));
@@ -2058,7 +2059,7 @@ public class ExhaustiveProviderProperties {
 
     private static void compareImplementationsListsLex_int_List() {
         Map<String, Function<Pair<List<Integer>, Integer>, List<List<Integer>>>> functions = new LinkedHashMap<>();
-        functions.put("alt", p -> listsLex_int_Iterable_alt(p.b, p.a));
+        functions.put("alt", p -> listsLex_int_List_alt(p.b, p.a));
         functions.put("standard", p -> toList(EP.listsLex(p.b, p.a)));
         Iterable<Pair<List<Integer>, Integer>> ps = filterInfinite(
                 p -> lt(BigInteger.valueOf(p.a.size()).pow(p.b), BigInteger.valueOf(LIMIT)),
@@ -4380,6 +4381,95 @@ public class ExhaustiveProviderProperties {
             try {
                 EP.stringsAtLeast(i);
                 fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctListsLex_int_List() {
+        initialize("distinctListsLex(int, List<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.distinctListsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsList.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(take(p.b, p.a)));
+                    assertEquals(p, last(listsList), toList(take(p.b, reverse(p.a))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.distinctListsLex(p.b, p.a));
+                assertTrue(p, unique(listsList));
+                assertTrue(p, all(IterableUtils::unique, listsList));
+                assertTrue(
+                        p,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(p.a)),
+                                map(ys -> ((Iterable<Integer>) ys), listsList)
+                        )
+                );
+                BigInteger limit = BigInteger.valueOf(p.a.size()).pow(p.b);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    assertTrue(
+                            p,
+                            IterableUtils.equal(filter(IterableUtils::unique, EP.listsLex(p.b, p.a)), listsList)
+                    );
+                }
+            }
+        }
+
+        ps = filter(
+                p -> p.a.size() < p.b,
+                P.pairsLogarithmicOrder(
+                        P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> xss = EP.distinctListsLex(p.b, p.a);
+            testHasNext(xss);
+            assertEquals(p, toList(xss), Collections.emptyList());
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> xss = EP.distinctListsLex(0, xs);
+            testHasNext(xss);
+            assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger listsLength = MathUtils.factorial(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                Iterable<List<Integer>> xss = EP.distinctListsLex(xs.size(), xs);
+                assertTrue(xs, IterableUtils.equal(xss, EP.permutationsFinite(xs)));
+            }
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.distinctListsLex(p.b, p.a);
+                fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
     }
