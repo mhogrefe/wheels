@@ -3484,6 +3484,22 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code List}s of a given size containing natural numbers up to a given value with no repetitions.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers, and contains no repetitions.
+     *  Each element has the same size.</li>
+     * </ul>
+     *
+     * Length is <sub>{@code elementCount}</sub>P<sub>{@code size}</sub>
+     *
+     * @param size the length of each of the result {@code List}s
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all lists of length {@code size} with elements from 0 to {@code elementCount}–1 with no repetitions
+     */
     private static @NotNull Iterable<List<Integer>> distinctListIndices(int size, int elementCount) {
         BigInteger outputSize = MathUtils.fallingFactorial(BigInteger.valueOf(elementCount), size);
         Iterable<Integer> range = IterableUtils.range(0, size - 1);
@@ -3526,6 +3542,25 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code List}s of a given length with elements from a given
+     * {@code List}, with no repetitions. The {@code List}s are ordered lexicographically, matching the order given by
+     * the original {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
+     *  entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s of a given length created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
         if (size < 0) {
@@ -3534,16 +3569,61 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(map(xs::get, is)), distinctListIndices(size, xs.size()));
     }
 
+    /**
+     * Returns all {@code Pair}s of distinct elements from an {@code Iterable}. The {@code Pair}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Pair}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), distinctListsLex(2, xs));
     }
 
+    /**
+     * Returns all {@code Triple}s of distinct elements from an {@code Iterable}. The {@code Triple}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Triple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctListsLex(3, xs));
     }
 
+    /**
+     * Returns all {@code Quadruple}s of distinct elements from an {@code Iterable}. The {@code Quadruple}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
         return map(
@@ -3552,6 +3632,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Quintuple}s of distinct elements from an {@code Iterable}. The {@code Quintuple}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
         return map(
@@ -3560,6 +3655,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Sextuple}s of distinct elements from an {@code Iterable}. The {@code Sextuple}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
         return map(
@@ -3568,6 +3678,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Septuple}s of distinct elements from an {@code Iterable}. The {@code Septuple}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Septuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
         return map(
@@ -3584,6 +3709,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
+     * {@code String, with no repetitions. The {@code String}s are ordered lexicographically, matching the order given
+     * by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite. All of its {@code String}s have the same length. None are empty, unless the result
+     *  consists entirely of one empty {@code String}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code s}|</sub>P<sub>{@code size}</sub>
+     *
+     * @param size the length of the result {@code String}
+     * @param s the {@code String} from which characters are selected
+     * @return all Strings of a given length created from {@code s} with no repetitions
+     */
     @Override
     public @NotNull Iterable<String> distinctStringsLex(int size, @NotNull String s) {
         return map(IterableUtils::charsToString, distinctListsLex(size, toList(fromString(s))));
