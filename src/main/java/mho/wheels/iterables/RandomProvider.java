@@ -1421,7 +1421,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * Length is infinite
      */
-    //todo extract Iterables
     @Override
     public @NotNull Iterable<BigInteger> rangeUp(@NotNull BigInteger a) {
         int minBitLength = a.signum() == -1 ? 0 : a.bitLength();
@@ -1433,11 +1432,13 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("If minBitLength is 0, scale cannot be Integer.MAX_VALUE.");
         }
         int absBitLength = a.abs().bitLength();
+        Iterable<Integer> rangeUpGeometric = rangeUpGeometric(minBitLength);
+        Iterable<BigInteger> bigIntegersBounded = bigIntegersBounded(
+                a.signum() == -1 ? BigInteger.ONE.subtract(a) : BigInteger.ONE.shiftLeft(absBitLength).subtract(a)
+        );
         return () -> new NoRemoveIterator<BigInteger>() {
-            private final @NotNull Iterator<Integer> is = rangeUpGeometric(minBitLength).iterator();
-            private final @NotNull Iterator<BigInteger> is2 = bigIntegersBounded(
-                    a.signum() == -1 ? BigInteger.ONE.subtract(a) : BigInteger.ONE.shiftLeft(absBitLength).subtract(a)
-            ).iterator();
+            private final @NotNull Iterator<Integer> is = rangeUpGeometric.iterator();
+            private final @NotNull Iterator<BigInteger> is2 = bigIntegersBounded.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1579,10 +1580,11 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
                     secondaryScale);
         }
+        Iterable<BigInteger> bigIntegers = bigIntegers();
+        Iterable<Integer> integersGeometric = integersGeometric(secondaryScale * (scale + 1), scale);
         return () -> new NoRemoveIterator<BinaryFraction>() {
-            private final @NotNull Iterator<BigInteger> ms = bigIntegers().iterator();
-            private final @NotNull Iterator<Integer> ss =
-                    integersGeometric(secondaryScale * (scale + 1), scale).iterator();
+            private final @NotNull Iterator<BigInteger> ms = bigIntegers.iterator();
+            private final @NotNull Iterator<Integer> ss = integersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
@@ -1669,21 +1671,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (scale == Integer.MAX_VALUE) {
-            throw new IllegalStateException("this cannot have a scale of Integer.MAX_VALUE, or " + scale);
-        }
         if (a.equals(b)) return repeat(a);
         if (gt(a, b)) return Collections.emptyList();
         BinaryFraction difference = b.subtract(a);
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
+        Iterable<BigInteger> range1 = range(BigInteger.ZERO, difference.getMantissa());
+        Iterable<BigInteger> range2 = range(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE));
         return () -> new NoRemoveIterator<BinaryFraction>() {
-            private @NotNull final Iterator<Integer> is = naturalIntegersGeometric().iterator();
-            private @NotNull final Iterator<BigInteger> is2 =
-                    range(BigInteger.ZERO, difference.getMantissa()).iterator();
-            private @NotNull final Iterator<BigInteger> is3 =
-                    range(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE)).iterator();
+            private @NotNull final Iterator<Integer> is = naturalIntegersGeometric.iterator();
+            private @NotNull final Iterator<BigInteger> is2 = range1.iterator();
+            private @NotNull final Iterator<BigInteger> is3 = range2.iterator();
             private @NotNull final Map<Integer, Iterator<BigInteger>> isMap = new HashMap<>();
 
             @Override
@@ -2383,18 +2380,13 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> positiveCanonicalBigDecimals() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
+        Iterable<BigInteger> positiveBigIntegers = positiveBigIntegers();
+        Iterable<Integer> positiveIntegersGeometric = positiveIntegersGeometric();
+        Iterable<Integer> naturalIntegersGeometric = withScale(secondaryScale).naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigDecimal>() {
-            private final @NotNull Iterator<BigInteger> is1 = positiveBigIntegers().iterator();
-            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric().iterator();
-            private final @NotNull Iterator<Integer> is3 = withScale(secondaryScale).naturalIntegersGeometric()
-                    .iterator();
+            private final @NotNull Iterator<BigInteger> is1 = positiveBigIntegers.iterator();
+            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric.iterator();
+            private final @NotNull Iterator<Integer> is3 = naturalIntegersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2473,19 +2465,15 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> canonicalBigDecimals() {
-        if (scale < 2) {
-            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
+        Iterable<Boolean> booleans = booleans();
+        Iterable<BigInteger> naturalBigIntegers = naturalBigIntegers();
+        Iterable<Integer> positiveIntegersGeometric = positiveIntegersGeometric();
+        Iterable<Integer> naturalIntegersGeometric = withScale(secondaryScale).naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigDecimal>() {
-            private final @NotNull Iterator<Boolean> bs = booleans().iterator();
-            private final @NotNull Iterator<BigInteger> is1 = naturalBigIntegers().iterator();
-            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric().iterator();
-            private final @NotNull Iterator<Integer> is3 = withScale(secondaryScale).naturalIntegersGeometric()
-                    .iterator();
+            private final @NotNull Iterator<Boolean> bs = booleans.iterator();
+            private final @NotNull Iterator<BigInteger> is1 = naturalBigIntegers.iterator();
+            private final @NotNull Iterator<Integer> is2 = positiveIntegersGeometric.iterator();
+            private final @NotNull Iterator<Integer> is3 = naturalIntegersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2527,9 +2515,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return canonical {@code BigDecimal}s between 0 and 10<sup>{@code pow}</sup>, inclusive
      */
     private @NotNull Iterable<BigDecimal> zeroToPowerOfTenCanonicalBigDecimals(int pow) {
+        Iterable<Boolean> booleans = booleans();
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigDecimal>() {
-            private final @NotNull Iterator<Boolean> bs = booleans().iterator();
-            private final @NotNull Iterator<Integer> is = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Boolean> bs = booleans.iterator();
+            private final @NotNull Iterator<Integer> is = naturalIntegersGeometric.iterator();
             private final @NotNull Map<Integer, Iterator<BigInteger>> isMap = new HashMap<>();
 
             @Override
@@ -2576,10 +2566,12 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return all {@code BigDecimal}s which, once canonicalized, belong to {@code xs}
      */
     private @NotNull Iterable<BigDecimal> uncanonicalize(@NotNull Iterable<BigDecimal> bds) {
+        Iterable<Integer> integersGeometric = integersGeometric();
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<BigDecimal>() {
             private final @NotNull Iterator<BigDecimal> bdi = bds.iterator();
-            private final @NotNull Iterator<Integer> integersGeometric = integersGeometric().iterator();
-            private final @NotNull Iterator<Integer> naturalIntegersGeometric = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> is1 = integersGeometric.iterator();
+            private final @NotNull Iterator<Integer> is2 = naturalIntegersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2590,10 +2582,10 @@ public final strictfp class RandomProvider extends IterableProvider {
             public @NotNull BigDecimal next() {
                 BigDecimal bd = bdi.next();
                 if (bd.equals(BigDecimal.ZERO)) {
-                    return new BigDecimal(BigInteger.ZERO, integersGeometric.next());
+                    return new BigDecimal(BigInteger.ZERO, is1.next());
                 } else {
                     bd = bd.stripTrailingZeros();
-                    return BigDecimalUtils.setPrecision(bd, naturalIntegersGeometric.next() + bd.precision());
+                    return BigDecimalUtils.setPrecision(bd, is2.next() + bd.precision());
                 }
             }
         };
@@ -2657,13 +2649,6 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BigDecimal> range(@NotNull BigDecimal a, @NotNull BigDecimal b) {
-        if (scale < 1) {
-            throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
-        }
-        if (secondaryScale < 1) {
-            throw new IllegalStateException("this must have a positive secondaryScale. Invalid secondaryScale: " +
-                    secondaryScale);
-        }
         if (gt(a, b)) return Collections.emptyList();
         return withScale(secondaryScale).uncanonicalize(rangeCanonical(a, b));
     }
@@ -2771,9 +2756,10 @@ public final strictfp class RandomProvider extends IterableProvider {
         if (scale < 2) {
             throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
         }
+        Iterable<Integer> range = range(1, scale);
         return () -> new NoRemoveIterator<T>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
-            private final @NotNull Iterator<Integer> is = range(1, scale).iterator();
+            private final @NotNull Iterator<Integer> is = range.iterator();
 
             @Override
             public boolean hasNext() {
@@ -2917,9 +2903,10 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalStateException("this must have a positive scale. Invalid scale: " + scale);
         }
         if (!lengthAtLeast(2, xs)) return repeat(new NoRemoveIterable<>(xs));
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<Iterable<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> prefixSizes = naturalIntegersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
@@ -3368,9 +3355,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs) {
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
-            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
+            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric.iterator();
 
             @Override
             public boolean hasNext() {
