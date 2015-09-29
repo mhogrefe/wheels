@@ -619,7 +619,7 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoListsLex_int_Iterable() {
+    private static void demoListsLex_int_List() {
         initialize();
         Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).lists(P.withNull(P.integersGeometric())),
@@ -1332,6 +1332,71 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringsAtLeast(" + i + ") = " + its(map(Testing::nicePrint, EP.stringsAtLeast(i))));
+        }
+    }
+
+    private static void demoDistinctListsLex_int_List() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctListsLex(" + p.b + ", " + p.a + ") = " + its(EP.distinctListsLex(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctPairsLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctPairsLex(" + xs + ") = " + its(EP.distinctPairsLex(xs)));
+        }
+    }
+
+    private static void demoDistinctTriplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctTriplesLex(" + xs + ") = " + its(EP.distinctTriplesLex(xs)));
+        }
+    }
+
+    private static void demoDistinctQuadruplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctQuadruplesLex(" + xs + ") = " + its(EP.distinctQuadruplesLex(xs)));
+        }
+    }
+
+    private static void demoDistinctQuintuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctQuintuplesLex(" + xs + ") = " + its(EP.distinctQuintuplesLex(xs)));
+        }
+    }
+
+    private static void demoDistinctSextuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctSextuplesLex(" + xs + ") = " + its(EP.distinctSextuplesLex(xs)));
+        }
+    }
+
+    private static void demoDistinctSeptuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctSeptuplesLex(" + xs + ") = " + its(EP.distinctSeptuplesLex(xs)));
+        }
+    }
+
+    private static void demoDistinctStringsLex_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctStringsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsLex(p.b, p.a))));
         }
     }
 }
