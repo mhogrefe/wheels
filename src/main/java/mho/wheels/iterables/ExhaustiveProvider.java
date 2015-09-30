@@ -3505,11 +3505,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         Iterable<Integer> range = IterableUtils.range(0, size - 1);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(range);
-            private final @NotNull Set<Integer> taken;
+            private final @NotNull boolean[] taken = new boolean[elementCount];
             private boolean first = true;
             {
-                taken = new HashSet<>();
-                taken.addAll(list);
+                list.stream().filter(i -> i < elementCount).forEach(i -> taken[i] = true);
                 setOutputSize(outputSize);
             }
 
@@ -3522,20 +3521,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 for (int i = size - 1; i >= 0; i--) {
                     int index = list.get(i);
                     for (int j = index + 1; j < elementCount; j++) {
-                        if (taken.contains(j)) continue;
+                        if (taken[j]) continue;
                         list.set(i, j);
-                        taken.remove(index);
-                        taken.add(j);
+                        taken[index] = false;
+                        taken[j] = true;
                         int k = i + 1;
                         for (int m = 0; m < elementCount && k < size; m++) {
-                            if (taken.contains(m)) continue;
+                            if (taken[m]) continue;
                             list.set(k, m);
-                            taken.add(m);
+                            taken[m] = true;
                             k++;
                         }
                         return list;
                     }
-                    taken.remove(index);
+                    taken[index] = false;
                 }
                 throw new IllegalStateException();
             }
@@ -3736,10 +3735,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(elementCount);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = new ArrayList<>();
-            private final @NotNull Set<Integer> taken;
+            private final @NotNull boolean[] taken = new boolean[elementCount];
             private boolean first = true;
             {
-                taken = new HashSet<>();
+                list.stream().filter(i -> i < elementCount).forEach(i -> taken[i] = true);
                 setOutputSize(outputSize);
             }
 
@@ -3750,9 +3749,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     return list;
                 } else if (list.size() < elementCount) {
                     for (int i = 0; i < elementCount; i++) {
-                        if (!taken.contains(i)) {
+                        if (!taken[i]) {
                             list.add(i);
-                            taken.add(i);
+                            taken[i] = true;
                             return list;
                         }
                     }
@@ -3760,14 +3759,14 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     int previous = list.get(elementCount - 1);
                     for (int i = elementCount - 2; i >= 0; i--) {
                         list.remove(i + 1);
-                        taken.remove(previous);
+                        taken[previous] = false;
                         int j = list.get(i);
                         if (j < previous) {
                             for (int k = j + 1; k < elementCount; k++) {
-                                if (!taken.contains(k)) {
+                                if (!taken[k]) {
                                     list.set(i, k);
-                                    taken.remove(j);
-                                    taken.add(k);
+                                    taken[j] = false;
+                                    taken[k] = true;
                                     return list;
                                 }
                             }
@@ -3795,11 +3794,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(range);
-            private final @NotNull Set<Integer> taken;
+            private final @NotNull boolean[] taken = new boolean[elementCount];
             private boolean first = true;
             {
-                taken = new HashSet<>();
-                taken.addAll(list);
+                list.stream().filter(i -> i < elementCount).forEach(i -> taken[i] = true);
                 setOutputSize(outputSize);
             }
 
@@ -3810,9 +3808,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     return list;
                 } else if (list.size() < elementCount) {
                     for (int i = 0; i < elementCount; i++) {
-                        if (!taken.contains(i)) {
+                        if (!taken[i]) {
                             list.add(i);
-                            taken.add(i);
+                            taken[i] = true;
                             return list;
                         }
                     }
@@ -3821,27 +3819,26 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     outer:
                     for (int i = elementCount - 2; i >= 0; i--) {
                         list.remove(i + 1);
-                        taken.remove(previous);
+                        taken[previous] = false;
                         int j = list.get(i);
                         if (j < previous) {
                             for (int k = j + 1; k < elementCount; k++) {
-                                if (!taken.contains(k)) {
+                                if (!taken[k]) {
                                     list.set(i, k);
-                                    taken.remove(j);
-                                    taken.add(k);
+                                    taken[j] = false;
+                                    taken[k] = true;
                                     break outer;
                                 }
                             }
                         }
                         previous = j;
                     }
-                    while (list.size() < minSize) {
-                        for (int i = 0; i < elementCount; i++) {
-                            if (!taken.contains(i)) {
-                                list.add(i);
-                                taken.add(i);
-                                break;
-                            }
+                    int size = list.size();
+                    for (int i = 0; size < minSize && i < elementCount; i++) {
+                        if (!taken[i]) {
+                            list.add(i);
+                            taken[i] = true;
+                            size++;
                         }
                     }
                     return list;
