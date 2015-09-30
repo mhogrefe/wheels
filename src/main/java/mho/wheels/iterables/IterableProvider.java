@@ -954,7 +954,7 @@ public abstract strictfp class IterableProvider {
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> stringPermutations(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutationsFinite(toList(fromString(s))));
+        return map(IterableUtils::charsToString, permutationsFinite(toList(s)));
     }
 
     /**
@@ -1673,7 +1673,7 @@ public abstract strictfp class IterableProvider {
     }
 
     public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsetsUniform(toList(fromString(s))));
+        return map(IterableUtils::charsToString, subsetsUniform(toList(s)));
     }
 
     public @NotNull Iterable<String> stringSubsets() {
