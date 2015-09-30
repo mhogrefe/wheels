@@ -3732,9 +3732,57 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsLex(size, toList(s)));
     }
 
+    private static @NotNull Iterable<List<Integer>> distinctListIndices(int elementCount) {
+        BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(elementCount);
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = new ArrayList<>();
+            private final @NotNull Set<Integer> taken;
+            private boolean first = true;
+            {
+                taken = new HashSet<>();
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                } else if (list.size() < elementCount) {
+                    for (int i = 0; i < elementCount; i++) {
+                        if (!taken.contains(i)) {
+                            list.add(i);
+                            taken.add(i);
+                            return list;
+                        }
+                    }
+                } else {
+                    int previous = list.get(elementCount - 1);
+                    for (int i = elementCount - 2; i >= 0; i--) {
+                        list.remove(i + 1);
+                        taken.remove(previous);
+                        int j = list.get(i);
+                        if (j < previous) {
+                            for (int k = j + 1; k < elementCount; k++) {
+                                if (!taken.contains(k)) {
+                                    list.set(i, k);
+                                    taken.remove(j);
+                                    taken.add(k);
+                                    return list;
+                                }
+                            }
+                        }
+                        previous = j;
+                    }
+                }
+                throw new IllegalStateException();
+            }
+        };
+    }
+
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
-        return null;
+        return map(is -> toList(map(xs::get, is)), distinctListIndices(xs.size()));
     }
 
     @Override
@@ -3742,9 +3790,70 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsLex(toList(s)));
     }
 
+    private static @NotNull Iterable<List<Integer>> distinctListIndicesAtLeast(int minSize, int elementCount) {
+        BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(minSize, elementCount);
+        Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(range);
+            private final @NotNull Set<Integer> taken;
+            private boolean first = true;
+            {
+                taken = new HashSet<>();
+                taken.addAll(list);
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                } else if (list.size() < elementCount) {
+                    for (int i = 0; i < elementCount; i++) {
+                        if (!taken.contains(i)) {
+                            list.add(i);
+                            taken.add(i);
+                            return list;
+                        }
+                    }
+                } else {
+                    int previous = list.get(elementCount - 1);
+                    outer:
+                    for (int i = elementCount - 2; i >= 0; i--) {
+                        list.remove(i + 1);
+                        taken.remove(previous);
+                        int j = list.get(i);
+                        if (j < previous) {
+                            for (int k = j + 1; k < elementCount; k++) {
+                                if (!taken.contains(k)) {
+                                    list.set(i, k);
+                                    taken.remove(j);
+                                    taken.add(k);
+                                    break outer;
+                                }
+                            }
+                        }
+                        previous = j;
+                    }
+                    while (list.size() < minSize) {
+                        for (int i = 0; i < elementCount; i++) {
+                            if (!taken.contains(i)) {
+                                list.add(i);
+                                taken.add(i);
+                                break;
+                            }
+                        }
+                    }
+                    return list;
+                }
+                throw new IllegalStateException();
+            }
+        };
+    }
+
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
-        return null;
+        return map(is -> toList(map(xs::get, is)), distinctListIndicesAtLeast(minSize, xs.size()));
     }
 
     @Override

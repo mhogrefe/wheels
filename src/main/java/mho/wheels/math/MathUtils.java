@@ -240,12 +240,12 @@ public final class MathUtils {
 
     public static @NotNull BigInteger numberOfArrangementsOfASet(int n) {
         BigInteger bigN = BigInteger.valueOf(n);
-        return sumBigInteger(
-                map(
-                        k -> productBigInteger(range(k.add(BigInteger.ONE), bigN)),
-                        range(BigInteger.ZERO, BigInteger.valueOf(n))
-                )
-        );
+        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(0, n)));
+    }
+
+    public static @NotNull BigInteger numberOfArrangementsOfASet(int minSize, int n) {
+        BigInteger bigN = BigInteger.valueOf(n);
+        return sumBigInteger(map(k -> fallingFactorial(bigN, k), range(minSize, n)));
     }
 
     public static @NotNull <T> BigInteger permutationCount(@NotNull List<T> xs) {
