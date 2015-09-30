@@ -3732,35 +3732,43 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsLex(size, toList(fromString(s))));
     }
 
-    public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull Iterable<String> distinctStringsLex(@NotNull String s) {
         return null;
     }
 
-    public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull Iterable<String> distinctStringsLexAtLeast(int minSize, @NotNull String s) {
         return null;
     }
 
+    @Override
     public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
         int n = length(xs);
         return filter(IterableUtils::unique, takeWhile(ys -> ys.size() <= n, listsShortlex(xs)));
     }
 
+    @Override
     public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
         return null;
     }
 
-    public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
         return null;
     }

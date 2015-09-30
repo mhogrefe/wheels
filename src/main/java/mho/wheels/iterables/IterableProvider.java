@@ -1512,6 +1512,100 @@ public abstract strictfp class IterableProvider {
         return distinctStrings(size, s);
     }
 
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} with no repetitions. The {@code List}s
+     * are ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
+        return distinctLists(xs);
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions. The
+     * {@code String}s are ordered lexicographically, matching the order given by the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsLex(@NotNull String s) {
+        return distinctStrings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically, matching the order given by the original
+     * {@code List}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
+        return distinctListsAtLeast(minSize, xs);
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsLexAtLeast(int minSize, @NotNull String s) {
+        return distinctStringsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code Iterable} with no repetitions. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the order given by the
+     * original {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
+        return distinctLists(xs);
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions. The
+     * {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the order given by
+     * the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
+        return distinctStrings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable} with no
+     * repetitions. The {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the
+     * order given by the original {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
+        return distinctListsAtLeast(minSize, xs);
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the
+     * order given by the original {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
+        return distinctStringsAtLeast(minSize, s);
+    }
+
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
 
     public abstract @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs);
