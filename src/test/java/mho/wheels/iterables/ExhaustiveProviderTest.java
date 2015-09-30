@@ -5449,18 +5449,18 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
-    private static void strings_String_helper(int size, @NotNull String output) {
+    private static void strings_int_helper(int size, @NotNull String output) {
         aeqitLimit(TINY_LIMIT, P.strings(size), output);
     }
 
     @Test
     public void testStrings_int() {
-        strings_String_helper(0, "[]");
+        strings_int_helper(0, "[]");
         aeq(length(P.strings(0)), 1);
-        strings_String_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
-        strings_String_helper(2,
+        strings_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
+        strings_int_helper(2,
                 "[aa, ab, ba, bb, ac, ad, bc, bd, ca, cb, da, db, cc, cd, dc, dd, ae, af, be, bf, ...]");
-        strings_String_helper(3,
+        strings_int_helper(3,
                 "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, aad, abc, abd, bac, bad, bbc, bbd, aca, acb, ada," +
                 " adb, ...]");
         try {
@@ -5752,6 +5752,9 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDistinctListsLex_int_List() {
         distinctListsLex_int_List_helper(0, "[]", "[[]]");
+        distinctListsLex_int_List_helper(1, "[]", "[]");
+        distinctListsLex_int_List_helper(2, "[]", "[]");
+        distinctListsLex_int_List_helper(3, "[]", "[]");
         distinctListsLex_int_List_helper(0, "[5]", "[[]]");
         distinctListsLex_int_List_helper(1, "[5]", "[[5]]");
         distinctListsLex_int_List_helper(2, "[5]", "[]");
@@ -5775,10 +5778,6 @@ public strictfp class ExhaustiveProviderTest {
                 "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
         distinctListsLex_int_List_helper(3, "[1, null, 3]",
                 "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctListsLex_int_List_helper(0, "[]", "[[]]");
-        distinctListsLex_int_List_helper(1, "[]", "[]");
-        distinctListsLex_int_List_helper(2, "[]", "[]");
-        distinctListsLex_int_List_helper(3, "[]", "[]");
         try {
             P.distinctListsLex(-1, Collections.emptyList());
             fail();
@@ -5994,6 +5993,62 @@ public strictfp class ExhaustiveProviderTest {
             P.distinctStringsLex(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctListsLex_List_helper(@NotNull String input, @NotNull String output) {
+        aeqit(P.distinctListsLex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctListsLex_List() {
+        distinctListsLex_List_helper("[]", "[[]]");
+        distinctListsLex_List_helper("[5]", "[[], [5]]");
+        distinctListsLex_List_helper("[1, 2, 3]",
+                "[[], [1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3]," +
+                " [3, 1], [3, 1, 2], [3, 2], [3, 2, 1]]");
+        distinctListsLex_List_helper("[1, null, 3]",
+                "[[], [1], [1, null], [1, null, 3], [1, 3], [1, 3, null], [null], [null, 1], [null, 1, 3]," +
+                " [null, 3], [null, 3, 1], [3], [3, 1], [3, 1, null], [3, null], [3, null, 1]]");
+        distinctListsLex_List_helper("[1, 2, 3, 4]",
+                "[[], [1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 2, 4, 3], [1, 3], [1, 3, 2]," +
+                " [1, 3, 2, 4], [1, 3, 4], [1, 3, 4, 2], [1, 4], [1, 4, 2], [1, 4, 2, 3], [1, 4, 3], [1, 4, 3, 2]," +
+                " [2], [2, 1], [2, 1, 3], [2, 1, 3, 4], [2, 1, 4], [2, 1, 4, 3], [2, 3], [2, 3, 1], [2, 3, 1, 4]," +
+                " [2, 3, 4], [2, 3, 4, 1], [2, 4], [2, 4, 1], [2, 4, 1, 3], [2, 4, 3], [2, 4, 3, 1], [3], [3, 1]," +
+                " [3, 1, 2], [3, 1, 2, 4], [3, 1, 4], [3, 1, 4, 2], [3, 2], [3, 2, 1], [3, 2, 1, 4], [3, 2, 4]," +
+                " [3, 2, 4, 1], [3, 4], [3, 4, 1], [3, 4, 1, 2], [3, 4, 2], [3, 4, 2, 1], [4], [4, 1], [4, 1, 2]," +
+                " [4, 1, 2, 3], [4, 1, 3], [4, 1, 3, 2], [4, 2], [4, 2, 1], [4, 2, 1, 3], [4, 2, 3], [4, 2, 3, 1]," +
+                " [4, 3], [4, 3, 1], [4, 3, 1, 2], [4, 3, 2], [4, 3, 2, 1]]");
+        distinctListsLex_List_helper("[1, 2, 2, 3]",
+                "[[], [1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 2], [1, 2, 2]," +
+                " [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 3], [1, 3, 2], [1, 3, 2, 2], [1, 3, 2], [1, 3, 2, 2]," +
+                " [2], [2, 1], [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3]," +
+                " [2, 2, 3], [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [2], [2, 1]," +
+                " [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3]," +
+                " [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [3], [3, 1], [3, 1, 2]," +
+                " [3, 1, 2, 2], [3, 1, 2], [3, 1, 2, 2], [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]," +
+                " [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
+    }
+
+    @Test
+    public void testDistinctStringsLex_String() {
+        aeqit(P.distinctStringsLex(""), "[]");
+        aeq(length(P.distinctStringsLex("")), 1);
+        aeqit(P.distinctStringsLex("a"), "[, a]");
+        aeqit(P.distinctStringsLex("abc"), "[, a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
+        aeqit(P.distinctStringsLex("abcd"),
+                "[, a, ab, abc, abcd, abd, abdc, ac, acb, acbd, acd, acdb, ad, adb, adbc, adc, adcb, b, ba, bac," +
+                " bacd, bad, badc, bc, bca, bcad, bcd, bcda, bd, bda, bdac, bdc, bdca, c, ca, cab, cabd, cad, cadb," +
+                " cb, cba, cbad, cbd, cbda, cd, cda, cdab, cdb, cdba, d, da, dab, dabc, dac, dacb, db, dba, dbac," +
+                " dbc, dbca, dc, dca, dcab, dcb, dcba]");
+        aeqit(P.distinctStringsLex("abbc"),
+                "[, a, ab, abb, abbc, abc, abcb, ab, abb, abbc, abc, abcb, ac, acb, acbb, acb, acbb, b, ba, bab," +
+                " babc, bac, bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, b, ba, bab, babc, bac, bacb," +
+                " bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, c, ca, cab, cabb, cab, cabb, cb, cba, cbab," +
+                " cbb, cbba, cb, cba, cbab, cbb, cbba]");
+        aeqitLimit(TINY_LIMIT, P.distinctStringsLex("Mississippi"),
+                "[, M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
+                " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
+                " ...]");
     }
 
     @Test
