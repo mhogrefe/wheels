@@ -1075,7 +1075,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is a non-removable {@code Iterable} containing {@code BinaryFraction}s.</li>
      * </ul>
      *
-     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1736,7 +1736,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is a non-removable {@code Iterable} containing {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1809,7 +1809,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result is a non-removable {@code Iterable} containing canonical {@code BigDecimal}s.</li>
      * </ul>
      *
-     * Length is 0 if a>b, 1 if a=b, and infinite otherwise
+     * Length is 0 if a{@literal >}b, 1 if a=b, and infinite otherwise
      *
      * @param a the inclusive lower bound of the generated elements
      * @param b the inclusive upper bound of the generated elements
@@ -1878,8 +1878,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code unpairingFunction} must bijectively map natural {@code BigInteger}s to pairs of natural
      *  {@code BigInteger}s, and also must have the property
-     *  {@code unpairingFunction}<sup>–1</sup>(a, b){@literal <}{@code unpairingFunction}<sup>–1</sup>(a, b+1)</li> for
-     *  all natural a, b.
+     *  {@code unpairingFunction}<sup>–1</sup>(a, b){@literal <}{@code unpairingFunction}<sup>–1</sup>(a, b+1) for all
+     *  natural a, b.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>{@code f} must terminate and not return null when applied to any element of {@code xs}. All results must be
      *  infinite.</li>
@@ -2689,7 +2689,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  sequence.</li>
      * </ul>
      *
-     * Result length is 1 if {@code xs} is empty, infinite otherwise
+     * Length is 1 if {@code xs} is empty, infinite otherwise
      *
      * @param xs the {@code List} from which elements are selected
      * @param <T> the type of the given {@code List}'s elements
@@ -2714,7 +2714,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  some sequence.</li>
      * </ul>
      *
-     * Result length is 1 if {@code s} is empty, infinite otherwise
+     * Length is 1 if {@code s} is empty, infinite otherwise
      *
      * @param s the {@code String} from which characters are selected
      * @return all {@code String}s created from {@code s}
@@ -2739,7 +2739,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  equal to some minimum) of elements drawn from some sequence.</li>
      * </ul>
      *
-     * Result length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * Length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
      * {@code minSize} is 0, and infinite otherwise
      *
      * @param minSize the minimum length of the result {@code List}s
@@ -2772,7 +2772,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  equal to some minimum) of characters drawn from some sequence.</li>
      * </ul>
      *
-     * Result length is 0 if {@code s} is empty and {@code minSize} is greater than 0, 1 if {@code s} is empty and
+     * Length is 0 if {@code s} is empty and {@code minSize} is greater than 0, 1 if {@code s} is empty and
      * {@code minSize} is 0, and infinite otherwise
      *
      * @param minSize the minimum length of the result {@code String}s
@@ -3420,7 +3420,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  of elements drawn from some sequence.</li>
      * </ul>
      *
-     * Result length is 1 if {@code xs} is empty, infinite otherwise
+     * Length is 1 if {@code xs} is empty, infinite otherwise
      *
      * @param xs the {@code List} from which elements are selected
      * @param <T> the type of the given {@code List}'s elements
@@ -3456,13 +3456,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  (with a length greater than or equal to some minimum) of elements drawn from some sequence.</li>
      * </ul>
      *
-     * Result length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * Length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
      * {@code minSize} is 0, and infinite otherwise
      *
      * @param minSize the minimum length of the result {@code List}s
      * @param xs the {@code List} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all {@code List}s created from {@code xs}
+     * @return all {@code List}s with length at least {@code minSize} created from {@code xs}
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs) {
@@ -3485,20 +3485,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all {@code List}s of a given size containing natural numbers up to a given value with no repetitions.
+     * Returns all {@code List}s of a given size containing natural numbers up to a given value with no repetitions
+     * Does not support removal.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code elementCount} cannot be negative.</li>
-     *  <li>The result is in lexicographic order, contains only non-negative integers, and contains no repetitions.
-     *  Each element has the same size.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers with no repetitions, and contains
+     *  no repetitions. Each element has the same size.</li>
      * </ul>
      *
      * Length is <sub>{@code elementCount}</sub>P<sub>{@code size}</sub>
      *
      * @param size the length of each of the result {@code List}s
      * @param elementCount one more than the largest possible value in the result {@code List}s
-     * @return all lists of length {@code size} with elements from 0 to {@code elementCount}–1 with no repetitions
+     * @return all lists with no repetitions of length {@code size} with elements from 0 to {@code elementCount}–1
      */
     private static @NotNull Iterable<List<Integer>> distinctListIndices(int size, int elementCount) {
         BigInteger outputSize = MathUtils.fallingFactorial(BigInteger.valueOf(elementCount), size);
@@ -3710,7 +3711,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     /**
      * Returns an {@code Iterable} containing all {@code String}s of a given length with characters from a given
-     * {@code String, with no repetitions. The {@code String}s are ordered lexicographically, matching the order given
+     * {@code String}, with no repetitions. The {@code String}s are ordered lexicographically, matching the order given
      * by the original {@code String}. Does not support removal.
      *
      * <ul>
@@ -3731,6 +3732,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsLex(size, toList(s)));
     }
 
+    /**
+     * Returns all {@code List}s of containing natural numbers up to a given value with no repetitions. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers with no repetitions, and contains
+     *  no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>{@code elementCount}</sub>P<sub>{@code size}</sub>
+     *
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all lists with no repetitions with elements from 0 to {@code elementCount}–1
+     */
     private static @NotNull Iterable<List<Integer>> distinctListIndices(int elementCount) {
         BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(elementCount);
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
@@ -3779,16 +3795,65 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically, matching the order given by the original
+     * {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
         return map(is -> toList(map(xs::get, is)), distinctListIndices(xs.size()));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s with characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result contains no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param s the {@code String} from which elements are selected
+     * @return all {@code String}s with no repetitions created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> distinctStringsLex(@NotNull String s) {
         return map(IterableUtils::charsToString, distinctListsLex(toList(s)));
     }
 
+    /**
+     * Returns all {@code List}s of at least a given size containing natural numbers up to a given value with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers with no repetitions, and contains
+     *  no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>{@code elementCount}</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of each of the result {@code List}s
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all lists with no repetitions of length at least {@code minSize} with elements from 0 to
+     * {@code elementCount}–1
+     */
     private static @NotNull Iterable<List<Integer>> distinctListIndicesAtLeast(int minSize, int elementCount) {
         BigInteger outputSize = MathUtils.numberOfArrangementsOfASet(minSize, elementCount);
         Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
@@ -3848,11 +3913,48 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. The {@code List}s are ordered lexicographically, matching the order given by
+     * the original {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains every {@code List} (with a length greater than or equal to some minimum) of elements
+     *  drawn from some sequence with no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all {@code List}s with length at least {@code minSize} with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
         return map(is -> toList(map(xs::get, is)), distinctListIndicesAtLeast(minSize, xs.size()));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s with a minimum size with elements from a given
+     * {@code String} with no repetitions. The {@code String}s are ordered lexicographically, matching the order given
+     * by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result contains every {@code String} (with a length greater than or equal to some minimum) of
+     *  characters drawn from some sequence with no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which elements are selected
+     * @return all {@code String}s with length at least {@code minSize} with no repetitions created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> distinctStringsLexAtLeast(int minSize, @NotNull String s) {
         return map(IterableUtils::charsToString, distinctListsLexAtLeast(minSize, toList(s)));
