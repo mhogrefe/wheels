@@ -1671,10 +1671,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<BinaryFraction> range(@NotNull BinaryFraction a, @NotNull BinaryFraction b) {
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         if (a.equals(b)) return repeat(a);
         if (gt(a, b)) return Collections.emptyList();
         BinaryFraction difference = b.subtract(a);
-        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
         Iterable<BigInteger> range1 = range(BigInteger.ZERO, difference.getMantissa());
         Iterable<BigInteger> range2 = range(BigInteger.ZERO, difference.getMantissa().subtract(BigInteger.ONE));
         return () -> new NoRemoveIterator<BinaryFraction>() {
