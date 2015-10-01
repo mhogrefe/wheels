@@ -5613,6 +5613,22 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, null], [null, null, 1], [1, 1, null, null], [null, null, null]," +
                 " [1, 1, 1, 1, 1, 1, 1], [1, 1, 3], [1, null, 1, 1], [1, null, 3], [1, 1, 1, null, 1], ...]");
 
+        listsAtLeast_helper(0, "[1, 2, 2, 3]",
+                "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
+        listsAtLeast_helper(1, "[1, 2, 2, 3]",
+                "[[1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
+                " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3]," +
+                " [1, 1, 1, 1, 1, 1], ...]");
+        listsAtLeast_helper(2, "[1, 2, 2, 3]",
+                "[[1, 1], [1, 1, 1], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2], [1, 1, 1, 1, 1], [1, 2]," +
+                " [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], [1, 1, 1, 1, 1, 1], [2, 1], [2, 1, 1]," +
+                " [2, 2], [1, 1, 2, 1], ...]");
+        listsAtLeast_helper(3, "[1, 2, 2, 3]",
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 2], [1, 1, 1, 1, 1], [1, 2, 1], [1, 1, 1, 2], [1, 2, 2]," +
+                " [1, 1, 1, 1, 1, 1], [2, 1, 1], [1, 1, 2, 1], [2, 1, 2], [1, 1, 1, 1, 2], [2, 2, 1], [1, 1, 2, 2]," +
+                " [2, 2, 2], [1, 1, 1, 1, 1, 1, 1], [1, 1, 2], [1, 2, 1, 1], [1, 1, 3], [1, 1, 1, 2, 1], ...]");
+
         listsAtLeast_helper(0, P.naturalIntegers(),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
                 " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
@@ -6049,6 +6065,272 @@ public strictfp class ExhaustiveProviderTest {
                 "[, M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
                 " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
                 " ...]");
+    }
+
+    private static void distinctListsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctListsLexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctListsLexAtLeast() {
+        distinctListsLexAtLeast_helper(0, "[]", "[[]]");
+        distinctListsLexAtLeast_helper(1, "[]", "[]");
+        distinctListsLexAtLeast_helper(2, "[]", "[]");
+        distinctListsLexAtLeast_helper(3, "[]", "[]");
+
+        distinctListsLexAtLeast_helper(0, "[5]", "[[], [5]]");
+        distinctListsLexAtLeast_helper(1, "[5]", "[[5]]");
+        distinctListsLexAtLeast_helper(2, "[5]", "[]");
+        distinctListsLexAtLeast_helper(3, "[5]", "[]");
+
+        distinctListsLexAtLeast_helper(0, "[1, 2, 3]",
+                "[[], [1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3]," +
+                " [3, 1], [3, 1, 2], [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(1, "[1, 2, 3]",
+                "[[1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3], [3, 1]," +
+                " [3, 1, 2], [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(2, "[1, 2, 3]",
+                "[[1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3, 1], [3, 1, 2]," +
+                " [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(3, "[1, 2, 3]",
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+
+        distinctListsLexAtLeast_helper(0, "[1, null, 3]",
+                "[[], [1], [1, null], [1, null, 3], [1, 3], [1, 3, null], [null], [null, 1], [null, 1, 3]," +
+                " [null, 3], [null, 3, 1], [3], [3, 1], [3, 1, null], [3, null], [3, null, 1]]");
+        distinctListsLexAtLeast_helper(1, "[1, null, 3]",
+                "[[1], [1, null], [1, null, 3], [1, 3], [1, 3, null], [null], [null, 1], [null, 1, 3], [null, 3]," +
+                " [null, 3, 1], [3], [3, 1], [3, 1, null], [3, null], [3, null, 1]]");
+        distinctListsLexAtLeast_helper(2, "[1, null, 3]",
+                "[[1, null], [1, null, 3], [1, 3], [1, 3, null], [null, 1], [null, 1, 3], [null, 3], [null, 3, 1]," +
+                " [3, 1], [3, 1, null], [3, null], [3, null, 1]]");
+        distinctListsLexAtLeast_helper(3, "[1, null, 3]",
+                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+
+        distinctListsLexAtLeast_helper(0, "[1, 2, 3]",
+                "[[], [1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3]," +
+                " [3, 1], [3, 1, 2], [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(1, "[1, 2, 3]",
+                "[[1], [1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3], [3, 1]," +
+                " [3, 1, 2], [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(2, "[1, 2, 3]",
+                "[[1, 2], [1, 2, 3], [1, 3], [1, 3, 2], [2, 1], [2, 1, 3], [2, 3], [2, 3, 1], [3, 1], [3, 1, 2]," +
+                " [3, 2], [3, 2, 1]]");
+        distinctListsLexAtLeast_helper(3, "[1, 2, 3]",
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+
+        distinctListsLexAtLeast_helper(0, "[1, 2, 3, 4]",
+                "[[], [1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 2, 4, 3], [1, 3], [1, 3, 2]," +
+                " [1, 3, 2, 4], [1, 3, 4], [1, 3, 4, 2], [1, 4], [1, 4, 2], [1, 4, 2, 3], [1, 4, 3], [1, 4, 3, 2]," +
+                " [2], [2, 1], [2, 1, 3], [2, 1, 3, 4], [2, 1, 4], [2, 1, 4, 3], [2, 3], [2, 3, 1], [2, 3, 1, 4]," +
+                " [2, 3, 4], [2, 3, 4, 1], [2, 4], [2, 4, 1], [2, 4, 1, 3], [2, 4, 3], [2, 4, 3, 1], [3], [3, 1]," +
+                " [3, 1, 2], [3, 1, 2, 4], [3, 1, 4], [3, 1, 4, 2], [3, 2], [3, 2, 1], [3, 2, 1, 4], [3, 2, 4]," +
+                " [3, 2, 4, 1], [3, 4], [3, 4, 1], [3, 4, 1, 2], [3, 4, 2], [3, 4, 2, 1], [4], [4, 1], [4, 1, 2]," +
+                " [4, 1, 2, 3], [4, 1, 3], [4, 1, 3, 2], [4, 2], [4, 2, 1], [4, 2, 1, 3], [4, 2, 3], [4, 2, 3, 1]," +
+                " [4, 3], [4, 3, 1], [4, 3, 1, 2], [4, 3, 2], [4, 3, 2, 1]]");
+        distinctListsLexAtLeast_helper(1, "[1, 2, 3, 4]",
+                "[[1], [1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 2, 4, 3], [1, 3], [1, 3, 2], [1, 3, 2, 4]," +
+                " [1, 3, 4], [1, 3, 4, 2], [1, 4], [1, 4, 2], [1, 4, 2, 3], [1, 4, 3], [1, 4, 3, 2], [2], [2, 1]," +
+                " [2, 1, 3], [2, 1, 3, 4], [2, 1, 4], [2, 1, 4, 3], [2, 3], [2, 3, 1], [2, 3, 1, 4], [2, 3, 4]," +
+                " [2, 3, 4, 1], [2, 4], [2, 4, 1], [2, 4, 1, 3], [2, 4, 3], [2, 4, 3, 1], [3], [3, 1], [3, 1, 2]," +
+                " [3, 1, 2, 4], [3, 1, 4], [3, 1, 4, 2], [3, 2], [3, 2, 1], [3, 2, 1, 4], [3, 2, 4], [3, 2, 4, 1]," +
+                " [3, 4], [3, 4, 1], [3, 4, 1, 2], [3, 4, 2], [3, 4, 2, 1], [4], [4, 1], [4, 1, 2], [4, 1, 2, 3]," +
+                " [4, 1, 3], [4, 1, 3, 2], [4, 2], [4, 2, 1], [4, 2, 1, 3], [4, 2, 3], [4, 2, 3, 1], [4, 3]," +
+                " [4, 3, 1], [4, 3, 1, 2], [4, 3, 2], [4, 3, 2, 1]]");
+        distinctListsLexAtLeast_helper(2, "[1, 2, 3, 4]",
+                "[[1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 2, 4, 3], [1, 3], [1, 3, 2], [1, 3, 2, 4]," +
+                " [1, 3, 4], [1, 3, 4, 2], [1, 4], [1, 4, 2], [1, 4, 2, 3], [1, 4, 3], [1, 4, 3, 2], [2, 1]," +
+                " [2, 1, 3], [2, 1, 3, 4], [2, 1, 4], [2, 1, 4, 3], [2, 3], [2, 3, 1], [2, 3, 1, 4], [2, 3, 4]," +
+                " [2, 3, 4, 1], [2, 4], [2, 4, 1], [2, 4, 1, 3], [2, 4, 3], [2, 4, 3, 1], [3, 1], [3, 1, 2]," +
+                " [3, 1, 2, 4], [3, 1, 4], [3, 1, 4, 2], [3, 2], [3, 2, 1], [3, 2, 1, 4], [3, 2, 4], [3, 2, 4, 1]," +
+                " [3, 4], [3, 4, 1], [3, 4, 1, 2], [3, 4, 2], [3, 4, 2, 1], [4, 1], [4, 1, 2], [4, 1, 2, 3]," +
+                " [4, 1, 3], [4, 1, 3, 2], [4, 2], [4, 2, 1], [4, 2, 1, 3], [4, 2, 3], [4, 2, 3, 1], [4, 3]," +
+                " [4, 3, 1], [4, 3, 1, 2], [4, 3, 2], [4, 3, 2, 1]]");
+        distinctListsLexAtLeast_helper(3, "[1, 2, 3, 4]",
+                "[[1, 2, 3], [1, 2, 3, 4], [1, 2, 4], [1, 2, 4, 3], [1, 3, 2], [1, 3, 2, 4], [1, 3, 4]," +
+                " [1, 3, 4, 2], [1, 4, 2], [1, 4, 2, 3], [1, 4, 3], [1, 4, 3, 2], [2, 1, 3], [2, 1, 3, 4]," +
+                " [2, 1, 4], [2, 1, 4, 3], [2, 3, 1], [2, 3, 1, 4], [2, 3, 4], [2, 3, 4, 1], [2, 4, 1]," +
+                " [2, 4, 1, 3], [2, 4, 3], [2, 4, 3, 1], [3, 1, 2], [3, 1, 2, 4], [3, 1, 4], [3, 1, 4, 2]," +
+                " [3, 2, 1], [3, 2, 1, 4], [3, 2, 4], [3, 2, 4, 1], [3, 4, 1], [3, 4, 1, 2], [3, 4, 2]," +
+                " [3, 4, 2, 1], [4, 1, 2], [4, 1, 2, 3], [4, 1, 3], [4, 1, 3, 2], [4, 2, 1], [4, 2, 1, 3]," +
+                " [4, 2, 3], [4, 2, 3, 1], [4, 3, 1], [4, 3, 1, 2], [4, 3, 2], [4, 3, 2, 1]]");
+
+        distinctListsLexAtLeast_helper(0, "[1, 2, 2, 3]",
+                "[[], [1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 2], [1, 2, 2]," +
+                " [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 3], [1, 3, 2], [1, 3, 2, 2], [1, 3, 2], [1, 3, 2, 2]," +
+                " [2], [2, 1], [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3]," +
+                " [2, 2, 3], [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [2], [2, 1]," +
+                " [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3]," +
+                " [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [3], [3, 1], [3, 1, 2]," +
+                " [3, 1, 2, 2], [3, 1, 2], [3, 1, 2, 2], [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]," +
+                " [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
+        distinctListsLexAtLeast_helper(1, "[1, 2, 2, 3]",
+                "[[1], [1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 2], [1, 2, 2], [1, 2, 2, 3]," +
+                " [1, 2, 3], [1, 2, 3, 2], [1, 3], [1, 3, 2], [1, 3, 2, 2], [1, 3, 2], [1, 3, 2, 2], [2], [2, 1]," +
+                " [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3]," +
+                " [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [2], [2, 1], [2, 1, 2]," +
+                " [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3], [2, 2, 3, 1]," +
+                " [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [3], [3, 1], [3, 1, 2], [3, 1, 2, 2]," +
+                " [3, 1, 2], [3, 1, 2, 2], [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1], [3, 2]," +
+                " [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
+        distinctListsLexAtLeast_helper(2, "[1, 2, 2, 3]",
+                "[[1, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 2], [1, 2, 2], [1, 2, 2, 3]," +
+                " [1, 2, 3], [1, 2, 3, 2], [1, 3], [1, 3, 2], [1, 3, 2, 2], [1, 3, 2], [1, 3, 2, 2], [2, 1]," +
+                " [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3]," +
+                " [2, 2, 3, 1], [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [2, 1], [2, 1, 2]," +
+                " [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2], [2, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3], [2, 2, 3, 1]," +
+                " [2, 3], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [3, 1], [3, 1, 2], [3, 1, 2, 2]," +
+                " [3, 1, 2], [3, 1, 2, 2], [3, 2], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1], [3, 2]," +
+                " [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
+        distinctListsLexAtLeast_helper(3, "[1, 2, 2, 3]",
+                "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3, 2], [1, 2, 2], [1, 2, 2, 3], [1, 2, 3]," +
+                " [1, 2, 3, 2], [1, 3, 2], [1, 3, 2, 2], [1, 3, 2], [1, 3, 2, 2], [2, 1, 2], [2, 1, 2, 3]," +
+                " [2, 1, 3], [2, 1, 3, 2], [2, 2, 1], [2, 2, 1, 3], [2, 2, 3], [2, 2, 3, 1], [2, 3, 1]," +
+                " [2, 3, 1, 2], [2, 3, 2], [2, 3, 2, 1], [2, 1, 2], [2, 1, 2, 3], [2, 1, 3], [2, 1, 3, 2]," +
+                " [2, 2, 1], [2, 2, 1, 3], [2, 2, 3], [2, 2, 3, 1], [2, 3, 1], [2, 3, 1, 2], [2, 3, 2]," +
+                " [2, 3, 2, 1], [3, 1, 2], [3, 1, 2, 2], [3, 1, 2], [3, 1, 2, 2], [3, 2, 1], [3, 2, 1, 2]," +
+                " [3, 2, 2], [3, 2, 2, 1], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
+
+        try {
+            P.distinctListsLexAtLeast(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctListsLexAtLeast(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctStringsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctStringsLexAtLeast(minSize, input), output);
+    }
+
+    private static void distinctStringsLexAtLeast_helper_limit(
+            int minSize,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctStringsLexAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testDistinctStringsLexAtLeast_int_String() {
+        distinctStringsLexAtLeast_helper(0, "", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(0, "")), 1);
+        distinctStringsLexAtLeast_helper(1, "", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(1, "")), 0);
+        distinctStringsLexAtLeast_helper(2, "", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(2, "")), 0);
+        distinctStringsLexAtLeast_helper(3, "", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(3, "")), 0);
+        distinctStringsLexAtLeast_helper(0, "a", "[, a]");
+        distinctStringsLexAtLeast_helper(1, "a", "[a]");
+        distinctStringsLexAtLeast_helper(2, "a", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(2, "a")), 0);
+        distinctStringsLexAtLeast_helper(3, "a", "[]");
+        aeq(length(P.distinctStringsLexAtLeast(3, "a")), 0);
+        distinctStringsLexAtLeast_helper(0, "abc",
+                "[, a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
+        distinctStringsLexAtLeast_helper(1, "abc", "[a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
+        distinctStringsLexAtLeast_helper(2, "abc", "[ab, abc, ac, acb, ba, bac, bc, bca, ca, cab, cb, cba]");
+        distinctStringsLexAtLeast_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
+        distinctStringsLexAtLeast_helper(0, "abbc",
+                "[, a, ab, abb, abbc, abc, abcb, ab, abb, abbc, abc, abcb, ac, acb, acbb, acb, acbb, b, ba, bab," +
+                " babc, bac, bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, b, ba, bab, babc, bac, bacb," +
+                " bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, c, ca, cab, cabb, cab, cabb, cb, cba, cbab," +
+                " cbb, cbba, cb, cba, cbab, cbb, cbba]");
+        distinctStringsLexAtLeast_helper(1, "abbc",
+                "[a, ab, abb, abbc, abc, abcb, ab, abb, abbc, abc, abcb, ac, acb, acbb, acb, acbb, b, ba, bab, babc," +
+                " bac, bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, b, ba, bab, babc, bac, bacb, bb," +
+                " bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, c, ca, cab, cabb, cab, cabb, cb, cba, cbab, cbb," +
+                " cbba, cb, cba, cbab, cbb, cbba]");
+        distinctStringsLexAtLeast_helper(2, "abbc",
+                "[ab, abb, abbc, abc, abcb, ab, abb, abbc, abc, abcb, ac, acb, acbb, acb, acbb, ba, bab, babc, bac," +
+                " bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, ba, bab, babc, bac, bacb, bb, bba, bbac," +
+                " bbc, bbca, bc, bca, bcab, bcb, bcba, ca, cab, cabb, cab, cabb, cb, cba, cbab, cbb, cbba, cb, cba," +
+                " cbab, cbb, cbba]");
+        distinctStringsLexAtLeast_helper(3, "abbc",
+                "[abb, abbc, abc, abcb, abb, abbc, abc, abcb, acb, acbb, acb, acbb, bab, babc, bac, bacb, bba, bbac," +
+                " bbc, bbca, bca, bcab, bcb, bcba, bab, babc, bac, bacb, bba, bbac, bbc, bbca, bca, bcab, bcb, bcba," +
+                " cab, cabb, cab, cabb, cba, cbab, cbb, cbba, cba, cbab, cbb, cbba]");
+        distinctStringsLexAtLeast_helper_limit(0, "Mississippi",
+                "[, M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
+                " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
+                " ...]");
+        distinctStringsLexAtLeast_helper_limit(1, "Mississippi",
+                "[M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
+                " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
+                " Mississiip, ...]");
+        distinctStringsLexAtLeast_helper_limit(2, "Mississippi",
+                "[Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi, Mississipi," +
+                " Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii, Mississiip," +
+                " Mississiipp, ...]");
+        distinctStringsLexAtLeast_helper_limit(3, "Mississippi",
+                "[Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi, Mississipi," +
+                " Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii, Mississiip," +
+                " Mississiipp, Mississiip, ...]");
+        try {
+            P.distinctStringsLexAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctStringsLexAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctListsShortlex_helper(@NotNull String input, @NotNull String output) {
+        aeqit(P.distinctListsShortlex(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctListsShortlex() {
+        distinctListsShortlex_helper("[]", "[[]]");
+        distinctListsShortlex_helper("[5]", "[[], [5]]");
+        distinctListsShortlex_helper("[1, 2, 3]",
+                "[[], [1], [2], [3], [1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2], [1, 2, 3], [1, 3, 2]," +
+                " [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsShortlex_helper("[1, null, 3]",
+                "[[], [1], [null], [3], [1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null], [1, null, 3]," +
+                " [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsShortlex_helper("[1, 2, 3, 4]",
+                "[[], [1], [2], [3], [4], [1, 2], [1, 3], [1, 4], [2, 1], [2, 3], [2, 4], [3, 1], [3, 2], [3, 4]," +
+                " [4, 1], [4, 2], [4, 3], [1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [1, 4, 2], [1, 4, 3]," +
+                " [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [2, 4, 1], [2, 4, 3], [3, 1, 2], [3, 1, 4], [3, 2, 1]," +
+                " [3, 2, 4], [3, 4, 1], [3, 4, 2], [4, 1, 2], [4, 1, 3], [4, 2, 1], [4, 2, 3], [4, 3, 1], [4, 3, 2]," +
+                " [1, 2, 3, 4], [1, 2, 4, 3], [1, 3, 2, 4], [1, 3, 4, 2], [1, 4, 2, 3], [1, 4, 3, 2], [2, 1, 3, 4]," +
+                " [2, 1, 4, 3], [2, 3, 1, 4], [2, 3, 4, 1], [2, 4, 1, 3], [2, 4, 3, 1], [3, 1, 2, 4], [3, 1, 4, 2]," +
+                " [3, 2, 1, 4], [3, 2, 4, 1], [3, 4, 1, 2], [3, 4, 2, 1], [4, 1, 2, 3], [4, 1, 3, 2], [4, 2, 1, 3]," +
+                " [4, 2, 3, 1], [4, 3, 1, 2], [4, 3, 2, 1]]");
+        distinctListsShortlex_helper("[1, 2, 2, 3]",
+                "[[], [1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 1], [2, 2], [2, 3], [2, 1], [2, 2], [2, 3]," +
+                " [3, 1], [3, 2], [3, 2], [1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 2], [1, 3, 2]," +
+                " [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1]," +
+                " [2, 2, 3], [2, 3, 1], [2, 3, 2], [3, 1, 2], [3, 1, 2], [3, 2, 1], [3, 2, 2], [3, 2, 1], [3, 2, 2]," +
+                " [1, 2, 2, 3], [1, 2, 3, 2], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2, 2], [1, 3, 2, 2], [2, 1, 2, 3]," +
+                " [2, 1, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [2, 1, 2, 3], [2, 1, 3, 2]," +
+                " [2, 2, 1, 3], [2, 2, 3, 1], [2, 3, 1, 2], [2, 3, 2, 1], [3, 1, 2, 2], [3, 1, 2, 2], [3, 2, 1, 2]," +
+                " [3, 2, 2, 1], [3, 2, 1, 2], [3, 2, 2, 1]]");
+    }
+
+    @Test
+    public void testDistinctStringsShortlex() {
+        aeqit(P.distinctStringsShortlex(""), "[]");
+        aeq(length(P.distinctStringsShortlex("")), 1);
+        aeqit(P.distinctStringsShortlex("a"), "[, a]");
+        aeqit(P.distinctStringsShortlex("abc"), "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
+        aeqit(P.distinctStringsShortlex("abcd"),
+                "[, a, b, c, d, ab, ac, ad, ba, bc, bd, ca, cb, cd, da, db, dc, abc, abd, acb, acd, adb, adc, bac," +
+                " bad, bca, bcd, bda, bdc, cab, cad, cba, cbd, cda, cdb, dab, dac, dba, dbc, dca, dcb, abcd, abdc," +
+                " acbd, acdb, adbc, adcb, bacd, badc, bcad, bcda, bdac, bdca, cabd, cadb, cbad, cbda, cdab, cdba," +
+                " dabc, dacb, dbac, dbca, dcab, dcba]");
+        aeqit(P.distinctStringsShortlex("abbc"),
+                "[, a, b, b, c, ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab," +
+                " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
+                " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
+                " cabb, cabb, cbab, cbba, cbab, cbba]");
+        aeqitLimit(TINY_LIMIT, P.distinctStringsShortlex("Mississippi"),
+                "[, M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
     }
 
     @Test

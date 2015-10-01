@@ -3934,6 +3934,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         return map(is -> toList(map(xs::get, is)), distinctListIndicesAtLeast(minSize, xs.size()));
     }
 
@@ -3962,7 +3965,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
-        return concatMap(i -> listsLex(i, xs), range(0, xs.size()));
+        return concatMap(i -> distinctListsLex(i, xs), range(0, xs.size()));
     }
 
     @Override
