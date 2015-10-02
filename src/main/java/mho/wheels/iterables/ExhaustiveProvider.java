@@ -2745,7 +2745,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param minSize the minimum length of the result {@code List}s
      * @param xs the {@code List} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
-     * @return all {@code List}s created from {@code xs}
+     * @return all {@code List}s with length at least {@code minSize} created from {@code xs}
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
@@ -2777,7 +2777,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * @param minSize the minimum length of the result {@code String}s
      * @param s the {@code String} from which elements are selected
-     * @return all {@code String}s created from {@code s}
+     * @return all {@code String}s with length at least {@code minSize} created from {@code s}
      */
     @Override
     public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
@@ -3802,7 +3802,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -3823,7 +3823,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -3963,21 +3963,91 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsLexAtLeast(minSize, toList(s)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code List} with no
+     * repetitions. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
+     * {@code List}s, and {@code List}s of the same length are ordered lexicographically, matching the order given by
+     * the original {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
         return concatMap(i -> distinctListsLex(i, xs), range(0, xs.size()));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s with characters from a given {@code String} with no
+     * repetitions. The {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer
+     * {@code String}s, and {@code String}s of the same length are ordered lexicographically, matching the order given
+     * by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param s the {@code String} from which characters are selected
+     * @return all {@code Strings}s with no repetitions created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
         return map(IterableUtils::charsToString, distinctListsShortlex(toList(s)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. The {@code List}s are in shortlex order; that is, shorter {@code List}s
+     * precede longer {@code List}s, and {@code List}s of the same length are ordered lexicographically, matching the
+     * order given by the original {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all {@code List}s with length at least {@code minSize} with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
         return concatMap(i -> listsLex(i, xs), range(minSize, xs.size()));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code String}s with a minimum size with elements from a given
+     * {@code String} with no repetitions. The {@code String}s are in shortlex order; that is, shorter {@code String}s
+     * precede longer {@code String}s, and {@code String}s of the same length are ordered lexicographically, matching
+     * the order given by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which elements are selected
+     * @return all {@code String}s with length at least {@code minSize} with no repetitions created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
         return map(IterableUtils::charsToString, distinctListsShortlexAtLeast(minSize, toList(s)));
