@@ -3802,7 +3802,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -3823,7 +3823,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -3971,7 +3971,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -3993,7 +3993,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -4015,7 +4015,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -4027,7 +4027,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
-        return concatMap(i -> listsLex(i, xs), range(minSize, xs.size()));
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        return concatMap(i -> distinctListsLex(i, xs), range(minSize, xs.size()));
     }
 
     /**
@@ -4039,7 +4042,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result contains no repetitions, and its elements contain no repetitions.</li>
+     *  <li>The result contains no repetitions.</li>
      * </ul>
      *
      * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
