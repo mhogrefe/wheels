@@ -207,6 +207,8 @@ public class ExhaustiveProviderProperties {
             propertiesDistinctSextuplesLex();
             propertiesDistinctSeptuplesLex();
             propertiesDistinctStringsLex_int_String();
+            propertiesDistinctListsLex_List();
+            propertiesDistinctStringsLex_String();
         }
         System.out.println("Done");
     }
@@ -4237,7 +4239,7 @@ public class ExhaustiveProviderProperties {
         }
 
         for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
-            List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.listsShortlex(xs)));
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.lists(xs)));
             assertTrue(xs, unique(listsList));
         }
 
@@ -4966,6 +4968,74 @@ public class ExhaustiveProviderProperties {
                 EP.distinctStringsLex(p.b, p.a);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctListsLex_List() {
+        initialize("distinctListsLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> lists = EP.distinctListsLex(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsList.isEmpty()) {
+                    assertEquals(xs, head(listsList), Collections.emptyList());
+                    assertEquals(xs, last(listsList), reverse(xs));
+                }
+                assertEquals(xs, listsList.size(), listsLength.intValueExact());
+                assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger listsLength = MathUtils.numberOfArrangementsOfASet(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.distinctListsLex(xs));
+                assertTrue(xs, unique(listsList));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(xs)),
+                                map(ys -> ((Iterable<Integer>) ys), listsList)
+                        )
+                );
+            }
+        }
+    }
+
+    private static void propertiesDistinctStringsLex_String() {
+        initialize("distinctStringsLex(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> strings = EP.distinctStringsLex(s);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.numberOfArrangementsOfASet(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!stringsList.isEmpty()) {
+                    assertEquals(s, head(stringsList), "");
+                    assertEquals(s, last(stringsList), reverse(s));
+                }
+                assertEquals(s, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(s, all(t -> isSubsetOf(t, s), stringsList));
+            }
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            BigInteger stringsLength = MathUtils.numberOfArrangementsOfASet(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.distinctStringsLex(s));
+                assertTrue(s, unique(stringsList));
+                assertTrue(
+                        s,
+                        increasing(
+                                new LexComparator<>(new ListBasedComparator<>(toList(s))),
+                                map(IterableUtils::toList, stringsList)
+                        )
+                );
+            }
         }
     }
 }
