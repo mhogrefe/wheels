@@ -1399,4 +1399,82 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.distinctStringsLex(p.b, p.a))));
         }
     }
+
+    private static void demoDistinctListsLex_List() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctListsLex(" + xs + ") = " + its(EP.distinctListsLex(xs)));
+        }
+    }
+
+    private static void demoDistinctStringsLex_String() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("distinctStringsLex(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsLex(s))));
+        }
+    }
+
+    private static void demoDistinctListsLexAtLeast() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctListsLexAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.distinctListsLexAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctStringsLexAtLeast() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctStringsLexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsLexAtLeast(p.b, p.a))));
+        }
+    }
+
+    private static void demoDistinctListsShortlex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctListsShortlex(" + xs + ") = " + its(EP.distinctListsShortlex(xs)));
+        }
+    }
+
+    private static void demoDistinctStringsShortlex() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("distinctStringsShortlex(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsShortlex(s))));
+        }
+    }
+
+    private static void demoDistinctListsShortlexAtLeast() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctListsShortlexAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.distinctListsShortlexAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctStringsShortlexAtLeast() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctStringsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsShortlexAtLeast(p.b, p.a))));
+        }
+    }
 }
