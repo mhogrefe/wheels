@@ -1606,23 +1606,77 @@ public abstract strictfp class IterableProvider {
         return distinctStringsAtLeast(minSize, s);
     }
 
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} with no repetitions.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Pair}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Triple}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Quadruple}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Quintuple}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Sextuple}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs);
 
+    /**
+     * Generates all {@code Septuple}s of elements from a {@code List} with no repetitions.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
     public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> distinctStrings(int size, @NotNull String s);
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, distinctLists(size, uniformSample(s)));
+    }
 
-    public abstract @NotNull Iterable<String> distinctStrings(int size);
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String}.
+     */
+    public @NotNull Iterable<String> distinctStrings(int size) {
+        return map(IterableUtils::charsToString, distinctLists(size, characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs);
 

@@ -3466,16 +3466,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> distinctStrings(int size) {
-        return null;
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
         return filterInfinite(IterableUtils::unique, lists(xs));
     }

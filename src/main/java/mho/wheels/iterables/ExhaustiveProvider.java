@@ -4092,16 +4092,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> distinctStrings(int size) {
-        return null;
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
         Iterable<List<Integer>> lists = lists(naturalIntegers());
