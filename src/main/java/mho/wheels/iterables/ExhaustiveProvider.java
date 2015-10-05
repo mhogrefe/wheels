@@ -4056,39 +4056,103 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsShortlexAtLeast(minSize, toList(s)));
     }
 
+    private static @NotNull <T> Iterable<List<T>> distinctIndices(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<List<Integer>> originalIndices,
+            @NotNull Optional<Integer> requiredSize,
+            @NotNull Function<Integer, BigInteger> outputSizeFunction
+    ) {
+        return () -> new EventuallyKnownSizeIterator<List<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private final @NotNull Iterator<List<Integer>> indices = originalIndices.iterator();
+            {
+                if (requiredSize.isPresent()) {
+                    cxs.get(requiredSize.get() - 1); //ensure xs has at least requiredSize elements
+                }
+            }
+
+            @Override
+            public List<T> advance() {
+                outer:
+                while (true) {
+                    BitSet taken = new BitSet();
+                    List<T> output = new ArrayList<>();
+                    for (int index : indices.next()) {
+                        int i = 0;
+                        while (taken.get(i)) i++;
+                        for (int j = 0; j < index; j++) {
+                            i++;
+                            while (taken.get(i)) i++;
+                        }
+                        NullableOptional<T> element = cxs.get(i);
+                        if (!element.isPresent()) continue outer;
+                        output.add(element.get());
+                        taken.set(i);
+                    }
+                    if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                        setOutputSize(outputSizeFunction.apply(cxs.knownSize().get()));
+                    }
+                    return output;
+                }
+            }
+        };
+    }
+
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
-        return null;
+        return distinctIndices(
+                xs,
+                lists(size, naturalIntegers()),
+                Optional.of(size),
+                n -> MathUtils.fallingFactorial(BigInteger.valueOf(n), size)
+        );
     }
 
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return filter(p -> !Objects.equals(p.a, p.b), pairs(xs));
+        return map(list -> new Pair<>(list.get(0), list.get(1)), distinctLists(2, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
-        return filter(t -> !t.a.equals(t.b) && !t.a.equals(t.c) && !t.b.equals(t.c), triples(xs));
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctLists(3, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
-        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quadruple.toList(q)))), quadruples(xs));
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), distinctLists(4, xs));
     }
 
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
-        return filter(q -> and(map(p -> !p.a.equals(p.b), pairs(Quintuple.toList(q)))), quintuples(xs));
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                distinctLists(5, xs)
+        );
     }
 
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
-        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Sextuple.toList(s)))), sextuples(xs));
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                distinctLists(6, xs)
+        );
     }
 
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
-        return filter(s -> and(map(p -> !p.a.equals(p.b), pairs(Septuple.toList(s)))), septuples(xs));
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                distinctLists(7, xs)
+        );
     }
 
     @Override
