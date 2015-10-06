@@ -17,7 +17,7 @@ public class CachedIterator<T> {
     public CachedIterator(@NotNull Iterable<T> iterable, boolean checkUniqueness) {
         iterator = iterable.iterator();
         cache = new ArrayList<>();
-        size = Optional.empty();
+        size = IterableUtils.isEmpty(iterable) ? Optional.of(0) : Optional.empty();
         this.checkUniqueness = checkUniqueness;
         set = new HashSet<>();
     }

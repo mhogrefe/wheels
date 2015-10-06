@@ -4102,8 +4102,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<List<Integer>> indices = originalIndices.iterator();
             {
-                if (requiredSize.isPresent()) {
-                    cxs.get(requiredSize.get() - 1); //ensure xs has at least requiredSize elements
+                if (requiredSize.isPresent() && requiredSize.get() != 0) {
+                    if (!cxs.get(requiredSize.get() - 1).isPresent()) {
+                        setOutputSize(BigInteger.ZERO);
+                    }
                 }
             }
 
@@ -4154,6 +4156,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
+        if (size == 0) return Collections.singletonList(Collections.emptyList());
         return distinctIndices(
                 xs,
                 lists(size, naturalIntegers()),

@@ -1628,50 +1628,51 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testRange_BigDecimal_BigDecimal() {
         range_BigDecimal_BigDecimal_helper("0", "1",
-                "[0, 0.0, 0.1, 0E+1, 0.2, 0.10, 0.01, 0.00, 0.3, 0.20, 0.02, 0.100, 0.4, 0.010, 0.001, 0E+2, 0.5," +
-                " 0.30, 0.03, 0.200]");
+                "[0, 0.0, 0.1, 0E+1, 0.01, 0.10, 0.3, 0.00, 0.02, 0.010, 0.4, 0.100, 0.001, 0.30, 0.5, 0E+2, 0.03," +
+                " 0.020, 0.6, 0.0100]");
         range_BigDecimal_BigDecimal_helper("0", "3",
-                "[0, 0.0, 1, 0E+1, 2, 1.0, 0.1, 0.00, 3, 2.0, 0.2, 1.00, 0.01, 0.10, 0.3, 0E+2, 0.02, 3.0, 0.4," +
-                " 2.00]");
+                "[0, 0.0, 1, 0E+1, 0.1, 1.0, 3, 0.00, 0.2, 0.10, 0.01, 1.00, 0.3, 3.0, 0.02, 0E+2, 0.4, 0.20, 0.001," +
+                " 0.100]");
         range_BigDecimal_BigDecimal_helper("0", "1E+6",
-                "[0, 0.0, 1E+5, 0E+1, 2E+5, 1.0E+5, 1E+4, 0.00, 3E+5, 2.0E+5, 2E+4, 1.00E+5, 4E+5, 1.0E+4, 1E+3," +
-                " 0E+2, 5E+5, 3.0E+5, 3E+4, 2.00E+5]");
+                "[0, 0.0, 1E+5, 0E+1, 1E+4, 1.0E+5, 3E+5, 0.00, 2E+4, 1.0E+4, 4E+5, 1.00E+5, 1E+3, 3.0E+5, 5E+5," +
+                " 0E+2, 3E+4, 2.0E+4, 6E+5, 1.00E+4]");
         range_BigDecimal_BigDecimal_helper("0", "0.000001",
-                "[0, 0.0, 1E-7, 0E+1, 2E-7, 1.0E-7, 1E-8, 0.00, 3E-7, 2.0E-7, 2E-8, 1.00E-7, 4E-7, 1.0E-8, 1E-9," +
-                " 0E+2, 5E-7, 3.0E-7, 3E-8, 2.00E-7]");
+                "[0, 0.0, 1E-7, 0E+1, 1E-8, 1.0E-7, 3E-7, 0.00, 2E-8, 1.0E-8, 4E-7, 1.00E-7, 1E-9, 3.0E-7, 5E-7," +
+                " 0E+2, 3E-8, 2.0E-8, 6E-7, 1.00E-8]");
         range_BigDecimal_BigDecimal_helper("1", "3",
-                "[1, 1.0, 2, 1.00, 3, 2.0, 1.1, 1.000, 1.2, 3.0, 1.01, 2.00, 1.3, 1.10, 1.02, 1.0000, 1.4, 1.20," +
-                " 1.001, 3.00]");
+                "[1, 1.0, 2, 1.00, 1.1, 2.0, 1.2, 1.000, 1.01, 1.10, 1.3, 2.00, 1.02, 1.20, 1.4, 1.0000, 1.001," +
+                " 1.010, 1.5, 1.100]");
         range_BigDecimal_BigDecimal_helper("1", "1E+6",
-                "[1, 1.0, 100001, 1.00, 200001, 100001.0, 10001, 1.000, 300001, 200001.0, 20001, 100001.00, 400001," +
-                " 10001.0, 1001, 1.0000, 500001, 300001.0, 30001, 200001.00]");
+                "[1, 1.0, 100001, 1.00, 10001, 100001.0, 300001, 1.000, 20001, 10001.0, 400001, 100001.00, 1001," +
+                " 300001.0, 500001, 1.0000, 30001, 20001.0, 600001, 10001.00]");
         range_BigDecimal_BigDecimal_helper("-1", "0",
-                "[-1, -1.0, -0.9, -1.00, -0.8, -0.90, -0.99, -1.000, -0.7, -0.80, -0.98, -0.900, -0.6, -0.990," +
-                " -0.999, -1.0000, -0.5, -0.70, -0.97, -0.800]");
+                "[-1, -1.0, -0.9, -1.00, -0.99, -0.90, -0.7, -1.000, -0.98, -0.990, -0.6, -0.900, -0.999, -0.70," +
+                " -0.5, -1.0000, -0.97, -0.980, -0.4, -0.9900]");
         range_BigDecimal_BigDecimal_helper("-3", "0",
-                "[-3, -3.0, -2, -3.00, -1, -2.0, -2.9, -3.000, 0, -1.0, -2.8, -2.00, -2.99, -2.90, -2.7, -3.0000," +
-                " -2.98, 0.0, -2.6, -1.00]");
+                "[-3, -3.0, -2, -3.00, -2.9, -2.0, 0, -3.000, -2.8, -2.90, -2.99, -2.00, -2.7, 0.0, -2.98, -3.0000," +
+                " -2.6, -2.80, -2.999, -2.900]");
         range_BigDecimal_BigDecimal_helper("-1E+6", "0",
-                "[-1E+6, -1.0E+6, -9E+5, -1.00E+6, -8E+5, -9.0E+5, -9.9E+5, -1.000E+6, -7E+5, -8.0E+5, -9.8E+5," +
-                " -9.00E+5, -6E+5, -9.90E+5, -9.99E+5, -1.0000E+6, -5E+5, -7.0E+5, -9.7E+5, -8.00E+5]");
+                "[-1E+6, -1.0E+6, -9E+5, -1.00E+6, -9.9E+5, -9.0E+5, -7E+5, -1.000E+6, -9.8E+5, -9.90E+5, -6E+5," +
+                " -9.00E+5, -9.99E+5, -7.0E+5, -5E+5, -1.0000E+6, -9.7E+5, -9.80E+5, -4E+5, -9.900E+5]");
         range_BigDecimal_BigDecimal_helper("-0.000001", "0",
-                "[-0.000001, -0.0000010, -9E-7, -0.00000100, -8E-7, -9.0E-7, -9.9E-7, -0.000001000, -7E-7, -8.0E-7," +
-                " -9.8E-7, -9.00E-7, -6E-7, -9.90E-7, -9.99E-7, -0.0000010000, -5E-7, -7.0E-7, -9.7E-7, -8.00E-7]");
+                "[-0.000001, -0.0000010, -9E-7, -0.00000100, -9.9E-7, -9.0E-7, -7E-7, -0.000001000, -9.8E-7," +
+                " -9.90E-7, -6E-7, -9.00E-7, -9.99E-7, -7.0E-7, -5E-7, -0.0000010000, -9.7E-7, -9.80E-7, -4E-7," +
+                " -9.900E-7]");
         range_BigDecimal_BigDecimal_helper("-3", "-1",
-                "[-3, -3.0, -2, -3.00, -1, -2.0, -2.9, -3.000, -2.8, -1.0, -2.99, -2.00, -2.7, -2.90, -2.98," +
-                " -3.0000, -2.6, -2.80, -2.999, -1.00]");
+                "[-3, -3.0, -2, -3.00, -2.9, -2.0, -2.8, -3.000, -2.99, -2.90, -2.7, -2.00, -2.98, -2.80, -2.6," +
+                " -3.0000, -2.999, -2.990, -2.5, -2.900]");
         range_BigDecimal_BigDecimal_helper("-1E+6", "-1",
-                "[-1E+6, -1.0E+6, -9E+5, -1.00E+6, -8E+5, -9.0E+5, -9.9E+5, -1.000E+6, -7E+5, -8.0E+5, -9.8E+5," +
-                " -9.00E+5, -6E+5, -9.90E+5, -9.99E+5, -1.0000E+6, -5E+5, -7.0E+5, -9.7E+5, -8.00E+5]");
+                "[-1E+6, -1.0E+6, -9E+5, -1.00E+6, -9.9E+5, -9.0E+5, -7E+5, -1.000E+6, -9.8E+5, -9.90E+5, -6E+5," +
+                " -9.00E+5, -9.99E+5, -7.0E+5, -5E+5, -1.0000E+6, -9.7E+5, -9.80E+5, -4E+5, -9.900E+5]");
         range_BigDecimal_BigDecimal_helper("100", "101",
-                "[1E+2, 1.0E+2, 100.1, 100, 100.2, 100.10, 100.01, 100.0, 100.3, 100.20, 100.02, 100.100, 100.4," +
-                " 100.010, 100.001, 100.00, 100.5, 100.30, 100.03, 100.200]");
+                "[1E+2, 1.0E+2, 100.1, 100, 100.01, 100.10, 100.3, 100.0, 100.02, 100.010, 100.4, 100.100, 100.001," +
+                " 100.30, 100.5, 100.00, 100.03, 100.020, 100.6, 100.0100]");
         range_BigDecimal_BigDecimal_helper("2.7183", "3.1416",
-                "[2.7183, 2.71830, 2.8183, 2.718300, 2.9183, 2.81830, 2.7283, 2.7183000, 3.0183, 2.91830, 2.7383," +
-                " 2.818300, 3.1183, 2.72830, 2.7193, 2.71830000, 2.7483, 3.01830, 2.7203, 2.918300]");
+                "[2.7183, 2.71830, 2.8183, 2.718300, 2.7283, 2.81830, 3.0183, 2.7183000, 2.7383, 2.72830, 3.1183," +
+                " 2.818300, 2.7193, 3.01830, 2.7483, 2.71830000, 2.7203, 2.73830, 2.7583, 2.728300]");
         range_BigDecimal_BigDecimal_helper("-3.1416", "2.7183",
-                "[-3.1416, -3.14160, -2.1416, -3.141600, -1.1416, -2.14160, -3.0416, -3.1416000, -0.1416, -1.14160," +
-                " -2.9416, -2.141600, 0.8584, -3.04160, -3.1316, -3.14160000, 1.8584, -0.14160, -2.8416, -1.141600]");
+                "[-3.1416, -3.14160, -2.1416, -3.141600, -3.0416, -2.14160, -0.1416, -3.1416000, -2.9416, -3.04160," +
+                " 0.8584, -2.141600, -3.1316, -0.14160, 1.8584, -3.14160000, -2.8416, -2.94160, -3.1216, -3.041600]");
         range_BigDecimal_BigDecimal_helper("0", "0",
                 "[0, 0.0, 0E+1, 0.00, 0E+2, 0.000, 0E+3, 0.0000, 0E+4, 0.00000, 0E+5, 0.000000, 0E+6, 0E-7, 0E+7," +
                 " 0E-8, 0E+8, 0E-9, 0E+9, 0E-10]");
@@ -3914,6 +3915,9 @@ public strictfp class ExhaustiveProviderTest {
         testPairs_Iterable_helper(P.naturalIntegers(),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
+        testPairs_Iterable_helper(repeat(1),
+                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
+                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
     }
 
     @Test
@@ -3975,6 +3979,10 @@ public strictfp class ExhaustiveProviderTest {
                 "[(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1), (0, 0, 2)," +
                 " (0, 0, 3), (0, 1, 2), (0, 1, 3), (1, 0, 2), (1, 0, 3), (1, 1, 2), (1, 1, 3), (0, 2, 0), (0, 2, 1)," +
                 " (0, 3, 0), (0, 3, 1), ...]");
+        testTriples_Iterable_helper(repeat(1),
+                "[(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), ...]");
     }
 
     @Test
@@ -4068,6 +4076,10 @@ public strictfp class ExhaustiveProviderTest {
                 "[(0, 0, 0, 0), (0, 0, 0, 1), (0, 0, 1, 0), (0, 0, 1, 1), (0, 1, 0, 0), (0, 1, 0, 1), (0, 1, 1, 0)," +
                 " (0, 1, 1, 1), (1, 0, 0, 0), (1, 0, 0, 1), (1, 0, 1, 0), (1, 0, 1, 1), (1, 1, 0, 0), (1, 1, 0, 1)," +
                 " (1, 1, 1, 0), (1, 1, 1, 1), (0, 0, 0, 2), (0, 0, 0, 3), (0, 0, 1, 2), (0, 0, 1, 3), ...]");
+        testQuadruples_Iterable_helper(repeat(1),
+                "[(1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
     }
 
     @Test
@@ -4274,6 +4286,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, 0, 1, 0, 1), (0, 0, 1, 1, 0), (0, 0, 1, 1, 1), (0, 1, 0, 0, 0), (0, 1, 0, 0, 1)," +
                 " (0, 1, 0, 1, 0), (0, 1, 0, 1, 1), (0, 1, 1, 0, 0), (0, 1, 1, 0, 1), (0, 1, 1, 1, 0)," +
                 " (0, 1, 1, 1, 1), (1, 0, 0, 0, 0), (1, 0, 0, 0, 1), (1, 0, 0, 1, 0), (1, 0, 0, 1, 1), ...]");
+        testQuintuples_Iterable_helper(repeat(1),
+                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
     }
 
     @Test
@@ -4632,6 +4649,12 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, 0, 1, 0, 0, 0), (0, 0, 1, 0, 0, 1), (0, 0, 1, 0, 1, 0), (0, 0, 1, 0, 1, 1)," +
                 " (0, 0, 1, 1, 0, 0), (0, 0, 1, 1, 0, 1), (0, 0, 1, 1, 1, 0), (0, 0, 1, 1, 1, 1)," +
                 " (0, 1, 0, 0, 0, 0), (0, 1, 0, 0, 0, 1), (0, 1, 0, 0, 1, 0), (0, 1, 0, 0, 1, 1), ...]");
+        testSextuples_Iterable_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
     }
 
     @Test
@@ -5391,6 +5414,12 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, 0, 0, 1, 0, 0, 0), (0, 0, 0, 1, 0, 0, 1), (0, 0, 0, 1, 0, 1, 0), (0, 0, 0, 1, 0, 1, 1)," +
                 " (0, 0, 0, 1, 1, 0, 0), (0, 0, 0, 1, 1, 0, 1), (0, 0, 0, 1, 1, 1, 0), (0, 0, 0, 1, 1, 1, 1)," +
                 " (0, 0, 1, 0, 0, 0, 0), (0, 0, 1, 0, 0, 0, 1), (0, 0, 1, 0, 0, 1, 0), (0, 0, 1, 0, 0, 1, 1), ...]");
+        testSeptuples_Iterable_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), ...]");
     }
 
     private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
@@ -6543,6 +6572,356 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
         try {
             P.distinctStringsShortlexAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctLists_int_List_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctLists(size, readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testDistinctLists_int_List() {
+        distinctLists_int_List_helper(0, "[]", "[[]]");
+        distinctLists_int_List_helper(1, "[]", "[]");
+        distinctLists_int_List_helper(2, "[]", "[]");
+        distinctLists_int_List_helper(3, "[]", "[]");
+        distinctLists_int_List_helper(0, "[5]", "[[]]");
+        distinctLists_int_List_helper(1, "[5]", "[[5]]");
+        distinctLists_int_List_helper(2, "[5]", "[]");
+        distinctLists_int_List_helper(3, "[5]", "[]");
+        distinctLists_int_List_helper(0, "[1, 2, 3]", "[[]]");
+        distinctLists_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        distinctLists_int_List_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]");
+        distinctLists_int_List_helper(3, "[1, 2, 3]",
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctLists_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
+        distinctLists_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        distinctLists_int_List_helper(2, "[1, 2, 2, 3]",
+                "[[1, 2], [1, 2], [2, 1], [2, 2], [1, 3], [2, 3], [2, 1], [2, 2], [3, 1], [3, 2], [2, 3], [3, 2]]");
+        distinctLists_int_List_helper(3, "[1, 2, 2, 3]",
+                "[[1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [1, 3, 2]," +
+                " [1, 3, 2], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [3, 1, 2], [3, 1, 2]," +
+                " [3, 2, 1], [3, 2, 2], [2, 3, 1], [2, 3, 2], [3, 2, 1], [3, 2, 2]]");
+        distinctLists_int_List_helper(0, "[1, null, 3]", "[[]]");
+        distinctLists_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
+        distinctLists_int_List_helper(2, "[1, null, 3]",
+                "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
+        distinctLists_int_List_helper(3, "[1, null, 3]",
+                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        try {
+            P.distinctLists(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctLists(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctPairs(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctPairs(input), output);
+    }
+
+    @Test
+    public void testDistinctPairs() {
+        distinctPairs_helper("[]", "[]");
+        distinctPairs_helper("[5]", "[]");
+        distinctPairs_helper("[1, 2, 3, 4]",
+                "[(1, 2), (1, 3), (2, 1), (2, 3), (1, 4), (2, 4), (3, 1), (3, 2), (4, 1), (4, 2), (3, 4), (4, 3)]");
+        distinctPairs_helper("[1, 2, 2, 4]",
+                "[(1, 2), (1, 2), (2, 1), (2, 2), (1, 4), (2, 4), (2, 1), (2, 2), (4, 1), (4, 2), (2, 4), (4, 2)]");
+        distinctPairs_helper("[1, 2, null, 4]",
+                "[(1, 2), (1, null), (2, 1), (2, null), (1, 4), (2, 4), (null, 1), (null, 2), (4, 1), (4, 2)," +
+                " (null, 4), (4, null)]");
+        distinctPairs_helper(P.naturalIntegers(),
+                "[(0, 1), (0, 2), (1, 0), (1, 2), (0, 3), (0, 4), (1, 3), (1, 4), (2, 0), (2, 1), (3, 0), (3, 1)," +
+                " (2, 3), (2, 4), (3, 2), (3, 4), (0, 5), (0, 6), (1, 5), (1, 6), ...]");
+        distinctPairs_helper(repeat(1),
+                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
+                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
+    }
+
+    private static void distinctTriples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctTriples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctTriples(input), output);
+    }
+
+    @Test
+    public void testDistinctTriples() {
+        distinctTriples_helper("[]", "[]");
+        distinctTriples_helper("[5]", "[]");
+        distinctTriples_helper("[1, 2, 3, 4]",
+                "[(1, 2, 3), (1, 2, 4), (1, 3, 2), (1, 3, 4), (2, 1, 3), (2, 1, 4), (2, 3, 1), (2, 3, 4), (1, 4, 2)," +
+                " (1, 4, 3), (2, 4, 1), (2, 4, 3), (3, 1, 2), (3, 1, 4), (3, 2, 1), (3, 2, 4), (4, 1, 2), (4, 1, 3)," +
+                " (4, 2, 1), (4, 2, 3), ...]");
+        distinctTriples_helper("[1, 2, 2, 4]",
+                "[(1, 2, 2), (1, 2, 4), (1, 2, 2), (1, 2, 4), (2, 1, 2), (2, 1, 4), (2, 2, 1), (2, 2, 4), (1, 4, 2)," +
+                " (1, 4, 2), (2, 4, 1), (2, 4, 2), (2, 1, 2), (2, 1, 4), (2, 2, 1), (2, 2, 4), (4, 1, 2), (4, 1, 2)," +
+                " (4, 2, 1), (4, 2, 2), ...]");
+        distinctTriples_helper("[1, 2, null, 4]",
+                "[(1, 2, null), (1, 2, 4), (1, null, 2), (1, null, 4), (2, 1, null), (2, 1, 4), (2, null, 1)," +
+                " (2, null, 4), (1, 4, 2), (1, 4, null), (2, 4, 1), (2, 4, null), (null, 1, 2), (null, 1, 4)," +
+                " (null, 2, 1), (null, 2, 4), (4, 1, 2), (4, 1, null), (4, 2, 1), (4, 2, null), ...]");
+        distinctTriples_helper(P.naturalIntegers(),
+                "[(0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 3), (1, 0, 2), (1, 0, 3), (1, 2, 0), (1, 2, 3), (0, 1, 4)," +
+                " (0, 1, 5), (0, 2, 4), (0, 2, 5), (1, 0, 4), (1, 0, 5), (1, 2, 4), (1, 2, 5), (0, 3, 1), (0, 3, 2)," +
+                " (0, 4, 1), (0, 4, 2), ...]");
+        distinctTriples_helper(repeat(1),
+                "[(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), ...]");
+    }
+
+    private static void distinctQuadruples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuadruples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuadruples(input), output);
+    }
+
+    @Test
+    public void testDistinctQuadruples() {
+        distinctQuadruples_helper("[]", "[]");
+        distinctQuadruples_helper("[5]", "[]");
+        distinctQuadruples_helper("[1, 2, 3, 4]",
+                "[(1, 2, 3, 4), (1, 2, 4, 3), (1, 3, 2, 4), (1, 3, 4, 2), (2, 1, 3, 4), (2, 1, 4, 3), (2, 3, 1, 4)," +
+                " (2, 3, 4, 1), (1, 4, 2, 3), (1, 4, 3, 2), (2, 4, 1, 3), (2, 4, 3, 1), (3, 1, 2, 4), (3, 1, 4, 2)," +
+                " (3, 2, 1, 4), (3, 2, 4, 1), (4, 1, 2, 3), (4, 1, 3, 2), (4, 2, 1, 3), (4, 2, 3, 1), ...]");
+        distinctQuadruples_helper("[1, 2, 2, 4]",
+                "[(1, 2, 2, 4), (1, 2, 4, 2), (1, 2, 2, 4), (1, 2, 4, 2), (2, 1, 2, 4), (2, 1, 4, 2), (2, 2, 1, 4)," +
+                " (2, 2, 4, 1), (1, 4, 2, 2), (1, 4, 2, 2), (2, 4, 1, 2), (2, 4, 2, 1), (2, 1, 2, 4), (2, 1, 4, 2)," +
+                " (2, 2, 1, 4), (2, 2, 4, 1), (4, 1, 2, 2), (4, 1, 2, 2), (4, 2, 1, 2), (4, 2, 2, 1), ...]");
+        distinctQuadruples_helper("[1, 2, null, 4]",
+                "[(1, 2, null, 4), (1, 2, 4, null), (1, null, 2, 4), (1, null, 4, 2), (2, 1, null, 4)," +
+                " (2, 1, 4, null), (2, null, 1, 4), (2, null, 4, 1), (1, 4, 2, null), (1, 4, null, 2)," +
+                " (2, 4, 1, null), (2, 4, null, 1), (null, 1, 2, 4), (null, 1, 4, 2), (null, 2, 1, 4)," +
+                " (null, 2, 4, 1), (4, 1, 2, null), (4, 1, null, 2), (4, 2, 1, null), (4, 2, null, 1), ...]");
+        distinctQuadruples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3), (0, 1, 2, 4), (0, 1, 3, 2), (0, 1, 3, 4), (0, 2, 1, 3), (0, 2, 1, 4), (0, 2, 3, 1)," +
+                " (0, 2, 3, 4), (1, 0, 2, 3), (1, 0, 2, 4), (1, 0, 3, 2), (1, 0, 3, 4), (1, 2, 0, 3), (1, 2, 0, 4)," +
+                " (1, 2, 3, 0), (1, 2, 3, 4), (0, 1, 2, 5), (0, 1, 2, 6), (0, 1, 3, 5), (0, 1, 3, 6), ...]");
+        distinctQuadruples_helper(repeat(1),
+                "[(1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
+    }
+
+    private static void distinctQuintuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuintuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctQuintuples(input), output);
+    }
+
+    @Test
+    public void testDistinctQuintuples() {
+        distinctQuintuples_helper("[]", "[]");
+        distinctQuintuples_helper("[5]", "[]");
+        distinctQuintuples_helper("[1, 2, 3, 4]", "[]");
+        distinctQuintuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 5, 4), (1, 2, 3, 5, 6), (1, 2, 4, 3, 5)," +
+                " (1, 2, 4, 3, 6), (1, 2, 4, 5, 3), (1, 2, 4, 5, 6), (1, 3, 2, 4, 5), (1, 3, 2, 4, 6)," +
+                " (1, 3, 2, 5, 4), (1, 3, 2, 5, 6), (1, 3, 4, 2, 5), (1, 3, 4, 2, 6), (1, 3, 4, 5, 2)," +
+                " (1, 3, 4, 5, 6), (2, 1, 3, 4, 5), (2, 1, 3, 4, 6), (2, 1, 3, 5, 4), (2, 1, 3, 5, 6), ...]");
+        distinctQuintuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 5, 4), (1, 2, 2, 5, 6), (1, 2, 4, 2, 5)," +
+                " (1, 2, 4, 2, 6), (1, 2, 4, 5, 2), (1, 2, 4, 5, 6), (1, 2, 2, 4, 5), (1, 2, 2, 4, 6)," +
+                " (1, 2, 2, 5, 4), (1, 2, 2, 5, 6), (1, 2, 4, 2, 5), (1, 2, 4, 2, 6), (1, 2, 4, 5, 2)," +
+                " (1, 2, 4, 5, 6), (2, 1, 2, 4, 5), (2, 1, 2, 4, 6), (2, 1, 2, 5, 4), (2, 1, 2, 5, 6), ...]");
+        distinctQuintuples_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5), (1, 2, null, 4, 6), (1, 2, null, 5, 4), (1, 2, null, 5, 6)," +
+                " (1, 2, 4, null, 5), (1, 2, 4, null, 6), (1, 2, 4, 5, null), (1, 2, 4, 5, 6), (1, null, 2, 4, 5)," +
+                " (1, null, 2, 4, 6), (1, null, 2, 5, 4), (1, null, 2, 5, 6), (1, null, 4, 2, 5)," +
+                " (1, null, 4, 2, 6), (1, null, 4, 5, 2), (1, null, 4, 5, 6), (2, 1, null, 4, 5)," +
+                " (2, 1, null, 4, 6), (2, 1, null, 5, 4), (2, 1, null, 5, 6), ...]");
+        distinctQuintuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4), (0, 1, 2, 3, 5), (0, 1, 2, 4, 3), (0, 1, 2, 4, 5), (0, 1, 3, 2, 4)," +
+                " (0, 1, 3, 2, 5), (0, 1, 3, 4, 2), (0, 1, 3, 4, 5), (0, 2, 1, 3, 4), (0, 2, 1, 3, 5)," +
+                " (0, 2, 1, 4, 3), (0, 2, 1, 4, 5), (0, 2, 3, 1, 4), (0, 2, 3, 1, 5), (0, 2, 3, 4, 1)," +
+                " (0, 2, 3, 4, 5), (1, 0, 2, 3, 4), (1, 0, 2, 3, 5), (1, 0, 2, 4, 3), (1, 0, 2, 4, 5), ...]");
+        distinctQuintuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
+    }
+
+    private static void distinctSextuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSextuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSextuples(input), output);
+    }
+
+    @Test
+    public void testDistinctSextuples() {
+        distinctSextuples_helper("[]", "[]");
+        distinctSextuples_helper("[5]", "[]");
+        distinctSextuples_helper("[1, 2, 3, 4]", "[]");
+        distinctSextuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 6, 5), (1, 2, 3, 4, 6, 7)," +
+                " (1, 2, 3, 5, 4, 6), (1, 2, 3, 5, 4, 7), (1, 2, 3, 5, 6, 4), (1, 2, 3, 5, 6, 7)," +
+                " (1, 2, 4, 3, 5, 6), (1, 2, 4, 3, 5, 7), (1, 2, 4, 3, 6, 5), (1, 2, 4, 3, 6, 7)," +
+                " (1, 2, 4, 5, 3, 6), (1, 2, 4, 5, 3, 7), (1, 2, 4, 5, 6, 3), (1, 2, 4, 5, 6, 7)," +
+                " (1, 3, 2, 4, 5, 6), (1, 3, 2, 4, 5, 7), (1, 3, 2, 4, 6, 5), (1, 3, 2, 4, 6, 7), ...]");
+        distinctSextuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 6, 5), (1, 2, 2, 4, 6, 7)," +
+                " (1, 2, 2, 5, 4, 6), (1, 2, 2, 5, 4, 7), (1, 2, 2, 5, 6, 4), (1, 2, 2, 5, 6, 7)," +
+                " (1, 2, 4, 2, 5, 6), (1, 2, 4, 2, 5, 7), (1, 2, 4, 2, 6, 5), (1, 2, 4, 2, 6, 7)," +
+                " (1, 2, 4, 5, 2, 6), (1, 2, 4, 5, 2, 7), (1, 2, 4, 5, 6, 2), (1, 2, 4, 5, 6, 7)," +
+                " (1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 6, 5), (1, 2, 2, 4, 6, 7), ...]");
+        distinctSextuples_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5, 6), (1, 2, null, 4, 5, 7), (1, 2, null, 4, 6, 5), (1, 2, null, 4, 6, 7)," +
+                " (1, 2, null, 5, 4, 6), (1, 2, null, 5, 4, 7), (1, 2, null, 5, 6, 4), (1, 2, null, 5, 6, 7)," +
+                " (1, 2, 4, null, 5, 6), (1, 2, 4, null, 5, 7), (1, 2, 4, null, 6, 5), (1, 2, 4, null, 6, 7)," +
+                " (1, 2, 4, 5, null, 6), (1, 2, 4, 5, null, 7), (1, 2, 4, 5, 6, null), (1, 2, 4, 5, 6, 7)," +
+                " (1, null, 2, 4, 5, 6), (1, null, 2, 4, 5, 7), (1, null, 2, 4, 6, 5), (1, null, 2, 4, 6, 7), ...]");
+        distinctSextuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 6), (0, 1, 2, 3, 5, 4), (0, 1, 2, 3, 5, 6)," +
+                " (0, 1, 2, 4, 3, 5), (0, 1, 2, 4, 3, 6), (0, 1, 2, 4, 5, 3), (0, 1, 2, 4, 5, 6)," +
+                " (0, 1, 3, 2, 4, 5), (0, 1, 3, 2, 4, 6), (0, 1, 3, 2, 5, 4), (0, 1, 3, 2, 5, 6)," +
+                " (0, 1, 3, 4, 2, 5), (0, 1, 3, 4, 2, 6), (0, 1, 3, 4, 5, 2), (0, 1, 3, 4, 5, 6)," +
+                " (0, 2, 1, 3, 4, 5), (0, 2, 1, 3, 4, 6), (0, 2, 1, 3, 5, 4), (0, 2, 1, 3, 5, 6), ...]");
+        distinctSextuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
+    }
+
+    private static void distinctSeptuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSeptuples(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctSeptuples(input), output);
+    }
+
+    @Test
+    public void testDistinctSeptuples() {
+        distinctSeptuples_helper("[]", "[]");
+        distinctSeptuples_helper("[5]", "[]");
+        distinctSeptuples_helper("[1, 2, 3, 4]", "[]");
+        distinctSeptuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 6), (1, 2, 3, 4, 5, 7, 8)," +
+                " (1, 2, 3, 4, 6, 5, 7), (1, 2, 3, 4, 6, 5, 8), (1, 2, 3, 4, 6, 7, 5), (1, 2, 3, 4, 6, 7, 8)," +
+                " (1, 2, 3, 5, 4, 6, 7), (1, 2, 3, 5, 4, 6, 8), (1, 2, 3, 5, 4, 7, 6), (1, 2, 3, 5, 4, 7, 8)," +
+                " (1, 2, 3, 5, 6, 4, 7), (1, 2, 3, 5, 6, 4, 8), (1, 2, 3, 5, 6, 7, 4), (1, 2, 3, 5, 6, 7, 8)," +
+                " (1, 2, 4, 3, 5, 6, 7), (1, 2, 4, 3, 5, 6, 8), (1, 2, 4, 3, 5, 7, 6), (1, 2, 4, 3, 5, 7, 8), ...]");
+        distinctSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 6), (1, 2, 2, 4, 5, 7, 8)," +
+                " (1, 2, 2, 4, 6, 5, 7), (1, 2, 2, 4, 6, 5, 8), (1, 2, 2, 4, 6, 7, 5), (1, 2, 2, 4, 6, 7, 8)," +
+                " (1, 2, 2, 5, 4, 6, 7), (1, 2, 2, 5, 4, 6, 8), (1, 2, 2, 5, 4, 7, 6), (1, 2, 2, 5, 4, 7, 8)," +
+                " (1, 2, 2, 5, 6, 4, 7), (1, 2, 2, 5, 6, 4, 8), (1, 2, 2, 5, 6, 7, 4), (1, 2, 2, 5, 6, 7, 8)," +
+                " (1, 2, 4, 2, 5, 6, 7), (1, 2, 4, 2, 5, 6, 8), (1, 2, 4, 2, 5, 7, 6), (1, 2, 4, 2, 5, 7, 8), ...]");
+        distinctSeptuples_helper("[1, 2, null, 4, 5, 6, 7, 8]",
+                "[(1, 2, null, 4, 5, 6, 7), (1, 2, null, 4, 5, 6, 8), (1, 2, null, 4, 5, 7, 6)," +
+                " (1, 2, null, 4, 5, 7, 8), (1, 2, null, 4, 6, 5, 7), (1, 2, null, 4, 6, 5, 8)," +
+                " (1, 2, null, 4, 6, 7, 5), (1, 2, null, 4, 6, 7, 8), (1, 2, null, 5, 4, 6, 7)," +
+                " (1, 2, null, 5, 4, 6, 8), (1, 2, null, 5, 4, 7, 6), (1, 2, null, 5, 4, 7, 8)," +
+                " (1, 2, null, 5, 6, 4, 7), (1, 2, null, 5, 6, 4, 8), (1, 2, null, 5, 6, 7, 4)," +
+                " (1, 2, null, 5, 6, 7, 8), (1, 2, 4, null, 5, 6, 7), (1, 2, 4, null, 5, 6, 8)," +
+                " (1, 2, 4, null, 5, 7, 6), (1, 2, 4, null, 5, 7, 8), ...]");
+        distinctSeptuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4, 5, 6), (0, 1, 2, 3, 4, 5, 7), (0, 1, 2, 3, 4, 6, 5), (0, 1, 2, 3, 4, 6, 7)," +
+                " (0, 1, 2, 3, 5, 4, 6), (0, 1, 2, 3, 5, 4, 7), (0, 1, 2, 3, 5, 6, 4), (0, 1, 2, 3, 5, 6, 7)," +
+                " (0, 1, 2, 4, 3, 5, 6), (0, 1, 2, 4, 3, 5, 7), (0, 1, 2, 4, 3, 6, 5), (0, 1, 2, 4, 3, 6, 7)," +
+                " (0, 1, 2, 4, 5, 3, 6), (0, 1, 2, 4, 5, 3, 7), (0, 1, 2, 4, 5, 6, 3), (0, 1, 2, 4, 5, 6, 7)," +
+                " (0, 1, 3, 2, 4, 5, 6), (0, 1, 3, 2, 4, 5, 7), (0, 1, 3, 2, 4, 6, 5), (0, 1, 3, 2, 4, 6, 7), ...]");
+        distinctSeptuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), ...]");
+    }
+
+    private static void distinctStrings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.distinctStrings(size, input), output);
+    }
+
+    private static void distinctStrings_int_String_helper_limit(
+            int size,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctStrings(size, input), output);
+    }
+
+    @Test
+    public void testDistinctStrings_int_String() {
+        distinctStrings_int_String_helper(0, "", "[]");
+        aeq(length(P.distinctStrings(0, "")), 1);
+        distinctStrings_int_String_helper(1, "", "[]");
+        aeq(length(P.distinctStrings(1, "")), 0);
+        distinctStrings_int_String_helper(2, "", "[]");
+        aeq(length(P.distinctStrings(2, "")), 0);
+        distinctStrings_int_String_helper(3, "", "[]");
+        aeq(length(P.distinctStrings(3, "")), 0);
+        distinctStrings_int_String_helper(0, "a", "[]");
+        distinctStrings_int_String_helper(1, "a", "[a]");
+        distinctStrings_int_String_helper(2, "a", "[]");
+        aeq(length(P.distinctStrings(2, "a")), 0);
+        distinctStrings_int_String_helper(3, "a", "[]");
+        aeq(length(P.distinctStrings(3, "a")), 0);
+        distinctStrings_int_String_helper(0, "abc", "[]");
+        aeq(length(P.distinctStrings(0, "abc")), 1);
+        distinctStrings_int_String_helper(1, "abc", "[a, b, c]");
+        distinctStrings_int_String_helper(2, "abc", "[ab, ac, ba, bc, ca, cb]");
+        distinctStrings_int_String_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
+        distinctStrings_int_String_helper(0, "abbc", "[]");
+        aeq(length(P.distinctStrings(0, "abbc")), 1);
+        distinctStrings_int_String_helper(1, "abbc", "[a, b, b, c]");
+        distinctStrings_int_String_helper(2, "abbc", "[ab, ab, ba, bb, ac, bc, ba, bb, ca, cb, bc, cb]");
+        distinctStrings_int_String_helper(3, "abbc",
+                "[abb, abc, abb, abc, bab, bac, bba, bbc, acb, acb, bca, bcb, bab, bac, bba, bbc, cab, cab, cba," +
+                " cbb, bca, bcb, cba, cbb]");
+        distinctStrings_int_String_helper_limit(0, "Mississippi", "[]");
+        aeq(length(P.distinctStrings(0, "Mississippi")), 1);
+        distinctStrings_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
+        distinctStrings_int_String_helper_limit(2, "Mississippi",
+                "[Mi, Ms, iM, is, Ms, Mi, is, ii, sM, si, sM, si, ss, si, ss, si, Ms, Ms, is, is, ...]");
+        distinctStrings_int_String_helper_limit(3, "Mississippi",
+                "[Mis, Mis, Msi, Mss, iMs, iMs, isM, iss, Mii, Mis, Msi, Mss, iMi, iMs, isi, iss, Msi, Mss, Mii," +
+                " Mis, ...]");
+        try {
+            P.distinctStrings(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctStrings(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctStrings_int_helper(int size, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctStrings(size), output);
+    }
+
+    @Test
+    public void testDistinctStrings_int() {
+        distinctStrings_int_helper(0, "[]");
+        aeq(length(P.distinctStrings(0)), 1);
+        distinctStrings_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
+        distinctStrings_int_helper(2,
+                "[ab, ac, ba, bc, ad, ae, bd, be, ca, cb, da, db, cd, ce, dc, de, af, ag, bf, bg, ...]");
+        distinctStrings_int_helper(3,
+                "[abc, abd, acb, acd, bac, bad, bca, bcd, abe, abf, ace, acf, bae, baf, bce, bcf, adb, adc, aeb," +
+                " aec, ...]");
+        try {
+            P.distinctStrings(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
