@@ -4056,6 +4056,42 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, distinctListsShortlexAtLeast(minSize, toList(s)));
     }
 
+    /**
+     * A helper method for generating distinct lists. Given an {@code Iterable} of lists of integers,
+     * {@code originalIndices}, this method reinterprets the indices to only generate lists with no repetitions. For
+     * example, consider the list [0, 0, 3, 1]. Let's select a list of length 4 from the characters 'a' through 'z'
+     * using these indices. Since we don't want any repetitions, we'll cross off every character we see. Here's what we
+     * get:
+     * <ul>
+     *  <li><tt>     abcdefghijklmnopqrstuvwxyz</tt></li>
+     *  <li><tt>0: a Xbcdefghijklmnopqrstuvwxyz</tt></li>
+     *  <li><tt>0: b XXcdefghijklmnopqrstuvwxyz</tt></li>
+     *  <li><tt>3: f XXcdeXghijklmnopqrstuvwxyz</tt></li>
+     *  <li><tt>1: d XXcXeXghijklmnopqrstuvwxyz</tt></li>
+     * </ul>
+     * So [0, 0, 3, 1] corresponds to [a, b, f, d].
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  {@code Integer}s.</li>
+     *  <li>{@code requiredSize} cannot be null.</li>
+     *  <li>{@code outputSizeFunction} cannot be null.</li>
+     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a nonnegative integer when applied to
+     *  {@code length(xs)}.</li>
+     *  <li>The number of lists in {@code originalSize} that correspond to a valid distinct list must be at least
+     *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite).</li>
+     *  <li>If {@code requiredSize} is nonempty, it must be no greater than the size of {@code xs}.</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param originalIndices an {@code Iterable} of lists, each list corresponding to a list of elements from
+     * {@code xs} with no repetitions
+     * @param requiredSize the minimum size of any of the generated lists
+     * @param outputSizeFunction The total number of generated lists as a function of the size of {@code xs}
+     * @param <T> the type of the elements in {@code xs}
+     * @return lists of elements from {@code xs} with no repetitions
+     */
     private static @NotNull <T> Iterable<List<T>> distinctIndices(
             @NotNull Iterable<T> xs,
             @NotNull Iterable<List<Integer>> originalIndices,
@@ -4098,6 +4134,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code List}s of a given length with elements from a given
+     * {@code List}, with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite. All of its elements have the same length. None are empty, unless the result consists
+     *  entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s of a given length created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
         return distinctIndices(
@@ -4108,21 +4162,77 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Pair}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Pair}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), distinctLists(2, xs));
     }
 
+    /**
+     * Returns all {@code Triple}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Triple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), distinctLists(3, xs));
     }
 
+    /**
+     * Returns all {@code Quadruple}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), distinctLists(4, xs));
     }
 
+    /**
+     * Returns all {@code Quintuple}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
         return map(
@@ -4131,6 +4241,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Sextuple}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
         return map(
@@ -4139,6 +4263,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all {@code Septuple}s of distinct elements from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all distinct {@code Septuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>P<sub>7</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct ordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
         return map(
