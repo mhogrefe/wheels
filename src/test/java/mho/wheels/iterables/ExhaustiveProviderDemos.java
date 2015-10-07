@@ -1477,4 +1477,129 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.distinctStringsShortlexAtLeast(p.b, p.a))));
         }
     }
+
+    private static void demoDistinctLists_int_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctLists(" + p.b + ", " + p.a + ") = " + its(EP.distinctLists(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctLists_int_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctLists(" + p.b + ", " + its(p.a) + ") = " + its(EP.distinctLists(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctPairs_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctPairs(" + xs + ") = " + its(EP.distinctPairs(xs)));
+        }
+    }
+
+    private static void demoDistinctPairs_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctPairs(" + its(xs) + ") = " + its(EP.distinctPairs(xs)));
+        }
+    }
+
+    private static void demoDistinctTriples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctTriples(" + xs + ") = " + its(EP.distinctTriples(xs)));
+        }
+    }
+
+    private static void demoDistinctTriples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctTriples(" + its(xs) + ") = " + its(EP.distinctTriples(xs)));
+        }
+    }
+
+    private static void demoDistinctQuadruples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctQuadruples(" + xs + ") = " + its(EP.distinctQuadruples(xs)));
+        }
+    }
+
+    private static void demoDistinctQuadruples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctQuadruples(" + its(xs) + ") = " + its(EP.distinctQuadruples(xs)));
+        }
+    }
+
+    private static void demoDistinctQuintuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctQuintuples(" + xs + ") = " + its(EP.distinctQuintuples(xs)));
+        }
+    }
+
+    private static void demoDistinctQuintuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctQuintuples(" + its(xs) + ") = " + its(EP.distinctQuintuples(xs)));
+        }
+    }
+
+    private static void demoDistinctSextuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctSextuples(" + xs + ") = " + its(EP.distinctSextuples(xs)));
+        }
+    }
+
+    private static void demoDistinctSextuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctSextuples(" + its(xs) + ") = " + its(EP.distinctSextuples(xs)));
+        }
+    }
+
+    private static void demoDistinctSeptuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctSeptuples(" + xs + ") = " + its(EP.distinctSeptuples(xs)));
+        }
+    }
+
+    private static void demoDistinctSeptuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctSeptuples(" + its(xs) + ") = " + its(EP.distinctSeptuples(xs)));
+        }
+    }
+
+    private static void demoDistinctStrings_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctStrings(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStrings(p.b, p.a))));
+        }
+    }
+
+    private static void demoDistinctStrings_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("distinctStrings(" + i + ") = " + its(map(Testing::nicePrint, EP.distinctStrings(i))));
+        }
+    }
 }
