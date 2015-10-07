@@ -3586,22 +3586,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> distinctStrings(@NotNull String s) {
-        return null;
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize) {
         return null;
     }
 

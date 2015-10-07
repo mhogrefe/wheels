@@ -1599,7 +1599,7 @@ public abstract strictfp class IterableProvider {
      * repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the
      * order given by the original {@code String}.
      *
-     * @param minSize the minimum size of the resulting {@code List}s
+     * @param minSize the minimum size of the resulting {@code String}s
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
@@ -1607,9 +1607,10 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
-     * Generates all {@code List}s containing elements from a given {@code List} with no repetitions.
+     * Generates all {@code List}s of a given size containing elements from a given {@code List} with no repetitions.
      *
      * @param xs a {@code List} of elements
+     * @param size the length of each of the generated {@code List}s
      * @param <T> the type of values in the {@code List}s
      */
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
@@ -1663,8 +1664,10 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs);
 
     /**
-     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions.
+     * Generates all {@code String}s of a given size containing characters from a given {@code String} with no
+     * repetitions.
      *
+     * @param size the length of each of the generated {@code String}s
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
@@ -1672,25 +1675,67 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
-     * Generates all {@code String}s containing characters from a given {@code String}.
+     * Generates all {@code String}s of a given size containing characters from a given {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
      */
     public @NotNull Iterable<String> distinctStrings(int size) {
         return map(IterableUtils::charsToString, distinctLists(size, characters()));
     }
 
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} with no repetitions.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> distinctStrings(@NotNull String s);
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStrings(@NotNull String s) {
+        return map(IterableUtils::charsToString, distinctLists(uniformSample(s)));
+    }
 
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String}.
+     */
     public Iterable<String> distinctStrings() {
         return map(IterableUtils::charsToString, distinctLists(characters()));
     }
 
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code List} with no
+     * repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s);
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, distinctListsAtLeast(minSize, uniformSample(s)));
+    }
 
-    public abstract @NotNull Iterable<String> distinctStringsAtLeast(int minSize);
+    /**
+     * Generates all {@code String}s with a minimum size with no repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     */
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, distinctListsAtLeast(minSize, characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs);
 
