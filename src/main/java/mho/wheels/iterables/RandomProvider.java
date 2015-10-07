@@ -3430,36 +3430,151 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s of a given length with elements from a given
+     * {@code Iterable} with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements have the same length and no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists of a given length created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
         return distinctChunkInfinite(size, xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Pair}s of elements from an {@code Iterable} with no repetitions.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Pair}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
         return distinctChunkPairsInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Triple}s of elements from an {@code Iterable} with no repetitions.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Triple}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
         return distinctChunkTriplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quadruple}s of elements from an {@code Iterable} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quadruple}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
         return distinctChunkQuadruplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Quintuple}s of elements from an {@code Iterable} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quintuple}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
         return distinctChunkQuintuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Sextuple}s of elements from an {@code Iterable} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Sextuple}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
         return distinctChunkSextuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code Septuple}s of elements from an {@code Iterable} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Septuple}s of elements from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
         return distinctChunkSeptuplesInfinite(xs);
