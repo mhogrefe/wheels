@@ -3245,6 +3245,184 @@ public final strictfp class IterableUtils {
         };
     }
 
+    public static @NotNull <T> Iterable<List<T>> distinctChunkInfinite(int size, @NotNull Iterable<T> xs) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        }
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < size) {
+                    set.add(xsi.next());
+                }
+                return toList(set);
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Pair<T, T>> distinctChunkPairsInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Pair<T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Pair<T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 2) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Pair<>(setIterator.next(), setIterator.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Triple<T, T, T>> distinctChunkTriplesInfinite(@NotNull Iterable<T> xs) {
+        return () -> new NoRemoveIterator<Triple<T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Triple<T, T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 3) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Triple<>(setIterator.next(), setIterator.next(), setIterator.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctChunkQuadruplesInfinite(
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<Quadruple<T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quadruple<T, T, T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 4) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Quadruple<>(setIterator.next(), setIterator.next(), setIterator.next(), setIterator.next());
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctChunkQuintuplesInfinite(
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<Quintuple<T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Quintuple<T, T, T, T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 5) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Quintuple<>(
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next()
+                );
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctChunkSextuplesInfinite(
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<Sextuple<T, T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Sextuple<T, T, T, T, T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 6) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Sextuple<>(
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next()
+                );
+            }
+        };
+    }
+
+    public static @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctChunkSeptuplesInfinite(
+            @NotNull Iterable<T> xs
+    ) {
+        return () -> new NoRemoveIterator<Septuple<T, T, T, T, T, T, T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public Septuple<T, T, T, T, T, T, T> next() {
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < 7) {
+                    set.add(xsi.next());
+                }
+                Iterator<T> setIterator = set.iterator();
+                return new Septuple<>(
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next(),
+                        setIterator.next()
+                );
+            }
+        };
+    }
+
     public static @NotNull <T> Iterable<List<T>> chunkPadded(@Nullable T pad, int size, @NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();

@@ -3432,37 +3432,37 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkInfinite(size, xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs) {
-        return filter(p -> !Objects.equals(p.a, p.b), pairs(xs));
+        return distinctChunkPairsInfinite(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkTriplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkQuadruplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkQuintuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkSextuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs) {
-        return null;
+        return distinctChunkSeptuplesInfinite(xs);
     }
 
     @Override
