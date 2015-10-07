@@ -222,6 +222,8 @@ public class ExhaustiveProviderProperties {
             propertiesDistinctQuintuples();
             propertiesDistinctSextuples();
             propertiesDistinctSeptuples();
+            propertiesDistinctStrings_int_String();
+            propertiesDistinctStrings_int();
         }
         System.out.println("Done");
     }
@@ -5758,6 +5760,87 @@ public class ExhaustiveProviderProperties {
                 assertTrue(xs, elem(s.f, xs));
                 assertTrue(xs, elem(s.g, xs));
             }
+        }
+    }
+
+    private static void propertiesDistinctStrings_int_String() {
+        initialize("distinctStrings(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.distinctStrings(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!stringsList.isEmpty()) {
+                    assertEquals(p, head(stringsList), take(p.b, p.a));
+                    assertEquals(p, last(stringsList), take(p.b, reverse(p.a)));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.distinctStrings(p.b, p.a));
+                assertTrue(p, unique(stringsList));
+                assertTrue(p, all(IterableUtils::unique, stringsList));
+            }
+        }
+
+        ps = filter(
+                p -> p.a.length() < p.b,
+                P.pairsLogarithmicOrder(P.withScale(4).strings(), P.withScale(4).naturalIntegersGeometric())
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> ss = EP.distinctStrings(p.b, p.a);
+            testHasNext(ss);
+            assertEquals(p, toList(ss), Collections.emptyList());
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> ss = EP.distinctStrings(0, s);
+            testHasNext(ss);
+            assertEquals(s, toList(ss), Collections.singletonList(""));
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.distinctStrings(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctStrings_int() {
+        initialize("distinctStrings(int)");
+        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            Iterable<String> strings = EP.distinctStrings(i);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(i, head(stringsList), charsToString(take(i, EP.characters())));
+            assertTrue(i, all(s -> s.length() == i, stringsList));
+            assertTrue(i, all(IterableUtils::unique, stringsList));
+            assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(LIMIT, P.withScale(4).negativeIntegersGeometric())) {
+            try {
+                EP.distinctStrings(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }
