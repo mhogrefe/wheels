@@ -215,6 +215,13 @@ public class ExhaustiveProviderProperties {
             propertiesDistinctStringsShortlex();
             propertiesDistinctListsShortlexAtLeast();
             propertiesDistinctStringsShortlexAtLeast();
+            propertiesDistinctLists_int_Iterable();
+            propertiesDistinctPairs();
+            propertiesDistinctTriples();
+            propertiesDistinctQuadruples();
+            propertiesDistinctQuintuples();
+            propertiesDistinctSextuples();
+            propertiesDistinctSeptuples();
         }
         System.out.println("Done");
     }
@@ -3065,9 +3072,7 @@ public class ExhaustiveProviderProperties {
             Iterable<List<Integer>> lists = EP.lists(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
-            if (!isEmpty(p.a)) {
-                assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
-            }
+            assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
             assertTrue(p, all(xs -> xs.size() == p.b, listsList));
             assertTrue(p, unique(listsList));
@@ -4304,9 +4309,7 @@ public class ExhaustiveProviderProperties {
             Iterable<List<Integer>> lists = EP.listsAtLeast(p.b, p.a);
             testNoRemove(TINY_LIMIT, lists);
             List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
-            if (!isEmpty(p.a)) {
-                assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
-            }
+            assertEquals(p, head(listsList), toList(replicate(p.b, head(p.a))));
             assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
             assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
             assertTrue(p, unique(listsList));
@@ -5330,6 +5333,431 @@ public class ExhaustiveProviderProperties {
                 EP.distinctStringsShortlexAtLeast(p.b, p.a);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctLists_int_Iterable() {
+        initialize("distinctLists(int, Iterable<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.distinctLists(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsList.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(take(p.b, p.a)));
+                    assertEquals(p, last(listsList), toList(take(p.b, reverse(p.a))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.distinctLists(p.b, p.a));
+                assertTrue(p, unique(listsList));
+                assertTrue(p, all(IterableUtils::unique, listsList));
+            }
+        }
+
+        Iterable<Pair<Iterable<Integer>, Integer>> ps2 = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(LIMIT, ps2)) {
+            Iterable<List<Integer>> lists = EP.distinctLists(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            assertEquals(p, head(listsList), toList(take(p.b, p.a)));
+            assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+            assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            assertTrue(p, all(IterableUtils::unique, listsList));
+            assertTrue(p, unique(listsList));
+        }
+
+        ps = filter(
+                p -> p.a.size() < p.b,
+                P.pairsLogarithmicOrder(
+                        P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> xss = EP.distinctLists(p.b, p.a);
+            testHasNext(xss);
+            assertEquals(p, toList(xss), Collections.emptyList());
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<List<Integer>> xss = EP.distinctLists(0, xs);
+            testHasNext(xss);
+            assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.distinctLists(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctPairs() {
+        initialize("distinctPairs(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.distinctPairs(xs);
+            testNoRemove(TINY_LIMIT, pairs);
+            BigInteger pairsLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 2);
+            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairsList = toList(pairs);
+                if (!pairsList.isEmpty()) {
+                    assertEquals(xs, head(pairsList), new Pair<>(xs.get(0), xs.get(1)));
+                    assertEquals(xs, last(pairsList), new Pair<>(xs.get(xs.size() - 1), xs.get(xs.size() - 2)));
+                }
+                assertEquals(xs, pairsList.size(), pairsLength.intValueExact());
+                assertTrue(xs, all(p -> elem(p.a, xs), pairsList));
+                assertTrue(xs, all(p -> elem(p.b, xs), pairsList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger pairsLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 2);
+            if (lt(pairsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Pair<Integer, Integer>> pairsList = toList(EP.distinctPairs(xs));
+                assertTrue(xs, unique(pairsList));
+                assertTrue(xs, all(IterableUtils::unique, map(Pair::toList, pairsList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.distinctPairs(xs);
+            testNoRemove(TINY_LIMIT, pairs);
+            assertTrue(xs, unique(take(TINY_LIMIT, pairs)));
+            List<Pair<Integer, Integer>> pairsList = toList(take(TINY_LIMIT, pairs));
+            for (Pair<Integer, Integer> p : pairsList) {
+                assertTrue(xs, elem(p.a, xs));
+                assertTrue(xs, elem(p.b, xs));
+            }
+        }
+    }
+
+    private static void propertiesDistinctTriples() {
+        initialize("distinctTriples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.distinctTriples(xs);
+            testNoRemove(TINY_LIMIT, triples);
+            BigInteger triplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 3);
+            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(triples);
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
+                if (!triplesList.isEmpty()) {
+                    assertEquals(xs, head(triplesList), new Triple<>(xs.get(0), xs.get(1), xs.get(2)));
+                    assertEquals(
+                            xs,
+                            last(triplesList),
+                            new Triple<>(xs.get(xs.size() - 1), xs.get(xs.size() - 2), xs.get(xs.size() - 3))
+                    );
+                }
+                assertEquals(xs, triplesList.size(), triplesLength.intValueExact());
+                assertTrue(xs, all(t -> elem(t.a, xs), triplesList));
+                assertTrue(xs, all(t -> elem(t.b, xs), triplesList));
+                assertTrue(xs, all(t -> elem(t.c, xs), triplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger triplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 3);
+            if (lt(triplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.distinctTriples(xs));
+                assertTrue(xs, unique(triplesList));
+                assertTrue(xs, all(IterableUtils::unique, map(Triple::toList, triplesList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.distinctTriples(xs);
+            testNoRemove(TINY_LIMIT, triples);
+            assertTrue(xs, unique(take(TINY_LIMIT, triples)));
+            List<Triple<Integer, Integer, Integer>> triplesList = toList(take(TINY_LIMIT, triples));
+            for (Triple<Integer, Integer, Integer> t : triplesList) {
+                assertTrue(xs, elem(t.a, xs));
+                assertTrue(xs, elem(t.b, xs));
+                assertTrue(xs, elem(t.c, xs));
+            }
+        }
+    }
+
+    private static void propertiesDistinctQuadruples() {
+        initialize("distinctQuadruples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.distinctQuadruples(xs);
+            testNoRemove(TINY_LIMIT, quadruples);
+            BigInteger quadruplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 4);
+            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(quadruples);
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
+                if (!quadruplesList.isEmpty()) {
+                    assertEquals(
+                            xs,
+                            head(quadruplesList),
+                            new Quadruple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3))
+                    );
+                    assertEquals(
+                            xs,
+                            last(quadruplesList),
+                            new Quadruple<>(
+                                    xs.get(xs.size() - 1),
+                                    xs.get(xs.size() - 2),
+                                    xs.get(xs.size() - 3),
+                                    xs.get(xs.size() - 4)
+                            )
+                    );
+                }
+                assertEquals(xs, quadruplesList.size(), quadruplesLength.intValueExact());
+                assertTrue(xs, all(q -> elem(q.a, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.b, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.c, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.d, xs), quadruplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger quadruplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 4);
+            if (lt(quadruplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(EP.distinctQuadruples(xs));
+                assertTrue(xs, unique(quadruplesList));
+                assertTrue(xs, all(IterableUtils::unique, map(Quadruple::toList, quadruplesList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.distinctQuadruples(xs);
+            testNoRemove(TINY_LIMIT, quadruples);
+            assertTrue(xs, unique(take(TINY_LIMIT, quadruples)));
+            List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(take(TINY_LIMIT, quadruples));
+            for (Quadruple<Integer, Integer, Integer, Integer> q : quadruplesList) {
+                assertTrue(xs, elem(q.a, xs));
+                assertTrue(xs, elem(q.b, xs));
+                assertTrue(xs, elem(q.c, xs));
+                assertTrue(xs, elem(q.d, xs));
+            }
+        }
+    }
+
+    private static void propertiesDistinctQuintuples() {
+        initialize("distinctQuintuples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.distinctQuintuples(xs);
+            testNoRemove(TINY_LIMIT, quintuples);
+            BigInteger quintuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 5);
+            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(quintuples);
+                List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList = toList(quintuples);
+                if (!quintuplesList.isEmpty()) {
+                    assertEquals(
+                            xs,
+                            head(quintuplesList),
+                            new Quintuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4))
+                    );
+                    assertEquals(
+                            xs,
+                            last(quintuplesList),
+                            new Quintuple<>(
+                                    xs.get(xs.size() - 1),
+                                    xs.get(xs.size() - 2),
+                                    xs.get(xs.size() - 3),
+                                    xs.get(xs.size() - 4),
+                                    xs.get(xs.size() - 5)
+                            )
+                    );
+                }
+                assertEquals(xs, quintuplesList.size(), quintuplesLength.intValueExact());
+                assertTrue(xs, all(q -> elem(q.a, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.b, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.c, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.d, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.e, xs), quintuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger quintuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 5);
+            if (lt(quintuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
+                        toList(EP.distinctQuintuples(xs));
+                assertTrue(xs, unique(quintuplesList));
+                assertTrue(xs, all(IterableUtils::unique, map(Quintuple::toList, quintuplesList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.distinctQuintuples(xs);
+            testNoRemove(TINY_LIMIT, quintuples);
+            assertTrue(xs, unique(take(TINY_LIMIT, quintuples)));
+            List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
+                    toList(take(TINY_LIMIT, quintuples));
+            for (Quintuple<Integer, Integer, Integer, Integer, Integer> q : quintuplesList) {
+                assertTrue(xs, elem(q.a, xs));
+                assertTrue(xs, elem(q.b, xs));
+                assertTrue(xs, elem(q.c, xs));
+                assertTrue(xs, elem(q.d, xs));
+                assertTrue(xs, elem(q.e, xs));
+            }
+        }
+    }
+
+    private static void propertiesDistinctSextuples() {
+        initialize("distinctSextuples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
+                    EP.distinctSextuples(xs);
+            testNoRemove(TINY_LIMIT, sextuples);
+            BigInteger sextuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 6);
+            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(sextuples);
+                List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
+                if (!sextuplesList.isEmpty()) {
+                    assertEquals(
+                            xs,
+                            head(sextuplesList),
+                            new Sextuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5))
+                    );
+                    assertEquals(
+                            xs,
+                            last(sextuplesList),
+                            new Sextuple<>(
+                                    xs.get(xs.size() - 1),
+                                    xs.get(xs.size() - 2),
+                                    xs.get(xs.size() - 3),
+                                    xs.get(xs.size() - 4),
+                                    xs.get(xs.size() - 5),
+                                    xs.get(xs.size() - 6)
+                            )
+                    );
+                }
+                assertEquals(xs, sextuplesList.size(), sextuplesLength.intValueExact());
+                assertTrue(xs, all(s -> elem(s.a, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.b, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.c, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.d, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.e, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.f, xs), sextuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger sextuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 6);
+            if (lt(sextuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
+                        toList(EP.distinctSextuples(xs));
+                assertTrue(xs, unique(sextuplesList));
+                assertTrue(xs, all(IterableUtils::unique, map(Sextuple::toList, sextuplesList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
+                    EP.distinctSextuples(xs);
+            testNoRemove(TINY_LIMIT, sextuples);
+            assertTrue(xs, unique(take(TINY_LIMIT, sextuples)));
+            List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
+                    toList(take(TINY_LIMIT, sextuples));
+            for (Sextuple<Integer, Integer, Integer, Integer, Integer, Integer> s : sextuplesList) {
+                assertTrue(xs, elem(s.a, xs));
+                assertTrue(xs, elem(s.b, xs));
+                assertTrue(xs, elem(s.c, xs));
+                assertTrue(xs, elem(s.d, xs));
+                assertTrue(xs, elem(s.e, xs));
+                assertTrue(xs, elem(s.f, xs));
+            }
+        }
+    }
+
+    private static void propertiesDistinctSeptuples() {
+        initialize("distinctSeptuples(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
+                    EP.distinctSeptuples(xs);
+            testNoRemove(TINY_LIMIT, septuples);
+            BigInteger septuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 7);
+            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                testHasNext(septuples);
+                List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
+                        toList(septuples);
+                if (!septuplesList.isEmpty()) {
+                    assertEquals(
+                            xs,
+                            head(septuplesList),
+                            new Septuple<>(xs.get(0), xs.get(1), xs.get(2), xs.get(3), xs.get(4), xs.get(5), xs.get(6))
+                    );
+                    assertEquals(
+                            xs,
+                            last(septuplesList),
+                            new Septuple<>(
+                                    xs.get(xs.size() - 1),
+                                    xs.get(xs.size() - 2),
+                                    xs.get(xs.size() - 3),
+                                    xs.get(xs.size() - 4),
+                                    xs.get(xs.size() - 5),
+                                    xs.get(xs.size() - 6),
+                                    xs.get(xs.size() - 7)
+                            )
+                    );
+                }
+                assertEquals(xs, septuplesList.size(), septuplesLength.intValueExact());
+                assertTrue(xs, all(s -> elem(s.a, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.b, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.c, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.d, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.e, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.f, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.g, xs), septuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            BigInteger septuplesLength = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 7);
+            if (lt(septuplesLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
+                        toList(EP.distinctSeptuples(xs));
+                assertTrue(xs, unique(septuplesList));
+                assertTrue(xs, all(IterableUtils::unique, map(Septuple::toList, septuplesList)));
+            }
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
+                    EP.distinctSeptuples(xs);
+            testNoRemove(TINY_LIMIT, septuples);
+            assertTrue(xs, unique(take(TINY_LIMIT, septuples)));
+            List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
+                    toList(take(TINY_LIMIT, septuples));
+            for (Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer> s : septuplesList) {
+                assertTrue(xs, elem(s.a, xs));
+                assertTrue(xs, elem(s.b, xs));
+                assertTrue(xs, elem(s.c, xs));
+                assertTrue(xs, elem(s.d, xs));
+                assertTrue(xs, elem(s.e, xs));
+                assertTrue(xs, elem(s.f, xs));
+                assertTrue(xs, elem(s.g, xs));
+            }
         }
     }
 }
