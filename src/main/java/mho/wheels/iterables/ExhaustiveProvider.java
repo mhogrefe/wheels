@@ -4296,68 +4296,52 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with elements from a given {@code List} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all {@code List}s with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs)) return Collections.singletonList(new ArrayList<>());
-        Iterable<List<Integer>> lists = lists(naturalIntegers());
-        return () -> new NoRemoveIterator<List<T>>() {
-            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private final @NotNull Iterator<List<Integer>> xsi = lists.iterator();
-            private @NotNull Optional<BigInteger> outputSize = Optional.empty();
-            private @NotNull BigInteger index = BigInteger.ZERO;
-            private boolean reachedEnd = false;
-
-            @Override
-            public boolean hasNext() {
-                return !reachedEnd;
-            }
-
-            @Override
-            public List<T> next() {
-                if (reachedEnd) {
-                    throw new NoSuchElementException();
-                }
-                outer:
-                while (true) {
-                    List<T> list = new ArrayList<>();
-                    Set<T> seen = new HashSet<>();
-                    List<Integer> indices = xsi.next();
-                    for (int index : indices) {
-                        int j = 0;
-                        T x;
-                        do {
-                            NullableOptional<T> ox = cxs.get(j);
-                            if (!ox.isPresent()) continue outer;
-                            x = ox.get();
-                            j++;
-                        } while (seen.contains(x));
-                        for (int i = 0; i < index; i++) {
-                            do {
-                                NullableOptional<T> ox = cxs.get(j);
-                                if (!ox.isPresent()) continue outer;
-                                x = ox.get();
-                                j++;
-                            } while (seen.contains(x));
-                        }
-                        list.add(x);
-                        seen.add(x);
-                    }
-                    if (!outputSize.isPresent() && cxs.knownSize().isPresent()) {
-                        outputSize = Optional.of(MathUtils.numberOfArrangementsOfASet(cxs.knownSize().get()));
-                    }
-                    index = index.add(BigInteger.ONE);
-                    if (outputSize.isPresent() && index.equals(outputSize.get())) {
-                        reachedEnd = true;
-                    }
-                    return list;
-                }
-            }
-        };
+        return distinctIndices(xs, lists(naturalIntegers()), Optional.empty(), MathUtils::numberOfArrangementsOfASet);
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains every {@code List} (with a length greater than or equal to some minimum) of elements
+     *  drawn from some sequence with no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all {@code List}s with length at least {@code minSize} with no repetitions created from {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
+        return distinctIndices(
+                xs,
+                listsAtLeast(minSize, naturalIntegers()),
+                Optional.of(minSize),
+                n -> MathUtils.numberOfArrangementsOfASet(minSize, n)
+        );
     }
 
     public @NotNull <T> Iterable<List<T>> bagsLex(int size, @NotNull Iterable<T> xs) {
