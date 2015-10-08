@@ -1273,14 +1273,14 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoLists_finite() {
+    private static void demoLists_Iterable_finite() {
         initialize();
         for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             System.out.println("lists(" + xs + ") = " + its(EP.lists(xs)));
         }
     }
 
-    private static void demoLists_infinite() {
+    private static void demoLists_Iterable_infinite() {
         initialize();
         for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             System.out.println("lists(" + its(xs) + ") = " + its(EP.lists(xs)));
@@ -1600,6 +1600,72 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("distinctStrings(" + i + ") = " + its(map(Testing::nicePrint, EP.distinctStrings(i))));
+        }
+    }
+
+    private static void demoDistinctLists_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            System.out.println("distinctLists(" + xs + ") = " + its(EP.distinctLists(xs)));
+        }
+    }
+
+    private static void demoDistinctLists_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            System.out.println("distinctLists(" + its(xs) + ") = " + its(EP.distinctLists(xs)));
+        }
+    }
+
+    private static void demoDistinctStrings_String() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("distinctStrings(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStrings(s))));
+        }
+    }
+
+    private static void demoDistinctListsAtLeast_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.withNull(P.integersGeometric())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctListsAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.distinctListsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctListsAtLeast_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctListsAtLeast(" + p.b + ", " + its(p.a) + ") = " +
+                    its(EP.distinctListsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoDistinctStringsAtLeast_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("distinctStringsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsAtLeast(p.b, p.a))));
+        }
+    }
+
+    private static void demoDistinctStringsAtLeast_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("distinctStringsAtLeast(" + i + ") = " +
+                    its(map(Testing::nicePrint, EP.distinctStringsAtLeast(i))));
         }
     }
 }
