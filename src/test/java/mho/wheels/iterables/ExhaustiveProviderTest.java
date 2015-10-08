@@ -6927,6 +6927,225 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testDistinctLists_Iterable() {
+        aeqit(P.distinctLists(Collections.emptyList()), "[[]]");
+        aeqitLimit(TINY_LIMIT, P.distinctLists(Collections.singletonList(5)), "[[], [5]]");
+        aeqitLimit(TINY_LIMIT, P.distinctLists(Arrays.asList(1, 2, 3)),
+                "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3]," +
+                " [3, 2], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        aeqitLimit(TINY_LIMIT, P.distinctLists(Arrays.asList(1, 2, 2, 3)),
+                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2]," +
+                " [1, 3], [1, 2, 2], [2, 3], [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], ...]");
+        aeqitLimit(TINY_LIMIT, P.distinctLists(P.naturalIntegers()),
+                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
+                " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
+        aeqitLimit(TINY_LIMIT, P.distinctLists(repeat(1)),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+    }
+
+    @Test
+    public void testDistinctStrings_String() {
+        aeqit(P.distinctStrings(""), "[]");
+        aeq(length(P.distinctStrings("")), 1);
+        aeqitLimit(TINY_LIMIT, P.distinctStrings("a"), "[, a]");
+        aeqitLimit(TINY_LIMIT, P.distinctStrings("abc"),
+                "[, a, ab, b, abc, c, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
+        aeqitLimit(TINY_LIMIT, P.distinctStrings("abbc"),
+                "[, a, ab, b, abb, b, ab, c, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ...]");
+        aeqitLimit(TINY_LIMIT, P.distinctStrings("Mississippi"),
+                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, iM, s, Mis, s, is, i, Missi, p, Ms, p, ...]");
+    }
+
+    @Test
+    public void testDistinctStrings() {
+        aeqitLimit(TINY_LIMIT, P.distinctStrings(),
+                "[, a, ab, b, abc, c, ac, d, abcd, e, ba, f, abd, g, bc, h, abcde, i, ad, j, ...]");
+    }
+
+    private static void distinctListsAtLeast_helper(
+            int minSize,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctListsAtLeast(minSize, input), output);
+    }
+
+    private static void distinctListsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        distinctListsAtLeast_helper(minSize, readIntegerListWithNulls(input), output);
+    }
+
+    @Test
+    public void testDistinctListsAtLeast() {
+        distinctListsAtLeast_helper(0, "[]", "[[]]");
+        distinctListsAtLeast_helper(1, "[]", "[]");
+        distinctListsAtLeast_helper(2, "[]", "[]");
+        distinctListsAtLeast_helper(3, "[]", "[]");
+
+        distinctListsAtLeast_helper(0, "[5]", "[[], [5]]");
+        distinctListsAtLeast_helper(1, "[5]", "[[5]]");
+        distinctListsAtLeast_helper(2, "[5]", "[]");
+        distinctListsAtLeast_helper(3, "[5]", "[]");
+
+        distinctListsAtLeast_helper(0, "[1, 2, 3]",
+                "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3]," +
+                " [3, 2], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsAtLeast_helper(1, "[1, 2, 3]",
+                "[[1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3], [3, 2]," +
+                " [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+        distinctListsAtLeast_helper(2, "[1, 2, 3]",
+                "[[1, 2], [1, 2, 3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3], [3, 2], [2, 3, 1]," +
+                " [3, 1, 2], [3, 2, 1]]");
+        distinctListsAtLeast_helper(3, "[1, 2, 3]",
+                "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
+
+        distinctListsAtLeast_helper(0, "[1, null, 3]",
+                "[[], [1], [1, null], [null], [1, null, 3], [3], [1, 3], [null, 1], [null, 3], [1, 3, null], [3, 1]," +
+                " [null, 1, 3], [3, null], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsAtLeast_helper(1, "[1, null, 3]",
+                "[[1], [1, null], [null], [1, null, 3], [3], [1, 3], [null, 1], [null, 3], [1, 3, null], [3, 1]," +
+                " [null, 1, 3], [3, null], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsAtLeast_helper(2, "[1, null, 3]",
+                "[[1, null], [1, null, 3], [1, 3], [null, 1], [null, 3], [1, 3, null], [3, 1], [null, 1, 3]," +
+                " [3, null], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+        distinctListsAtLeast_helper(3, "[1, null, 3]",
+                "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
+
+        distinctListsAtLeast_helper(0, "[1, 2, 2, 3]",
+                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2]," +
+                " [1, 3], [1, 2, 2], [2, 3], [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], ...]");
+        distinctListsAtLeast_helper(1, "[1, 2, 2, 3]",
+                "[[1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2], [1, 3]," +
+                " [1, 2, 2], [2, 3], [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], [3, 1], ...]");
+        distinctListsAtLeast_helper(2, "[1, 2, 2, 3]",
+                "[[1, 2], [1, 2, 2], [1, 2], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2], [1, 3], [1, 2, 2], [2, 3]," +
+                " [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], [3, 1], [2, 1, 3], [3, 2], [2, 3], [2, 2, 1]," +
+                " ...]");
+        distinctListsAtLeast_helper(3, "[1, 2, 2, 3]",
+                "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 2], [1, 2, 3], [2, 1, 2], [1, 2, 3, 2], [2, 1, 3]," +
+                " [2, 2, 1], [2, 2, 3], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2], [2, 1, 2, 3], [1, 3, 2], [2, 3, 1]," +
+                " [2, 1, 3, 2], [2, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], ...]");
+
+        distinctListsAtLeast_helper(0, P.naturalIntegers(),
+                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
+                " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
+        distinctListsAtLeast_helper(1, P.naturalIntegers(),
+                "[[0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
+                " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], [0, 2, 1], ...]");
+        distinctListsAtLeast_helper(2, P.naturalIntegers(),
+                "[[0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [1, 0], [0, 1, 3], [1, 2], [0, 1, 2, 3, 4], [0, 3]," +
+                " [0, 2, 1], [0, 4], [0, 1, 2, 4], [1, 3], [0, 2, 3], [1, 4], [0, 1, 2, 3, 4, 5], [2, 0], [1, 0, 2]," +
+                " [2, 1], [0, 1, 3, 2], ...]");
+        distinctListsAtLeast_helper(3, P.naturalIntegers(),
+                "[[0, 1, 2], [0, 1, 2, 3], [0, 1, 3], [0, 1, 2, 3, 4], [0, 2, 1], [0, 1, 2, 4], [0, 2, 3]," +
+                " [0, 1, 2, 3, 4, 5], [1, 0, 2], [0, 1, 3, 2], [1, 0, 3], [0, 1, 2, 3, 5], [1, 2, 0], [0, 1, 3, 4]," +
+                " [1, 2, 3], [0, 1, 2, 3, 4, 5, 6], [0, 1, 4], [0, 2, 1, 3], [0, 1, 5], [0, 1, 2, 4, 3], ...]");
+
+        distinctListsAtLeast_helper(0, repeat(1),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        distinctListsAtLeast_helper(1, repeat(1),
+                "[[1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], ...]");
+        distinctListsAtLeast_helper(2, repeat(1),
+                "[[1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [1, 1]," +
+                " [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1], [1, 1], [1, 1, 1]," +
+                " [1, 1], [1, 1, 1, 1], ...]");
+        distinctListsAtLeast_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
+
+        try {
+            P.distinctListsAtLeast(-1, Collections.emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctListsAtLeast(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctStringsAtLeast_String_helper(
+            int minSize,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctStringsAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testDistinctStringsAtLeast_String() {
+        distinctStringsAtLeast_String_helper(0, "", "[]");
+        aeq(length(P.distinctStringsShortlexAtLeast(0, "")), 1);
+        distinctStringsAtLeast_String_helper(1, "", "[]");
+        aeq(length(P.distinctStringsShortlexAtLeast(1, "")), 0);
+        distinctStringsAtLeast_String_helper(2, "", "[]");
+        aeq(length(P.distinctStringsShortlexAtLeast(2, "")), 0);
+        distinctStringsAtLeast_String_helper(3, "", "[]");
+        aeq(length(P.distinctStringsShortlexAtLeast(3, "")), 0);
+        distinctStringsAtLeast_String_helper(0, "a", "[, a]");
+        distinctStringsAtLeast_String_helper(1, "a", "[a]");
+        distinctStringsAtLeast_String_helper(2, "a", "[]");
+        distinctStringsAtLeast_String_helper(3, "a", "[]");
+        distinctStringsAtLeast_String_helper(0, "abc",
+                "[, a, ab, b, abc, c, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
+        distinctStringsAtLeast_String_helper(1, "abc",
+                "[a, ab, b, abc, c, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
+        distinctStringsAtLeast_String_helper(2, "abc", "[ab, abc, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
+        distinctStringsAtLeast_String_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
+        distinctStringsAtLeast_String_helper(0, "abbc",
+                "[, a, ab, b, abb, b, ab, c, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ...]");
+        distinctStringsAtLeast_String_helper(1, "abbc",
+                "[a, ab, b, abb, b, ab, c, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ca, ...]");
+        distinctStringsAtLeast_String_helper(2, "abbc",
+                "[ab, abb, ab, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ca, bac, cb, bc, bba, ...]");
+        distinctStringsAtLeast_String_helper(3, "abbc",
+                "[abb, abbc, abc, abb, abc, bab, abcb, bac, bba, bbc, abbc, abcb, acb, babc, acb, bca, bacb, bcb," +
+                " bbac, bbca, ...]");
+        distinctStringsAtLeast_String_helper(0, "Mississippi",
+                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, iM, s, Mis, s, is, i, Missi, p, Ms, p, ...]");
+        distinctStringsAtLeast_String_helper(1, "Mississippi",
+                "[M, Mi, i, Mis, s, Ms, s, Miss, i, iM, s, Mis, s, is, i, Missi, p, Ms, p, Msi, ...]");
+        distinctStringsAtLeast_String_helper(2, "Mississippi",
+                "[Mi, Mis, Ms, Miss, iM, Mis, is, Missi, Ms, Msi, Mi, Misi, is, Mss, ii, Missis, sM, iMs, si, Miss," +
+                " ...]");
+        distinctStringsAtLeast_String_helper(3, "Mississippi",
+                "[Mis, Miss, Mis, Missi, Msi, Misi, Mss, Missis, iMs, Miss, iMs, Misss, isM, Misi, iss, Mississ," +
+                " Mii, Msis, Mis, Misis, ...]");
+        try {
+            P.distinctStringsAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.distinctStringsAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void distinctStringsAtLeast_helper(int minSize, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.distinctStringsAtLeast(minSize), output);
+    }
+
+    @Test
+    public void testDistinctStringsAtLeast() {
+        distinctStringsAtLeast_helper(0,
+                "[, a, ab, b, abc, c, ac, d, abcd, e, ba, f, abd, g, bc, h, abcde, i, ad, j, ...]");
+        distinctStringsAtLeast_helper(1,
+                "[a, ab, b, abc, c, ac, d, abcd, e, ba, f, abd, g, bc, h, abcde, i, ad, j, acb, ...]");
+        distinctStringsAtLeast_helper(2,
+                "[ab, abc, ac, abcd, ba, abd, bc, abcde, ad, acb, ae, abce, bd, acd, be, abcdef, ca, bac, cb, abdc," +
+                " ...]");
+        distinctStringsAtLeast_helper(3,
+                "[abc, abcd, abd, abcde, acb, abce, acd, abcdef, bac, abdc, bad, abcdf, bca, abde, bcd, abcdefg," +
+                " abe, acbd, abf, abced, ...]");
+        try {
+            P.distinctStringsAtLeast(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    @Test
     public void testEquals() {
         //noinspection EqualsWithItself
         assertTrue(P.equals(P));
