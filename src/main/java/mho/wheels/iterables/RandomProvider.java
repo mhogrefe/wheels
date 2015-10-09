@@ -3438,6 +3438,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
      *  <li>{@code size} cannot be negative.</li>
      *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must contain at least {@code size} distinct elements.</li>
      *  <li>The result is infinite, non-removable, and all of its elements have the same length and no
      *  repetitions.</li>
      * </ul>
@@ -3580,6 +3581,24 @@ public final strictfp class RandomProvider extends IterableProvider {
         return distinctChunkSeptuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s with elements from a given {@code Iterable} with no
+     * repetitions. The mean length of the {@code List}s increases as {@code scale} increases. The more distinct
+     * elements {@code xs} contains, the closer the mean length will be to {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements have no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists of a given length created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
         Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
@@ -3596,7 +3615,7 @@ public final strictfp class RandomProvider extends IterableProvider {
             public List<T> next() {
                 int size = sizes.next();
                 Set<T> set = new LinkedHashSet<>();
-                while (set.size() < size) {
+                for (int i = 0; i < size; i++) {
                     set.add(xsi.next());
                 }
                 return toList(set);
@@ -3604,6 +3623,28 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates all {@code List}s with a minimum length and with elements from a given
+     * {@code Iterable} with no repetitions. The mean length of the {@code List}s increases as {@code scale} increases.
+     * The more distinct elements {@code xs} contains, the closer the mean length will be to {@code scale}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code this} must have a {@code scale} at least 1 greater than {@code minSize}.</li>
+     *  <li>{@code xs} must contain at least {@code minSize} distinct elements.</li>
+     *  <li>The result is infinite, non-removable, and none of its elements are null.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return lists with length at least {@code minSize} created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         Iterable<Integer> rangeUpGeometric = rangeUpGeometric(minSize);
@@ -3620,7 +3661,10 @@ public final strictfp class RandomProvider extends IterableProvider {
             public List<T> next() {
                 int size = sizes.next();
                 Set<T> set = new LinkedHashSet<>();
-                while (set.size() < size) {
+                while (set.size() < minSize) {
+                    set.add(xsi.next());
+                }
+                for (int i = 0; i < size - minSize; i++) {
                     set.add(xsi.next());
                 }
                 return toList(set);
