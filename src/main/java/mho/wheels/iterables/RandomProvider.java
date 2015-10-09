@@ -3582,12 +3582,50 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs) {
-        return filterInfinite(IterableUtils::unique, lists(xs));
+        Iterable<Integer> naturalIntegersGeometric = naturalIntegersGeometric();
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<Integer> sizes = naturalIntegersGeometric.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next();
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < size) {
+                    set.add(xsi.next());
+                }
+                return toList(set);
+            }
+        };
     }
 
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
+        Iterable<Integer> rangeUpGeometric = rangeUpGeometric(minSize);
+        return () -> new NoRemoveIterator<List<T>>() {
+            private final @NotNull Iterator<T> xsi = xs.iterator();
+            private final @NotNull Iterator<Integer> sizes = rangeUpGeometric.iterator();
+
+            @Override
+            public boolean hasNext() {
+                return true;
+            }
+
+            @Override
+            public List<T> next() {
+                int size = sizes.next();
+                Set<T> set = new LinkedHashSet<>();
+                while (set.size() < size) {
+                    set.add(xsi.next());
+                }
+                return toList(set);
+            }
+        };
     }
 
     @Override
