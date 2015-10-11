@@ -1347,6 +1347,120 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoDistinctLists() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegersGeometric()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctLists(" + p.a + ", " + its(p.b) + ") = " + its(p.a.distinctLists(p.b)));
+        }
+    }
+
+    private static void demoDistinctStrings_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctStrings(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, p.a.distinctStrings(p.b))));
+        }
+    }
+
+    private static void demoDistinctStrings() {
+        initialize();
+        Iterable<RandomProvider> rps = filter(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("distinctStrings(" + rp + ") = " + its(map(Testing::nicePrint, rp.distinctStrings())));
+        }
+    }
+
+    private static @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(
+            @NotNull IterableProvider ip,
+            int minSize,
+            @NotNull Iterable<T> xs
+    ) {
+        return map(
+                IterableUtils::cycle,
+                nub(
+                        filterInfinite(
+                                ys -> !ys.isEmpty() && length(nub(ys)) >= minSize,
+                                map(IterableUtils::unrepeat, ip.listsAtLeast(minSize, xs))
+                        )
+                )
+        );
+    }
+
+    private static void demoDistinctListsAtLeast() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> repeatingIterablesAtLeast(
+                                P.withScale(p.a.getScale()),
+                                p.b,
+                                P.withNull(P.naturalIntegersGeometric())
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("distinctListsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.distinctListsAtLeast(t.b, t.c)));
+        }
+    }
+
+    private static void demoDistinctStringsAtLeast_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, String>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> filterInfinite(
+                                s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                P.withScale(p.a.getScale()).stringsAtLeast(p.b)
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("distinctStringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.distinctStringsAtLeast(t.b, t.c))));
+        }
+    }
+
+    private static void demoDistinctStringsAtLeast_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctStringsAtLeast(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.distinctStringsAtLeast(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
