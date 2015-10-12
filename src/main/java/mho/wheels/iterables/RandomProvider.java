@@ -3676,7 +3676,43 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
+            @NotNull Iterable<T> xs
+    ) {
         return null;
     }
 
@@ -3691,7 +3727,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
         return null;
     }
 
@@ -3706,7 +3742,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }
 

@@ -4344,15 +4344,53 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull <T> Iterable<List<T>> bagsLex(int size, @NotNull Iterable<T> xs) {
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsLex(int size, @NotNull List<T> xs) {
         return null;
     }
 
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
     public @NotNull Iterable<String> stringBagsLex(int size, @NotNull String s) {
         return null;
     }
 
-    public @NotNull <T> Iterable<List<T>> bagsShortlex(@NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull Iterable<T> xs) {
         return null;
     }
 
@@ -4360,7 +4398,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return null;
     }
 
-    public @NotNull <T> Iterable<List<T>> bagsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlexAtLeast(
+            int minSize,
+            @NotNull Iterable<T> xs
+    ) {
         return null;
     }
 
@@ -4369,7 +4410,43 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
+            @NotNull Iterable<T> xs
+    ) {
         return null;
     }
 
@@ -4384,7 +4461,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
         return null;
     }
 
@@ -4399,7 +4476,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }
 
