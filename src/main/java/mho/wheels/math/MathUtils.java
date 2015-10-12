@@ -262,6 +262,14 @@ public final class MathUtils {
         return productBigInteger(range(x.subtract(BigInteger.valueOf(n - 1)), x));
     }
 
+    public static @NotNull BigInteger binomialCoefficient(@NotNull BigInteger n, int k) {
+        return fallingFactorial(n, k).divide(factorial(k));
+    }
+
+    public static @NotNull BigInteger multisetCoefficient(@NotNull BigInteger n, int k) {
+        return binomialCoefficient(n.add(BigInteger.valueOf(k - 1)), k);
+    }
+
     public static @NotNull BigInteger fastGrowingCeilingInverse(
             @NotNull Function<BigInteger, BigInteger> f,
             @NotNull BigInteger y,

@@ -4344,50 +4344,99 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    private static Iterable<List<Integer>> bagIndices(int size, int elementCount) {
+        BigInteger outputSize = MathUtils.multisetCoefficient(BigInteger.valueOf(elementCount), size);
+        int indexLimit = elementCount - 1;
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(replicate(size, 0));
+            private boolean first = true;
+            {
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                }
+                for (int i = size - 1; i >= 0; i--) {
+                    int j = list.get(i);
+                    if (j != indexLimit) {
+                        j++;
+                        for (int k = i; k < size; k++) {
+                            list.set(k, j);
+                        }
+                        return list;
+                    }
+                }
+                throw new IllegalStateException();
+            }
+        };
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsLex(int size, @NotNull List<T> xs) {
-        return null;
+        List<T> sorted = sort(xs);
+        return map(is -> toList(map(sorted::get, is)), bagIndices(size, xs.size()));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
-        return null;
+        return map(list -> new Pair<>(list.get(0), list.get(1)), bagsLex(2, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
-        return null;
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bagsLex(3, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
-        return null;
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bagsLex(4, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                bagsLex(5, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                bagsLex(6, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                bagsLex(7, xs)
+        );
     }
 
     @Override
     public @NotNull Iterable<String> stringBagsLex(int size, @NotNull String s) {
-        return null;
+        return map(IterableUtils::charsToString, bagsLex(size, toList(s)));
     }
 
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull Iterable<T> xs) {
