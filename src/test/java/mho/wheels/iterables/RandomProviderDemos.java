@@ -1269,7 +1269,7 @@ public class RandomProviderDemos {
     private static void demoLists() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
@@ -1280,7 +1280,7 @@ public class RandomProviderDemos {
     private static void demoStrings_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
@@ -1291,7 +1291,7 @@ public class RandomProviderDemos {
 
     private static void demoStrings() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
@@ -1302,7 +1302,7 @@ public class RandomProviderDemos {
 
     private static void demoListsAtLeast() {
         initialize();
-        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filter(
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
@@ -1318,7 +1318,7 @@ public class RandomProviderDemos {
 
     private static void demoStringsAtLeast_int_String() {
         initialize();
-        Iterable<Triple<RandomProvider, Integer, String>> ts = filter(
+        Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
                 P.triples(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
@@ -1334,7 +1334,7 @@ public class RandomProviderDemos {
 
     private static void demoStringsAtLeast_int() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
@@ -1350,7 +1350,7 @@ public class RandomProviderDemos {
     private static void demoDistinctLists() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
-                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProviders()),
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegersGeometric()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
@@ -1361,7 +1361,7 @@ public class RandomProviderDemos {
     private static void demoDistinctStrings_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
-                filter(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
@@ -1372,7 +1372,7 @@ public class RandomProviderDemos {
 
     private static void demoDistinctStrings() {
         initialize();
-        Iterable<RandomProvider> rps = filter(
+        Iterable<RandomProvider> rps = filterInfinite(
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
@@ -1448,7 +1448,7 @@ public class RandomProviderDemos {
 
     private static void demoDistinctStringsAtLeast_int() {
         initialize();
-        Iterable<Pair<RandomProvider, Integer>> ps = filter(
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
                 P.pairs(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),

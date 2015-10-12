@@ -3647,6 +3647,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         Iterable<Integer> rangeUpGeometric = rangeUpGeometric(minSize);
         return () -> new NoRemoveIterator<List<T>>() {
             private final @NotNull Iterator<T> xsi = xs.iterator();
