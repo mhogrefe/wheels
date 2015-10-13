@@ -1668,4 +1668,70 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.distinctStringsAtLeast(i))));
         }
     }
+    //todo scale pair demos back to 4
+
+    private static void demoBagsLex_int_List() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("bagsLex(" + p.b + ", " + p.a + ") = " + its(EP.bagsLex(p.b, p.a)));
+        }
+    }
+
+    private static void demoBagPairsLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagPairsLex(" + xs + ") = " + its(EP.bagPairsLex(xs)));
+        }
+    }
+
+    private static void demoBagTriplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagTriplesLex(" + xs + ") = " + its(EP.bagTriplesLex(xs)));
+        }
+    }
+
+    private static void demoBagQuadruplesLex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagQuadruplesLex(" + xs + ") = " + its(EP.bagQuadruplesLex(xs)));
+        }
+    }
+
+    private static void demoBagQuintuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagQuintuplesLex(" + xs + ") = " + its(EP.bagQuintuplesLex(xs)));
+        }
+    }
+
+    private static void demoBagSextuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagSextuplesLex(" + xs + ") = " + its(EP.bagSextuplesLex(xs)));
+        }
+    }
+
+    private static void demoBagSeptuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.withScale(4).integersGeometric()))) {
+            System.out.println("bagSeptuplesLex(" + xs + ") = " + its(EP.bagSeptuplesLex(xs)));
+        }
+    }
+
+    private static void demoStringBagsLex_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringBagsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringBagsLex(p.b, p.a))));
+        }
+    }
 }
