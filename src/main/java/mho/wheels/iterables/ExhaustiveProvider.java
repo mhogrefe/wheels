@@ -3485,7 +3485,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all {@code List}s of a given size containing natural numbers up to a given value with no repetitions
+     * Returns all {@code List}s of a given size containing natural numbers up to a given value with no repetitions.
      * Does not support removal.
      *
      * <ul>
@@ -4344,7 +4344,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    private static Iterable<List<Integer>> bagIndices(int size, int elementCount) {
+    /**
+     * Returns all sorted {@code List}s of a given size containing natural numbers up to a given value. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only sorted lists of non-negative integers, and contains no
+     *  repetitions. Each element has the same size.</li>
+     * </ul>
+     *
+     * Length is <sub>{@code elementCount}+{@code size}–1</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of each of the result {@code List}s
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all sorted lists of length {@code size} with elements from 0 to {@code elementCount}–1
+     */
+    private static @NotNull Iterable<List<Integer>> bagIndices(int size, int elementCount) {
         BigInteger outputSize = MathUtils.multisetCoefficient(BigInteger.valueOf(elementCount), size);
         int indexLimit = elementCount - 1;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
@@ -4375,27 +4392,105 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s of a given length with elements from a given
+     * {@code List}. The {@code List}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite. All of its elements have the same length and are sorted. None are empty, unless the
+     *  result consists entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+{@code size}–1</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all sorted {@code List}s of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsLex(int size, @NotNull List<T> xs) {
         List<T> sorted = sort(xs);
         return map(is -> toList(map(sorted::get, is)), bagIndices(size, xs.size()));
     }
 
+    /**
+     * Returns all unordered {@code Pair}s from an {@code Iterable}. The {@code Pair}s are ordered lexicographically.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Pair}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), bagsLex(2, xs));
     }
 
+    /**
+     * Returns all unordered {@code Triple}s from an {@code Iterable}. The {@code Triple}s are ordered
+     * lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Triple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+2</sub>C<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bagsLex(3, xs));
     }
 
+    /**
+     * Returns all unordered {@code Quadruple}s from an {@code Iterable}. The {@code Quadruple}s are ordered
+     * lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+3</sub>C<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bagsLex(4, xs));
     }
 
+    /**
+     * Returns all unordered {@code Quintuple}s from an {@code Iterable}. The {@code Quintuple}s are ordered
+     * lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+4</sub>C<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
             @NotNull List<T> xs
@@ -4406,6 +4501,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all unordered {@code Sextuple}s from an {@code Iterable}. The {@code Sextuple}s are ordered
+     * lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+5</sub>C<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
             @NotNull List<T> xs
@@ -4416,6 +4526,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all unordered {@code Septuple}s from an {@code Iterable}. The {@code Septuple}s are ordered
+     * lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Septuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+6</sub>C<sub>7</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
             @NotNull List<T> xs
@@ -4434,6 +4559,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s of a given length with characters from a given
+     * {@code String}. The {@code String}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite. All of its elements have the same length and are sorted. None are empty, unless the
+     *  result consists entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code s}|+{@code size}–1</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result {@code String}s
+     * @param s the {@code String} from which characters are selected
+     * @return all sorted {@code String}s of a given length created from {@code xs}
+     */
     @Override
     public @NotNull Iterable<String> stringBagsLex(int size, @NotNull String s) {
         return map(IterableUtils::charsToString, bagsLex(size, toList(s)));
