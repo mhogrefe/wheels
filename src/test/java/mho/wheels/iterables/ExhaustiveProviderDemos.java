@@ -1722,7 +1722,7 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoStringBagsLex_int_String() {
+    private static void demoStringBagsLex() {
         initialize();
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),

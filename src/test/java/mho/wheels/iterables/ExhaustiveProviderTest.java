@@ -7349,11 +7349,11 @@ public strictfp class ExhaustiveProviderTest {
         bagSeptuplesLex_fail_helper("[1, 2, null, 4]");
     }
 
-    private static void stringBagsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+    private static void stringBagsLex_helper(int size, @NotNull String input, @NotNull String output) {
         aeqit(P.stringBagsLex(size, input), output);
     }
 
-    private static void stringBagsLex_int_String_helper_limit(
+    private static void stringBagsLex_helper_limit(
             int size,
             @NotNull String input,
             @NotNull String output
@@ -7362,38 +7362,38 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testStringBagsLex_int_String() {
-        stringBagsLex_int_String_helper(0, "", "[]");
+    public void testStringBagsLex() {
+        stringBagsLex_helper(0, "", "[]");
         aeq(length(P.stringBagsLex(0, "")), 1);
-        stringBagsLex_int_String_helper(1, "", "[]");
+        stringBagsLex_helper(1, "", "[]");
         aeq(length(P.stringBagsLex(1, "")), 0);
-        stringBagsLex_int_String_helper(2, "", "[]");
+        stringBagsLex_helper(2, "", "[]");
         aeq(length(P.stringBagsLex(2, "")), 0);
-        stringBagsLex_int_String_helper(3, "", "[]");
+        stringBagsLex_helper(3, "", "[]");
         aeq(length(P.stringBagsLex(3, "")), 0);
-        stringBagsLex_int_String_helper(0, "a", "[]");
+        stringBagsLex_helper(0, "a", "[]");
         aeq(length(P.stringBagsLex(0, "a")), 1);
-        stringBagsLex_int_String_helper(1, "a", "[a]");
-        stringBagsLex_int_String_helper(2, "a", "[aa]");
-        stringBagsLex_int_String_helper(3, "a", "[aaa]");
-        stringBagsLex_int_String_helper(0, "abc", "[]");
+        stringBagsLex_helper(1, "a", "[a]");
+        stringBagsLex_helper(2, "a", "[aa]");
+        stringBagsLex_helper(3, "a", "[aaa]");
+        stringBagsLex_helper(0, "abc", "[]");
         aeq(length(P.stringBagsLex(0, "abc")), 1);
-        stringBagsLex_int_String_helper(1, "abc", "[a, b, c]");
-        stringBagsLex_int_String_helper(2, "abc", "[aa, ab, ac, bb, bc, cc]");
-        stringBagsLex_int_String_helper(3, "abc", "[aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc]");
-        stringBagsLex_int_String_helper(0, "abbc", "[]");
+        stringBagsLex_helper(1, "abc", "[a, b, c]");
+        stringBagsLex_helper(2, "abc", "[aa, ab, ac, bb, bc, cc]");
+        stringBagsLex_helper(3, "abc", "[aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc]");
+        stringBagsLex_helper(0, "abbc", "[]");
         aeq(length(P.stringBagsLex(0, "abbc")), 1);
-        stringBagsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
-        stringBagsLex_int_String_helper(2, "abbc", "[aa, ab, ab, ac, bb, bb, bc, bb, bc, cc]");
-        stringBagsLex_int_String_helper(3, "abbc",
+        stringBagsLex_helper(1, "abbc", "[a, b, b, c]");
+        stringBagsLex_helper(2, "abbc", "[aa, ab, ab, ac, bb, bb, bc, bb, bc, cc]");
+        stringBagsLex_helper(3, "abbc",
                 "[aaa, aab, aab, aac, abb, abb, abc, abb, abc, acc, bbb, bbb, bbc, bbb, bbc, bcc, bbb, bbc, bcc," +
                 " ccc]");
-        stringBagsLex_int_String_helper_limit(0, "Mississippi", "[]");
+        stringBagsLex_helper_limit(0, "Mississippi", "[]");
         aeq(length(P.stringBagsLex(0, "Mississippi")), 1);
-        stringBagsLex_int_String_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
-        stringBagsLex_int_String_helper_limit(2, "Mississippi",
+        stringBagsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
+        stringBagsLex_helper_limit(2, "Mississippi",
                 "[MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ii, ip, ip, is, is, is, ...]");
-        stringBagsLex_int_String_helper_limit(3, "Mississippi",
+        stringBagsLex_helper_limit(3, "Mississippi",
                 "[MMM, MMi, MMi, MMi, MMi, MMp, MMp, MMs, MMs, MMs, MMs, Mii, Mii, Mii, Mii, Mip, Mip, Mis, Mis," +
                 " Mis, ...]");
         try {
