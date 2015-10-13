@@ -230,6 +230,7 @@ public class ExhaustiveProviderProperties {
             propertiesDistinctListsAtLeast();
             propertiesDistinctStringsAtLeast_int_String();
             propertiesDistinctStringsAtLeast_int();
+            propertiesBagsLex_int_List();
         }
         System.out.println("Done");
     }
@@ -6056,6 +6057,78 @@ public class ExhaustiveProviderProperties {
                 EP.distinctStringsAtLeast(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesBagsLex_int_List() {
+        initialize("bagsLex(int, List<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.bagsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.multisetCoefficient(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!p.a.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(replicate(p.b, minimum(p.a))));
+                    assertEquals(p, last(listsList), toList(replicate(p.b, maximum(p.a))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.multisetCoefficient(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.bagsLex(p.b, p.a));
+                assertTrue(p, increasing(new LexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+                BigInteger limit = BigInteger.valueOf(p.a.size()).pow(p.b);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    assertTrue(
+                            p,
+                            IterableUtils.equal(filter(IterableUtils::weaklyIncreasing, EP.listsLex(p.b, sort(p.a))), listsList)
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<List<Integer>> xss = EP.bagsLex(0, xs);
+            testHasNext(xss);
+            assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.bagsLex(p.b, p.a);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).listsWithElement(null, P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.bagsLex(p.b, p.a);
+                fail(p);
+            } catch (NullPointerException ignored) {}
         }
     }
 }

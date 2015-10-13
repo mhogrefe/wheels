@@ -7184,6 +7184,7 @@ public strictfp class ExhaustiveProviderTest {
         bagsLex_int_List_fail_helper(-1, "[]");
         bagsLex_int_List_fail_helper(-1, "[1, 2, 3]");
         bagsLex_int_List_fail_helper(1, "[1, null, 3]");
+        bagsLex_int_List_fail_helper(1, "[null]");
     }
 
     private static void bagPairsLex_helper(@NotNull String input, @NotNull String output) {
