@@ -4585,14 +4585,17 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, bagsLex(size, toList(s)));
     }
 
+    @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull Iterable<T> xs) {
         return null;
     }
 
+    @Override
     public @NotNull Iterable<String> stringBagsShortlex(@NotNull String s) {
         return null;
     }
 
+    @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlexAtLeast(
             int minSize,
             @NotNull Iterable<T> xs
@@ -4600,6 +4603,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return null;
     }
 
+    @Override
     public @NotNull Iterable<String> stringBagsShortlexAtLeast(int minSize, @NotNull String s) {
         return null;
     }
