@@ -3966,7 +3966,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -3988,7 +3988,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -4010,7 +4010,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -4037,7 +4037,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code minSize} cannot be negative.</li>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -4580,17 +4580,67 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, bagsLex(size, toList(s)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with elements from a given {@code List}. The
+     * {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer {@code List}s, and
+     * {@code List}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code xs} is empty, and infinite otherwise
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all sorted {@code List}s created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull List<T> xs) {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         return concatMap(i -> bagsLex(i.intValueExact(), xs), naturalBigIntegers());
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with characters from a given {@code String}.
+     * The {@code String}s are in shortlex order; that is, shorter {@code List}s precede longer {@code List}s, and
+     * {@code String}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 1 if {@code s} is empty, and infinite otherwise
+     *
+     * @param s the {@code String} from which characters are selected
+     * @return all sorted {@code String}s created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> stringBagsShortlex(@NotNull String s) {
         return map(IterableUtils::charsToString, bagsShortlex(toList(s)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with a minimum size with elements from a given
+     * {@code List}. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
+     * {@code List}s, and {@code List}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
         if (minSize < 0) {
@@ -4602,6 +4652,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return concatMap(i -> bagsLex(i.intValueExact(), xs), rangeUp(BigInteger.valueOf(minSize)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with a minimum size with characters from a
+     * given {@code String}. The {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer
+     * {@code String}s, and {@code String}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code s} is empty and {@code minSize} is greater than 0, 1 if {@code s} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which characters are selected
+     * @return all sorted {@code String}s with length at least {@code minSize} created from {@code s}
+     */
     @Override
     public @NotNull Iterable<String> stringBagsShortlexAtLeast(int minSize, @NotNull String s) {
         return map(IterableUtils::charsToString, bagsShortlexAtLeast(minSize, toList(s)));
