@@ -4675,45 +4675,95 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, bagsShortlexAtLeast(minSize, toList(s)));
     }
 
+    private static @NotNull <T> Iterable<List<T>> bagIndices(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<List<Integer>> originalIndices,
+            @NotNull Function<Integer, Optional<BigInteger>> outputSizeFunction
+    ) {
+        return () -> new EventuallyKnownSizeIterator<List<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private final @NotNull Iterator<List<Integer>> indices = originalIndices.iterator();
+
+            @Override
+            public List<T> advance() {
+                while (true) {
+                    List<Integer> cumulativeIndices = toList(scanl1((x, y) -> x + y, indices.next()));
+                    if (!cumulativeIndices.isEmpty() && !cxs.get(last(cumulativeIndices)).isPresent()) {
+                        continue;
+                    }
+                    List<T> output = toList(map(i -> cxs.get(i).get(), cumulativeIndices));
+                    if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                        Optional<BigInteger> outputSize = outputSizeFunction.apply(cxs.knownSize().get());
+                        if (outputSize.isPresent()) {
+                            setOutputSize(outputSize.get());
+                        }
+                    }
+                    return output;
+                }
+            }
+        };
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
-        return null;
+        return bagIndices(
+                xs,
+                lists(size, naturalIntegers()),
+                n -> Optional.of(MathUtils.multisetCoefficient(BigInteger.valueOf(n), size))
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
-        return null;
+        return map(list -> new Pair<>(list.get(0), list.get(1)), bags(2, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
-        return null;
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bags(3, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
-        return null;
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bags(4, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                bags(5, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                bags(6, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                bags(7, xs)
+        );
     }
 
     @Override
