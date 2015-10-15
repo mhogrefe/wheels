@@ -4675,7 +4675,33 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, bagsShortlexAtLeast(minSize, toList(s)));
     }
 
-    private static @NotNull <T> Iterable<List<T>> bagIndices(
+    /**
+     * A helper method for generating bags (multisets). Given an {@code Iterable} of lists of integers,
+     * {@code originalIndices}, this method reinterprets the indices to only generate sorted lists. For example,
+     * consider the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these
+     * indices. Since we don't want any repetitions, we'll use the cumulative sums of these indices, which are
+     * [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or [1, 1, 6, 9] This corresponds to [a, a, f, i].
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  {@code Integer}s.</li>
+     *  <li>{@code outputSizeFunction} cannot be null.</li>
+     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
+     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  <li>The number of lists in {@code originalSize} that correspond to a valid bag must be at least
+     *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
+     *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param originalIndices an {@code Iterable} of lists, each list corresponding to a sorted list of elements from
+     * {@code xs}
+     * @param outputSizeFunction The total number of generated lists as a function of the size of {@code xs}
+     * @param <T> the type of the elements in {@code xs}
+     * @return sorted lists of elements from {@code xs}
+     */
+    private static @NotNull <T extends Comparable<T>> Iterable<List<T>> bagIndices(
             @NotNull Iterable<T> xs,
             @NotNull Iterable<List<Integer>> originalIndices,
             @NotNull Function<Integer, Optional<BigInteger>> outputSizeFunction
@@ -4698,7 +4724,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                             setOutputSize(outputSize.get());
                         }
                     }
-                    return output;
+                    return sort(output);
                 }
             }
         };
