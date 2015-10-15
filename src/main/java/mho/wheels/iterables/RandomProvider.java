@@ -3717,16 +3717,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull Iterable<String> stringBags(int size, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringBags(int size) {
-        return null;
-    }
-
-    @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
         return null;
     }
