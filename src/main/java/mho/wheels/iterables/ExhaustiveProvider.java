@@ -4416,18 +4416,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Pair}s from an {@code Iterable}. The {@code Pair}s are ordered lexicographically.
-     * Does not support removal.
+     * Returns all unordered {@code Pair}s from a {@code List}. The {@code Pair}s are ordered lexicographically. Does
+     * not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Pair}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Pair}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Pair}s of elements from {@code xs}
      */
     @Override
@@ -4436,18 +4436,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Triple}s from an {@code Iterable}. The {@code Triple}s are ordered
-     * lexicographically. Does not support removal.
+     * Returns all unordered {@code Triple}s from a {@code List}. The {@code Triple}s are ordered lexicographically.
+     * Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Triple}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Triple}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+2</sub>C<sub>3</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Triple}s of elements from {@code xs}
      */
     @Override
@@ -4456,18 +4456,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Quadruple}s from an {@code Iterable}. The {@code Quadruple}s are ordered
+     * Returns all unordered {@code Quadruple}s from a {@code List}. The {@code Quadruple}s are ordered
      * lexicographically. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Quadruple}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+3</sub>C<sub>4</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Quadruple}s of elements from {@code xs}
      */
     @Override
@@ -4476,18 +4476,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Quintuple}s from an {@code Iterable}. The {@code Quintuple}s are ordered
+     * Returns all unordered {@code Quintuple}s from a {@code List}. The {@code Quintuple}s are ordered
      * lexicographically. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Quintuple}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+4</sub>C<sub>5</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Quintuple}s of elements from {@code xs}
      */
     @Override
@@ -4501,18 +4501,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Sextuple}s from an {@code Iterable}. The {@code Sextuple}s are ordered
+     * Returns all unordered {@code Sextuple}s from a {@code List}. The {@code Sextuple}s are ordered
      * lexicographically. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Sextuple}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+5</sub>C<sub>6</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Sextuple}s of elements from {@code xs}
      */
     @Override
@@ -4526,18 +4526,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all unordered {@code Septuple}s from an {@code Iterable}. The {@code Septuple}s are ordered
+     * Returns all unordered {@code Septuple}s from a {@code List}. The {@code Septuple}s are ordered
      * lexicographically. Does not support removal.
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains all sorted {@code Septuple}s of elements from an {@code Iterable}.</li>
+     *  <li>The result contains all sorted {@code Septuple}s of elements from a {@code List}.</li>
      * </ul>
      *
      * Length is <sub>|{@code xs}|+6</sub>C<sub>7</sub>
      *
-     * @param xs an {@code Iterable}
-     * @param <T> the type of the {@code Iterable}'s elements
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
      * @return all unordered {@code Septuple}s of elements from {@code xs}
      */
     @Override
@@ -4680,7 +4680,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code originalIndices}, this method reinterprets the indices to only generate sorted lists. For example,
      * consider the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these
      * indices. Since we don't want any repetitions, we'll use the cumulative sums of these indices, which are
-     * [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or [1, 1, 6, 9] This corresponds to [a, a, f, i].
+     * [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or [1, 1, 6, 9]. This corresponds to [a, a, f, i].
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -4730,6 +4730,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s of a given length with elements from a given
+     * {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>All of the result's elements have the same length and are sorted. None are empty, unless the result
+     *  consists entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+{@code size}–1</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
         return bagIndices(
@@ -4739,21 +4757,77 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all unordered {@code Pair}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Pair}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), bags(2, xs));
     }
 
+    /**
+     * Returns all unordered {@code Triple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Triple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), bags(3, xs));
     }
 
+    /**
+     * Returns all unordered {@code Quadruple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), bags(4, xs));
     }
 
+    /**
+     * Returns all unordered {@code Quintuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
@@ -4764,6 +4838,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all unordered {@code Sextuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
@@ -4774,6 +4862,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all unordered {@code Septuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Septuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all unordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
