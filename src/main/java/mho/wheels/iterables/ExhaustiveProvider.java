@@ -4724,6 +4724,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                             setOutputSize(outputSize.get());
                         }
                     }
+                    if (output.size() == 1) {
+                        T first = output.get(0);
+                        first.compareTo(first); //catch incomparable single element; sort will catch the other cases
+                    }
                     return sort(output);
                 }
             }
@@ -4750,6 +4754,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        }
+        if (size == 0) return Collections.singletonList(Collections.emptyList());
+        if (isEmpty(xs)) return Collections.emptyList();
         return bagIndices(
                 xs,
                 lists(size, naturalIntegers()),

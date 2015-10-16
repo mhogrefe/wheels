@@ -6585,47 +6585,78 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
-    private static void distinctLists_int_List_helper(int size, @NotNull String input, @NotNull String output) {
+    private static void distinctLists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
         aeqit(P.distinctLists(size, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void distinctLists_int_Iterable_helper(
+            int size,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.distinctLists(size, input), output);
+    }
+
+    private static void distinctLists_int_Iterable_fail_helper(int size, @NotNull String input) {
+        try {
+            P.distinctLists(size, readIntegerListWithNulls(input));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testDistinctLists_int_List() {
-        distinctLists_int_List_helper(0, "[]", "[[]]");
-        distinctLists_int_List_helper(1, "[]", "[]");
-        distinctLists_int_List_helper(2, "[]", "[]");
-        distinctLists_int_List_helper(3, "[]", "[]");
-        distinctLists_int_List_helper(0, "[5]", "[[]]");
-        distinctLists_int_List_helper(1, "[5]", "[[5]]");
-        distinctLists_int_List_helper(2, "[5]", "[]");
-        distinctLists_int_List_helper(3, "[5]", "[]");
-        distinctLists_int_List_helper(0, "[1, 2, 3]", "[[]]");
-        distinctLists_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
-        distinctLists_int_List_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]");
-        distinctLists_int_List_helper(3, "[1, 2, 3]",
+        distinctLists_int_Iterable_helper(0, "[]", "[[]]");
+        distinctLists_int_Iterable_helper(1, "[]", "[]");
+        distinctLists_int_Iterable_helper(2, "[]", "[]");
+        distinctLists_int_Iterable_helper(3, "[]", "[]");
+        distinctLists_int_Iterable_helper(0, "[5]", "[[]]");
+        distinctLists_int_Iterable_helper(1, "[5]", "[[5]]");
+        distinctLists_int_Iterable_helper(2, "[5]", "[]");
+        distinctLists_int_Iterable_helper(3, "[5]", "[]");
+        distinctLists_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
+        distinctLists_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        distinctLists_int_Iterable_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]");
+        distinctLists_int_Iterable_helper(3, "[1, 2, 3]",
                 "[[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        distinctLists_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
-        distinctLists_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
-        distinctLists_int_List_helper(2, "[1, 2, 2, 3]",
+        distinctLists_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
+        distinctLists_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        distinctLists_int_Iterable_helper(2, "[1, 2, 2, 3]",
                 "[[1, 2], [1, 2], [2, 1], [2, 2], [1, 3], [2, 3], [2, 1], [2, 2], [3, 1], [3, 2], [2, 3], [3, 2]]");
-        distinctLists_int_List_helper(3, "[1, 2, 2, 3]",
+        distinctLists_int_Iterable_helper(3, "[1, 2, 2, 3]",
                 "[[1, 2, 2], [1, 2, 3], [1, 2, 2], [1, 2, 3], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [1, 3, 2]," +
                 " [1, 3, 2], [2, 3, 1], [2, 3, 2], [2, 1, 2], [2, 1, 3], [2, 2, 1], [2, 2, 3], [3, 1, 2], [3, 1, 2]," +
                 " [3, 2, 1], [3, 2, 2], [2, 3, 1], [2, 3, 2], [3, 2, 1], [3, 2, 2]]");
-        distinctLists_int_List_helper(0, "[1, null, 3]", "[[]]");
-        distinctLists_int_List_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
-        distinctLists_int_List_helper(2, "[1, null, 3]",
+        distinctLists_int_Iterable_helper(0, "[1, null, 3]", "[[]]");
+        distinctLists_int_Iterable_helper(1, "[1, null, 3]", "[[1], [null], [3]]");
+        distinctLists_int_Iterable_helper(2, "[1, null, 3]",
                 "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
-        distinctLists_int_List_helper(3, "[1, null, 3]",
+        distinctLists_int_Iterable_helper(3, "[1, null, 3]",
                 "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        try {
-            P.distinctLists(-1, Collections.emptyList());
-            fail();
-        } catch (IllegalArgumentException ignored) {}
-        try {
-            P.distinctLists(-1, Arrays.asList(1, 2, 3));
-            fail();
-        } catch (IllegalArgumentException ignored) {}
+        distinctLists_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
+        distinctLists_int_Iterable_helper(1, P.positiveIntegers(),
+                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
+                " [19], [20], ...]");
+        distinctLists_int_Iterable_helper(2, P.positiveIntegers(),
+                "[[1, 2], [1, 3], [2, 1], [2, 3], [1, 4], [1, 5], [2, 4], [2, 5], [3, 1], [3, 2], [4, 1], [4, 2]," +
+                " [3, 4], [3, 5], [4, 3], [4, 5], [1, 6], [1, 7], [2, 6], [2, 7], ...]");
+        distinctLists_int_Iterable_helper(3, P.positiveIntegers(),
+                "[[1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [1, 2, 5]," +
+                " [1, 2, 6], [1, 3, 5], [1, 3, 6], [2, 1, 5], [2, 1, 6], [2, 3, 5], [2, 3, 6], [1, 4, 2], [1, 4, 3]," +
+                " [1, 5, 2], [1, 5, 3], ...]");
+        distinctLists_int_Iterable_helper(0, repeat(1), "[[]]");
+        distinctLists_int_Iterable_helper(1, repeat(1),
+                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
+                " [1], ...]");
+        distinctLists_int_Iterable_helper(2, repeat(1),
+                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
+                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
+        distinctLists_int_Iterable_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], ...]");
+        distinctLists_int_Iterable_fail_helper(-1, "[]");
+        distinctLists_int_Iterable_fail_helper(-1, "[1, 2, 3]");
     }
 
     private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
@@ -7618,6 +7649,104 @@ public strictfp class ExhaustiveProviderTest {
             P.stringBagsShortlexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void bags_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.bags(size, readIntegerList(input)), output);
+    }
+
+    private static void bags_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.bags(size, input), output);
+    }
+
+    private static void bags_int_Iterable_fail_helper(int size, @NotNull String input) {
+        try {
+            toList(P.bags(size, readIntegerListWithNulls(input)));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testBags_int_List() {
+        bags_int_Iterable_helper(0, "[]", "[[]]");
+        bags_int_Iterable_helper(1, "[]", "[]");
+        bags_int_Iterable_helper(2, "[]", "[]");
+        bags_int_Iterable_helper(3, "[]", "[]");
+        bags_int_Iterable_helper(0, "[5]", "[[]]");
+        bags_int_Iterable_helper(1, "[5]", "[[5]]");
+        bags_int_Iterable_helper(2, "[5]", "[[5, 5]]");
+        bags_int_Iterable_helper(3, "[5]", "[[5, 5, 5]]");
+        bags_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
+        bags_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        bags_int_Iterable_helper(2, "[1, 2, 3]", "[[1, 1], [1, 2], [2, 2], [2, 3], [1, 3], [3, 3]]");
+        bags_int_Iterable_helper(3, "[1, 2, 3]",
+                "[[1, 1, 1], [1, 1, 2], [1, 2, 2], [1, 2, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [1, 1, 3], [1, 3, 3]," +
+                " [3, 3, 3]]");
+        bags_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
+        bags_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        bags_int_Iterable_helper(2, "[1, 2, 2, 3]",
+                "[[1, 1], [1, 2], [2, 2], [2, 2], [1, 2], [1, 3], [2, 3], [2, 2], [2, 3], [3, 3]]");
+        bags_int_Iterable_helper(3, "[1, 2, 2, 3]",
+                "[[1, 1, 1], [1, 1, 2], [1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 3], [1, 1, 2]," +
+                " [1, 1, 3], [1, 2, 3], [2, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 3, 3], [2, 2, 2], [2, 2, 3]," +
+                " [2, 3, 3], [3, 3, 3]]");
+        bags_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
+        bags_int_Iterable_helper(1, P.positiveIntegers(),
+                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
+                " [19], [20], ...]");
+        bags_int_Iterable_helper(2, P.positiveIntegers(),
+                "[[1, 1], [1, 2], [2, 2], [2, 3], [1, 3], [1, 4], [2, 4], [2, 5], [3, 3], [3, 4], [4, 4], [4, 5]," +
+                " [3, 5], [3, 6], [4, 6], [4, 7], [1, 5], [1, 6], [2, 6], [2, 7], ...]");
+        bags_int_Iterable_helper(3, P.positiveIntegers(),
+                "[[1, 1, 1], [1, 1, 2], [1, 2, 2], [1, 2, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [2, 3, 4], [1, 1, 3]," +
+                " [1, 1, 4], [1, 2, 4], [1, 2, 5], [2, 2, 4], [2, 2, 5], [2, 3, 5], [2, 3, 6], [1, 3, 3], [1, 3, 4]," +
+                " [1, 4, 4], [1, 4, 5], ...]");
+        bags_int_Iterable_helper(0, repeat(1), "[[]]");
+        bags_int_Iterable_helper(1, repeat(1),
+                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
+                " [1], ...]");
+        bags_int_Iterable_helper(2, repeat(1),
+                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
+                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
+        bags_int_Iterable_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], ...]");
+        bags_int_Iterable_fail_helper(-1, "[]");
+        bags_int_Iterable_fail_helper(-1, "[1, 2, 3]");
+        bags_int_Iterable_fail_helper(1, "[1, null, 3]");
+    }
+
+    private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.bagPairs(readIntegerList(input)), output);
+    }
+
+    private static void bagPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.bagPairs(input), output);
+    }
+
+    private static void bagPairs_fail_helper(@NotNull String input) {
+        try {
+            toList(P.bagPairs(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testBagPairs() {
+        bagPairs_helper("[]", "[]");
+        bagPairs_helper("[5]", "[(5, 5)]");
+        bagPairs_helper("[1, 2, 3, 4]",
+                "[(1, 1), (1, 2), (2, 2), (2, 3), (1, 3), (1, 4), (2, 4), (3, 3), (3, 4), (4, 4)]");
+        bagPairs_helper("[1, 2, 2, 4]",
+                "[(1, 1), (1, 2), (2, 2), (2, 2), (1, 2), (1, 4), (2, 4), (2, 2), (2, 4), (4, 4)]");
+        bagPairs_helper(P.naturalIntegers(),
+                "[(0, 0), (0, 1), (1, 1), (1, 2), (0, 2), (0, 3), (1, 3), (1, 4), (2, 2), (2, 3), (3, 3), (3, 4)," +
+                " (2, 4), (2, 5), (3, 5), (3, 6), (0, 4), (0, 5), (1, 5), (1, 6), ...]");
+        bagPairs_helper(repeat(1),
+                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
+                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
+        bagPairs_fail_helper("[1, null, 3]");
     }
 
     @Test
