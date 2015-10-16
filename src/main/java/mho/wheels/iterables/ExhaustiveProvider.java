@@ -4846,7 +4846,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result contains all sorted {@code Sextuple}s of elements from an {@code Iterable}.</li>
      * </ul>
      *
-     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>6</sub>
      *
      * @param xs an {@code Iterable}
      * @param <T> the type of the {@code Iterable}'s elements
@@ -4870,7 +4870,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result contains all sorted {@code Septuple}s of elements from an {@code Iterable}.</li>
      * </ul>
      *
-     * Length is <sub>|{@code xs}|+1</sub>C<sub>2</sub>
+     * Length is <sub>|{@code xs}|+1</sub>C<sub>7</sub>
      *
      * @param xs an {@code Iterable}
      * @param <T> the type of the {@code Iterable}'s elements
