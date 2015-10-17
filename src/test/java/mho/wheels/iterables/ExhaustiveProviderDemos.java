@@ -1772,4 +1772,129 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringBagsShortlexAtLeast(p.b, p.a))));
         }
     }
+
+    private static void demoBags_int_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("bags(" + p.b + ", " + p.a + ") = " + its(EP.bags(p.b, p.a)));
+        }
+    }
+
+    private static void demoBags_int_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("bags(" + p.b + ", " + its(p.a) + ") = " + its(EP.bags(p.b, p.a)));
+        }
+    }
+
+    private static void demoBagPairs_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagPairs(" + xs + ") = " + its(EP.bagPairs(xs)));
+        }
+    }
+
+    private static void demoBagPairs_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagPairs(" + its(xs) + ") = " + its(EP.bagPairs(xs)));
+        }
+    }
+
+    private static void demoBagTriples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagTriples(" + xs + ") = " + its(EP.bagTriples(xs)));
+        }
+    }
+
+    private static void demoBagTriples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagTriples(" + its(xs) + ") = " + its(EP.bagTriples(xs)));
+        }
+    }
+
+    private static void demoBagQuadruples_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagQuadruples(" + xs + ") = " + its(EP.bagQuadruples(xs)));
+        }
+    }
+
+    private static void demoBagQuadruples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagQuadruples(" + its(xs) + ") = " + its(EP.bagQuadruples(xs)));
+        }
+    }
+
+    private static void demoBagQuintuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagQuintuples(" + xs + ") = " + its(EP.bagQuintuples(xs)));
+        }
+    }
+
+    private static void demoBagQuintuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagQuintuples(" + its(xs) + ") = " + its(EP.bagQuintuples(xs)));
+        }
+    }
+
+    private static void demoBagSextuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagSextuples(" + xs + ") = " + its(EP.bagSextuples(xs)));
+        }
+    }
+
+    private static void demoBagSextuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagSextuples(" + its(xs) + ") = " + its(EP.bagSextuples(xs)));
+        }
+    }
+
+    private static void demoBagSeptuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bagSeptuples(" + xs + ") = " + its(EP.bagSeptuples(xs)));
+        }
+    }
+
+    private static void demoBagSeptuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bagSeptuples(" + its(xs) + ") = " + its(EP.bagSeptuples(xs)));
+        }
+    }
+
+    private static void demoStringBags_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringBags(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringBags(p.b, p.a))));
+        }
+    }
+
+    private static void demoStringBags_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("stringBags(" + i + ") = " + its(map(Testing::nicePrint, EP.stringBags(i))));
+        }
+    }
 }
