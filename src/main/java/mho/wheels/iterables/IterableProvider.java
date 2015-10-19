@@ -1942,8 +1942,9 @@ public abstract strictfp class IterableProvider {
     );
 
     /**
-     * Generates all unordered {@code String}s containing characters from a given {@code String}.
+     * Generates all unordered {@code String}s of a given size containing characters from a given {@code String}.
      *
+     * @param size the length of each of the generated {@code String}s
      * @param s a {@code String}
      */
     public @NotNull Iterable<String> stringBags(int size, @NotNull String s) {
@@ -1951,26 +1952,68 @@ public abstract strictfp class IterableProvider {
     }
 
     /**
-     * Generates all unordered {@code String}s.
+     * Generates all unordered {@code String}s of a given size.
+     *
+     * @param size the length of each of the generated {@code String}s
      */
     public @NotNull Iterable<String> stringBags(int size) {
         return map(IterableUtils::charsToString, bags(size, characters()));
     }
 
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable}.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs);
 
-    public abstract @NotNull Iterable<String> stringBags(@NotNull String s);
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBags(@NotNull String s) {
+        return map(IterableUtils::charsToString, bags(uniformSample(s)));
+    }
 
-    public abstract @NotNull Iterable<String> stringBags();
+    /**
+     * Generates all unordered {@code String}s.
+     */
+    public @NotNull Iterable<String> stringBags() {
+        return map(IterableUtils::charsToString, bags(characters()));
+    }
 
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(
             int minSize,
             @NotNull Iterable<T> xs
     );
 
-    public abstract @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull String s);
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s an {@code String}
+     */
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, bagsAtLeast(minSize, uniformSample(s)));
+    }
 
-    public abstract @NotNull Iterable<String> stringBagsAtLeast(int minSize);
+    /**
+     * Generates all unordered {@code String}s with a minimum size.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     */
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, bagsAtLeast(minSize, characters()));
+    }
 
     public abstract @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
 
