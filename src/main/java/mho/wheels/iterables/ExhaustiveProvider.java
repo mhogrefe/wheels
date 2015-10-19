@@ -4905,12 +4905,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
-        return null;
+        return bagIndices(xs, lists(naturalIntegers()), n -> Optional.empty());
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
+        return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());
     }
 
     public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
