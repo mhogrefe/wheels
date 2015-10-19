@@ -3677,43 +3677,43 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
-        return null;
+        return sortedChunkInfinite(size, xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
-        return null;
+        return sortedChunkPairsInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
-        return null;
+        return sortedChunkTriplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
-        return null;
+        return sortedChunkQuadruplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedChunkQuintuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedChunkSextuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedChunkSeptuplesInfinite(xs);
     }
 
     @Override
