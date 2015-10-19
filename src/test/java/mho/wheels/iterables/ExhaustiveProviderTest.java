@@ -7224,6 +7224,8 @@ public strictfp class ExhaustiveProviderTest {
         bagsLex_int_List_fail_helper(-1, "[1, 2, 3]");
         bagsLex_int_List_fail_helper(1, "[1, null, 3]");
         bagsLex_int_List_fail_helper(1, "[null]");
+        bagsLex_int_List_fail_helper(0, "[1, null, 3]");
+        bagsLex_int_List_fail_helper(0, "[null]");
     }
 
     private static void bagPairsLex_helper(@NotNull String input, @NotNull String output) {
@@ -7246,6 +7248,7 @@ public strictfp class ExhaustiveProviderTest {
         bagPairsLex_helper("[1, 2, 2, 4]",
                 "[(1, 1), (1, 2), (1, 2), (1, 4), (2, 2), (2, 2), (2, 4), (2, 2), (2, 4), (4, 4)]");
         bagPairsLex_fail_helper("[1, 2, null, 4]");
+        bagPairsLex_fail_helper("[null]");
     }
 
     private static void bagTriplesLex_helper(@NotNull String input, @NotNull String output) {
@@ -7272,6 +7275,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 4, 4), (2, 2, 2), (2, 2, 2), (2, 2, 4), (2, 2, 2), (2, 2, 4), (2, 4, 4), (2, 2, 2), (2, 2, 4)," +
                 " (2, 4, 4), (4, 4, 4)]");
         bagTriplesLex_fail_helper("[1, 2, null, 4]");
+        bagTriplesLex_fail_helper("[null]");
     }
 
     private static void bagQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
@@ -7298,6 +7302,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 2), (1, 1, 2, 4), (1, 1, 4, 4), (1, 2, 2, 2), (1, 2, 2, 2), (1, 2, 2, 4), (1, 2, 2, 2)," +
                 " (1, 2, 2, 4), (1, 2, 4, 4), (1, 2, 2, 2), (1, 2, 2, 4), (1, 2, 4, 4), (1, 4, 4, 4), ...]");
         bagQuadruplesLex_fail_helper("[1, 2, null, 4]");
+        bagQuadruplesLex_fail_helper("[null]");
     }
 
     private static void bagQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
@@ -7326,6 +7331,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 2, 2), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4)," +
                 " (1, 1, 2, 4, 4), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4), (1, 1, 2, 4, 4), (1, 1, 4, 4, 4), ...]");
         bagQuintuplesLex_fail_helper("[1, 2, null, 4]");
+        bagQuintuplesLex_fail_helper("[null]");
     }
 
     private static void bagSextuplesLex_helper(@NotNull String input, @NotNull String output) {
@@ -7356,6 +7362,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 4, 4)," +
                 " (1, 1, 1, 2, 2, 2), (1, 1, 1, 2, 2, 4), (1, 1, 1, 2, 4, 4), (1, 1, 1, 4, 4, 4), ...]");
         bagSextuplesLex_fail_helper("[1, 2, null, 4]");
+        bagSextuplesLex_fail_helper("[null]");
     }
 
     private static void bagSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
@@ -7386,6 +7393,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 4, 4)," +
                 " (1, 1, 1, 1, 2, 2, 2), (1, 1, 1, 1, 2, 2, 4), (1, 1, 1, 1, 2, 4, 4), (1, 1, 1, 1, 4, 4, 4), ...]");
         bagSeptuplesLex_fail_helper("[1, 2, null, 4]");
+        bagSeptuplesLex_fail_helper("[null]");
     }
 
     private static void stringBagsLex_helper(int size, @NotNull String input, @NotNull String output) {
@@ -7476,6 +7484,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[[], [1], [2], [2], [3], [1, 1], [1, 2], [1, 2], [1, 3], [2, 2], [2, 2], [2, 3], [2, 2], [2, 3]," +
                 " [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 2], [1, 1, 3], [1, 2, 2], ...]");
         bagsShortlex_fail_helper("[1, null, 3]");
+        bagsShortlex_fail_helper("[null]");
     }
 
     private static void stringBagsShortlex_helper(@NotNull String input, @NotNull String output) {
@@ -7578,6 +7587,10 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
         try {
             toList(P.bagsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            toList(P.bagsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7715,6 +7728,7 @@ public strictfp class ExhaustiveProviderTest {
         bags_int_Iterable_fail_helper(-1, "[]");
         bags_int_Iterable_fail_helper(-1, "[1, 2, 3]");
         bags_int_Iterable_fail_helper(1, "[1, null, 3]");
+        bags_int_Iterable_fail_helper(1, "[null]");
     }
 
     private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
