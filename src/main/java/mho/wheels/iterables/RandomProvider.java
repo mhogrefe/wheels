@@ -3461,7 +3461,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 2 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3482,7 +3482,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 3 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3503,7 +3503,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 4 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3524,7 +3524,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 5 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3545,7 +3545,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 6 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3566,7 +3566,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code this} may be any {@code RandomProvider}.</li>
-     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} must be infinite and must contain at least 7 distinct elements.</li>
      *  <li>The result is infinite, non-removable, and contains no nulls. Its elements contain no repetitions.</li>
      * </ul>
      *
@@ -3675,26 +3675,108 @@ public final strictfp class RandomProvider extends IterableProvider {
         };
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code List}s of a given length with elements from a given
+     * {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted and have the same length.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return sorted lists of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs) {
         return sortedChunkInfinite(size, xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Pair}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs) {
         return sortedChunkPairsInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Triple}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs) {
         return sortedChunkTriplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Quadruple}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(@NotNull Iterable<T> xs) {
         return sortedChunkQuadruplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Quintuple}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
             @NotNull Iterable<T> xs
@@ -3702,6 +3784,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedChunkQuintuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Sextuple}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
             @NotNull Iterable<T> xs
@@ -3709,6 +3807,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedChunkSextuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code Septuple}s of elements from an {@code Iterable}. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return unordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
             @NotNull Iterable<T> xs
