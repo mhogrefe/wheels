@@ -4903,11 +4903,46 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s with elements from a given {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>All of the result's elements are sorted. None are empty, unless the result consists entirely of one empty
+     *  element.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code xs} is empty, infinite otherwise
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
         return bagIndices(xs, lists(naturalIntegers()), n -> Optional.empty());
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with a minimum size with elements from a given
+     * {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains every sorted {@code List} (with a length greater than or equal to some minimum) of
+     *  elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * Length is 0 if {@code xs} is empty and {@code minSize} is greater than 0, 1 if {@code xs} is empty and
+     * {@code minSize} is 0, and infinite otherwise
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());
