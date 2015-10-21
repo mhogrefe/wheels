@@ -1897,4 +1897,68 @@ public class ExhaustiveProviderDemos {
             System.out.println("stringBags(" + i + ") = " + its(map(Testing::nicePrint, EP.stringBags(i))));
         }
     }
+
+    private static void demoBags_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(SMALL_LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("bags(" + xs + ") = " + its(EP.bags(xs)));
+        }
+    }
+
+    private static void demoBags_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("bags(" + its(xs) + ") = " + its(EP.bags(xs)));
+        }
+    }
+
+    private static void demoStringBags_String() {
+        initialize();
+        for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
+            System.out.println("stringBags(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.stringBags(s))));
+        }
+    }
+
+    private static void demoBagsAtLeast_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("bagsAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.bagsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoBagsAtLeast_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("bagsAtLeast(" + p.b + ", " + its(p.a) + ") = " + its(EP.bagsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoStringBagsAtLeast_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringBagsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringBagsAtLeast(p.b, p.a))));
+        }
+    }
+
+    private static void demoStringBagsAtLeast_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("stringBagsAtLeast(" + i + ") = " +
+                    its(map(Testing::nicePrint, EP.stringBagsAtLeast(i))));
+        }
+    }
 }
