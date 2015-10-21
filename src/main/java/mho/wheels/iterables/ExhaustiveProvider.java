@@ -4713,7 +4713,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @Override
             public List<T> advance() {
                 while (true) {
-                    List<Integer> cumulativeIndices = toList(scanl1((x, y) -> x + y, indices.next()));
+                    List<Integer> next = indices.next();
+                    List<Integer> cumulativeIndices = next.isEmpty() ?
+                            Collections.emptyList() :
+                            toList(scanl1((x, y) -> x + y, next));
                     if (!cumulativeIndices.isEmpty() && !cxs.get(last(cumulativeIndices)).isPresent()) {
                         continue;
                     }
@@ -4921,6 +4924,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
+        if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
+        if (!lengthAtLeast(2, xs)) {
+            T x = head(xs);
+            return iterate(ys -> toList(cons(x, ys)), Collections.emptyList());
+        }
         return bagIndices(xs, lists(naturalIntegers()), n -> Optional.empty());
     }
 
@@ -4945,6 +4953,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + minSize);
+        }
+        if (minSize == 0) return bags(xs);
+        if (isEmpty(xs)) return Collections.emptyList();
+        if (!lengthAtLeast(2, xs)) {
+            T x = head(xs);
+            return iterate(ys -> toList(cons(x, ys)), toList(replicate(minSize, x)));
+        }
         return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());
     }
 
