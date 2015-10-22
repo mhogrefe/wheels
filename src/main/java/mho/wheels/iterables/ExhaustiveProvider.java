@@ -4927,6 +4927,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(xs)) return Collections.singletonList(Collections.emptyList());
         if (!lengthAtLeast(2, xs)) {
             T x = head(xs);
+            x.compareTo(x);
             return iterate(ys -> toList(cons(x, ys)), Collections.emptyList());
         }
         return bagIndices(xs, lists(naturalIntegers()), n -> Optional.empty());
@@ -4960,6 +4961,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(xs)) return Collections.emptyList();
         if (!lengthAtLeast(2, xs)) {
             T x = head(xs);
+            x.compareTo(x);
             return iterate(ys -> toList(cons(x, ys)), toList(replicate(minSize, x)));
         }
         return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());

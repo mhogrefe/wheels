@@ -8077,6 +8077,10 @@ public strictfp class ExhaustiveProviderTest {
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
         try {
+            toList(P.bags(Collections.<Integer>singletonList(null)));
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
             toList(P.bags(Arrays.asList(1, null, 3)));
             fail();
         } catch (NullPointerException ignored) {}
@@ -8237,6 +8241,7 @@ public strictfp class ExhaustiveProviderTest {
 
         bagsAtLeast_fail_helper(-1, "[]");
         bagsAtLeast_fail_helper(-1, "[1, 2, 3]");
+        bagsAtLeast_fail_helper(1, "[null]");
         bagsAtLeast_fail_helper(1, "[1, null, 3]");
     }
 
