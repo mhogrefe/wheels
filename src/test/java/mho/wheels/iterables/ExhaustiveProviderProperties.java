@@ -100,6 +100,7 @@ public class ExhaustiveProviderProperties {
         propertiesCanonicalBigDecimals();
         propertiesStrings();
         propertiesDistinctStrings();
+        propertiesStringBags();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -195,7 +196,7 @@ public class ExhaustiveProviderProperties {
             compareImplementationsSeptuples_Iterable();
             propertiesStrings_int_String();
             propertiesStrings_int();
-            propertiesLists();
+            propertiesLists_Iterable();
             propertiesStrings_String();
             propertiesListsAtLeast();
             propertiesStringsAtLeast_int_String();
@@ -251,6 +252,8 @@ public class ExhaustiveProviderProperties {
             propertiesBagSeptuples();
             propertiesStringBags_int_String();
             propertiesStringBags_int();
+            propertiesBags_Iterable();
+            propertiesStringBags_String();
         }
         System.out.println("Done");
     }
@@ -4258,7 +4261,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesLists() {
+    private static void propertiesLists_Iterable() {
         initialize("lists(Iterable<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             Iterable<List<Integer>> lists = EP.lists(xs);
@@ -7294,5 +7297,66 @@ public class ExhaustiveProviderProperties {
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
         }
+    }
+
+    private static void propertiesBags_Iterable() {
+        initialize("bags(Iterable<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<List<Integer>> lists = EP.bags(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            assertEquals(xs, head(listsList), Collections.emptyList());
+            assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, EP.bags(xs)));
+            assertTrue(xs, unique(listsList));
+            assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+        }
+
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            Iterable<List<Integer>> lists = EP.bags(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            List<List<Integer>> listsList = toList(take(TINY_LIMIT, lists));
+            assertEquals(xs, head(listsList), Collections.emptyList());
+            assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+            assertTrue(xs, unique(listsList));
+            assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+        }
+
+        Iterable<List<Integer>> failXs = filterInfinite(
+                ys -> ys.size() > 1,
+                P.withScale(4).listsWithElement(null, P.integersGeometric())
+        );
+        for (List<Integer> xs : take(LIMIT, failXs)) {
+            try {
+                toList(EP.bags(xs));
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBags_String() {
+        initialize("stringBags(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> strings = EP.stringBags(s);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(s, head(stringsList), "");
+            assertTrue(s, all(t -> isSubsetOf(t, s), stringsList));
+            assertTrue(s, all(t -> weaklyIncreasing(toList(t)), stringsList));
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            List<String> stringsList = toList(take(TINY_LIMIT, EP.stringBags(s)));
+            assertTrue(s, unique(stringsList));
+            assertTrue(s, all(t -> weaklyIncreasing(toList(t)), stringsList));
+        }
+    }
+
+    private static void propertiesStringBags() {
+        initializeConstant("stringBags()");
+        biggerTest(EP, EP.stringBags(), s -> weaklyIncreasing(toList(s)));
     }
 }
