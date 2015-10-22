@@ -976,7 +976,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull List<T> xs) {
-        return lists(size, xs);
+        return lists(size, uniformSample(xs));
     }
 
     /**
@@ -989,7 +989,7 @@ public abstract strictfp class IterableProvider {
      * @param <B> the type of the second {@code Iterable}'s elements
      */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull List<B> bs) {
-        return pairs(as, bs);
+        return pairs(as, uniformSample(bs));
     }
 
     /**
@@ -1008,7 +1008,7 @@ public abstract strictfp class IterableProvider {
             @NotNull List<B> bs,
             @NotNull List<C> cs
     ) {
-        return triples(as, bs, cs);
+        return triples(as, uniformSample(bs), uniformSample(cs));
     }
 
     /**
@@ -1030,7 +1030,7 @@ public abstract strictfp class IterableProvider {
             @NotNull List<C> cs,
             @NotNull List<D> ds
     ) {
-        return quadruples(as, bs, cs, ds);
+        return quadruples(as, uniformSample(bs), uniformSample(cs), uniformSample(ds));
     }
 
     /**
@@ -1055,7 +1055,7 @@ public abstract strictfp class IterableProvider {
             @NotNull List<D> ds,
             @NotNull List<E> es
     ) {
-        return quintuples(as, bs, cs, ds, es);
+        return quintuples(as, uniformSample(bs), uniformSample(cs), uniformSample(ds), uniformSample(es));
     }
 
     /**
@@ -1083,7 +1083,14 @@ public abstract strictfp class IterableProvider {
             @NotNull List<E> es,
             @NotNull List<F> fs
     ) {
-        return sextuples(as, bs, cs, ds, es, fs);
+        return sextuples(
+                as,
+                uniformSample(bs),
+                uniformSample(cs),
+                uniformSample(ds),
+                uniformSample(es),
+                uniformSample(fs)
+        );
     }
 
     /**
@@ -1114,7 +1121,15 @@ public abstract strictfp class IterableProvider {
             @NotNull List<F> fs,
             @NotNull List<G> gs
     ) {
-        return septuples(as, bs, cs, ds, es, fs, gs);
+        return septuples(
+                as,
+                uniformSample(bs),
+                uniformSample(cs),
+                uniformSample(ds),
+                uniformSample(es),
+                uniformSample(fs),
+                uniformSample(gs)
+        );
     }
 
     /**
@@ -1136,7 +1151,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public <T> Iterable<List<T>> listsShortlex(@NotNull List<T> xs) {
-        return lists(xs);
+        return lists(uniformSample(xs));
     }
 
     /**
@@ -1159,7 +1174,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
-        return listsAtLeast(minSize, xs);
+        return listsAtLeast(minSize, uniformSample(xs));
     }
 
     /**
@@ -1431,7 +1446,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
-        return distinctLists(size, xs);
+        return distinctLists(size, uniformSample(xs));
     }
 
     /**
@@ -1442,7 +1457,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
-        return distinctPairs(xs);
+        return distinctPairs(uniformSample(xs));
     }
 
     /**
@@ -1453,7 +1468,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
-        return distinctTriples(xs);
+        return distinctTriples(uniformSample(xs));
     }
 
     /**
@@ -1464,7 +1479,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
-        return distinctQuadruples(xs);
+        return distinctQuadruples(uniformSample(xs));
     }
 
     /**
@@ -1475,7 +1490,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
-        return distinctQuintuples(xs);
+        return distinctQuintuples(uniformSample(xs));
     }
 
     /**
@@ -1486,7 +1501,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
-        return distinctSextuples(xs);
+        return distinctSextuples(uniformSample(xs));
     }
 
     /**
@@ -1497,7 +1512,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
-        return distinctSeptuples(xs);
+        return distinctSeptuples(uniformSample(xs));
     }
 
     /**
@@ -1520,7 +1535,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
-        return distinctLists(xs);
+        return distinctLists(uniformSample(xs));
     }
 
     /**
@@ -1543,7 +1558,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
-        return distinctListsAtLeast(minSize, xs);
+        return distinctListsAtLeast(minSize, uniformSample(xs));
     }
 
     /**
@@ -1567,7 +1582,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
-        return distinctLists(xs);
+        return distinctLists(uniformSample(xs));
     }
 
     /**
@@ -1591,7 +1606,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
-        return distinctListsAtLeast(minSize, xs);
+        return distinctListsAtLeast(minSize, uniformSample(xs));
     }
 
     /**
@@ -1747,7 +1762,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsLex(int size, @NotNull List<T> xs) {
-        return bags(size, xs);
+        return bags(size, uniformSample(xs));
     }
 
     /**
@@ -1758,7 +1773,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
-        return bagPairs(xs);
+        return bagPairs(uniformSample(xs));
     }
 
     /**
@@ -1769,7 +1784,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
-        return bagTriples(xs);
+        return bagTriples(uniformSample(xs));
     }
 
     /**
@@ -1780,7 +1795,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the {@code List}'s elements
      */
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
-        return bagQuadruples(xs);
+        return bagQuadruples(uniformSample(xs));
     }
 
     /**
@@ -1793,7 +1808,7 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return bagQuintuples(xs);
+        return bagQuintuples(uniformSample(xs));
     }
 
     /**
@@ -1806,7 +1821,7 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return bagSextuples(xs);
+        return bagSextuples(uniformSample(xs));
     }
 
     /**
@@ -1819,7 +1834,7 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return bagSeptuples(xs);
+        return bagSeptuples(uniformSample(xs));
     }
 
     /**
@@ -1840,7 +1855,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull List<T> xs) {
-        return bags(xs);
+        return bags(uniformSample(xs));
     }
 
     /**
@@ -1862,7 +1877,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of values in the {@code List}s
      */
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
-        return bagsAtLeast(minSize, xs);
+        return bagsAtLeast(minSize, uniformSample(xs));
     }
 
     /**
