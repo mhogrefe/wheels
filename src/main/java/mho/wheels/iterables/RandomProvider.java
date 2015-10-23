@@ -3830,11 +3830,46 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedChunkSeptuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code List}s with elements from a given {@code Iterable}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return sorted lists created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
         return map(IterableUtils::sort, lists(xs));
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted{@code List}s with a minimum length and with elements from a given
+     * {@code Iterable}. The mean length of the {@code List}s is {@code scale}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code this} must have a {@code scale} at least 1 greater than {@code minSize}.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return sorted lists with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return map(IterableUtils::sort, listsAtLeast(minSize, xs));
