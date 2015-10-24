@@ -3553,6 +3553,186 @@ public strictfp class CompoundTest {
         distinctStringsAtLeast_int_fail_helper(4, 5);
     }
 
+    private static void stringBags_int_String_helper(
+            int size,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringBags(size, input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void stringBags_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            P.stringBags(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringBags_int_String() {
+        stringBags_int_String_helper(
+                0,
+                "a",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringBags_int_String_helper(
+                1,
+                "a",
+                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
+                "{a=1000000}"
+        );
+        stringBags_int_String_helper(
+                2,
+                "a",
+                "[aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, aa, ...]",
+                "{aa=1000000}"
+        );
+        stringBags_int_String_helper(
+                3,
+                "a",
+                "[aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa, aaa," +
+                " aaa, ...]",
+                "{aaa=1000000}"
+        );
+        stringBags_int_String_helper(
+                0,
+                "abc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringBags_int_String_helper(
+                1,
+                "abc",
+                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
+                "{c=333615, b=333313, a=333072}"
+        );
+        stringBags_int_String_helper(
+                2,
+                "abc",
+                "[bb, bc, ab, bb, bb, ab, bc, bc, ac, bb, ac, bc, ac, bc, bc, aa, ac, bc, ab, ac, ...]",
+                "{bc=222712, ab=222100, ac=222096, aa=111121, cc=111028, bb=110943}"
+        );
+        stringBags_int_String_helper(
+                3,
+                "abc",
+                "[bbc, abb, bbb, abb, bbc, acc, bbc, abc, abc, bcc, aac, abc, aab, bcc, acc, bcc, abc, acc, aac," +
+                " aac, ...]",
+                "{abc=222554, acc=111661, bbc=111270, bcc=110898, aab=110745, abb=110451, aac=110411, aaa=37441," +
+                " bbb=37355, ccc=37214}"
+        );
+        stringBags_int_String_helper(
+                0,
+                "abbc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringBags_int_String_helper(
+                1,
+                "abbc",
+                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
+                "{b=499640, c=250298, a=250062}"
+        );
+        stringBags_int_String_helper(
+                2,
+                "abbc",
+                "[bb, bc, bc, ab, bc, bc, bc, bc, ab, bb, bc, ab, bc, bc, bb, ab, bc, ac, bc, bc, ...]",
+                "{bb=250376, bc=249722, ab=249371, ac=125181, cc=62694, aa=62656}"
+        );
+        stringBags_int_String_helper(
+                3,
+                "abbc",
+                "[bbc, bbc, abb, bcc, bcc, abb, bbc, abb, bbc, bbc, abc, abc, bcc, bbb, abc, abc, abb, aab, bcc," +
+                " bbc, ...]",
+                "{bbc=187506, abb=187492, abc=187127, bbb=125202, bcc=93885, aab=93511, aac=46960, acc=46889," +
+                " ccc=15726, aaa=15702}"
+        );
+        stringBags_int_String_helper(
+                0,
+                "Mississippi",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringBags_int_String_helper(
+                1,
+                "Mississippi",
+                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
+                "{s=363979, i=363703, p=181581, M=90737}"
+        );
+        stringBags_int_String_helper(
+                2,
+                "Mississippi",
+                "[pp, ss, ps, ss, ii, ss, ps, is, is, ss, is, ip, is, is, ip, ss, ss, is, Ms, is, ...]",
+                "{is=264865, ss=132606, ps=132537, ii=131960, ip=131662, Mi=66206, Ms=65705, pp=33071, Mp=33023" +
+                ", MM=8365}"
+        );
+        stringBags_int_String_helper(
+                3,
+                "Mississippi",
+                "[pps, pss, iss, iss, pss, iis, sss, iip, iss, iip, sss, iss, Mis, sss, iss, ips, Mip, ipp, ips," +
+                " iss, ...]",
+                "{iss=144520, ips=144458, iis=144124, pss=72346, iip=71867, Mis=71484, sss=48687, iii=48048," +
+                " Mii=36461, Mip=36170}"
+        );
+        stringBags_int_String_fail_helper(1, "");
+        stringBags_int_String_fail_helper(-1, "abc");
+    }
+
+    private static void stringBags_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringBags(size)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void stringBags_int_fail_helper(int size) {
+        try {
+            P.stringBags(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringBags_int() {
+        stringBags_int_helper(
+                0,
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringBags_int_helper(
+                1,
+                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
+                " 몱, ﲦ, ...]",
+                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
+        );
+        stringBags_int_helper(
+                2,
+                "[嘩퇉, \u2df2馃, ε䊿, \u2538\u31e5, 肣髽, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, ϡ䯏," +
+                " \u19dc罖, ㄾ刿, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 㩷缄, ⴿ읾, 纫\ufe2d, ...]",
+                "{틺\uf310=2, 緑\ue709=2, 㑰\uf5be=2, 啺횄=2, 菧\ue429=2, 㧣㻜=2, \u23c0\uf480=2, Կ첵=2, 뻀\udf8a=2," +
+                " Ⳉ고=2}"
+        );
+        stringBags_int_helper(
+                3,
+                "[嘩馃퇉, ε\u2df2䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, \u17f3赧\ue215, 껸\udd15\udd75, 䯏몱ﲦ, ϡ\u19dc罖, ㄾ䲵刿," +
+                " 偵恾箿, ᬜK㵏, 㩷缄ꏹ, ⴿ纫읾, 㗂䝲\ufe2d, 갩힜\uf207, \u2a43坤琖, 퉌\ue352\uea45, 䉀蕤餥, \u2b63鸂\uf637," +
+                " 误輮鸅, ...]",
+                "{嘩馃퇉=1, ε\u2df2䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, \u17f3赧\ue215=1, 껸\udd15\udd75=1, 䯏몱ﲦ=1," +
+                " ϡ\u19dc罖=1, ㄾ䲵刿=1, 偵恾箿=1}"
+        );
+        stringBags_int_fail_helper(-1);
+    }
+
     private static void bags_Iterable_helper(
             int scale,
             @NotNull Iterable<Integer> input,
@@ -4736,7 +4916,7 @@ public strictfp class CompoundTest {
     }
 
     @Test
-    public void testStringBags_int() {
+    public void testStringBagsAtLeast_int() {
         stringBagsAtLeast_int_helper(
                 2,
                 1,
