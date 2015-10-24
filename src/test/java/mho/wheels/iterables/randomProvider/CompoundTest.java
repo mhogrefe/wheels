@@ -2520,6 +2520,171 @@ public strictfp class CompoundTest {
         stringsAtLeast_int_fail_helper(4, 5);
     }
 
+    private static void distinctStrings_int_String_helper(
+            int size,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.distinctStrings(size, input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void distinctStrings_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            P.distinctStrings(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testDistinctStrings_int_String() {
+        distinctStrings_int_String_helper(
+                0,
+                "a",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        distinctStrings_int_String_helper(
+                1,
+                "a",
+                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
+                "{a=1000000}"
+        );
+        distinctStrings_int_String_helper(
+                0,
+                "abc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        distinctStrings_int_String_helper(
+                1,
+                "abc",
+                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
+                "{c=333615, b=333313, a=333072}"
+        );
+        distinctStrings_int_String_helper(
+                2,
+                "abc",
+                "[bc, ba, ba, bc, bc, ac, bc, ac, ba, cb, cb, ac, ab, ca, ba, cb, ca, cb, ca, ba, ...]",
+                "{bc=167243, cb=166812, ba=166749, ca=166743, ab=166278, ac=166175}"
+        );
+        distinctStrings_int_String_helper(
+                3,
+                "abc",
+                "[bca, bac, bca, cba, cba, cba, acb, cab, acb, cab, cab, acb, abc, cba, bca, bac, cba, bca, acb," +
+                " cba, ...]",
+                "{cab=167288, bca=167242, cba=167051, abc=166598, acb=166062, bac=165759}"
+        );
+        distinctStrings_int_String_helper(
+                0,
+                "abbc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        distinctStrings_int_String_helper(
+                1,
+                "abbc",
+                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
+                "{b=499640, c=250298, a=250062}"
+        );
+        distinctStrings_int_String_helper(
+                2,
+                "abbc",
+                "[bc, bc, ab, bc, cb, cb, cb, ab, bc, ba, cb, bc, ba, bc, ba, cb, cb, bc, ba, ab, ...]",
+                "{ba=249826, bc=249607, cb=167056, ab=166498, ca=83615, ac=83398}"
+        );
+        distinctStrings_int_String_helper(
+                3,
+                "abbc",
+                "[bca, bca, bca, cba, bca, cba, abc, abc, cba, bca, bac, bca, bca, bca, bca, cba, cba, bca, abc," +
+                " bca, ...]",
+                "{bca=250476, bac=249778, cba=166982, abc=166446, cab=83355, acb=82963}"
+        );
+        distinctStrings_int_String_helper(
+                0,
+                "Mississippi",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        distinctStrings_int_String_helper(
+                1,
+                "Mississippi",
+                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
+                "{s=363979, i=363703, p=181581, M=90737}"
+        );
+        distinctStrings_int_String_helper(
+                2,
+                "Mississippi",
+                "[ps, sp, si, is, sp, si, si, si, pi, is, si, pi, si, sM, si, si, si, pi, Mp, ip, ...]",
+                "{si=208293, is=207849, ip=103895, sp=103888, ps=81111, pi=79988, iM=52287, sM=51836, Mi=36458" +
+                ", Ms=36215}"
+        );
+        distinctStrings_int_String_helper(
+                3,
+                "Mississippi",
+                "[psi, isp, sip, isp, isM, sip, iMp, ips, siM, psi, spM, spi, sip, psi, ips, iMs, pis, spi, isM," +
+                " sMi, ...]",
+                "{isp=138594, sip=138527, spi=83691, ips=82883, siM=69277, isM=69089, psi=64708, pis=64454," +
+                " iMs=35048, sMi=34639}"
+        );
+        distinctStrings_int_String_fail_helper(1, "");
+        distinctStrings_int_String_fail_helper(-1, "abc");
+    }
+
+    private static void distinctStrings_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.distinctStrings(size)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void distinctStrings_int_fail_helper(int size) {
+        try {
+            P.distinctStrings(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testDistinctStrings_int() {
+        distinctStrings_int_helper(
+                0,
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        distinctStrings_int_helper(
+                1,
+                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
+                " 몱, ﲦ, ...]",
+                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
+        );
+        distinctStrings_int_helper(
+                2,
+                "[嘩퇉, 馃\u2df2, ε䊿, \u2538\u31e5, 髽肣, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, 䯏ϡ," +
+                " 罖\u19dc, 刿ㄾ, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 缄㩷, ⴿ읾, 纫\ufe2d, ...]",
+                "{\u2bdbᴴ=2, \uf310틺=2, 㑰\uf5be=2, \uf480\u23c0=2, Ⳬ\ue4b6=2, ꢓ\ue5db=2, 백蝰=2, \ue13d굛=2," +
+                " \u2688瘷=2, ύ\u3099=2}"
+        );
+        distinctStrings_int_helper(
+                3,
+                "[嘩퇉馃, \u2df2ε䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, 赧\ue215\u17f3, \udd75껸\udd15, 몱ﲦ䯏, ϡ罖\u19dc, 刿ㄾ䲵," +
+                " 箿偵恾, ᬜK㵏, ꏹ缄㩷, ⴿ읾纫, \ufe2d㗂䝲, \uf207갩힜, 坤琖\u2a43, 퉌\uea45\ue352, 蕤餥䉀, \u2b63\uf637鸂," +
+                " 鸅误輮, ...]",
+                "{嘩퇉馃=1, \u2df2ε䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, 赧\ue215\u17f3=1, \udd75껸\udd15=1, 몱ﲦ䯏=1," +
+                " ϡ罖\u19dc=1, 刿ㄾ䲵=1, 箿偵恾=1}"
+        );
+        distinctStrings_int_fail_helper(-1);
+    }
+
     private static void distinctLists_Iterable_helper(
             int scale,
             @NotNull Iterable<Integer> input,
