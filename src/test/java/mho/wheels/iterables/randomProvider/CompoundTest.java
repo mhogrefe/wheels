@@ -1139,7 +1139,7 @@ public strictfp class CompoundTest {
     }
 
     private static void strings_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
-        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, map(Testing::nicePrint, P.strings(size))));
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.strings(size)));
         aeqitLimit(TINY_LIMIT, sample, output);
         aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
         P.reset();
@@ -1157,27 +1157,31 @@ public strictfp class CompoundTest {
 
     @Test
     public void testStrings_int() {
-        strings_int_helper(0, "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        strings_int_helper(
+                0,
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
         strings_int_helper(
                 1,
-                "[嘩, 퇉, 馃, \\u2df2, ε, 䊿, \\u2538, \\u31e5, 髽, 肣, \\uf6ff, ﳑ, 赧, \\ue215, \\u17f3, \\udd75, 껸," +
-                " \\udd15, 몱, ﲦ, ...]",
-                "{\\uf1b2=36, 撢=35, આ=34, 퉃=34, \\27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
+                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
+                " 몱, ﲦ, ...]",
+                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
         );
         strings_int_helper(
                 2,
-                "[嘩퇉, 馃\\u2df2, ε䊿, \\u2538\\u31e5, 髽肣, \\uf6ffﳑ, 赧\\ue215, \\u17f3\\udd75, 껸\\udd15, 몱ﲦ, 䯏ϡ," +
-                " 罖\\u19dc, 刿ㄾ, 䲵箿, 偵恾, \u1B1CK, 㵏ꏹ, 缄㩷, \u2D3F읾, 纫\\ufe2d, ...]",
-                "{\\uf310틺=2, 緑\\ue709=2, 㑰\\uf5be=2, \\ue429菧=2, \\uf480\\u23c0=2, \u2CC8고=2, 㜛땹=2," +
-                " \\ue283捿=2, \\ua8ed\u2C04=2, 楮譂=2}"
+                "[嘩퇉, 馃\u2df2, ε䊿, \u2538\u31e5, 髽肣, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, 䯏ϡ," +
+                " 罖\u19dc, 刿ㄾ, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 缄㩷, ⴿ읾, 纫\ufe2d, ...]",
+                "{\uf310틺=2, 緑\ue709=2, 㑰\uf5be=2, \ue429菧=2, \uf480\u23c0=2, Ⳉ고=2, 㜛땹=2, \ue283捿=2," +
+                " \ua8edⰄ=2, 楮譂=2}"
         );
         strings_int_helper(
                 3,
-                "[嘩퇉馃, \\u2df2ε䊿, \\u2538\\u31e5髽, 肣\\uf6ffﳑ, 赧\\ue215\\u17f3, \\udd75껸\\udd15, 몱ﲦ䯏," +
-                " ϡ罖\\u19dc, 刿ㄾ䲵, 箿偵恾, \u1B1CK㵏, ꏹ缄㩷, \u2D3F읾纫, \\ufe2d㗂䝲, \\uf207갩힜, 坤琖\\u2a43," +
-                " 퉌\\uea45\\ue352, 蕤餥䉀, \\u2b63\\uf637鸂, 鸅误輮, ...]",
-                "{嘩퇉馃=1, \\u2df2ε䊿=1, \\u2538\\u31e5髽=1, 肣\\uf6ffﳑ=1, 赧\\ue215\\u17f3=1, \\udd75껸\\udd15=1," +
-                " 몱ﲦ䯏=1, ϡ罖\\u19dc=1, 刿ㄾ䲵=1, 箿偵恾=1}"
+                "[嘩퇉馃, \u2df2ε䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, 赧\ue215\u17f3, \udd75껸\udd15, 몱ﲦ䯏, ϡ罖\u19dc, 刿ㄾ䲵," +
+                " 箿偵恾, ᬜK㵏, ꏹ缄㩷, ⴿ읾纫, \ufe2d㗂䝲, \uf207갩힜, 坤琖\u2a43, 퉌\uea45\ue352, 蕤餥䉀, \u2b63\uf637鸂," +
+                " 鸅误輮, ...]",
+                "{嘩퇉馃=1, \u2df2ε䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, 赧\ue215\u17f3=1, \udd75껸\udd15=1, 몱ﲦ䯏=1," +
+                " ϡ罖\u19dc=1, 刿ㄾ䲵=1, 箿偵恾=1}"
         );
         strings_int_fail_helper(-1);
     }
