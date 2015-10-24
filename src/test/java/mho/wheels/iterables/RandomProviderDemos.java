@@ -1347,6 +1347,58 @@ public class RandomProviderDemos {
         }
     }
 
+    private static @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(
+            @NotNull IterableProvider ip,
+            int minSize,
+            @NotNull Iterable<T> xs
+    ) {
+        return map(
+                IterableUtils::cycle,
+                nub(
+                        filterInfinite(
+                                ys -> !ys.isEmpty() && length(nub(ys)) >= minSize,
+                                map(IterableUtils::unrepeat, ip.listsAtLeast(minSize, xs))
+                        )
+                )
+        );
+    }
+
+    private static void demoDistinctStrings_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, String>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> filterInfinite(
+                                s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                P.withScale(p.a.getScale()).stringsAtLeast(p.b)
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("distinctStrings(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.distinctStrings(t.b, t.c))));
+        }
+    }
+
+    private static void demoDistinctStrings_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
+                P.randomProvidersDefault(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("distinctStrings(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.distinctStrings(p.b))));
+        }
+    }
+
     private static void demoDistinctLists() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
@@ -1379,22 +1431,6 @@ public class RandomProviderDemos {
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
             System.out.println("distinctStrings(" + rp + ") = " + its(map(Testing::nicePrint, rp.distinctStrings())));
         }
-    }
-
-    private static @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(
-            @NotNull IterableProvider ip,
-            int minSize,
-            @NotNull Iterable<T> xs
-    ) {
-        return map(
-                IterableUtils::cycle,
-                nub(
-                        filterInfinite(
-                                ys -> !ys.isEmpty() && length(nub(ys)) >= minSize,
-                                map(IterableUtils::unrepeat, ip.listsAtLeast(minSize, xs))
-                        )
-                )
-        );
     }
 
     private static void demoDistinctListsAtLeast() {
