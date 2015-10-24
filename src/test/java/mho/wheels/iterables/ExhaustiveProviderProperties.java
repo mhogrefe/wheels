@@ -5859,7 +5859,8 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesDistinctStrings_int() {
         initialize("distinctStrings(int)");
-        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        Iterable<Integer> is = filterInfinite(j -> j <= (1 << 16), P.withScale(4).naturalIntegersGeometric());
+        for (int i : take(SMALL_LIMIT, is)) {
             Iterable<String> strings = EP.distinctStrings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -5867,6 +5868,10 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, all(s -> s.length() == i, stringsList));
             assertTrue(i, all(IterableUtils::unique, stringsList));
             assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+            assertEquals(i, toList(EP.distinctStrings(i)), Collections.emptyList());
         }
 
         for (int i : take(LIMIT, P.withScale(4).negativeIntegersGeometric())) {
@@ -6068,7 +6073,8 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesDistinctStringsAtLeast_int() {
         initialize("distinctStringsAtLeast(int)");
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        Iterable<Integer> is = filterInfinite(j -> j < (1 << 16) + 1, P.withScale(4).naturalIntegersGeometric());
+        for (int i : take(TINY_LIMIT, is)) {
             Iterable<String> strings = EP.distinctStringsAtLeast(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -6076,6 +6082,10 @@ public class ExhaustiveProviderProperties {
             assertTrue(i, all(s -> s.length() >= i, stringsList));
             assertTrue(i, all(IterableUtils::unique, stringsList));
             assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+            assertEquals(i, toList(EP.distinctStringsAtLeast(i)), Collections.emptyList());
         }
 
         for (int i : take(LIMIT, P.negativeIntegers())) {

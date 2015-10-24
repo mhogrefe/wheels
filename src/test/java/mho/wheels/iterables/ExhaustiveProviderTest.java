@@ -6960,6 +6960,7 @@ public strictfp class ExhaustiveProviderTest {
         distinctStrings_int_helper(3,
                 "[abc, abd, acb, acd, bac, bad, bca, bcd, abe, abf, ace, acf, bae, baf, bce, bcf, adb, adc, aeb," +
                 " aec, ...]");
+        distinctStrings_int_helper(65537, "[]");
         try {
             P.distinctStrings(-1);
             fail();
@@ -7179,6 +7180,7 @@ public strictfp class ExhaustiveProviderTest {
         distinctStringsAtLeast_helper(3,
                 "[abc, abcd, abd, abcde, acb, abce, acd, abcdef, bac, abdc, bad, abcdf, bca, abde, bcd, abcdefg," +
                 " abe, acbd, abf, abced, ...]");
+        distinctStringsAtLeast_helper(65537, "[]");
         try {
             P.distinctStringsAtLeast(-1);
             fail();

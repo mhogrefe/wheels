@@ -2179,6 +2179,14 @@ public final strictfp class IterableUtils {
         return map(NullableOptional::get, filter(NullableOptional::isPresent, xs));
     }
 
+    public static @NotNull <A> Iterable<A> optionalFilterInfinite(@NotNull Iterable<Optional<A>> xs) {
+        return map(Optional::get, filterInfinite(Optional::isPresent, xs));
+    }
+
+    public static @NotNull <A> Iterable<A> nullableOptionalFilterInfinite(@NotNull Iterable<NullableOptional<A>> xs) {
+        return map(NullableOptional::get, filterInfinite(NullableOptional::isPresent, xs));
+    }
+
     public static @NotNull <A, B> Iterable<B> optionalMap(
             @NotNull Function<A, Optional<B>> f,
             @NotNull Iterable<A> xs
@@ -2191,6 +2199,20 @@ public final strictfp class IterableUtils {
             @NotNull Iterable<A> xs
     ) {
         return nullableOptionalFilter(map(f, xs));
+    }
+
+    public static @NotNull <A, B> Iterable<B> optionalMapInfinite(
+            @NotNull Function<A, Optional<B>> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return optionalFilterInfinite(map(f, xs));
+    }
+
+    public static @NotNull <A, B> Iterable<B> nullableOptionalMapInfinite(
+            @NotNull Function<A, NullableOptional<B>> f,
+            @NotNull Iterable<A> xs
+    ) {
+        return nullableOptionalFilterInfinite(map(f, xs));
     }
 
     public static boolean and(@NotNull Iterable<Boolean> xs) {

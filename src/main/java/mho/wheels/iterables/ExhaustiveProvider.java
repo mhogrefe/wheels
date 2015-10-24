@@ -3470,7 +3470,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             T x = head(xs);
             return iterate(ys -> toList(cons(x, ys)), toList(replicate(minSize, x)));
         }
-        return optionalMap(
+        return optionalMapInfinite(
                 p -> p.b,
                 dependentPairsInfiniteLogarithmicOrder(
                         rangeUp(BigInteger.valueOf(minSize)),
