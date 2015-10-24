@@ -458,7 +458,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Integer}s less than {@code n}
      */
     private @NotNull Iterable<Integer> integersBounded(int n) {
-        return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+        if (n == 1) {
+            return repeat(0);
+        } else {
+            return filterInfinite(i -> i < n, integersPow2(IntegerUtils.ceilingLog2(n)));
+        }
     }
 
     /**
@@ -477,7 +481,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code Long}s less than {@code n}
      */
     private @NotNull Iterable<Long> longsBounded(long n) {
-        return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+        if (n == 1) {
+            return repeat(0L);
+        } else {
+            return filterInfinite(l -> l < n, longsPow2(IntegerUtils.ceilingLog2(n)));
+        }
     }
 
     /**
@@ -496,8 +504,11 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @return uniformly-distributed positive {@code BigInteger}s less than {@code n}
      */
     private @NotNull Iterable<BigInteger> bigIntegersBounded(@NotNull BigInteger n) {
-        if (n.equals(BigInteger.ONE)) return repeat(BigInteger.ZERO);
-        return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+        if (n.equals(BigInteger.ONE)) {
+            return repeat(BigInteger.ZERO);
+        } else {
+            return filterInfinite(i -> lt(i, n), bigIntegersPow2(IntegerUtils.ceilingLog2(n)));
+        }
     }
 
     /**
