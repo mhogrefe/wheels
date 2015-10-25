@@ -3430,7 +3430,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         }
         return cons(
                 Collections.emptyList(),
-                optionalMap(
+                optionalMapInfinite(
                         p -> p.b,
                         dependentPairsInfiniteLogarithmicOrder(
                                 positiveBigIntegers(),

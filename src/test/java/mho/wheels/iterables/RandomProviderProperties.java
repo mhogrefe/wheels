@@ -2329,7 +2329,7 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Optional<Integer>> os = toList(take(TINY_LIMIT, p.a.optionals(p.b)));
             testNoRemove(TINY_LIMIT, p.a.optionals(p.b));
-            List<Integer> filteredResult = toList(optionalMap(Function.identity(), os));
+            List<Integer> filteredResult = toList(optionalFilter(os));
             assertEquals(p, filteredResult, toList(take(filteredResult.size(), p.b)));
         }
 
@@ -2376,7 +2376,7 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<NullableOptional<Integer>> os = toList(take(TINY_LIMIT, p.a.nullableOptionals(p.b)));
             testNoRemove(TINY_LIMIT, p.a.nullableOptionals(p.b));
-            List<Integer> filteredResult = toList(nullableOptionalMap(Function.identity(), os));
+            List<Integer> filteredResult = toList(nullableOptionalFilter(os));
             assertEquals(p, filteredResult, toList(take(filteredResult.size(), p.b)));
         }
 
