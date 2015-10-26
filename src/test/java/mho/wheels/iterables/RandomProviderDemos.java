@@ -1527,6 +1527,87 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoBags() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("bags(" + p.a + ", " + its(p.b) + ") = " + its(p.a.bags(p.b)));
+        }
+    }
+
+    private static void demoStringBags_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringBags(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringBags(p.b))));
+        }
+    }
+
+    private static void demoStringBags() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("stringBags(" + rp + ") = " + its(map(Testing::nicePrint, rp.stringBags())));
+        }
+    }
+
+    private static void demoBagsAtLeast() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.prefixPermutations(EP.naturalIntegers())
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("bagsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.bagsAtLeast(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringBagsAtLeast_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringBagsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.stringBagsAtLeast(t.b, t.c))));
+        }
+    }
+
+    private static void demoStringBagsAtLeast_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringBagsAtLeast(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringBagsAtLeast(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
