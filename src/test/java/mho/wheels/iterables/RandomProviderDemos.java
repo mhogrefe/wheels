@@ -1391,7 +1391,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
-                P.withScale(4).naturalIntegersGeometric()
+                filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("distinctStrings(" + p.a + ", " + p.b + ") = " +
@@ -1488,12 +1488,42 @@ public class RandomProviderDemos {
                 p -> p.a.getScale() > p.b,
                 P.pairs(
                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                        P.withScale(4).naturalIntegersGeometric()
+                        filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("distinctStringsAtLeast(" + p.a + ", " + p.b + ") = " +
                     its(map(Testing::nicePrint, p.a.distinctStringsAtLeast(p.b))));
+        }
+    }
+
+    private static void demoStringBags_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, String, Integer>> ts = map(
+                p -> new Triple<>(p.a, p.b.a, p.b.b),
+                P.pairs(
+                        P.randomProvidersDefault(),
+                        P.pairsLogarithmicOrder(
+                                P.withScale(4).stringsAtLeast(1),
+                                P.withScale(4).naturalIntegersGeometric()
+                        )
+                )
+        );
+        for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringBags(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
+                    its(map(Testing::nicePrint, t.a.stringBags(t.c, t.b))));
+        }
+    }
+
+    private static void demoStringBags_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
+                P.randomProvidersDefault(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringBags(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringBags(p.b))));
         }
     }
 
