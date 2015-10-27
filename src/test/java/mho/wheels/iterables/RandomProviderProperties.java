@@ -191,6 +191,12 @@ public class RandomProviderProperties {
             propertiesDistinctStringsAtLeast_int();
             propertiesStringBags_int_String();
             propertiesStringBags_int();
+            propertiesBags();
+            propertiesStringBags_String();
+            propertiesStringBags();
+            propertiesBagsAtLeast();
+            propertiesStringBagsAtLeast_int_String();
+            propertiesStringBagsAtLeast_int();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -3367,6 +3373,264 @@ public class RandomProviderProperties {
                 p.a.stringBags(p.b);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesBags() {
+        initialize("bags(Iterable<T>)");
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.bags(p.b), IterableUtils::weaklyIncreasing);
+        }
+
+        Iterable<Pair<RandomProvider, List<Integer>>> ps2 = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
+            simpleTest(p.a, p.a.bags(p.a.uniformSample(p.b)), is -> isSubsetOf(is, p.b) && weaklyIncreasing(is));
+        }
+
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps2)) {
+            try {
+                toList(p.a.bags(p.b));
+                fail(p);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.bags(p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBags_String() {
+        initialize("stringBags(String)");
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringBags(p.b), s -> isSubsetOf(s, p.b) && weaklyIncreasing(toList(s)));
+        }
+
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.stringBags("");
+                fail(rp);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBags() {
+        initialize("stringBags()");
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            simpleTest(rp, rp.stringBags(), s -> IterableUtils.weaklyIncreasing(toList(s)));
+        }
+    }
+
+    private static void propertiesBagsAtLeast() {
+        initialize("bagsAtLeast(int, Iterable<T>)");
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.prefixPermutations(EP.naturalIntegers())
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.bagsAtLeast(t.b, t.c), is -> is.size() >= t.b && IterableUtils.weaklyIncreasing(is));
+        }
+
+        Iterable<Triple<RandomProvider, Integer, List<Integer>>> ts2 = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.withScale(4).listsAtLeast(1, P.withScale(4).integersGeometric())
+                )
+        );
+        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, ts2)) {
+            simpleTest(t.a, t.a.bagsAtLeast(t.b, t.a.uniformSample(t.c)), is -> isSubsetOf(is, t.c));
+        }
+
+        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, ts2)) {
+            try {
+                toList(t.a.bagsAtLeast(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).negativeIntegersGeometric(),
+                        P.prefixPermutations(EP.naturalIntegers())
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.bagsAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> t.a.getScale() <= t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.prefixPermutations(EP.naturalIntegers())
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.bagsAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                toList(t.a.bagsAtLeast(t.b, t.c));
+                fail(t);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBagsAtLeast_int_String() {
+        initialize("stringBagsAtLeast(int, String)");
+        Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.stringBagsAtLeast(t.b, t.c),
+                    s -> s.length() >= t.b && isSubsetOf(s, t.c) && weaklyIncreasing(toList(s))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.stringBagsAtLeast(p.b, ""));
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Integer, String>> tsFail = filterInfinite(
+                t -> t.a.getScale() > t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).negativeIntegersGeometric(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringBagsAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        tsFail = filterInfinite(
+                t -> t.a.getScale() <= t.b,
+                P.triples(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringBagsAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBagsAtLeast_int() {
+        initialize("stringBagsAtLeast(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            simpleTest(
+                    p.a,
+                    p.a.stringBagsAtLeast(p.b),
+                    s -> s.length() >= p.b && IterableUtils.weaklyIncreasing(toList(s))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).negativeIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringBagsAtLeast(p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = filterInfinite(
+                p -> p.a.getScale() <= p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringBagsAtLeast(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
         }
     }
 

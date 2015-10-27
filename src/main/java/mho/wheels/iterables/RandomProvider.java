@@ -3859,7 +3859,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs) {
-        return map(IterableUtils::sort, lists(xs));
+        return map(
+                ys -> {
+                    if (ys.size() == 1) {
+                        T first = ys.get(0);
+                        first.compareTo(first);
+                    }
+                    return sort(ys);
+                },
+                lists(xs)
+        );
     }
 
     /**
@@ -3883,7 +3892,16 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return map(IterableUtils::sort, listsAtLeast(minSize, xs));
+        return map(
+                ys -> {
+                    if (ys.size() == 1) {
+                        T first = ys.get(0);
+                        first.compareTo(first);
+                    }
+                    return sort(ys);
+                },
+                listsAtLeast(minSize, xs)
+        );
     }
 
     @Override
