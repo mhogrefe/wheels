@@ -181,6 +181,8 @@ public class RandomProviderProperties {
             propertiesListsAtLeast();
             propertiesStringsAtLeast_int_String();
             propertiesStringsAtLeast_int();
+            propertiesDistinctStrings_int_String();
+            propertiesDistinctStrings_int();
             propertiesDistinctLists();
             propertiesDistinctStrings_String();
             propertiesDistinctStrings();
@@ -2902,6 +2904,100 @@ public class RandomProviderProperties {
                 p.a.stringsAtLeast(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesDistinctStrings_int_String() {
+        initialize("distinctStrings(int, String)");
+        Iterable<Triple<RandomProvider, Integer, String>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> filterInfinite(
+                                s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                P.withScale(p.a.getScale()).stringsAtLeast(p.b)
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.distinctStrings(t.b, t.c),
+                    s -> s.length() == t.b && isSubsetOf(s, t.c) && IterableUtils.unique(s)
+            );
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.distinctStrings(p.b, ""));
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Triple<RandomProvider, Integer, String>> tsFail = map(
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
+                    P.dependentPairsInfinite(
+                            filterInfinite(
+                                    p -> p.a.getScale() > p.b,
+                                    P.pairs(
+                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).negativeIntegersGeometric()
+                                    )
+                            ),
+                            p -> filterInfinite(
+                                    s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                    P.withScale(p.a.getScale()).stringsAtLeast(p.b < 0 ? 0 : p.b)
+                            )
+                    )
+            );
+            for (Triple<RandomProvider, Integer, String> t : take(LIMIT, tsFail)) {
+                try {
+                    t.a.distinctStrings(t.b, t.c);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+    }
+
+    private static void propertiesDistinctStrings_int() {
+        initialize("distinctStrings(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.distinctStrings(p.b), s -> s.length() >= p.b && IterableUtils.unique(s));
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).negativeIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.distinctStrings(p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
