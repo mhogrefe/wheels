@@ -189,6 +189,8 @@ public class RandomProviderProperties {
             propertiesDistinctListsAtLeast();
             propertiesDistinctStringsAtLeast_int_String();
             propertiesDistinctStringsAtLeast_int();
+            propertiesStringBags_int_String();
+            propertiesStringBags_int();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -3282,6 +3284,89 @@ public class RandomProviderProperties {
                 p.a.distinctStringsAtLeast(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBags_int_String() {
+        initialize("stringBags(int, String)");
+        Iterable<Triple<RandomProvider, String, Integer>> ts = map(
+                p -> new Triple<>(p.a, p.b.a, p.b.b),
+                P.pairs(
+                        P.randomProvidersDefault(),
+                        P.pairsLogarithmicOrder(
+                                P.withScale(4).stringsAtLeast(1),
+                                P.withScale(4).naturalIntegersGeometric()
+                        )
+                )
+        );
+        for (Triple<RandomProvider, String, Integer> t : take(LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.stringBags(t.c, t.b),
+                    s -> s.length() == t.c && isSubsetOf(s, t.b) && weaklyIncreasing(toList(s))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
+            aeqit(p, TINY_LIMIT, p.a.stringBags(0, p.b), repeat(""));
+        }
+
+        Iterable<Triple<RandomProvider, Character, Integer>> ts2 = map(
+                p -> new Triple<>(p.a, p.b.a, p.b.b),
+                P.pairs(
+                        P.randomProvidersDefault(),
+                        P.pairsLogarithmicOrder(P.characters(), P.withScale(4).naturalIntegersGeometric())
+                )
+        );
+        for (Triple<RandomProvider, Character, Integer> t : take(LIMIT, ts2)) {
+            aeqit(
+                    t,
+                    TINY_LIMIT,
+                    t.a.stringBags(t.c, Character.toString(t.b)), repeat(replicate(t.c, t.b.charValue()))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = P.pairs(P.randomProvidersDefault(), P.positiveIntegers());
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringBags(p.b, "");
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, String, Integer>> tsFail = P.triples(
+                P.randomProvidersDefault(),
+                P.stringsAtLeast(1),
+                P.negativeIntegers()
+        );
+        for (Triple<RandomProvider, String, Integer> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringBags(t.c, t.b);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringBags_int() {
+        initialize("stringBags(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
+                P.randomProvidersDefault(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringBags(p.b), s -> s.length() == p.b && weaklyIncreasing(toList(s)));
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = P.pairs(P.randomProvidersDefault(), P.negativeIntegers());
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringBags(p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
