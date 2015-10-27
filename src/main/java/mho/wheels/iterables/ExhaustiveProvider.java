@@ -4967,6 +4967,82 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());
     }
 
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
+            @NotNull Iterable<T> xs
+    ) {
+        return null;
+    }
+
     public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
         if (isEmpty(xs))
             return Collections.singletonList(new ArrayList<>());
