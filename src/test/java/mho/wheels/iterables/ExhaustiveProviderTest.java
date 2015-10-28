@@ -8345,6 +8345,254 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void subsetsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.subsetsLex(size, readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetsLex_int_List_fail_helper(int size, @NotNull String input) {
+        try {
+            P.subsetsLex(size, readIntegerListWithNulls(input));
+            fail();
+        } catch (ArithmeticException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetsLex_int_List() {
+        subsetsLex_int_List_helper(0, "[]", "[[]]");
+        subsetsLex_int_List_helper(1, "[]", "[]");
+        subsetsLex_int_List_helper(2, "[]", "[]");
+        subsetsLex_int_List_helper(3, "[]", "[]");
+        subsetsLex_int_List_helper(0, "[5]", "[[]]");
+        subsetsLex_int_List_helper(1, "[5]", "[[5]]");
+        subsetsLex_int_List_helper(2, "[5]", "[]");
+        subsetsLex_int_List_helper(3, "[5]", "[]");
+        subsetsLex_int_List_helper(0, "[1, 2, 3]", "[[]]");
+        subsetsLex_int_List_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        subsetsLex_int_List_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3]]");
+        subsetsLex_int_List_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+        subsetsLex_int_List_helper(0, "[1, 2, 2, 3]", "[[]]");
+        subsetsLex_int_List_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        subsetsLex_int_List_helper(2, "[1, 2, 2, 3]", "[[1, 2], [1, 2], [1, 3], [2, 2], [2, 3], [2, 3]]");
+        subsetsLex_int_List_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+        subsetsLex_int_List_fail_helper(-1, "[]");
+        subsetsLex_int_List_fail_helper(-1, "[1, 2, 3]");
+        subsetsLex_int_List_fail_helper(1, "[1, null, 3]");
+        subsetsLex_int_List_fail_helper(1, "[null]");
+        subsetsLex_int_List_fail_helper(0, "[1, null, 3]");
+        subsetsLex_int_List_fail_helper(0, "[null]");
+    }
+
+    private static void subsetPairsLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetPairsLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetPairsLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetPairsLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetPairsLex() {
+        subsetPairsLex_helper("[]", "[]");
+        subsetPairsLex_helper("[5]", "[]");
+        subsetPairsLex_helper("[1, 2, 3, 4]", "[(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]");
+        subsetPairsLex_helper("[1, 2, 2, 4]", "[(1, 2), (1, 2), (1, 4), (2, 2), (2, 4), (2, 4)]");
+        subsetPairsLex_fail_helper("[1, 2, null, 4]");
+        subsetPairsLex_fail_helper("[null]");
+    }
+
+    private static void subsetTriplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetTriplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetTriplesLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetTriplesLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetTriplesLex() {
+        subsetTriplesLex_helper("[]", "[]");
+        subsetTriplesLex_helper("[5]", "[]");
+        subsetTriplesLex_helper("[1, 2, 3, 4]", "[(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]");
+        subsetTriplesLex_helper("[1, 2, 2, 4]", "[(1, 2, 2), (1, 2, 4), (1, 2, 4), (2, 2, 4)]");
+        subsetTriplesLex_fail_helper("[1, 2, null, 4]");
+        subsetTriplesLex_fail_helper("[null]");
+    }
+
+    private static void subsetQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuadruplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetQuadruplesLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetQuadruplesLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetQuadruplesLex() {
+        subsetQuadruplesLex_helper("[]", "[]");
+        subsetQuadruplesLex_helper("[5]", "[]");
+        subsetQuadruplesLex_helper("[1, 2, 3, 4]", "[(1, 2, 3, 4)]");
+        subsetQuadruplesLex_helper("[1, 2, 2, 4]", "[(1, 2, 2, 4)]");
+        subsetQuadruplesLex_fail_helper("[1, 2, null, 4]");
+        subsetQuadruplesLex_fail_helper("[null]");
+    }
+
+    private static void subsetQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuintuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetQuintuplesLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetQuintuplesLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetQuintuplesLex() {
+        subsetQuintuplesLex_helper("[]", "[]");
+        subsetQuintuplesLex_helper("[5]", "[]");
+        subsetQuintuplesLex_helper("[1, 2, 3, 4]", "[]");
+        subsetQuintuplesLex_helper("[1, 2, 2, 4]", "[]");
+        subsetQuintuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 4, 7), (1, 2, 3, 4, 8), (1, 2, 3, 5, 6)," +
+                " (1, 2, 3, 5, 7), (1, 2, 3, 5, 8), (1, 2, 3, 6, 7), (1, 2, 3, 6, 8), (1, 2, 3, 7, 8)," +
+                " (1, 2, 4, 5, 6), (1, 2, 4, 5, 7), (1, 2, 4, 5, 8), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8)," +
+                " (1, 2, 4, 7, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8), (1, 2, 6, 7, 8), ...]");
+        subsetQuintuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 4, 7), (1, 2, 2, 4, 8), (1, 2, 2, 5, 6)," +
+                " (1, 2, 2, 5, 7), (1, 2, 2, 5, 8), (1, 2, 2, 6, 7), (1, 2, 2, 6, 8), (1, 2, 2, 7, 8)," +
+                " (1, 2, 4, 5, 6), (1, 2, 4, 5, 7), (1, 2, 4, 5, 8), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8)," +
+                " (1, 2, 4, 7, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8), (1, 2, 6, 7, 8), ...]");
+        subsetQuintuplesLex_fail_helper("[1, 2, null, 4]");
+        subsetQuintuplesLex_fail_helper("[null]");
+    }
+
+    private static void subsetSextuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSextuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetSextuplesLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetSextuplesLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetSextuplesLex() {
+        subsetSextuplesLex_helper("[]", "[]");
+        subsetSextuplesLex_helper("[5]", "[]");
+        subsetSextuplesLex_helper("[1, 2, 3, 4]", "[]");
+        subsetSextuplesLex_helper("[1, 2, 2, 4]", "[]");
+        subsetSextuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 5, 8), (1, 2, 3, 4, 6, 7)," +
+                " (1, 2, 3, 4, 6, 8), (1, 2, 3, 4, 7, 8), (1, 2, 3, 5, 6, 7), (1, 2, 3, 5, 6, 8)," +
+                " (1, 2, 3, 5, 7, 8), (1, 2, 3, 6, 7, 8), (1, 2, 4, 5, 6, 7), (1, 2, 4, 5, 6, 8)," +
+                " (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7)," +
+                " (1, 3, 4, 5, 6, 8), (1, 3, 4, 5, 7, 8), (1, 3, 4, 6, 7, 8), (1, 3, 5, 6, 7, 8), ...]");
+        subsetSextuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 5, 8), (1, 2, 2, 4, 6, 7)," +
+                " (1, 2, 2, 4, 6, 8), (1, 2, 2, 4, 7, 8), (1, 2, 2, 5, 6, 7), (1, 2, 2, 5, 6, 8)," +
+                " (1, 2, 2, 5, 7, 8), (1, 2, 2, 6, 7, 8), (1, 2, 4, 5, 6, 7), (1, 2, 4, 5, 6, 8)," +
+                " (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7)," +
+                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8), ...]");
+        subsetSextuplesLex_fail_helper("[1, 2, null, 4]");
+        subsetSextuplesLex_fail_helper("[null]");
+    }
+
+    private static void subsetSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSeptuplesLex(readIntegerListWithNulls(input)), output);
+    }
+
+    private static void subsetSeptuplesLex_fail_helper(@NotNull String input) {
+        try {
+            P.subsetSeptuplesLex(readIntegerListWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetSeptuplesLex() {
+        subsetSeptuplesLex_helper("[]", "[]");
+        subsetSeptuplesLex_helper("[5]", "[]");
+        subsetSeptuplesLex_helper("[1, 2, 3, 4]", "[]");
+        subsetSeptuplesLex_helper("[1, 2, 2, 4]", "[]");
+        subsetSeptuplesLex_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 8), (1, 2, 3, 4, 6, 7, 8)," +
+                " (1, 2, 3, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7, 8), (2, 3, 4, 5, 6, 7, 8)]");
+        subsetSeptuplesLex_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 8), (1, 2, 2, 4, 6, 7, 8)," +
+                " (1, 2, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (2, 2, 4, 5, 6, 7, 8)]");
+        subsetSeptuplesLex_fail_helper("[1, 2, null, 4]");
+        subsetSeptuplesLex_fail_helper("[null]");
+    }
+
+    private static void stringSubsetsLex_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.stringSubsetsLex(size, input), output);
+    }
+
+    private static void stringSubsetsLex_helper_limit(
+            int size,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsLex(size, input), output);
+    }
+
+    @Test
+    public void testStringSubsetsLex() {
+        stringSubsetsLex_helper(0, "", "[]");
+        aeq(length(P.stringSubsetsLex(0, "")), 1);
+        stringSubsetsLex_helper(1, "", "[]");
+        aeq(length(P.stringSubsetsLex(1, "")), 0);
+        stringSubsetsLex_helper(2, "", "[]");
+        aeq(length(P.stringSubsetsLex(2, "")), 0);
+        stringSubsetsLex_helper(3, "", "[]");
+        aeq(length(P.stringSubsetsLex(3, "")), 0);
+        stringSubsetsLex_helper(0, "a", "[]");
+        aeq(length(P.stringSubsetsLex(0, "a")), 1);
+        stringSubsetsLex_helper(1, "a", "[a]");
+        stringSubsetsLex_helper(2, "a", "[]");
+        aeq(length(P.stringSubsetsLex(2, "a")), 0);
+        stringSubsetsLex_helper(3, "a", "[]");
+        aeq(length(P.stringSubsetsLex(3, "a")), 0);
+        stringSubsetsLex_helper(0, "abc", "[]");
+        aeq(length(P.stringSubsetsLex(0, "abc")), 1);
+        stringSubsetsLex_helper(1, "abc", "[a, b, c]");
+        stringSubsetsLex_helper(2, "abc", "[ab, ac, bc]");
+        stringSubsetsLex_helper(3, "abc", "[abc]");
+        stringSubsetsLex_helper(0, "abbc", "[]");
+        aeq(length(P.stringSubsetsLex(0, "abbc")), 1);
+        stringSubsetsLex_helper(1, "abbc", "[a, b, b, c]");
+        stringSubsetsLex_helper(2, "abbc", "[ab, ab, ac, bb, bc, bc]");
+        stringSubsetsLex_helper(3, "abbc", "[abb, abc, abc, bbc]");
+        stringSubsetsLex_helper_limit(0, "Mississippi", "[]");
+        aeq(length(P.stringSubsetsLex(0, "Mississippi")), 1);
+        stringSubsetsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
+        stringSubsetsLex_helper_limit(2, "Mississippi",
+                "[Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ip, ip, is, is, is, is, ii, ...]");
+        stringSubsetsLex_helper_limit(3, "Mississippi",
+                "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
+                " Mip, ...]");
+        try {
+            P.stringSubsetsLex(-1, "");
+            fail();
+        } catch (ArithmeticException ignored) {}
+        try {
+            P.stringSubsetsLex(-1, "abc");
+            fail();
+        } catch (ArithmeticException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself

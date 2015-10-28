@@ -5038,7 +5038,12 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(int size, @NotNull List<T> xs) {
-        return map(is -> toList(map(xs::get, is)), subsetIndices(size, xs.size()));
+        if (xs.size() == 1) {
+            T first = xs.get(0);
+            first.compareTo(first); //catch incomparable single element; sort will catch the other cases
+        }
+        List<T> sorted = sort(xs);
+        return map(is -> toList(map(sorted::get, is)), subsetIndices(size, xs.size()));
     }
 
     /**
