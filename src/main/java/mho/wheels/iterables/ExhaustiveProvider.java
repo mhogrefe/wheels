@@ -4967,42 +4967,119 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return bagIndices(xs, listsAtLeast(minSize, naturalIntegers()), n -> Optional.empty());
     }
 
+    /**
+     * Returns all sorted {@code List}s of a given size containing natural numbers up to a given value with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only sorted lists of non-negative integers with no
+     *  repetitions, and contains no repetitions. Each element has the same size.</li>
+     * </ul>
+     *
+     * Length is <sub>{@code elementCount}</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of each of the result {@code List}s
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all sorted lists of length {@code size} with elements from 0 to {@code elementCount}–1 with no
+     * repetitions
+     */
+    private static @NotNull Iterable<List<Integer>> subsetIndices(int size, int elementCount) {
+        BigInteger outputSize = MathUtils.binomialCoefficient(BigInteger.valueOf(elementCount), size);
+        Iterable<Integer> range = IterableUtils.range(0, size - 1);
+        int offset = elementCount - size;
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(range);
+            private boolean first = true;
+            {
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                }
+                for (int i = size - 1; i >= 0; i--) {
+                    int j = list.get(i);
+                    if (j != i + offset) {
+                        for (int k = i; k < size; k++) {
+                            j++;
+                            list.set(k, j);
+                        }
+                        return list;
+                    }
+                }
+                throw new IllegalStateException();
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(int size, @NotNull List<T> xs) {
+        return map(is -> toList(map(xs::get, is)), subsetIndices(size, xs.size()));
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
-        return null;
+        return map(list -> new Pair<>(list.get(0), list.get(1)), subsetsLex(2, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
-        return null;
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsetsLex(3, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsetsLex(4, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                subsetsLex(5, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                subsetsLex(6, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
             @NotNull List<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                subsetsLex(7, xs)
+        );
+    }
+
+    @Override
+    public @NotNull Iterable<String> stringSubsetsLex(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsLex(size, toList(s)));
     }
 
     @Override
