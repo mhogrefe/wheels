@@ -1961,4 +1961,69 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringBagsAtLeast(i))));
         }
     }
+
+    private static void demoSubsetsLex_int_List() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("subsetsLex(" + p.b + ", " + p.a + ") = " + its(EP.subsetsLex(p.b, p.a)));
+        }
+    }
+
+    private static void demoSubsetPairsLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetPairsLex(" + xs + ") = " + its(EP.subsetPairsLex(xs)));
+        }
+    }
+
+    private static void demoSubsetTriplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetTriplesLex(" + xs + ") = " + its(EP.subsetTriplesLex(xs)));
+        }
+    }
+
+    private static void demoSubsetQuadruplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetQuadruplesLex(" + xs + ") = " + its(EP.subsetQuadruplesLex(xs)));
+        }
+    }
+
+    private static void demoSubsetQuintuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetQuintuplesLex(" + xs + ") = " + its(EP.subsetQuintuplesLex(xs)));
+        }
+    }
+
+    private static void demoSubsetSextuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetSextuplesLex(" + xs + ") = " + its(EP.subsetSextuplesLex(xs)));
+        }
+    }
+
+    private static void demoSubsetSeptuplesLex() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetSeptuplesLex(" + xs + ") = " + its(EP.subsetSeptuplesLex(xs)));
+        }
+    }
+
+    private static void demoStringSubsetsLex() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringSubsetsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsetsLex(p.b, p.a))));
+        }
+    }
 }
