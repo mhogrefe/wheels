@@ -3720,7 +3720,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * @param size the length of the result {@code String}
      * @param s the {@code String} from which characters are selected
-     * @return all Strings of a given length created from {@code s} with no repetitions
+     * @return all {@code String}s of a given length created from {@code s} with no repetitions
      */
     @Override
     public @NotNull Iterable<String> distinctStringsLex(int size, @NotNull String s) {
@@ -5017,21 +5017,85 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s of a given length with elements from a given
+     * {@code List}, with no repetitions. The {@code List}s are ordered lexicographically, matching the order given by
+     * the original {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is finite. All of its elements have the same length and are sorted. None are empty, unless the
+     *  result consists entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all sorted {@code List}s of a given length created from {@code xs} with no repetitions
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(int size, @NotNull List<T> xs) {
         return map(is -> toList(map(xs::get, is)), subsetIndices(size, xs.size()));
     }
 
+    /**
+     * Returns all sorted {@code Pair}s of distinct elements from an {@code Iterable}. The {@code Pair}s are ordered
+     * lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Pair}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), subsetsLex(2, xs));
     }
 
+    /**
+     * Returns all sorted {@code Triple}s of distinct elements from an {@code Iterable}. The {@code Triple}s are
+     * ordered lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Triple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsetsLex(3, xs));
     }
 
+    /**
+     * Returns all sorted {@code Quadruple}s of distinct elements from an {@code Iterable}. The {@code Quadruple}s are
+     * ordered lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Quadruple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
             @NotNull List<T> xs
@@ -5039,6 +5103,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsetsLex(4, xs));
     }
 
+    /**
+     * Returns all sorted {@code Quintuple}s of distinct elements from an {@code Iterable}. The {@code Quintuple}s are
+     * ordered lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Quintuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
             @NotNull List<T> xs
@@ -5049,6 +5128,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all sorted {@code Sextuple}s of distinct elements from an {@code Iterable}. The {@code Sextuple}s are
+     * ordered lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Sextuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
             @NotNull List<T> xs
@@ -5059,6 +5153,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all sorted {@code Septuple}s of distinct elements from an {@code Iterable}. The {@code Septuple}s are
+     * ordered lexicographically, matching the order given by the original {@code Iterable}s. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted distinct {@code Septuple}s of elements from an {@code Iterable}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>7</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
             @NotNull List<T> xs
@@ -5077,6 +5186,24 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s of a given length with characters from a given
+     * {@code String}, with no repetitions. The {@code String}s are ordered lexicographically, matching the order given
+     * by the original {@code String}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is finite. All of its {@code String}s have the same length and are sorted. None are empty,
+     *  unless the result consists entirely of one empty {@code String}.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code s}|</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result {@code String}
+     * @param s the {@code String} from which characters are selected
+     * @return all sorted {@code String}s of a given length created from {@code s} with no repetitions
+     */
     @Override
     public @NotNull Iterable<String> stringSubsetsLex(int size, @NotNull String s) {
         return map(IterableUtils::charsToString, subsetsLex(size, toList(s)));
