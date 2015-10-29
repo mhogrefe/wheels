@@ -2015,7 +2015,7 @@ public class ExhaustiveProviderDemos {
         }
     }
 
-    private static void demoStringSubsetsLex() {
+    private static void demoStringSubsetsLex_int_String() {
         initialize();
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),

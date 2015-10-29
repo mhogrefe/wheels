@@ -8549,7 +8549,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testStringSubsetsLex() {
+    public void testStringSubsetsLex_int_String() {
         stringSubsetsLex_helper(0, "", "[]");
         aeq(length(P.stringSubsetsLex(0, "")), 1);
         stringSubsetsLex_helper(1, "", "[]");

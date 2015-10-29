@@ -264,7 +264,7 @@ public class ExhaustiveProviderProperties {
             propertiesSubsetQuintuplesLex();
             propertiesSubsetSextuplesLex();
             propertiesSubsetSeptuplesLex();
-            propertiesStringSubsetsLex_int_List();
+            propertiesStringSubsetsLex_int_String();
         }
         System.out.println("Done");
     }
@@ -8057,7 +8057,7 @@ public class ExhaustiveProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsLex_int_List() {
+    private static void propertiesStringSubsetsLex_int_String() {
         initialize("stringSubsetsLex(int, String)");
         Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
                 P.withScale(4).strings(),
