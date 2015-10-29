@@ -257,6 +257,14 @@ public class ExhaustiveProviderProperties {
             propertiesBagsAtLeast();
             propertiesStringBagsAtLeast_int_String();
             propertiesStringBagsAtLeast_int();
+            propertiesSubsetsLex_int_List();
+            propertiesSubsetPairsLex();
+            propertiesSubsetTriplesLex();
+            propertiesSubsetQuadruplesLex();
+            propertiesSubsetQuintuplesLex();
+            propertiesSubsetSextuplesLex();
+            propertiesSubsetSeptuplesLex();
+            propertiesStringSubsetsLex_int_List();
         }
         System.out.println("Done");
     }
@@ -7499,6 +7507,618 @@ public class ExhaustiveProviderProperties {
                 EP.stringBagsAtLeast(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetsLex_int_List() {
+        initialize("subsetsLex(int, List<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.subsetsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsList.isEmpty()) {
+                    assertEquals(p, head(listsList), toList(take(p.b, sort(p.a))));
+                    assertEquals(p, last(listsList), reverse(take(p.b, reverse(sort(p.a)))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(xs -> xs.size() == p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.size()), p.b);
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.subsetsLex(p.b, p.a));
+                assertTrue(p, all(IterableUtils::unique, listsList));
+                assertTrue(p, increasing(new LexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.size()), p.b);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    assertTrue(
+                            p,
+                            IterableUtils.equal(
+                                    filter(IterableUtils::weaklyIncreasing, EP.distinctListsLex(p.b, sort(p.a))),
+                                    listsList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<List<Integer>> xss = EP.subsetsLex(0, xs);
+            testHasNext(xss);
+            assertEquals(xs, toList(xss), Collections.singletonList(Collections.emptyList()));
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.subsetsLex(p.b, p.a);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
+        }
+
+        psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).listsWithElement(null, P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.subsetsLex(p.b, p.a);
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetPairsLex() {
+        initialize("subsetPairsLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Pair<Integer, Integer>> pairs = EP.subsetPairsLex(xs);
+            testNoRemove(TINY_LIMIT, pairs);
+            BigInteger pairsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 2);
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(pairs);
+                List<Pair<Integer, Integer>> pairsList = toList(pairs);
+                if (!pairsList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(xs, head(pairsList), new Pair<>(ys.get(0), ys.get(1)));
+                    assertEquals(xs, last(pairsList), new Pair<>(ys.get(ys.size() - 2), ys.get(ys.size() - 1)));
+                }
+                assertEquals(xs, pairsList.size(), pairsLength.intValueExact());
+                assertTrue(xs, all(p -> elem(p.a, xs), pairsList));
+                assertTrue(xs, all(p -> elem(p.b, xs), pairsList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger pairsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 2);
+            if (lt(pairsLength, BigInteger.valueOf(LIMIT))) {
+                List<Pair<Integer, Integer>> pairsList = toList(EP.subsetPairsLex(xs));
+                assertTrue(xs, unique(pairsList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Pair::toList, pairsList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Pair::toList, pairsList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Pair.PairComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                pairsList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 2);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Pair.toList(p)),
+                                            EP.distinctPairsLex(sorted)
+                                    ),
+                                    pairsList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetPairsLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetTriplesLex() {
+        initialize("subsetTriplesLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Triple<Integer, Integer, Integer>> triples = EP.subsetTriplesLex(xs);
+            testNoRemove(TINY_LIMIT, triples);
+            BigInteger triplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 3);
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(triples);
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(triples);
+                if (!triplesList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(xs, head(triplesList), new Triple<>(ys.get(0), ys.get(1), ys.get(2)));
+                    assertEquals(
+                            xs,
+                            last(triplesList),
+                            new Triple<>(ys.get(ys.size() - 3), ys.get(ys.size() - 2), ys.get(ys.size() - 1))
+                    );
+                }
+                assertEquals(xs, triplesList.size(), triplesLength.intValueExact());
+                assertTrue(xs, all(t -> elem(t.a, xs), triplesList));
+                assertTrue(xs, all(t -> elem(t.b, xs), triplesList));
+                assertTrue(xs, all(t -> elem(t.c, xs), triplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger triplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 3);
+            if (lt(triplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Triple<Integer, Integer, Integer>> triplesList = toList(EP.subsetTriplesLex(xs));
+                assertTrue(xs, unique(triplesList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Triple::toList, triplesList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Triple::toList, triplesList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Triple.TripleComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                triplesList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 3);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Triple.toList(p)),
+                                            EP.distinctTriplesLex(sorted)
+                                    ),
+                                    triplesList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetTriplesLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetQuadruplesLex() {
+        initialize("subsetQuadruplesLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Quadruple<Integer, Integer, Integer, Integer>> quadruples = EP.subsetQuadruplesLex(xs);
+            testNoRemove(TINY_LIMIT, quadruples);
+            BigInteger quadruplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 4);
+            if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(quadruples);
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList = toList(quadruples);
+                if (!quadruplesList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(
+                            xs,
+                            head(quadruplesList),
+                            new Quadruple<>(ys.get(0), ys.get(1), ys.get(2), ys.get(3))
+                    );
+                    assertEquals(
+                            xs,
+                            last(quadruplesList),
+                            new Quadruple<>(
+                                    ys.get(ys.size() - 4),
+                                    ys.get(ys.size() - 3),
+                                    ys.get(ys.size() - 2),
+                                    ys.get(ys.size() - 1)
+                            )
+                    );
+                }
+                assertEquals(xs, quadruplesList.size(), quadruplesLength.intValueExact());
+                assertTrue(xs, all(q -> elem(q.a, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.b, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.c, xs), quadruplesList));
+                assertTrue(xs, all(q -> elem(q.d, xs), quadruplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger quadruplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 4);
+            if (lt(quadruplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Quadruple<Integer, Integer, Integer, Integer>> quadruplesList =
+                        toList(EP.subsetQuadruplesLex(xs));
+                assertTrue(xs, unique(quadruplesList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quadruple::toList, quadruplesList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Quadruple::toList, quadruplesList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Quadruple.QuadrupleComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                quadruplesList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 4);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Quadruple.toList(p)),
+                                            EP.distinctQuadruplesLex(sorted)
+                                    ),
+                                    quadruplesList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetQuadruplesLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetQuintuplesLex() {
+        initialize("subsetQuintuplesLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuples = EP.subsetQuintuplesLex(xs);
+            testNoRemove(TINY_LIMIT, quintuples);
+            BigInteger quintuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 5);
+            if (lt(quintuplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(quintuples);
+                List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList = toList(quintuples);
+                if (!quintuplesList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(
+                            xs,
+                            head(quintuplesList),
+                            new Quintuple<>(ys.get(0), ys.get(1), ys.get(2), ys.get(3), ys.get(4))
+                    );
+                    assertEquals(
+                            xs,
+                            last(quintuplesList),
+                            new Quintuple<>(
+                                    ys.get(ys.size() - 5),
+                                    ys.get(ys.size() - 4),
+                                    ys.get(ys.size() - 3),
+                                    ys.get(ys.size() - 2),
+                                    ys.get(ys.size() - 1)
+                            )
+                    );
+                }
+                assertEquals(xs, quintuplesList.size(), quintuplesLength.intValueExact());
+                assertTrue(xs, all(q -> elem(q.a, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.b, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.c, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.d, xs), quintuplesList));
+                assertTrue(xs, all(q -> elem(q.e, xs), quintuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger quintuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 5);
+            if (lt(quintuplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Quintuple<Integer, Integer, Integer, Integer, Integer>> quintuplesList =
+                        toList(EP.subsetQuintuplesLex(xs));
+                assertTrue(xs, unique(quintuplesList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Quintuple::toList, quintuplesList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Quintuple::toList, quintuplesList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Quintuple.QuintupleComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                quintuplesList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 5);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Quintuple.toList(p)),
+                                            EP.distinctQuintuplesLex(sorted)
+                                    ),
+                                    quintuplesList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetQuintuplesLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetSextuplesLex() {
+        initialize("subsetSextuplesLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuples =
+                    EP.subsetSextuplesLex(xs);
+            testNoRemove(TINY_LIMIT, sextuples);
+            BigInteger sextuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 6);
+            if (lt(sextuplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(sextuples);
+                List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList = toList(sextuples);
+                if (!sextuplesList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(
+                            xs,
+                            head(sextuplesList),
+                            new Sextuple<>(ys.get(0), ys.get(1), ys.get(2), ys.get(3), ys.get(4), ys.get(5))
+                    );
+                    assertEquals(
+                            xs,
+                            last(sextuplesList),
+                            new Sextuple<>(
+                                    ys.get(ys.size() - 6),
+                                    ys.get(ys.size() - 5),
+                                    ys.get(ys.size() - 4),
+                                    ys.get(ys.size() - 3),
+                                    ys.get(ys.size() - 2),
+                                    ys.get(ys.size() - 1)
+                            )
+                    );
+                }
+                assertEquals(xs, sextuplesList.size(), sextuplesLength.intValueExact());
+                assertTrue(xs, all(s -> elem(s.a, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.b, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.c, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.d, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.e, xs), sextuplesList));
+                assertTrue(xs, all(s -> elem(s.f, xs), sextuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger sextuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 6);
+            if (lt(sextuplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Sextuple<Integer, Integer, Integer, Integer, Integer, Integer>> sextuplesList =
+                        toList(EP.subsetSextuplesLex(xs));
+                assertTrue(xs, unique(sextuplesList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Sextuple::toList, sextuplesList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Sextuple::toList, sextuplesList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Sextuple.SextupleComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                sextuplesList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 6);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Sextuple.toList(p)),
+                                            EP.distinctSextuplesLex(sorted)
+                                    ),
+                                    sextuplesList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetSextuplesLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetSeptuplesLex() {
+        initialize("subsetSeptuplesLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuples =
+                    EP.subsetSeptuplesLex(xs);
+            testNoRemove(TINY_LIMIT, septuples);
+            BigInteger septuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 7);
+            if (lt(septuplesLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(septuples);
+                List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
+                        toList(septuples);
+                if (!septuplesList.isEmpty()) {
+                    List<Integer> ys = sort(xs);
+                    assertEquals(
+                            xs,
+                            head(septuplesList),
+                            new Septuple<>(ys.get(0), ys.get(1), ys.get(2), ys.get(3), ys.get(4), ys.get(5), ys.get(6))
+                    );
+                    assertEquals(
+                            xs,
+                            last(septuplesList),
+                            new Septuple<>(
+                                    ys.get(ys.size() - 7),
+                                    ys.get(ys.size() - 6),
+                                    ys.get(ys.size() - 5),
+                                    ys.get(ys.size() - 4),
+                                    ys.get(ys.size() - 3),
+                                    ys.get(ys.size() - 2),
+                                    ys.get(ys.size() - 1)
+                            )
+                    );
+                }
+                assertEquals(xs, septuplesList.size(), septuplesLength.intValueExact());
+                assertTrue(xs, all(s -> elem(s.a, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.b, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.c, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.d, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.e, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.f, xs), septuplesList));
+                assertTrue(xs, all(s -> elem(s.g, xs), septuplesList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger septuplesLength = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size()), 7);
+            if (lt(septuplesLength, BigInteger.valueOf(LIMIT))) {
+                List<Septuple<Integer, Integer, Integer, Integer, Integer, Integer, Integer>> septuplesList =
+                        toList(EP.subsetSeptuplesLex(xs));
+                assertTrue(xs, unique(septuplesList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, map(Septuple::toList, septuplesList)));
+                assertTrue(xs, all(IterableUtils::unique, map(Septuple::toList, septuplesList)));
+                assertTrue(
+                        xs,
+                        increasing(
+                                new Septuple.SeptupleComparator<>(
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder(),
+                                        Comparator.<Integer>naturalOrder()
+                                ),
+                                septuplesList
+                        )
+                );
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(xs.size()), 7);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    List<Integer> sorted = sort(xs);
+                    assertTrue(
+                            xs,
+                            IterableUtils.equal(
+                                    filter(
+                                            p -> IterableUtils.weaklyIncreasing(Septuple.toList(p)),
+                                            EP.distinctSeptuplesLex(sorted)
+                                    ),
+                                    septuplesList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetSeptuplesLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsLex_int_List() {
+        initialize("stringSubsetsLex(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringSubsetsLex(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!stringsList.isEmpty()) {
+                    assertEquals(p, head(stringsList), take(p.b, sort(p.a)));
+                    assertEquals(p, last(stringsList), reverse(take(p.b, reverse(sort(p.a)))));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(s -> IterableUtils.weaklyIncreasing(fromString(s)), stringsList));
+                assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsetsLex(p.b, p.a));
+                assertTrue(p, increasing(stringsList));
+                assertTrue(p, all(IterableUtils::unique, stringsList));
+                BigInteger limit = MathUtils.fallingFactorial(BigInteger.valueOf(p.a.length()), p.b);
+                if (lt(limit, BigInteger.valueOf(LIMIT))) {
+                    assertTrue(
+                            p,
+                            IterableUtils.equal(
+                                    filter(
+                                            s -> IterableUtils.weaklyIncreasing(fromString(s)),
+                                            EP.distinctStringsLex(p.b, sort(p.a))
+                                    ),
+                                    stringsList
+                            )
+                    );
+                }
+            }
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> ss = EP.stringSubsetsLex(0, s);
+            testHasNext(ss);
+            assertEquals(s, toList(ss), Collections.singletonList(""));
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringSubsetsLex(p.b, p.a);
+                fail(p);
+            } catch (ArithmeticException ignored) {}
         }
     }
 }
