@@ -3981,44 +3981,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsetsLimited(int maxSize, @NotNull Iterable<T> xs) {
-        return () -> new NoRemoveIterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
-            private final Iterator<Integer> sizes = filter(i -> i <= maxSize, naturalIntegersGeometric()).iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull List<T> next() {
-                int size = sizes.next();
-                Set<T> set = new LinkedHashSet<>();
-                while (set.size() < size) {
-                    set.add(xsi.next());
-                }
-                return toList(set);
-            }
-        };
-    }
-
-    @Override
-    public @NotNull <T> Iterable<List<T>> subsetsUniform(@NotNull List<T> xs) {
-        return () -> new NoRemoveIterator<List<T>>() {
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull List<T> next() {
-                return toList(select(booleans(), xs));
-            }
-        };
-    }
-
-    @Override
     public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }

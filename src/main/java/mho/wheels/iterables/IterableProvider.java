@@ -2192,20 +2192,12 @@ public abstract strictfp class IterableProvider {
 
     public abstract @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs);
 
-    public @NotNull <T> Iterable<List<T>> subsetsLimited(int maxSize, @NotNull Iterable<T> xs) {
-        return subsets(xs);
-    }
-
-    public @NotNull <T> Iterable<List<T>> subsetsUniform(@NotNull List<T> xs) {
-        return subsetsLimited(xs.size(), uniformSample(xs));
-    }
-
     public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsetsUniform(toList(s)));
+        return null;
     }
 
     public @NotNull Iterable<String> stringSubsets() {
-        return map(IterableUtils::charsToString, subsetsLimited(1 << 16, characters()));
+        return null;
     }
 
     public abstract @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs);
