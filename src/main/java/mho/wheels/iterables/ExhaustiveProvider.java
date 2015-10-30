@@ -3728,8 +3728,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
-     * Returns all {@code List}s of containing natural numbers up to a given value with no repetitions. Does not
-     * support removal.
+     * Returns all {@code List}s of natural numbers up to a given value with no repetitions. Does not support removal.
      *
      * <ul>
      *  <li>{@code elementCount} cannot be negative.</li>
@@ -3797,7 +3796,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>P<sub>{@code i}</sub>
@@ -3818,7 +3817,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *
      * <ul>
      *  <li>{@code s} cannot be null.</li>
-     *  <li>The result contains no repetitions.</li>
+     *  <li>The result is not null.</li>
      * </ul>
      *
      * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>P<sub>{@code i}</sub>
@@ -5214,6 +5213,98 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, subsetsLex(size, toList(s)));
     }
 
+    /**
+     * Returns all sorted {@code List}s of natural numbers up to a given value with no repetitions. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers with no repetitions, and contains
+     *  no repetitions. Each element is sorted.</li>
+     * </ul>
+     *
+     * Length is 2<sup>elementCount</sup>
+     *
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all sorted lists with no repetitions with elements from 0 to {@code elementCount}–1
+     */
+    private static @NotNull Iterable<List<Integer>> subsetIndices(int elementCount) {
+        BigInteger outputSize = BigInteger.ONE.shiftLeft(elementCount);
+        int limit = elementCount - 1;
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = new ArrayList<>();
+            private boolean first = true;
+            {
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                } else if (list.isEmpty()) {
+                    list.add(0);
+                    return list;
+                }
+                int last = last(list);
+                if (last != limit) {
+                    list.add(last + 1);
+                } else {
+                    int i = list.size() - 1;
+                    list.remove(i);
+                    i--;
+                    list.set(i, list.get(i) + 1);
+                }
+                return list;
+            }
+        };
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 2<sup>|{@code xs}|</sup>
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all sorted {@code List}s with no repetitions created from {@code xs}
+     */
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(@NotNull List<T> xs) {
+        if (xs.size() == 1) {
+            T first = xs.get(0);
+            first.compareTo(first);
+        }
+        List<T> sorted = sort(xs);
+        return map(is -> toList(map(sorted::get, is)), subsetIndices(xs.size()));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with characters from a given {@code String}
+     * with no repetitions. The {@code String}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is 2<sup>|{@code s}|</sup>
+     *
+     * @param s the {@code String} from which elements are selected
+     * @return all sorted {@code String}s with no repetitions created from {@code s}
+     */
+    @Override
+    public @NotNull Iterable<String> stringSubsetsLex(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsLex(toList(s)));
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
         return null;
@@ -5249,51 +5340,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
-    }
-
-    public @NotNull <T> Iterable<List<T>> subsetsLex(@NotNull Iterable<T> xs) {
-        if (isEmpty(xs))
-            return Collections.singletonList(new ArrayList<>());
-        return () -> new NoRemoveIterator<List<T>>() {
-            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
-            private @NotNull List<Integer> indices = new ArrayList<>();
-
-            @Override
-            public boolean hasNext() {
-                return indices != null;
-            }
-
-            @Override
-            public List<T> next() {
-                List<T> subsequence = cxs.get(indices).get();
-                if (indices.isEmpty()) {
-                    indices.add(0);
-                } else {
-                    int lastIndex = last(indices);
-                    if (lastIndex < cxs.size() - 1) {
-                        indices.add(lastIndex + 1);
-                    } else if (indices.size() == 1) {
-                        indices = null;
-                    } else {
-                        indices.remove(indices.size() - 1);
-                        indices.set(indices.size() - 1, last(indices) + 1);
-                    }
-                }
-                return subsequence;
-            }
-        };
-    }
-
-    public @NotNull Iterable<String> stringSubsetsLex(@NotNull String s) {
-        return map(IterableUtils::charsToString, subsetsLex(fromString(s)));
-    }
-
-    public @NotNull <T> Iterable<List<T>> subsetsLexAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    public @NotNull Iterable<String> stringSubsetsLexAtLeast(int minSize, @NotNull String s) {
         return null;
     }
 
