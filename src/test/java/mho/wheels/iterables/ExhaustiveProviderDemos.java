@@ -2026,4 +2026,42 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringSubsetsLex(p.b, p.a))));
         }
     }
+
+    private static void demoSubsetsLex_List() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetsLex(" + xs + ") = " + its(EP.subsetsLex(xs)));
+        }
+    }
+
+    private static void demoStringSubsetsLex_String() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("stringSubsetsLex(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsetsLex(s))));
+        }
+    }
+
+    private static void demoSubsetsLexAtLeast() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("subsetsLexAtLeast(" + p.b + ", " + p.a + ") = " + its(EP.subsetsLexAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoStringSubsetsLexAtLeast() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringSubsetsLexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsetsLexAtLeast(p.b, p.a))));
+        }
+    }
 }
