@@ -41,7 +41,7 @@
                         <include>**/randomProvider/BasicTest.java</include>
                         <include>**/randomProvider/CompoundTest.java</include>
                         <include>**/randomProvider/NonIntegerNumericsTest.java</include>
-                        <include>**/RandomProviderProperties.java</include>
+                        <include>**/randomProvider/RandomProviderProperties.java</include>
                         <include>**/BinaryFractionTest.java</include>
                         <include>**/BinaryFractionProperties.java</include>
                         <include>**/MathUtilsTest.java</include>

@@ -1,5 +1,9 @@
-package mho.wheels.iterables;
+package mho.wheels.iterables.randomProvider;
 
+import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.IterableProvider;
+import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.RandomProvider;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
@@ -20,7 +24,8 @@ import static mho.wheels.testing.Testing.*;
 @SuppressWarnings("UnusedDeclaration")
 public class RandomProviderDemos {
     private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    private static final @NotNull
+    ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 100;
@@ -1152,7 +1157,7 @@ public class RandomProviderDemos {
         IterableProvider PS = P.withScale(4);
         Function<List<Integer>, Iterable<Map<Integer, List<Integer>>>> f = xs -> filterInfinite(
                 m -> !all(p -> isEmpty(p.b), fromMap(m)),
-                PS.maps(xs, map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
+                PS.maps(xs, IterableUtils.map(IterableUtils::unrepeat, PS.listsAtLeast(1, P.integersGeometric())))
         );
         Function<
                 Pair<List<Integer>, Map<Integer, List<Integer>>>,
