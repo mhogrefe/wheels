@@ -5305,6 +5305,117 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, subsetsLex(toList(s)));
     }
 
+    /**
+     * Returns all sorted {@code List}s of at least a given size containing natural numbers up to a given value with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code elementCount} cannot be negative.</li>
+     *  <li>The result is in lexicographic order, contains only non-negative integers with no repetitions, and contains
+     *  no repetitions. Each element is sorted.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>{@code elementCount}</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of each of the result {@code List}s
+     * @param elementCount one more than the largest possible value in the result {@code List}s
+     * @return all sorted lists with no repetitions of length at least {@code minSize} with elements from 0 to
+     * {@code elementCount}–1
+     */
+    private static @NotNull Iterable<List<Integer>> subsetIndicesAtLeast(int minSize, int elementCount) {
+        BigInteger outputSize = MathUtils.subsetCount(BigInteger.valueOf(elementCount), minSize);
+        Iterable<Integer> range = IterableUtils.range(0, minSize - 1);
+        int limit = elementCount - 1;
+        int offset = elementCount - minSize;
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(range);
+            private boolean first = true;
+            {
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                } else if (list.isEmpty()) {
+                    list.add(0);
+                    return list;
+                }
+                int last = last(list);
+                if (last != limit) {
+                    list.add(last + 1);
+                } else if (list.size() > minSize) {
+                    int i = list.size() - 1;
+                    list.remove(i);
+                    i--;
+                    list.set(i, list.get(i) + 1);
+                } else {
+                    for (int i = minSize - 2; i >= 0; i--) {
+                        int k = list.get(i);
+                        if (k != i + offset) {
+                            for (int j = i; j < minSize; j++) {
+                                k++;
+                                list.set(j, k);
+                            }
+                            return list;
+                        }
+                    }
+                }
+                return list;
+            }
+        };
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. The {@code List}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains every sorted {@code List} (with a length greater than or equal to some minimum) of
+     *  elements drawn from some sequence with no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s with length at least {@code minSize} with no repetitions created from
+     * {@code xs}
+     */
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLexAtLeast(int minSize, @NotNull List<T> xs) {
+        return map(is -> toList(map(xs::get, is)), subsetIndicesAtLeast(minSize, xs.size()));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with a minimum size with elements from a given
+     * {@code String} with no repetitions. The {@code String}s are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result contains every sorted {@code String} (with a length greater than or equal to some minimum) of
+     *  characters drawn from some sequence with no repetitions.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which elements are selected
+     * @return all sorted {@code String}s with length at least {@code minSize} with no repetitions created from
+     * {@code s}
+     */
+    @Override
+    public @NotNull Iterable<String> stringSubsetsLexAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsLexAtLeast(minSize, toList(s)));
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
         return null;
