@@ -5390,7 +5390,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLexAtLeast(int minSize, @NotNull List<T> xs) {
-        return map(is -> toList(map(xs::get, is)), subsetIndicesAtLeast(minSize, xs.size()));
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
+        if (xs.size() == 1) {
+            T first = xs.get(0);
+            first.compareTo(first);
+        }
+        List<T> sorted = sort(xs);
+        return map(is -> toList(map(sorted::get, is)), subsetIndicesAtLeast(minSize, xs.size()));
     }
 
     /**
