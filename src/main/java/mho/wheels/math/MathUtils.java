@@ -266,7 +266,7 @@ public final class MathUtils {
         return fallingFactorial(n, k).divide(factorial(k));
     }
 
-    public static @NotNull BigInteger subsetCount(@NotNull BigInteger n, int minSize) {
+    public static @NotNull BigInteger subsetCount(int minSize, @NotNull BigInteger n) {
         return sumBigInteger(
                 map(k -> binomialCoefficient(n, k.intValueExact()), range(BigInteger.valueOf(minSize), n))
         );

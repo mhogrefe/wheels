@@ -265,6 +265,10 @@ public class ExhaustiveProviderProperties {
             propertiesSubsetSextuplesLex();
             propertiesSubsetSeptuplesLex();
             propertiesStringSubsetsLex_int_String();
+            propertiesSubsetsLex_List();
+            propertiesStringSubsetsLex_String();
+            propertiesSubsetsLexAtLeast();
+            propertiesStringSubsetsLexAtLeast();
         }
         System.out.println("Done");
     }
@@ -4564,10 +4568,7 @@ public class ExhaustiveProviderProperties {
                 if (lt(limit, BigInteger.valueOf(LIMIT))) {
                     assertTrue(
                             xs,
-                            IterableUtils.equal(
-                                    filter(p -> IterableUtils.unique(Pair.toList(p)), EP.pairsLex(xs, xs)),
-                                    pairsList
-                            )
+                            IterableUtils.equal(filter(p -> unique(Pair.toList(p)), EP.pairsLex(xs, xs)), pairsList)
                     );
                 }
             }
@@ -4620,7 +4621,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(t -> IterableUtils.unique(Triple.toList(t)), EP.triplesLex(xs, xs, xs)),
+                                    filter(t -> unique(Triple.toList(t)), EP.triplesLex(xs, xs, xs)),
                                     triplesList
                             )
                     );
@@ -4687,10 +4688,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            q -> IterableUtils.unique(Quadruple.toList(q)),
-                                            EP.quadruplesLex(xs, xs, xs, xs)
-                                    ),
+                                    filter(q -> unique(Quadruple.toList(q)), EP.quadruplesLex(xs, xs, xs, xs)),
                                     quadruplesList
                             )
                     );
@@ -4760,10 +4758,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            q -> IterableUtils.unique(Quintuple.toList(q)),
-                                            EP.quintuplesLex(xs, xs, xs, xs, xs)
-                                    ),
+                                    filter(q -> unique(Quintuple.toList(q)), EP.quintuplesLex(xs, xs, xs, xs, xs)),
                                     quintuplesList
                             )
                     );
@@ -4837,10 +4832,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            s -> IterableUtils.unique(Sextuple.toList(s)),
-                                            EP.sextuplesLex(xs, xs, xs, xs, xs, xs)
-                                    ),
+                                    filter(s -> unique(Sextuple.toList(s)), EP.sextuplesLex(xs, xs, xs, xs, xs, xs)),
                                     sextuplesList
                             )
                     );
@@ -4919,7 +4911,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            s -> IterableUtils.unique(Septuple.toList(s)),
+                                            s -> unique(Septuple.toList(s)),
                                             EP.septuplesLex(xs, xs, xs, xs, xs, xs, xs)
                                     ),
                                     septuplesList
@@ -6222,10 +6214,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            p -> IterableUtils.weaklyIncreasing(Pair.toList(p)),
-                                            EP.pairsLex(sorted, sorted)
-                                    ),
+                                    filter(p -> weaklyIncreasing(Pair.toList(p)), EP.pairsLex(sorted, sorted)),
                                     pairsList
                             )
                     );
@@ -6287,7 +6276,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            t -> IterableUtils.weaklyIncreasing(Triple.toList(t)),
+                                            t -> weaklyIncreasing(Triple.toList(t)),
                                             EP.triplesLex(sorted, sorted, sorted)
                                     ),
                                     triplesList
@@ -6353,7 +6342,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            q -> IterableUtils.weaklyIncreasing(Quadruple.toList(q)),
+                                            q -> weaklyIncreasing(Quadruple.toList(q)),
                                             EP.quadruplesLex(sorted, sorted, sorted, sorted)
                                     ),
                                     quadruplesList
@@ -6430,7 +6419,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            q -> IterableUtils.weaklyIncreasing(Quintuple.toList(q)),
+                                            q -> weaklyIncreasing(Quintuple.toList(q)),
                                             EP.quintuplesLex(sorted, sorted, sorted, sorted, sorted)
                                     ),
                                     quintuplesList
@@ -6510,7 +6499,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            s -> IterableUtils.weaklyIncreasing(Sextuple.toList(s)),
+                                            s -> weaklyIncreasing(Sextuple.toList(s)),
                                             EP.sextuplesLex(sorted, sorted, sorted, sorted, sorted, sorted)
                                     ),
                                     sextuplesList
@@ -6593,7 +6582,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            s -> IterableUtils.weaklyIncreasing(Septuple.toList(s)),
+                                            s -> weaklyIncreasing(Septuple.toList(s)),
                                             EP.septuplesLex(sorted, sorted, sorted, sorted, sorted, sorted, sorted)
                                     ),
                                     septuplesList
@@ -6630,7 +6619,7 @@ public class ExhaustiveProviderProperties {
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
-                assertTrue(p, all(s -> IterableUtils.weaklyIncreasing(fromString(s)), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(fromString(s)), stringsList));
                 assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
             }
         }
@@ -6646,10 +6635,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             p,
                             IterableUtils.equal(
-                                    filter(
-                                            s -> IterableUtils.weaklyIncreasing(fromString(s)),
-                                            EP.stringsLex(p.b, sort(p.a))
-                                    ),
+                                    filter(s -> weaklyIncreasing(fromString(s)), EP.stringsLex(p.b, sort(p.a))),
                                     stringsList
                             )
                     );
@@ -6713,7 +6699,7 @@ public class ExhaustiveProviderProperties {
         for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
             List<String> stringsList = toList(take(TINY_LIMIT, EP.stringBagsShortlex(s)));
             assertTrue(s, unique(stringsList));
-            assertTrue(s, all(t -> IterableUtils.weaklyIncreasing(toList(t)), stringsList));
+            assertTrue(s, all(t -> weaklyIncreasing(toList(t)), stringsList));
             assertTrue(s, increasing(new StringShortlexComparator(), stringsList));
         }
     }
@@ -6796,7 +6782,7 @@ public class ExhaustiveProviderProperties {
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             List<String> stringsList = toList(take(TINY_LIMIT, EP.stringBagsShortlexAtLeast(p.b, p.a)));
             assertTrue(p, unique(stringsList));
-            assertTrue(p, all(t -> IterableUtils.weaklyIncreasing(toList(t)), stringsList));
+            assertTrue(p, all(t -> weaklyIncreasing(toList(t)), stringsList));
             assertTrue(p, increasing(new StringShortlexComparator(), stringsList));
         }
 
@@ -7268,7 +7254,7 @@ public class ExhaustiveProviderProperties {
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
-                assertTrue(p, all(s -> IterableUtils.weaklyIncreasing(toList(s)), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(toList(s)), stringsList));
                 assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
             }
         }
@@ -7308,7 +7294,7 @@ public class ExhaustiveProviderProperties {
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
             assertEquals(i, head(stringsList), charsToString(replicate(i, head(EP.characters()))));
             assertTrue(i, all(s -> s.length() == i, stringsList));
-            assertTrue(i, all(s -> IterableUtils.weaklyIncreasing(toList(s)), stringsList));
+            assertTrue(i, all(s -> weaklyIncreasing(toList(s)), stringsList));
             assertTrue(i, unique(stringsList));
         }
 
@@ -7629,10 +7615,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            p -> IterableUtils.weaklyIncreasing(Pair.toList(p)),
-                                            EP.distinctPairsLex(sorted)
-                                    ),
+                                    filter(p -> weaklyIncreasing(Pair.toList(p)), EP.distinctPairsLex(sorted)),
                                     pairsList
                             )
                     );
@@ -7697,10 +7680,7 @@ public class ExhaustiveProviderProperties {
                     assertTrue(
                             xs,
                             IterableUtils.equal(
-                                    filter(
-                                            p -> IterableUtils.weaklyIncreasing(Triple.toList(p)),
-                                            EP.distinctTriplesLex(sorted)
-                                    ),
+                                    filter(p -> weaklyIncreasing(Triple.toList(p)), EP.distinctTriplesLex(sorted)),
                                     triplesList
                             )
                     );
@@ -7778,7 +7758,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            p -> IterableUtils.weaklyIncreasing(Quadruple.toList(p)),
+                                            p -> weaklyIncreasing(Quadruple.toList(p)),
                                             EP.distinctQuadruplesLex(sorted)
                                     ),
                                     quadruplesList
@@ -7861,7 +7841,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            p -> IterableUtils.weaklyIncreasing(Quintuple.toList(p)),
+                                            p -> weaklyIncreasing(Quintuple.toList(p)),
                                             EP.distinctQuintuplesLex(sorted)
                                     ),
                                     quintuplesList
@@ -7948,7 +7928,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            p -> IterableUtils.weaklyIncreasing(Sextuple.toList(p)),
+                                            p -> weaklyIncreasing(Sextuple.toList(p)),
                                             EP.distinctSextuplesLex(sorted)
                                     ),
                                     sextuplesList
@@ -8039,7 +8019,7 @@ public class ExhaustiveProviderProperties {
                             xs,
                             IterableUtils.equal(
                                     filter(
-                                            p -> IterableUtils.weaklyIncreasing(Septuple.toList(p)),
+                                            p -> weaklyIncreasing(Septuple.toList(p)),
                                             EP.distinctSeptuplesLex(sorted)
                                     ),
                                     septuplesList
@@ -8076,7 +8056,7 @@ public class ExhaustiveProviderProperties {
                 }
                 assertEquals(p, stringsList.size(), stringsLength.intValueExact());
                 assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
-                assertTrue(p, all(s -> IterableUtils.weaklyIncreasing(fromString(s)), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(fromString(s)), stringsList));
                 assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
             }
         }
@@ -8094,7 +8074,7 @@ public class ExhaustiveProviderProperties {
                             p,
                             IterableUtils.equal(
                                     filter(
-                                            s -> IterableUtils.weaklyIncreasing(fromString(s)),
+                                            s -> weaklyIncreasing(fromString(s)),
                                             EP.distinctStringsLex(p.b, sort(p.a))
                                     ),
                                     stringsList
@@ -8119,6 +8099,187 @@ public class ExhaustiveProviderProperties {
                 EP.stringSubsetsLex(p.b, p.a);
                 fail(p);
             } catch (ArithmeticException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetsLex_List() {
+        initialize("subsetsLex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<List<Integer>> lists = EP.subsetsLex(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!xs.isEmpty()) {
+                    assertEquals(xs, head(listsList), Collections.emptyList());
+                    assertEquals(xs, last(listsList), Collections.singletonList(maximum(xs)));
+                }
+                assertEquals(xs, listsList.size(), listsLength.intValueExact());
+                assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.subsetsLex(xs));
+                assertTrue(xs, unique(listsList));
+                assertTrue(xs, increasing(new LexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).listsWithElement(null, P.integersGeometric()))) {
+            try {
+                EP.subsetsLex(xs);
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsLex_String() {
+        initialize("stringSubsets(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> strings = EP.stringSubsetsLex(s);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = BigInteger.ONE.shiftLeft(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!s.isEmpty()) {
+                    assertEquals(s, head(stringsList), "");
+                    assertEquals(s, last(stringsList), Character.toString(maximum(s)));
+                }
+                assertEquals(s, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(s, all(ys -> isSubsetOf(ys, s), stringsList));
+                assertTrue(s, all(t -> weaklyIncreasing(toList(t)), stringsList));
+            }
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            BigInteger stringsLength = BigInteger.ONE.shiftLeft(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsetsLex(s));
+                assertTrue(s, unique(stringsList));
+                assertTrue(s, increasing(stringsList));
+            }
+        }
+    }
+
+    private static void propertiesSubsetsLexAtLeast() {
+        initialize("subsetsLexAtLeast(int, List<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.subsetsLexAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsLength.equals(BigInteger.ZERO)) {
+                    assertEquals(p, head(listsList), toList(take(p.b, sort(p.a))));
+                    assertEquals(p, last(listsList), reverse(take(max(p.b, 1), reverse(sort(p.a)))));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.subsetsLexAtLeast(p.b, p.a));
+                assertTrue(p, unique(listsList));
+                assertTrue(p, increasing(new LexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<List<Integer>> xss = EP.subsetsLexAtLeast(i, Collections.<Integer>emptyList());
+            testHasNext(xss);
+            assertEquals(i, toList(xss), Collections.emptyList());
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.subsetsLexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).listsWithElement(null, P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.subsetsLexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsLexAtLeast() {
+        initialize("stringSubsetsLexAtLeast(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringSubsetsLexAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(strings);
+                if (!stringsLength.equals(BigInteger.ZERO)) {
+                    assertEquals(p, head(stringsList), take(p.b, sort(p.a)));
+                    assertEquals(p, last(stringsList), reverse(take(max(p.b, 1), reverse(sort(p.a)))));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(toList(s)), stringsList));
+                assertTrue(p, all(xs -> xs.length() >= p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsetsLexAtLeast(p.b, p.a));
+                assertTrue(p, unique(stringsList));
+                assertTrue(p, increasing(stringsList));
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<String> ss = EP.stringSubsetsLexAtLeast(i, "");
+            testHasNext(ss);
+            assertEquals(i, toList(ss), Collections.emptyList());
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringSubsetsLexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }
