@@ -5490,6 +5490,9 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             int minSize,
             @NotNull List<T> xs
     ) {
+        if (minSize < 0) {
+            throw new IllegalArgumentException("minSize cannot be negative. Invalid minSize: " + minSize);
+        }
         return concatMap(i -> subsetsLex(i, xs), range(minSize, xs.size()));
     }
 

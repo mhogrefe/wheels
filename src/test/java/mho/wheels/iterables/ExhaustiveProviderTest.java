@@ -8737,6 +8737,134 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void subsetsShortlex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetsShortlex(readIntegerList(input)), output);
+    }
+
+    private static void subsetsShortlex_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetsShortlex(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetsShortlex() {
+        subsetsShortlex_helper("[]", "[[]]");
+        subsetsShortlex_helper("[5]", "[[], [5]]");
+        subsetsShortlex_helper("[1, 2, 3]", "[[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
+        subsetsShortlex_helper("[1, 2, 2, 3]",
+                "[[], [1], [2], [2], [3], [1, 2], [1, 2], [1, 3], [2, 2], [2, 3], [2, 3], [1, 2, 2], [1, 2, 3]," +
+                " [1, 2, 3], [2, 2, 3], [1, 2, 2, 3]]");
+        subsetsShortlex_fail_helper("[1, null, 3]");
+        subsetsShortlex_fail_helper("[null]");
+    }
+
+    private static void stringSubsetsShortlex_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsShortlex(input), output);
+    }
+
+    @Test
+    public void testStringSubsetsShortlex() {
+        stringSubsetsShortlex_helper("", "[]");
+        aeq(length(P.stringSubsetsShortlex("")), 1);
+        stringSubsetsShortlex_helper("a", "[, a]");
+        stringSubsetsShortlex_helper("abc", "[, a, b, c, ab, ac, bc, abc]");
+        stringSubsetsShortlex_helper("abbc","[, a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
+        stringSubsetsShortlex_helper("Mississippi",
+                "[, M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, ...]");
+    }
+
+    private static void subsetsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
+    }
+
+    @Test
+    public void testSubsetsShortlexAtLeast() {
+        subsetsShortlexAtLeast_helper(0, "[]", "[[]]");
+        subsetsShortlexAtLeast_helper(1, "[]", "[]");
+        subsetsShortlexAtLeast_helper(2, "[]", "[]");
+        subsetsShortlexAtLeast_helper(3, "[]", "[]");
+
+        subsetsShortlexAtLeast_helper(0, "[5]", "[[], [5]]");
+        subsetsShortlexAtLeast_helper(1, "[5]", "[[5]]");
+        subsetsShortlexAtLeast_helper(2, "[5]", "[]");
+        subsetsShortlexAtLeast_helper(3, "[5]", "[]");
+
+        subsetsShortlexAtLeast_helper(0, "[1, 2, 3]", "[[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
+        subsetsShortlexAtLeast_helper(1, "[1, 2, 3]", "[[1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]]");
+        subsetsShortlexAtLeast_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3], [1, 2, 3]]");
+        subsetsShortlexAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+
+        try {
+            P.subsetsShortlexAtLeast(-1, Collections.<Integer>emptyList());
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.subsetsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            toList(P.subsetsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
+            fail();
+        } catch (NullPointerException ignored) {}
+        try {
+            toList(P.subsetsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    private static void stringSubsetsShortlexAtLeast_helper(
+            int minSize,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsShortlexAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testStringSubsetsShortlexAtLeast() {
+        stringSubsetsShortlexAtLeast_helper(0, "", "[]");
+        aeq(length(P.stringSubsetsShortlexAtLeast(0, "")), 1);
+        stringSubsetsShortlexAtLeast_helper(1, "", "[]");
+        aeq(length(P.stringSubsetsShortlexAtLeast(1, "")), 0);
+        stringSubsetsShortlexAtLeast_helper(2, "", "[]");
+        aeq(length(P.stringSubsetsShortlexAtLeast(2, "")), 0);
+        stringSubsetsShortlexAtLeast_helper(3, "", "[]");
+        aeq(length(P.stringSubsetsShortlexAtLeast(3, "")), 0);
+        stringSubsetsShortlexAtLeast_helper(0, "a", "[, a]");
+        stringSubsetsShortlexAtLeast_helper(1, "a", "[a]");
+        stringSubsetsShortlexAtLeast_helper(2, "a", "[]");
+        stringSubsetsShortlexAtLeast_helper(3, "a", "[]");
+        stringSubsetsShortlexAtLeast_helper(0, "abc", "[, a, b, c, ab, ac, bc, abc]");
+        stringSubsetsShortlexAtLeast_helper(1, "abc", "[a, b, c, ab, ac, bc, abc]");
+        stringSubsetsShortlexAtLeast_helper(2, "abc", "[ab, ac, bc, abc]");
+        stringSubsetsShortlexAtLeast_helper(3, "abc", "[abc]");
+        stringSubsetsShortlexAtLeast_helper(0, "abbc",
+                "[, a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
+        stringSubsetsShortlexAtLeast_helper(1, "abbc",
+                "[a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
+        stringSubsetsShortlexAtLeast_helper(2, "abbc", "[ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
+        stringSubsetsShortlexAtLeast_helper(3, "abbc", "[abb, abc, abc, bbc, abbc]");
+        stringSubsetsShortlexAtLeast_helper(0, "Mississippi",
+                "[, M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, ...]");
+        stringSubsetsShortlexAtLeast_helper(1, "Mississippi",
+                "[M, i, i, i, i, p, p, s, s, s, s, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, ...]");
+        stringSubsetsShortlexAtLeast_helper(2, "Mississippi",
+                "[Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ip, ip, is, is, is, is, ii, ...]");
+        stringSubsetsShortlexAtLeast_helper(3, "Mississippi",
+                "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
+                " Mip, ...]");
+        try {
+            P.stringSubsetsShortlexAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringSubsetsShortlexAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
