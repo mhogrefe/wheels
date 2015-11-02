@@ -5424,6 +5424,99 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, subsetsLexAtLeast(minSize, toList(s)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with elements from a given {@code List} with no
+     * repetitions. The {@code List}s are in shortlex order; that is, shorter {@code List}s precede longer
+     * {@code List}s, and {@code List}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code xs}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all sorted {@code List}s with no repetitions created from {@code xs}
+     */
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlex(@NotNull List<T> xs) {
+        return concatMap(i -> subsetsLex(i, xs), range(0, xs.size()));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with characters from a given {@code String}
+     * with no repetitions. The {@code String}s are in shortlex order; that is, shorter {@code String}s precede longer
+     * {@code String}s, and {@code String}s of the same length are ordered lexicographically. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i=0</sub><sup>n</sup><sub>|{@code s}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param s the {@code String} from which characters are selected
+     * @return all sorted {@code Strings}s with no repetitions created from {@code s}
+     */
+    @Override
+    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsShortlex(toList(s)));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. The {@code List}s are in shortlex order; that is, shorter {@code List}s
+     * precede longer {@code List}s, and {@code List}s of the same length are ordered lexicographically. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s with length at least {@code minSize} with no repetitions created from
+     * {@code xs}
+     */
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlexAtLeast(
+            int minSize,
+            @NotNull List<T> xs
+    ) {
+        return concatMap(i -> subsetsLex(i, xs), range(minSize, xs.size()));
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code String}s with a minimum size with elements from a given
+     * {@code String} with no repetitions. The {@code String}s are in shortlex order; that is, shorter {@code String}s
+     * precede longer {@code String}s, and {@code String}s of the same length are ordered lexicographically. Does not
+     * support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result is not null.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code s}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code String}s
+     * @param s the {@code String} from which elements are selected
+     * @return all sorted {@code String}s with length at least {@code minSize} with no repetitions created from
+     * {@code s}
+     */
+    @Override
+    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsShortlexAtLeast(minSize, toList(s)));
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
         return null;
@@ -5459,22 +5552,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
-    }
-
-    public @NotNull <T> Iterable<List<T>> subsetsShortlex(@NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
-        return null;
-    }
-
-    public @NotNull <T> Iterable<List<T>> subsetsShortlexAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
         return null;
     }
 
