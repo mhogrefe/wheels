@@ -5442,6 +5442,10 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlex(@NotNull List<T> xs) {
+        if (xs.size() == 1) {
+            T first = xs.get(0);
+            first.compareTo(first);
+        }
         return concatMap(i -> subsetsLex(i, xs), range(0, xs.size()));
     }
 

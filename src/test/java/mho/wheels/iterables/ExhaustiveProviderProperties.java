@@ -269,6 +269,10 @@ public class ExhaustiveProviderProperties {
             propertiesStringSubsetsLex_String();
             propertiesSubsetsLexAtLeast();
             propertiesStringSubsetsLexAtLeast();
+            propertiesSubsetsShortlex();
+            propertiesStringSubsetsShortlex();
+            propertiesSubsetsShortlexAtLeast();
+            propertiesStringSubsetsShortlexAtLeast();
         }
         System.out.println("Done");
     }
@@ -8139,7 +8143,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesStringSubsetsLex_String() {
-        initialize("stringSubsets(String)");
+        initialize("stringSubsetsLex(String)");
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             Iterable<String> strings = EP.stringSubsetsLex(s);
             testNoRemove(TINY_LIMIT, strings);
@@ -8278,6 +8282,181 @@ public class ExhaustiveProviderProperties {
         for (Pair<String, Integer> p : take(LIMIT, psFail)) {
             try {
                 EP.stringSubsetsLexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesSubsetsShortlex() {
+        initialize("subsetsShortlex(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            Iterable<List<Integer>> lists = EP.subsetsShortlex(xs);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(lists);
+                List<List<Integer>> listsList = toList(lists);
+                if (!xs.isEmpty()) {
+                    assertEquals(xs, head(listsList), Collections.emptyList());
+                    assertEquals(xs, last(listsList), sort(xs));
+                }
+                assertEquals(xs, listsList.size(), listsLength.intValueExact());
+                assertTrue(xs, all(ys -> isSubsetOf(ys, xs), listsList));
+                assertTrue(xs, all(IterableUtils::weaklyIncreasing, listsList));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.integersGeometric()))) {
+            BigInteger listsLength = BigInteger.ONE.shiftLeft(xs.size());
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.subsetsShortlex(xs));
+                assertTrue(xs, unique(listsList));
+                assertTrue(xs, increasing(new ShortlexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+            }
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).listsWithElement(null, P.integersGeometric()))) {
+            try {
+                toList(EP.subsetsShortlex(xs));
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsShortlex() {
+        initialize("stringSubsetsShortlex(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> strings = EP.stringSubsetsShortlex(s);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = BigInteger.ONE.shiftLeft(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!s.isEmpty()) {
+                    assertEquals(s, head(stringsList), "");
+                    assertEquals(s, last(stringsList), sort(s));
+                }
+                assertEquals(s, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(s, all(ys -> isSubsetOf(ys, s), stringsList));
+                assertTrue(s, all(t -> weaklyIncreasing(toList(t)), stringsList));
+            }
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            BigInteger stringsLength = BigInteger.ONE.shiftLeft(s.length());
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsetsShortlex(s));
+                assertTrue(s, unique(stringsList));
+                assertTrue(s, increasing(new StringShortlexComparator(), stringsList));
+            }
+        }
+    }
+
+    private static void propertiesSubsetsShortlexAtLeast() {
+        initialize("subsetsShortlexAtLeast(int, List<T>)");
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            Iterable<List<Integer>> lists = EP.subsetsShortlexAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(lists);
+                if (!listsLength.equals(BigInteger.ZERO)) {
+                    assertEquals(p, head(listsList), toList(take(p.b, sort(p.a))));
+                    assertEquals(p, last(listsList), sort(p.a));
+                }
+                assertEquals(p, listsList.size(), listsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), listsList));
+                assertTrue(p, all(IterableUtils::weaklyIncreasing, listsList));
+                assertTrue(p, all(xs -> xs.size() >= p.b, listsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(
+                P.withScale(4).distinctLists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            BigInteger listsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.size()));
+            if (lt(listsLength, BigInteger.valueOf(LIMIT))) {
+                List<List<Integer>> listsList = toList(EP.subsetsShortlexAtLeast(p.b, p.a));
+                assertTrue(p, unique(listsList));
+                assertTrue(p, increasing(new ShortlexComparator<>(), map(ys -> ((Iterable<Integer>) ys), listsList)));
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<List<Integer>> xss = EP.subsetsShortlexAtLeast(i, Collections.<Integer>emptyList());
+            testHasNext(xss);
+            assertEquals(i, toList(xss), Collections.emptyList());
+        }
+
+        Iterable<Pair<List<Integer>, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.subsetsShortlexAtLeast(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).listsWithElement(null, P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+    }
+
+    private static void propertiesStringSubsetsShortlexAtLeast() {
+        initialize("stringSubsetsShortlexAtLeast(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringSubsetsShortlexAtLeast(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(strings);
+                if (!stringsLength.equals(BigInteger.ZERO)) {
+                    assertEquals(p, head(stringsList), take(p.b, sort(p.a)));
+                    assertEquals(p, last(stringsList), sort(p.a));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(toList(s)), stringsList));
+                assertTrue(p, all(xs -> xs.length() >= p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = MathUtils.subsetCount(p.b, BigInteger.valueOf(p.a.length()));
+            if (lt(stringsLength, BigInteger.valueOf(LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsetsShortlexAtLeast(p.b, p.a));
+                assertTrue(p, unique(stringsList));
+                assertTrue(p, increasing(new StringShortlexComparator(), stringsList));
+            }
+        }
+
+        for (int i : take(LIMIT, P.positiveIntegersGeometric())) {
+            Iterable<String> ss = EP.stringSubsetsShortlexAtLeast(i, "");
+            testHasNext(ss);
+            assertEquals(i, toList(ss), Collections.emptyList());
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringSubsetsShortlexAtLeast(p.b, p.a);
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
