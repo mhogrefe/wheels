@@ -2170,6 +2170,61 @@ public abstract strictfp class IterableProvider {
         return stringSubsetsAtLeast(minSize, s);
     }
 
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable} with no repetitions. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlex(@NotNull List<T> xs) {
+        return subsets(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
+     * The {@code String}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
+        return stringSubsets(s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable} with
+     * no repetitions. The {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlexAtLeast(
+            int minSize,
+            @NotNull List<T> xs
+    ) {
+        return subsetsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}
+     * with no repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
+        return stringSubsetsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s of a given size containing elements from a given {@code Iterable} with no
+     * repetitions.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
 
     /**
@@ -2231,55 +2286,24 @@ public abstract strictfp class IterableProvider {
     );
 
     /**
-     * Generates all unordered {@code List}s containing elements from a given {@code Iterable} with no repetitions. The
-     * {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     * Generates all unordered {@code String}s of a given size containing characters from a given {@code String} with
+     * no repetitons.
      *
-     * @param xs a {@code List} of elements
-     * @param <T> the type of values in the {@code List}s
-     */
-    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlex(@NotNull List<T> xs) {
-        return subsets(uniformSample(xs));
-    }
-
-    /**
-     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
-     * The {@code String}s are ordered in shortlex order (by length, then lexicographically).
-     *
+     * @param size the length of each of the generated {@code String}s
      * @param s a {@code String}
      */
-    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
-        return stringSubsets(s);
+    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsets(size, uniformSample(s)));
     }
 
     /**
-     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable} with
-     * no repetitions. The {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     * Generates all unordered {@code String}s of a given size with no repetitons.
      *
-     * @param minSize the minimum size of the resulting {@code List}s
-     * @param xs a {@code List} of elements
-     * @param <T> the type of values in the {@code List}s
+     * @param size the length of each of the generated {@code String}s
      */
-    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlexAtLeast(
-            int minSize,
-            @NotNull List<T> xs
-    ) {
-        return subsetsAtLeast(minSize, uniformSample(xs));
+    public @NotNull Iterable<String> stringSubsets(int size) {
+        return map(IterableUtils::charsToString, subsets(size, characters()));
     }
-
-    /**
-     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}
-     * with no repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically).
-     *
-     * @param minSize the minimum size of the resulting {@code String}s
-     * @param s a {@code String}
-     */
-    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
-        return stringSubsetsAtLeast(minSize, s);
-    }
-
-    public abstract @NotNull Iterable<String> stringSubsets(int size, @NotNull String s);
-
-    public abstract @NotNull Iterable<String> stringSubsets(int size);
 
     public abstract @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs);
 
