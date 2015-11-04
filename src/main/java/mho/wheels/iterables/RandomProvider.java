@@ -3905,7 +3905,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
         return null;
     }
 
@@ -3944,16 +3944,6 @@ public final strictfp class RandomProvider extends IterableProvider {
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsets(int size) {
         return null;
     }
 

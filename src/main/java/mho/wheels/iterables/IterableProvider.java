@@ -2225,7 +2225,7 @@ public abstract strictfp class IterableProvider {
      * @param xs an {@code Iterable} of elements
      * @param <T> the type of values in the {@code List}s
      */
-    public abstract @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
 
     /**
      * Generates all unordered {@code Pair}s of elements from an {@code Iterable} with no repetitions.

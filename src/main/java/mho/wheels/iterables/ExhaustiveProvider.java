@@ -4678,8 +4678,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * A helper method for generating bags (multisets). Given an {@code Iterable} of lists of integers,
      * {@code originalIndices}, this method reinterprets the indices to only generate sorted lists. For example,
      * consider the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these
-     * indices. Since we don't want any repetitions, we'll use the cumulative sums of these indices, which are
-     * [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or [1, 1, 6, 9]. This corresponds to [a, a, f, i].
+     * indices. We'll use the cumulative sums of these indices, which are [1, 1 + 0, 1 + 0 + 5, 1 + 0 + 5 + 3], or
+     * [1, 1, 6, 9]. This corresponds to [a, a, f, i].
      *
      * <ul>
      *  <li>{@code xs} cannot be null.</li>
@@ -5524,57 +5524,153 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(IterableUtils::charsToString, subsetsShortlexAtLeast(minSize, toList(s)));
     }
 
+    /**
+     * A helper method for generating subsets. Given an {@code Iterable} of lists of integers, {@code originalIndices},
+     * this method reinterprets the indices to only generate sorted lists with no repetitions. For example, consider
+     * the list [1, 0, 5, 3]. Let's select a list of length 4 from the characters 'a' through 'z' using these indices.
+     * We'll use the cumulative sums of these indices plus the index, resulting in
+     * [0 + 1, 1 + 1 + 0, 2 + 1 + 0 + 5, 3 + 1 + 0 + 5 + 3], or [1, 2, 7, 10]. This corresponds to [a, b, g, j].
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
+     *  {@code Integer}s.</li>
+     *  <li>{@code outputSizeFunction} cannot be null.</li>
+     *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
+     *  nonnegative integer when applied to {@code length(xs)}.</li>
+     *  <li>The number of lists in {@code originalSize} that correspond to a valid subset must be at least
+     *  {@code outputSizeFunction.apply(length(xs))} (or infinite if {@code xs} is infinite or
+     *  {@code outputSizeFunction.apply(length(xs))} is empty).</li>
+     * </ul>
+     *
+     * @param xs an {@code Iterable}
+     * @param originalIndices an {@code Iterable} of lists, each list corresponding to a sorted list of elements from
+     * {@code xs} with no repetitions
+     * @param outputSizeFunction The total number of generated lists as a function of the size of {@code xs}
+     * @param <T> the type of the elements in {@code xs}
+     * @return sorted lists of elements from {@code xs} with no repetitions
+     */
+    private static @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetIndices(
+            @NotNull Iterable<T> xs,
+            @NotNull Iterable<List<Integer>> originalIndices,
+            @NotNull Function<Integer, Optional<BigInteger>> outputSizeFunction
+    ) {
+        return () -> new EventuallyKnownSizeIterator<List<T>>() {
+            private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
+            private final @NotNull Iterator<List<Integer>> indices = originalIndices.iterator();
+
+            @Override
+            public List<T> advance() {
+                while (true) {
+                    List<Integer> next = indices.next();
+                    List<Integer> cumulativeIndices = next.isEmpty() ?
+                            Collections.emptyList() :
+                            toList(scanl1((x, y) -> x + y + 1, next));
+                    if (!cumulativeIndices.isEmpty() && !cxs.get(last(cumulativeIndices)).isPresent()) {
+                        continue;
+                    }
+                    List<T> output = toList(map(i -> cxs.get(i).get(), cumulativeIndices));
+                    if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
+                        Optional<BigInteger> outputSize = outputSizeFunction.apply(cxs.knownSize().get());
+                        if (outputSize.isPresent()) {
+                            setOutputSize(outputSize.get());
+                        }
+                    }
+                    if (output.size() == 1) {
+                        T first = output.get(0);
+                        first.compareTo(first); //catch incomparable single element; sort will catch the other cases
+                    }
+                    return sort(output);
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s of a given length with elements from a given
+     * {@code Iterable} with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>All of the result's elements have the same length and are sorted. None are empty, unless the result
+     *  consists entirely of one empty element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>{@code size}</sub>
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all sorted {@code List}s of a given length created from {@code xs} with no repetitions
+     */
+    @Override
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size cannot be negative. Invalid size: " + size);
+        }
+        if (size == 0) return Collections.singletonList(Collections.emptyList());
+        if (isEmpty(xs)) return Collections.emptyList();
+        return subsetIndices(
+                xs,
+                lists(size, naturalIntegers()),
+                n -> Optional.of(MathUtils.binomialCoefficient(BigInteger.valueOf(n), size))
+        );
+    }
+
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
-        return null;
+        return map(list -> new Pair<>(list.get(0), list.get(1)), subsets(2, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
-        return null;
+        return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsets(3, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsets(4, xs));
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Quintuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4)),
+                subsets(5, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return map(
+                list -> new Sextuple<>(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5)),
+                subsets(6, xs)
+        );
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
-    }
-
-    @Override
-    public @NotNull <T> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsets(int size) {
-        return null;
+        return map(
+                list -> new Septuple<>(
+                        list.get(0),
+                        list.get(1),
+                        list.get(2),
+                        list.get(3),
+                        list.get(4),
+                        list.get(5),
+                        list.get(6)
+                ),
+                subsets(7, xs)
+        );
     }
 
     @Override
