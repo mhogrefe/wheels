@@ -5535,6 +5535,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code xs} cannot be null.</li>
      *  <li>{@code originalIndices} cannot contain any nulls, and all of its elements can only contain nonnegative
      *  {@code Integer}s.</li>
+     *  <li>{@code requiredSize} cannot be null.</li>
      *  <li>{@code outputSizeFunction} cannot be null.</li>
      *  <li>If {@code xs} is finite, {@code outputSizeFunction} must return a either an empty {@code Optional} or a
      *  nonnegative integer when applied to {@code length(xs)}.</li>
@@ -5546,6 +5547,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * @param xs an {@code Iterable}
      * @param originalIndices an {@code Iterable} of lists, each list corresponding to a sorted list of elements from
      * {@code xs} with no repetitions
+     * @param requiredSize the minimum size of any of the generated lists
      * @param outputSizeFunction The total number of generated lists as a function of the size of {@code xs}
      * @param <T> the type of the elements in {@code xs}
      * @return sorted lists of elements from {@code xs} with no repetitions
@@ -5553,11 +5555,19 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private static @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetIndices(
             @NotNull Iterable<T> xs,
             @NotNull Iterable<List<Integer>> originalIndices,
+            @NotNull Optional<Integer> requiredSize,
             @NotNull Function<Integer, Optional<BigInteger>> outputSizeFunction
     ) {
         return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
             private final @NotNull Iterator<List<Integer>> indices = originalIndices.iterator();
+            {
+                if (requiredSize.isPresent() && requiredSize.get() != 0) {
+                    if (!cxs.get(requiredSize.get() - 1).isPresent()) {
+                        setOutputSize(BigInteger.ZERO);
+                    }
+                }
+            }
 
             @Override
             public List<T> advance() {
@@ -5614,6 +5624,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return subsetIndices(
                 xs,
                 lists(size, naturalIntegers()),
+                Optional.of(size),
                 n -> Optional.of(MathUtils.binomialCoefficient(BigInteger.valueOf(n), size))
         );
     }

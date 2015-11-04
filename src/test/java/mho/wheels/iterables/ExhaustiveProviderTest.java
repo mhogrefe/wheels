@@ -8865,6 +8865,101 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void subsets_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.subsets(size, readIntegerList(input)), output);
+    }
+
+    private static void subsets_int_Iterable_helper(
+            int size,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.subsets(size, input), output);
+    }
+
+    private static void subsets_int_Iterable_fail_helper(int size, @NotNull String input) {
+        try {
+            toList(P.subsets(size, readIntegerListWithNulls(input)));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsets_int_List() {
+        subsets_int_Iterable_helper(0, "[]", "[[]]");
+        subsets_int_Iterable_helper(1, "[]", "[]");
+        subsets_int_Iterable_helper(2, "[]", "[]");
+        subsets_int_Iterable_helper(3, "[]", "[]");
+        subsets_int_Iterable_helper(0, "[5]", "[[]]");
+        subsets_int_Iterable_helper(1, "[5]", "[[5]]");
+        subsets_int_Iterable_helper(2, "[5]", "[]");
+        subsets_int_Iterable_helper(3, "[5]", "[]");
+        subsets_int_Iterable_helper(0, "[1, 2, 3]", "[[]]");
+        subsets_int_Iterable_helper(1, "[1, 2, 3]", "[[1], [2], [3]]");
+        subsets_int_Iterable_helper(2, "[1, 2, 3]", "[[1, 2], [1, 3], [2, 3]]");
+        subsets_int_Iterable_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+        subsets_int_Iterable_helper(0, "[1, 2, 2, 3]", "[[]]");
+        subsets_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
+        subsets_int_Iterable_helper(2, "[1, 2, 2, 3]", "[[1, 2], [1, 2], [2, 2], [2, 3], [1, 3], [2, 3]]");
+        subsets_int_Iterable_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+        subsets_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
+        subsets_int_Iterable_helper(1, P.positiveIntegers(),
+                "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
+                " [19], [20], ...]");
+        subsets_int_Iterable_helper(2, P.positiveIntegers(),
+                "[[1, 2], [1, 3], [2, 3], [2, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 4], [3, 5], [4, 5], [4, 6]," +
+                " [3, 6], [3, 7], [4, 7], [4, 8], [1, 6], [1, 7], [2, 7], [2, 8], ...]");
+        subsets_int_Iterable_helper(3, P.positiveIntegers(),
+                "[[1, 2, 3], [1, 2, 4], [1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [2, 4, 6], [1, 2, 5]," +
+                " [1, 2, 6], [1, 3, 6], [1, 3, 7], [2, 3, 6], [2, 3, 7], [2, 4, 7], [2, 4, 8], [1, 4, 5], [1, 4, 6]," +
+                " [1, 5, 6], [1, 5, 7], ...]");
+        subsets_int_Iterable_helper(0, repeat(1), "[[]]");
+        subsets_int_Iterable_helper(1, repeat(1),
+                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
+                " [1], ...]");
+        subsets_int_Iterable_helper(2, repeat(1),
+                "[[1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]," +
+                " [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1], ...]");
+        subsets_int_Iterable_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], ...]");
+        subsets_int_Iterable_fail_helper(-1, "[]");
+        subsets_int_Iterable_fail_helper(-1, "[1, 2, 3]");
+        subsets_int_Iterable_fail_helper(1, "[1, null, 3]");
+        subsets_int_Iterable_fail_helper(1, "[null]");
+    }
+
+    private static void subsetPairs_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetPairs(readIntegerList(input)), output);
+    }
+
+    private static void subsetPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetPairs(input), output);
+    }
+
+    private static void subsetPairs_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetPairs(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetPairs() {
+        subsetPairs_helper("[]", "[]");
+        subsetPairs_helper("[5]", "[]");
+        subsetPairs_helper("[1, 2, 3, 4]", "[(1, 2), (1, 3), (2, 3), (2, 4), (1, 4), (3, 4)]");
+        subsetPairs_helper("[1, 2, 2, 4]", "[(1, 2), (1, 2), (2, 2), (2, 4), (1, 4), (2, 4)]");
+        subsetPairs_helper(P.naturalIntegers(),
+                "[(0, 1), (0, 2), (1, 2), (1, 3), (0, 3), (0, 4), (1, 4), (1, 5), (2, 3), (2, 4), (3, 4), (3, 5)," +
+                " (2, 5), (2, 6), (3, 6), (3, 7), (0, 5), (0, 6), (1, 6), (1, 7), ...]");
+        subsetPairs_helper(repeat(1),
+                "[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1)," +
+                " (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), (1, 1), ...]");
+        subsetPairs_fail_helper("[1, null, 3]");
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
