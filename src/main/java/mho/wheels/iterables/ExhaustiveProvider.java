@@ -5618,16 +5618,60 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all distinct unordered {@code Pair}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Pair}s of elements from an {@code Iterable} with no repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>2</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
         return map(list -> new Pair<>(list.get(0), list.get(1)), subsets(2, xs));
     }
 
+    /**
+     * Returns all distinct unordered {@code Triple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Triple}s of elements from an {@code Iterable} with no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>3</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
         return map(list -> new Triple<>(list.get(0), list.get(1), list.get(2)), subsets(3, xs));
     }
 
+    /**
+     * Returns all distinct unordered {@code Quadruple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quadruple}s of elements from an {@code Iterable} with no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>4</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
@@ -5635,6 +5679,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(list -> new Quadruple<>(list.get(0), list.get(1), list.get(2), list.get(3)), subsets(4, xs));
     }
 
+    /**
+     * Returns all distinct unordered {@code Quintuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Quintuple}s of elements from an {@code Iterable} with no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>5</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
@@ -5645,6 +5704,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all distinct unordered {@code Sextuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Sextuple}s of elements from an {@code Iterable} with no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>6</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
@@ -5655,6 +5729,21 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns all distinct unordered {@code Septuple}s from an {@code Iterable}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains all sorted {@code Septuple}s of elements from an {@code Iterable} with no
+     *  repetitions.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>7</sub>
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return all distinct unordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
