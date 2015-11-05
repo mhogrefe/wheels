@@ -8960,6 +8960,277 @@ public strictfp class ExhaustiveProviderTest {
         subsetPairs_fail_helper("[1, null, 3]");
     }
 
+    private static void subsetTriples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetTriples(readIntegerList(input)), output);
+    }
+
+    private static void subsetTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetTriples(input), output);
+    }
+
+    private static void subsetTriples_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetTriples(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetTriples() {
+        subsetTriples_helper("[]", "[]");
+        subsetTriples_helper("[5]", "[]");
+        subsetTriples_helper("[1, 2, 3, 4]", "[(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]");
+        subsetTriples_helper("[1, 2, 2, 4]", "[(1, 2, 2), (1, 2, 4), (1, 2, 4), (2, 2, 4)]");
+        subsetTriples_helper(P.naturalIntegers(),
+                "[(0, 1, 2), (0, 1, 3), (0, 2, 3), (0, 2, 4), (1, 2, 3), (1, 2, 4), (1, 3, 4), (1, 3, 5), (0, 1, 4)," +
+                " (0, 1, 5), (0, 2, 5), (0, 2, 6), (1, 2, 5), (1, 2, 6), (1, 3, 6), (1, 3, 7), (0, 3, 4), (0, 3, 5)," +
+                " (0, 4, 5), (0, 4, 6), ...]");
+        subsetTriples_helper(repeat(1),
+                "[(1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1), (1, 1, 1)," +
+                " (1, 1, 1), (1, 1, 1), ...]");
+        subsetTriples_fail_helper("[1, null, 3]");
+    }
+
+    private static void subsetQuadruples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuadruples(readIntegerList(input)), output);
+    }
+
+    private static void subsetQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuadruples(input), output);
+    }
+
+    private static void subsetQuadruples_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetQuadruples(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetQuadruples() {
+        subsetQuadruples_helper("[]", "[]");
+        subsetQuadruples_helper("[5]", "[]");
+        subsetQuadruples_helper("[1, 2, 3, 4]", "[(1, 2, 3, 4)]");
+        subsetQuadruples_helper("[1, 2, 2, 4]", "[(1, 2, 2, 4)]");
+        subsetQuadruples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3), (0, 1, 2, 4), (0, 1, 3, 4), (0, 1, 3, 5), (0, 2, 3, 4), (0, 2, 3, 5), (0, 2, 4, 5)," +
+                " (0, 2, 4, 6), (1, 2, 3, 4), (1, 2, 3, 5), (1, 2, 4, 5), (1, 2, 4, 6), (1, 3, 4, 5), (1, 3, 4, 6)," +
+                " (1, 3, 5, 6), (1, 3, 5, 7), (0, 1, 2, 5), (0, 1, 2, 6), (0, 1, 3, 6), (0, 1, 3, 7), ...]");
+        subsetQuadruples_helper(repeat(1),
+                "[(1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1)," +
+                " (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), (1, 1, 1, 1), ...]");
+        subsetQuadruples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
+    }
+
+    private static void subsetQuintuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuintuples(readIntegerList(input)), output);
+    }
+
+    private static void subsetQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetQuintuples(input), output);
+    }
+
+    private static void subsetQuintuples_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetQuintuples(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetQuintuples() {
+        subsetQuintuples_helper("[]", "[]");
+        subsetQuintuples_helper("[5]", "[]");
+        subsetQuintuples_helper("[1, 2, 3, 4]", "[]");
+        subsetQuintuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 5, 6), (1, 2, 3, 5, 7), (1, 2, 4, 5, 6)," +
+                " (1, 2, 4, 5, 7), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 3, 4, 5, 6), (1, 3, 4, 5, 7)," +
+                " (1, 3, 4, 6, 7), (1, 3, 4, 6, 8), (1, 3, 5, 6, 7), (1, 3, 5, 6, 8), (1, 3, 5, 7, 8)," +
+                " (2, 3, 4, 5, 6), (2, 3, 4, 5, 7), (2, 3, 4, 6, 7), (2, 3, 4, 6, 8), (2, 3, 5, 6, 7), ...]");
+        subsetQuintuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5), (1, 2, 2, 4, 6), (1, 2, 2, 5, 6), (1, 2, 2, 5, 7), (1, 2, 4, 5, 6)," +
+                " (1, 2, 4, 5, 7), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 4, 5, 6), (1, 2, 4, 5, 7)," +
+                " (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8)," +
+                " (2, 2, 4, 5, 6), (2, 2, 4, 5, 7), (2, 2, 4, 6, 7), (2, 2, 4, 6, 8), (2, 2, 5, 6, 7), ...]");
+        subsetQuintuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4), (0, 1, 2, 3, 5), (0, 1, 2, 4, 5), (0, 1, 2, 4, 6), (0, 1, 3, 4, 5)," +
+                " (0, 1, 3, 4, 6), (0, 1, 3, 5, 6), (0, 1, 3, 5, 7), (0, 2, 3, 4, 5), (0, 2, 3, 4, 6)," +
+                " (0, 2, 3, 5, 6), (0, 2, 3, 5, 7), (0, 2, 4, 5, 6), (0, 2, 4, 5, 7), (0, 2, 4, 6, 7)," +
+                " (0, 2, 4, 6, 8), (1, 2, 3, 4, 5), (1, 2, 3, 4, 6), (1, 2, 3, 5, 6), (1, 2, 3, 5, 7), ...]");
+        subsetQuintuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), (1, 1, 1, 1, 1), ...]");
+        subsetQuintuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
+    }
+
+    private static void subsetSextuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSextuples(readIntegerList(input)), output);
+    }
+
+    private static void subsetSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSextuples(input), output);
+    }
+
+    private static void subsetSextuples_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetSextuples(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetSextuples() {
+        subsetSextuples_helper("[]", "[]");
+        subsetSextuples_helper("[5]", "[]");
+        subsetSextuples_helper("[1, 2, 3, 4]", "[]");
+        subsetSextuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6), (1, 2, 3, 4, 5, 7), (1, 2, 3, 4, 6, 7), (1, 2, 3, 4, 6, 8)," +
+                " (1, 2, 3, 5, 6, 7), (1, 2, 3, 5, 6, 8), (1, 2, 3, 5, 7, 8), (1, 2, 4, 5, 6, 7)," +
+                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 3, 4, 5, 6, 7)," +
+                " (1, 3, 4, 5, 6, 8), (1, 3, 4, 5, 7, 8), (1, 3, 4, 6, 7, 8), (1, 3, 5, 6, 7, 8)," +
+                " (2, 3, 4, 5, 6, 7), (2, 3, 4, 5, 6, 8), (2, 3, 4, 5, 7, 8), (2, 3, 4, 6, 7, 8), ...]");
+        subsetSextuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6), (1, 2, 2, 4, 5, 7), (1, 2, 2, 4, 6, 7), (1, 2, 2, 4, 6, 8)," +
+                " (1, 2, 2, 5, 6, 7), (1, 2, 2, 5, 6, 8), (1, 2, 2, 5, 7, 8), (1, 2, 4, 5, 6, 7)," +
+                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 4, 5, 6, 7)," +
+                " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8)," +
+                " (2, 2, 4, 5, 6, 7), (2, 2, 4, 5, 6, 8), (2, 2, 4, 5, 7, 8), (2, 2, 4, 6, 7, 8), ...]");
+        subsetSextuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 6), (0, 1, 2, 3, 5, 6), (0, 1, 2, 3, 5, 7)," +
+                " (0, 1, 2, 4, 5, 6), (0, 1, 2, 4, 5, 7), (0, 1, 2, 4, 6, 7), (0, 1, 2, 4, 6, 8)," +
+                " (0, 1, 3, 4, 5, 6), (0, 1, 3, 4, 5, 7), (0, 1, 3, 4, 6, 7), (0, 1, 3, 4, 6, 8)," +
+                " (0, 1, 3, 5, 6, 7), (0, 1, 3, 5, 6, 8), (0, 1, 3, 5, 7, 8), (0, 1, 3, 5, 7, 9)," +
+                " (0, 2, 3, 4, 5, 6), (0, 2, 3, 4, 5, 7), (0, 2, 3, 4, 6, 7), (0, 2, 3, 4, 6, 8), ...]");
+        subsetSextuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1), ...]");
+        subsetSextuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
+    }
+
+    private static void subsetSeptuples_helper(@NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSeptuples(readIntegerList(input)), output);
+    }
+
+    private static void subsetSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetSeptuples(input), output);
+    }
+
+    private static void subsetSeptuples_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsetSeptuples(readIntegerListWithNulls(input)));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetSeptuples() {
+        subsetSeptuples_helper("[]", "[]");
+        subsetSeptuples_helper("[5]", "[]");
+        subsetSeptuples_helper("[1, 2, 3, 4]", "[]");
+        subsetSeptuples_helper("[1, 2, 3, 4, 5, 6, 7, 8]",
+                "[(1, 2, 3, 4, 5, 6, 7), (1, 2, 3, 4, 5, 6, 8), (1, 2, 3, 4, 5, 7, 8), (1, 2, 3, 4, 6, 7, 8)," +
+                " (1, 2, 3, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 3, 4, 5, 6, 7, 8), (2, 3, 4, 5, 6, 7, 8)]");
+        subsetSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
+                "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 8), (1, 2, 2, 4, 6, 7, 8)," +
+                " (1, 2, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (2, 2, 4, 5, 6, 7, 8)]");
+        subsetSeptuples_helper(P.naturalIntegers(),
+                "[(0, 1, 2, 3, 4, 5, 6), (0, 1, 2, 3, 4, 5, 7), (0, 1, 2, 3, 4, 6, 7), (0, 1, 2, 3, 4, 6, 8)," +
+                " (0, 1, 2, 3, 5, 6, 7), (0, 1, 2, 3, 5, 6, 8), (0, 1, 2, 3, 5, 7, 8), (0, 1, 2, 3, 5, 7, 9)," +
+                " (0, 1, 2, 4, 5, 6, 7), (0, 1, 2, 4, 5, 6, 8), (0, 1, 2, 4, 5, 7, 8), (0, 1, 2, 4, 5, 7, 9)," +
+                " (0, 1, 2, 4, 6, 7, 8), (0, 1, 2, 4, 6, 7, 9), (0, 1, 2, 4, 6, 8, 9), (0, 1, 2, 4, 6, 8, 10)," +
+                " (0, 1, 3, 4, 5, 6, 7), (0, 1, 3, 4, 5, 6, 8), (0, 1, 3, 4, 5, 7, 8), (0, 1, 3, 4, 5, 7, 9), ...]");
+        subsetSeptuples_helper(repeat(1),
+                "[(1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1)," +
+                " (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), (1, 1, 1, 1, 1, 1, 1), ...]");
+        subsetSeptuples_fail_helper("[1, null, 3, 4, 5, 6, 7, 8]");
+    }
+
+    private static void stringSubsets_int_String_helper(int size, @NotNull String input, @NotNull String output) {
+        aeqit(P.stringSubsets(size, input), output);
+    }
+
+    private static void stringSubsets_int_String_helper_limit(
+            int size,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsets(size, input), output);
+    }
+
+    @Test
+    public void testStringSubsets_int_String() {
+        stringSubsets_int_String_helper(0, "", "[]");
+        aeq(length(P.stringSubsets(0, "")), 1);
+        stringSubsets_int_String_helper(1, "", "[]");
+        aeq(length(P.stringSubsets(1, "")), 0);
+        stringSubsets_int_String_helper(2, "", "[]");
+        aeq(length(P.stringSubsets(2, "")), 0);
+        stringSubsets_int_String_helper(3, "", "[]");
+        aeq(length(P.stringSubsets(3, "")), 0);
+        stringSubsets_int_String_helper(0, "a", "[]");
+        stringSubsets_int_String_helper(1, "a", "[a]");
+        stringSubsets_int_String_helper(2, "a", "[]");
+        aeq(length(P.stringSubsets(2, "a")), 0);
+        stringSubsets_int_String_helper(3, "a", "[]");
+        aeq(length(P.stringSubsets(3, "a")), 0);
+        stringSubsets_int_String_helper(0, "abc", "[]");
+        aeq(length(P.stringSubsets(0, "abc")), 1);
+        stringSubsets_int_String_helper(1, "abc", "[a, b, c]");
+        stringSubsets_int_String_helper(2, "abc", "[ab, ac, bc]");
+        stringSubsets_int_String_helper(3, "abc", "[abc]");
+        stringSubsets_int_String_helper(0, "abbc", "[]");
+        aeq(length(P.stringSubsets(0, "abbc")), 1);
+        stringSubsets_int_String_helper(1, "abbc", "[a, b, b, c]");
+        stringSubsets_int_String_helper(2, "abbc", "[ab, ab, bb, bc, ac, bc]");
+        stringSubsets_int_String_helper(3, "abbc", "[abb, abc, abc, bbc]");
+        stringSubsets_int_String_helper_limit(0, "Mississippi", "[]");
+        aeq(length(P.stringSubsets(0, "Mississippi")), 1);
+        stringSubsets_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
+        stringSubsets_int_String_helper_limit(2, "Mississippi",
+                "[Mi, Ms, is, is, Ms, Mi, ii, is, ss, is, is, ss, ss, ss, ss, is, Ms, Ms, is, ii, ...]");
+        stringSubsets_int_String_helper_limit(3, "Mississippi",
+                "[Mis, Mis, Mss, Mis, iss, iis, iis, iss, Mii, Mis, Mss, Mss, iss, iss, iss, iis, Mis, Mss, Mis," +
+                " Mis, ...]");
+        try {
+            P.stringSubsets(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringSubsets(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void stringSubsets_int_helper(int size, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsets(size), output);
+    }
+
+    @Test
+    public void testStringSubsets_int() {
+        stringSubsets_int_helper(0, "[]");
+        aeq(length(P.stringSubsets(0)), 1);
+        stringSubsets_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
+        stringSubsets_int_helper(2,
+                "[ab, ac, bc, bd, ad, ae, be, bf, cd, ce, de, df, cf, cg, dg, dh, af, ag, bg, bh, ...]");
+        stringSubsets_int_helper(3,
+                "[abc, abd, acd, ace, bcd, bce, bde, bdf, abe, abf, acf, acg, bcf, bcg, bdg, bdh, ade, adf, aef," +
+                " aeg, ...]");
+        try {
+            P.stringSubsets(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
