@@ -2103,4 +2103,129 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringSubsetsShortlexAtLeast(p.b, p.a))));
         }
     }
+
+    private static void demoSubsets_int_Iterable_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("subsets(" + p.b + ", " + p.a + ") = " + its(EP.subsets(p.b, p.a)));
+        }
+    }
+
+    private static void demoSubsets_int_Iterable_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("subsets(" + p.b + ", " + its(p.a) + ") = " + its(EP.subsets(p.b, p.a)));
+        }
+    }
+
+    private static void demoSubsetPairs_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetPairs(" + xs + ") = " + its(EP.subsetPairs(xs)));
+        }
+    }
+
+    private static void demoSubsetPairs_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetPairs(" + its(xs) + ") = " + its(EP.subsetPairs(xs)));
+        }
+    }
+
+    private static void demoSubsetTriples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetTriples(" + xs + ") = " + its(EP.subsetTriples(xs)));
+        }
+    }
+
+    private static void demoSubsetTriples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetTriples(" + its(xs) + ") = " + its(EP.subsetTriples(xs)));
+        }
+    }
+
+    private static void demoSubsetQuadruples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetQuadruples(" + xs + ") = " + its(EP.subsetQuadruples(xs)));
+        }
+    }
+
+    private static void demoSubsetQuadruples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetQuadruples(" + its(xs) + ") = " + its(EP.subsetQuadruples(xs)));
+        }
+    }
+
+    private static void demoSubsetQuintuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetQuintuples(" + xs + ") = " + its(EP.subsetQuintuples(xs)));
+        }
+    }
+
+    private static void demoSubsetQuintuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetQuintuples(" + its(xs) + ") = " + its(EP.subsetQuintuples(xs)));
+        }
+    }
+
+    private static void demoSubsetSextuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetSextuples(" + xs + ") = " + its(EP.subsetSextuples(xs)));
+        }
+    }
+
+    private static void demoSubsetSextuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetSextuples(" + its(xs) + ") = " + its(EP.subsetSextuples(xs)));
+        }
+    }
+
+    private static void demoSubsetSeptuples_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsetSeptuples(" + xs + ") = " + its(EP.subsetSeptuples(xs)));
+        }
+    }
+
+    private static void demoSubsetSeptuples_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsetSeptuples(" + its(xs) + ") = " + its(EP.subsetSeptuples(xs)));
+        }
+    }
+
+    private static void demoStringSubsets_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringSubsets(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsets(p.b, p.a))));
+        }
+    }
+
+    private static void demoStringSubsets_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("stringSubsets(" + i + ") = " + its(map(Testing::nicePrint, EP.stringSubsets(i))));
+        }
+    }
 }
