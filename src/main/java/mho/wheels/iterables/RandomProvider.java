@@ -3904,21 +3904,88 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code List}s of a given length with elements from a given
+     * {@code Iterable} with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code size} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted, have the same length, and have
+     *  no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param size the length of the result lists
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return distinct sorted lists of a given length created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
         return sortedDistinctChunkInfinite(size, xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Pair}s of elements from an {@code Iterable}. Does
+     * not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Pair}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
         return sortedDistinctChunkPairsInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Triple}s of elements from an {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Triple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
         return sortedDistinctChunkTriplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Quadruple}s of elements from an {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quadruple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
@@ -3926,6 +3993,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedDistinctChunkQuadruplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Quintuple}s of elements from an {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Quintuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
@@ -3933,6 +4016,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedDistinctChunkQuintuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Sextuple}s of elements from an {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Sextuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
@@ -3940,6 +4039,22 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedDistinctChunkSextuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all distinct sorted {@code Septuple}s of elements from an {@code Iterable}.
+     * Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and contains no nulls. Its elements are sorted and distinct.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     * @return ordered {@code Septuple}s of elements from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
