@@ -3906,45 +3906,45 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs) {
-        return null;
+        return sortedDistinctChunkInfinite(size, xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs) {
-        return null;
+        return sortedDistinctChunkPairsInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(@NotNull Iterable<T> xs) {
-        return null;
+        return sortedDistinctChunkTriplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedDistinctChunkQuadruplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedDistinctChunkQuintuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedDistinctChunkSextuplesInfinite(xs);
     }
 
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
             @NotNull Iterable<T> xs
     ) {
-        return null;
+        return sortedDistinctChunkSeptuplesInfinite(xs);
     }
 
     @Override
