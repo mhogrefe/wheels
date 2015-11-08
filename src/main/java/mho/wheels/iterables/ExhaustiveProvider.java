@@ -5770,11 +5770,45 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code List}s with elements from a given {@code Iterable} with
+     * no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>All of the result's elements are sorted. None are empty, unless the result consists entirely of one empty
+     *  element.</li>
+     * </ul>
+     *
+     * Length is <sub>|{@code xs}|</sub>C<sub>{@code size}</sub>
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all distinct sorted {@code List}s created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
         return subsetIndices(xs, lists(naturalIntegers()), Optional.empty(), BigInteger.ONE::shiftLeft);
     }
 
+    /**
+     * Returns an {@code Iterable} containing all sorted {@code Lists}s with a minimum size with elements from a given
+     * {@code List} with no repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains every sorted {@code List} (with a length greater than or equal to some minimum) of
+     *  elements drawn from some sequence.</li>
+     * </ul>
+     *
+     * Length is Σ<sub>i={@code minSize}</sub><sup>n</sup><sub>|{@code xs}|</sub>C<sub>{@code i}</sub>
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code List} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return all distinct sorted {@code List}s with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return subsetIndices(
@@ -5783,16 +5817,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 Optional.of(minSize),
                 n -> MathUtils.subsetCount(minSize, BigInteger.valueOf(n))
         );
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize) {
-        return null;
     }
 
     public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
