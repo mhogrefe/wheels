@@ -29,8 +29,7 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class RandomProviderProperties {
-    private static final @NotNull
-    ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
     private static final int SMALL_LIMIT = 1000;
     private static final int TINY_LIMIT = 20;
@@ -202,6 +201,8 @@ public class RandomProviderProperties {
             propertiesBagsAtLeast();
             propertiesStringBagsAtLeast_int_String();
             propertiesStringBagsAtLeast_int();
+            propertiesStringSubsets_int_String();
+            propertiesStringSubsets_int();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -270,7 +271,7 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             RandomProvider rp = p.a.withScale(p.b);
             rp.validate();
-            assertEquals(p, rp.getScale(), p.b.intValue());
+            assertEquals(p, rp.getScale(), p.b);
             assertEquals(p, rp.getSecondaryScale(), p.a.getSecondaryScale());
             assertEquals(p, rp.getSeed(), p.a.getSeed());
             inverses(x -> x.withScale(p.b), (RandomProvider y) -> y.withScale(p.a.getScale()), p.a);
@@ -287,7 +288,7 @@ public class RandomProviderProperties {
             RandomProvider rp = p.a.withSecondaryScale(p.b);
             rp.validate();
             assertEquals(p, rp.getScale(), p.a.getScale());
-            assertEquals(p, rp.getSecondaryScale(), p.b.intValue());
+            assertEquals(p, rp.getSecondaryScale(), p.b);
             assertEquals(p, rp.getSeed(), p.a.getSeed());
             inverses(
                     x -> x.withSecondaryScale(p.b),
@@ -3636,6 +3637,100 @@ public class RandomProviderProperties {
                 p.a.stringBagsAtLeast(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsets_int_String() {
+        initialize("stringSubsets(int, String)");
+        Iterable<Triple<RandomProvider, Integer, String>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> filterInfinite(
+                                s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                P.withScale(p.a.getScale()).stringsAtLeast(p.b)
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.stringSubsets(t.b, t.c),
+                    s -> s.length() == t.b && isSubsetOf(s, t.c) && IterableUtils.increasing(toList(s))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).naturalIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.stringSubsets(p.b, ""));
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        if (P instanceof ExhaustiveProvider) {
+            Iterable<Triple<RandomProvider, Integer, String>> tsFail = map(
+                    p -> new Triple<>(p.a.a, p.a.b, p.b),
+                    P.dependentPairsInfinite(
+                            filterInfinite(
+                                    p -> p.a.getScale() > p.b,
+                                    P.pairs(
+                                            P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                            P.withScale(4).negativeIntegersGeometric()
+                                    )
+                            ),
+                            p -> filterInfinite(
+                                    s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                    P.withScale(p.a.getScale()).stringsAtLeast(p.b < 0 ? 0 : p.b)
+                            )
+                    )
+            );
+            for (Triple<RandomProvider, Integer, String> t : take(LIMIT, tsFail)) {
+                try {
+                    t.a.stringSubsets(t.b, t.c);
+                    fail(t);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+    }
+
+    private static void propertiesStringSubsets_int() {
+        initialize("distinctStrings(int)");
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringSubsets(p.b), s -> s.length() >= p.b && IterableUtils.increasing(toList(s)));
+        }
+
+        Iterable<Pair<RandomProvider, Integer>> psFail = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        P.withScale(4).negativeIntegersGeometric()
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringSubsets(p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
