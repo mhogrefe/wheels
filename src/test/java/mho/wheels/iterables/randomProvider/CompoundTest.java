@@ -4972,6 +4972,169 @@ public strictfp class CompoundTest {
         stringBagsAtLeast_int_fail_helper(4, 5);
     }
 
+    private static void stringSubsets_int_String_helper(
+            int size,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringSubsets(size, input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void stringSubsets_int_String_fail_helper(int size, @NotNull String input) {
+        try {
+            P.stringSubsets(size, input);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsets_int_String() {
+        stringSubsets_int_String_helper(
+                0,
+                "a",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                1,
+                "a",
+                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
+                "{a=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                0,
+                "abc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                1,
+                "abc",
+                "[b, b, c, b, a, b, b, b, b, b, a, b, b, c, b, c, a, c, b, b, ...]",
+                "{c=333615, b=333313, a=333072}"
+        );
+        stringSubsets_int_String_helper(
+                2,
+                "abc",
+                "[bc, ab, ab, bc, bc, ac, bc, ac, ab, bc, bc, ac, ab, ac, ab, bc, ac, bc, ac, ab, ...]",
+                "{bc=334055, ab=333027, ac=332918}"
+        );
+        stringSubsets_int_String_helper(
+                3,
+                "abc",
+                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
+                " abc, ...]",
+                "{abc=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                0,
+                "abbc",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                1,
+                "abbc",
+                "[b, b, c, b, b, c, a, b, b, c, c, b, c, b, c, b, a, b, b, b, ...]",
+                "{b=499640, c=250298, a=250062}"
+        );
+        stringSubsets_int_String_helper(
+                2,
+                "abbc",
+                "[bc, bc, ab, bc, bc, bc, bc, ab, bc, ab, bc, bc, ab, bc, ab, bc, bc, bc, ab, ab, ...]",
+                "{bc=416663, ab=416324, ac=167013}"
+        );
+        stringSubsets_int_String_helper(
+                3,
+                "abbc",
+                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
+                " abc, ...]",
+                "{abc=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                0,
+                "Mississippi",
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringSubsets_int_String_helper(
+                1,
+                "Mississippi",
+                "[p, p, s, s, s, p, s, s, i, i, s, s, s, p, s, i, s, i, s, s, ...]",
+                "{s=363979, i=363703, p=181581, M=90737}"
+        );
+        stringSubsets_int_String_helper(
+                2,
+                "Mississippi",
+                "[ps, ps, is, is, ps, is, is, is, ip, is, is, ip, is, Ms, is, is, is, ip, Mp, ip, ...]",
+                "{is=416142, ps=184999, ip=183883, Mi=88745, Ms=88051, Mp=38180}"
+        );
+        stringSubsets_int_String_helper(
+                3,
+                "Mississippi",
+                "[ips, ips, ips, ips, Mis, ips, Mip, ips, Mis, ips, Mps, ips, ips, ips, ips, Mis, ips, ips, Mis," +
+                " Mis, ...]",
+                "{ips=572857, Mis=256219, Mps=85499, Mip=85425}"
+        );
+        stringSubsets_int_String_fail_helper(1, "");
+        stringSubsets_int_String_fail_helper(-1, "abc");
+    }
+
+    private static void stringSubsets_int_helper(int size, @NotNull String output, @NotNull String topSampleCount) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.stringSubsets(size)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private void stringSubsets_int_fail_helper(int size) {
+        try {
+            P.stringBags(size);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally{
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsets_int() {
+        stringSubsets_int_helper(
+                0,
+                "[, , , , , , , , , , , , , , , , , , , , ...]",
+                "{=1000000}"
+        );
+        stringSubsets_int_helper(
+                1,
+                "[嘩, 퇉, 馃, \u2df2, ε, 䊿, \u2538, \u31e5, 髽, 肣, \uf6ff, ﳑ, 赧, \ue215, \u17f3, \udd75, 껸, \udd15," +
+                " 몱, ﲦ, ...]",
+                "{\uf1b2=36, 撢=35, આ=34, 퉃=34, \27=33, 韖=32, 㖒=32, 膗=31, 㗞=31, 䕦=31}"
+        );
+        stringSubsets_int_helper(
+                2,
+                "[嘩퇉, \u2df2馃, ε䊿, \u2538\u31e5, 肣髽, \uf6ffﳑ, 赧\ue215, \u17f3\udd75, 껸\udd15, 몱ﲦ, ϡ䯏," +
+                " \u19dc罖, ㄾ刿, 䲵箿, 偵恾, ᬜK, 㵏ꏹ, 㩷缄, ⴿ읾, 纫\ufe2d, ...]",
+                "{ᴴ\u2bdb=2, \u223b圉=2, 틺\uf310=2, 㑰\uf5be=2, 啺횄=2, 㧣㻜=2, \u23c0\uf480=2, ᮽ倄=2, Ⳬ\ue4b6=2," +
+                " 籯퓁=2}"
+        );
+        stringSubsets_int_helper(
+                3,
+                "[嘩馃퇉, ε\u2df2䊿, \u2538\u31e5髽, 肣\uf6ffﳑ, \u17f3赧\ue215, 껸\udd15\udd75, 䯏몱ﲦ, ϡ\u19dc罖, ㄾ䲵刿," +
+                " 偵恾箿, ᬜK㵏, 㩷缄ꏹ, ⴿ纫읾, 㗂䝲\ufe2d, 갩힜\uf207, \u2a43坤琖, 퉌\ue352\uea45, 䉀蕤餥, \u2b63鸂\uf637," +
+                " 误輮鸅, ...]",
+                "{嘩馃퇉=1, ε\u2df2䊿=1, \u2538\u31e5髽=1, 肣\uf6ffﳑ=1, \u17f3赧\ue215=1, 껸\udd15\udd75=1, 䯏몱ﲦ=1," +
+                " ϡ\u19dc罖=1, ㄾ䲵刿=1, 偵恾箿=1}"
+        );
+        stringSubsets_int_fail_helper(-1);
+    }
+
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
