@@ -4063,7 +4063,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
         return () -> new NoRemoveIterator<List<T>>() {
             private final Iterator<T> xsi = xs.iterator();
             private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
@@ -4086,17 +4086,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull String s) {
-        return null;
-    }
-
-    @Override
-    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize) {
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
         return null;
     }
 

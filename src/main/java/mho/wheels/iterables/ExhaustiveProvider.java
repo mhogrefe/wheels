@@ -5556,7 +5556,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<T> xs,
             @NotNull Iterable<List<Integer>> originalIndices,
             @NotNull Optional<Integer> requiredSize,
-            @NotNull Function<Integer, Optional<BigInteger>> outputSizeFunction
+            @NotNull Function<Integer, BigInteger> outputSizeFunction
     ) {
         return () -> new EventuallyKnownSizeIterator<List<T>>() {
             private final @NotNull CachedIterator<T> cxs = new CachedIterator<>(xs);
@@ -5581,10 +5581,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     }
                     List<T> output = toList(map(i -> cxs.get(i).get(), cumulativeIndices));
                     if (!outputSizeKnown() && cxs.knownSize().isPresent()) {
-                        Optional<BigInteger> outputSize = outputSizeFunction.apply(cxs.knownSize().get());
-                        if (outputSize.isPresent()) {
-                            setOutputSize(outputSize.get());
-                        }
+                        setOutputSize(outputSizeFunction.apply(cxs.knownSize().get()));
                     }
                     if (output.size() == 1) {
                         T first = output.get(0);
@@ -5625,7 +5622,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                 xs,
                 lists(size, naturalIntegers()),
                 Optional.of(size),
-                n -> Optional.of(MathUtils.binomialCoefficient(BigInteger.valueOf(n), size))
+                n -> MathUtils.binomialCoefficient(BigInteger.valueOf(n), size)
         );
     }
 
@@ -5774,20 +5771,18 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
-        CachedIterator<T> cxs = new CachedIterator<>(xs);
-        return map(
-                Optional::get,
-                takeWhile(
-                        Optional::isPresent, map(i -> cxs.select(IntegerUtils.bits(i)),
-                                IterableUtils.rangeUp(BigInteger.ZERO))
-                )
-        );
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
+        return subsetIndices(xs, lists(naturalIntegers()), Optional.empty(), BigInteger.ONE::shiftLeft);
     }
 
     @Override
-    public @NotNull <T> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return subsetIndices(
+                xs,
+                listsAtLeast(minSize, naturalIntegers()),
+                Optional.of(minSize),
+                n -> MathUtils.subsetCount(minSize, BigInteger.valueOf(n))
+        );
     }
 
     @Override
