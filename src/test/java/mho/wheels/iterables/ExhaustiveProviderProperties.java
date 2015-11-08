@@ -280,6 +280,8 @@ public class ExhaustiveProviderProperties {
             propertiesSubsetQuintuples();
             propertiesSubsetSextuples();
             propertiesSubsetSeptuples();
+            propertiesStringSubsets_int_String();
+            propertiesStringSubsets_int();
         }
         System.out.println("Done");
     }
@@ -5870,8 +5872,7 @@ public class ExhaustiveProviderProperties {
 
     private static void propertiesDistinctStrings_int() {
         initialize("distinctStrings(int)");
-        Iterable<Integer> is = filterInfinite(j -> j <= (1 << 16), P.withScale(4).naturalIntegersGeometric());
-        for (int i : take(SMALL_LIMIT, is)) {
+        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             Iterable<String> strings = EP.distinctStrings(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
@@ -7303,7 +7304,7 @@ public class ExhaustiveProviderProperties {
             Iterable<String> strings = EP.stringBags(i);
             testNoRemove(TINY_LIMIT, strings);
             List<String> stringsList = toList(take(TINY_LIMIT, strings));
-            assertEquals(i, head(stringsList), charsToString(replicate(i, head(EP.characters()))));
+            assertEquals(i, head(stringsList), sort(charsToString(replicate(i, head(EP.characters())))));
             assertTrue(i, all(s -> s.length() == i, stringsList));
             assertTrue(i, all(s -> weaklyIncreasing(toList(s)), stringsList));
             assertTrue(i, unique(stringsList));
@@ -9022,6 +9023,93 @@ public class ExhaustiveProviderProperties {
                 toList(EP.subsetSeptuples(xs));
                 fail(xs);
             } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsets_int_String() {
+        initialize("stringSubsets(int, String)");
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> strings = EP.stringSubsets(p.b, p.a);
+            testNoRemove(TINY_LIMIT, strings);
+            BigInteger stringsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(TINY_LIMIT))) {
+                testHasNext(strings);
+                List<String> stringsList = toList(strings);
+                if (!stringsList.isEmpty()) {
+                    assertEquals(p, head(stringsList), sort(take(p.b, p.a)));
+                    assertEquals(p, last(stringsList), sort(take(p.b, reverse(p.a))));
+                }
+                assertEquals(p, stringsList.size(), stringsLength.intValueExact());
+                assertTrue(p, all(xs -> isSubsetOf(xs, p.a), stringsList));
+                assertTrue(p, all(s -> weaklyIncreasing(toList(s)), stringsList));
+                assertTrue(p, all(xs -> xs.length() == p.b, stringsList));
+            }
+        }
+
+        ps = P.pairsLogarithmicOrder(P.withScale(4).distinctStrings(), P.withScale(4).naturalIntegersGeometric());
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            BigInteger stringsLength = MathUtils.binomialCoefficient(BigInteger.valueOf(p.a.length()), p.b);
+            if (lt(stringsLength, BigInteger.valueOf(TINY_LIMIT))) {
+                List<String> stringsList = toList(EP.stringSubsets(p.b, p.a));
+                assertTrue(p, all(IterableUtils::unique, stringsList));
+                assertTrue(p, unique(stringsList));
+            }
+        }
+
+        ps = filter(
+                p -> p.a.length() < p.b,
+                P.pairsLogarithmicOrder(P.withScale(4).strings(), P.withScale(4).naturalIntegersGeometric())
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            Iterable<String> ss = EP.stringSubsets(p.b, p.a);
+            testHasNext(ss);
+            assertEquals(p, toList(ss), Collections.emptyList());
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            Iterable<String> ss = EP.stringSubsets(0, s);
+            testHasNext(ss);
+            assertEquals(s, toList(ss), Collections.singletonList(""));
+        }
+
+        Iterable<Pair<String, Integer>> psFail = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).negativeIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, psFail)) {
+            try {
+                EP.stringSubsets(p.b, p.a);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsets_int() {
+        initialize("stringSubsets(int)");
+        for (int i : take(SMALL_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            Iterable<String> strings = EP.stringSubsets(i);
+            testNoRemove(TINY_LIMIT, strings);
+            List<String> stringsList = toList(take(TINY_LIMIT, strings));
+            assertEquals(i, head(stringsList), sort(charsToString(take(i, EP.characters()))));
+            assertTrue(i, all(s -> s.length() == i, stringsList));
+            assertTrue(i, all(s -> weaklyIncreasing(toList(s)), stringsList));
+            assertTrue(i, all(IterableUtils::unique, stringsList));
+            assertTrue(i, unique(stringsList));
+        }
+
+        for (int i : take(SMALL_LIMIT, P.rangeUp((1 << 16) + 1))) {
+            assertEquals(i, toList(EP.stringSubsets(i)), Collections.emptyList());
+        }
+
+        for (int i : take(LIMIT, P.withScale(4).negativeIntegersGeometric())) {
+            try {
+                EP.stringSubsets(i);
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }
