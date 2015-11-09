@@ -9231,6 +9231,209 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void subsets_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsets(input), output);
+    }
+
+    private static void subsets_Iterable_helper(@NotNull String input, @NotNull String output) {
+        subsets_Iterable_helper(readIntegerList(input), output);
+    }
+
+    private static void subsets_Iterable_fail_helper(@NotNull String input) {
+        try {
+            toList(P.subsets(readIntegerListWithNulls(input)));
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsets_Iterable() {
+        subsets_Iterable_helper("[]", "[[]]");
+        subsets_Iterable_helper("[5]", "[[], [5]]");
+        subsets_Iterable_helper("[1, 2, 3]", "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
+        subsets_Iterable_helper("[1, 2, 2, 3]",
+                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3]," +
+                " [1, 3], [1, 2, 3], [2, 3], [2, 2, 3]]");
+        subsets_Iterable_helper(P.naturalIntegers(),
+                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
+                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
+        subsets_Iterable_helper(repeat(1),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        subsets_Iterable_fail_helper("[null]");
+        subsets_Iterable_fail_helper("[1, null, 3]");
+    }
+
+    @Test
+    public void testStringSubsets_String() {
+        aeqit(P.stringSubsets(""), "[]");
+        aeq(length(P.stringSubsets("")), 1);
+        aeqitLimit(TINY_LIMIT, P.stringSubsets("a"), "[, a]");
+        aeqitLimit(TINY_LIMIT, P.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
+        aeqitLimit(TINY_LIMIT, P.stringSubsets("abbc"),
+                "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
+        aeqitLimit(TINY_LIMIT, P.stringSubsets("Mississippi"),
+                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
+    }
+
+    @Test
+    public void testStringSubsets() {
+        aeqitLimit(TINY_LIMIT, P.stringSubsets(),
+                "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
+    }
+
+    private static void subsetsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.subsetsAtLeast(minSize, input), output);
+    }
+
+    private static void subsetsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
+        subsetsAtLeast_helper(minSize, readIntegerList(input), output);
+    }
+
+    private static void subsetsAtLeast_fail_helper(int minSize, @NotNull String input) {
+        try {
+            toList(P.subsetsAtLeast(minSize, readIntegerListWithNulls(input)));
+            fail();
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testSubsetsAtLeast() {
+        subsetsAtLeast_helper(0, "[]", "[[]]");
+        subsetsAtLeast_helper(1, "[]", "[]");
+        subsetsAtLeast_helper(2, "[]", "[]");
+        subsetsAtLeast_helper(3, "[]", "[]");
+
+        subsetsAtLeast_helper(0, "[5]", "[[], [5]]");
+        subsetsAtLeast_helper(1, "[5]", "[[5]]");
+        subsetsAtLeast_helper(2, "[5]", "[]");
+        subsetsAtLeast_helper(3, "[5]", "[]");
+
+        subsetsAtLeast_helper(0, "[1, 2, 3]", "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
+        subsetsAtLeast_helper(1, "[1, 2, 3]", "[[1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 3]]");
+        subsetsAtLeast_helper(2, "[1, 2, 3]", "[[1, 2], [1, 2, 3], [1, 3], [2, 3]]");
+        subsetsAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
+
+        subsetsAtLeast_helper(0, "[1, 2, 2, 3]",
+                "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3]," +
+                " [1, 3], [1, 2, 3], [2, 3], [2, 2, 3]]");
+        subsetsAtLeast_helper(1, "[1, 2, 2, 3]",
+                "[[1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3], [1, 3]," +
+                " [1, 2, 3], [2, 3], [2, 2, 3]]");
+        subsetsAtLeast_helper(2, "[1, 2, 2, 3]",
+                "[[1, 2], [1, 2, 2], [1, 2], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3], [1, 3], [1, 2, 3], [2, 3]," +
+                " [2, 2, 3]]");
+        subsetsAtLeast_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
+
+        subsetsAtLeast_helper(0, P.naturalIntegers(),
+                "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
+                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
+        subsetsAtLeast_helper(1, P.naturalIntegers(),
+                "[[0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
+                " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], [0, 2, 3], ...]");
+        subsetsAtLeast_helper(2, P.naturalIntegers(),
+                "[[0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [1, 2], [0, 1, 3], [1, 3], [0, 1, 2, 3, 4], [0, 3]," +
+                " [0, 2, 3], [0, 4], [0, 1, 2, 4], [1, 4], [0, 2, 4], [1, 5], [0, 1, 2, 3, 4, 5], [2, 3], [1, 2, 3]," +
+                " [2, 4], [0, 1, 3, 4], ...]");
+        subsetsAtLeast_helper(3, P.naturalIntegers(),
+                "[[0, 1, 2], [0, 1, 2, 3], [0, 1, 3], [0, 1, 2, 3, 4], [0, 2, 3], [0, 1, 2, 4], [0, 2, 4]," +
+                " [0, 1, 2, 3, 4, 5], [1, 2, 3], [0, 1, 3, 4], [1, 2, 4], [0, 1, 2, 3, 5], [1, 3, 4], [0, 1, 3, 5]," +
+                " [1, 3, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 4], [0, 2, 3, 4], [0, 1, 5], [0, 1, 2, 4, 5], ...]");
+
+        subsetsAtLeast_helper(0, repeat(1),
+                "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
+        subsetsAtLeast_helper(1, repeat(1),
+                "[[1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
+                " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], ...]");
+        subsetsAtLeast_helper(2, repeat(1),
+                "[[1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [1, 1]," +
+                " [1, 1, 1], [1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1], [1, 1], [1, 1, 1]," +
+                " [1, 1], [1, 1, 1, 1], ...]");
+        subsetsAtLeast_helper(3, repeat(1),
+                "[[1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
+
+        subsetsAtLeast_fail_helper(-1, "[]");
+        subsetsAtLeast_fail_helper(-1, "[1, 2, 3]");
+        subsetsAtLeast_fail_helper(1, "[null]");
+        subsetsAtLeast_fail_helper(1, "[1, null, 3]");
+    }
+
+    private static void stringSubsetsAtLeast_String_helper(
+            int minSize,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsAtLeast(minSize, input), output);
+    }
+
+    @Test
+    public void testStringSubsetsAtLeast_String() {
+        stringSubsetsAtLeast_String_helper(0, "", "[]");
+        aeq(length(P.stringSubsetsAtLeast(0, "")), 1);
+        stringSubsetsAtLeast_String_helper(1, "", "[]");
+        aeq(length(P.stringSubsetsAtLeast(1, "")), 0);
+        stringSubsetsAtLeast_String_helper(2, "", "[]");
+        aeq(length(P.stringSubsetsAtLeast(2, "")), 0);
+        stringSubsetsAtLeast_String_helper(3, "", "[]");
+        aeq(length(P.stringSubsetsAtLeast(3, "")), 0);
+        stringSubsetsAtLeast_String_helper(0, "a", "[, a]");
+        stringSubsetsAtLeast_String_helper(1, "a", "[a]");
+        stringSubsetsAtLeast_String_helper(2, "a", "[]");
+        stringSubsetsAtLeast_String_helper(3, "a", "[]");
+        stringSubsetsAtLeast_String_helper(0, "abc", "[, a, ab, b, abc, c, ac, bc]");
+        stringSubsetsAtLeast_String_helper(1, "abc", "[a, ab, b, abc, c, ac, bc]");
+        stringSubsetsAtLeast_String_helper(2, "abc", "[ab, abc, ac, bc]");
+        stringSubsetsAtLeast_String_helper(3, "abc", "[abc]");
+        stringSubsetsAtLeast_String_helper(0, "abbc",
+                "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
+        stringSubsetsAtLeast_String_helper(1, "abbc",
+                "[a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
+        stringSubsetsAtLeast_String_helper(2, "abbc", "[ab, abb, ab, abbc, bb, abc, bc, ac, abc, bc, bbc]");
+        stringSubsetsAtLeast_String_helper(3, "abbc", "[abb, abbc, abc, abc, bbc]");
+        stringSubsetsAtLeast_String_helper(0, "Mississippi",
+                "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
+        stringSubsetsAtLeast_String_helper(1, "Mississippi",
+                "[M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, Mss, ...]");
+        stringSubsetsAtLeast_String_helper(2, "Mississippi",
+                "[Mi, Mis, Ms, Miss, is, Mis, is, Miiss, Ms, Mss, Mi, Miis, ii, Mis, is, Miisss, ss, iss, is, Miis," +
+                " ...]");
+        stringSubsetsAtLeast_String_helper(3, "Mississippi",
+                "[Mis, Miss, Mis, Miiss, Mss, Miis, Mis, Miisss, iss, Miis, iis, Misss, iis, Miss, iss, Miissss," +
+                " Mii, Miss, Mis, Miiss, ...]");
+        try {
+            P.stringSubsetsAtLeast(-1, "");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        try {
+            P.stringSubsetsAtLeast(-1, "abc");
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    private static void stringSubsetsAtLeast_helper(int minSize, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsAtLeast(minSize), output);
+    }
+
+    @Test
+    public void testStringSubsetsAtLeast() {
+        stringSubsetsAtLeast_helper(0,
+                "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
+        stringSubsetsAtLeast_helper(1,
+                "[a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, acd, ...]");
+        stringSubsetsAtLeast_helper(2,
+                "[ab, abc, ac, abcd, bc, abd, bd, abcde, ad, acd, ae, abce, be, ace, bf, abcdef, cd, bcd, ce, abde," +
+                " ...]");
+        stringSubsetsAtLeast_helper(3,
+                "[abc, abcd, abd, abcde, acd, abce, ace, abcdef, bcd, abde, bce, abcdf, bde, abdf, bdf, abcdefg," +
+                " abe, acde, abf, abcef, ...]");
+        try {
+            P.stringSubsetsAtLeast(-1);
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
