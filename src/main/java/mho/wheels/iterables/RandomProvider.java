@@ -3872,7 +3872,7 @@ public final strictfp class RandomProvider extends IterableProvider {
     }
 
     /**
-     * An {@code Iterable} that generates all sorted{@code List}s with a minimum length and with elements from a given
+     * An {@code Iterable} that generates all sorted {@code List}s with a minimum length and with elements from a given
      * {@code Iterable}. The mean length of the {@code List}s is {@code scale}. Does not support removal.
      *
      * <ul>
@@ -4062,32 +4062,68 @@ public final strictfp class RandomProvider extends IterableProvider {
         return sortedDistinctChunkSeptuplesInfinite(xs);
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code List}s with elements from a given {@code Iterable} with no
+     * repetitions. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} may be any {@code RandomProvider}.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted and have no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return sorted, distinct lists created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(@NotNull Iterable<T> xs) {
-        return () -> new NoRemoveIterator<List<T>>() {
-            private final Iterator<T> xsi = xs.iterator();
-            private final Iterator<Integer> sizes = naturalIntegersGeometric().iterator();
-
-            @Override
-            public boolean hasNext() {
-                return true;
-            }
-
-            @Override
-            public @NotNull List<T> next() {
-                int size = sizes.next();
-                Set<T> set = new LinkedHashSet<>();
-                while (set.size() < size) {
-                    set.add(xsi.next());
-                }
-                return toList(set);
-            }
-        };
+        return map(
+                ys -> {
+                    if (ys.size() == 1) {
+                        T first = ys.get(0);
+                        first.compareTo(first);
+                    }
+                    return sort(ys);
+                },
+                distinctLists(xs)
+        );
     }
 
+    /**
+     * An {@code Iterable} that generates all sorted {@code List}s with a minimum length and with elements from a given
+     * {@code Iterable} with no repetitions. The mean length of the {@code List}s is {@code scale}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a positive {@code scale}.</li>
+     *  <li>{@code minSize} cannot be negative.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code this} must have a {@code scale} at least 1 greater than {@code minSize}.</li>
+     *  <li>The result is infinite, non-removable, and all of its elements are sorted and have no repetitions.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param minSize the minimum length of the result {@code List}s
+     * @param xs the {@code Iterable} from which elements are selected
+     * @param <T> the type of the given {@code Iterable}'s elements
+     * @return sorted, distinct lists with length at least {@code minSize} created from {@code xs}
+     */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return null;
+        return map(
+                ys -> {
+                    if (ys.size() == 1) {
+                        T first = ys.get(0);
+                        first.compareTo(first);
+                    }
+                    return sort(ys);
+                },
+                distinctListsAtLeast(minSize, xs)
+        );
     }
 
     /**
