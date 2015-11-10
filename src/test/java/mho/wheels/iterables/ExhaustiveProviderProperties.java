@@ -8412,17 +8412,6 @@ public class ExhaustiveProviderProperties {
                 fail(p);
             } catch (IllegalArgumentException ignored) {}
         }
-
-        psFail = P.pairsLogarithmicOrder(
-                P.withScale(4).listsWithElement(null, P.integersGeometric()),
-                P.withScale(4).naturalIntegersGeometric()
-        );
-        for (Pair<List<Integer>, Integer> p : take(LIMIT, psFail)) {
-            try {
-                EP.subsetsShortlexAtLeast(p.b, p.a);
-                fail(p);
-            } catch (NullPointerException ignored) {}
-        }
     }
 
     private static void propertiesStringSubsetsShortlexAtLeast() {
