@@ -2228,4 +2228,69 @@ public class ExhaustiveProviderDemos {
             System.out.println("stringSubsets(" + i + ") = " + its(map(Testing::nicePrint, EP.stringSubsets(i))));
         }
     }
+
+    private static void demoSubsets_Iterable_finite() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.integersGeometric()))) {
+            System.out.println("subsets(" + xs + ") = " + its(EP.subsets(xs)));
+        }
+    }
+
+    private static void demoSubsets_Iterable_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(SMALL_LIMIT, P.prefixPermutations(EP.naturalIntegers()))) {
+            System.out.println("subsets(" + its(xs) + ") = " + its(EP.subsets(xs)));
+        }
+    }
+
+    private static void demoStringSubsets_String() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("stringSubsets(" + nicePrint(s) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsets(s))));
+        }
+    }
+
+    private static void demoSubsetsAtLeast_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).lists(P.integersGeometric()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<List<Integer>, Integer> p : take(LIMIT, ps)) {
+            System.out.println("subsetsAtLeast(" + p.b + ", " + p.a + ") = " +
+                    its(EP.subsetsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoSubsetsAtLeast_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(EP.naturalIntegers()),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("subsetsAtLeast(" + p.b + ", " + its(p.a) + ") = " + its(EP.subsetsAtLeast(p.b, p.a)));
+        }
+    }
+
+    private static void demoStringSubsetsAtLeast_int_String() {
+        initialize();
+        Iterable<Pair<String, Integer>> ps = P.pairsLogarithmicOrder(
+                P.withScale(4).strings(),
+                P.withScale(4).naturalIntegersGeometric()
+        );
+        for (Pair<String, Integer> p : take(LIMIT, ps)) {
+            System.out.println("stringSubsetsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsetsAtLeast(p.b, p.a))));
+        }
+    }
+
+    private static void demoStringSubsetsAtLeast_int() {
+        initialize();
+        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+            System.out.println("stringSubsetsAtLeast(" + i + ") = " +
+                    its(map(Testing::nicePrint, EP.stringSubsetsAtLeast(i))));
+        }
+    }
 }
