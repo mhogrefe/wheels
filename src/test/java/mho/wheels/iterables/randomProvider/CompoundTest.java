@@ -5135,6 +5135,827 @@ public strictfp class CompoundTest {
         stringSubsets_int_fail_helper(-1);
     }
 
+    private static void subsets_Iterable_helper(
+            int scale,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).subsets(input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void subsets_Iterable_helper_uniform(
+            int scale,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        subsets_Iterable_helper(
+                scale,
+                P.uniformSample(readIntegerListWithNulls(input)),
+                output,
+                topSampleCount,
+                meanSize
+        );
+    }
+
+    private static void subsets_Iterable_fail_helper(int scale, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).subsets(input));
+            fail();
+        } catch (NoSuchElementException | IllegalStateException | NullPointerException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testSubsets_Iterable() {
+        subsets_Iterable_helper_uniform(
+                1,
+                "[5]",
+                "[[5], [5], [5], [5], [5], [], [5], [5], [], [], [5], [5], [5], [], [5], [], [], [5], [5], [], ...]",
+                "{[5]=500875, []=499125}",
+                0.5008749999935656
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[5]",
+                "[[5], [5], [5], [5], [5], [5], [], [5], [5], [5], [5], [5], [5], [5], [], [5], [], [5], [], [5]," +
+                " ...]",
+                "{[5]=666187, []=333813}",
+                0.6661869999983192
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[5]",
+                "[[5], [5], [5], [5], [5], [], [5], [], [5], [5], [5], [5], [5], [5], [5], [5], [], [5], [5], [5]," +
+                " ...]",
+                "{[5]=799806, []=200194}",
+                0.7998060000021615
+        );
+        subsets_Iterable_helper_uniform(
+                1,
+                "[1, 2, 3]",
+                "[[1, 2], [1, 2, 3], [1, 3], [2, 3], [], [], [1, 3], [2], [], [], [3], [1, 3], [3], [3], [], [3]," +
+                " [], [], [], [], ...]",
+                "{[]=499504, [2]=100253, [3]=100058, [1]=100023, [2, 3]=50160, [1, 2, 3]=50048, [1, 2]=49990" +
+                ", [1, 3]=49964}",
+                0.7507059999970308
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[1, 2, 3]",
+                "[[2], [2], [2, 3], [], [2, 3], [1, 3], [1, 2], [3], [1, 2, 3], [1], [1], [1], [1, 2], [2, 3], []," +
+                " [2], [1, 2, 3], [], [], [], ...]",
+                "{[]=333247, [1, 2, 3]=152964, [2]=95442, [3]=95325, [1]=94824, [1, 2]=76127, [1, 3]=76065" +
+                ", [2, 3]=76006}",
+                1.2008789999923022
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[1, 2, 3]",
+                "[[2], [2], [1, 2, 3], [1], [3], [1, 2, 3], [2, 3], [1, 2, 3], [], [1, 2, 3], [1, 3], [1, 3]," +
+                " [1, 2, 3], [], [], [1, 3], [1], [1, 3], [], [1, 3], ...]",
+                "{[1, 2, 3]=332856, []=199912, [2, 3]=83497, [1, 2]=82734, [1, 3]=82492, [1]=72945, [2]=72868" +
+                ", [3]=72696}",
+                1.7145229999887661
+        );
+        subsets_Iterable_helper_uniform(
+                1,
+                "[1, 2, 3, 4]",
+                "[[1, 2, 4], [1, 2, 3, 4], [1, 3, 4], [4], [4], [3], [1, 3], [2], [], [], [4], [2], [1], [], [3]," +
+                " [3], [], [3], [], [], ...]",
+                "{[]=499557, [3]=71710, [2]=71646, [1]=71506, [4]=71260, [3, 4]=23960, [1, 4]=23912, [1, 2]=23865," +
+                " [2, 3]=23842, [1, 3]=23669}",
+                0.8006769999971934
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[1, 2, 3, 4]",
+                "[[2, 4], [2, 3], [3, 4], [2, 3, 4], [], [1, 2, 3, 4], [2], [], [3, 4], [1, 2, 3], [], [], [1], [1]," +
+                " [2, 4], [], [2, 3, 4], [4], [4], [1, 2, 3, 4], ...]",
+                "{[]=333041, [2]=66872, [1, 2, 3, 4]=66813, [1]=66679, [3]=66527, [4]=66467, [1, 3, 4]=33691," +
+                " [2, 3, 4]=33589, [2, 3]=33463, [3, 4]=33406}",
+                1.334835999990812
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[1, 2, 3, 4]",
+                "[[2, 4], [2], [1, 2, 3, 4], [1, 3], [], [], [3], [1, 2, 4], [2, 3, 4], [1, 2, 3, 4], [2, 3, 4]," +
+                " [1, 2, 3, 4], [1], [], [1, 3, 4], [1, 3], [1, 2, 3, 4], [3], [], [1, 3, 4], ...]",
+                "{[1, 2, 3, 4]=200419, []=200010, [1, 3, 4]=50393, [2, 3, 4]=50288, [2]=50021, [1, 2, 4]=49914," +
+                " [1, 2, 3]=49893, [4]=49847, [3]=49827, [1]=49823}",
+                2.001787999981212
+        );
+        subsets_Iterable_helper_uniform(
+                1,
+                "[1, 2, 2, 4]",
+                "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [4], [4], [2], [1, 2], [2], [], [], [4], [2], [1], [], [2], [2]," +
+                " [], [2], [], [], ...]",
+                "{[]=499557, [2]=167198, [1]=71506, [4]=71260, [2, 4]=61764, [1, 2]=61754, [1, 2, 4]=43049" +
+                ", [1, 4]=23912}",
+                0.7339709999971153
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[1, 2, 2, 4]",
+                "[[2, 4], [2], [2, 4], [2, 4], [], [1, 2, 4], [2], [], [2, 4], [1, 2], [], [], [1], [1], [2, 4], []," +
+                " [2, 4], [4], [4], [1, 2, 4], ...]",
+                "{[]=333041, [2]=166862, [1, 2, 4]=133729, [2, 4]=100221, [1, 2]=99830, [1]=66679, [4]=66467" +
+                ", [1, 4]=33171}",
+                1.1676389999927037
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[1, 2, 2, 4]",
+                "[[2, 4], [2], [1, 2, 4], [1, 2], [], [], [2], [1, 2, 4], [2, 4], [1, 2, 4], [2, 4], [1, 2, 4], [1]," +
+                " [], [1, 2, 4], [1, 2], [1, 2, 4], [2], [], [1, 2, 4], ...]",
+                "{[1, 2, 4]=300726, []=200010, [2]=133338, [2, 4]=116702, [1, 2]=116234, [4]=49847, [1]=49823" +
+                ", [1, 4]=33320}",
+                1.667697999989275
+        );
+        subsets_Iterable_helper_uniform(
+                1,
+                "[2, 2, 2, 2]",
+                "[[2], [2], [2], [2], [2], [2], [2], [2], [], [], [2], [2], [2], [], [2], [2], [], [2], [], [], ...]",
+                "{[2]=500443, []=499557}",
+                0.5004429999935531
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[2, 2, 2, 2]",
+                "[[2], [2], [2], [2], [], [2], [2], [], [2], [2], [], [], [2], [2], [2], [], [2], [2], [2], [2], ...]",
+                "{[2]=666959, []=333041}",
+                0.6669589999983414
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[2, 2, 2, 2]",
+                "[[2], [2], [2], [2], [], [], [2], [2], [2], [2], [2], [2], [2], [], [2], [2], [2], [2], [], [2]," +
+                " ...]",
+                "{[2]=799990, []=200010}",
+                0.7999900000021668
+        );
+        subsets_Iterable_helper_uniform(
+                1,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[6, 9], [2, 6, 7, 10], [], [3], [5, 7], [6], [], [], [4], [6], [3], [7], [], [], [1], [], [], []," +
+                " [], [], ...]",
+                "{[]=500030, [10]=26710, [7]=26432, [4]=26418, [1]=26417, [6]=26409, [2]=26409, [5]=26279," +
+                " [8]=26268, [3]=26245}",
+                0.9078379999975383
+        );
+        subsets_Iterable_helper_uniform(
+                2,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[2, 4, 6, 8], [2, 6], [6, 10], [], [3, 4, 5, 6, 7], [], [4], [3, 4, 7], [1, 9], [9], [3, 6, 10]," +
+                " [4, 6, 7], [2, 4, 8], [3, 5, 7, 8, 9, 10], [], [], [], [3, 4, 5, 6, 7, 8], [2, 7], [], ...]",
+                "{[]=333018, [6]=23950, [10]=23943, [7]=23883, [2]=23862, [4]=23764, [1]=23753, [3]=23694," +
+                " [5]=23667, [8]=23610}",
+                1.6697689999898184
+        );
+        subsets_Iterable_helper_uniform(
+                4,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[2, 4, 6, 8], [6], [1, 3, 4, 5, 6, 7, 8, 9], [3, 6, 10], [6, 7], [1, 3, 4, 5, 7, 8, 9, 10], []," +
+                " [1, 3, 4, 5, 6, 7, 8], [3, 8], [1, 3, 7, 10], [2, 3, 5, 10], [1], [3, 5, 6, 9], [5], [1, 3, 8, 9]," +
+                " [], [], [1, 4], [6, 7], [2, 4, 6, 9], ...]",
+                "{[]=200177, [10]=17554, [8]=17510, [1]=17479, [6]=17445, [9]=17442, [5]=17440, [7]=17376," +
+                " [4]=17340, [2]=17337}",
+                2.8588639999882393
+        );
+        subsets_Iterable_helper(
+                1,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[3, 7, 10], [5], [], [1, 10], [], [3], [7], [], [5], [3], [], [], [], [], [], [], [], [], [5]," +
+                " [6, 9, 12, 15], ...]",
+                "{[]=499603, [1]=71387, [2]=51631, [3]=37715, [4]=27574, [5]=20807, [1, 2]=17158, [6]=15264," +
+                " [1, 3]=12126, [7]=11330}",
+                0.8811449999975006
+        );
+        subsets_Iterable_helper(
+                2,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[4, 7, 10], [1, 2, 3, 7], [1, 2, 3], [], [5, 9, 15], [12], [1, 2], [], [1, 2, 4, 5, 6, 7, 9], []," +
+                " [], [], [1, 3, 5], [2], [1, 4, 5], [12], [2], [], [1, 4], [1], ...]",
+                "{[]=333149, [1]=66271, [2]=47475, [3]=34388, [4]=24997, [1, 2]=23194, [5]=18733, [1, 3]=16292," +
+                " [6]=13708, [1, 4]=11818}",
+                1.583489999990105
+        );
+        subsets_Iterable_helper(
+                4,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[4, 7, 10], [1, 2, 3, 7, 8], [1, 2, 6, 12, 15], [13], [1, 2, 3, 4, 5, 6, 10], []," +
+                " [1, 2, 3, 4, 6, 12], [], [], [], [1, 2, 3], [4, 5], [9], [1, 4, 5, 6, 7], [], [1, 2, 3]," +
+                " [7, 10, 13], [4, 19], [1, 2, 3, 4, 17, 22], [], ...]",
+                "{[]=199867, [1]=49790, [2]=35481, [3]=25159, [1, 2]=22484, [4]=18608, [1, 3]=15260, [5]=13362," +
+                " [1, 2, 3]=13054, [1, 4]=11055}",
+                2.668782999988186
+        );
+        subsets_Iterable_helper(
+                1,
+                repeat(1),
+                "[[1], [1], [1], [1], [1], [], [1], [1], [], [], [1], [1], [1], [], [1], [], [], [1], [1], [], ...]",
+                "{[1]=500875, []=499125}",
+                0.5008749999935656
+        );
+        subsets_Iterable_helper(
+                2,
+                repeat(1),
+                "[[1], [1], [1], [1], [1], [1], [], [1], [1], [1], [1], [1], [1], [1], [], [1], [], [1], [], [1]," +
+                " ...]",
+                "{[1]=666187, []=333813}",
+                0.6661869999983192
+        );
+        subsets_Iterable_helper(
+                4,
+                repeat(1),
+                "[[1], [1], [1], [1], [1], [], [1], [], [1], [1], [1], [1], [1], [1], [1], [1], [], [1], [1], [1]," +
+                " ...]",
+                "{[1]=799806, []=200194}",
+                0.7998060000021615
+        );
+        subsets_Iterable_fail_helper(1, Collections.emptyList());
+        subsets_Iterable_fail_helper(1, Arrays.asList(1, 2, 3));
+        subsets_Iterable_fail_helper(0, P.integers());
+        subsets_Iterable_fail_helper(-1, P.integers());
+        subsets_Iterable_fail_helper(1, Arrays.asList(1, null, 3));
+        subsets_Iterable_fail_helper(1, Collections.singleton(null));
+    }
+
+    private static void stringSubsets_String_helper(
+            int scale,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsets(input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringSubsets_String_fail_helper(int scale, @NotNull String input) {
+        try {
+            toList(P.withScale(scale).stringSubsets(input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsets_String() {
+        stringSubsets_String_helper(
+                1,
+                "a",
+                "[a, a, a, a, a, , a, a, , , a, a, a, , a, , , a, a, , ...]",
+                "{a=500875, =499125}",
+                0.5008749999935656
+        );
+        stringSubsets_String_helper(
+                2,
+                "a",
+                "[a, a, a, a, a, a, , a, a, a, a, a, a, a, , a, , a, , a, ...]",
+                "{a=666187, =333813}",
+                0.6661869999983192
+        );
+        stringSubsets_String_helper(
+                4,
+                "a",
+                "[a, a, a, a, a, , a, , a, a, a, a, a, a, a, a, , a, a, a, ...]",
+                "{a=799806, =200194}",
+                0.7998060000021615
+        );
+        stringSubsets_String_helper(
+                1,
+                "abc",
+                "[ab, abc, ac, bc, , , ac, b, , , c, ac, c, c, , c, , , , , ...]",
+                "{=499504, b=100253, c=100058, a=100023, bc=50160, abc=50048, ab=49990, ac=49964}",
+                0.7507059999970308
+        );
+        stringSubsets_String_helper(
+                2,
+                "abc",
+                "[b, b, bc, , bc, ac, ab, c, abc, a, a, a, ab, bc, , b, abc, , , , ...]",
+                "{=333247, abc=152964, b=95442, c=95325, a=94824, ab=76127, ac=76065, bc=76006}",
+                1.2008789999923022
+        );
+        stringSubsets_String_helper(
+                4,
+                "abc",
+                "[b, b, abc, a, c, abc, bc, abc, , abc, ac, ac, abc, , , ac, a, ac, , ac, ...]",
+                "{abc=332856, =199912, bc=83497, ab=82734, ac=82492, a=72945, b=72868, c=72696}",
+                1.7145229999887661
+        );
+        stringSubsets_String_helper(
+                1,
+                "abbc",
+                "[abc, abc, abc, c, c, b, ab, b, , , c, b, a, , b, b, , b, , , ...]",
+                "{=499557, b=167198, a=71506, c=71260, bc=61764, ab=61754, abc=43049, ac=23912}",
+                0.7339709999971153
+        );
+        stringSubsets_String_helper(
+                2,
+                "abbc",
+                "[bc, b, bc, bc, , abc, b, , bc, ab, , , a, a, bc, , bc, c, c, abc, ...]",
+                "{=333041, b=166862, abc=133729, bc=100221, ab=99830, a=66679, c=66467, ac=33171}",
+                1.1676389999927037
+        );
+        stringSubsets_String_helper(
+                4,
+                "abbc",
+                "[bc, b, abc, ab, , , b, abc, bc, abc, bc, abc, a, , abc, ab, abc, b, , abc, ...]",
+                "{abc=300726, =200010, b=133338, bc=116702, ab=116234, c=49847, a=49823, ac=33320}",
+                1.667697999989275
+        );
+        stringSubsets_String_helper(
+                1,
+                "Mississippi",
+                "[ps, is, is, , is, s, , , s, s, s, i, i, , i, , , , , , ...]",
+                "{=499907, s=111371, i=111271, is=63764, p=49940, ips=27926, ps=26420, ip=26257, M=23658, Mis=12412}",
+                0.7700039999971866
+        );
+        stringSubsets_String_helper(
+                2,
+                "Mississippi",
+                "[is, is, is, i, is, , s, s, Mip, , , p, ps, s, is, ips, i, , is, , ...]",
+                "{=333528, s=106872, i=106248, is=100321, ips=77392, p=45804, Mips=40546, ps=37802, ip=37774" +
+                ", Mis=31686}",
+                1.2632049999918284
+        );
+        stringSubsets_String_helper(
+                4,
+                "Mississippi",
+                "[is, s, Mips, s, ps, s, Mips, s, Mis, is, Mips, Mips, , ips, i, Mips, , , Ms, s, ...]",
+                "{=199852, ips=143500, Mips=131826, is=114182, s=82176, i=81772, Mis=51875, ip=38564, ps=38557" +
+                ", p=34200}",
+                1.8740139999846195
+        );
+        stringSubsets_String_fail_helper(1, "");
+        stringSubsets_String_fail_helper(0, "abc");
+        stringSubsets_String_fail_helper(-1, "abc");
+    }
+
+    private static void stringSubsets_helper(
+            int scale,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsets()));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringSubsets_fail_helper(int scale) {
+        try {
+            toList(P.withScale(scale).stringSubsets());
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsets() {
+        stringSubsets_helper(
+                1,
+                "[ε\u2538䊿, ϡ\u19dcㄾ䯏刿罖몱\udd15ﲦ, ᬜK㵏, 㩷, 纫, 䝲, 坤琖, \uea45, , , \u2b63, 鸅, \uee1c, , ᅺ, 䇺," +
+                " , 㖊, , , ...]",
+                "{=499557, \uf59a=15, 僵=14, \u12c7=14, 瘍=14, \ue0de=14, \ua838=13, 䃢=13, 喽=13, 瓫=13}",
+                1.0006239999976707
+        );
+        stringSubsets_helper(
+                2,
+                "[\u31e5肣髽\uf6ff, 몱\udd15ﲦ, ㄾ刿, K㵏ꏹ, , \u2a43坤琖퉌\uea45, 餥, , \u33b2酓캆, \u2aec㖊짎\ue9fd, , ," +
+                " 䱸, \uf878, 尩굿\uecf5, , \u3353刓嗏瀵컦\ud805\ue2d3, 䫯噋ꌻ\uf36f, 홃, \u061a\u2e94壙穨鼧픫\udd82, ...]",
+                "{=333041, 趤=15, 挗=13, \u2fae=13, 阤=12, \u0978=12, \ue2fe=12, \uab10=12, 䖸=12, \ue973=12}",
+                2.0036399999891383
+        );
+        stringSubsets_helper(
+                4,
+                "[\u31e5肣髽\uf6ff, 몱\udd15, ᅺᤘ\u2b63\u33b2䇺煖误輮酓鸂鸅됽캆\ue9fd\uee1c\uf637, 全覚, , , ሮ," +
+                " 尩疜ꪻ굿\uecf5, 刓瀵컦, \u061a\u2e94㽖䥔嗮壙穨糦鼧픫핀\udd42\udd82\uf329ﶼﻧ, \u0e77慚ꯃ총\uf36b," +
+                " ढ\u2293䴻庺槔横靯駆ꎤ퉐\ued0d, 䃼, , ᑒ拷만\ue68e, ͺ\u124e\u2506囀ꪪ, 䔾唯嶂湑猂甧蹙췴턞\uead1ﮍ, \uab6e, ," +
+                " ᖒ㿘滞\ue89b, ...]",
+                "{=200010, \ued08=11, 듏=11, \ua495=11, 幱=10, 㚼=10, Ꙛ=10, 홣=10, ﺆ=10, \ua494=10}",
+                4.005472999991468
+        );
+        stringSubsets_fail_helper(0);
+        stringSubsets_fail_helper(-1);
+    }
+
+    private static void subsetsAtLeast_helper(
+            int scale,
+            int minSize,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<List<Integer>> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).subsetsAtLeast(minSize, input))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(List::size, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void subsetsAtLeast_helper_uniform(
+            int scale,
+            int minSize,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        subsetsAtLeast_helper(
+                scale,
+                minSize,
+                P.uniformSample(readIntegerListWithNulls(input)),
+                output,
+                topSampleCount,
+                meanSize
+        );
+    }
+
+    private static void subsetsAtLeast_fail_helper(int scale, int minSize, @NotNull Iterable<Integer> input) {
+        try {
+            toList(P.withScale(scale).subsetsAtLeast(minSize, input));
+            fail();
+        } catch (NoSuchElementException | IllegalStateException | NullPointerException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testSubsetsAtLeast() {
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[5]",
+                "[[5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5], [5]," +
+                " [5], ...]",
+                "{[5]=1000000}",
+                1.000000000007918
+        );
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3]",
+                "[[1, 2], [1, 2, 3], [1, 2, 3], [3], [1, 2, 3], [3], [2, 3], [2], [3], [1, 3], [2], [3], [2], [3]," +
+                " [1], [3], [1], [1], [3], [1, 2], ...]",
+                "{[2]=200397, [3]=200001, [1]=199719, [2, 3]=100517, [1, 2, 3]=100200, [1, 3]=99720, [1, 2]=99446}",
+                1.50008299998526
+        );
+        subsetsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3]",
+                "[[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]," +
+                " [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]," +
+                " [1, 2, 3], [1, 2, 3], ...]",
+                "{[1, 2, 3]=1000000}",
+                2.9999999999775233
+        );
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3, 4]",
+                "[[1, 2, 4], [1, 2, 3, 4], [1, 2, 3, 4], [4], [2, 4], [3], [1, 3, 4], [2], [1], [4], [2], [1, 3]," +
+                " [2, 3], [3], [2], [3], [1], [3], [1], [1], ...]",
+                "{[2]=143315, [4]=143102, [1]=143064, [3]=142514, [1, 4]=47716, [2, 3]=47647, [2, 4]=47577," +
+                " [1, 3]=47540, [3, 4]=47519, [1, 2]=47049}",
+                1.5996069999831977
+        );
+        subsetsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3, 4]",
+                "[[1, 2, 3, 4], [2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [2, 3, 4], [2, 3, 4], [1, 2, 3], [1, 3, 4]," +
+                " [1, 2, 3, 4], [2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3], [2, 3, 4], [1, 2, 3]," +
+                " [1, 2, 3, 4], [1, 3, 4], [1, 3, 4], [1, 3, 4], [1, 2, 4], ...]",
+                "{[1, 2, 3, 4]=333852, [2, 3, 4]=167170, [1, 2, 3]=166847, [1, 2, 4]=166090, [1, 3, 4]=166041}",
+                3.3338519999899345
+        );
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 2, 4]",
+                "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [4], [2, 4], [2], [1, 2, 4], [2], [1], [4], [2], [1, 2], [2]," +
+                " [2], [2], [2], [1], [2], [1], [1], ...]",
+                "{[2]=333476, [4]=143102, [1]=143064, [2, 4]=123708, [1, 2]=123118, [1, 2, 4]=85816, [1, 4]=47716}",
+                1.466173999985577
+        );
+        subsetsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 2, 4]",
+                "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4]," +
+                " [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4], [1, 2, 4]," +
+                " [1, 2, 4], [1, 2, 4], ...]",
+                "{[1, 2, 4]=1000000}",
+                2.9999999999775233
+        );
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[2, 2, 2, 2]",
+                "[[2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2], [2]," +
+                " [2], ...]",
+                "{[2]=1000000}",
+                1.000000000007918
+        );
+        subsetsAtLeast_helper_uniform(
+                2,
+                1,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[4, 6, 9], [2, 6, 7], [10], [8], [3], [4, 5, 7], [6], [5], [4, 8], [6], [3, 4], [7], [9], [1, 9]," +
+                " [9], [5], [4], [4], [3, 6, 10], [7], ...]",
+                "{[6]=53166, [5]=52878, [2]=52770, [4]=52720, [3]=52634, [1]=52615, [8]=52598, [9]=52572," +
+                " [10]=52566, [7]=52513}",
+                1.8170889999810345
+        );
+        subsetsAtLeast_helper_uniform(
+                5,
+                3,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[2, 4, 6, 8], [2, 6, 7], [3, 5, 6, 8, 10], [3, 4, 5, 6, 7], [1, 4, 6], [1, 3, 4, 7, 9], [4, 5, 9]," +
+                " [3, 6, 7, 10], [4, 6, 7], [2, 3, 4, 6, 7, 8], [3, 5, 8, 10], [1, 5, 7], [1, 2, 3, 4, 5, 6, 7, 8]," +
+                " [3, 4, 5, 8], [1, 4, 7], [3, 4, 5, 7, 8, 9], [1, 3, 7, 10], [3, 6, 9, 10], [2, 3, 8, 10]," +
+                " [1, 2, 5], ...]",
+                "{[1, 5, 8]=3625, [1, 5, 10]=3580, [1, 2, 10]=3575, [4, 5, 8]=3573, [2, 3, 6]=3570, [4, 7, 10]=3570," +
+                " [5, 6, 10]=3570, [4, 5, 10]=3564, [1, 6, 7]=3552, [2, 6, 10]=3551}",
+                4.168420999985633
+        );
+        subsetsAtLeast_helper_uniform(
+                32,
+                8,
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 4, 5, 6, 7, 9, 10]," +
+                " [2, 3, 4, 5, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 7, 8, 9, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]," +
+                " [1, 2, 3, 4, 5, 6, 7, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...]",
+                "{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=584407, [2, 3, 4, 5, 6, 7, 8, 9, 10]=24560," +
+                " [1, 2, 3, 4, 5, 6, 7, 9, 10]=24496, [1, 2, 3, 4, 5, 7, 8, 9, 10]=24492," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 10]=24318, [1, 3, 4, 5, 6, 7, 8, 9, 10]=24296," +
+                " [1, 2, 3, 4, 5, 6, 8, 9, 10]=24254, [1, 2, 4, 5, 6, 7, 8, 9, 10]=24239," +
+                " [1, 2, 3, 5, 6, 7, 8, 9, 10]=24234, [1, 2, 3, 4, 6, 7, 8, 9, 10]=24138}",
+                9.41189799992237
+        );
+        subsetsAtLeast_helper(
+                2,
+                1,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[3, 7, 10], [3], [1, 3, 7], [1, 2], [2, 4, 8], [2], [2], [2], [8], [6, 9, 12, 15], [2], [1], [12]," +
+                " [4, 7], [1, 2, 5, 6], [5], [1], [10], [2], [5], ...]",
+                "{[1]=142762, [2]=104119, [3]=75181, [4]=55392, [5]=41192, [1, 2]=33786, [6]=30272, [1, 3]=24074," +
+                " [7]=22836, [1, 4]=17437}",
+                1.7601419999815262
+        );
+        subsetsAtLeast_helper(
+                5,
+                3,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[1, 3, 4, 7, 10], [2, 3, 7, 8], [1, 2, 8], [6, 9, 12, 15], [1, 2, 13], [1, 2, 4, 5, 6, 7]," +
+                " [1, 3, 5, 10], [2, 4, 5], [2, 4, 5], [1, 2, 3, 4, 6], [1, 2, 5], [4, 5, 6], [1, 4, 6, 7, 9]," +
+                " [1, 2, 5, 10], [2, 3, 4], [1, 2, 3, 4, 5, 6, 7, 10, 19, 22], [1, 2, 3, 4, 7], [1, 2, 19]," +
+                " [3, 7, 14], [1, 2, 4, 20], ...]",
+                "{[1, 2, 3]=43250, [1, 2, 4]=30077, [1, 2, 5]=21354, [1, 3, 4]=20186, [1, 2, 3, 4]=19240," +
+                " [1, 2, 6]=15287, [1, 3, 5]=14238, [1, 2, 3, 5]=13622, [2, 3, 4]=12731, [1, 2, 7]=11260}",
+                3.989958999983499
+        );
+        subsetsAtLeast_helper(
+                32,
+                8,
+                P.withScale(4).positiveIntegersGeometric(),
+                "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15], [1, 2, 3, 4, 5, 6, 7, 9]," +
+                " [1, 2, 3, 4, 5, 6, 7, 10, 13, 19, 22], [1, 2, 3, 4, 5, 7, 8, 13, 14, 19, 20]," +
+                " [1, 2, 3, 4, 5, 6, 8, 10], [1, 2, 3, 4, 5, 6, 11, 15], [1, 2, 3, 4, 5, 6, 7, 9, 10]," +
+                " [1, 2, 3, 4, 5, 6, 8, 10, 13], [1, 2, 3, 4, 5, 6, 7, 8, 10, 15], [1, 2, 3, 4, 5, 6, 7, 9, 15]," +
+                " [1, 2, 3, 4, 5, 6, 8, 9, 12, 15, 17], [1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 14]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 15], [1, 2, 3, 4, 5, 6, 7, 8, 10, 11]," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 13], [1, 2, 3, 6, 7, 8, 9, 12, 16]," +
+                " [1, 2, 3, 4, 5, 6, 7, 11, 13, 14], [1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 17]," +
+                " [1, 2, 3, 4, 5, 7, 8, 9, 11, 16], [1, 2, 3, 4, 5, 6, 8, 9, 10, 12], ...]",
+                "{[1, 2, 3, 4, 5, 6, 7, 8]=15805, [1, 2, 3, 4, 5, 6, 7, 8, 9]=14490," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]=12306, [1, 2, 3, 4, 5, 6, 7, 9]=10542," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 10]=9481, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]=9410," +
+                " [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]=8086, [1, 2, 3, 4, 5, 6, 7, 10]=7186," +
+                " [1, 2, 3, 4, 5, 6, 8, 9]=6698, [1, 2, 3, 4, 5, 6, 7, 8, 11]=6627}",
+                10.378239999978224
+        );
+        subsetsAtLeast_helper(
+                2,
+                1,
+                repeat(1),
+                "[[1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1], [1]," +
+                " [1], ...]",
+                "{[1]=1000000}",
+                1.000000000007918
+        );
+        subsetsAtLeast_fail_helper(5, 3, Collections.emptyList());
+        subsetsAtLeast_fail_helper(5, 3, Arrays.asList(1, 2, 3));
+        subsetsAtLeast_fail_helper(5, 5, P.integers());
+        subsetsAtLeast_fail_helper(4, 5, P.integers());
+        subsetsAtLeast_fail_helper(2, 1, Collections.singletonList(null));
+        subsetsAtLeast_fail_helper(2, 1, Arrays.asList(1, null, 3));
+    }
+
+    private static void stringSubsetsAtLeast_int_String_helper(
+            int scale,
+            int minSize,
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsetsAtLeast(minSize, input))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringSubsetsAtLeast_int_String_fail_helper(int scale, int minSize, @NotNull String input) {
+        try {
+            toList(P.withScale(scale).stringSubsetsAtLeast(minSize, input));
+            fail();
+        } catch (IllegalArgumentException | IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsetsAtLeast_int_String() {
+        stringSubsetsAtLeast_int_String_helper(
+                2,
+                1,
+                "a",
+                "[a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, ...]",
+                "{a=1000000}",
+                1.000000000007918
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                2,
+                1,
+                "abc",
+                "[ab, abc, abc, c, abc, c, bc, b, c, ac, b, c, b, c, a, c, a, a, c, ab, ...]",
+                "{b=200397, c=200001, a=199719, bc=100517, abc=100200, ac=99720, ab=99446}",
+                1.50008299998526
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                5,
+                3,
+                "abc",
+                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
+                " abc, ...]",
+                "{abc=1000000}",
+                2.9999999999775233
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                2,
+                1,
+                "abbc",
+                "[abc, abc, abc, c, bc, b, abc, b, a, c, b, ab, b, b, b, b, a, b, a, a, ...]",
+                "{b=333476, c=143102, a=143064, bc=123708, ab=123118, abc=85816, ac=47716}",
+                1.466173999985577
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                5,
+                3,
+                "abbc",
+                "[abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc, abc," +
+                " abc, ...]",
+                "{abc=1000000}",
+                2.9999999999775233
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                2,
+                1,
+                "Mississippi",
+                "[ps, is, i, is, is, s, i, is, s, s, i, ip, Mi, i, p, i, s, s, ps, s, ...]",
+                "{i=222608, s=222220, is=127085, p=100226, ips=55787, ps=52857, ip=52609, M=47546, Mis=24765" +
+                ", Mi=24457}",
+                1.5401079999842737
+        );
+        stringSubsetsAtLeast_int_String_helper(
+                5,
+                3,
+                "Mississippi",
+                "[ips, ips, Mis, Mip, ips, ips, ips, Mips, Mis, Mis, Mps, ips, ips, ips, Mips, Mps, Mip, Mips, Mips," +
+                " Mis, ...]",
+                "{ips=484161, Mips=228522, Mis=187626, Mip=49852, Mps=49839}",
+                3.2285219999851744
+        );
+        stringSubsetsAtLeast_int_String_fail_helper(5, 3, "");
+        stringSubsetsAtLeast_int_String_fail_helper(5, 5, "abc");
+        stringSubsetsAtLeast_int_String_fail_helper(4, 5, "abc");
+    }
+
+    private static void stringSubsetsAtLeast_int_helper(
+            int scale,
+            int minSize,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringSubsetsAtLeast(minSize)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringSubsetsAtLeast_int_fail_helper(int scale, int minSize) {
+        try {
+            toList(P.withScale(scale).stringSubsetsAtLeast(minSize));
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testStringSubsetsAtLeast_int() {
+        stringSubsetsAtLeast_int_helper(
+                2,
+                1,
+                "[ε\u2538\u31e5䊿, ϡ\u19dcㄾ䯏刿罖몱\udd15ﲦ, ᬜK㵏ꏹ, 㩷, 纫\ufe2d, 䝲, \u2a43坤琖, \uea45, 蕤," +
+                " \u2b63\uf637, 鸅, \u33b2\uee1c, ᅺ됽, 䇺, \ue9fd, 㖊, \uaaf0, 覚, 䱸, \u2e24, ...]",
+                "{瓫=24, 簐=22, 듑=22, 瀯=21, \uf3e9=21, 䝞=21, 抷=20, 䒢=20, Ẑ=20, 텁=20}",
+                1.9995569999798375
+        );
+        stringSubsetsAtLeast_int_helper(
+                5,
+                3,
+                "[\u31e5肣赧髽\ue215\uf6ffﳑ, 䯏몱\udd15ﲦ, ㄾ䲵偵刿箿, K㵏缄ꏹ, \u2a43坤琖蕤餥퉌\ue352\uea45," +
+                " \u2b63鸂\uf637, ᅺ\u33b2酓됽캆, \u2aec㖊\uaaf0짎\ue9fd, 䱸覚돘, ܓሮ鄒\uf878, 尩ꪻ굿\uecf5, 빅빮\ue8b2," +
+                " \u3353刓嗏瀵컦\ud805\ue2d3, 䫯噋躁ꌻ홃\ue87c\uf36f, \u061a\u2e94㽖䥔壙穨鼧픫\udd82ﶼ, 嗮糦\uf329," +
+                " B\u0e77\u2a57㽿慚ꯃ총\uf36b, ꅪ\udcc6\udec6, \u0d5b\u337d萋, \u1366ᵠ詪쀝쪡\uf21b, ...]",
+                "{\u31e5肣赧髽\ue215\uf6ffﳑ=1, 䯏몱\udd15ﲦ=1, ㄾ䲵偵刿箿=1, K㵏缄ꏹ=1, \u2a43坤琖蕤餥퉌\ue352\uea45=1," +
+                " \u2b63鸂\uf637=1, ᅺ\u33b2酓됽캆=1, \u2aec㖊\uaaf0짎\ue9fd=1, 䱸覚돘=1, ܓሮ鄒\uf878=1}",
+                5.00299199999616
+        );
+        stringSubsetsAtLeast_int_helper(
+                32,
+                8,
+                "[ܓᅺሮᤘ\u28de\u2aec\u2b63\u2e24\u33b2㖊㱉䇺䟆䱸全尩泦煖疜覚误輮鄒酓鸂鸅\ua7b1ꪻ\uaaf0굿돘됽띯빅빮짎캆\ue2da" +
+                "\ue5cb\ue78f\ue8b2\ue9fd\uecf5\uee1c\uf637\uf878聆\uff03, ឃ\u3353刓嗏瀵컦\ud805\ue2d3," +
+                " B\u0964\u0d5b\u0e77\u2a57\u337d㽿䍾䞂嗮徜慚睸糦緜萋詪詵錹鎿鐳颒鰫ꅪꯃ묆쪡총\ud8ca\udcc6\udd42\udec6\uf329" +
+                "\uf36bﻧ, \u2293䴻庺槔横駆ꎤ퉐\ued0d," +
+                " ᯖ\u202c㝏䃼䦣儖匀낛띆\ue9c6\uea55ﱓ, Ȟͺұډ\u0a49ලხ\u124e㲜䔾䠬䮼叙嶂繲葒蛕ꪪ췴턞\ue28c\ue852\uefc8," +
+                " ᖒ\u2e64㥑㿘䁅䝀偘滞燔趵ꎿ\uab6e년믱젯\ue89b, ᶙ\u26f2㙴䁩聂ꃖꐲ\udc58," +
+                " ᅒ\u2320\u2606\u32b0㕯婜狙阏陜頵顓ꎚ궥댲뚗쇻쓎쟒쳮, \u0618\u19de\u25ad\u2613戯旞韕똽," +
+                " \u0d47\u0f1bᓑ\u2eea㚏䢗帇晸濙犋瞁鈖ꤥ죴쿕퀯퓰\uebc7\uf800," +
+                " а\u21c0\u2684\u2b83撻梏沅羾葆ꎠ궺놂뗢뵪쒞쥶팗풬\ue40c," +
+                " \u073d\u0aa9ஆ\u0b8c\u1069ቾ\u1739គᥔ\u19b1\u1a60\u1aba\u1b56ᳯᶝ\u2026\u2a33\u2af8\u2f0d\u3243㥐㭍㻶㼰" +
+                "㾸䅁䈏䦼䨺\u4df4乃侒偰剹厖叵呼団姕嬵悲挑摡枧柿桶泈狚睗窀箴糘茞蕕閦顆飰館鳙鳸\ua6f4Ꜣ\ua7afꯈ냥닁듂뼄뾁쀁쁳쑹운쥇챲춮칗" +
+                "탰헑\ud845\ude93\ue10d\ue480\ue531\ue649\ue672\uecda\ued1a\uf351\uf3a8," +
+                " ʵۮܒ\u07aa\u0875\u17cbᰁ\u1c47\u1fce\u25a0\u291e\u2e50\u2fbeㆲ㗨㙿㢍䒁䒉嘟墺廏操民滎瀉爑甍皑秳稔臙艸芦藟詂" +
+                "謳貗頔\ua837놿뇐멖뮣벧샣솄톋퍆\udde1\ue22c\uecda\uee3a\uee84\uf2ff\uf6cd," +
+                " K\u0529Ꮃᶑ㓆䌚䜐卩嘂壵显禎细鏌阘鳰Ꜯ\ua9f4갭쉙쬋쵕춢후\uda6c\ude3a\ue61e\ue9d5\uf04f\uf6a5\ufe3d," +
+                " ᬱ㨘昺炣玉虹뭇뾂," +
+                " 7Ϯ\u0c00\u0f24Ᏺᚅ\u1debど㖃㥥㴯㺸䌕䎌䜜則勪懜戎担敉杁欎溯潵焣穣笨绡缂葑頒鱼鲦齞걓겧렔몔씅익쯹츪클퇢횋\udd06" +
+                "\ude35\ue47a\ue498\ue59b串聾ﶯ, \u0482\u2153耕茟詴ꏠꜰ쵕쾭\ud847\uef98\uf7cd," +
+                " \u0361\u0cecᒚ\u21ba\u2818\u2b5dⲄⴋⴓ㺱㻞巶忢憊椼檌檮滙玌璎疟祍蠛裤ꚸ뤀먛\ud85c\udbf4\uec15," +
+                " Ȣⱊ\u2f43僮眏軷霺겴뜓좲퐗햽\ue41d\uf5e2, ...]",
+                "{ܓᅺሮᤘ\u28de\u2aec\u2b63\u2e24\u33b2㖊㱉䇺䟆䱸全尩泦煖疜覚误輮鄒酓鸂鸅\ua7b1ꪻ\uaaf0굿돘됽띯빅빮짎캆\ue2da" +
+                "\ue5cb\ue78f\ue8b2\ue9fd\uecf5\uee1c\uf637\uf878聆\uff03=1, ឃ\u3353刓嗏瀵컦\ud805\ue2d3=1," +
+                " B\u0964\u0d5b\u0e77\u2a57\u337d㽿䍾䞂嗮徜慚睸糦緜萋詪詵錹鎿鐳颒鰫ꅪꯃ묆쪡총\ud8ca\udcc6\udd42\udec6\uf329" +
+                "\uf36bﻧ=1, \u2293䴻庺槔横駆ꎤ퉐\ued0d=1," +
+                " ᯖ\u202c㝏䃼䦣儖匀낛띆\ue9c6\uea55ﱓ=1, Ȟͺұډ\u0a49ලხ\u124e㲜䔾䠬䮼叙嶂繲葒蛕ꪪ췴턞\ue28c\ue852\uefc8=1," +
+                " ᖒ\u2e64㥑㿘䁅䝀偘滞燔趵ꎿ\uab6e년믱젯\ue89b=1, ᶙ\u26f2㙴䁩聂ꃖꐲ\udc58=1," +
+                " ᅒ\u2320\u2606\u32b0㕯婜狙阏陜頵顓ꎚ궥댲뚗쇻쓎쟒쳮=1, \u0618\u19de\u25ad\u2613戯旞韕똽=1}",
+                31.99690200002153
+        );
+        stringSubsetsAtLeast_int_fail_helper(5, 5);
+        stringSubsetsAtLeast_int_fail_helper(4, 5);
+    }
+
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
