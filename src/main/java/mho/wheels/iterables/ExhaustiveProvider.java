@@ -5822,6 +5822,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     private static @NotNull Iterable<List<Integer>> cartesianProductIndices(List<Integer> listSizes) {
         //noinspection Convert2MethodRef
         BigInteger outputSize = productBigInteger(map(i -> BigInteger.valueOf(i), listSizes));
+        int limit = listSizes.size() - 1;
         return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
             private final @NotNull List<Integer> list = toList(replicate(listSizes.size(), 0));
             private boolean first = true;
@@ -5835,7 +5836,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     first = false;
                     return list;
                 }
-                for (int i = listSizes.size() - 1; i >= 0; i--) {
+                for (int i = limit; i >= 0; i--) {
                     int j = list.get(i) + 1;
                     if (j != listSizes.get(i)) {
                         list.set(i, j);
@@ -5850,10 +5851,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
 
     @Override
     public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
-        return map(
-                is -> toList(zipWith(List::get, xss, is)),
-                cartesianProductIndices(toList(map(List::size, xss)))
-        );
+        return map(is -> toList(zipWith(List::get, xss, is)), cartesianProductIndices(toList(map(List::size, xss))));
     }
 
     @Override
