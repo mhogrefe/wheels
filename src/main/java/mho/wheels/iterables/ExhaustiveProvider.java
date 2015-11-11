@@ -5856,13 +5856,6 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public static void main(String[] args) {
-        IterableProvider p = RandomProvider.example();
-        for (List<Integer> is : p.cartesianProduct(Arrays.asList(Arrays.asList(3,4,5), Arrays.asList(10,11), Arrays.asList(-1,-2,-3,-4)))) {
-            System.out.println(is);
-        }
-    }
-
     @Override
     public @NotNull Iterable<String> substrings(@NotNull String s) {
         return nub(super.substrings(s));
