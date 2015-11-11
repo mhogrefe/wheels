@@ -410,8 +410,8 @@ public final class MathUtils {
 
     public static @NotNull List<Integer> factors(int n) {
         List<Pair<Integer, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.controlledListsLex(
-                toList(map(p -> range(0, p.b), cpf))
+        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
+                toList(map(p -> toList(range(0, p.b)), cpf))
         );
         Function<List<Integer>, Integer> f = exponents -> productInteger(
                 zipWith((x, y) -> BigInteger.valueOf(x).pow(y).intValueExact(), map(q -> q.a, cpf), exponents)
@@ -421,8 +421,8 @@ public final class MathUtils {
 
     public static @NotNull List<BigInteger> factors(@NotNull BigInteger n) {
         List<Pair<BigInteger, Integer>> cpf = toList(compactPrimeFactors(n));
-        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.controlledListsLex(
-                toList(map(p -> range(0, p.b), cpf))
+        Iterable<List<Integer>> possibleExponents = ExhaustiveProvider.INSTANCE.cartesianProduct(
+                toList(map(p -> toList(range(0, p.b)), cpf))
         );
         Function<List<Integer>, BigInteger> f = exponents -> productBigInteger(
                 zipWith(BigInteger::pow, map(q -> q.a, cpf), exponents)

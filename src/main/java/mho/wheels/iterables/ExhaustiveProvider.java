@@ -3532,7 +3532,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     }
                     taken[index] = false;
                 }
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable");
             }
         };
     }
@@ -3784,7 +3784,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         previous = j;
                     }
                 }
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable");
             }
         };
     }
@@ -3902,7 +3902,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                     }
                     return list;
                 }
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable");
             }
         };
     }
@@ -4381,7 +4381,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         return list;
                     }
                 }
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable");
             }
         };
     }
@@ -5011,7 +5011,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
                         return list;
                     }
                 }
-                throw new IllegalStateException();
+                throw new IllegalStateException("unreachable");
             }
         };
     }
@@ -5819,21 +5819,48 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
-    public @NotNull <T> Iterable<List<T>> controlledListsLex(@NotNull List<Iterable<T>> xss) {
-        if (xss.size() == 0) return Collections.singletonList(new ArrayList<>());
-        if (xss.size() == 1) return map(Collections::singletonList, xss.get(0));
-        if (xss.size() == 2) return map(p -> Arrays.<T>asList(p.a, p.b), pairsLex(xss.get(0), toList(xss.get(1))));
-        List<Iterable<T>> leftList = new ArrayList<>();
-        List<Iterable<T>> rightList = new ArrayList<>();
-        for (int i = 0; i < xss.size() / 2; i++) {
-            leftList.add(xss.get(i));
+    private static @NotNull Iterable<List<Integer>> cartesianProductIndices(List<Integer> listSizes) {
+        //noinspection Convert2MethodRef
+        BigInteger outputSize = productBigInteger(map(i -> BigInteger.valueOf(i), listSizes));
+        return () -> new EventuallyKnownSizeIterator<List<Integer>>() {
+            private final @NotNull List<Integer> list = toList(replicate(listSizes.size(), 0));
+            private boolean first = true;
+            {
+                setOutputSize(outputSize);
+            }
+
+            @Override
+            public @NotNull List<Integer> advance() {
+                if (first) {
+                    first = false;
+                    return list;
+                }
+                for (int i = listSizes.size() - 1; i >= 0; i--) {
+                    int j = list.get(i) + 1;
+                    if (j != listSizes.get(i)) {
+                        list.set(i, j);
+                        return list;
+                    }
+                    list.set(i, 0);
+                }
+                throw new IllegalStateException("unreachable");
+            }
+        };
+    }
+
+    @Override
+    public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
+        return map(
+                is -> toList(zipWith(List::get, xss, is)),
+                cartesianProductIndices(toList(map(List::size, xss)))
+        );
+    }
+
+    public static void main(String[] args) {
+        IterableProvider p = RandomProvider.example();
+        for (List<Integer> is : p.cartesianProduct(Arrays.asList(Arrays.asList(3,4,5), Arrays.asList(10,11), Arrays.asList(-1,-2,-3,-4)))) {
+            System.out.println(is);
         }
-        for (int i = xss.size() / 2; i < xss.size(); i++) {
-            rightList.add(xss.get(i));
-        }
-        Iterable<List<T>> leftLists = controlledListsLex(leftList);
-        Iterable<List<T>> rightLists = controlledListsLex(rightList);
-        return map(p -> toList(concat(p.a, p.b)), pairsLex(leftLists, toList(rightLists)));
     }
 
     @Override

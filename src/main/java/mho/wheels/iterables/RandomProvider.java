@@ -4126,6 +4126,11 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    @Override
+    public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
+        return transpose(map(this::uniformSample, xss));
+    }
+
     /**
      * Determines whether {@code this} is equal to {@code that}.
      *
