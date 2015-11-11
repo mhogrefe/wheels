@@ -1648,6 +1648,100 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoSubsets() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).repeatingIterables(P.naturalIntegersGeometric())
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("subsets(" + p.a + ", " + its(p.b) + ") = " + its(p.a.subsets(p.b)));
+        }
+    }
+
+    private static void demoStringSubsets_String() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringSubsets(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringSubsets(p.b))));
+        }
+    }
+
+    private static void demoStringSubsets() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                s -> s.getScale() > 0,
+                P.withScale(4).randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("stringSubsets(" + rp + ") = " + its(map(Testing::nicePrint, rp.stringSubsets())));
+        }
+    }
+
+    private static void demoSubsetsAtLeast() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> repeatingIterablesAtLeast(P.withScale(p.a.getScale()), p.b, P.naturalIntegersGeometric())
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("subsetsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.subsetsAtLeast(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringSubsetsAtLeast_int_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, String>> ts = map(
+                p -> new Triple<>(p.a.a, p.a.b, p.b),
+                P.dependentPairsInfinite(
+                        filterInfinite(
+                                p -> p.a.getScale() > p.b,
+                                P.pairs(
+                                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                                        P.withScale(4).naturalIntegersGeometric()
+                                )
+                        ),
+                        p -> filterInfinite(
+                                s -> !s.isEmpty() && nub(s).length() >= p.b,
+                                P.withScale(p.a.getScale()).stringsAtLeast(p.b)
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringSubsetsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.stringSubsetsAtLeast(t.b, t.c))));
+        }
+    }
+
+    private static void demoStringSubsetsAtLeast_int() {
+        initialize();
+        Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
+                p -> p.a.getScale() > p.b,
+                P.pairs(
+                        P.withScale(4).randomProvidersDefaultSecondaryScale(),
+                        filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
+                )
+        );
+        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringSubsetsAtLeast(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringSubsetsAtLeast(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
