@@ -2293,4 +2293,15 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::nicePrint, EP.stringSubsetsAtLeast(i))));
         }
     }
+
+    private static void demoCartesianProduct() {
+        initialize();
+        Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (List<List<Integer>> xss : take(LIMIT, xsss)) {
+            String listString = tail(init(xss.toString()));
+            System.out.println("cartesianProduct(" + listString + ") = " + its(EP.cartesianProduct(xss)));
+        }
+    }
 }
