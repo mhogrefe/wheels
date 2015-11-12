@@ -209,6 +209,7 @@ public class RandomProviderProperties {
             propertiesSubsetsAtLeast();
             propertiesStringSubsetsAtLeast_int_String();
             propertiesStringSubsetsAtLeast_int();
+            propertiesCartesianProduct();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4001,6 +4002,48 @@ public class RandomProviderProperties {
                 p.a.stringSubsetsAtLeast(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesCartesianProduct() {
+        initialize("cartesianProduct(List<List<T>>)");
+        Iterable<Pair<RandomProvider, List<List<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).listsAtLeast(1, P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())))
+        );
+        for (Pair<RandomProvider, List<List<Integer>>> p : take(LIMIT, ps)) {
+            simpleTest(
+                    p.a,
+                    p.a.cartesianProduct(p.b), xs -> xs.size() == p.b.size() && and(zipWith(List::contains, p.b, xs))
+            );
+        }
+
+        Iterable<Pair<RandomProvider, List<List<Integer>>>> psFail = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).listsWithElement(
+                        Collections.emptyList(),
+                        P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric()))
+                )
+        );
+        for (Pair<RandomProvider, List<List<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.cartesianProduct(p.b));
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        psFail = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).listsWithElement(
+                        null,
+                        P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric()))
+                )
+        );
+        for (Pair<RandomProvider, List<List<Integer>>> p : take(LIMIT, psFail)) {
+            try {
+                toList(p.a.cartesianProduct(p.b));
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 
