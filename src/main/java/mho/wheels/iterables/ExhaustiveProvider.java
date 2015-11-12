@@ -5819,6 +5819,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         );
     }
 
+    /**
+     * Given a {@code List} of {@code Integer}s, generates the Cartesian product of the indices [0, ..., i–1] for each
+     * element i.
+     *
+     * <ul>
+     *  <li>{@code listSizes} cannot contain any negative values or nulls.</li>
+     *  <li>The result is the Cartesian product of sets of integers of the form [0, ..., i–1]</li>
+     * </ul>
+     *
+     * Length is ∏{@code listSizes}
+     *
+     * @param listSizes a {@code List} of non-negative {@code Integer}s
+     * @return ⨉<sub>i∈{@code listSizes}</sub>[0, ..., i–1]
+     */
     private static @NotNull Iterable<List<Integer>> cartesianProductIndices(List<Integer> listSizes) {
         //noinspection Convert2MethodRef
         BigInteger outputSize = productBigInteger(map(i -> BigInteger.valueOf(i), listSizes));
@@ -5849,6 +5863,20 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         };
     }
 
+    /**
+     * Returns an {@code Iterable} containing the Cartesian product of a {@code List} of {@code List}s.
+     *
+     * <ul>
+     *  <ul>None of the {@code List}s in {@code xss} can be null.</ul>
+     *  <ul>The result is the Cartesian product of a {@code List} of {@code List}s.</ul>
+     * </ul>
+     *
+     * Length is ∏<sub>{@code xs}∈{@code xss}</sub>{@code xs.size()}
+     *
+     * @param xss a {@code List} of {@code List}s
+     * @param <T> the type of the {@code List}s' elements
+     * @return ⨉{@code xss}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
         return map(is -> toList(zipWith(List::get, xss, is)), cartesianProductIndices(toList(map(List::size, xss))));
