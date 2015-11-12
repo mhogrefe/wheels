@@ -9434,6 +9434,37 @@ public strictfp class ExhaustiveProviderTest {
         } catch (IllegalArgumentException ignored) {}
     }
 
+    private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {
+        aeqit(P.cartesianProduct(readIntegerListWithNullsLists(input)), output);
+    }
+
+    private static void cartesianProduct_fail_helper(@NotNull String input) {
+        try {
+            P.cartesianProduct(readIntegerListWithNullsListsWithNulls(input));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testCartesianProduct() {
+        cartesianProduct_helper("[]", "[[]]");
+        cartesianProduct_helper("[[]]", "[]");
+        cartesianProduct_helper("[[], []]", "[]");
+        cartesianProduct_helper("[[], [0]]", "[]");
+        cartesianProduct_helper("[[0], [0]]", "[[0, 0]]");
+        cartesianProduct_helper("[[0, 0, 0]]", "[[0], [0], [0]]");
+        cartesianProduct_helper("[[1, 2, 3]]", "[[1], [2], [3]]");
+        cartesianProduct_helper("[[null]]", "[[null]]");
+        cartesianProduct_helper("[[1], [1], [1], [1]]", "[[1, 1, 1, 1]]");
+        cartesianProduct_helper("[[0, 1, 2], [-3, -4], [null, 10]]",
+                "[[0, -3, null], [0, -3, 10], [0, -4, null], [0, -4, 10], [1, -3, null], [1, -3, 10], [1, -4, null]," +
+                " [1, -4, 10], [2, -3, null], [2, -3, 10], [2, -4, null], [2, -4, 10]]");
+        cartesianProduct_helper("[[0, 1], [0, 1], [0, 1]]",
+                "[[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]");
+        cartesianProduct_fail_helper("[null]");
+        cartesianProduct_fail_helper("[[1, 2, 3], null]");
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
@@ -9460,6 +9491,14 @@ public strictfp class ExhaustiveProviderTest {
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
         return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+    }
+
+    private static @NotNull List<List<Integer>> readIntegerListWithNullsLists(@NotNull String s) {
+        return Readers.readList(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
+    }
+
+    private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
     }
 }
 // @formatter:on
