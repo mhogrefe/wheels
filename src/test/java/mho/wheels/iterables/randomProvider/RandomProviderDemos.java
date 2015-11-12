@@ -1351,22 +1351,6 @@ public class RandomProviderDemos {
         }
     }
 
-    private static @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(
-            @NotNull IterableProvider ip,
-            int minSize,
-            @NotNull Iterable<T> xs
-    ) {
-        return map(
-                IterableUtils::cycle,
-                nub(
-                        filterInfinite(
-                                ys -> !ys.isEmpty() && length(nub(ys)) >= minSize,
-                                map(IterableUtils::unrepeat, ip.listsAtLeast(minSize, xs))
-                        )
-                )
-        );
-    }
-
     private static void demoDistinctStrings_int_String() {
         initialize();
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
@@ -1449,8 +1433,7 @@ public class RandomProviderDemos {
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
-                        p -> repeatingIterablesAtLeast(
-                                P.withScale(p.a.getScale()),
+                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(
                                 p.b,
                                 P.withNull(P.naturalIntegersGeometric())
                         )
@@ -1694,7 +1677,7 @@ public class RandomProviderDemos {
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
-                        p -> repeatingIterablesAtLeast(P.withScale(p.a.getScale()), p.b, P.naturalIntegersGeometric())
+                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(p.b, P.naturalIntegersGeometric())
                 )
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {

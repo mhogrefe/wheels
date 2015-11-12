@@ -3078,22 +3078,6 @@ public class RandomProviderProperties {
         }
     }
 
-    private static @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(
-            @NotNull IterableProvider ip,
-            int minSize,
-            @NotNull Iterable<T> xs
-    ) {
-        return map(
-                IterableUtils::cycle,
-                nub(
-                        filterInfinite(
-                                ys -> !ys.isEmpty() && length(nub(ys)) >= minSize,
-                                map(IterableUtils::unrepeat, ip.listsAtLeast(minSize, xs))
-                        )
-                )
-        );
-    }
-
     private static void propertiesDistinctListsAtLeast() {
         initialize("distinctListsAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
@@ -3118,8 +3102,7 @@ public class RandomProviderProperties {
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
-                        p -> repeatingIterablesAtLeast(
-                                P.withScale(p.a.getScale()),
+                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(
                                 p.b,
                                 P.withNull(P.naturalIntegersGeometric())
                         )
@@ -3821,7 +3804,7 @@ public class RandomProviderProperties {
                                         P.withScale(4).naturalIntegersGeometric()
                                 )
                         ),
-                        p -> repeatingIterablesAtLeast(P.withScale(p.a.getScale()), p.b, P.naturalIntegersGeometric())
+                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(p.b, P.naturalIntegersGeometric())
                 )
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts2)) {

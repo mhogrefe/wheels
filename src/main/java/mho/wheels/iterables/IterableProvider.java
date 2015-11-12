@@ -2371,6 +2371,28 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss);
 
+    /**
+     * Generates repeating infinite {@code Iterables} whose elements are chosen from a given {@code List}.
+     *
+     * @param xs the source of elements for the generated {@code Iterable}s
+     * @param <T> the type of elements in the {@code Iterable}
+     */
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
+        return repeatingIterablesAtLeast(1, xs);
+    }
+
+    /**
+     * Generates repeating infinite {@code Iterables} whose elements are chosen from a given {@code List}. The
+     * repeating part has a specified minimum length.
+     *
+     * @param minSize the minimum length of the repeating part in the generated {@code Iterable}s
+     * @param xs the source of elements for the {@code Iterable}
+     * @param <T> the type of elements in the {@code Iterable}
+     */
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(minSize, xs)));
+    }
+
     public @NotNull Iterable<String> stringsWithChar(char c, @NotNull String s) {
         return map(p -> insert(p.a, p.b, c), dependentPairs(strings(s), t -> range(0, t.length())));
     }
@@ -2391,10 +2413,6 @@ public abstract strictfp class IterableProvider {
                 p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
                 pairsSquareRootOrder(dependentPairs(strings(), t -> range(0, t.length())), substrings)
         );
-    }
-
-    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
-        return map(IterableUtils::cycle, nub(map(IterableUtils::unrepeat, listsAtLeast(1, xs))));
     }
 
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
