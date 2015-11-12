@@ -1742,6 +1742,17 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoCartesianProduct() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<List<Integer>>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).listsAtLeast(1, P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())))
+        );
+        for (Pair<RandomProvider, List<List<Integer>>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("cartesianProduct(" + p.a + ", " + p.b + ") = " + its(p.a.cartesianProduct(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
