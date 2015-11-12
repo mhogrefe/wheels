@@ -288,6 +288,7 @@ public class ExhaustiveProviderProperties {
             propertiesSubsetsAtLeast();
             propertiesStringSubsetsAtLeast_int_String();
             propertiesStringSubsetsAtLeast_int();
+            propertiesCartesianProduct();
         }
         System.out.println("Done");
     }
@@ -9323,6 +9324,49 @@ public class ExhaustiveProviderProperties {
                 EP.stringSubsetsAtLeast(i);
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesCartesianProduct() {
+        initialize("cartesianProduct(List<List<T>>)");
+        Iterable<List<List<Integer>>> xsss = P.withScale(4).lists(
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (List<List<Integer>> xss : take(LIMIT, xsss)) {
+            Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                List<List<Integer>> listsList = toList(lists);
+                assertEquals(xss, listsList.size(), listsLength.intValueExact());
+                assertTrue(xss, all(xs -> xs.size() == xss.size(), listsList));
+                assertTrue(xss, all(xs -> and(zipWith(List::contains, xss, xs)), listsList));
+                if (!listsList.isEmpty()) {
+                    assertEquals(xss, head(listsList), toList(map(IterableUtils::head, xss)));
+                    assertEquals(xss, last(listsList), toList(map(IterableUtils::last, xss)));
+                }
+            }
+        }
+
+        xsss = P.withScale(4).lists(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (List<List<Integer>> xss : take(LIMIT, xsss)) {
+            Iterable<List<Integer>> lists = EP.cartesianProduct(xss);
+            testNoRemove(TINY_LIMIT, lists);
+            BigInteger listsLength = productBigInteger(map(xs -> BigInteger.valueOf(xs.size()), xss));
+            if (lt(listsLength, BigInteger.valueOf(SMALL_LIMIT))) {
+                assertTrue(xss, unique(lists));
+            }
+        }
+
+        Iterable<List<List<Integer>>> xsssFail = P.withScale(4).listsWithElement(
+                null,
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (List<List<Integer>> xss : take(LIMIT, xsssFail)) {
+            try {
+                EP.cartesianProduct(xss);
+                fail(xss);
+            } catch (NullPointerException ignored) {}
         }
     }
 }
