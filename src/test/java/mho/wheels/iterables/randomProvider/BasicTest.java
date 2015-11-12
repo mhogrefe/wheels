@@ -248,6 +248,7 @@ public strictfp class BasicTest {
     private static void uniformSample_Iterable_fail_helper(@NotNull String xs) {
         try {
             P.uniformSample(readIntegerListWithNulls(xs));
+            fail();
         } catch (IllegalArgumentException ignored) {}
         finally {
             P.reset();
@@ -275,6 +276,7 @@ public strictfp class BasicTest {
     private static void uniformSample_String_fail_helper(@NotNull String s) {
         try {
             P.uniformSample(s);
+            fail();
         } catch (IllegalArgumentException ignored) {}
         finally {
             P.reset();

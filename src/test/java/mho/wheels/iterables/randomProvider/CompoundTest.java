@@ -5956,12 +5956,103 @@ public strictfp class CompoundTest {
         stringSubsetsAtLeast_int_fail_helper(4, 5);
     }
 
+    private static void cartesianProduct_helper(
+            @NotNull String xss,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<List<Integer>> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.cartesianProduct(readIntegerListWithNullsListsWithNulls(xss)))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    private static void cartesianProduct_fail_helper(@NotNull String xss) {
+        try {
+            toList(P.cartesianProduct(readIntegerListWithNullsListsWithNulls(xss)));
+            fail();
+        } catch (IllegalArgumentException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void testCartesianProduct() {
+        cartesianProduct_helper(
+                "[[0]]",
+                "[[0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0], [0]," +
+                " [0], ...]",
+                "{[0]=1000000}"
+        );
+        cartesianProduct_helper(
+                "[[null]]",
+                "[[null], [null], [null], [null], [null], [null], [null], [null], [null], [null], [null], [null]," +
+                " [null], [null], [null], [null], [null], [null], [null], [null], ...]",
+                "{[null]=1000000}"
+        );
+        cartesianProduct_helper(
+                "[[0, 1]]",
+                "[[1], [1], [1], [0], [1], [1], [0], [1], [1], [1], [1], [1], [1], [1], [1], [1], [0], [1], [1]," +
+                " [0], ...]",
+                "{[0]=500035, [1]=499965}"
+        );
+        cartesianProduct_helper(
+                "[[0, 1], [2, 3]]",
+                "[[1, 3], [1, 2], [1, 3], [0, 3], [1, 3], [1, 3], [1, 3], [1, 3], [0, 3], [1, 2], [1, 3], [0, 2]," +
+                " [1, 2], [1, 3], [1, 2], [0, 2], [1, 3], [0, 3], [1, 2], [1, 3], ...]",
+                "{[0, 3]=250821, [1, 3]=249924, [1, 2]=249737, [0, 2]=249518}"
+        );
+        cartesianProduct_helper(
+                "[[1], [1], [1]]",
+                "[[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]," +
+                " [1, 1, 1], [1, 1, 1], ...]",
+                "{[1, 1, 1]=1000000}"
+        );
+        cartesianProduct_helper(
+                "[[null, null, null]]",
+                "[[null], [null], [null], [null], [null], [null], [null], [null], [null], [null], [null], [null]," +
+                " [null], [null], [null], [null], [null], [null], [null], [null], ...]",
+                "{[null]=1000000}"
+        );
+        cartesianProduct_helper(
+                "[[0, 1, 2], [-3, -4], [null, 10]]",
+                "[[1, -4, 10], [2, -4, 10], [0, -4, 10], [1, -4, 10], [1, -3, 10], [1, -3, 10], [1, -3, null]," +
+                " [2, -4, 10], [1, -3, null], [2, -4, 10], [0, -4, 10], [2, -4, 10], [2, -3, 10], [1, -3, null]," +
+                " [2, -4, null], [1, -3, null], [1, -3, 10], [2, -4, 10], [2, -3, null], [2, -3, 10], ...]",
+                "{[0, -3, 10]=83829, [2, -4, 10]=83612, [2, -4, null]=83541, [1, -4, null]=83393, [1, -3, 10]=83378," +
+                " [0, -3, null]=83325, [0, -4, 10]=83211, [0, -4, null]=83194, [1, -4, 10]=83192, [2, -3, 10]=83182}"
+        );
+        cartesianProduct_helper(
+                "[[0, 1], [0, 1], [0, 1]]",
+                "[[1, 1, 1], [0, 1, 1], [0, 1, 1], [1, 1, 1], [1, 1, 1], [1, 0, 1], [1, 0, 1], [1, 0, 0], [1, 0, 1]," +
+                " [1, 1, 0], [0, 0, 1], [1, 0, 1], [1, 0, 1], [1, 0, 0], [1, 1, 0], [0, 0, 1], [0, 1, 0], [0, 1, 0]," +
+                " [1, 1, 0], [1, 1, 0], ...]",
+                "{[1, 1, 0]=125742, [1, 0, 1]=125113, [0, 0, 0]=125087, [1, 0, 0]=124954, [1, 1, 1]=124816," +
+                " [0, 1, 1]=124787, [0, 1, 0]=124781, [0, 0, 1]=124720}"
+        );
+        cartesianProduct_fail_helper("[]");
+        cartesianProduct_fail_helper("[[], [1, 2]]");
+        cartesianProduct_fail_helper("[[1, 2], null]");
+    }
+
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
 
     private static @NotNull List<Integer> readIntegerListWithNulls(@NotNull String s) {
         return Readers.readListWithNulls(Readers::readInteger).apply(s).get();
+    }
+
+    private static @NotNull List<List<Integer>> readIntegerListWithNullsLists(@NotNull String s) {
+        return Readers.readList(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
+    }
+
+    private static @NotNull List<List<Integer>> readIntegerListWithNullsListsWithNulls(@NotNull String s) {
+        return Readers.readListWithNulls(Readers.readListWithNulls(Readers::readInteger)).apply(s).get();
     }
 }
 // @formatter:on

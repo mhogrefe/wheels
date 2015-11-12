@@ -4131,7 +4131,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * {@code List}s.
      *
      * <ul>
-     *  <li>No element of {@code xss} may be null or empty.</li>
+     *  <li>{@code xss} cannot be empty and no element of {@code xss} may be null or empty.</li>
      * </ul>
      *
      * Length is infinite
@@ -4142,6 +4142,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
+        if (xss.isEmpty()) {
+            throw new IllegalArgumentException("xss cannot be empty.");
+        }
         return transpose(map(this::uniformSample, xss));
     }
 
