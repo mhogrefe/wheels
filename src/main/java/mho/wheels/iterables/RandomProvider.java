@@ -4126,6 +4126,20 @@ public final strictfp class RandomProvider extends IterableProvider {
         );
     }
 
+    /**
+     * An {@code Iterable} that uniformly generates elements from the Cartesian product of a {@code List} of
+     * {@code List}s.
+     *
+     * <ul>
+     *  <li>No element of {@code xss} may be null or empty.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param xss a {@code List} of {@code List}s
+     * @param <T> the type of the {@code List}s' elements
+     * @return {@code List}s whose ith element is selected uniformly from the ith list in {@code xss}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss) {
         return transpose(map(this::uniformSample, xss));
