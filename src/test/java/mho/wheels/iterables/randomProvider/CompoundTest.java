@@ -5973,7 +5973,7 @@ public strictfp class CompoundTest {
         try {
             toList(P.cartesianProduct(readIntegerListWithNullsListsWithNulls(xss)));
             fail();
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException | NullPointerException ignored) {}
         finally {
             P.reset();
         }
