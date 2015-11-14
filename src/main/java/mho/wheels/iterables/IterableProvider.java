@@ -2381,19 +2381,22 @@ public abstract strictfp class IterableProvider {
         if (!lengthAtLeast(2, xs)) {
             throw new IllegalArgumentException("xs must have length at least 2. Invalid xs: " + toList(xs));
         }
-        return repeatingIterablesAtLeast(1, xs);
+        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(1, xs)));
     }
 
     /**
      * Generates repeating infinite {@code Iterables} whose elements are chosen from a given {@code List}. The
-     * repeating part has a specified minimum length.
+     * {@code Iterable}s have a specified minimum number of distinct elements (at least 2).
      *
-     * @param minSize the minimum length of the repeating part in the generated {@code Iterable}s
+     * @param minSize the minimum number of distinct elements in the generated {@code Iterable}s
      * @param xs the source of elements for the {@code Iterable}
      * @param <T> the type of elements in the {@code Iterable}
      */
-    public @NotNull <T> Iterable<Iterable<T>> repeatingIterablesAtLeast(int minSize, @NotNull Iterable<T> xs) {
-        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(minSize, xs)));
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterablesDistinctAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        return map(
+                IterableUtils::cycle,
+                filterInfinite(ys -> length(nub(ys)) >= minSize && unrepeat(ys).equals(ys), listsAtLeast(minSize, xs))
+        );
     }
 
     public @NotNull Iterable<String> stringsWithChar(char c, @NotNull String s) {

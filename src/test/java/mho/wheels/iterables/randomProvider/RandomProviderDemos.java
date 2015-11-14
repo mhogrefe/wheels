@@ -1430,10 +1430,10 @@ public class RandomProviderDemos {
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
                                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                                        P.withScale(4).naturalIntegersGeometric()
+                                        P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
-                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(
+                        p -> P.withScale(p.a.getScale()).repeatingIterablesDistinctAtLeast(
                                 p.b,
                                 P.withNull(P.naturalIntegersGeometric())
                         )
@@ -1674,10 +1674,11 @@ public class RandomProviderDemos {
                                 p -> p.a.getScale() > p.b,
                                 P.pairs(
                                         P.withScale(4).randomProvidersDefaultSecondaryScale(),
-                                        P.withScale(4).naturalIntegersGeometric()
+                                        P.withScale(4).rangeUpGeometric(2)
                                 )
                         ),
-                        p -> P.withScale(p.a.getScale()).repeatingIterablesAtLeast(p.b, P.naturalIntegersGeometric())
+                        p -> P.withScale(p.a.getScale())
+                                .repeatingIterablesDistinctAtLeast(p.b, P.naturalIntegersGeometric())
                 )
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
