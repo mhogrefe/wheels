@@ -2393,6 +2393,9 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of elements in the {@code Iterable}
      */
     public @NotNull <T> Iterable<Iterable<T>> repeatingIterablesDistinctAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(2, xs)) {
+            throw new IllegalArgumentException("xs must have length at least 2. Invalid xs: " + toList(xs));
+        }
         return map(
                 IterableUtils::cycle,
                 filterInfinite(ys -> length(nub(ys)) >= minSize && unrepeat(ys).equals(ys), listsAtLeast(minSize, xs))
