@@ -1410,7 +1410,7 @@ public class IntegerUtilsTest {
         try {
             mux(readBigIntegerListWithNulls("[1, null, 2]"));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test

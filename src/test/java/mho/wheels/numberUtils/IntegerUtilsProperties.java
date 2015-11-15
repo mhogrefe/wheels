@@ -92,6 +92,7 @@ public class IntegerUtilsProperties {
             propertiesSquareRootDemux();
             propertiesMux();
             propertiesDemux();
+            compareImplementationsDemux();
         }
         System.out.println("Done");
     }
@@ -2309,7 +2310,7 @@ public class IntegerUtilsProperties {
             try {
                 IntegerUtils.mux(is);
                 fail(is);
-            } catch (NullPointerException ignored) {}
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
 
         Iterable<List<BigInteger>> isFail = filterInfinite(
@@ -2324,25 +2325,24 @@ public class IntegerUtilsProperties {
         }
     }
 
+    private static @NotNull List<BigInteger> demux_alt(int size, @NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return toList(replicate(size, BigInteger.ZERO));
+        }
+        return reverse(IterableUtils.map(IntegerUtils::fromBits, IterableUtils.demux(size, bits(n))));
+    }
+
     private static void propertiesDemux() {
         initialize();
         System.out.println("\t\ttesting demux(int size, BigInteger n) properties...");
 
-        Iterable<Pair<BigInteger, Integer>> ps;
-        Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);
-        if (P instanceof ExhaustiveProvider) {
-            ps = cons(
-                    zeroPair,
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
-            );
-        } else {
-            ps = ((RandomProvider) P).withElement(
-                    zeroPair,
-                    P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
-            );
-        }
+        Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
+                new Pair<>(BigInteger.ZERO, 0),
+                P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<BigInteger> xs = demux(p.b, p.a);
+            assertEquals(p, xs, demux_alt(p.b, p.a));
             assertTrue(p, all(x -> x != null && x.signum() != -1, xs));
             assertEquals(p, IntegerUtils.mux(xs), p.a);
         }
@@ -2367,5 +2367,30 @@ public class IntegerUtilsProperties {
                 fail(i);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private static void compareImplementationsDemux() {
+        initialize();
+        System.out.println("\t\tcomparing demux(int size, BigInteger n) implementations...");
+
+        Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
+                new Pair<>(BigInteger.ZERO, 0),
+                P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
+        );
+        long totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux_alt(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talternative: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 }
