@@ -2307,14 +2307,22 @@ public class ExhaustiveProviderDemos {
 
     private static void demoRepeatingIterables_finite() {
         initialize();
-        Iterable<List<Integer>> xss = filter(
+        Iterable<List<Integer>> xss = filterInfinite(
                 ys -> length(nub(ys)) > 1,
                 P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
         );
         for (List<Integer> xs : take(TINY_LIMIT, xss)) {
             String listString = tail(init(xs.toString()));
-            System.out.println(xs);
             System.out.println("repeatingIterables(" + listString + ") = " +
+                    its(map(Testing::its, EP.repeatingIterables(xs))));
+        }
+    }
+
+    private static void demoRepeatingIterables_infinite() {
+        initialize();
+        for (Iterable<Integer> xs : take(TINY_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
+            String xsString = tail(init(its(xs)));
+            System.out.println("repeatingIterables(" + xsString + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
