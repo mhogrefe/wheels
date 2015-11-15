@@ -1391,7 +1391,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
-                P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegersGeometric()))
+                P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("distinctLists(" + p.a + ", " + its(p.b) + ") = " + its(p.a.distinctLists(p.b)));
@@ -1635,7 +1635,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
-                P.withScale(4).repeatingIterables(P.naturalIntegersGeometric())
+                P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("subsets(" + p.a + ", " + its(p.b) + ") = " + its(p.a.subsets(p.b)));

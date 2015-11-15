@@ -2381,7 +2381,7 @@ public abstract strictfp class IterableProvider {
         if (!lengthAtLeast(2, xs)) {
             throw new IllegalArgumentException("xs must have length at least 2. Invalid xs: " + toList(xs));
         }
-        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(1, xs)));
+        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(1, nub(xs))));
     }
 
     /**
@@ -2398,7 +2398,10 @@ public abstract strictfp class IterableProvider {
         }
         return map(
                 IterableUtils::cycle,
-                filterInfinite(ys -> length(nub(ys)) >= minSize && unrepeat(ys).equals(ys), listsAtLeast(minSize, xs))
+                filterInfinite(
+                        ys -> length(nub(ys)) >= minSize && unrepeat(ys).equals(ys),
+                        listsAtLeast(minSize, nub(xs))
+                )
         );
     }
 

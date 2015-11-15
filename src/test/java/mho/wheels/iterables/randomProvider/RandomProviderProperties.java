@@ -3026,7 +3026,7 @@ public class RandomProviderProperties {
         initialize("distinctLists(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
-                P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegersGeometric()))
+                P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.distinctLists(p.b), IterableUtils::unique);
@@ -3728,7 +3728,7 @@ public class RandomProviderProperties {
         initialize("subsets(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
-                P.withScale(4).repeatingIterables(P.naturalIntegersGeometric())
+                P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.subsets(p.b), IterableUtils::increasing);
@@ -4027,7 +4027,7 @@ public class RandomProviderProperties {
             try {
                 toList(p.a.cartesianProduct(p.b));
                 fail(p);
-            } catch (IllegalArgumentException ignored) {}
+            } catch (NullPointerException ignored) {}
         }
     }
 

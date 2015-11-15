@@ -2304,4 +2304,18 @@ public class ExhaustiveProviderDemos {
             System.out.println("cartesianProduct(" + listString + ") = " + its(EP.cartesianProduct(xss)));
         }
     }
+
+    private static void demoRepeatingIterables_finite() {
+        initialize();
+        Iterable<List<Integer>> xss = filter(
+                ys -> length(nub(ys)) > 1,
+                P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
+        );
+        for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+            String listString = tail(init(xs.toString()));
+            System.out.println(xs);
+            System.out.println("repeatingIterables(" + listString + ") = " +
+                    its(map(Testing::its, EP.repeatingIterables(xs))));
+        }
+    }
 }

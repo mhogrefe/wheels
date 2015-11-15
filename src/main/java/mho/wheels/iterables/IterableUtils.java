@@ -5344,10 +5344,10 @@ public final strictfp class IterableUtils {
 
     public static @NotNull <T> Iterable<T> nub(@NotNull Iterable<T> xs) {
         return new Iterable<T>() {
-            private Set<T> seen = new HashSet<>();
             @Override
             public Iterator<T> iterator() {
                 return new NoRemoveIterator<T>() {
+                    private Set<T> seen = new HashSet<>();
                     private final @NotNull Iterator<T> xsi = xs.iterator();
                     private @Nullable T next;
                     private boolean hasNext;
@@ -5370,8 +5370,7 @@ public final strictfp class IterableUtils {
                     private void advance() {
                         while (xsi.hasNext()) {
                             next = xsi.next();
-                            if (!seen.contains(next)) {
-                                seen.add(next);
+                            if (seen.add(next)) {
                                 hasNext = true;
                                 return;
                             }
