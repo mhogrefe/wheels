@@ -7,10 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -2332,6 +2329,38 @@ public class IntegerUtilsProperties {
         return reverse(IterableUtils.map(IntegerUtils::fromBits, IterableUtils.demux(size, bits(n))));
     }
 
+    private static @NotNull List<BigInteger> demux_alt2(int size, @NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return toList(replicate(size, BigInteger.ZERO));
+        }
+        int length = n.bitLength();
+        int resultLength = (length / 8 + 1) / size + 2;
+        byte[][] demuxedBytes = new byte[size][resultLength];
+        int ri = resultLength - 1;
+        int rj = 1;
+        int rk = size - 1;
+        for (int i = 0; i < length; i++) {
+            if (n.testBit(i)) {
+                demuxedBytes[rk][ri] |= rj;
+            }
+            if (rk == 0) {
+                rk = size - 1;
+                rj <<= 1;
+                if (rj == 256) {
+                    rj = 1;
+                    ri--;
+                }
+            } else {
+                rk--;
+            }
+        }
+        List<BigInteger> demuxed = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            demuxed.add(new BigInteger(demuxedBytes[i]));
+        }
+        return demuxed;
+    }
+
     private static void propertiesDemux() {
         initialize();
         System.out.println("\t\ttesting demux(int size, BigInteger n) properties...");
@@ -2343,6 +2372,7 @@ public class IntegerUtilsProperties {
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<BigInteger> xs = demux(p.b, p.a);
             assertEquals(p, xs, demux_alt(p.b, p.a));
+            assertEquals(p, xs, demux_alt2(p.b, p.a));
             assertTrue(p, all(x -> x != null && x.signum() != -1, xs));
             assertEquals(p, IntegerUtils.mux(xs), p.a);
         }
@@ -2384,6 +2414,14 @@ public class IntegerUtilsProperties {
             totalTime += (System.nanoTime() - time);
         }
         System.out.println("\t\t\talternative: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux_alt2(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talternative 2: " + ((double) totalTime) / 1e9 + " s");
 
         totalTime = 0;
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
