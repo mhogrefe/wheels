@@ -5883,6 +5883,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     @Override
+    public @NotNull <T> Iterable<List<T>> sublists(@NotNull List<T> xs) {
+        return nub(super.sublists(xs));
+    }
+
+    @Override
     public @NotNull Iterable<String> substrings(@NotNull String s) {
         return nub(super.substrings(s));
     }

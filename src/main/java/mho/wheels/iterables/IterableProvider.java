@@ -2402,6 +2402,27 @@ public abstract strictfp class IterableProvider {
         );
     }
 
+    /**
+     * Generates all sublists of a given {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return sublists of {@code xs}
+     */
+    public @NotNull <T> Iterable<List<T>> sublists(@NotNull List<T> xs) {
+        return map(p -> toList(xs.subList(p.a, p.b)), filter(p -> p.a <= p.b, pairs(range(0, xs.size()))));
+    }
+
+    /**
+     * Generates all substrings of a given {@code String}.
+     *
+     * @param s a {@code String}
+     * @return substrings of {@code s}
+     */
+    public @NotNull Iterable<String> substrings(@NotNull String s) {
+        return map(p -> s.substring(p.a, p.b), filter(p -> p.a <= p.b, pairs(range(0, s.length()))));
+    }
+
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, @NotNull Iterable<T> xs) {
         return map(
                 p -> toList(concat(p.a, cons(element, p.b))),
@@ -2417,20 +2438,6 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, listsWithElement(c, characters()));
     }
 
-    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings, @NotNull String s) {
-        return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(s), t -> range(0, t.length())), substrings)
-        );
-    }
-
-    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
-        return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(), t -> range(0, t.length())), substrings)
-        );
-    }
-
     public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
             @NotNull Iterable<Iterable<T>> subsequences,
             @NotNull Iterable<T> xs
@@ -2441,15 +2448,22 @@ public abstract strictfp class IterableProvider {
         );
     }
 
-    public @NotNull <K, V> Iterable<Map<K, V>> maps(@NotNull List<K> ks, Iterable<V> vs) {
-        return map(xs -> toMap(zip(ks, xs)), lists(ks.size(), vs));
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
+        return map(
+                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
+                pairsSquareRootOrder(dependentPairs(strings(), t -> range(0, t.length())), substrings)
+        );
     }
 
-    public @NotNull Iterable<String> substrings(@NotNull String s) {
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings, @NotNull String s) {
         return map(
-                q -> s.substring(q.a, q.b),
-                filter(p -> p.a <= p.b, pairs(range(0, s.length() - 1), range(0, s.length())))
+                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
+                pairsSquareRootOrder(dependentPairs(strings(s), t -> range(0, t.length())), substrings)
         );
+    }
+
+    public @NotNull <K, V> Iterable<Map<K, V>> maps(@NotNull List<K> ks, Iterable<V> vs) {
+        return map(xs -> toMap(zip(ks, xs)), lists(ks.size(), vs));
     }
 
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
