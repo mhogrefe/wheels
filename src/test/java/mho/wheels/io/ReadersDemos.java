@@ -41,10 +41,6 @@ public class ReadersDemos {
         }
     }
 
-    public static void main(String[] args) {
-        demoGenericFindIn_Function_String_Optional_T();
-    }
-
     private static void demoGenericRead() {
         initialize();
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
