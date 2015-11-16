@@ -2326,4 +2326,28 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::its, EP.repeatingIterables(xs))));
         }
     }
+
+    private static void demoRepeatingIterablesDistinctAtLeast_finite() {
+        initialize();
+        Iterable<Pair<Integer, List<Integer>>> ps = P.dependentPairsInfiniteLogarithmicOrder(
+                P.withScale(3).rangeUpGeometric(2),
+                i -> P.withScale(i + 1).distinctListsAtLeast(i, P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(TINY_LIMIT, ps)) {
+            System.out.println("repeatingIterablesDistinctAtLeast(" + p.a + ", " + p.b + ") = " +
+                    its(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(p.a, p.b))));
+        }
+    }
+
+    private static void demoRepeatingIterablesDistinctAtLeast_infinite() {
+        initialize();
+        Iterable<Pair<Iterable<Integer>, Integer>> ps = P.pairsLogarithmicOrder(
+                P.prefixPermutations(P.withNull(EP.naturalIntegers())),
+                filterInfinite(i -> i < 10, P.withScale(3).rangeUpGeometric(2))
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(TINY_LIMIT, ps)) {
+            System.out.println("repeatingIterablesDistinctAtLeast(" + p.b + ", " + its(p.a) + ") = " +
+                    its(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(p.b, p.a))));
+        }
+    }
 }
