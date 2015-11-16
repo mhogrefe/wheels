@@ -1737,6 +1737,39 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoRepeatingIterables() {
+        initialize();
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.withNull(EP.integers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(TINY_LIMIT, ps)) {
+            System.out.println("repeatingIterables(" + p.a + ", " + its(p.b) + ") = " +
+                    its(map(Testing::its, p.a.repeatingIterables(p.b))));
+        }
+    }
+
+    private static void demoRepeatingIterablesDistinctAtLeast() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
+                p -> new Triple<>(p.a, p.b.b, p.b.a),
+                filterInfinite(
+                        p -> p.a.getScale() > p.b.b,
+                        P.pairs(
+                                P.randomProvidersDefaultSecondaryScale(),
+                                P.pairsLogarithmicOrder(
+                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.withScale(4).rangeUpGeometric(2)
+                                )
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(TINY_LIMIT, ts)) {
+            System.out.println("repeatingIterablesDistinctAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(map(Testing::its, t.a.repeatingIterablesDistinctAtLeast(t.b, t.c))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
