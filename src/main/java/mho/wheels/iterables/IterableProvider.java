@@ -10,10 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -2405,12 +2402,19 @@ public abstract strictfp class IterableProvider {
         );
     }
 
+    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, @NotNull Iterable<T> xs) {
+        return map(
+                p -> toList(concat(p.a, cons(element, p.b))),
+                pairs(lists(filter(x -> !Objects.equals(x, element), xs)), lists(xs))
+        );
+    }
+
     public @NotNull Iterable<String> stringsWithChar(char c, @NotNull String s) {
-        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(s), t -> range(0, t.length())));
+        return map(IterableUtils::charsToString, listsWithElement(c, uniformSample(s)));
     }
 
     public @NotNull Iterable<String> stringsWithChar(char c) {
-        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(), t -> range(0, t.length())));
+        return map(IterableUtils::charsToString, listsWithElement(c, characters()));
     }
 
     public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings, @NotNull String s) {
@@ -2425,10 +2429,6 @@ public abstract strictfp class IterableProvider {
                 p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
                 pairsSquareRootOrder(dependentPairs(strings(), t -> range(0, t.length())), substrings)
         );
-    }
-
-    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
-        return map(p -> toList(insert(p.a, p.b, element)), dependentPairs(lists(xs), list -> range(0, list.size())));
     }
 
     public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
