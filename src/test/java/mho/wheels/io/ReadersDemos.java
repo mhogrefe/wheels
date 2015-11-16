@@ -58,8 +58,7 @@ public class ReadersDemos {
 
     private static void demoGenericFindIn_List_T() {
         initialize();
-        //todo use distinct lists instead
-        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
+        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.distinctLists(P.integers()), P.strings(INTEGRAL_CHARS));
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
             System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
