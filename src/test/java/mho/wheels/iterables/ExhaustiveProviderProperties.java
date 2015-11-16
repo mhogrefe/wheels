@@ -289,6 +289,8 @@ public class ExhaustiveProviderProperties {
             propertiesStringSubsetsAtLeast_int_String();
             propertiesStringSubsetsAtLeast_int();
             propertiesCartesianProduct();
+            propertiesRepeatingIterables();
+            propertiesRepeatingIterablesDistinctAtLeast();
         }
         System.out.println("Done");
     }
@@ -9367,6 +9369,100 @@ public class ExhaustiveProviderProperties {
                 EP.cartesianProduct(xss);
                 fail(xss);
             } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesRepeatingIterables() {
+        initialize("repeatingIterables(Iterable<T>)");
+        Iterable<List<Integer>> xss = filterInfinite(
+                ys -> length(nub(ys)) > 1,
+                P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
+        );
+        for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+            simpleTest(
+                    xs,
+                    EP.repeatingIterables(xs),
+                    ys -> {
+                        List<Integer> tys = toList(take(TINY_LIMIT, ys));
+                        return tys.size() == TINY_LIMIT && all(xs::contains, tys);
+                    }
+            );
+        }
+
+        for (Iterable<Integer> xs : take(TINY_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
+            simpleTest(
+                    xs,
+                    EP.repeatingIterables(xs),
+                    ys -> lengthAtLeast(TINY_LIMIT, ys)
+            );
+        }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integers()))) {
+            try {
+                EP.repeatingIterables(Collections.singletonList(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesRepeatingIterablesDistinctAtLeast() {
+        initialize("repeatingIterablesDistinctAtLeast(int, Iterable<T>)");
+        Iterable<Pair<Integer, List<Integer>>> ps = P.dependentPairsInfiniteLogarithmicOrder(
+                P.withScale(3).rangeUpGeometric(2),
+                i -> P.withScale(i + 1).distinctListsAtLeast(i, P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(TINY_LIMIT, ps)) {
+            simpleTest(
+                    p,
+                    EP.repeatingIterablesDistinctAtLeast(p.a, p.b),
+                    ys -> {
+                        List<Integer> tys = toList(take(TINY_LIMIT, ys));
+                        Set<Integer> distinctElements = new HashSet<Integer>();
+                        Iterator<Integer> ysi = ys.iterator();
+                        while (distinctElements.size() < p.a) {
+                            distinctElements.add(ysi.next());
+                        }
+                        return tys.size() == TINY_LIMIT && all(p.b::contains, tys);
+                    }
+            );
+        }
+
+        Iterable<Pair<Iterable<Integer>, Integer>> ps2 = P.pairsLogarithmicOrder(
+                P.prefixPermutations(P.withNull(EP.naturalIntegers())),
+                filterInfinite(i -> i < 10, P.withScale(3).rangeUpGeometric(2))
+        );
+        for (Pair<Iterable<Integer>, Integer> p : take(TINY_LIMIT, ps2)) {
+            simpleTest(
+                    p,
+                    EP.repeatingIterablesDistinctAtLeast(p.b, p.a),
+                    ys -> {
+                        List<Integer> tys = toList(take(TINY_LIMIT, ys));
+                        Set<Integer> distinctElements = new HashSet<Integer>();
+                        Iterator<Integer> ysi = ys.iterator();
+                        while (distinctElements.size() < p.b) {
+                            distinctElements.add(ysi.next());
+                        }
+                        return lengthAtLeast(TINY_LIMIT, ys);
+                    }
+            );
+        }
+
+        Iterable<Pair<Integer, List<Integer>>> psFail = P.dependentPairsInfinite(
+                P.negativeIntegers(),
+                i -> P.distinctListsAtLeast(2, P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(TINY_LIMIT, psFail)) {
+            try {
+                EP.repeatingIterablesDistinctAtLeast(p.a, p.b);
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integers()))) {
+            try {
+                EP.repeatingIterablesDistinctAtLeast(0, Collections.singletonList(i));
+                fail(i);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 }
