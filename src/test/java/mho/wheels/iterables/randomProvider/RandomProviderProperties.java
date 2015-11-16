@@ -210,6 +210,8 @@ public class RandomProviderProperties {
             propertiesStringSubsetsAtLeast_int_String();
             propertiesStringSubsetsAtLeast_int();
             propertiesCartesianProduct();
+            propertiesRepeatingIterables();
+            propertiesRepeatingIterablesDistinctAtLeast();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -3998,7 +4000,8 @@ public class RandomProviderProperties {
         for (Pair<RandomProvider, List<List<Integer>>> p : take(LIMIT, ps)) {
             simpleTest(
                     p.a,
-                    p.a.cartesianProduct(p.b), xs -> xs.size() == p.b.size() && and(zipWith(List::contains, p.b, xs))
+                    p.a.cartesianProduct(p.b),
+                    xs -> xs.size() == p.b.size() && and(zipWith(List::contains, p.b, xs))
             );
         }
 
@@ -4028,6 +4031,93 @@ public class RandomProviderProperties {
                 toList(p.a.cartesianProduct(p.b));
                 fail(p);
             } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesRepeatingIterables() {
+        initialize("repeatingIterables(Iterable<T>)");
+        Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.withNull(EP.integers()))
+        );
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
+            simpleTest(
+                    p.a,
+                    p.a.repeatingIterables(p.b),
+                    ys -> lengthAtLeast(TINY_LIMIT, ys)
+            );
+        }
+    }
+
+    private static void propertiesRepeatingIterablesDistinctAtLeast() {
+        initialize("repeatingIterablesDistinctAtLeast(int, Iterable<T>)");
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
+                p -> new Triple<>(p.a, p.b.b, p.b.a),
+                filterInfinite(
+                        p -> p.a.getScale() > p.b.b,
+                        P.pairs(
+                                P.randomProvidersDefaultSecondaryScale(),
+                                P.pairsLogarithmicOrder(
+                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.withScale(4).rangeUpGeometric(2)
+                                )
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(TINY_LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.repeatingIterablesDistinctAtLeast(t.b, t.c),
+                    ys -> {
+                        List<Integer> tys = toList(take(TINY_LIMIT, ys));
+                        Set<Integer> distinctElements = new HashSet<>();
+                        Iterator<Integer> ysi = ys.iterator();
+                        while (distinctElements.size() < t.b) {
+                            distinctElements.add(ysi.next());
+                        }
+                        return tys.size() == TINY_LIMIT;
+                    }
+            );
+        }
+
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = map(
+                p -> new Triple<>(p.a, p.b.b, p.b.a),
+                filterInfinite(
+                        p -> p.a.getScale() <= p.b.b,
+                        P.pairs(
+                                P.randomProvidersDefaultSecondaryScale(),
+                                P.pairsLogarithmicOrder(
+                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.withScale(4).rangeUpGeometric(2)
+                                )
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(TINY_LIMIT, tsFail)) {
+            try {
+                t.a.repeatingIterablesDistinctAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        tsFail = map(
+                p -> new Triple<>(p.a, p.b.b, p.b.a),
+                filterInfinite(
+                        p -> p.a.getScale() > p.b.b,
+                        P.pairs(
+                                filterInfinite(rp -> rp.getScale() < 0, P.randomProvidersDefaultSecondaryScale()),
+                                P.pairsLogarithmicOrder(
+                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.integers()
+                                )
+                        )
+                )
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(TINY_LIMIT, tsFail)) {
+            try {
+                t.a.repeatingIterablesDistinctAtLeast(t.b, t.c);
+                fail(t);
+            } catch (IllegalArgumentException ignored) {}
         }
     }
 

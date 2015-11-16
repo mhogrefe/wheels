@@ -9417,7 +9417,7 @@ public class ExhaustiveProviderProperties {
                     EP.repeatingIterablesDistinctAtLeast(p.a, p.b),
                     ys -> {
                         List<Integer> tys = toList(take(TINY_LIMIT, ys));
-                        Set<Integer> distinctElements = new HashSet<Integer>();
+                        Set<Integer> distinctElements = new HashSet<>();
                         Iterator<Integer> ysi = ys.iterator();
                         while (distinctElements.size() < p.a) {
                             distinctElements.add(ysi.next());
@@ -9436,8 +9436,7 @@ public class ExhaustiveProviderProperties {
                     p,
                     EP.repeatingIterablesDistinctAtLeast(p.b, p.a),
                     ys -> {
-                        List<Integer> tys = toList(take(TINY_LIMIT, ys));
-                        Set<Integer> distinctElements = new HashSet<Integer>();
+                        Set<Integer> distinctElements = new HashSet<>();
                         Iterator<Integer> ysi = ys.iterator();
                         while (distinctElements.size() < p.b) {
                             distinctElements.add(ysi.next());

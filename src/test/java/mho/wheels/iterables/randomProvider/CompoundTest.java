@@ -6255,7 +6255,6 @@ public strictfp class CompoundTest {
                 " 506, ...], ...]"
         );
         repeatingIterablesDistinctAtLeast_fail_helper(1, 1, P.positiveIntegers());
-        repeatingIterablesDistinctAtLeast_fail_helper(1, 1, Arrays.asList(1, 2, 3));
         repeatingIterablesDistinctAtLeast_fail_helper(1, -1, P.positiveIntegers());
     }
 
