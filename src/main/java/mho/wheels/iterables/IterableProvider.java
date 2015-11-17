@@ -2435,7 +2435,7 @@ public abstract strictfp class IterableProvider {
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs) {
         return map(
                 p -> toList(concat(p.a, cons(x, p.b))),
-                pairs(lists(filter(x -> !Objects.equals(x, x), xs)), lists(xs))
+                pairs(lists(filter(y -> !Objects.equals(y, x), xs)), lists(xs))
         );
     }
 
