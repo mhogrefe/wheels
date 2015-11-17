@@ -291,6 +291,8 @@ public class ExhaustiveProviderProperties {
             propertiesCartesianProduct();
             propertiesRepeatingIterables();
             propertiesRepeatingIterablesDistinctAtLeast();
+            propertiesSublists();
+            propertiesSubstrings();
         }
         System.out.println("Done");
     }
@@ -9462,6 +9464,44 @@ public class ExhaustiveProviderProperties {
                 EP.repeatingIterablesDistinctAtLeast(0, Collections.singletonList(i));
                 fail(i);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesSublists() {
+        initialize("sublists(List<T>)");
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            List<List<Integer>> sublists = toList(EP.sublists(xs));
+            simpleTest(xs, sublists, ys -> ys.size() <= xs.size());
+            assertTrue(xs, unique(sublists));
+            int sublistSize = sublists.size();
+            int minSize = xs.size() + 1;
+            int maxSize = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size() + 1), 2).intValueExact() + 1;
+            assertTrue(xs, sublistSize >= minSize && sublistSize <= maxSize);
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            int sublistSize = length(EP.sublists(xs));
+            int maxSize = MathUtils.binomialCoefficient(BigInteger.valueOf(xs.size() + 1), 2).intValueExact() + 1;
+            assertTrue(xs, sublistSize == maxSize);
+        }
+    }
+
+    private static void propertiesSubstrings() {
+        initialize("substrings(String)");
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            List<String> substrings = toList(EP.substrings(s));
+            simpleTest(s, substrings, s::contains);
+            assertTrue(s, unique(substrings));
+            int sublistSize = substrings.size();
+            int minSize = s.length() + 1;
+            int maxSize = MathUtils.binomialCoefficient(BigInteger.valueOf(s.length() + 1), 2).intValueExact() + 1;
+            assertTrue(s, sublistSize >= minSize && sublistSize <= maxSize);
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).distinctStrings())) {
+            int sublistSize = length(EP.substrings(s));
+            int maxSize = MathUtils.binomialCoefficient(BigInteger.valueOf(s.length() + 1), 2).intValueExact() + 1;
+            assertTrue(s, sublistSize == maxSize);
         }
     }
 }
