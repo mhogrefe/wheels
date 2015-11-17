@@ -2,11 +2,9 @@ package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -20,7 +18,7 @@ import static mho.wheels.iterables.IterableUtils.take;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {
-    private static final boolean USE_RANDOM = true;
+    private static final boolean USE_RANDOM = false;
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
@@ -28,7 +26,7 @@ public class ReadersDemos {
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
     private static int LIMIT;
-    private static final int TINY_LIMIT = 100;
+    private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -65,16 +63,16 @@ public class ReadersDemos {
     private static void demoGenericFindIn_Function_String_Optional_T() {
         initialize();
         Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
-                p -> new Pair<>(new FiniteDomainFunction<>(p.b), p.a),
+                p -> new Pair<>(new FiniteDomainFunction<String, Optional<Integer>>(p.b), p.a),
                 P.dependentPairsInfinite(
-                        P.withScale(8).stringsAtLeast(1, INTEGRAL_CHARS),
+                        P.withScale(4).stringsAtLeast(1, INTEGRAL_CHARS),
                         s -> P.maps(
                                 toList(filter(t -> !t.isEmpty(), ExhaustiveProvider.INSTANCE.substrings(s))),
-                                P.optionals(P.integers())
+                                P.optionals(P.integersGeometric())
                         )
                 )
         );
-        for (Pair<Function<String, Optional<Integer>>, String> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(SMALL_LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
             System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
                     genericFindIn(p.a).apply(p.b));
