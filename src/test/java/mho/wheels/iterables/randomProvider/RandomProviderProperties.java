@@ -212,6 +212,8 @@ public class RandomProviderProperties {
             propertiesCartesianProduct();
             propertiesRepeatingIterables();
             propertiesRepeatingIterablesDistinctAtLeast();
+            propertiesSublists();
+            propertiesSubstrings();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -2948,7 +2950,7 @@ public class RandomProviderProperties {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(LIMIT, ts)) {
             simpleTest(
                     t.a,
                     t.a.distinctStrings(t.b, t.c),
@@ -3650,7 +3652,7 @@ public class RandomProviderProperties {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(LIMIT, ts)) {
             simpleTest(
                     t.a,
                     t.a.stringSubsets(t.b, t.c),
@@ -4118,6 +4120,25 @@ public class RandomProviderProperties {
                 t.a.repeatingIterablesDistinctAtLeast(t.b, t.c);
                 fail(t);
             } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesSublists() {
+        initialize("sublists(List<T>)");
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.sublists(p.b), xs -> xs.size() <= p.b.size());
+        }
+    }
+
+    private static void propertiesSubstrings() {
+        initialize("substrings(String<T>)");
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
+        for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.substrings(p.b), p.b::contains);
         }
     }
 
