@@ -1770,6 +1770,25 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoSublists() {
+        initialize();
+        Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
+                P.randomProvidersDefault(),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("sublists(" + p.a + ", " + p.b + ") = " + its(p.a.sublists(p.b)));
+        }
+    }
+
+    private static void demoSubstrings() {
+        initialize();
+        Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
+        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("substrings(" + p.a + ", " + nicePrint(p.b) + ") = " + its(p.a.substrings(p.b)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
