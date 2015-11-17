@@ -5882,11 +5882,39 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(is -> toList(zipWith(List::get, xss, is)), cartesianProductIndices(toList(map(List::size, xss))));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all unique sublists of a given {@code List}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result consists of all unique sublists of a {@code List}.</li>
+     * </ul>
+     *
+     * Length is between 1 and <sub>|{@code xs}+1|</sub>C<sub>2</sub>+1, inclusive.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the given {@code List}'s elements
+     * @return all unique sublists of {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> sublists(@NotNull List<T> xs) {
         return nub(super.sublists(xs));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all unique substrings of a given {@code String}. Does not support
+     * removal.
+     *
+     * <ul>
+     *  <li>{@code s} cannot be null.</li>
+     *  <li>The result consists of all unique substrings of a {@code String}.</li>
+     * </ul>
+     *
+     * Length is between 1 and <sub>|{@code s}+1|</sub>C<sub>2</sub>+1, inclusive.
+     *
+     * @param s a {@code String}
+     * @return all unique substrings of {@code s}
+     */
     @Override
     public @NotNull Iterable<String> substrings(@NotNull String s) {
         return nub(super.substrings(s));
