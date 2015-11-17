@@ -6258,6 +6258,85 @@ public strictfp class CompoundTest {
         repeatingIterablesDistinctAtLeast_fail_helper(1, -1, P.positiveIntegers());
     }
 
+    private static void sublists_helper(
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<List<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.sublists(readIntegerListWithNulls(input))));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    @Test
+    public void testSublists() {
+        sublists_helper(
+                "[]",
+                "[[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], ...]",
+                "{[]=1000000}"
+        );
+        sublists_helper(
+                "[1, 2, 3, 4]",
+                "[[2], [2, 3, 4], [], [], [], [4], [2], [1, 2], [], [2], [1, 2], [3], [3, 4], [1, 2, 3], [4], []," +
+                " [], [3, 4], [1], [2, 3, 4], ...]",
+                "{[]=332665, [4]=67092, [2, 3]=67014, [3, 4]=66993, [1, 2]=66874, [3]=66850, [1, 2, 3, 4]=66738," +
+                " [2]=66555, [1]=66531, [2, 3, 4]=66518}"
+        );
+        sublists_helper(
+                "[1, null, 3, 4]",
+                "[[null], [null, 3, 4], [], [], [], [4], [null], [1, null], [], [null], [1, null], [3], [3, 4]," +
+                " [1, null, 3], [4], [], [], [3, 4], [1], [null, 3, 4], ...]",
+                "{[]=332665, [4]=67092, [null, 3]=67014, [3, 4]=66993, [1, null]=66874, [3]=66850," +
+                " [1, null, 3, 4]=66738, [null]=66555, [1]=66531, [null, 3, 4]=66518}"
+        );
+        sublists_helper(
+                "[3, 1, 4, 1]",
+                "[[1], [1, 4, 1], [], [], [], [1], [1], [3, 1], [], [1], [3, 1], [4], [4, 1], [3, 1, 4], [1], []," +
+                " [], [4, 1], [3], [1, 4, 1], ...]",
+                "{[]=332665, [1]=133647, [1, 4]=67014, [4, 1]=66993, [3, 1]=66874, [4]=66850, [3, 1, 4, 1]=66738," +
+                " [3]=66531, [1, 4, 1]=66518, [3, 1, 4]=66170}"
+        );
+        sublists_helper(
+                "[1, 1, 1, 1]",
+                "[[1], [1, 1, 1], [], [], [], [1], [1], [1, 1], [], [1], [1, 1], [1], [1, 1], [1, 1, 1], [1], []," +
+                " [], [1, 1], [1], [1, 1, 1], ...]",
+                "{[]=332665, [1]=267028, [1, 1]=200881, [1, 1, 1]=132688, [1, 1, 1, 1]=66738}"
+        );
+    }
+
+    private static void substrings_helper(
+            @NotNull String input,
+            @NotNull String output,
+            @NotNull String topSampleCount
+    ) {
+        List<String> sample = toList(take(DEFAULT_SAMPLE_SIZE, P.substrings(input)));
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        P.reset();
+    }
+
+    @Test
+    public void testSubstrings() {
+        substrings_helper("", "[, , , , , , , , , , , , , , , , , , , , ...]", "{=1000000}");
+        substrings_helper(
+                "abcd",
+                "[b, bcd, , , , d, b, ab, , b, ab, c, cd, abc, d, , , cd, a, bcd, ...]",
+                "{=332665, d=67092, bc=67014, cd=66993, ab=66874, c=66850, abcd=66738, b=66555, a=66531, bcd=66518}"
+        );
+        substrings_helper(
+                "aaaa",
+                "[a, aaa, , , , a, a, aa, , a, aa, a, aa, aaa, a, , , aa, a, aaa, ...]",
+                "{=332665, a=267028, aa=200881, aaa=132688, aaaa=66738}"
+        );
+        substrings_helper(
+                "Mississippi",
+                "[issi, , si, ssis, , Mississipp, si, ssissippi, i, ssiss, is, is, pp, sippi, , Mis, ippi, sis, si," +
+                " ss, ...]",
+                "{=153654, s=51343, i=50882, ss=26001, is=25767, p=25756, si=25753, ssi=25718, iss=25591, issi=25454}"
+        );
+    }
+
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
