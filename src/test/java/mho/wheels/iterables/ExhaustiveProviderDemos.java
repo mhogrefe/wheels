@@ -2365,4 +2365,43 @@ public class ExhaustiveProviderDemos {
             System.out.println("substrings(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.substrings(s))));
         }
     }
+
+    private static void demoListsWithElement_finite() {
+        initialize();
+        Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
+                P.withNull(P.integersGeometric()),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsWithElement(" + p.a + ", " + p.b + ") = " + its(EP.listsWithElement(p.a, p.b)));
+        }
+    }
+
+    private static void demoListsWithElement_infinite() {
+        initialize();
+        Iterable<Pair<Integer, Iterable<Integer>>> ps = P.pairs(
+                P.withNull(P.integersGeometric()),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsWithElement(" + p.a + ", " + its(p.b) + ") = " +
+                    its(EP.listsWithElement(p.a, p.b)));
+        }
+    }
+
+    private static void demoStringsWithChar_char_String() {
+        initialize();
+        for (Pair<Character, String> p : take(SMALL_LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
+            System.out.println("stringsWithChar(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsWithChar(p.a, p.b))));
+        }
+    }
+
+    private static void demoStringsWithChar_char() {
+        initialize();
+        for (char c : take(SMALL_LIMIT, P.characters())) {
+            System.out.println("stringsWithChar(" + nicePrint(c) + ") = " +
+                    its(map(Testing::nicePrint, EP.stringsWithChar(c))));
+        }
+    }
 }
