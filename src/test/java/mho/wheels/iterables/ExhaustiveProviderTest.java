@@ -5,6 +5,7 @@ import mho.wheels.math.BinaryFraction;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -9808,6 +9809,84 @@ public strictfp class ExhaustiveProviderTest {
                 " ssiss, sis, siss, Mississi, Mississip, ississi, ississip, Mississipp, Mississippi, ississipp," +
                 " ississippi, ssissi, ssissip, sissi, sissip, ssissipp, ssissippi, sissipp, sissippi, issip, ssip," +
                 " issipp, issippi, ssipp, ssippi, sip, ip, sipp, sippi, ipp, ippi, p, pp, ppi, pi]");
+    }
+
+    private static void listsWithElement_helper(
+            @Nullable Integer x,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.listsWithElement(x, input), output);
+    }
+
+    private static void listsWithElement_helper(@Nullable Integer x, @NotNull String input, @NotNull String output) {
+        listsWithElement_helper(x, readIntegerListWithNulls(input), output);
+    }
+
+    @Test
+    public void testListWithElement() {
+        listsWithElement_helper(0, "[]", "[[0]]");
+        listsWithElement_helper(0, "[1, 2, 3]",
+                "[[0], [0, 1], [1, 0], [1, 0, 1], [0, 1, 1], [0, 2], [1, 0, 1, 1], [1, 0, 2], [1, 1, 0]," +
+                " [1, 1, 0, 1], [2, 0], [2, 0, 1], [1, 1, 0, 1, 1], [1, 1, 0, 2], [2, 0, 1, 1], [2, 0, 2]," +
+                " [0, 1, 1, 1], [0, 3], [1, 0, 1, 1, 1], [1, 0, 3], ...]");
+        listsWithElement_helper(null, "[1, 2, 3]",
+                "[[null], [null, 1], [1, null], [1, null, 1], [null, 1, 1], [null, 2], [1, null, 1, 1]," +
+                " [1, null, 2], [1, 1, null], [1, 1, null, 1], [2, null], [2, null, 1], [1, 1, null, 1, 1]," +
+                " [1, 1, null, 2], [2, null, 1, 1], [2, null, 2], [null, 1, 1, 1], [null, 3], [1, null, 1, 1, 1]," +
+                " [1, null, 3], ...]");
+        listsWithElement_helper(0, "[0, 1, 2]",
+                "[[0], [0, 0], [1, 0], [1, 0, 0], [0, 0, 0], [0, 1], [1, 0, 0, 0], [1, 0, 1], [1, 1, 0]," +
+                " [1, 1, 0, 0], [2, 0], [2, 0, 0], [1, 1, 0, 0, 0], [1, 1, 0, 1], [2, 0, 0, 0], [2, 0, 1]," +
+                " [0, 0, 0, 0], [0, 2], [1, 0, 0, 0, 0], [1, 0, 2], ...]");
+        listsWithElement_helper(null, P.positiveIntegers(),
+                "[[null], [null, 1], [1, null], [1, null, 1], [null, 1, 1], [null, 2], [1, null, 1, 1]," +
+                " [1, null, 2], [1, 1, null], [1, 1, null, 1], [2, null], [2, null, 1], [1, 1, null, 1, 1]," +
+                " [1, 1, null, 2], [2, null, 1, 1], [2, null, 2], [null, 1, 1, 1], [null, 3], [1, null, 1, 1, 1]," +
+                " [1, null, 3], ...]");
+        listsWithElement_helper(3, P.positiveIntegers(),
+                "[[3], [3, 1], [1, 3], [1, 3, 1], [3, 1, 1], [3, 2], [1, 3, 1, 1], [1, 3, 2], [1, 1, 3]," +
+                " [1, 1, 3, 1], [2, 3], [2, 3, 1], [1, 1, 3, 1, 1], [1, 1, 3, 2], [2, 3, 1, 1], [2, 3, 2]," +
+                " [3, 1, 1, 1], [3, 3], [1, 3, 1, 1, 1], [1, 3, 3], ...]");
+        listsWithElement_helper(0, repeat(1),
+                "[[0], [0, 1], [1, 0], [1, 0, 1], [0, 1, 1], [0, 1], [1, 0, 1, 1], [1, 0, 1], [1, 1, 0]," +
+                " [1, 1, 0, 1], [1, 0], [1, 0, 1], [1, 1, 0, 1, 1], [1, 1, 0, 1], [1, 0, 1, 1], [1, 0, 1]," +
+                " [0, 1, 1, 1], [0, 1], [1, 0, 1, 1, 1], [1, 0, 1], ...]");
+    }
+
+    private static void stringsWithChar_char_String_helper(char c, @NotNull String input, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsWithChar(c, input), output);
+    }
+
+    @Test
+    public void testStringsWithChar_char_String() {
+        stringsWithChar_char_String_helper('a', "", "[a]");
+        stringsWithChar_char_String_helper('#', "abcd",
+                "[#, #a, a#, a#a, #aa, #b, a#aa, a#b, aa#, aa#a, b#, b#a, aa#aa, aa#b, b#aa, b#b, #aaa, #c, a#aaa," +
+                " a#c, ...]");
+        stringsWithChar_char_String_helper('a', "abcd",
+                "[a, aa, ba, baa, aaa, ab, baaa, bab, bba, bbaa, ca, caa, bbaaa, bbab, caaa, cab, aaaa, ac, baaaa," +
+                " bac, ...]");
+        stringsWithChar_char_String_helper('#', "aaaa",
+                "[#, #a, a#, a#a, #aa, #a, a#aa, a#a, aa#, aa#a, a#, a#a, aa#aa, aa#a, a#aa, a#a, #aaa, #a, a#aaa," +
+                " a#a, ...]");
+        stringsWithChar_char_String_helper('#', "Mississippi",
+                "[#, #M, M#, M#M, #MM, #i, M#MM, M#i, MM#, MM#M, i#, i#M, MM#MM, MM#i, i#MM, i#i, #MMM, #s, M#MMM," +
+                " M#s, ...]");
+    }
+
+    private static void stringsWithChar_char_helper(char c, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringsWithChar(c), output);
+    }
+
+    @Test
+    public void testStringsWithChar_char() {
+        stringsWithChar_char_helper('a',
+                "[a, aa, ba, baa, aaa, ab, baaa, bab, bba, bbaa, ca, caa, bbaaa, bbab, caaa, cab, aaaa, ac, baaaa," +
+                " bac, ...]");
+        stringsWithChar_char_helper('#',
+                "[#, #a, a#, a#a, #aa, #b, a#aa, a#b, aa#, aa#a, b#, b#a, aa#aa, aa#b, b#aa, b#b, #aaa, #c, a#aaa," +
+                " a#c, ...]");
     }
 
     @Test
