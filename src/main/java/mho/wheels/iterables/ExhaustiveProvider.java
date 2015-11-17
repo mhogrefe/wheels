@@ -5890,7 +5890,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result consists of all unique sublists of a {@code List}.</li>
      * </ul>
      *
-     * Length is between 1 and <sub>|{@code xs}+1|</sub>C<sub>2</sub>+1, inclusive.
+     * Length is between {@code xs}+1 and <sub>|{@code xs}|+1</sub>C<sub>2</sub>+1, inclusive.
      *
      * @param xs a {@code List}
      * @param <T> the type of the given {@code List}'s elements
@@ -5910,7 +5910,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>The result consists of all unique substrings of a {@code String}.</li>
      * </ul>
      *
-     * Length is between 1 and <sub>|{@code s}+1|</sub>C<sub>2</sub>+1, inclusive.
+     * Length is between {@code s}+1 and <sub>|{@code s}|+1</sub>C<sub>2</sub>+1, inclusive.
      *
      * @param s a {@code String}
      * @return all unique substrings of {@code s}

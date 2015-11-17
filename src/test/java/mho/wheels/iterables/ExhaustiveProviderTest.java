@@ -9777,6 +9777,39 @@ public strictfp class ExhaustiveProviderTest {
         repeatingIterablesDistinctAtLeast_fail_helper(-1, "[0, 1]");
     }
 
+    private static void sublists_helper(@NotNull String input, @NotNull String output) {
+        aeqit(P.sublists(readIntegerListWithNulls(input)), output);
+    }
+
+    @Test
+    public void testSublists() {
+        sublists_helper("[]", "[[]]");
+        sublists_helper("[1, 2, 3, 4]",
+                "[[], [1], [1, 2], [1, 2, 3], [2], [2, 3], [3], [1, 2, 3, 4], [2, 3, 4], [3, 4], [4]]");
+        sublists_helper("[1, null, 3, 4]",
+                "[[], [1], [1, null], [1, null, 3], [null], [null, 3], [3], [1, null, 3, 4], [null, 3, 4], [3, 4]," +
+                " [4]]");
+        sublists_helper("[3, 1, 4, 1]",
+                "[[], [3], [3, 1], [3, 1, 4], [1], [1, 4], [4], [3, 1, 4, 1], [1, 4, 1], [4, 1]]");
+        sublists_helper("[1, 1, 1, 1]", "[[], [1], [1, 1], [1, 1, 1], [1, 1, 1, 1]]");
+    }
+
+    private static void substrings_helper(@NotNull String input, @NotNull String output) {
+        aeqit(P.substrings(input), output);
+    }
+
+    @Test
+    public void testSubstrings() {
+        substrings_helper("", "[]");
+        substrings_helper("abcd", "[, a, ab, abc, b, bc, c, abcd, bcd, cd, d]");
+        substrings_helper("aaaa", "[, a, aa, aaa, aaaa]");
+        substrings_helper("Mississippi",
+                "[, M, Mi, Mis, i, is, s, Miss, Missi, iss, issi, Missis, Mississ, issis, ississ, ss, ssi, si, ssis," +
+                " ssiss, sis, siss, Mississi, Mississip, ississi, ississip, Mississipp, Mississippi, ississipp," +
+                " ississippi, ssissi, ssissip, sissi, sissip, ssissipp, ssissippi, sissipp, sissippi, issip, ssip," +
+                " issipp, issippi, ssipp, ssippi, sip, ip, sipp, sippi, ipp, ippi, p, pp, ppi, pi]");
+    }
+
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
