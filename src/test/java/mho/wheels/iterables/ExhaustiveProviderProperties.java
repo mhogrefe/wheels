@@ -293,6 +293,9 @@ public class ExhaustiveProviderProperties {
             propertiesRepeatingIterablesDistinctAtLeast();
             propertiesSublists();
             propertiesSubstrings();
+            propertiesListsWithElement();
+            propertiesStringsWithChar_char_String();
+            propertiesStringsWithChar_char();
         }
         System.out.println("Done");
     }
@@ -9502,6 +9505,74 @@ public class ExhaustiveProviderProperties {
             int sublistSize = length(EP.substrings(s));
             int maxSize = MathUtils.binomialCoefficient(BigInteger.valueOf(s.length() + 1), 2).intValueExact() + 1;
             assertTrue(s, sublistSize == maxSize);
+        }
+    }
+
+    private static void propertiesListsWithElement() {
+        initialize("listsWithElement(T, Iterable<T>)");
+        Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
+                P.withNull(P.integersGeometric()),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
+            List<Integer> combined = toList(cons(p.a, p.b));
+            assertTrue(
+                    p,
+                    all(
+                            xs -> xs.contains(p.a) && isSubsetOf(xs, combined),
+                            take(TINY_LIMIT, EP.listsWithElement(p.a, p.b))
+                    )
+            );
+        }
+
+        ps = P.pairs(
+                P.withNull(P.integersGeometric()),
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.listsWithElement(p.a, p.b))));
+        }
+
+        for (Integer i : take(LIMIT, P.withNull(P.integersGeometric()))) {
+            assertEquals(
+                    i,
+                    toList(EP.listsWithElement(i, Collections.emptyList())),
+                    Collections.singletonList(Collections.singletonList(i))
+            );
+        }
+
+        Iterable<Pair<Integer, Iterable<Integer>>> ps2 = P.pairs(
+                P.withNull(P.integersGeometric()),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+            simpleTest(p, EP.listsWithElement(p.a, p.b), xs -> xs.contains(p.a));
+        }
+    }
+    
+    private static void propertiesStringsWithChar_char_String() {
+        initialize("stringsWithChar(char, String)");
+        for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
+            String combined = cons(p.a, p.b);
+            assertTrue(
+                    p,
+                    all(s -> elem(p.a, s) && isSubsetOf(s, combined), take(TINY_LIMIT, EP.stringsWithChar(p.a, p.b)))
+            );
+        }
+
+        for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).distinctStrings()))) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.stringsWithChar(p.a, p.b))));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertEquals(c, toList(EP.stringsWithChar(c, "")), Collections.singletonList(Character.toString(c)));
+        }
+    }
+
+    private static void propertiesStringsWithChar_char() {
+        initialize("stringsWithChar(char, String)");
+        for (char c : take(SMALL_LIMIT, P.characters())) {
+            simpleTest(c, EP.stringsWithChar(c), s -> elem(c, s));
         }
     }
 }

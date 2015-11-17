@@ -5474,7 +5474,7 @@ public final strictfp class IterableUtils {
             set.remove(y);
             if (set.isEmpty()) return true;
         }
-        return set.isEmpty();
+        return false;
     }
 
     public static boolean isSubsetOf(@NotNull String s, @NotNull String t) {
