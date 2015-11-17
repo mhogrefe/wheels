@@ -2350,4 +2350,19 @@ public class ExhaustiveProviderDemos {
                     its(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(p.b, p.a))));
         }
     }
+
+    private static void demoSublists() {
+        initialize();
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            String listString = tail(init(xs.toString()));
+            System.out.println("sublists(" + listString + ") = " + its(EP.sublists(xs)));
+        }
+    }
+
+    private static void demoSubstrings() {
+        initialize();
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            System.out.println("substrings(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.substrings(s))));
+        }
+    }
 }
