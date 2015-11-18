@@ -1789,6 +1789,50 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoListsWithElement() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integersGeometric()),
+                P.prefixPermutations(EP.withNull(EP.integers()))
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("listsWithElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.listsWithElement(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringsWithChar_char_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() >= 3,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringsWithChar(" + t.a + ", " + nicePrint(t.b) + ", " + nicePrint(t.c) + ") = " +
+                    its(map(Testing::nicePrint, t.a.stringsWithChar(t.b, t.c))));
+        }
+    }
+
+    private static void demoStringsWithChar_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    its(map(Testing::nicePrint, p.a.stringsWithChar(p.b))));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
