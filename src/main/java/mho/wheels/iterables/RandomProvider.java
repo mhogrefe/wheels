@@ -4128,7 +4128,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that uniformly generates elements from the Cartesian product of a {@code List} of
-     * {@code List}s.
+     * {@code List}s. Does not support removal.
      *
      * <ul>
      *  <li>{@code xss} cannot be empty and no element of {@code xss} may be null or empty.</li>
@@ -4146,6 +4146,37 @@ public final strictfp class RandomProvider extends IterableProvider {
             throw new IllegalArgumentException("xss cannot be empty.");
         }
         return transpose(map(this::uniformSample, xss));
+    }
+
+    /**
+     * An {@code Iterable} that generates {@code List}s of elements from a given {@code Iterable} that contain a given
+     * element. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code this} must have a scale of at least 3.</li>
+     *  <li>{@code x} may be any value of type {@code T}, or null.</li>
+     *  <li>{@code xs} must be infinite.</li>
+     *  <li>{@code xs} cannot only contain copies of {@code x}.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param x an element that the output {@code List}s must contain
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return {@code List}s containing {@code x} and possibly members of {@code xs}
+     */
+    @Override
+    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs) {
+        int leftScale = (scale - 1) / 2;
+        int rightScale = (scale & 1) == 1 ? leftScale : leftScale + 1;
+        return map(
+                p -> toList(concat(p.a, cons(x, p.b))),
+                pairs(
+                        withScale(leftScale).lists(filter(y -> !Objects.equals(y, x), xs)),
+                        withScale(rightScale).lists(xs)
+                )
+        );
     }
 
     /**

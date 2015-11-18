@@ -5921,6 +5921,29 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
     }
 
     /**
+     * Returns an {@code Iterable} containing all {@code List}s from an {@code Iterable} of elements {@code xs} which
+     * contain a particular element. {@code xs} may or may not contain the element. Does not support removal.
+     *
+     * <ul>{@code x} may be any value of type {@code T}, or null.</ul>
+     * <ul>{@code xs} cannot be null.</ul>
+     * <ul>{@code xs} cannot be infinite and only contain copies of {@code x}.</ul>
+     *
+     * Length is 0 if {@code xs} is empty, infinite otherwise
+     *
+     * @param x an element that the output {@code List}s must contain
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return all {@code List}s containing {@code x} and possibly members of {@code xs}
+     */
+    @Override
+    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs) {
+        return map(
+                p -> toList(concat(p.a, cons(x, p.b))),
+                pairs(lists(filter(y -> !Objects.equals(y, x), xs)), lists(xs))
+        );
+    }
+
+    /**
      * Determines whether {@code this} is equal to {@code that}. This implementation is the same as in
      * {@link java.lang.Object#equals}, but repeated here for clarity.
      *

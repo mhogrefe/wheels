@@ -2407,7 +2407,6 @@ public abstract strictfp class IterableProvider {
      *
      * @param xs a {@code List}
      * @param <T> the type of the elements in {@code xs}
-     * @return sublists of {@code xs}
      */
     public @NotNull <T> Iterable<List<T>> sublists(@NotNull List<T> xs) {
         return map(p -> toList(xs.subList(p.a, p.b)), filter(p -> p.a <= p.b, pairs(range(0, xs.size()))));
@@ -2417,7 +2416,6 @@ public abstract strictfp class IterableProvider {
      * Generates all substrings of a given {@code String}.
      *
      * @param s a {@code String}
-     * @return substrings of {@code s}
      */
     public @NotNull Iterable<String> substrings(@NotNull String s) {
         return map(p -> s.substring(p.a, p.b), filter(p -> p.a <= p.b, pairs(range(0, s.length()))));
@@ -2430,14 +2428,8 @@ public abstract strictfp class IterableProvider {
      * @param x an element that the output {@code List}s must contain
      * @param xs a {@code List}
      * @param <T> the type of the elements in {@code xs}
-     * @return all {@code List}s containing {@code x} and possibly members of {@code xs}
      */
-    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs) {
-        return map(
-                p -> toList(concat(p.a, cons(x, p.b))),
-                pairs(lists(filter(y -> !Objects.equals(y, x), xs)), lists(xs))
-        );
-    }
+    public abstract @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs);
 
     /**
      * Generates all {@code String}s from a given {@code String} {@code s} which contain a particular character.
@@ -2445,7 +2437,6 @@ public abstract strictfp class IterableProvider {
      *
      * @param c a character that the output {@code String}s must contain
      * @param s a {@code String}
-     * @return all {@code String}s containing {@code c} and possibly characters of {@code s}
      */
     public @NotNull Iterable<String> stringsWithChar(char c, @NotNull String s) {
         return map(IterableUtils::charsToString, listsWithElement(c, uniformSample(s)));
@@ -2455,7 +2446,6 @@ public abstract strictfp class IterableProvider {
      * Generates all {@code String}s which contain a particular character.
      *
      * @param c a character that the output {@code String}s must contain
-     * @return all {@code String}s containing {@code c}
      */
     public @NotNull Iterable<String> stringsWithChar(char c) {
         return map(IterableUtils::charsToString, listsWithElement(c, characters()));
