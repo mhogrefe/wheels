@@ -5468,6 +5468,7 @@ public final strictfp class IterableUtils {
     }
 
     public static <T> boolean isSubsetOf(@NotNull Iterable<T> xs, @NotNull Iterable<T> ys) {
+        if (isEmpty(xs)) return true;
         HashSet<T> set = new HashSet<>();
         addTo(xs, set);
         for (T y : ys) {
