@@ -2451,6 +2451,39 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, listsWithElement(c, characters()));
     }
 
+    /**
+     * Generates all unordered {@code List}s from an {@code Iterable} of elements {@code xs}, with no repetitions,
+     * which contain a particular element. {@code xs} may or may not contain the element.
+     *
+     * @param x an element that the output {@code List}s must contain
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
+            @Nullable T x,
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} {@code s}, with no
+     * repetitions, which contain a particular character. {@code s} may or may not contain the character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsWithChar(char c, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsWithElement(c, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with no repetitions which contain a particular character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     */
+    public @NotNull Iterable<String> stringSubsetsWithChar(char c) {
+        return map(IterableUtils::charsToString, subsetsWithElement(c, characters()));
+    }
+
     public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
             @NotNull Iterable<Iterable<T>> subsequences,
             @NotNull Iterable<T> xs
