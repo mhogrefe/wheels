@@ -4168,6 +4168,9 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs) {
+        if (scale < 3) {
+            throw new IllegalStateException("this must have a scale of at least 3. Invalid scale: " + scale);
+        }
         int leftScale = (scale - 1) / 2;
         int rightScale = (scale & 1) == 1 ? leftScale : leftScale + 1;
         return map(

@@ -9549,7 +9549,7 @@ public class ExhaustiveProviderProperties {
             simpleTest(p, EP.listsWithElement(p.a, p.b), xs -> xs.contains(p.a));
         }
     }
-    
+
     private static void propertiesStringsWithChar_char_String() {
         initialize("stringsWithChar(char, String)");
         for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
