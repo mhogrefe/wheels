@@ -4212,6 +4212,15 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(ys -> sort(cons(x, ys)), withScale(scale - 1).subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
+    @Override
+    public @NotNull <T> Iterable<List<T>> listsWithSublists(
+            @NotNull Iterable<List<T>> sublists,
+            @NotNull Iterable<T> xs
+    ) {
+        Iterable<List<T>> lists = lists(xs);
+        return map(t -> toList(concat(Arrays.asList(t.a, t.b, t.c))), triples(lists, sublists, lists));
+    }
+
     /**
      * Determines whether {@code this} is equal to {@code that}.
      *

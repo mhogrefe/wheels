@@ -2484,27 +2484,42 @@ public abstract strictfp class IterableProvider {
         return map(IterableUtils::charsToString, subsetsWithElement(c, characters()));
     }
 
-    public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
-            @NotNull Iterable<Iterable<T>> subsequences,
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} {@code xs} which contain at least one
+     * of a given {@code Iterable} of sublists.
+     *
+     * @param sublists {@code List}s, at least one of which must be contained in each result {@code List}
+     * @param xs a {@code List}
+     * @param <T> the type of elements in {@code xs}
+     */
+    public abstract @NotNull <T> Iterable<List<T>> listsWithSublists(
+            @NotNull Iterable<List<T>> sublists,
             @NotNull Iterable<T> xs
-    ) {
-        return map(
-                p -> toList(concat(Arrays.asList(take(p.a.b, p.a.a), p.b, drop(p.a.b, p.a.a)))),
-                pairsSquareRootOrder(dependentPairs(lists(xs), list -> range(0, list.size())), subsequences)
-        );
-    }
+    );
 
-    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
-        return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(), t -> range(0, t.length())), substrings)
-        );
-    }
-
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} {@code s} which contain at least
+     * one of a given {@code Iterable} of substrings.
+     *
+     * @param substrings {@code String}s, at least one of which must be contained in each result {@code String}
+     * @param s a {@code String}
+     */
     public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings, @NotNull String s) {
         return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(s), t -> range(0, t.length())), substrings)
+                IterableUtils::charsToString,
+                listsWithSublists(map(IterableUtils::toList, substrings), uniformSample(s))
+        );
+    }
+
+    /**
+     * Generates all {@code String}s which contain at least one of a given {@code Iterable} of substrings.
+     *
+     * @param substrings {@code String}s, at least one of which must be contained in each result {@code String}
+     */
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
+        return map(
+                IterableUtils::charsToString,
+                listsWithSublists(map(IterableUtils::toList, substrings), characters())
         );
     }
 
