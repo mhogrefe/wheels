@@ -5780,7 +5780,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  element.</li>
      * </ul>
      *
-     * Length is <sub>|{@code xs}|</sub>C<sub>{@code size}</sub>
+     * Length is 2<sup>|{@code xs}|</sup>
      *
      * @param xs the {@code Iterable} from which elements are selected
      * @param <T> the type of the given {@code Iterable}'s elements
@@ -5867,8 +5867,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Returns an {@code Iterable} containing the Cartesian product of a {@code List} of {@code List}s.
      *
      * <ul>
-     *  <ul>None of the {@code List}s in {@code xss} can be null.</ul>
-     *  <ul>The result is the Cartesian product of a {@code List} of {@code List}s.</ul>
+     *  <li>None of the {@code List}s in {@code xss} can be null.</li>
+     *  <li>The result is the Cartesian product of a {@code List} of {@code List}s.</li>
      * </ul>
      *
      * Length is ∏<sub>{@code xs}∈{@code xss}</sub>{@code xs.size()}
@@ -5924,11 +5924,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * Returns an {@code Iterable} containing all {@code List}s from an {@code Iterable} of elements {@code xs} which
      * contain a particular element. {@code xs} may or may not contain the element. Does not support removal.
      *
-     * <ul>{@code x} may be any value of type {@code T}, or null.</ul>
-     * <ul>{@code xs} cannot be null.</ul>
-     * <ul>{@code xs} cannot be infinite and only contain copies of {@code x}.</ul>
+     * <ul>
+     *  <li>{@code x} may be any value of type {@code T}, or null.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     *  <li>{@code xs} cannot be infinite and only contain copies of {@code x}.</li>
+     * </ul>
      *
-     * Length is 0 if {@code xs} is empty, infinite otherwise
+     * Length is 1 if {@code xs} is empty, infinite otherwise
      *
      * @param x an element that the output {@code List}s must contain
      * @param xs a {@code List}
@@ -5948,11 +5950,13 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * {@code xs} which contain a particular element. {@code xs} may or may not contain the element. Does not support
      * removal.
      *
-     * <ul>{@code x} may be any value of type {@code T}, or null.</ul>
-     * <ul>{@code xs} cannot be null.</ul>
-     * <ul>{@code xs} cannot be infinite and only contain copies of {@code x}.</ul>
+     * <ul>
+     *   <li>{@code x} may be any value of type {@code T}, or null.</li>
+     *   <li>{@code xs} cannot be null.</li>
+     *   <li>{@code xs} cannot be infinite and only contain copies of {@code x}.</li>
+     * </ul>
      *
-     * Length is 0 if {@code xs} is empty, infinite otherwise
+     * Length is 2<sup>|{@code xs}\{{@code x}}|</sup>
      *
      * @param x an element that the output {@code List}s must contain
      * @param xs a {@code List}
@@ -5964,10 +5968,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @Nullable T x,
             @NotNull Iterable<T> xs
     ) {
-        return map(
-                p -> toList(concat(p.a, cons(x, p.b))),
-                pairs(lists(filter(y -> lt(y, x), xs)), lists(filter(y -> ge(y, x), xs)))
-        );
+        return map(ys -> sort(cons(x, ys)), subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
     /**

@@ -4213,8 +4213,8 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(
                 p -> toList(concat(p.a, cons(x, p.b))),
                 pairs(
-                        withScale(leftScale).lists(filterInfinite(y -> lt(y, x), xs)),
-                        withScale(rightScale).lists(filterInfinite(y -> ge(y, x), xs))
+                        withScale(leftScale).subsets(filterInfinite(y -> lt(y, x), xs)),
+                        withScale(rightScale).subsets(filterInfinite(y -> ge(y, x), xs))
                 )
         );
     }

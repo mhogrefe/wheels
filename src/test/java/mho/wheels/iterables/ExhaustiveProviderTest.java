@@ -9824,7 +9824,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
-    public void testListWithElement() {
+    public void testListsWithElement() {
         listsWithElement_helper(0, "[]", "[[0]]");
         listsWithElement_helper(0, "[1, 2, 3]",
                 "[[0], [0, 1], [1, 0], [1, 0, 1], [0, 1, 1], [0, 2], [1, 0, 1, 1], [1, 0, 2], [1, 1, 0]," +
@@ -9887,6 +9887,73 @@ public strictfp class ExhaustiveProviderTest {
         stringsWithChar_char_helper('#',
                 "[#, #a, a#, a#a, #aa, #b, a#aa, a#b, aa#, aa#a, b#, b#a, aa#aa, aa#b, b#aa, b#b, #aaa, #c, a#aaa," +
                 " a#c, ...]");
+    }
+
+    private static void subsetsWithElement_helper(
+            @NotNull Integer x,
+            @NotNull Iterable<Integer> input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.subsetsWithElement(x, input), output);
+    }
+
+    private static void subsetsWithElement_helper(@NotNull Integer x, @NotNull String input, @NotNull String output) {
+        subsetsWithElement_helper(x, readIntegerListWithNulls(input), output);
+    }
+
+    @Test
+    public void testSubsetsWithElement() {
+        subsetsWithElement_helper(0, "[]", "[[0]]");
+        subsetsWithElement_helper(0, "[1, 2, 3]",
+                "[[0], [0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [0, 3], [0, 1, 3], [0, 2, 3]]");
+        subsetsWithElement_helper(1, "[1, 2, 3]", "[[1], [1, 2], [1, 2, 3], [1, 3]]");
+        subsetsWithElement_helper(2, "[1, 2, 3]", "[[2], [1, 2], [1, 2, 3], [2, 3]]");
+        subsetsWithElement_helper(3, "[1, 2, 3]", "[[3], [1, 3], [1, 2, 3], [2, 3]]");
+        subsetsWithElement_helper(3, P.positiveIntegers(),
+                "[[3], [1, 3], [1, 2, 3], [2, 3], [1, 2, 3, 4], [3, 4], [1, 3, 4], [3, 5], [1, 2, 3, 4, 5], [3, 6]," +
+                " [2, 3, 4], [3, 7], [1, 2, 3, 5], [3, 8], [2, 3, 5], [3, 9], [1, 2, 3, 4, 5, 6], [3, 10]," +
+                " [1, 3, 5], [3, 11], ...]");
+        subsetsWithElement_helper(0, repeat(1),
+                "[[0], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1, 1], [0, 1]," +
+                " [0, 1, 1], [0, 1], [0, 1, 1, 1], [0, 1], [0, 1, 1], [0, 1], [0, 1, 1, 1, 1, 1], [0, 1], [0, 1, 1]," +
+                " [0, 1], ...]");
+    }
+
+    private static void stringSubsetsWithChar_char_String_helper(
+            char c,
+            @NotNull String input,
+            @NotNull String output
+    ) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsWithChar(c, input), output);
+    }
+
+    @Test
+    public void testStringSubsetsWithChar_char_String() {
+        stringSubsetsWithChar_char_String_helper('a', "", "[a]");
+        stringSubsetsWithChar_char_String_helper('#', "abcd",
+                "[#, #a, #ab, #b, #abc, #c, #ac, #d, #abcd, #bc, #abd, #bd, #ad, #acd, #cd, #bcd]");
+        stringSubsetsWithChar_char_String_helper('a', "aabcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
+        stringSubsetsWithChar_char_String_helper('a', "abcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
+        stringSubsetsWithChar_char_String_helper('a', "aabcd", "[a, ab, abc, ac, abcd, ad, abd, acd]");
+        stringSubsetsWithChar_char_String_helper('#', "aaaa",
+                "[#, #a, #aa, #a, #aaa, #a, #aa, #a, #aaaa, #aa, #aaa, #aa, #aa, #aaa, #aa, #aaa]");
+        stringSubsetsWithChar_char_String_helper('#', "Mississippi",
+                "[#, #M, #Mi, #i, #Mis, #s, #Ms, #s, #Miss, #i, #is, #s, #Mis, #s, #is, #i, #Miiss, #p, #Ms, #p," +
+                " ...]");
+    }
+
+    private static void stringSubsetsWithChar_char_helper(char c, @NotNull String output) {
+        aeqitLimit(TINY_LIMIT, P.stringSubsetsWithChar(c), output);
+    }
+
+    @Test
+    public void testStringSubsetsWithChar_char() {
+        stringSubsetsWithChar_char_helper('a',
+                "[a, ab, abc, ac, abcd, ad, abd, ae, abcde, af, acd, ag, abce, ah, ace, ai, abcdef, aj, abe, ak," +
+                " ...]");
+        stringSubsetsWithChar_char_helper('#',
+                "[#, #a, #ab, #b, #abc, #c, #ac, #d, #abcd, #e, #bc, #f, #abd, #g, #bd, #h, #abcde, #i, #ad, #j," +
+                " ...]");
     }
 
     @Test
