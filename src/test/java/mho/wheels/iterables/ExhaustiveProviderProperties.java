@@ -296,6 +296,9 @@ public class ExhaustiveProviderProperties {
             propertiesListsWithElement();
             propertiesStringsWithChar_char_String();
             propertiesStringsWithChar_char();
+            propertiesSubsetsWithElement();
+            propertiesStringSubsetsWithChar_char_String();
+            propertiesStringSubsetsWithChar_char();
         }
         System.out.println("Done");
     }
@@ -9573,6 +9576,92 @@ public class ExhaustiveProviderProperties {
         initialize("stringsWithChar(char, String)");
         for (char c : take(SMALL_LIMIT, P.characters())) {
             simpleTest(c, EP.stringsWithChar(c), s -> elem(c, s));
+        }
+    }
+
+    private static void propertiesSubsetsWithElement() {
+        initialize("subsetsWithElement(T, Iterable<T>)");
+        Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
+                P.integersGeometric(),
+                P.withScale(4).lists(P.integersGeometric())
+        );
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
+            List<Integer> combined = toList(cons(p.a, p.b));
+            assertTrue(
+                    p,
+                    all(
+                            xs -> xs.contains(p.a) && isSubsetOf(xs, combined) && weaklyIncreasing(xs),
+                            take(TINY_LIMIT, EP.subsetsWithElement(p.a, p.b))
+                    )
+            );
+        }
+
+        ps = P.pairs(P.integersGeometric(), P.withScale(4).distinctLists(P.integersGeometric()));
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.subsetsWithElement(p.a, p.b))));
+        }
+
+        for (Integer i : take(LIMIT, P.integersGeometric())) {
+            assertEquals(
+                    i,
+                    toList(EP.subsetsWithElement(i, Collections.emptyList())),
+                    Collections.singletonList(Collections.singletonList(i))
+            );
+        }
+
+        Iterable<Pair<Integer, Iterable<Integer>>> ps2 = P.pairs(
+                P.integersGeometric(),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps2)) {
+            simpleTest(p, EP.subsetsWithElement(p.a, p.b), xs -> xs.contains(p.a));
+        }
+
+        Iterable<Pair<Integer, List<Integer>>> psFail = P.pairs(
+                P.integersGeometric(),
+                P.withScale(4).listsWithElement(null, P.integersGeometric())
+        );
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, psFail)) {
+            try {
+                toList(EP.subsetsWithElement(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).listsWithElement(null, P.integersGeometric()))) {
+            try {
+                toList(EP.subsetsWithElement(null, xs));
+                fail(xs);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsWithChar_char_String() {
+        initialize("stringSubsetsWithChar(char, String)");
+        for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
+            String combined = cons(p.a, p.b);
+            assertTrue(
+                    p,
+                    all(
+                            s -> elem(p.a, s) && isSubsetOf(s, combined) && weaklyIncreasing(toList(s)),
+                            take(TINY_LIMIT, EP.stringSubsetsWithChar(p.a, p.b))
+                    )
+            );
+        }
+
+        for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).distinctStrings()))) {
+            assertTrue(p, unique(take(TINY_LIMIT, EP.stringSubsetsWithChar(p.a, p.b))));
+        }
+
+        for (char c : take(LIMIT, P.characters())) {
+            assertEquals(c, toList(EP.stringSubsetsWithChar(c, "")), Collections.singletonList(Character.toString(c)));
+        }
+    }
+
+    private static void propertiesStringSubsetsWithChar_char() {
+        initialize("stringSubsetsWithChar(char, String)");
+        for (char c : take(SMALL_LIMIT, P.characters())) {
+            simpleTest(c, EP.stringSubsetsWithChar(c), s -> elem(c, s) && weaklyIncreasing(toList(s)));
         }
     }
 }

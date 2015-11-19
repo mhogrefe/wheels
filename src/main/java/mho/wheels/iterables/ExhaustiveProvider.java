@@ -5968,6 +5968,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @Nullable T x,
             @NotNull Iterable<T> xs
     ) {
+        x.compareTo(x);
         return map(ys -> sort(cons(x, ys)), subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
