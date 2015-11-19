@@ -5965,7 +5965,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
-            @Nullable T x,
+            T x,
             @NotNull Iterable<T> xs
     ) {
         x.compareTo(x);

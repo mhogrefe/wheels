@@ -2460,7 +2460,7 @@ public abstract strictfp class IterableProvider {
      * @param <T> the type of the elements in {@code xs}
      */
     public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
-            @Nullable T x,
+            T x,
             @NotNull Iterable<T> xs
     );
 

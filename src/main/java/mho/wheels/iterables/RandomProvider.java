@@ -4187,7 +4187,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * contain a given element. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale of at least 3.</li>
+     *  <li>{@code this} must have a scale of at least 2.</li>
      *  <li>{@code x} may be any value of type {@code T}, or null.</li>
      *  <li>{@code xs} must be infinite.</li>
      *  <li>{@code xs} cannot only contain copies of {@code x}.</li>
@@ -4202,21 +4202,10 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
-            @Nullable T x,
+            T x,
             @NotNull Iterable<T> xs
     ) {
-        if (scale < 3) {
-            throw new IllegalStateException("this must have a scale of at least 3. Invalid scale: " + scale);
-        }
-        int leftScale = (scale - 1) / 2;
-        int rightScale = (scale & 1) == 1 ? leftScale : leftScale + 1;
-        return map(
-                p -> toList(concat(p.a, cons(x, p.b))),
-                pairs(
-                        withScale(leftScale).subsets(filterInfinite(y -> lt(y, x), xs)),
-                        withScale(rightScale).subsets(filterInfinite(y -> ge(y, x), xs))
-                )
-        );
+        return map(ys -> sort(cons(x, ys)), withScale(scale - 1).subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
     /**
