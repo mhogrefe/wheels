@@ -1254,7 +1254,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
             System.out.println("strings(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
-                    its(map(Testing::nicePrint, t.a.strings(t.c, t.b))));
+                    sits(t.a.strings(t.c, t.b)));
         }
     }
 
@@ -1265,8 +1265,7 @@ public class RandomProviderDemos {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("strings(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.strings(p.b))));
+            System.out.println("strings(" + p.a + ", " + p.b + ") = " + sits(p.a.strings(p.b)));
         }
     }
 
@@ -1288,8 +1287,7 @@ public class RandomProviderDemos {
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("strings(" + p.a + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, p.a.strings(p.b))));
+            System.out.println("strings(" + p.a + ", " + nicePrint(p.b) + ") = " + sits(p.a.strings(p.b)));
         }
     }
 
@@ -1300,7 +1298,7 @@ public class RandomProviderDemos {
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
-            System.out.println("strings(" + rp + ") = " + its(map(Testing::nicePrint, rp.strings())));
+            System.out.println("strings(" + rp + ") = " + sits(rp.strings()));
         }
     }
 
@@ -1332,7 +1330,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringsAtLeast(t.b, t.c))));
+                    sits(t.a.stringsAtLeast(t.b, t.c)));
         }
     }
 
@@ -1346,8 +1344,7 @@ public class RandomProviderDemos {
                 )
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("stringsAtLeast(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringsAtLeast(p.b))));
+            System.out.println("stringsAtLeast(" + p.a + ", " + p.b + ") = " + sits(p.a.stringsAtLeast(p.b)));
         }
     }
 
@@ -1371,7 +1368,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("distinctStrings(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.distinctStrings(t.b, t.c))));
+                    sits(t.a.distinctStrings(t.b, t.c)));
         }
     }
 
@@ -1382,8 +1379,7 @@ public class RandomProviderDemos {
                 filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("distinctStrings(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.distinctStrings(p.b))));
+            System.out.println("distinctStrings(" + p.a + ", " + p.b + ") = " + sits(p.a.distinctStrings(p.b)));
         }
     }
 
@@ -1406,7 +1402,7 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("distinctStrings(" + p.a + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, p.a.distinctStrings(p.b))));
+                    sits(p.a.distinctStrings(p.b)));
         }
     }
 
@@ -1417,7 +1413,7 @@ public class RandomProviderDemos {
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
-            System.out.println("distinctStrings(" + rp + ") = " + its(map(Testing::nicePrint, rp.distinctStrings())));
+            System.out.println("distinctStrings(" + rp + ") = " + sits(rp.distinctStrings()));
         }
     }
 
@@ -1465,7 +1461,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("distinctStringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.distinctStringsAtLeast(t.b, t.c))));
+                    sits(t.a.distinctStringsAtLeast(t.b, t.c)));
         }
     }
 
@@ -1480,7 +1476,7 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("distinctStringsAtLeast(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.distinctStringsAtLeast(p.b))));
+                    sits(p.a.distinctStringsAtLeast(p.b)));
         }
     }
 
@@ -1498,7 +1494,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringBags(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringBags(t.c, t.b))));
+                    sits(t.a.stringBags(t.c, t.b)));
         }
     }
 
@@ -1509,8 +1505,7 @@ public class RandomProviderDemos {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("stringBags(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringBags(p.b))));
+            System.out.println("stringBags(" + p.a + ", " + p.b + ") = " + sits(p.a.stringBags(p.b)));
         }
     }
 
@@ -1532,8 +1527,7 @@ public class RandomProviderDemos {
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("stringBags(" + p.a + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringBags(p.b))));
+            System.out.println("stringBags(" + p.a + ", " + nicePrint(p.b) + ") = " + sits(p.a.stringBags(p.b)));
         }
     }
 
@@ -1544,7 +1538,7 @@ public class RandomProviderDemos {
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
-            System.out.println("stringBags(" + rp + ") = " + its(map(Testing::nicePrint, rp.stringBags())));
+            System.out.println("stringBags(" + rp + ") = " + sits(rp.stringBags()));
         }
     }
 
@@ -1576,7 +1570,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringBagsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringBagsAtLeast(t.b, t.c))));
+                    sits(t.a.stringBagsAtLeast(t.b, t.c)));
         }
     }
 
@@ -1590,8 +1584,7 @@ public class RandomProviderDemos {
                 )
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("stringBagsAtLeast(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringBagsAtLeast(p.b))));
+            System.out.println("stringBagsAtLeast(" + p.a + ", " + p.b + ") = " + sits(p.a.stringBagsAtLeast(p.b)));
         }
     }
 
@@ -1615,7 +1608,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringSubsets(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringSubsets(t.b, t.c))));
+                    sits(t.a.stringSubsets(t.b, t.c)));
         }
     }
 
@@ -1626,8 +1619,7 @@ public class RandomProviderDemos {
                 filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
-            System.out.println("stringSubsets(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringSubsets(p.b))));
+            System.out.println("stringSubsets(" + p.a + ", " + p.b + ") = " + sits(p.a.stringSubsets(p.b)));
         }
     }
 
@@ -1650,7 +1642,7 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringSubsets(" + p.a + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringSubsets(p.b))));
+                    sits(p.a.stringSubsets(p.b)));
         }
     }
 
@@ -1661,7 +1653,7 @@ public class RandomProviderDemos {
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
         for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
-            System.out.println("stringSubsets(" + rp + ") = " + its(map(Testing::nicePrint, rp.stringSubsets())));
+            System.out.println("stringSubsets(" + rp + ") = " + sits(rp.stringSubsets()));
         }
     }
 
@@ -1707,7 +1699,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringSubsetsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringSubsetsAtLeast(t.b, t.c))));
+                    sits(t.a.stringSubsetsAtLeast(t.b, t.c)));
         }
     }
 
@@ -1722,7 +1714,7 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringSubsetsAtLeast(" + p.a + ", " + p.b + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringSubsetsAtLeast(p.b))));
+                    sits(p.a.stringSubsetsAtLeast(p.b)));
         }
     }
 
@@ -1817,7 +1809,7 @@ public class RandomProviderDemos {
         );
         for (Triple<RandomProvider, Character, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringsWithChar(" + t.a + ", " + nicePrint(t.b) + ", " + nicePrint(t.c) + ") = " +
-                    its(map(Testing::nicePrint, t.a.stringsWithChar(t.b, t.c))));
+                    sits(t.a.stringsWithChar(t.b, t.c)));
         }
     }
 
@@ -1829,7 +1821,7 @@ public class RandomProviderDemos {
         );
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, p.a.stringsWithChar(p.b))));
+                    sits(p.a.stringsWithChar(p.b)));
         }
     }
 

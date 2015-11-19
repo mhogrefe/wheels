@@ -434,8 +434,12 @@ public strictfp class Testing {
         return IterableUtils.toString(TINY_LIMIT, xs);
     }
 
-    public static @NotNull String cits(@NotNull Iterable<Character> xs) {
-        return nicePrint(take(SMALL_LIMIT, xs));
+    public static @NotNull String cits(@NotNull Iterable<Character> cs) {
+        return its(map(Testing::nicePrint, cs));
+    }
+
+    public static @NotNull String sits(@NotNull Iterable<String> ss) {
+        return its(map(Testing::nicePrint, ss));
     }
 
     public static @NotNull String nicePrint(char c) {

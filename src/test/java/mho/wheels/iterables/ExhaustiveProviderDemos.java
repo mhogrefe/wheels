@@ -596,8 +596,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringPermutations() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringPermutations(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringPermutations(s))));
+            System.out.println("stringPermutations(" + nicePrint(s) + ") = " + sits(EP.stringPermutations(s)));
         }
     }
 
@@ -884,8 +883,7 @@ public class ExhaustiveProviderDemos {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            System.out.println("stringsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsLex(p.b, p.a))));
+            System.out.println("stringsLex(" + p.b + ", " + nicePrint(p.a) + ") = " + sits(EP.stringsLex(p.b, p.a)));
         }
     }
 
@@ -899,8 +897,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringsShortlex() {
         initialize();
         for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringsShortlex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsShortlex(s))));
+            System.out.println("stringsShortlex(" + nicePrint(s) + ") = " + sits(EP.stringsShortlex(s)));
         }
     }
 
@@ -924,7 +921,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsShortlexAtLeast(p.b, p.a))));
+                    sits(EP.stringsShortlexAtLeast(p.b, p.a)));
         }
     }
 
@@ -1261,15 +1258,14 @@ public class ExhaustiveProviderDemos {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            System.out.println("strings(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.strings(p.b, p.a))));
+            System.out.println("strings(" + p.b + ", " + nicePrint(p.a) + ") = " + sits(EP.strings(p.b, p.a)));
         }
     }
 
     private static void demoStrings_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("strings(" + i + ") = " + its(map(Testing::nicePrint, EP.strings(i))));
+            System.out.println("strings(" + i + ") = " + sits(EP.strings(i)));
         }
     }
 
@@ -1290,7 +1286,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStrings_String() {
         initialize();
         for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
-            System.out.println("strings(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.strings(s))));
+            System.out.println("strings(" + nicePrint(s) + ") = " + sits(EP.strings(s)));
         }
     }
 
@@ -1324,14 +1320,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsAtLeast(p.b, p.a))));
+                    sits(EP.stringsAtLeast(p.b, p.a)));
         }
     }
 
     private static void demoStringsAtLeast_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("stringsAtLeast(" + i + ") = " + its(map(Testing::nicePrint, EP.stringsAtLeast(i))));
+            System.out.println("stringsAtLeast(" + i + ") = " + sits(EP.stringsAtLeast(i)));
         }
     }
 
@@ -1396,7 +1392,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("distinctStringsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsLex(p.b, p.a))));
+                    sits(EP.distinctStringsLex(p.b, p.a)));
         }
     }
 
@@ -1410,8 +1406,7 @@ public class ExhaustiveProviderDemos {
     private static void demoDistinctStringsLex_String() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("distinctStringsLex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsLex(s))));
+            System.out.println("distinctStringsLex(" + nicePrint(s) + ") = " + sits(EP.distinctStringsLex(s)));
         }
     }
 
@@ -1435,7 +1430,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("distinctStringsLexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsLexAtLeast(p.b, p.a))));
+                    sits(EP.distinctStringsLexAtLeast(p.b, p.a)));
         }
     }
 
@@ -1450,7 +1445,7 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
             System.out.println("distinctStringsShortlex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsShortlex(s))));
+                    sits(EP.distinctStringsShortlex(s)));
         }
     }
 
@@ -1474,7 +1469,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("distinctStringsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsShortlexAtLeast(p.b, p.a))));
+                    sits(EP.distinctStringsShortlexAtLeast(p.b, p.a)));
         }
     }
 
@@ -1592,14 +1587,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("distinctStrings(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStrings(p.b, p.a))));
+                    sits(EP.distinctStrings(p.b, p.a)));
         }
     }
 
     private static void demoDistinctStrings_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("distinctStrings(" + i + ") = " + its(map(Testing::nicePrint, EP.distinctStrings(i))));
+            System.out.println("distinctStrings(" + i + ") = " + sits(EP.distinctStrings(i)));
         }
     }
 
@@ -1620,8 +1615,7 @@ public class ExhaustiveProviderDemos {
     private static void demoDistinctStrings_String() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("distinctStrings(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStrings(s))));
+            System.out.println("distinctStrings(" + nicePrint(s) + ") = " + sits(EP.distinctStrings(s)));
         }
     }
 
@@ -1657,15 +1651,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("distinctStringsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsAtLeast(p.b, p.a))));
+                    sits(EP.distinctStringsAtLeast(p.b, p.a)));
         }
     }
 
     private static void demoDistinctStringsAtLeast_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("distinctStringsAtLeast(" + i + ") = " +
-                    its(map(Testing::nicePrint, EP.distinctStringsAtLeast(i))));
+            System.out.println("distinctStringsAtLeast(" + i + ") = " + sits(EP.distinctStringsAtLeast(i)));
         }
     }
 
@@ -1730,7 +1723,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringBagsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBagsLex(p.b, p.a))));
+                    sits(EP.stringBagsLex(p.b, p.a)));
         }
     }
 
@@ -1744,8 +1737,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringBagsShortlex() {
         initialize();
         for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringBagsShortlex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBagsShortlex(s))));
+            System.out.println("stringBagsShortlex(" + nicePrint(s) + ") = " + sits(EP.stringBagsShortlex(s)));
         }
     }
 
@@ -1769,7 +1761,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringBagsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBagsShortlexAtLeast(p.b, p.a))));
+                    sits(EP.stringBagsShortlexAtLeast(p.b, p.a)));
         }
     }
 
@@ -1886,15 +1878,14 @@ public class ExhaustiveProviderDemos {
                 P.withScale(4).naturalIntegersGeometric()
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
-            System.out.println("stringBags(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBags(p.b, p.a))));
+            System.out.println("stringBags(" + p.b + ", " + nicePrint(p.a) + ") = " + sits(EP.stringBags(p.b, p.a)));
         }
     }
 
     private static void demoStringBags_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("stringBags(" + i + ") = " + its(map(Testing::nicePrint, EP.stringBags(i))));
+            System.out.println("stringBags(" + i + ") = " + sits(EP.stringBags(i)));
         }
     }
 
@@ -1915,7 +1906,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringBags_String() {
         initialize();
         for (String s : take(SMALL_LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringBags(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.stringBags(s))));
+            System.out.println("stringBags(" + nicePrint(s) + ") = " + sits(EP.stringBags(s)));
         }
     }
 
@@ -1950,15 +1941,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringBagsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBagsAtLeast(p.b, p.a))));
+                    sits(EP.stringBagsAtLeast(p.b, p.a)));
         }
     }
 
     private static void demoStringBagsAtLeast_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("stringBagsAtLeast(" + i + ") = " +
-                    its(map(Testing::nicePrint, EP.stringBagsAtLeast(i))));
+            System.out.println("stringBagsAtLeast(" + i + ") = " + sits(EP.stringBagsAtLeast(i)));
         }
     }
 
@@ -2023,7 +2013,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringSubsetsLex(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsLex(p.b, p.a))));
+                    sits(EP.stringSubsetsLex(p.b, p.a)));
         }
     }
 
@@ -2037,8 +2027,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringSubsetsLex_String() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringSubsetsLex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsLex(s))));
+            System.out.println("stringSubsetsLex(" + nicePrint(s) + ") = " + sits(EP.stringSubsetsLex(s)));
         }
     }
 
@@ -2061,7 +2050,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringSubsetsLexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsLexAtLeast(p.b, p.a))));
+                    sits(EP.stringSubsetsLexAtLeast(p.b, p.a)));
         }
     }
 
@@ -2075,8 +2064,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringSubsetsShortlex() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringSubsetsShortlex(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsShortlex(s))));
+            System.out.println("stringSubsetsShortlex(" + nicePrint(s) + ") = " + sits(EP.stringSubsetsShortlex(s)));
         }
     }
 
@@ -2100,7 +2088,7 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringSubsetsShortlexAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsShortlexAtLeast(p.b, p.a))));
+                    sits(EP.stringSubsetsShortlexAtLeast(p.b, p.a)));
         }
     }
 
@@ -2218,14 +2206,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringSubsets(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsets(p.b, p.a))));
+                    sits(EP.stringSubsets(p.b, p.a)));
         }
     }
 
     private static void demoStringSubsets_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("stringSubsets(" + i + ") = " + its(map(Testing::nicePrint, EP.stringSubsets(i))));
+            System.out.println("stringSubsets(" + i + ") = " + sits(EP.stringSubsets(i)));
         }
     }
 
@@ -2246,8 +2234,7 @@ public class ExhaustiveProviderDemos {
     private static void demoStringSubsets_String() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("stringSubsets(" + nicePrint(s) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsets(s))));
+            System.out.println("stringSubsets(" + nicePrint(s) + ") = " + sits(EP.stringSubsets(s)));
         }
     }
 
@@ -2282,15 +2269,14 @@ public class ExhaustiveProviderDemos {
         );
         for (Pair<String, Integer> p : take(LIMIT, ps)) {
             System.out.println("stringSubsetsAtLeast(" + p.b + ", " + nicePrint(p.a) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsAtLeast(p.b, p.a))));
+                    sits(EP.stringSubsetsAtLeast(p.b, p.a)));
         }
     }
 
     private static void demoStringSubsetsAtLeast_int() {
         initialize();
         for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
-            System.out.println("stringSubsetsAtLeast(" + i + ") = " +
-                    its(map(Testing::nicePrint, EP.stringSubsetsAtLeast(i))));
+            System.out.println("stringSubsetsAtLeast(" + i + ") = " + sits(EP.stringSubsetsAtLeast(i)));
         }
     }
 
@@ -2362,7 +2348,7 @@ public class ExhaustiveProviderDemos {
     private static void demoSubstrings() {
         initialize();
         for (String s : take(LIMIT, P.withScale(4).strings())) {
-            System.out.println("substrings(" + nicePrint(s) + ") = " + its(map(Testing::nicePrint, EP.substrings(s))));
+            System.out.println("substrings(" + nicePrint(s) + ") = " + sits(EP.substrings(s)));
         }
     }
 
@@ -2393,15 +2379,14 @@ public class ExhaustiveProviderDemos {
         initialize();
         for (Pair<Character, String> p : take(SMALL_LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
             System.out.println("stringsWithChar(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsWithChar(p.a, p.b))));
+                    sits(EP.stringsWithChar(p.a, p.b)));
         }
     }
 
     private static void demoStringsWithChar_char() {
         initialize();
         for (char c : take(SMALL_LIMIT, P.characters())) {
-            System.out.println("stringsWithChar(" + nicePrint(c) + ") = " +
-                    its(map(Testing::nicePrint, EP.stringsWithChar(c))));
+            System.out.println("stringsWithChar(" + nicePrint(c) + ") = " + sits(EP.stringsWithChar(c)));
         }
     }
 }
