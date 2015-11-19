@@ -217,6 +217,9 @@ public class RandomProviderProperties {
             propertiesListsWithElement();
             propertiesStringsWithChar_char_String();
             propertiesStringsWithChar_char();
+            propertiesSubsetsWithElement();
+            propertiesStringSubsetsWithChar_char_String();
+            propertiesStringSubsetsWithChar_char();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4171,7 +4174,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail2 = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.lists(P.withScale(4).integersGeometric())
+                P.lists(P.withNull(P.withScale(4).integersGeometric()))
         );
         for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail2)) {
             try {
@@ -4237,6 +4240,105 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             simpleTest(p.a, p.a.stringsWithChar(p.b), s -> elem(p.b, s));
+        }
+    }
+
+    private static void propertiesSubsetsWithElement() {
+        initialize("subsetsWithElement(T, Iterable<T>)");
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.integersGeometric(),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.subsetsWithElement(t.b, t.c), xs -> xs.contains(t.b) && increasing(xs));
+        }
+
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() < 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.integersGeometric(),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.subsetsWithElement(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail2 = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.integersGeometric(),
+                P.lists(P.withScale(4).integersGeometric())
+        );
+        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail2)) {
+            try {
+                toList(t.a.subsetsWithElement(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsWithChar_char_String() {
+        initialize("stringSubsetsWithChar(char, String)");
+        Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() >= 2,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(LIMIT, ts)) {
+            String combined = cons(t.b, t.c);
+            simpleTest(
+                    t.a,
+                    t.a.stringSubsetsWithChar(t.b, t.c),
+                    s -> elem(t.b, s) && isSubsetOf(s, combined) && increasing(toList(s))
+            );
+        }
+
+        Iterable<Triple<RandomProvider, Character, String>> tsFail = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() < 2,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringSubsetsWithChar(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, Character>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringSubsetsWithChar(p.b, "");
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringSubsetsWithChar_char() {
+        initialize("stringSubsetsWithChar(char)");
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringSubsetsWithChar(p.b), s -> elem(p.b, s) && increasing(toList(s)));
         }
     }
 
