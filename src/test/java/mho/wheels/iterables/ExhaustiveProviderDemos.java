@@ -2389,4 +2389,43 @@ public class ExhaustiveProviderDemos {
             System.out.println("stringsWithChar(" + nicePrint(c) + ") = " + sits(EP.stringsWithChar(c)));
         }
     }
+
+    private static void demoSubsetsWithElement_finite() {
+        initialize();
+        Iterable<Pair<Integer, List<Integer>>> ps = P.pairs(
+                P.integersGeometric(),
+                P.withScale(4).lists(P.integersGeometric())
+        );
+        for (Pair<Integer, List<Integer>> p : take(LIMIT, ps)) {
+            System.out.println("subsetsWithElement(" + p.a + ", " + p.b + ") = " +
+                    its(EP.subsetsWithElement(p.a, p.b)));
+        }
+    }
+
+    private static void demoSubsetsWithElement_infinite() {
+        initialize();
+        Iterable<Pair<Integer, Iterable<Integer>>> ps = P.pairs(
+                P.integersGeometric(),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Pair<Integer, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("subsetsWithElement(" + p.a + ", " + its(p.b) + ") = " +
+                    its(EP.subsetsWithElement(p.a, p.b)));
+        }
+    }
+
+    private static void demoStringSubsetsWithChar_char_String() {
+        initialize();
+        for (Pair<Character, String> p : take(LIMIT, P.pairs(P.characters(), P.withScale(4).strings()))) {
+            System.out.println("stringSubsetsWithChar(" + nicePrint(p.a) + ", " + nicePrint(p.b) + ") = " +
+                    sits(EP.stringSubsetsWithChar(p.a, p.b)));
+        }
+    }
+
+    private static void demoStringSubsetsWithChar_char() {
+        initialize();
+        for (char c : take(SMALL_LIMIT, P.characters())) {
+            System.out.println("stringSubsetsWithChar(" + nicePrint(c) + ") = " + sits(EP.stringSubsetsWithChar(c)));
+        }
+    }
 }
