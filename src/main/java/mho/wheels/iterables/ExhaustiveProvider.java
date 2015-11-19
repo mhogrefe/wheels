@@ -5982,9 +5982,11 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * <ul>
      *  <li>{@code sublists} cannot be null and cannot contain nulls.</li>
      *  <li>{@code xs} cannot be null.</li>
+     *  <li>The result contains no nulls and no repetitions.</li>
      * </ul>
      *
-     * Length is infinite.
+     * Length is 0 if {@code sublists} is empty, 1 if {@code sublists} only contains an empty {@code List} and
+     * {@code xs} is empty, and infinite otherwise
      *
      * @param sublists {@code List}s, at least one of which must be contained in each result {@code List}
      * @param xs a {@code List}
