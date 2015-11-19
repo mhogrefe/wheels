@@ -1520,7 +1520,7 @@ public final strictfp class IterableUtils {
     }
 
     /**
-     * Equivalent of Haskell's {@code tail} function. Given a {@code String}, returns a {@code String} containing
+     * Equivalent of Haskell's {@code init} function. Given a {@code String}, returns a {@code String} containing
      * all of its characters but the last. Uses O(n) additional memory, where n is the length of {@code s}.
      *
      * <ul>
