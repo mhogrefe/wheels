@@ -5928,6 +5928,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *  <li>{@code x} may be any value of type {@code T}, or null.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>{@code xs} cannot be infinite and only contain copies of {@code x}.</li>
+     *  <li>The result contains no nulls, and every {@code List} contains one particular element.</li>
      * </ul>
      *
      * Length is 1 if {@code xs} is empty, infinite otherwise
@@ -5954,6 +5955,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      *   <li>{@code x} may be any value of type {@code T}, or null.</li>
      *   <li>{@code xs} cannot be null.</li>
      *   <li>{@code xs} cannot be infinite and only contain copies of {@code x}.</li>
+     *   <li>The result contains no nulls, and every {@code List} contains one particular element.</li>
      * </ul>
      *
      * Length is 2<sup>|{@code xs}\{{@code x}}|</sup>
@@ -5972,6 +5974,23 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         return map(ys -> sort(cons(x, ys)), subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
+    /**
+     * Returns an {@code Iterable} containing all {@code List}s from an {@code Iterable} of elements {@code xs} which
+     * contain a particular at least one {@code List} from {@code sublists}. The {@code List}s in {@code sublists} are
+     * not necessarily made up of elements from {@code xs}. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code sublists} cannot be null and cannot contain nulls.</li>
+     *  <li>{@code xs} cannot be null.</li>
+     * </ul>
+     *
+     * Length is infinite.
+     *
+     * @param sublists {@code List}s, at least one of which must be contained in each result {@code List}
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     * @return all {@code List}s containing {@code x} and at least one {@code List} from {@code sublists}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> listsWithSublists(
             @NotNull Iterable<List<T>> sublists,
