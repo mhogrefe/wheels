@@ -214,6 +214,9 @@ public class RandomProviderProperties {
             propertiesRepeatingIterablesDistinctAtLeast();
             propertiesSublists();
             propertiesSubstrings();
+            propertiesListsWithElement();
+            propertiesStringsWithChar_char_String();
+            propertiesStringsWithChar_char();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4139,6 +4142,101 @@ public class RandomProviderProperties {
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.substrings(p.b), p.b::contains);
+        }
+    }
+
+    private static void propertiesListsWithElement() {
+        initialize("listsWithElement(T, Iterable<T>)");
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integersGeometric()),
+                P.prefixPermutations(EP.withNull(EP.integers()))
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.listsWithElement(t.b, t.c), xs -> xs.contains(t.b));
+        }
+
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() < 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integersGeometric()),
+                P.prefixPermutations(EP.withNull(EP.integers()))
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.listsWithElement(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        Iterable<Triple<RandomProvider, Integer, List<Integer>>> tsFail2 = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.withNull(P.integersGeometric()),
+                P.lists(P.withScale(4).integersGeometric())
+        );
+        for (Triple<RandomProvider, Integer, List<Integer>> t : take(LIMIT, tsFail2)) {
+            try {
+                toList(t.a.listsWithElement(t.b, t.c));
+                fail(t);
+            } catch (NoSuchElementException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithChar_char_String() {
+        initialize("stringsWithChar(char, String)");
+        Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() >= 3,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(LIMIT, ts)) {
+            String combined = cons(t.b, t.c);
+            simpleTest(t.a, t.a.stringsWithChar(t.b, t.c), s -> elem(t.b, s) && isSubsetOf(s, combined));
+        }
+
+        Iterable<Triple<RandomProvider, Character, String>> tsFail = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() < 3,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringsWithChar(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+
+        Iterable<Pair<RandomProvider, Character>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringsWithChar(p.b, "");
+                fail(p);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithChar_char() {
+        initialize("stringsWithChar(char)");
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringsWithChar(p.b), s -> elem(p.b, s));
         }
     }
 
