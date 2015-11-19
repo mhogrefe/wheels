@@ -1108,7 +1108,7 @@ public class RandomProviderDemos {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
@@ -1120,7 +1120,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.integers())
+                P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("withNull(" + p.a + ", " + its(p.b) + ") = " + its(p.a.withNull(p.b)));
@@ -1131,7 +1131,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.integers())
+                P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("optionals(" + p.a + ", " + its(p.b) + ") = " + its(p.a.optionals(p.b)));
@@ -1142,7 +1142,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +
@@ -1733,7 +1733,7 @@ public class RandomProviderDemos {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(TINY_LIMIT, ps)) {
             System.out.println("repeatingIterables(" + p.a + ", " + its(p.b) + ") = " +
@@ -1750,7 +1750,7 @@ public class RandomProviderDemos {
                         P.pairs(
                                 P.randomProvidersDefaultSecondaryScale(),
                                 P.pairsLogarithmicOrder(
-                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         )
@@ -1786,7 +1786,7 @@ public class RandomProviderDemos {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("listsWithElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
@@ -1822,6 +1822,50 @@ public class RandomProviderDemos {
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
                     sits(p.a.stringsWithChar(p.b)));
+        }
+    }
+
+    private static void demoSubsetsWithElement() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.integersGeometric(),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("subsetsWithElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
+                    its(t.a.subsetsWithElement(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringSubsetsWithChar_char_String() {
+        initialize();
+        Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
+                t -> nub(t.c).length() != 1 || head(t.c) != t.b,
+                P.triples(
+                        filterInfinite(
+                                rp -> rp.getScale() >= 2,
+                                P.withScale(4).randomProvidersDefaultSecondaryScale()
+                        ),
+                        P.characters(),
+                        P.withScale(4).stringsAtLeast(1)
+                )
+        );
+        for (Triple<RandomProvider, Character, String> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("stringSubsetsWithChar(" + t.a + ", " + nicePrint(t.b) + ", " + nicePrint(t.c) +
+                    ") = " + sits(t.a.stringSubsetsWithChar(t.b, t.c)));
+        }
+    }
+
+    private static void demoStringSubsetsWithChar_char() {
+        initialize();
+        Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.characters()
+        );
+        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("stringSubsetsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
+                    sits(p.a.stringSubsetsWithChar(p.b)));
         }
     }
 
