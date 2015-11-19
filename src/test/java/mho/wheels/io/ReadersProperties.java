@@ -2,7 +2,6 @@ package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.FiniteDomainFunction;
@@ -107,13 +106,12 @@ public strictfp class ReadersProperties {
             );
         }
 
-        //todo use subsetsWithElement
         ps = map(
                 p -> p.b,
                 P.dependentPairsInfinite(
                         P.integers(),
                         i -> P.pairs(
-                                filter(IterableUtils::unique, P.listsWithElement(i, P.integers())),
+                                P.subsetsWithElement(i, P.integers()),
                                 P.stringsWithSubstrings(Collections.singletonList(i.toString()))
                         )
                 )
@@ -273,7 +271,7 @@ public strictfp class ReadersProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             Optional<Integer> oi = readInteger(Integer.toString(i));
-            assertEquals(i, oi.get().intValue(), i);
+            assertEquals(i, oi.get(), i);
         }
     }
 

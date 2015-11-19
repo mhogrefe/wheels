@@ -2276,7 +2276,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
             List<Integer> withElement = toList(take(TINY_LIMIT, t.a.withElement(t.b, t.c)));
@@ -2304,7 +2304,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail2 = P.triples(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail2)) {
             try {
@@ -2318,7 +2318,7 @@ public class RandomProviderProperties {
         initialize("withNull(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.integers())
+                P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Integer> withNull = toList(take(TINY_LIMIT, p.a.withNull(p.b)));
@@ -2354,7 +2354,7 @@ public class RandomProviderProperties {
         initialize("optionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.integers())
+                P.prefixPermutations(EP.naturalIntegers())
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<Optional<Integer>> os = toList(take(TINY_LIMIT, p.a.optionals(p.b)));
@@ -2387,7 +2387,7 @@ public class RandomProviderProperties {
 
         psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
@@ -2401,7 +2401,7 @@ public class RandomProviderProperties {
         initialize("nullableOptionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             List<NullableOptional<Integer>> os = toList(take(TINY_LIMIT, p.a.nullableOptionals(p.b)));
@@ -2423,7 +2423,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, Iterable<Integer>>> psFail2 = P.pairs(
                 filterInfinite(x -> x.getScale() < 2, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, psFail2)) {
             try {
@@ -4043,7 +4043,7 @@ public class RandomProviderProperties {
         initialize("repeatingIterables(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Pair<RandomProvider, Iterable<Integer>> p : take(LIMIT, ps)) {
             simpleTest(
@@ -4063,7 +4063,7 @@ public class RandomProviderProperties {
                         P.pairs(
                                 P.randomProvidersDefaultSecondaryScale(),
                                 P.pairsLogarithmicOrder(
-                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         )
@@ -4092,7 +4092,7 @@ public class RandomProviderProperties {
                         P.pairs(
                                 P.randomProvidersDefaultSecondaryScale(),
                                 P.pairsLogarithmicOrder(
-                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.withScale(4).rangeUpGeometric(2)
                                 )
                         )
@@ -4112,7 +4112,7 @@ public class RandomProviderProperties {
                         P.pairs(
                                 filterInfinite(rp -> rp.getScale() < 0, P.randomProvidersDefaultSecondaryScale()),
                                 P.pairsLogarithmicOrder(
-                                        P.prefixPermutations(EP.withNull(EP.integers())),
+                                        P.prefixPermutations(EP.withNull(EP.naturalIntegers())),
                                         P.integers()
                                 )
                         )
@@ -4150,7 +4150,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, ts)) {
             simpleTest(t.a, t.a.listsWithElement(t.b, t.c), xs -> xs.contains(t.b));
@@ -4159,7 +4159,7 @@ public class RandomProviderProperties {
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> tsFail = P.triples(
                 filterInfinite(rp -> rp.getScale() < 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withNull(P.integersGeometric()),
-                P.prefixPermutations(EP.withNull(EP.integers()))
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(LIMIT, tsFail)) {
             try {
