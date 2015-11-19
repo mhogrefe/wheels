@@ -4280,6 +4280,9 @@ public final strictfp class IterableUtils {
 
                     @Override
                     public T next() {
+                        if (!hasNext) {
+                            throw new NoSuchElementException();
+                        }
                         T current = next;
                         advance();
                         return current;

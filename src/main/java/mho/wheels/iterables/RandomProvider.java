@@ -4150,7 +4150,7 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates {@code List}s of elements from a given {@code Iterable} that contain a given
-     * element. Does not support removal.
+     * element. The mean length of the {@code List}s is {@code scale}. Does not support removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 3.</li>
@@ -4184,7 +4184,8 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates distinct sorted {@code List}s of elements from a given {@code Iterable} that
-     * contain a given element. Does not support removal.
+     * contain a given element. The mean length of the {@code List}s is approximately {@code scale}. Does not support
+     * removal.
      *
      * <ul>
      *  <li>{@code this} must have a scale of at least 2.</li>
@@ -4205,6 +4206,9 @@ public final strictfp class RandomProvider extends IterableProvider {
             T x,
             @NotNull Iterable<T> xs
     ) {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
         return map(ys -> sort(cons(x, ys)), withScale(scale - 1).subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
