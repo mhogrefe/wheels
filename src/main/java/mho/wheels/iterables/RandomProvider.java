@@ -4217,6 +4217,8 @@ public final strictfp class RandomProvider extends IterableProvider {
      * one of a given {@code Iterable} of sublists. Does not support removal.
      *
      * <ul>
+     *  <li>{@code this} must have a scale at least 2 larger than the length of the longest sublist in
+     *  {@code sublists}.</li>
      *  <li>{@code sublists} must be infinite and cannot contain nulls.</li>
      *  <li>{@code xs} must be infinite and cannot contain nulls.</li>
      *  <li>The result is infinite and does not contain nulls.</li>
