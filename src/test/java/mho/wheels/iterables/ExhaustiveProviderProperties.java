@@ -299,6 +299,9 @@ public class ExhaustiveProviderProperties {
             propertiesSubsetsWithElement();
             propertiesStringSubsetsWithChar_char_String();
             propertiesStringSubsetsWithChar_char();
+            propertiesListsWithSublists();
+            propertiesStringsWithSubstrings_Iterable_String_String();
+            propertiesStringsWithSubstrings_Iterable_String();
         }
         System.out.println("Done");
     }
@@ -9477,7 +9480,7 @@ public class ExhaustiveProviderProperties {
         initialize("sublists(List<T>)");
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
             List<List<Integer>> sublists = toList(EP.sublists(xs));
-            simpleTest(xs, sublists, ys -> ys.size() <= xs.size());
+            simpleTest(xs, sublists, ys -> isInfixOf(ys, xs));
             assertTrue(xs, unique(sublists));
             int sublistSize = sublists.size();
             int minSize = xs.size() + 1;
@@ -9659,9 +9662,77 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesStringSubsetsWithChar_char() {
-        initialize("stringSubsetsWithChar(char, String)");
-        for (char c : take(SMALL_LIMIT, P.characters())) {
+        initialize("stringSubsetsWithChar(char)");
+        for (char c : take(LIMIT, P.characters())) {
             simpleTest(c, EP.stringSubsetsWithChar(c), s -> elem(c, s) && weaklyIncreasing(toList(s)));
+        }
+    }
+
+    private static void propertiesListsWithSublists() {
+        initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
+        Iterable<List<Integer>> lists = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        for (Pair<List<List<Integer>>, List<Integer>> p : take(LIMIT, P.pairs(P.withScale(4).lists(lists), lists))) {
+            List<Integer> combined = toList(nub(concat(map(xs -> (Iterable<Integer>) xs, cons(p.b, p.a)))));
+            simpleTest(
+                    p,
+                    EP.listsWithSublists(p.a, p.b),
+                    xs -> any(ys -> isInfixOf(ys, xs), p.a) && isSubsetOf(xs, combined)
+            );
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {
+            assertTrue(xs, isEmpty(EP.listsWithSublists(Collections.emptyList(), xs)));
+        }
+
+        Iterable<Pair<List<List<Integer>>, Iterable<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withScale(4).lists(P.withNull(P.integersGeometric()))),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<List<List<Integer>>, Iterable<Integer>> p : take(LIMIT, ps)) {
+            simpleTest(p, EP.listsWithSublists(p.a, p.b), xs -> any(ys -> isInfixOf(ys, xs), p.a));
+        }
+
+        Iterable<Pair<List<List<Integer>>, List<Integer>>> psFail = P.pairs(
+                P.withScale(4).listsWithElement(null, lists),
+                lists
+        );
+        for (Pair<List<List<Integer>>, List<Integer>> p : take(LIMIT, psFail)) {
+            try {
+                toList(EP.listsWithSublists(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithSubstrings_Iterable_String_String() {
+        initialize("stringsWithSubstrings(Iterable<String>, String)");
+        Iterable<String> strings = P.withScale(4).strings();
+        for (Pair<List<String>, String> p : take(LIMIT, P.pairs(P.withScale(4).lists(strings), strings))) {
+            String combined = concatStrings(cons(p.b, p.a));
+            simpleTest(
+                    p,
+                    EP.stringsWithSubstrings(p.a, p.b),
+                    s -> any(t -> isInfixOf(t, s), p.a) && isSubsetOf(s, combined)
+            );
+        }
+
+        for (String s : take(LIMIT, P.withScale(4).strings())) {
+            assertTrue(s, isEmpty(EP.stringsWithSubstrings(Collections.emptyList(), s)));
+        }
+
+        Iterable<Pair<List<String>, String>> psFail = P.pairs(P.withScale(4).listsWithElement(null, strings), strings);
+        for (Pair<List<String>, String> p : take(LIMIT, psFail)) {
+            try {
+                toList(EP.stringsWithSubstrings(p.a, p.b));
+                fail(p);
+            } catch (NullPointerException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithSubstrings_Iterable_String() {
+        initialize("stringsWithSubstrings(Iterable<String>)");
+        for (List<String> ss : take(LIMIT, P.withScale(4).lists(P.withScale(4).strings()))) {
+            simpleTest(ss, EP.stringsWithSubstrings(ss), s -> any(t -> isInfixOf(t, s), ss));
         }
     }
 }

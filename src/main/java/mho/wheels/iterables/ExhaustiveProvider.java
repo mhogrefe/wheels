@@ -6002,7 +6002,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
         if (isEmpty(sublists)) {
             return Collections.emptyList();
         }
-        Iterable<List<T>> lists = nub(lists(xs));
+        Iterable<List<T>> lists = lists(nub(xs));
         if (!lengthAtLeast(2, nublists) && head(sublists).isEmpty()) {
             return lists;
         }
