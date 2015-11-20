@@ -10016,6 +10016,34 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     @Test
+    public void testStringsWithSubstrings_Iterable_String_String() {
+        aeqitLimit(
+                TINY_LIMIT,
+                P.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
+                "[, a, aa, b, aaa, ab, ba, aaaa, aab, baa, bb, c, ac, d, ad, aaaaa, aac, baaa, bc, aaab, ...]"
+        );
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
+        aeq(length(P.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
+                "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
+                " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]"
+        );
+        aeqitLimit(
+                TINY_LIMIT,
+                P.stringsWithSubstrings(
+                        map(d -> Double.toString(d), P.positiveDoubles()),
+                        charsToString(range('a', 'z'))
+                ),
+                "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
+                " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]"
+        );
+    }
+
+    @Test
     public void testEquals() {
         //noinspection EqualsWithItself
         assertTrue(P.equals(P));
