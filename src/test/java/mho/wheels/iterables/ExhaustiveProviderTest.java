@@ -9958,6 +9958,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsWithSublists() {
+        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
+        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqitLimit(
+                TINY_LIMIT,
+                P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
+                "[[]]"
+        );
         aeqitLimit(
                 TINY_LIMIT,
                 P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
@@ -9971,13 +9978,6 @@ public strictfp class ExhaustiveProviderTest {
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
-                P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
-                "[[]]"
-        );
-        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
-        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
         aeqitLimit(
                 TINY_LIMIT,
                 P.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
@@ -10017,15 +10017,15 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
+        aeq(length(P.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
         aeqitLimit(
                 TINY_LIMIT,
                 P.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
                 "[, a, aa, b, aaa, ab, ba, aaaa, aab, baa, bb, c, ac, d, ad, aaaaa, aac, baaa, bc, aaab, ...]"
         );
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
-        aeq(length(P.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
         aeqitLimit(
                 TINY_LIMIT,
                 P.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
@@ -10041,6 +10041,27 @@ public strictfp class ExhaustiveProviderTest {
                 "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
                 " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]"
         );
+        try {
+            toList(P.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testStringsWithSubstrings_Iterable_String() {
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList()), "[]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("")),
+                "[, a, aa, b, aaa, ab, ba, aaaa, aab, baa, bb, c, ac, d, ad, aaaaa, aac, baaa, bc, aaab, ...]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("cat")),
+                "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
+                " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]");
+        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(map(d -> Double.toString(d), P.positiveDoubles())),
+                "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
+                " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]");
+        try {
+            toList(P.stringsWithSubstrings(Collections.singletonList(null)));
+            fail();
+        } catch (NullPointerException ignored) {}
     }
 
     @Test
