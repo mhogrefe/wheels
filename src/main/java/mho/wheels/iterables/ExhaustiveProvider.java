@@ -5980,7 +5980,7 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * not necessarily made up of elements from {@code xs}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code sublists} cannot be null and cannot contain nulls.</li>
+     *  <li>{@code sublists} cannot be null, cannot contain nulls, and cannot be one element repeating forever.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>The result contains no nulls and no repetitions.</li>
      * </ul>
@@ -5998,8 +5998,15 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
             @NotNull Iterable<List<T>> sublists,
             @NotNull Iterable<T> xs
     ) {
-        Iterable<List<T>> lists = lists(xs);
-        return nub(map(t -> toList(concat(Arrays.asList(t.a, t.b, t.c))), triples(lists, sublists, lists)));
+        Iterable<List<T>> nublists = nub(sublists);
+        if (isEmpty(sublists)) {
+            return Collections.emptyList();
+        }
+        Iterable<List<T>> lists = nub(lists(xs));
+        if (!lengthAtLeast(2, nublists) && head(sublists).isEmpty()) {
+            return lists;
+        }
+        return nub(map(t -> toList(concat(Arrays.asList(t.a, t.b, t.c))), triples(lists, nublists, lists)));
     }
 
     /**

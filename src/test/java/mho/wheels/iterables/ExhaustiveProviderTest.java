@@ -10024,7 +10024,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqitLimit(
                 TINY_LIMIT,
                 P.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
-                "[, a, aa, b, aaa, ab, ba, aaaa, aab, baa, bb, c, ac, d, ad, aaaaa, aac, baaa, bc, aaab, ...]"
+                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]"
         );
         aeqitLimit(
                 TINY_LIMIT,
@@ -10051,7 +10051,7 @@ public strictfp class ExhaustiveProviderTest {
     public void testStringsWithSubstrings_Iterable_String() {
         aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList()), "[]");
         aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("")),
-                "[, a, aa, b, aaa, ab, ba, aaaa, aab, baa, bb, c, ac, d, ad, aaaaa, aac, baaa, bc, aaab, ...]");
+                "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
         aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("cat")),
                 "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
                 " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]");

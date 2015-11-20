@@ -2428,4 +2428,42 @@ public class ExhaustiveProviderDemos {
             System.out.println("stringSubsetsWithChar(" + nicePrint(c) + ") = " + sits(EP.stringSubsetsWithChar(c)));
         }
     }
+
+    private static void demoListsWithSublists_finite() {
+        initialize();
+        Iterable<List<Integer>> lists = P.withScale(4).lists(P.withNull(P.integersGeometric()));
+        Iterable<Pair<List<List<Integer>>, List<Integer>>> ps = P.pairs(P.withScale(4).lists(lists), lists);
+        for (Pair<List<List<Integer>>, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsWithSublists(" + p.a + ", " + p.b + ") = " + its(EP.listsWithSublists(p.a, p.b)));
+        }
+    }
+
+    private static void demoListsWithSublists_infinite() {
+        initialize();
+        Iterable<Pair<List<List<Integer>>, Iterable<Integer>>> ps = P.pairs(
+                P.withScale(4).lists(P.withScale(4).lists(P.withNull(P.integersGeometric()))),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<List<List<Integer>>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("listsWithSublists(" + p.a + ", " + its(p.b) + ") = " +
+                    its(EP.listsWithSublists(p.a, p.b)));
+        }
+    }
+
+    private static void demoStringsWithSubstrings_Iterable_String_String() {
+        initialize();
+        Iterable<String> strings = P.withScale(4).strings();
+        for (Pair<List<String>, String> p : take(SMALL_LIMIT, P.pairs(P.withScale(4).lists(strings), strings))) {
+            System.out.println("stringsWithSubstrings(" + toList(map(Testing::nicePrint, p.a)) + ", " +
+                    nicePrint(p.b) + ") = " + sits(EP.stringsWithSubstrings(p.a, p.b)));
+        }
+    }
+
+    private static void demoStringsWithSubstrings_Iterable_String() {
+        initialize();
+        for (List<String> ss : take(SMALL_LIMIT, P.withScale(4).lists(P.withScale(4).strings()))) {
+            System.out.println("stringsWithSubstrings(" + toList(map(Testing::nicePrint, ss)) + ") = " +
+                    sits(EP.stringsWithSubstrings(ss)));
+        }
+    }
 }
