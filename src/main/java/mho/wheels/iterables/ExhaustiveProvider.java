@@ -5980,7 +5980,8 @@ public final strictfp class ExhaustiveProvider extends IterableProvider {
      * not necessarily made up of elements from {@code xs}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code sublists} cannot be null, cannot contain nulls, and cannot be one element repeating forever.</li>
+     *  <li>{@code sublists} cannot be null, cannot contain nulls, and cannot contain an infinite suffix with finitely
+     *  many distinct elements.</li>
      *  <li>{@code xs} cannot be null.</li>
      *  <li>The result contains no nulls and no repetitions.</li>
      * </ul>

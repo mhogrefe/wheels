@@ -4212,6 +4212,23 @@ public final strictfp class RandomProvider extends IterableProvider {
         return map(ys -> sort(cons(x, ys)), withScale(scale - 1).subsets(filter(y -> !Objects.equals(y, x), xs)));
     }
 
+    /**
+     * An {@code Iterable} that generates {@code List}s of elements from a given {@code Iterable} that contain at least
+     * one of a given {@code Iterable} of sublists. Does not support removal.
+     *
+     * <ul>
+     *  <li>{@code sublists} must be infinite and cannot contain nulls.</li>
+     *  <li>{@code xs} must be infinite and cannot contain nulls.</li>
+     *  <li>The result is infinite and does not contain nulls.</li>
+     * </ul>
+     *
+     * Length is infinite
+     *
+     * @param sublists {@code List}s, at least one of which must be contained in each result {@code List}
+     * @param xs a {@code List}
+     * @param <T> the type of elements in {@code xs}
+     * @return all lists containing at least one of {@code sublists} and possibly members of {@code xs}
+     */
     @Override
     public @NotNull <T> Iterable<List<T>> listsWithSublists(
             @NotNull Iterable<List<T>> sublists,
