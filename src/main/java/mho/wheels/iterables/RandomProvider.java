@@ -4217,8 +4217,24 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<List<T>> sublists,
             @NotNull Iterable<T> xs
     ) {
-        Iterable<List<T>> lists = lists(xs);
-        return map(t -> toList(concat(Arrays.asList(t.a, t.b, t.c))), triples(lists, sublists, lists));
+        return map(
+                p -> p.b,
+                (Iterable<Pair<List<T>, List<T>>>) dependentPairsInfinite(
+                        sublists,
+                        sublist -> {
+                            int padding = scale - sublist.size();
+                            int leftScale = padding / 2;
+                            int rightScale = (padding & 1) == 0 ? leftScale : leftScale + 1;
+                            return map(
+                                    p -> toList(concat(Arrays.asList(p.a, sublist, p.b))),
+                                    pairs(
+                                            withScale(leftScale).lists(xs),
+                                            withScale(rightScale).lists(xs)
+                                    )
+                            );
+                        }
+                )
+        );
     }
 
     /**

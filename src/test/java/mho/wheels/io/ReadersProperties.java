@@ -112,7 +112,7 @@ public strictfp class ReadersProperties {
                         P.integers(),
                         i -> P.pairs(
                                 P.subsetsWithElement(i, P.integers()),
-                                P.stringsWithSubstrings(Collections.singletonList(i.toString()))
+                                P.stringsWithSubstrings(P.uniformSample(Collections.singletonList(i.toString())))
                         )
                 )
         );
