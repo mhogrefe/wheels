@@ -1759,9 +1759,12 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Float> floats() {
-        return filterInfinite(
-                f -> !Float.isNaN(f) || Float.floatToIntBits(f) == Float.floatToIntBits(Float.NaN),
-                map(Float::intBitsToFloat, integers())
+        return map(
+                p -> p.b,
+                filterInfinite(
+                        p -> !Float.isNaN(p.b) || p.a == 0x7fc00000,
+                        map(i -> new Pair<>(i, Float.intBitsToFloat(i)), integers())
+                )
         );
     }
 
@@ -1806,9 +1809,12 @@ public final strictfp class RandomProvider extends IterableProvider {
      */
     @Override
     public @NotNull Iterable<Double> doubles() {
-        return filterInfinite(
-                d -> !Double.isNaN(d) || Double.doubleToLongBits(d) == Double.doubleToLongBits(Double.NaN),
-                map(Double::longBitsToDouble, longs())
+        return map(
+                p -> p.b,
+                filterInfinite(
+                        p -> !Double.isNaN(p.b) || p.a == 0x7ff8000000000000L,
+                        map(l -> new Pair<>(l, Double.longBitsToDouble(l)), longs())
+                )
         );
     }
 
@@ -4214,11 +4220,11 @@ public final strictfp class RandomProvider extends IterableProvider {
 
     /**
      * An {@code Iterable} that generates {@code List}s of elements from a given {@code Iterable} that contain at least
-     * one of a given {@code Iterable} of sublists. Does not support removal.
+     * one of a given {@code Iterable} of sublists. The average length of the result {@code List}s is {@code scale}
+     * plus the average length of the {@code List}s in {@code sublists}. Does not support removal.
      *
      * <ul>
-     *  <li>{@code this} must have a scale at least 2 larger than the length of the longest sublist in
-     *  {@code sublists}.</li>
+     *  <li>{@code this} must have a {@code scale} of at least 2.</li>
      *  <li>{@code sublists} must be infinite and cannot contain nulls.</li>
      *  <li>{@code xs} must be infinite and cannot contain nulls.</li>
      *  <li>The result is infinite and does not contain nulls.</li>
@@ -4236,23 +4242,14 @@ public final strictfp class RandomProvider extends IterableProvider {
             @NotNull Iterable<List<T>> sublists,
             @NotNull Iterable<T> xs
     ) {
+        if (scale < 2) {
+            throw new IllegalStateException("this must have a scale of at least 2. Invalid scale: " + scale);
+        }
+        int leftScale = scale / 2;
+        int rightScale = (scale & 1) == 0 ? leftScale : leftScale + 1;
         return map(
-                p -> p.b,
-                (Iterable<Pair<List<T>, List<T>>>) dependentPairsInfinite(
-                        sublists,
-                        sublist -> {
-                            int padding = scale - sublist.size();
-                            int leftScale = padding / 2;
-                            int rightScale = (padding & 1) == 0 ? leftScale : leftScale + 1;
-                            return map(
-                                    p -> toList(concat(Arrays.asList(p.a, sublist, p.b))),
-                                    pairs(
-                                            withScale(leftScale).lists(xs),
-                                            withScale(rightScale).lists(xs)
-                                    )
-                            );
-                        }
-                )
+                t -> toList(concat(Arrays.asList(t.a, t.b, t.c))),
+                triples(withScale(leftScale).lists(xs), sublists, withScale(rightScale).lists(xs))
         );
     }
 

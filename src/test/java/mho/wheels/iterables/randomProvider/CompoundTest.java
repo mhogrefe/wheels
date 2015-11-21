@@ -7288,19 +7288,19 @@ public strictfp class CompoundTest {
             @NotNull Iterable<List<Integer>> sublists,
             @NotNull Iterable<Integer> input
     ) {
-//        try {
+        try {
             toList(P.withScale(scale).listsWithSublists(sublists, input));
-//            fail();
-//        } catch (NoSuchElementException | IllegalStateException ignored) {}
-//        finally {
-//            P.reset();
-//        }
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
     }
 
     @Test
     public void testListsWithSublists() {
         listsWithSublists_helper(
-                5,
+                2,
                 P.uniformSample(Collections.singletonList(Arrays.asList(1, 2, 3))),
                 P.uniformSample(Arrays.asList(4, 5, 6)),
                 "[[5, 4, 5, 1, 2, 3, 5, 5, 6, 5, 6, 4, 6, 5], [4, 6, 1, 2, 3, 6, 5], [1, 2, 3], [4, 6, 1, 2, 3, 5]," +
@@ -7316,62 +7316,270 @@ public strictfp class CompoundTest {
                 16,
                 P.uniformSample(Collections.singletonList(Arrays.asList(1, 2, 3))),
                 P.uniformSample(Arrays.asList(4, 5, 6)),
-                "[[5, 5, 5, 5, 5, 1, 2, 3]," +
-                " [6, 5, 6, 4, 6, 6, 6, 5, 6, 6, 4, 5, 4, 6, 6, 4, 4, 6, 4, 4, 6, 4, 4, 6, 6, 5, 4, 5, 5, 1, 2, 3," +
-                " 5, 6, 5, 6, 5, 6, 5, 4, 5, 4], [5, 6, 6, 4, 4, 6, 4, 4, 1, 2, 3]," +
-                " [6, 5, 6, 4, 6, 6, 6, 4, 5, 5, 1, 2, 3, 6, 4, 6, 5, 4, 4, 6, 6]," +
-                " [4, 4, 1, 2, 3, 4, 6, 6, 4, 4, 4, 5, 4, 6, 4, 6, 6]," +
-                " [6, 4, 6, 6, 5, 6, 5, 5, 5, 5, 6, 4, 6, 4, 5, 4, 1, 2, 3, 6, 6, 4, 4]," +
-                " [4, 5, 1, 2, 3, 6, 4, 4, 4], [1, 2, 3, 4, 6, 4, 4], [5, 6, 6, 1, 2, 3, 6, 6, 4, 5, 5]," +
-                " [5, 6, 5, 4, 4, 4, 6, 5, 5, 6, 4, 1, 2, 3, 4, 5, 6, 5], [4, 4, 4, 4, 1, 2, 3, 4, 6]," +
-                " [6, 1, 2, 3, 6, 6], [6, 6, 5, 6, 6, 5, 4, 6, 5, 1, 2, 3, 6, 6, 4, 5, 5, 6, 6, 6, 6, 5, 6]," +
-                " [6, 4, 4, 4, 5, 5, 5, 6, 5, 5, 6, 6, 6, 5, 5, 5, 6, 5, 4, 5, 5, 5, 6, 5, 5, 5, 1, 2, 3, 5, 4, 4," +
-                " 5, 4, 4, 6, 6], [6, 5, 4, 1, 2, 3, 6], [4, 4, 5, 1, 2, 3, 4, 6, 5, 4, 4], [1, 2, 3, 5, 5, 4]," +
-                " [4, 4, 4, 6, 5, 5, 4, 5, 5, 4, 6, 6, 6, 6, 5, 6, 5, 5, 5, 5, 1, 2, 3, 6, 5]," +
-                " [4, 5, 5, 4, 5, 4, 5, 5, 5, 6, 5, 4, 6, 6, 5, 4, 6, 4, 5, 6, 6, 1, 2, 3, 6, 6, 5, 5, 5, 6, 6, 4]," +
-                " [1, 2, 3, 5, 6, 4, 4, 5, 6], ...]",
-                "{[1, 2, 3]=17715, [1, 2, 3, 5]=5212, [1, 2, 3, 4]=5206, [1, 2, 3, 6]=5149, [6, 1, 2, 3]=5077," +
-                " [5, 1, 2, 3]=5061, [4, 1, 2, 3]=5038, [1, 2, 3, 6, 5]=1592, [1, 2, 3, 4, 5]=1560," +
-                " [1, 2, 3, 5, 5]=1542}",
-                16.013374999997783
+                "[[6, 5, 6, 4, 6, 6, 6, 5, 6, 6, 4, 5, 4, 6, 6, 4, 4, 6, 4, 4, 6, 4, 4, 6, 6, 5, 4, 5, 5, 4, 6, 1," +
+                " 2, 3, 5, 6, 5], [6, 6, 5, 6, 6, 6, 6, 5, 4, 6, 5, 6, 4, 6, 6, 6, 4, 5, 5, 6, 6, 4, 5, 1, 2, 3, 6]," +
+                " [1, 2, 3, 4, 4, 6, 6, 5]," +
+                " [6, 6, 6, 5, 4, 4, 6, 5, 5, 4, 6, 5, 6, 1, 2, 3, 6, 4, 5, 4, 4, 5, 5, 4, 6, 6]," +
+                " [4, 5, 5, 1, 2, 3, 4, 4, 4, 6, 5], [4, 6, 1, 2, 3, 6], [5, 6, 1, 2, 3, 6, 6, 4]," +
+                " [4, 4, 6, 5, 5, 6, 4, 5, 1, 2, 3, 4, 5], [4, 4, 6, 4, 4, 1, 2, 3, 6]," +
+                " [1, 2, 3, 6, 6, 5, 6, 6, 5, 4]," +
+                " [5, 5, 5, 6, 5, 5, 5, 6, 6, 6, 5, 6, 6, 4, 5, 4, 4, 5, 4, 4, 6, 6, 4, 6, 5, 4, 6, 5, 4, 6, 4, 6," +
+                " 6, 5, 5, 4, 4, 4, 5, 5, 4, 6, 5, 1, 2, 3]," +
+                " [4, 4, 6, 5, 1, 2, 3, 4, 4, 4, 6, 5, 5, 4, 5, 5, 4, 6, 6, 6, 6, 5, 6, 5]," +
+                " [6, 5, 5, 6, 1, 2, 3, 5, 4, 5, 5, 5, 6, 5, 4, 6, 6, 5, 4, 6, 4, 5]," +
+                " [6, 6, 5, 4, 6, 4, 5, 6, 4, 4, 5, 6, 5, 6, 1, 2, 3, 6, 5, 6, 4, 6, 5, 4, 4, 6, 5, 6, 6]," +
+                " [6, 5, 5, 6, 5, 1, 2, 3, 5]," +
+                " [5, 4, 5, 4, 4, 6, 4, 5, 5, 4, 4, 4, 4, 5, 6, 5, 6, 4, 5, 6, 5, 5, 6, 6, 5, 6, 5, 4, 6, 1, 2, 3," +
+                " 5, 4, 5, 4, 6, 6, 4, 5, 4, 5, 4, 6], [4, 1, 2, 3, 4, 4, 6, 4, 6, 6, 5, 6, 5, 4, 6]," +
+                " [5, 4, 6, 5, 6, 1, 2, 3, 6, 5, 6, 4], [4, 6, 4, 4, 5, 5, 4, 1, 2, 3, 5, 6, 5, 5, 4, 4]," +
+                " [4, 5, 5, 6, 5, 6, 5, 4, 4, 4, 4, 6, 4, 1, 2, 3], ...]",
+                "{[1, 2, 3]=12333, [1, 2, 3, 6]=3709, [4, 1, 2, 3]=3694, [5, 1, 2, 3]=3682, [1, 2, 3, 5]=3648," +
+                " [6, 1, 2, 3]=3639, [1, 2, 3, 4]=3626, [5, 1, 2, 3, 6]=1151, [4, 1, 2, 3, 5]=1147," +
+                " [4, 1, 2, 3, 6]=1140}",
+                18.983894000012278
         );
         listsWithSublists_helper(
-                4,
+                2,
                 map(i -> Arrays.asList(i, i), P.naturalIntegersGeometric()),
                 P.naturalIntegersGeometric(),
-                "[[46, 25, 19, 19], [17, 0, 0], [8, 21, 21], [13, 13], [11, 11, 17], [5, 10, 10], [77, 77, 19, 70]," +
-                " [52, 6, 17, 17, 22, 16], [6, 6, 8, 0], [6, 15, 41, 41], [20, 20], [22, 9, 23, 23, 83]," +
-                " [27, 32, 32, 2], [41, 41, 1], [20, 12, 12], [33, 45, 45, 25, 14, 12, 2]," +
-                " [37, 37, 2, 15, 15, 24, 24, 118, 49, 46], [54, 54, 15, 15, 0, 90], [31, 31], [18, 18, 28, 19], ...]",
-                "{[0, 0]=7600, [1, 1]=7316, [2, 2]=7114, [3, 3]=6968, [4, 4]=6683, [5, 5]=6601, [6, 6]=6233," +
-                " [7, 7]=6065, [8, 8]=5837, [9, 9]=5775}",
-                4.001450999968003
+                "[[17, 47, 25, 0, 0, 17], [21, 21, 8], [13, 13], [11, 11], [17, 10, 10, 5], [77, 77]," +
+                " [19, 70, 17, 17, 52, 6], [22, 16, 6, 6], [8, 0, 41, 41, 6, 15], [20, 20], [23, 23, 22, 9]," +
+                " [83, 32, 32, 27], [2, 41, 41], [1, 12, 12, 20], [45, 45, 33]," +
+                " [25, 14, 12, 2, 24, 24, 37, 37, 2, 15, 15], [118, 49, 46, 54, 54], [15, 15, 0, 90, 31, 31]," +
+                " [18, 18], [28, 19, 36, 36], ...]",
+                "{[0, 0]=7655, [1, 1]=7389, [2, 2]=6970, [3, 3]=6785, [4, 4]=6667, [5, 5]=6585, [6, 6]=6124," +
+                " [7, 7]=6065, [8, 8]=5847, [9, 9]=5823}",
+                4.001453999968074
         );
         listsWithSublists_helper(
                 16,
                 map(i -> Arrays.asList(i, i), P.naturalIntegersGeometric()),
                 P.naturalIntegersGeometric(),
-                "[[40, 25, 0, 19, 21, 9, 13, 12, 20, 10, 7, 77, 19, 70, 19, 19, 15, 53, 6, 24, 16, 6]," +
-                " [9, 9, 41, 9], [16, 23, 24, 9, 84, 32, 28, 2, 15, 15, 38, 3, 12, 21, 45, 34, 28, 14, 12, 2, 24]," +
-                " [35, 40, 40, 15, 15, 118, 49, 46, 54, 19, 15, 0, 90]," +
-                " [12, 31, 19, 36, 44, 43, 168, 18, 7, 3, 31, 22, 13, 33, 49, 31, 31, 60, 50, 14]," +
-                " [7, 121, 23, 122, 19, 0, 0, 74]," +
-                " [6, 14, 14, 9, 51, 10, 7, 31, 9, 18, 12, 17, 1, 73, 9, 29, 21, 3, 55, 16], [35, 35, 8, 64]," +
-                " [12, 12, 45, 24, 170, 60, 21, 32, 22], [34, 34, 26, 91, 34]," +
-                " [10, 100, 5, 126, 0, 11, 16, 0, 29, 7, 6, 13, 22, 120, 2, 30, 36, 11, 31, 10, 0, 2, 33, 4, 10, 14," +
-                " 18, 36, 33, 61, 21, 21, 26, 43], [37, 25, 43, 89, 20, 30, 41, 6, 24, 4, 4, 14]," +
-                " [8, 5, 14, 21, 106, 0, 62, 94, 16, 8, 1, 5, 45, 4, 17, 7, 7, 25, 31, 25, 27, 80, 53, 2]," +
-                " [21, 40, 44, 10, 11, 10, 47, 28, 33, 48, 21, 21], [67, 6, 6, 60]," +
-                " [19, 19, 67, 21, 47, 7, 51, 4, 35, 35, 35, 20, 17, 12, 19]," +
-                " [38, 0, 2, 2, 35, 1, 18, 33, 24, 33, 17, 6]," +
-                " [5, 11, 31, 40, 42, 35, 0, 14, 27, 4, 6, 5, 5, 30, 28, 34, 2, 50, 40]," +
-                " [28, 11, 37, 18, 31, 28, 4, 4, 76, 44, 8, 30, 57, 19, 27, 25, 23, 12, 4, 7, 60, 76, 3, 39]," +
-                " [23, 23, 11, 26, 33, 15, 20, 2, 7], ...]",
-                "{[0, 0]=496, [1, 1]=473, [3, 3]=440, [4, 4]=406, [2, 2]=406, [5, 5]=399, [7, 7]=383, [6, 6]=368," +
-                " [9, 9]=362, [12, 12]=354}",
-                16.005091000001197
+                "[[47, 25, 0, 19, 21, 9, 13, 12, 20, 10, 7, 77, 19, 70, 17, 53, 6, 24, 16, 6, 9, 0, 41, 9, 15, 20," +
+                " 23, 24, 9, 84, 32, 28, 28, 2], [32, 3, 12, 21, 45, 34, 28, 14, 12, 2, 24, 24, 37, 37, 2, 15]," +
+                " [3, 118, 49, 46, 54, 19, 15, 0, 90, 31, 19, 31, 19, 36, 44, 43, 168, 18, 7, 3, 3, 22, 13, 33, 49," +
+                " 61, 50, 14, 0, 8, 121, 23, 122, 19, 75, 14, 6, 16, 51, 10, 7, 31, 9, 18, 12, 17, 1, 73, 9]," +
+                " [10, 21, 3, 55, 16, 35, 10, 64, 12, 48, 24, 170, 60, 21, 32, 22, 34, 0, 29, 91, 34, 21, 23, 100," +
+                " 100, 0, 126, 0, 11, 16, 0, 29, 7], [13, 22, 120, 2, 30, 36, 11, 11, 29, 10]," +
+                " [2, 33, 33, 10, 14, 18], [34, 33, 33, 52, 29, 43, 4]," +
+                " [37, 25, 43, 89, 20, 30, 41, 41, 24, 15, 7, 18]," +
+                " [14, 21, 106, 0, 62, 94, 16, 8, 1, 5, 5, 40, 4, 17, 3, 25]," +
+                " [26, 25, 27, 80, 53, 53, 21, 25, 40, 44], [5, 11, 11, 4, 47, 28, 33], [46, 7, 68, 68, 59, 35]," +
+                " [19, 19, 67, 21, 47, 7, 7, 45, 4, 37, 20, 17, 12, 19], [1, 1, 38], [43, 43]," +
+                " [1, 33, 24, 33, 17, 6, 5, 9, 11, 31, 40, 42, 35, 0, 14, 27, 4, 6, 6, 27, 28, 34, 2, 50]," +
+                " [9, 4, 32, 11, 37, 18, 31, 28, 84, 44, 8, 30, 57, 19, 27, 25, 23, 12, 4, 7, 60, 76, 3, 39, 23, 3," +
+                " 11, 26, 33, 15, 20, 2, 7, 102, 8, 41, 89, 45, 42, 42, 31, 64], [43, 11, 0, 0, 12, 2, 28, 12]," +
+                " [23, 117, 4, 96, 96, 22, 5, 6, 18, 1, 74, 6, 136, 55, 31, 17, 14, 18, 30, 38, 19, 4]," +
+                " [2, 30, 32, 32, 46, 112, 44, 24, 7, 19, 50], ...]",
+                "{[0, 0]=377, [1, 1]=367, [2, 2]=350, [4, 4]=331, [5, 5]=319, [9, 9]=300, [7, 7]=297, [6, 6]=297," +
+                " [3, 3]=296, [11, 11]=286}",
+                17.99236900000833
         );
-        //todo failure
+        listsWithSublists_fail_helper(
+                1,
+                P.uniformSample(Collections.singletonList(Arrays.asList(1, 2, 3))),
+                P.uniformSample(Arrays.asList(4, 5, 6))
+        );
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_helper(
+            int scale,
+            @NotNull Iterable<String> substrings,
+            @NotNull String s,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsWithSubstrings(substrings, s))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_String_fail_helper(
+            int scale,
+            @NotNull Iterable<String> substrings,
+            @NotNull String s
+    ) {
+        try {
+            P.withScale(scale).stringsWithSubstrings(substrings, s);
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void stringsWithSubstrings_Iterable_String_String() {
+        stringsWithSubstrings_Iterable_String_String_helper(
+                2,
+                P.uniformSample(Collections.singletonList("cat")),
+                charsToString(range('a', 'z')),
+                "[vyfcatvrgpbwvv, cat, catxl, scatew, fcat, catd, fcats, wcat, catk, cat, cat, cat, cat, cat," +
+                " dcatjvs, catg, avcat, ftlszpcatdrxg, fcat, zclcatu, ...]",
+                "{cat=249881, tcat=4961, catw=4949, fcat=4919, qcat=4918, catb=4900, catr=4899, catq=4898," +
+                " icat=4897, caty=4895}",
+                5.000164999985253
+        );
+        stringsWithSubstrings_Iterable_String_String_helper(
+                16,
+                P.uniformSample(Collections.singletonList("cat")),
+                charsToString(range('a', 'z')),
+                "[dxcfpostgwymkoqiyyeyotsdplrqjvscatvgt, gojhcctlgszydxlcxgkgelvkbkcatg, catagtpw," +
+                " okjmsjrmsvozsicatoareerp, uzjcwscatyx, kcataop, ocatvg, typcatuhphphyl, rzxcati, pemdgqcatck," +
+                " catgwvszug, rpbjcvjncsdbshwqbianyugwexqwzuwiorxpqaurzucatd, iyscatydesxrntijrexskkgb," +
+                " zngnchcatfandrrtveggjh, cat, onmlyndxhytyrwjcatceojqygvmgnm, ojllcatrhj," +
+                " vyvigafvheyhdutbcjkypxvsfdjkcatfpxvgsatnqvucva, meklvozmwrumtcatby, sxopucatashqudb, ...]",
+                "{cat=12409, xcat=469, jcat=463, cato=459, qcat=455, bcat=453, catz=452, dcat=452, catb=451," +
+                " ecat=445}",
+                18.980979000012418
+        );
+        stringsWithSubstrings_Iterable_String_String_helper(
+                2,
+                map(f -> Float.toString(f), P.floats()),
+                charsToString(range('0', '9')),
+                "[585-8.745077E295161655, -3.8562423E-20, 72-5.418378E2546, 5-3.31379009E12, 31.36775321E17," +
+                " 23-2.763534E-21, 8-57.728504, -3.87529152E8, 1.2088307E-37, 5.0185977E28, 3.8192072E-283," +
+                " 9528.22823E-356, 056.5493657E-7532913, 725.2670996E7, 9273.655872E36, -9.5261086E-35," +
+                " -2.3683897E32, 15.7468652, 298-2.1571468E-19, 76652.009171606, ...]",
+                "{-1.1123897E-17=2, 3.703E-5=2, -1.99528348E18=2, -1.5117249E-35=2, -4080635.8=2, 1.6368128E27=2," +
+                " 4.695226=2, 4.523417E27=2, -6.4474385E-16=2, 2.6752413E20=2}",
+                14.31768299994003
+        );
+        stringsWithSubstrings_Iterable_String_String_helper(
+                16,
+                map(f -> Float.toString(f), P.floats()),
+                charsToString(range('0', '9')),
+                "[37252366808884832310952569605631.0719636E1669722362983727664516060344," +
+                " 06-2.56170422E14929125928241219, 01-4.4911137E-3049926282, 4.0917575E-1153, 07.3894236E-319," +
+                " 564.5286633E30385, 4777865-4.2354097E-23, 8793.1971366E-284360, 20-3.07368407E176652946," +
+                " 119259223127601808466470694681700419410343-9.547804E-48, 83427138914726172535-5.7034625E-149," +
+                " 50311354669700114.3459432E21837783816994, 249086563492.68999117E99," +
+                " 179-8.955546E37585860557487343129875253925, 57562030542507.82684E-21459614384018," +
+                " 27422-1.5677651E3802704, 4769-1.1446778E-4153, 7196164088990692-3.8460768E28738," +
+                " 467508-4.4292383E-31260559736943308616284817, 9752366342.789954737433859214120, ...]",
+                "{37252366808884832310952569605631.0719636E1669722362983727664516060344=1," +
+                " 06-2.56170422E14929125928241219=1, 01-4.4911137E-3049926282=1, 4.0917575E-1153=1," +
+                " 07.3894236E-319=1, 564.5286633E30385=1, 4777865-4.2354097E-23=1, 8793.1971366E-284360=1," +
+                " 20-3.07368407E176652946=1, 119259223127601808466470694681700419410343-9.547804E-48=1}",
+                28.306307000011344
+        );
+        stringsWithSubstrings_Iterable_String_String_fail_helper(
+                1,
+                P.uniformSample(Collections.singletonList("cat")),
+                charsToString(range('a', 'z'))
+        );
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_helper(
+            int scale,
+            @NotNull Iterable<String> substrings,
+            @NotNull String output,
+            @NotNull String topSampleCount,
+            double meanSize
+    ) {
+        List<String> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.withScale(scale).stringsWithSubstrings(substrings))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        aeq(topSampleCount(DEFAULT_TOP_COUNT, sample), topSampleCount);
+        aeq(meanOfIntegers(toList(map(String::length, sample))), meanSize);
+        P.reset();
+    }
+
+    private static void stringsWithSubstrings_Iterable_String_fail_helper(
+            int scale,
+            @NotNull Iterable<String> substrings
+    ) {
+        try {
+            P.withScale(scale).stringsWithSubstrings(substrings);
+            fail();
+        } catch (IllegalStateException ignored) {}
+        finally {
+            P.reset();
+        }
+    }
+
+    @Test
+    public void stringsWithSubstrings_Iterable_String() {
+        stringsWithSubstrings_Iterable_String_helper(
+                2,
+                P.uniformSample(Collections.singletonList("cat")),
+                "[ε䊿\u2538cat\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏cat㩷, 纫cat䝲, 坤琖cat\uea45, cat, \u2b63cat鸅, \uee1ccat," +
+                " ᅺcat䇺, cat㖊, cat, cat, cat, cat, cat, \uff03cat尩굿\uecf5, \ue8b2cat, 䟆cat㭠瀵," +
+                " cat쪅右䦋\u2832ﭙ빜, 홃祝몷ࢦ\ufdd7cat, \u0c55cat壙\udd82, ...]",
+                "{cat=249337, \u2863cat=10, cat휵=10, cat鯖=10, \uf84acat=10, 傄cat=10, cat놼=9, ᓈcat=9, cat餦=9," +
+                " 㐏cat=9}",
+                5.002274999985167
+        );
+        stringsWithSubstrings_Iterable_String_helper(
+                16,
+                P.uniformSample(Collections.singletonList("cat")),
+                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒" +
+                "\uff03cat尩, 瀵컦刓嗏\u3353cat糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6," +
+                " 駆퉐庺\u2293cat䃼匀낛띆, ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხcat\uab6e䝀㥑\u2e64년믱젯䁅偘," +
+                " 㙴ᶙ䁩聂cat\uf518\ue2d7劏嘨, cat훀쳮陜, 쓎cat頵\u2606, 旞\u2613\u19decat죴\u0d47㚏帇퀯\uebc7晸犋鈖," +
+                " ᓑ濙cat诨갇, 梏\u2684\ue40c\u2b83葆cat, 뗢撻cat," +
+                " 濆엶䩵ᣞ\ud992\u2f79滔cat헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍\u2af8운\u2026桶" +
+                "뼄ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞\ue531칗ᳯ\u073d飰\ue480," +
+                " \u3243\u4df4\u2a33䨺cat館," +
+                " 糘ﱜ\u22a3䐄굲ﱷ\u3291\uf28d즓\uf27f䝨雩\uecb1ᡄ\ude17ᒲ蕪逊兆묡cat訾ꉹ\uaa4d藆\ue34d\uf5a2," +
+                " \ue2c5哠甍뮣民皑\u291e秳ʵ솄퍆芦瀉벧cat, cat\uee3aۮ\uf6cd\ue22c\u2fbe톋艸操샣墺貗\u1c47\uf2ffㆸⱳ," +
+                " 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭cat禎\u0529K쬋," +
+                " ᬱ뭇昺cat픕\u23b8ᆵ䨨\ueb1c\u0966儠씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7익Ᏺ㥥㖃," +
+                " \ue59b聾ﶯ\uddd7ぜＵნ\ue266耒뎀\u2153\uf7cdꜰ耕詴cat\ud847\uef98," +
+                " 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0ceccat\u0361ꚸ璎祍忢\u17cd, ...]",
+                "{cat=12385, cat竬=4, 헣cat=4, \u24cbcat=4, औcat=4, \u4dffcat=3, catᏑ=3, 黢cat=3, 縁cat=3, 㒓cat=3}",
+                18.984739000011526
+        );
+        stringsWithSubstrings_Iterable_String_helper(
+                2,
+                map(f -> Float.toString(f), P.floats()),
+                "[ε䊿\u2538-4.730412E-34\udd15몱ﲦ䯏ϡ罖\u19dc刿, -3.041954E25ᬜK, 㩷ⴿ2.0586195E-32䝲\uf207," +
+                " 坤1.841686E31\uea45, 1.5387214E38\u2b63, 鸅1.1917704, 0.016748283ᅺ, 䇺2.681261E36㖊, 7.741398E-26," +
+                " -1.467987E37, -2.81001E34, 7.645123E-18, 尩굿\uecf5ꪻ-1.7399366E-8, 143097.08, 1.6778092E-13㭠," +
+                " 刓1.0719636E16쪅右䦋\u2832, 䫯-1.7012438E-6홃祝몷, -6.0346965E28, \u0c554.3328808E-37壙," +
+                " 63701.168\u2e94, ...]",
+                "{3.3475204E22=2, -4.16071123E11=2, 4.523417E27=2, -170.97168=2, 3.37845E-11=2, -10.269147=2," +
+                " -5.751692E-14=2, ε䊿\u2538-4.730412E-34\udd15몱ﲦ䯏ϡ罖\u19dc刿=1, -3.041954E25ᬜK=1" +
+                ", 㩷ⴿ2.0586195E-32䝲\uf207=1}",
+                14.31644599993982
+        );
+        stringsWithSubstrings_Iterable_String_helper(
+                16,
+                map(f -> Float.toString(f), P.floats()),
+                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒" +
+                "\uff03-2.5324939E30尩," +
+                " 瀵컦刓嗏\u33532.8102187E-19糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ," +
+                " 駆퉐庺\u2293\ued0d6.2105025E-19䃼匀낛띆, ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ-7.5414853\uab6e䝀" +
+                "㥑\u2e64년믱젯䁅偘, 㙴ᶙ䁩聂3.5566916\uf518\ue2d7劏, \ue54a-0.009772067훀쳮, 쓎-3.06893264E15頵\u2606," +
+                " 旞\u2613\u19de1.5354367E-16죴\u0d47㚏帇퀯\uebc7晸犋, ᓑ濙䢗-1.8859948E34," +
+                " 梏\u2684\ue40c\u2b83葆а팗4.1738653E-4뗢, -3.07368407E17濆엶䩵ᣞ\ud992\u2f79滔," +
+                " 헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍\u2af8운\u2026桶뼄ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞" +
+                "\ue531칗ᳯ\u073d飰\ue4804.01656349E14\u3243\u4df4\u2a33," +
+                " 館1.0064398E30糘ﱜ\u22a3䐄굲ﱷ\u3291\uf28d즓\uf27f䝨雩\uecb1ᡄ\ude17ᒲ蕪逊兆," +
+                " 訾ꉹ\uaa4d藆\ue34d\uf5a2됇3733098.5\ue2c5哠甍뮣民皑\u291e秳ʵ솄퍆芦瀉," +
+                " 滎-6.043743E10\uee3aۮ\uf6cd\ue22c\u2fbe톋艸操샣墺貗\u1c47\uf2ffㆸⱳ," +
+                " 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭-6.3691853E8禎\u0529K쬋," +
+                " ᬱ뭇昺1.7043144E24픕\u23b8ᆵ䨨\ueb1c\u0966儠씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7익Ᏺ㥥㖃," +
+                " \ue59b聾ﶯ\uddd7ぜＵნ\ue266耒뎀\u2153\uf7cdꜰ耕詴6.117129E-31\ud847\uef98," +
+                " 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0cec-1.7406041E25\u0361ꚸ璎祍忢," +
+                " 좲햽퐗僮-3.7339023E-30ﰀ\u2572\ueea7䳰뼴Ⴃ跁涫, ...]",
+                "{\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
+                "-2.5324939E30尩=1," +
+                " 瀵컦刓嗏\u33532.8102187E-19糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ=1," +
+                " 駆퉐庺\u2293\ued0d6.2105025E-19䃼匀낛띆=1," +
+                " ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ-7.5414853\uab6e䝀㥑\u2e64년믱젯䁅偘=1," +
+                " 㙴ᶙ䁩聂3.5566916\uf518\ue2d7劏=1, \ue54a-0.009772067훀쳮=1, 쓎-3.06893264E15頵\u2606=1," +
+                " 旞\u2613\u19de1.5354367E-16죴\u0d47㚏帇퀯\uebc7晸犋=1, ᓑ濙䢗-1.8859948E34=1," +
+                " 梏\u2684\ue40c\u2b83葆а팗4.1738653E-4뗢=1}",
+                28.30002600001155
+        );
+        stringsWithSubstrings_Iterable_String_fail_helper(1, P.uniformSample(Collections.singletonList("cat")));
     }
 
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
