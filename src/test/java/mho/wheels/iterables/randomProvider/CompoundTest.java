@@ -7301,6 +7301,38 @@ public strictfp class CompoundTest {
     public void testListsWithSublists() {
         listsWithSublists_helper(
                 2,
+                P.uniformSample(Collections.singletonList(Collections.emptyList())),
+                P.uniformSample(Arrays.asList(4, 5, 6)),
+                "[[5, 4, 5, 5, 5, 6, 5, 6, 4, 6, 5], [4, 6, 6, 5], [], [4, 6, 5], [], [6, 4, 6], [6, 6], [6], []," +
+                " [], [], [], [], [5], [6, 6, 5, 6], [4, 5], [5, 6, 5, 4, 5, 4, 6, 5, 6], [5, 6, 6], [], [], ...]",
+                "{[]=249571, [5]=83609, [6]=83425, [4]=82914, [5, 5]=21160, [4, 5]=20988, [4, 4]=20910," +
+                " [6, 4]=20897, [5, 4]=20876, [6, 5]=20855}",
+                2.0017519999875453
+        );
+        listsWithSublists_helper(
+                16,
+                P.uniformSample(Collections.singletonList(Collections.emptyList())),
+                P.uniformSample(Arrays.asList(4, 5, 6)),
+                "[[6, 5, 6, 4, 6, 6, 6, 5, 6, 6, 4, 5, 4, 6, 6, 4, 4, 6, 4, 4, 6, 4, 4, 6, 6, 5, 4, 5, 5, 4, 6, 5," +
+                " 6, 5], [6, 6, 5, 6, 6, 6, 6, 5, 4, 6, 5, 6, 4, 6, 6, 6, 4, 5, 5, 6, 6, 4, 5, 6], [4, 4, 6, 6, 5]," +
+                " [6, 6, 6, 5, 4, 4, 6, 5, 5, 4, 6, 5, 6, 6, 4, 5, 4, 4, 5, 5, 4, 6, 6], [4, 5, 5, 4, 4, 4, 6, 5]," +
+                " [4, 6, 6], [5, 6, 6, 6, 4], [4, 4, 6, 5, 5, 6, 4, 5, 4, 5], [4, 4, 6, 4, 4, 6]," +
+                " [6, 6, 5, 6, 6, 5, 4]," +
+                " [5, 5, 5, 6, 5, 5, 5, 6, 6, 6, 5, 6, 6, 4, 5, 4, 4, 5, 4, 4, 6, 6, 4, 6, 5, 4, 6, 5, 4, 6, 4, 6," +
+                " 6, 5, 5, 4, 4, 4, 5, 5, 4, 6, 5]," +
+                " [4, 4, 6, 5, 4, 4, 4, 6, 5, 5, 4, 5, 5, 4, 6, 6, 6, 6, 5, 6, 5]," +
+                " [6, 5, 5, 6, 5, 4, 5, 5, 5, 6, 5, 4, 6, 6, 5, 4, 6, 4, 5]," +
+                " [6, 6, 5, 4, 6, 4, 5, 6, 4, 4, 5, 6, 5, 6, 6, 5, 6, 4, 6, 5, 4, 4, 6, 5, 6, 6]," +
+                " [6, 5, 5, 6, 5, 5]," +
+                " [5, 4, 5, 4, 4, 6, 4, 5, 5, 4, 4, 4, 4, 5, 6, 5, 6, 4, 5, 6, 5, 5, 6, 6, 5, 6, 5, 4, 6, 5, 4, 5," +
+                " 4, 6, 6, 4, 5, 4, 5, 4, 6], [4, 4, 4, 6, 4, 6, 6, 5, 6, 5, 4, 6], [5, 4, 6, 5, 6, 6, 5, 6, 4]," +
+                " [4, 6, 4, 4, 5, 5, 4, 5, 6, 5, 5, 4, 4], [4, 5, 5, 6, 5, 6, 5, 4, 4, 4, 4, 6, 4], ...]",
+                "{[]=12333, [6]=7348, [5]=7330, [4]=7320, [5, 6]=3371, [4, 6]=3309, [6, 4]=3282, [5, 4]=3267," +
+                " [5, 5]=3247, [4, 4]=3245}",
+                15.983893999996807
+        );
+        listsWithSublists_helper(
+                2,
                 P.uniformSample(Collections.singletonList(Arrays.asList(1, 2, 3))),
                 P.uniformSample(Arrays.asList(4, 5, 6)),
                 "[[5, 4, 5, 1, 2, 3, 5, 5, 6, 5, 6, 4, 6, 5], [4, 6, 1, 2, 3, 6, 5], [1, 2, 3], [4, 6, 1, 2, 3, 5]," +
@@ -7417,6 +7449,26 @@ public strictfp class CompoundTest {
     public void stringsWithSubstrings_Iterable_String_String() {
         stringsWithSubstrings_Iterable_String_String_helper(
                 2,
+                P.uniformSample(Collections.singletonList("")),
+                charsToString(range('a', 'z')),
+                "[vyfvrgpbwvv, , xl, sew, f, d, fs, w, k, , , , , , djvs, g, av, ftlszpdrxg, f, zclu, ...]",
+                "{=249881, q=9816, f=9774, u=9750, t=9732, j=9712, d=9696, w=9692, i=9691, p=9668}",
+                2.0001649999875575
+        );
+        stringsWithSubstrings_Iterable_String_String_helper(
+                16,
+                P.uniformSample(Collections.singletonList("")),
+                charsToString(range('a', 'z')),
+                "[dxcfpostgwymkoqiyyeyotsdplrqjvsvgt, gojhcctlgszydxlcxgkgelvkbkg, agtpw, okjmsjrmsvozsioareerp," +
+                " uzjcwsyx, kaop, ovg, typuhphphyl, rzxi, pemdgqck, gwvszug," +
+                " rpbjcvjncsdbshwqbianyugwexqwzuwiorxpqaurzud, iysydesxrntijrexskkgb, zngnchfandrrtveggjh, ," +
+                " onmlyndxhytyrwjceojqygvmgnm, ojllrhj, vyvigafvheyhdutbcjkypxvsfdjkfpxvgsatnqvucva," +
+                " meklvozmwrumtby, sxopuashqudb, ...]",
+                "{=12409, j=907, b=904, o=885, q=884, x=877, e=874, z=867, d=866, g=864}",
+                15.980978999996648
+        );
+        stringsWithSubstrings_Iterable_String_String_helper(
+                2,
                 P.uniformSample(Collections.singletonList("cat")),
                 charsToString(range('a', 'z')),
                 "[vyfcatvrgpbwvv, cat, catxl, scatew, fcat, catd, fcats, wcat, catk, cat, cat, cat, cat, cat," +
@@ -7506,6 +7558,33 @@ public strictfp class CompoundTest {
 
     @Test
     public void stringsWithSubstrings_Iterable_String() {
+        stringsWithSubstrings_Iterable_String_helper(
+                2,
+                P.uniformSample(Collections.singletonList("")),
+                "[ε䊿\u2538\udd15몱ﲦ䯏ϡ罖\u19dc刿ㄾ, ᬜK㵏㩷, 纫䝲, 坤琖\uea45, , \u2b63鸅, \uee1c, ᅺ䇺, 㖊, , , , , ," +
+                " \uff03尩굿\uecf5, \ue8b2, 䟆㭠瀵, 쪅右䦋\u2832ﭙ빜, 홃祝몷ࢦ\ufdd7, \u0c55壙\udd82, ...]",
+                "{=249337, ᓈ=14, 瘍=14, ᾥ=14, 箚=13, 餦=13, 㐏=13, 縞=13, 攻=13, 䬋=13}",
+                2.002274999987558
+        );
+        stringsWithSubstrings_Iterable_String_helper(
+                16,
+                P.uniformSample(Collections.singletonList("")),
+                "[\u2b63\uf637鸂鸅误輮\uee1c\u33b2酓캆ᅺ됽煖䇺ᤘ\ue9fd\u2aec㖊짎\uaaf0全覚돘䱸\u28de\u2e24\uf878ሮܓ鄒\uff03" +
+                "尩, 瀵컦刓嗏\u3353糦嗮\uf329ﻧ\udd42䞂鎿鐳鰫묆颒錹睸ꯃ慚총\u0e77\uf36bB㽿\u2a57緜\udec6ꅪ\udcc6," +
+                " 駆퉐庺\u2293䃼匀낛띆, ͺ\u124eꪪ\u0a49䠬㲜\ue852ډұ\ue28c葒ලȞ蛕䮼ხ\uab6e䝀㥑\u2e64년믱젯䁅偘," +
+                " 㙴ᶙ䁩聂\uf518\ue2d7劏嘨, 훀쳮陜, 쓎頵\u2606, 旞\u2613\u19de죴\u0d47㚏帇퀯\uebc7晸犋鈖, ᓑ濙诨갇," +
+                " 梏\u2684\ue40c\u2b83葆, 뗢撻," +
+                " 濆엶䩵ᣞ\ud992\u2f79滔헑䈏닁\ue649គ姕\u1069\u2f0d듂狚\ue672団䅁悲枧\u1b56偰摡泈\u1a60㭍\u2af8운\u2026桶뼄" +
+                "ቾᶝ睗㥐厖剹ᥔ㻶\uf3a8춮茞\ue531칗ᳯ\u073d飰\ue480, \u3243\u4df4\u2a33䨺館," +
+                " 糘ﱜ\u22a3䐄굲ﱷ\u3291\uf28d즓\uf27f䝨雩\uecb1ᡄ\ude17ᒲ蕪逊兆묡訾ꉹ\uaa4d藆\ue34d\uf5a2," +
+                " \ue2c5哠甍뮣民皑\u291e秳ʵ솄퍆芦瀉벧, \uee3aۮ\uf6cd\ue22c\u2fbe톋艸操샣墺貗\u1c47\uf2ffㆸⱳ," +
+                " 䌚\ufe3d춢후Ꜯ卩鳰阘细\ue9d5\ude3a显鏌㓆갭禎\u0529K쬋," +
+                " ᬱ뭇昺픕\u23b8ᆵ䨨\ueb1c\u0966儠씅潵겧\u0f24㺸則穣클䜜걓绡缂敉勪\ue498溯7익Ᏺ㥥㖃," +
+                " \ue59b聾ﶯ\uddd7ぜＵნ\ue266耒뎀\u2153\uf7cdꜰ耕詴\ud847\uef98," +
+                " 檌裤㻞椼憊ⴋ\u21ba\uec15檮滙\u0cec\u0361ꚸ璎祍忢\u17cd, ...]",
+                "{=12385, \uef01=5, \u24cb=5, 濸=5, 黢=4, \u197d=4, 쁃=4, 졆=4, 竬=4, 熔=4}",
+                15.98473899999724
+        );
         stringsWithSubstrings_Iterable_String_helper(
                 2,
                 P.uniformSample(Collections.singletonList("cat")),
