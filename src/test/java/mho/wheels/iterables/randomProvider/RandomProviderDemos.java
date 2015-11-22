@@ -1872,11 +1872,11 @@ public class RandomProviderDemos {
     private static void demoListsWithSublists() {
         initialize();
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).lists(P.integersGeometric())),
-                P.prefixPermutations(EP.naturalIntegers())
+                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(TINY_LIMIT, ts)) {
+        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("listsWithSublists(" + t.a + ", " + its(t.b) + ", " + its(t.c) + ") = " +
                     its(t.a.listsWithSublists(t.b, t.c)));
         }
@@ -1885,11 +1885,11 @@ public class RandomProviderDemos {
     private static void demoStringsWithSubstrings_Iterable_String_String() {
         initialize();
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings()),
+                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Triple<RandomProvider, Iterable<String>, String> t : take(TINY_LIMIT, ts)) {
+        for (Triple<RandomProvider, Iterable<String>, String> t : take(SMALL_LIMIT, ts)) {
             System.out.println("stringsWithSubstrings(" + t.a + ", " + sits(t.b) + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringsWithSubstrings(t.b, t.c)));
         }
@@ -1898,10 +1898,10 @@ public class RandomProviderDemos {
     private static void demoStringsWithSubstrings_Iterable_String() {
         initialize();
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
-                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings())
+                filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
+                P.prefixPermutations(EP.strings())
         );
-        for (Pair<RandomProvider, Iterable<String>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<String>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("stringsWithSubstrings(" + p.a + ", " + sits(p.b) + ") = " +
                     sits(p.a.stringsWithSubstrings(p.b)));
         }
