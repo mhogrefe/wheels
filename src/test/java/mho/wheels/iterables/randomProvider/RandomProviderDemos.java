@@ -1907,6 +1907,18 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoMaps() {
+        initialize();
+        Iterable<Triple<RandomProvider, List<Integer>, Iterable<Integer>>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("maps(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " + its(t.a.maps(t.b, t.c)));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {

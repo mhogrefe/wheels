@@ -7661,11 +7661,7 @@ public strictfp class CompoundTest {
         stringsWithSubstrings_Iterable_String_fail_helper(1, P.uniformSample(Collections.singletonList("cat")));
     }
 
-    private static void maps_helper(
-            @NotNull String keys,
-            @NotNull Iterable<Integer> values,
-            @NotNull String output
-    ) {
+    private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
         List<Map<Integer, Integer>> sample = toList(
                 take(DEFAULT_SAMPLE_SIZE, P.maps(readIntegerListWithNulls(keys), values))
         );
