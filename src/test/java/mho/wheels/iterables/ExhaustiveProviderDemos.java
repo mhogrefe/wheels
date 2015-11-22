@@ -2470,7 +2470,8 @@ public class ExhaustiveProviderDemos {
     private static void demoMaps_finite() {
         initialize();
         Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
-                P.withScale(4).distinctLists(P.withNull(P.integersGeometric()))
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<List<Integer>, List<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("maps(" + p.a + ", " + p.b + ") = " + its(EP.maps(p.a, p.b)));

@@ -302,6 +302,7 @@ public class ExhaustiveProviderProperties {
             propertiesListsWithSublists();
             propertiesStringsWithSubstrings_Iterable_String_String();
             propertiesStringsWithSubstrings_Iterable_String();
+            propertiesMaps();
         }
         System.out.println("Done");
     }
@@ -9733,6 +9734,71 @@ public class ExhaustiveProviderProperties {
         initialize("stringsWithSubstrings(Iterable<String>)");
         for (List<String> ss : take(LIMIT, P.withScale(4).lists(P.withScale(4).strings()))) {
             simpleTest(ss, EP.stringsWithSubstrings(ss), s -> any(t -> isInfixOf(t, s), ss));
+        }
+    }
+
+    private static void propertiesMaps() {
+        initialize("maps(List<K>, Iterable<V>)");
+        Comparator<Integer> withNullComparator = new WithNullComparator<>();
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.withScale(4).lists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            Iterable<Map<Integer, Integer>> maps = EP.maps(p.a, p.b);
+            testNoRemove(TINY_LIMIT, maps);
+            BigInteger mapsLength = BigInteger.valueOf(p.b.size()).pow(p.a.size());
+            if (lt(mapsLength, BigInteger.valueOf(LIMIT))) {
+                testHasNext(maps);
+                List<Map<Integer, Integer>> mapsList = toList(maps);
+                assertEquals(p, mapsList.size(), mapsLength.intValueExact());
+                List<Integer> sortedKeys = sort(withNullComparator, p.a);
+                assertTrue(p, all(m -> sort(withNullComparator, m.keySet()).equals(sortedKeys), mapsList));
+                assertTrue(p, all(m -> isSubsetOf(m.values(), p.b), mapsList));
+            }
+        }
+
+        ps = P.pairs(P.withScale(4).distinctLists(P.withNull(P.integersGeometric())));
+        for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, ps)) {
+            BigInteger mapsLength = BigInteger.valueOf(p.b.size()).pow(p.a.size());
+            if (lt(mapsLength, BigInteger.valueOf(LIMIT))) {
+                List<Map<Integer, Integer>> mapsList = toList(EP.maps(p.a, p.b));
+                assertTrue(p, unique(mapsList));
+            }
+        }
+
+        Iterable<Pair<List<Integer>, Iterable<Integer>>> ps2 = P.pairs(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<List<Integer>, Iterable<Integer>> p : take(LIMIT, ps2)) {
+            Iterable<Map<Integer, Integer>> maps = EP.maps(p.a, p.b);
+            testNoRemove(TINY_LIMIT, maps);
+            List<Map<Integer, Integer>> mapsList = toList(take(TINY_LIMIT, maps));
+            List<Integer> sortedKeys = sort(withNullComparator, p.a);
+            assertTrue(p, all(m -> sort(withNullComparator, m.keySet()).equals(sortedKeys), mapsList));
+            assertTrue(p, all(m -> isSubsetOf(m.values(), p.b), mapsList));
+        }
+
+        for (List<Integer> xs : take(LIMIT, P.withScale(4).distinctLists(P.withNull(P.integersGeometric())))) {
+            assertEquals(
+                    xs,
+                    toList(EP.maps(Collections.emptyList(), xs)),
+                    Collections.singletonList(Collections.emptyMap())
+            );
+        }
+
+        for (Iterable<Integer> xs : take(LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+            assertEquals(
+                    xs,
+                    toList(EP.maps(Collections.emptyList(), xs)),
+                    Collections.singletonList(Collections.emptyMap())
+            );
+        }
+
+        Iterable<List<Integer>> xss = P.withScale(4).distinctListsAtLeast(1, P.withNull(P.integersGeometric()));
+        for (List<Integer> xs : take(LIMIT, xss)) {
+            assertTrue(xs, isEmpty(EP.maps(xs, Collections.emptyList())));
         }
     }
 }
