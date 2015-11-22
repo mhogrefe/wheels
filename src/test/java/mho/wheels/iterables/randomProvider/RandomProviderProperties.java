@@ -220,6 +220,9 @@ public class RandomProviderProperties {
             propertiesSubsetsWithElement();
             propertiesStringSubsetsWithChar_char_String();
             propertiesStringSubsetsWithChar_char();
+            propertiesListsWithSublists();
+            propertiesStringsWithSubstrings_Iterable_String_String();
+            propertiesStringsWithSubstrings_Iterable_String();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4339,6 +4342,76 @@ public class RandomProviderProperties {
         );
         for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
             simpleTest(p.a, p.a.stringSubsetsWithChar(p.b), s -> elem(p.b, s) && increasing(toList(s)));
+        }
+    }
+
+    private static void propertiesListsWithSublists() {
+        initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
+        Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).lists(P.integersGeometric())),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.listsWithSublists(t.b, t.c), xs -> true);
+        }
+
+        Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).lists(P.integersGeometric())),
+                P.prefixPermutations(EP.naturalIntegers())
+        );
+        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.listsWithSublists(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithSubstrings_Iterable_String_String() {
+        initialize("stringsWithSubstrings(Iterable<String>, String)");
+        Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).strings()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Triple<RandomProvider, Iterable<String>, String> t : take(LIMIT, ts)) {
+            simpleTest(t.a, t.a.stringsWithSubstrings(t.b, t.c), s -> true);
+        }
+
+        Iterable<Triple<RandomProvider, Iterable<String>, String>> tsFail = P.triples(
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).strings()),
+                P.withScale(4).stringsAtLeast(1)
+        );
+        for (Triple<RandomProvider, Iterable<String>, String> t : take(LIMIT, tsFail)) {
+            try {
+                t.a.stringsWithSubstrings(t.b, t.c);
+                fail(t);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesStringsWithSubstrings_Iterable_String() {
+        initialize("stringsWithSubstrings(Iterable<String>)");
+        Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
+                filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).strings())
+        );
+        for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, ps)) {
+            simpleTest(p.a, p.a.stringsWithSubstrings(p.b), s -> true);
+        }
+
+        Iterable<Pair<RandomProvider, Iterable<String>>> psFail = P.pairs(
+                filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
+                P.repeatingIterables(P.withScale(4).strings())
+        );
+        for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, psFail)) {
+            try {
+                p.a.stringsWithSubstrings(p.b);
+                fail(p);
+            } catch (IllegalStateException ignored) {}
         }
     }
 
