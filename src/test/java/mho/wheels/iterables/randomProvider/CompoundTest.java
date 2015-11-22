@@ -7661,6 +7661,42 @@ public strictfp class CompoundTest {
         stringsWithSubstrings_Iterable_String_fail_helper(1, P.uniformSample(Collections.singletonList("cat")));
     }
 
+    private static void maps_helper(
+            @NotNull String keys,
+            @NotNull Iterable<Integer> values,
+            @NotNull String output
+    ) {
+        List<Map<Integer, Integer>> sample = toList(
+                take(DEFAULT_SAMPLE_SIZE, P.maps(readIntegerListWithNulls(keys), values))
+        );
+        aeqitLimit(TINY_LIMIT, sample, output);
+        P.reset();
+    }
+
+    @Test
+    public void testMaps() {
+        maps_helper("[5]", P.naturalIntegersGeometric(),
+                "[{5=19}, {5=47}, {5=25}, {5=0}, {5=19}, {5=21}, {5=9}, {5=13}, {5=12}, {5=20}, {5=10}, {5=7}," +
+                " {5=77}, {5=19}, {5=70}, {5=17}, {5=53}, {5=6}, {5=24}, {5=16}, ...]"
+        );
+        maps_helper("[1, 2, 3]", P.naturalIntegersGeometric(),
+                "[{1=19, 2=47, 3=25}, {1=0, 2=19, 3=21}, {1=9, 2=13, 3=12}, {1=20, 2=10, 3=7}, {1=77, 2=19, 3=70}," +
+                " {1=17, 2=53, 3=6}, {1=24, 2=16, 3=6}, {1=9, 2=0, 3=41}, {1=9, 2=15, 3=20}, {1=23, 2=24, 3=9}," +
+                " {1=84, 2=32, 3=28}, {1=2, 2=41, 3=3}, {1=12, 2=21, 3=45}, {1=34, 2=28, 3=14}, {1=12, 2=2, 3=24}," +
+                " {1=40, 2=37, 3=2}, {1=15, 2=15, 3=118}, {1=49, 2=46, 3=54}, {1=19, 2=15, 3=0}, {1=90, 2=31, 3=19}," +
+                " ...]"
+        );
+        maps_helper(
+                "[1, null, 3]",
+                P.naturalIntegersGeometric(),
+                "[{null=47, 1=19, 3=25}, {null=19, 1=0, 3=21}, {null=13, 1=9, 3=12}, {null=10, 1=20, 3=7}," +
+                " {null=19, 1=77, 3=70}, {null=53, 1=17, 3=6}, {null=16, 1=24, 3=6}, {null=0, 1=9, 3=41}," +
+                " {null=15, 1=9, 3=20}, {null=24, 1=23, 3=9}, {null=32, 1=84, 3=28}, {null=41, 1=2, 3=3}," +
+                " {null=21, 1=12, 3=45}, {null=28, 1=34, 3=14}, {null=2, 1=12, 3=24}, {null=37, 1=40, 3=2}," +
+                " {null=15, 1=15, 3=118}, {null=46, 1=49, 3=54}, {null=15, 1=19, 3=0}, {null=31, 1=90, 3=19}, ...]"
+        );
+    }
+
     private static double meanOfIntegers(@NotNull List<Integer> xs) {
         return sumDouble(map(i -> (double) i / DEFAULT_SAMPLE_SIZE, xs));
     }
