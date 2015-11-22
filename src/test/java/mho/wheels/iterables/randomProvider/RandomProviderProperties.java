@@ -4349,8 +4349,8 @@ public class RandomProviderProperties {
         initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).lists(P.integersGeometric())),
-                P.prefixPermutations(EP.naturalIntegers())
+                P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(LIMIT, ts)) {
             simpleTest(t.a, t.a.listsWithSublists(t.b, t.c), xs -> true);
@@ -4358,8 +4358,8 @@ public class RandomProviderProperties {
 
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> tsFail = P.triples(
                 filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).lists(P.integersGeometric())),
-                P.prefixPermutations(EP.naturalIntegers())
+                P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
         for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(LIMIT, tsFail)) {
             try {
@@ -4373,7 +4373,7 @@ public class RandomProviderProperties {
         initialize("stringsWithSubstrings(Iterable<String>, String)");
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings()),
+                P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Triple<RandomProvider, Iterable<String>, String> t : take(LIMIT, ts)) {
@@ -4382,7 +4382,7 @@ public class RandomProviderProperties {
 
         Iterable<Triple<RandomProvider, Iterable<String>, String>> tsFail = P.triples(
                 filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings()),
+                P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
         for (Triple<RandomProvider, Iterable<String>, String> t : take(LIMIT, tsFail)) {
@@ -4397,7 +4397,7 @@ public class RandomProviderProperties {
         initialize("stringsWithSubstrings(Iterable<String>)");
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings())
+                P.prefixPermutations(EP.strings())
         );
         for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, ps)) {
             simpleTest(p.a, p.a.stringsWithSubstrings(p.b), s -> true);
@@ -4405,7 +4405,7 @@ public class RandomProviderProperties {
 
         Iterable<Pair<RandomProvider, Iterable<String>>> psFail = P.pairs(
                 filterInfinite(rp -> rp.getScale() <= 1, P.randomProvidersDefaultSecondaryScale()),
-                P.repeatingIterables(P.withScale(4).strings())
+                P.prefixPermutations(EP.strings())
         );
         for (Pair<RandomProvider, Iterable<String>> p : take(LIMIT, psFail)) {
             try {
