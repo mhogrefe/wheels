@@ -2466,4 +2466,25 @@ public class ExhaustiveProviderDemos {
                     sits(EP.stringsWithSubstrings(ss)));
         }
     }
+
+    private static void demoMaps_finite() {
+        initialize();
+        Iterable<Pair<List<Integer>, List<Integer>>> ps = P.pairs(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric()))
+        );
+        for (Pair<List<Integer>, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("maps(" + p.a + ", " + p.b + ") = " + its(EP.maps(p.a, p.b)));
+        }
+    }
+
+    private static void demoMaps_infinite() {
+        initialize();
+        Iterable<Pair<List<Integer>, Iterable<Integer>>> ps = P.pairs(
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.prefixPermutations(P.withNull(EP.naturalIntegers()))
+        );
+        for (Pair<List<Integer>, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+            System.out.println("maps(" + p.a + ", " + its(p.b) + ") = " + its(EP.maps(p.a, p.b)));
+        }
+    }
 }
