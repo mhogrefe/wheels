@@ -9,6 +9,7 @@ import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.ordering.comparators.ListBasedComparator;
+import mho.wheels.ordering.comparators.WithNullComparator;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
@@ -223,6 +224,7 @@ public class RandomProviderProperties {
             propertiesListsWithSublists();
             propertiesStringsWithSubstrings_Iterable_String_String();
             propertiesStringsWithSubstrings_Iterable_String();
+            propertiesMaps();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4412,6 +4414,20 @@ public class RandomProviderProperties {
                 p.a.stringsWithSubstrings(p.b);
                 fail(p);
             } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesMaps() {
+        initialize("maps(List<Integer>, List<Integer>)");
+        Comparator<Integer> withNullComparator = new WithNullComparator<>();
+        Iterable<Triple<RandomProvider, List<Integer>, Iterable<Integer>>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
+                P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
+        );
+        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+            List<Integer> sortedKeys = sort(withNullComparator, t.b);
+            simpleTest(t.a, t.a.maps(t.b, t.c), m -> sort(withNullComparator, m.keySet()).equals(sortedKeys));
         }
     }
 
