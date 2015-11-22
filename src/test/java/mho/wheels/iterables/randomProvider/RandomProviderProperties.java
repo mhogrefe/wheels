@@ -4139,7 +4139,7 @@ public class RandomProviderProperties {
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
         for (Pair<RandomProvider, List<Integer>> p : take(LIMIT, ps)) {
-            simpleTest(p.a, p.a.sublists(p.b), xs -> xs.size() <= p.b.size());
+            simpleTest(p.a, p.a.sublists(p.b), xs -> isInfixOf(xs, p.b));
         }
     }
 
