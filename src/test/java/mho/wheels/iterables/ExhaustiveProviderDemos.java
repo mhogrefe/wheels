@@ -2488,4 +2488,12 @@ public class ExhaustiveProviderDemos {
             System.out.println("maps(" + p.a + ", " + its(p.b) + ") = " + its(EP.maps(p.a, p.b)));
         }
     }
+
+    private static void demoRandomProvidersFixedScales() {
+        initialize();
+        for (Pair<Integer, Integer> p : take(SMALL_LIMIT, P.pairs(P.integersGeometric()))) {
+            System.out.println("randomProvidersFixedScales(" + p.a + ", " + p.b + ") = " +
+                    its(P.randomProvidersFixedScales(p.a, p.b)));
+        }
+    }
 }
