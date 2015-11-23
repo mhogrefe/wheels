@@ -113,8 +113,8 @@ public final class Triple<A, B, C> {
         if (that == null || getClass() != that.getClass()) return false;
         Triple triple = (Triple) that;
         return (a == null ? triple.a == null : a.equals(triple.a)) &&
-               (b == null ? triple.b == null : b.equals(triple.b)) &&
-               (c == null ? triple.c == null : c.equals(triple.c));
+               (b == null ? triple.b == null : b.equals(triple.b)) && ///
+               (c == null ? triple.c == null : c.equals(triple.c)); ///
     }
 
     /**

@@ -14,7 +14,7 @@ public class NoRemoveIterable<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new NoRemoveIterator<T>() {
-            private Iterator<T> it = inner.iterator();
+            private final @NotNull Iterator<T> it = inner.iterator();
 
             @Override
             public boolean hasNext() {

@@ -1142,12 +1142,21 @@ public strictfp class IterableUtilsTest {
                 new ArrayList<Integer>()
         )), "[]");
         aeqit(transposePadded(0, new ArrayList<Iterable<Integer>>()), "[]");
-        aeqit(take(10, transposePadded(0, Arrays.asList(
-                (Iterable<Integer>) Arrays.asList(1, 2, 3),
-                (Iterable<Integer>) Arrays.asList(4, 5, 6),
-                repeat(7)
-        ))), "[[1, 4, 7], [2, 5, 7], [3, 6, 7], [0, 0, 7], [0, 0, 7]," +
-             " [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7]]");
+        aeqit(
+                take(
+                        10,
+                        transposePadded(
+                                0,
+                                Arrays.asList(
+                                        (Iterable<Integer>) Arrays.asList(1, 2, 3),
+                                        (Iterable<Integer>) Arrays.asList(4, 5, 6),
+                                        repeat(7)
+                        )
+                )
+                ),
+                "[[1, 4, 7], [2, 5, 7], [3, 6, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7], [0, 0, 7]," +
+                " [0, 0, 7]]"
+        );
     }
 
     @Test
@@ -1279,7 +1288,7 @@ public strictfp class IterableUtilsTest {
     }
 
     @Test
-     public void testProductByte() {
+    public void testProductByte() {
         aeq(productByte(Arrays.asList((byte) 2, (byte) 5, (byte) 12)), 120);
         aeq(productByte(Arrays.asList((byte) -3, (byte) 5, (byte) -7)), 105);
         aeq(productByte(Arrays.asList((byte) (1 << 6), (byte) 2)), Byte.MIN_VALUE);
@@ -1325,7 +1334,6 @@ public strictfp class IterableUtilsTest {
             fail();
         } catch (NullPointerException ignored) {}
     }
-
 
     @Test
     public void testProductFloat() {

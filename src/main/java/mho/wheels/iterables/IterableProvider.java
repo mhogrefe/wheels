@@ -1,7 +1,6 @@
 package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
-import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.*;
@@ -11,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -65,6 +64,13 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<Boolean> booleans();
 
     /**
+     * Generates {@link Ordering}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Ordering> orderingsIncreasing() {
+        return orderings();
+    }
+
+    /**
      * Generates {@link Ordering}s.
      */
     public abstract @NotNull Iterable<Ordering> orderings();
@@ -87,6 +93,34 @@ public abstract strictfp class IterableProvider {
      * @param s the source {@code String}
      */
     public abstract @NotNull Iterable<Character> uniformSample(@NotNull String s);
+
+    /**
+     * Generates {@code Byte}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Byte> bytesIncreasing() {
+        return bytes();
+    }
+
+    /**
+     * Generates {@code Short}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Short> shortsIncreasing() {
+        return shorts();
+    }
+
+    /**
+     * Generates {@code Integer}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Integer> integersIncreasing() {
+        return integers();
+    }
+
+    /**
+     * Generates {@code Long}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Long> longsIncreasing() {
+        return longs();
+    }
 
     /**
      * Generates positive {@code Byte}s.
@@ -222,9 +256,23 @@ public abstract strictfp class IterableProvider {
     public abstract @NotNull Iterable<BigInteger> bigIntegers();
 
     /**
+     * Generates ASCII {@code Character}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Character> asciiCharactersIncreasing() {
+        return asciiCharacters();
+    }
+
+    /**
      * Generates ASCII {@code Character}s.
      */
     public abstract @NotNull Iterable<Character> asciiCharacters();
+
+    /**
+     * Generates {@code Character}s, in increasing order if applicable.
+     */
+    public @NotNull Iterable<Character> charactersIncreasing() {
+        return characters();
+    }
 
     /**
      * Generates {@code Character}s.
@@ -710,45 +758,528 @@ public abstract strictfp class IterableProvider {
      */
     public abstract @NotNull Iterable<BigDecimal> rangeCanonical(@NotNull BigDecimal a, @NotNull BigDecimal b);
 
-    public abstract @NotNull <T> Iterable<T> withSpecialElement(@Nullable T x, @NotNull Iterable<T> xs);
+    /**
+     * Generates all the elements in a given {@code Iterable}, along with an extra element.
+     *
+     * @param x an extra element
+     * @param xs an {@code Iterable}
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public abstract @NotNull <T> Iterable<T> withElement(@Nullable T x, @NotNull Iterable<T> xs);
 
-    public abstract @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs);
-    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
-        return pairs(xs);
+    /**
+     * Generates all the elements in a given {@code Iterable}, along with null.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of element contained in {@code xs}
+     * @return an {@code Iterable} including null and every element in {@code xs}
+     */
+    public @NotNull <T> Iterable<T> withNull(@NotNull Iterable<T> xs) {
+        return withElement(null, xs);
     }
+
+    /**
+     * Generates nonempty {@link Optional}s; the result contains wrapped values of {@code xs}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<Optional<T>> nonEmptyOptionals(@NotNull Iterable<T> xs) {
+        return map(Optional::of, xs);
+    }
+
+    /**
+     * Generates {@link Optional}s; the result contains wrapped values of {@code xs}, along with the empty
+     * {@code Optional}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<Optional<T>> optionals(@NotNull Iterable<T> xs) {
+        return withElement(Optional.<T>empty(), map(Optional::of, xs));
+    }
+
+    /**
+     * Generates nonempty {@link NullableOptional}s; the result contains wrapped values of {@code xs}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<NullableOptional<T>> nonEmptyNullableOptionals(@NotNull Iterable<T> xs) {
+        return map(NullableOptional::of, xs);
+    }
+
+    /**
+     * Generates {@link NullableOptional}s; the result contains wrapped values of {@code xs}, along with the empty
+     * {@code NullableOptional}.
+     *
+     * @param xs an {@code Iterable}.
+     * @param <T> the type of element contained in {@code xs}
+     */
+    public @NotNull <T> Iterable<NullableOptional<T>> nullableOptionals(@NotNull Iterable<T> xs) {
+        return withElement(NullableOptional.<T>empty(), map(NullableOptional::of, xs));
+    }
+
+    /**
+     * Generates pairs of values where the second value depends on the first.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
+    /**
+     * Generates pairs of values where the second value depends on the first. There must be an infinite number of
+     * possible first values, and every first value must be associated with an infinite number of possible second
+     * values.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an infinite {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
+    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfinite(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    );
+
+    /**
+     * Generates pairs of values where the second value depends on the first and the second value grows linearly, but
+     * the first grows logarithmically (if applicable). There must be an infinite number of possible first values, and
+     * every first value must be associated with an infinite number of possible second values.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an infinite {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteLogarithmicOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
+    /**
+     * Generates pairs of values where the second value depends on the first and the second value grows as
+     * O(n<sup>2/3</sup>), but the first grows as O(n<sup>1/3</sup>) (if applicable). There must be an infinite number
+     * of possible first values, and every first value must be associated with an infinite number of possible second
+     * values.
+     *
+     * @param xs an {@code Iterable} of values
+     * @param f a function from a value of type {@code a} to an infinite {@code Iterable} of type-{@code B} values
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
+    public @NotNull <A, B> Iterable<Pair<A, B>> dependentPairsInfiniteSquareRootOrder(
+            @NotNull Iterable<A> xs,
+            @NotNull Function<A, Iterable<B>> f
+    ) {
+        return dependentPairsInfinite(xs, f);
+    }
+
+    /**
+     * Generates pairs of elements where the first component grows linearly but the second grows logarithmically (if
+     * applicable).
+     *
+     * @param as the source of values in the first slot
+     * @param bs the source of values in the second slot
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsLogarithmicOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return pairs(as, bs);
     }
-    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+
+    /**
+     * Generates pairs of elements where the first component grows linearly but the second grows logarithmically (if
+     * applicable).
+     *
+     * @param xs the source of values
+     * @param <T> the type of values in the both slots of the result pairs
+     */
+    public @NotNull <T> Iterable<Pair<T, T>> pairsLogarithmicOrder(@NotNull Iterable<T> xs) {
         return pairs(xs);
     }
+
+    /**
+     * Generates pairs of elements where the first component grows as O(n<sup>2/3</sup>) but the second grows as
+     * O(n<sup>1/3</sup>) (if applicable).
+     *
+     * @param as the source of values in the first slot
+     * @param bs the source of values in the second slot
+     * @param <A> the type of values in the first slot
+     * @param <B> the type of values in the second slot
+     */
     public @NotNull <A, B> Iterable<Pair<A, B>> pairsSquareRootOrder(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs
     ) {
         return pairs(as, bs);
     }
-    public abstract @NotNull <A, B> Iterable<Pair<A, B>> dependentPairs(
-            @NotNull Iterable<A> xs,
-            @NotNull Function<A, Iterable<B>> f
-    );
+
+    /**
+     * Generates pairs of elements where the first component grows as O(n<sup>2/3</sup>) but the second grows as
+     * O(n<sup>1/3</sup>) (if applicable).
+     *
+     * @param xs the source of values
+     * @param <T> the type of values in the both slots of the result pairs
+     */
+    public @NotNull <T> Iterable<Pair<T, T>> pairsSquareRootOrder(@NotNull Iterable<T> xs) {
+        return pairs(xs);
+    }
+
+    /**
+     * Generates all permutations of a {@code List}.
+     *
+     * @param xs a list of elements
+     * @param <T> the type of values in the permutations
+     */
+    public abstract @NotNull <T> Iterable<List<T>> permutationsFinite(@NotNull List<T> xs);
+
+    /**
+     * Generates all permutations of a {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringPermutations(@NotNull String s) {
+        return map(IterableUtils::charsToString, permutationsFinite(toList(s)));
+    }
+
+    /**
+     * Generates permutations of an {@code Iterable}. If the {@code Iterable} is finite, all permutations are
+     * generated; if it is infinite, then only permutations that are equal to the identity except in a finite prefix
+     * are generated.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the permutations
+     */
+    public abstract @NotNull <T> Iterable<Iterable<T>> prefixPermutations(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code List}s of a given size containing elements from a given {@code List}. The {@code List}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> listsLex(int size, @NotNull List<T> xs) {
+        return lists(size, uniformSample(xs));
+    }
+
+    /**
+     * Given two {@code Iterable}s, returns all {@code Pair}s of elements from these {@code Iterable}s. The
+     * {@code Pair}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
+    public @NotNull <A, B> Iterable<Pair<A, B>> pairsLex(@NotNull Iterable<A> as, @NotNull List<B> bs) {
+        return pairs(as, uniformSample(bs));
+    }
+
+    /**
+     * Given three {@code Iterable}s, returns all {@code Triple}s of elements from these {@code Iterable}s. The
+     * {@code Triple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     */
+    public @NotNull <A, B, C> Iterable<Triple<A, B, C>> triplesLex(
+            @NotNull Iterable<A> as,
+            @NotNull List<B> bs,
+            @NotNull List<C> cs
+    ) {
+        return triples(as, uniformSample(bs), uniformSample(cs));
+    }
+
+    /**
+     * Given four {@code Iterable}s, returns all {@code Quadruple}s of elements from these {@code Iterable}s. The
+     * {@code Quadruple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     */
+    public @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruplesLex(
+            @NotNull Iterable<A> as,
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds
+    ) {
+        return quadruples(as, uniformSample(bs), uniformSample(cs), uniformSample(ds));
+    }
+
+    /**
+     * Given five {@code Iterable}s, returns all {@code Quintuple}s of elements from these {@code Iterable}s. The
+     * {@code Quintuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     */
+    public @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuplesLex(
+            @NotNull Iterable<A> as,
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es
+    ) {
+        return quintuples(as, uniformSample(bs), uniformSample(cs), uniformSample(ds), uniformSample(es));
+    }
+
+    /**
+     * Given six {@code Iterable}s, returns all {@code Sextuple}s of elements from these {@code Iterable}s. The
+     * {@code Sextuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     */
+    public @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuplesLex(
+            @NotNull Iterable<A> as,
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es,
+            @NotNull List<F> fs
+    ) {
+        return sextuples(
+                as,
+                uniformSample(bs),
+                uniformSample(cs),
+                uniformSample(ds),
+                uniformSample(es),
+                uniformSample(fs)
+        );
+    }
+
+    /**
+     * Given seven {@code Iterable}s, returns all {@code Septuple}s of elements from these {@code Iterable}s. The
+     * {@code Septuple}s are ordered lexicographically, matching the order given by the original {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param gs the seventh {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     */
+    public @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuplesLex(
+            @NotNull Iterable<A> as,
+            @NotNull List<B> bs,
+            @NotNull List<C> cs,
+            @NotNull List<D> ds,
+            @NotNull List<E> es,
+            @NotNull List<F> fs,
+            @NotNull List<G> gs
+    ) {
+        return septuples(
+                as,
+                uniformSample(bs),
+                uniformSample(cs),
+                uniformSample(ds),
+                uniformSample(es),
+                uniformSample(fs),
+                uniformSample(gs)
+        );
+    }
+
+    /**
+     * Generates all {@code String}s of a given size containing characters from a given {@code String}. The
+     * {@code String}s are ordered lexicographically, matching the order given by the original {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsLex(int size, @NotNull String s) {
+        return strings(size, s);
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code Iterable}. The {@code List}s are ordered in
+     * shortlex order (by length, then lexicographically), matching the order given by the original {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public <T> Iterable<List<T>> listsShortlex(@NotNull List<T> xs) {
+        return lists(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String}. The {@code String}s are ordered
+     * in shortlex order (by length, then lexicographically), matching the order given by the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsShortlex(@NotNull String s) {
+        return strings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable}. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the order given by the
+     * original {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> listsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
+        return listsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String}. The
+     * {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the order given by
+     * the original {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsShortlexAtLeast(int minSize, @NotNull String s) {
+        return stringsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all {@code List}s of a given size containing elements from a given {@code Iterable}.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
+
+    /**
+     * Given two {@code Iterable}s, generates all {@code Pair}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B> Iterable<Pair<A, B>> pairs(@NotNull Iterable<A> as, @NotNull Iterable<B> bs);
+
+    /**
+     * Generates all {@code Pair}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs);
+
+    /**
+     * Given three {@code Iterable}s, generates all {@code Triple}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B, C> Iterable<Triple<A, B, C>> triples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs
     );
+
+    /**
+     * Generates all {@code Triple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs);
+
+    /**
+     * Given four {@code Iterable}s, generates all {@code Quadruple}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B, C, D> Iterable<Quadruple<A, B, C, D>> quadruples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
             @NotNull Iterable<C> cs,
             @NotNull Iterable<D> ds
     );
+
+    /**
+     * Generates all {@code Quadruple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs);
+
+    /**
+     * Given five {@code Iterable}s, generates all {@code Quintuple}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B, C, D, E> Iterable<Quintuple<A, B, C, D, E>> quintuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -756,6 +1287,31 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<D> ds,
             @NotNull Iterable<E> es
     );
+
+    /**
+     * Generates all {@code Quintuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Given six {@code Iterable}s, generates all {@code Sextuple}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B, C, D, E, F> Iterable<Sextuple<A, B, C, D, E, F>> sextuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -764,6 +1320,33 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<E> es,
             @NotNull Iterable<F> fs
     );
+
+    /**
+     * Generates all {@code Sextuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Given seven {@code Iterable}s, generates all {@code Septuple}s of elements from these {@code Iterable}s.
+     *
+     * @param as the first {@code Iterable}
+     * @param bs the second {@code Iterable}
+     * @param cs the third {@code Iterable}
+     * @param ds the fourth {@code Iterable}
+     * @param es the fifth {@code Iterable}
+     * @param fs the sixth {@code Iterable}
+     * @param gs the seventh {@code Iterable}
+     * @param <A> the type of the first {@code Iterable}'s elements
+     * @param <B> the type of the second {@code Iterable}'s elements
+     * @param <C> the type of the third {@code Iterable}'s elements
+     * @param <D> the type of the fourth {@code Iterable}'s elements
+     * @param <E> the type of the fifth {@code Iterable}'s elements
+     * @param <F> the type of the sixth {@code Iterable}'s elements
+     * @param <G> the type of the seventh {@code Iterable}'s elements
+     */
     public abstract @NotNull <A, B, C, D, E, F, G> Iterable<Septuple<A, B, C, D, E, F, G>> septuples(
             @NotNull Iterable<A> as,
             @NotNull Iterable<B> bs,
@@ -773,58 +1356,1193 @@ public abstract strictfp class IterableProvider {
             @NotNull Iterable<F> fs,
             @NotNull Iterable<G> gs
     );
-    public abstract @NotNull <T> Iterable<Pair<T, T>> pairs(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Triple<T, T, T>> triples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> quadruples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> quintuples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> sextuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Septuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
     public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> septuples(@NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<List<T>> lists(int size, @NotNull Iterable<T> xs);
-    public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s of a given size containing characters from a given {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> strings(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, lists(size, uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s of a given size.
+     *
+     * @param size the length of each of the generated {@code String}s
+     */
+    public @NotNull Iterable<String> strings(int size) {
+        return map(IterableUtils::charsToString, lists(size, characters()));
+    }
+
+    /**
+     * Generates all {@code List}s of a containing elements from a given {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
     public abstract @NotNull <T> Iterable<List<T>> lists(@NotNull Iterable<T> xs);
-    public @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T element, Iterable<T> xs) {
-        return map(p -> toList(insert(p.a, p.b, element)), dependentPairs(lists(xs), list -> range(0, list.size())));
+
+    /**
+     * Generates all {@code String}s of a containing characters from a given {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> strings(@NotNull String s) {
+        return map(IterableUtils::charsToString, lists(uniformSample(s)));
     }
-    public @NotNull <T> Iterable<List<T>> listsWithSubsequence(
-            @NotNull Iterable<Iterable<T>> subsequences,
+
+    /**
+     * Generates all {@code String}s.
+     */
+    public @NotNull Iterable<String> strings() {
+        return map(IterableUtils::charsToString, lists(characters()));
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> listsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     */
+    public @NotNull Iterable<String> stringsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, listsAtLeast(minSize, characters()));
+    }
+
+    /**
+     * Generates all {@code List}s of a given size containing elements from a given {@code List} with no repetitions.
+     * The {@code List}s are ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(int size, @NotNull List<T> xs) {
+        return distinctLists(size, uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Pair}s of elements from a {@code List} with no repetitions. The {@code Pair}s are ordered
+     * lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Pair<T, T>> distinctPairsLex(@NotNull List<T> xs) {
+        return distinctPairs(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Triple}s of elements from a {@code List} with no repetitions. The {@code Triple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Triple<T, T, T>> distinctTriplesLex(@NotNull List<T> xs) {
+        return distinctTriples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Quadruple}s of elements from a {@code List} with no repetitions. The {@code Quadruple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruplesLex(@NotNull List<T> xs) {
+        return distinctQuadruples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Quintuple}s of elements from a {@code List} with no repetitions. The {@code Quintuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuplesLex(@NotNull List<T> xs) {
+        return distinctQuintuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Sextuple}s of elements from a {@code List} with no repetitions. The {@code Sextuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuplesLex(@NotNull List<T> xs) {
+        return distinctSextuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code Septuple}s of elements from a {@code List} with no repetitions. The {@code Septuple}s are
+     * ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuplesLex(@NotNull List<T> xs) {
+        return distinctSeptuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s of a given size containing characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsLex(int size, @NotNull String s) {
+        return distinctStrings(size, s);
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} with no repetitions. The {@code List}s
+     * are ordered lexicographically, matching the order given by the original {@code List}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsLex(@NotNull List<T> xs) {
+        return distinctLists(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions. The
+     * {@code String}s are ordered lexicographically, matching the order given by the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsLex(@NotNull String s) {
+        return distinctStrings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically, matching the order given by the original
+     * {@code List}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsLexAtLeast(int minSize, @NotNull List<T> xs) {
+        return distinctListsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered lexicographically, matching the order given by the original
+     * {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsLexAtLeast(int minSize, @NotNull String s) {
+        return distinctStringsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code Iterable} with no repetitions. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the order given by the
+     * original {@code Iterable}.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlex(@NotNull List<T> xs) {
+        return distinctLists(uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions. The
+     * {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the order given by
+     * the original {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsShortlex(@NotNull String s) {
+        return distinctStrings(s);
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable} with no
+     * repetitions. The {@code List}s are ordered in shortlex order (by length, then lexicographically), matching the
+     * order given by the original {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T> Iterable<List<T>> distinctListsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
+        return distinctListsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically), matching the
+     * order given by the original {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsShortlexAtLeast(int minSize, @NotNull String s) {
+        return distinctStringsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all {@code List}s of a given size containing elements from a given {@code Iterable} with no
+     * repetitions.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param size the length of each of the generated {@code List}s
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> distinctLists(int size, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Pair}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Pair<T, T>> distinctPairs(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Triple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Triple<T, T, T>> distinctTriples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Quadruple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Quadruple<T, T, T, T>> distinctQuadruples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Quintuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Quintuple<T, T, T, T, T>> distinctQuintuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Sextuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Sextuple<T, T, T, T, T, T>> distinctSextuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code Septuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T> Iterable<Septuple<T, T, T, T, T, T, T>> distinctSeptuples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s of a given size containing characters from a given {@code String} with no
+     * repetitions.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStrings(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, distinctLists(size, uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s of a given size containing characters from a given {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
+     */
+    public @NotNull Iterable<String> distinctStrings(int size) {
+        return map(IterableUtils::charsToString, distinctLists(size, characters()));
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> distinctLists(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} with no repetitions.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStrings(@NotNull String s) {
+        return map(IterableUtils::charsToString, distinctLists(uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String}.
+     */
+    public Iterable<String> distinctStrings() {
+        return map(IterableUtils::charsToString, distinctLists(characters()));
+    }
+
+    /**
+     * Generates all {@code List}s with a minimum size containing elements from a given {@code Iterable} with no
+     * repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> distinctListsAtLeast(int minSize, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s with a minimum size containing characters from a given {@code String} with no
+     * repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, distinctListsAtLeast(minSize, uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s with a minimum size with no repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     */
+    public @NotNull Iterable<String> distinctStringsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, distinctListsAtLeast(minSize, characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s of a given size containing elements from a given {@code List}. The
+     * {@code List}s are ordered lexicographically.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsLex(int size, @NotNull List<T> xs) {
+        return bags(size, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Pair}s of elements from a {@code List}. The {@code Pair}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairsLex(@NotNull List<T> xs) {
+        return bagPairs(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Triple}s of elements from a {@code List}. The {@code Triple}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriplesLex(@NotNull List<T> xs) {
+        return bagTriples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Quadruple}s of elements from a {@code List}. The {@code Quadruple}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruplesLex(@NotNull List<T> xs) {
+        return bagQuadruples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Quintuple}s of elements from a {@code List}. The {@code Quintuple}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return bagQuintuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Sextuple}s of elements from a {@code List}. The {@code Sextuple}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return bagSextuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Septuple}s of elements from a {@code List}. The {@code Septuple}s are ordered
+     * lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return bagSeptuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String}. The {@code String}s
+     * are ordered lexicographically.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBagsLex(int size, @NotNull String s) {
+        return stringBags(size, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable}. The {@code List}s are
+     * ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlex(@NotNull List<T> xs) {
+        return bags(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String}. The {@code String}s
+     * are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBagsShortlex(@NotNull String s) {
+        return stringBags(s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable}. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsShortlexAtLeast(int minSize, @NotNull List<T> xs) {
+        return bagsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}.
+     * The {@code String}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBagsShortlexAtLeast(int minSize, @NotNull String s) {
+        return stringBagsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s of a given size containing elements from a given {@code Iterable}.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(int size, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code Pair}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> bagPairs(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code Triple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> bagTriples(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code Quadruple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> bagQuadruples(
             @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Quintuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> bagQuintuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Sextuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> bagSextuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Septuple}s of elements from an {@code Iterable}.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> bagSeptuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s of a given size containing characters from a given {@code String}.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBags(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, bags(size, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s of a given size.
+     *
+     * @param size the length of each of the generated {@code String}s
+     */
+    public @NotNull Iterable<String> stringBags(int size) {
+        return map(IterableUtils::charsToString, bags(size, characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable}.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> bags(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringBags(@NotNull String s) {
+        return map(IterableUtils::charsToString, bags(uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s.
+     */
+    public @NotNull Iterable<String> stringBags() {
+        return map(IterableUtils::charsToString, bags(characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable}.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> bagsAtLeast(
+            int minSize,
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s an {@code String}
+     */
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, bagsAtLeast(minSize, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     */
+    public @NotNull Iterable<String> stringBagsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, bagsAtLeast(minSize, characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s of a given size containing elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(int size, @NotNull List<T> xs) {
+        return subsets(size, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Pair}s of elements from a {@code List} with no repetitions. The {@code Pair}s are
+     * ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairsLex(@NotNull List<T> xs) {
+        return subsetPairs(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Triple}s of elements from a {@code List} with no repetitions. The {@code Triple}s
+     * are ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriplesLex(@NotNull List<T> xs) {
+        return subsetTriples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Quadruple}s of elements from a {@code List} with no repetitions. The
+     * {@code Quadruple}s are ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruplesLex(
+            @NotNull List<T> xs
     ) {
+        return subsetQuadruples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Quintuple}s of elements from a {@code List} with no repetitions. The
+     * {@code Quintuple}s are ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return subsetQuintuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Sextuple}s of elements from a {@code List} with no repetitions. The
+     * {@code Sextuple}s are ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return subsetSextuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code Septuple}s of elements from a {@code List} with no repetitions. The
+     * {@code Septuple}s are ordered lexicographically.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the {@code List}'s elements
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuplesLex(
+            @NotNull List<T> xs
+    ) {
+        return subsetSeptuples(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
+     * The {@code String}s are ordered lexicographically.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsLex(int size, @NotNull String s) {
+        return stringSubsets(size, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code List} with no repetitions. The
+     * {@code List}s are ordered lexicographically.
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLex(@NotNull List<T> xs) {
+        return subsets(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
+     * The {@code String}s are ordered lexicographically.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsLex(@NotNull String s) {
+        return stringSubsets(s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code List} with no
+     * repetitions. The {@code List}s are ordered lexicographically.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsLexAtLeast(int minSize, @NotNull List<T> xs) {
+        return subsetsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}
+     * with no repetitions. The {@code String}s are ordered lexicographically.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsLexAtLeast(int minSize, @NotNull String s) {
+        return stringSubsetsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable} with no repetitions. The
+     * {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlex(@NotNull List<T> xs) {
+        return subsets(uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
+     * The {@code String}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsShortlex(@NotNull String s) {
+        return stringSubsets(s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable} with
+     * no repetitions. The {@code List}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs a {@code List} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsShortlexAtLeast(
+            int minSize,
+            @NotNull List<T> xs
+    ) {
+        return subsetsAtLeast(minSize, uniformSample(xs));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}
+     * with no repetitions. The {@code String}s are ordered in shortlex order (by length, then lexicographically).
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsShortlexAtLeast(int minSize, @NotNull String s) {
+        return stringSubsetsAtLeast(minSize, s);
+    }
+
+    /**
+     * Generates all unordered {@code List}s of a given size containing elements from a given {@code Iterable} with no
+     * repetitions.
+     *
+     * @param size the length of each of the generated {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(int size, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code Pair}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Pair<T, T>> subsetPairs(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code Triple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Triple<T, T, T>> subsetTriples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Quadruple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Quadruple<T, T, T, T>> subsetQuadruples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Quintuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Quintuple<T, T, T, T, T>> subsetQuintuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Sextuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Sextuple<T, T, T, T, T, T>> subsetSextuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code Septuple}s of elements from an {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable}
+     * @param <T> the type of the {@code Iterable}'s elements
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<Septuple<T, T, T, T, T, T, T>> subsetSeptuples(
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s of a given size containing characters from a given {@code String} with
+     * no repetitions.
+     *
+     * @param size the length of each of the generated {@code String}s
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsets(int size, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsets(size, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s of a given size with no repetitions.
+     *
+     * @param size the length of each of the generated {@code String}s
+     */
+    public @NotNull Iterable<String> stringSubsets(int size) {
+        return map(IterableUtils::charsToString, subsets(size, characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s containing elements from a given {@code Iterable} with no repetitions.
+     *
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsets(@NotNull Iterable<T> xs);
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} with no repetitions.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsets(@NotNull String s) {
+        return map(IterableUtils::charsToString, subsets(uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with no repetitions.
+     */
+    public @NotNull Iterable<String> stringSubsets() {
+        return map(IterableUtils::charsToString, subsets(characters()));
+    }
+
+    /**
+     * Generates all unordered {@code List}s with a minimum size containing elements from a given {@code Iterable} with
+     * no repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code List}s
+     * @param xs an {@code Iterable} of elements
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsAtLeast(
+            int minSize,
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size containing characters from a given {@code String}
+     * with no repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     * @param s an {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsAtLeast(minSize, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with a minimum size with no repetitions.
+     *
+     * @param minSize the minimum size of the resulting {@code String}s
+     */
+    public @NotNull Iterable<String> stringSubsetsAtLeast(int minSize) {
+        return map(IterableUtils::charsToString, subsetsAtLeast(minSize, characters()));
+    }
+
+    /**
+     * Generates the Cartesian product of a {@code List} of {@code List}s, that is, all possible {@code List}s such
+     * that the ith element of the {@code List} comes from the ith input {@code List}.
+     *
+     * @param xss a {@code List} of {@code List}s
+     * @param <T> the type of values in the {@code List}s
+     */
+    public abstract @NotNull <T> Iterable<List<T>> cartesianProduct(@NotNull List<List<T>> xss);
+
+    /**
+     * Generates repeating infinite {@code Iterables} whose elements are chosen from a given {@code List}.
+     *
+     * @param xs the source of elements for the generated {@code Iterable}s
+     * @param <T> the type of elements in the {@code Iterable}
+     */
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterables(@NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(2, xs)) {
+            throw new IllegalArgumentException("xs must have length at least 2. Invalid xs: " + toList(xs));
+        }
+        return map(IterableUtils::cycle, filterInfinite(ys -> unrepeat(ys).equals(ys), listsAtLeast(1, nub(xs))));
+    }
+
+    /**
+     * Generates repeating infinite {@code Iterables} whose elements are chosen from a given {@code List}. The
+     * {@code Iterable}s have a specified minimum number of distinct elements (at least 2).
+     *
+     * @param minSize the minimum number of distinct elements in the generated {@code Iterable}s
+     * @param xs the source of elements for the {@code Iterable}
+     * @param <T> the type of elements in the {@code Iterable}
+     */
+    public @NotNull <T> Iterable<Iterable<T>> repeatingIterablesDistinctAtLeast(int minSize, @NotNull Iterable<T> xs) {
+        if (!lengthAtLeast(2, xs)) {
+            throw new IllegalArgumentException("xs must have length at least 2. Invalid xs: " + toList(xs));
+        }
         return map(
-                p -> toList(concat(Arrays.asList(take(p.a.b, p.a.a), p.b, drop(p.a.b, p.a.a)))),
-                pairsSquareRootOrder(dependentPairs(lists(xs), list -> range(0, list.size())), subsequences)
+                IterableUtils::cycle,
+                filterInfinite(
+                        ys -> length(nub(ys)) >= minSize && unrepeat(ys).equals(ys),
+                        listsAtLeast(minSize, nub(xs))
+                )
         );
     }
 
-    public abstract @NotNull Iterable<String> strings(int size, @NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> stringsAtLeast(int minSize, @NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> strings(int size);
-    public abstract @NotNull Iterable<String> stringsAtLeast(int size);
-    public abstract @NotNull Iterable<String> strings(@NotNull Iterable<Character> cs);
-    public abstract @NotNull Iterable<String> strings();
-    public @NotNull Iterable<String> stringsWithChar(char c, Iterable<Character> cs) {
-        return map(p -> insert(p.a, p.b, c), dependentPairs(strings(cs), s -> range(0, s.length())));
+    /**
+     * Generates all sublists of a given {@code List}.
+     *
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     */
+    public @NotNull <T> Iterable<List<T>> sublists(@NotNull List<T> xs) {
+        return map(p -> toList(xs.subList(p.a, p.b)), filter(p -> p.a <= p.b, pairs(range(0, xs.size()))));
     }
+
+    /**
+     * Generates all substrings of a given {@code String}.
+     *
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> substrings(@NotNull String s) {
+        return map(p -> s.substring(p.a, p.b), filter(p -> p.a <= p.b, pairs(range(0, s.length()))));
+    }
+
+    /**
+     * Generates all {@code List}s from an {@code Iterable} of elements {@code xs} which contain a particular element.
+     * {@code xs} may or may not contain the element.
+     *
+     * @param x an element that the output {@code List}s must contain
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     */
+    public abstract @NotNull <T> Iterable<List<T>> listsWithElement(@Nullable T x, @NotNull Iterable<T> xs);
+
+    /**
+     * Generates all {@code String}s from a given {@code String} {@code s} which contain a particular character.
+     * {@code s} may or may not contain the character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsWithChar(char c, @NotNull String s) {
+        return map(IterableUtils::charsToString, listsWithElement(c, uniformSample(s)));
+    }
+
+    /**
+     * Generates all {@code String}s which contain a particular character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     */
     public @NotNull Iterable<String> stringsWithChar(char c) {
-        return stringsWithChar(c, characters());
+        return map(IterableUtils::charsToString, listsWithElement(c, characters()));
     }
-    public @NotNull Iterable<String> stringsWithSubstrings(
-            @NotNull Iterable<String> substrings,
-            @NotNull Iterable<Character> cs
-    ) {
+
+    /**
+     * Generates all unordered {@code List}s from an {@code Iterable} of elements {@code xs}, with no repetitions,
+     * which contain a particular element. {@code xs} may or may not contain the element.
+     *
+     * @param x an element that the output {@code List}s must contain
+     * @param xs a {@code List}
+     * @param <T> the type of the elements in {@code xs}
+     */
+    public abstract @NotNull <T extends Comparable<T>> Iterable<List<T>> subsetsWithElement(
+            T x,
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all unordered {@code String}s containing characters from a given {@code String} {@code s}, with no
+     * repetitions, which contain a particular character. {@code s} may or may not contain the character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringSubsetsWithChar(char c, @NotNull String s) {
+        return map(IterableUtils::charsToString, subsetsWithElement(c, uniformSample(s)));
+    }
+
+    /**
+     * Generates all unordered {@code String}s with no repetitions which contain a particular character.
+     *
+     * @param c a character that the output {@code String}s must contain
+     */
+    public @NotNull Iterable<String> stringSubsetsWithChar(char c) {
+        return map(IterableUtils::charsToString, subsetsWithElement(c, characters()));
+    }
+
+    /**
+     * Generates all {@code List}s containing elements from a given {@code List} {@code xs} which contain at least one
+     * of a given {@code Iterable} of sublists.
+     *
+     * @param sublists {@code List}s, at least one of which must be contained in each result {@code List}
+     * @param xs a {@code List}
+     * @param <T> the type of elements in {@code xs}
+     */
+    public abstract @NotNull <T> Iterable<List<T>> listsWithSublists(
+            @NotNull Iterable<List<T>> sublists,
+            @NotNull Iterable<T> xs
+    );
+
+    /**
+     * Generates all {@code String}s containing characters from a given {@code String} {@code s} which contain at least
+     * one of a given {@code Iterable} of substrings.
+     *
+     * @param substrings {@code String}s, at least one of which must be contained in each result {@code String}
+     * @param s a {@code String}
+     */
+    public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings, @NotNull String s) {
         return map(
-                p -> take(p.a.b, p.a.a) + p.b + drop(p.a.b, p.a.a),
-                pairsSquareRootOrder(dependentPairs(strings(cs), s -> range(0, s.length())), substrings)
+                IterableUtils::charsToString,
+                listsWithSublists(map(IterableUtils::toList, substrings), uniformSample(s))
         );
     }
+
+    /**
+     * Generates all {@code String}s which contain at least one of a given {@code Iterable} of substrings.
+     *
+     * @param substrings {@code String}s, at least one of which must be contained in each result {@code String}
+     */
     public @NotNull Iterable<String> stringsWithSubstrings(@NotNull Iterable<String> substrings) {
-        return stringsWithSubstrings(substrings, characters());
+        return map(
+                IterableUtils::charsToString,
+                listsWithSublists(map(IterableUtils::toList, substrings), characters())
+        );
     }
 
-    public abstract @NotNull <T> Iterable<List<T>> permutations(@NotNull List<T> xs);
-    public @NotNull Iterable<String> permutations(@NotNull String s) {
-        return map(IterableUtils::charsToString, permutations(toList(fromString(s))));
+    /**
+     * Generates all {@code HashMap}s whose keys are {@code ks} and whose values are subsets of {@code vs}.
+     *
+     * @param ks the keys of the resulting maps
+     * @param vs a set where the values of the resulting maps are drawn from
+     * @param <K> the type of the maps' keys
+     * @param <V> the type of the maps' values
+     */
+    public @NotNull <K, V> Iterable<Map<K, V>> maps(@NotNull List<K> ks, Iterable<V> vs) {
+        return map(xs -> toMap(zip(ks, xs)), lists(ks.size(), vs));
     }
 
+    /**
+     * Generates all {@code RandomProvider}s with a fixed {@code scale} and {@code secondaryScale}.
+     *
+     * @param scale the {@code scale} of the generated {@code RandomProvider}s
+     * @param secondaryScale the {@code secondaryScale} of the generated {@code RandomProvider}s
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
         return map(
                 is -> new RandomProvider(is).withScale(scale).withSecondaryScale(secondaryScale),
@@ -832,21 +2550,30 @@ public abstract strictfp class IterableProvider {
         );
     }
 
-    public @NotNull Iterable<RandomProvider> randomProviders() {
-        return map(
-                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
-        );
-    }
-
+    /**
+     * Generates all {@code RandomProvider}s with the default {@code scale} and {@code secondaryScale}.
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
         return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
     }
 
+    /**
+     * Generates all {@code RandomProvider}s with the default {@code secondaryScale}.
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b),
                 pairs(lists(IsaacPRNG.SIZE, integers()), integersGeometric())
+        );
+    }
+
+    /**
+     * Generates all {@code RandomProvider}s.
+     */
+    public @NotNull Iterable<RandomProvider> randomProviders() {
+        return map(
+                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
+                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
         );
     }
 }

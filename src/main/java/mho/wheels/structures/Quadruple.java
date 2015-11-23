@@ -151,7 +151,6 @@ public final class Quadruple<A, B, C, D> {
         return result;
     }
 
-
     /**
      * Creates a {@code Quadruple} from a {@code String}. Valid strings are of the form
      * {@code "(" + a + ", " + b + ", " + c + ", " + d + ")"}, where {@code a}, {@code b}, {@code c}, and {@code d} are

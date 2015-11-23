@@ -1,18 +1,15 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.RandomProvider;
+import mho.wheels.iterables.*;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -20,6 +17,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.MathUtils.ceilingLog;
 import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.numberUtils.IntegerUtils.demux;
+import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.ge;
 import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
@@ -94,6 +92,7 @@ public class IntegerUtilsProperties {
             propertiesSquareRootDemux();
             propertiesMux();
             propertiesDemux();
+            compareImplementationsDemux();
         }
         System.out.println("Done");
     }
@@ -156,7 +155,7 @@ public class IntegerUtilsProperties {
     }
 
     private static @NotNull Iterable<Boolean> bits_BigInteger_alt(@NotNull BigInteger n) {
-        return () -> new Iterator<Boolean>() {
+        return () -> new NoRemoveIterator<Boolean>() {
             private BigInteger remaining = n;
 
             @Override
@@ -169,11 +168,6 @@ public class IntegerUtilsProperties {
                 boolean bit = remaining.testBit(0);
                 remaining = remaining.shiftRight(1);
                 return bit;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -2241,6 +2235,8 @@ public class IntegerUtilsProperties {
             assertNotEquals(p, p.a.signum(), -1);
             assertNotEquals(p, p.b.signum(), -1);
             assertEquals(p, logarithmicMux(p.a, p.b), i);
+            assertTrue(p, lt(i, logarithmicMux(p.a.add(BigInteger.ONE), p.b)));
+            assertTrue(p, lt(i, logarithmicMux(p.a, p.b.add(BigInteger.ONE))));
         }
 
         for (BigInteger i : take(LIMIT, P.negativeBigIntegers())) {
@@ -2259,6 +2255,8 @@ public class IntegerUtilsProperties {
             BigInteger i = squareRootMux(p.a, p.b);
             assertNotEquals(p, i.signum(), -1);
             assertEquals(p, squareRootDemux(i), p);
+            assertTrue(p, lt(i, squareRootMux(p.a.add(BigInteger.ONE), p.b)));
+            assertTrue(p, lt(i, squareRootMux(p.a, p.b.add(BigInteger.ONE))));
         }
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers(), P.negativeBigIntegers()))) {
@@ -2303,13 +2301,16 @@ public class IntegerUtilsProperties {
             BigInteger i = IntegerUtils.mux(is);
             assertNotEquals(is, i.signum(), -1);
             assertEquals(is, demux(is.size(), i), is);
+            for (int j = 0; j < is.size(); j++) {
+                assertTrue(is, lt(i, mux(toList(set(is, j, is.get(j).add(BigInteger.ONE))))));
+            }
         }
 
         for (List<BigInteger> is : take(LIMIT, P.listsWithElement(null, P.naturalBigIntegers()))) {
             try {
                 IntegerUtils.mux(is);
                 fail(is);
-            } catch (NullPointerException ignored) {}
+            } catch (NullPointerException | IllegalArgumentException ignored) {}
         }
 
         Iterable<List<BigInteger>> isFail = filterInfinite(
@@ -2324,25 +2325,57 @@ public class IntegerUtilsProperties {
         }
     }
 
+    private static @NotNull List<BigInteger> demux_alt(int size, @NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return toList(replicate(size, BigInteger.ZERO));
+        }
+        return reverse(IterableUtils.map(IntegerUtils::fromBits, IterableUtils.demux(size, bits(n))));
+    }
+
+    private static @NotNull List<BigInteger> demux_alt2(int size, @NotNull BigInteger n) {
+        if (n.equals(BigInteger.ZERO)) {
+            return toList(replicate(size, BigInteger.ZERO));
+        }
+        int length = n.bitLength();
+        int resultLength = (length / 8 + 1) / size + 2;
+        byte[][] demuxedBytes = new byte[size][resultLength];
+        int ri = resultLength - 1;
+        int rj = 1;
+        int rk = size - 1;
+        for (int i = 0; i < length; i++) {
+            if (n.testBit(i)) {
+                demuxedBytes[rk][ri] |= rj;
+            }
+            if (rk == 0) {
+                rk = size - 1;
+                rj <<= 1;
+                if (rj == 256) {
+                    rj = 1;
+                    ri--;
+                }
+            } else {
+                rk--;
+            }
+        }
+        List<BigInteger> demuxed = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            demuxed.add(new BigInteger(demuxedBytes[i]));
+        }
+        return demuxed;
+    }
+
     private static void propertiesDemux() {
         initialize();
         System.out.println("\t\ttesting demux(int size, BigInteger n) properties...");
 
-        Iterable<Pair<BigInteger, Integer>> ps;
-        Pair<BigInteger, Integer> zeroPair = new Pair<>(BigInteger.ZERO, 0);
-        if (P instanceof ExhaustiveProvider) {
-            ps = cons(
-                    zeroPair,
-                    ((ExhaustiveProvider) P).pairsLogarithmicOrder(P.naturalBigIntegers(), P.positiveIntegers())
-            );
-        } else {
-            ps = ((RandomProvider) P).withSpecialElement(
-                    zeroPair,
-                    P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
-            );
-        }
+        Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
+                new Pair<>(BigInteger.ZERO, 0),
+                P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
+        );
         for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
             List<BigInteger> xs = demux(p.b, p.a);
+            assertEquals(p, xs, demux_alt(p.b, p.a));
+            assertEquals(p, xs, demux_alt2(p.b, p.a));
             assertTrue(p, all(x -> x != null && x.signum() != -1, xs));
             assertEquals(p, IntegerUtils.mux(xs), p.a);
         }
@@ -2367,5 +2400,38 @@ public class IntegerUtilsProperties {
                 fail(i);
             } catch (ArithmeticException ignored) {}
         }
+    }
+
+    private static void compareImplementationsDemux() {
+        initialize();
+        System.out.println("\t\tcomparing demux(int size, BigInteger n) implementations...");
+
+        Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
+                new Pair<>(BigInteger.ZERO, 0),
+                P.pairs(P.naturalBigIntegers(), P.withScale(20).positiveIntegersGeometric())
+        );
+        long totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux_alt(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talternative: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux_alt2(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\talternative 2: " + ((double) totalTime) / 1e9 + " s");
+
+        totalTime = 0;
+        for (Pair<BigInteger, Integer> p : take(LIMIT, ps)) {
+            long time = System.nanoTime();
+            demux(p.b, p.a);
+            totalTime += (System.nanoTime() - time);
+        }
+        System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 }

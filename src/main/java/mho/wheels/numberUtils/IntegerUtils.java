@@ -7,8 +7,8 @@ import mho.wheels.structures.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -434,7 +434,7 @@ public class IntegerUtils {
         if (n.signum() == -1) {
             throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
         }
-        return () -> new Iterator<BigInteger>() {
+        return () -> new NoRemoveIterator<BigInteger>() {
             private BigInteger remaining = n;
 
             @Override
@@ -447,11 +447,6 @@ public class IntegerUtils {
                 BigInteger digit = remaining.mod(base);
                 remaining = remaining.divide(base);
                 return digit;
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException("cannot remove from this iterator");
             }
         };
     }
@@ -1077,9 +1072,9 @@ public class IntegerUtils {
     /**
      * Bijectively maps one natural {@code BigInteger} to a list of natural {@code BigInteger}s in such a way that
      * every element of the list is "typically" about the same size. More precisely, this method is the inverse of
-     * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed size, not
-     * between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps to the
-     * empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
+     * {@link mho.wheels.numberUtils.IntegerUtils#mux}. The bijection is between the naturals and lists of a fixed
+     * size, not between naturals and all lists. If {@code size} is 0, the only acceptable {@code n} is 0, which maps
+     * to the empty list. The inverse of this method is {@link mho.wheels.numberUtils.IntegerUtils#mux}.
      *
      * <ul>
      *  <li>{@code size} cannot be negative.</li>
@@ -1093,13 +1088,48 @@ public class IntegerUtils {
      * @return a list of {@code BigInteger}s generated bijectively from {@code n}
      */
     public static @NotNull List<BigInteger> demux(int size, @NotNull BigInteger n) {
-        if (size == 0 && !n.equals(BigInteger.ZERO))
-            throw new ArithmeticException("if muxing into 0 numbers, n must also be 0");
-        if (size < 0)
-            throw new ArithmeticException("cannot demux into a negative size");
+        if (size < 0) {
+            throw new ArithmeticException("size cannot be negative. Invalid size: " + size);
+        }
         if (n.equals(BigInteger.ZERO)) {
             return toList(replicate(size, BigInteger.ZERO));
         }
-        return reverse(IterableUtils.map(IntegerUtils::fromBits, IterableUtils.demux(size, bits(n))));
+        if (size == 0) {
+            throw new ArithmeticException("If size is 0, n must also be 0. Invalid n: " + n);
+        }
+        if (n.signum() == -1) {
+            throw new ArithmeticException("n cannot be negative. Invalid n: " + n);
+        }
+        byte[] bytes = n.toByteArray();
+        int length = bytes.length;
+        int resultLength = length / size + 2;
+        byte[][] demuxedBytes = new byte[size][resultLength];
+        int ri = resultLength - 1;
+        int rj = 1;
+        int rk = size - 1;
+        for (int i = length - 1; i >= 0; i--) {
+            byte b = bytes[i];
+            for (int j = 0; j < 8; j++) {
+                if ((b & 1) != 0) {
+                    demuxedBytes[rk][ri] |= rj;
+                }
+                b >>= 1;
+                if (rk == 0) {
+                    rk = size - 1;
+                    rj <<= 1;
+                    if (rj == 256) {
+                        rj = 1;
+                        ri--;
+                    }
+                } else {
+                    rk--;
+                }
+            }
+        }
+        List<BigInteger> demuxed = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            demuxed.add(new BigInteger(demuxedBytes[i]));
+        }
+        return demuxed;
     }
 }

@@ -35,15 +35,38 @@ public class FiniteDomainFunction<A, B> implements Function<A, B> {
         return map.size();
     }
 
+    public @NotNull Set<A> domain() {
+        Set<A> domain = new HashSet<>();
+        domain.addAll(map.keySet());
+        return domain;
+    }
+
     //here range means image, not codomain
+    public @NotNull Set<B> range() {
+        Set<B> range = new HashSet<>();
+        range.addAll(map.values());
+        return range;
+    }
+
     public int rangeSize() {
-        Set<B> values = new HashSet<>();
-        values.addAll(map.values());
-        return values.size();
+        return range().size();
     }
 
     public boolean injective() {
         return domainSize() == rangeSize();
+    }
+
+    public @NotNull Map<A, B> asMap() {
+        Map<A, B> copy = new HashMap<>();
+        copy.putAll(map);
+        return copy;
+    }
+
+    public @NotNull FiniteDomainFunction<A, B> set(A key, B value) {
+        Map<A, B> copy = new HashMap<>();
+        copy.putAll(map);
+        copy.put(key, value);
+        return new FiniteDomainFunction<>(copy);
     }
 
     @Override

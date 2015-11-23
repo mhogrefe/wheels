@@ -82,7 +82,7 @@ public class MathUtilsProperties {
 
         for (int i : take(LIMIT, P.integers())) {
             assertEquals(i, gcd(i, 1), 1);
-        }             
+        }
 
         for (int i : take(LIMIT, filter(j -> j != 0, P.integers()))) {
             assertEquals(i, gcd(i, i), Math.abs(i));

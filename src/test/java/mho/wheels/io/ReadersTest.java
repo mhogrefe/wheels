@@ -93,18 +93,19 @@ public class ReadersTest {
     }
 
     @Test
-    public void testGenericFindIn_Iterable_T_String() {
+    public void testGenericFindIn_List_T() {
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 3 numbers").get(), "(3, 10)");
-        aeq(genericFindIn(Arrays.asList(1, 3, 3)).apply("there are 3 numbers").get(), "(3, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are 12 numbers").get(), "(12, 10)");
         aeq(genericFindIn(Arrays.asList(1, 12, 3)).apply("there is 1 number").get(), "(1, 9)");
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("there are no numbers").isPresent());
         assertFalse(genericFindIn(Arrays.asList(1, 12, 3)).apply("").isPresent());
         try {
-            genericFindIn(Arrays.asList(1, null, 3)).apply("there are 3 numbers");
+            genericFindIn(Arrays.asList(1, null, 3));
             fail();
         } catch (NullPointerException ignored) {}
-        genericFindIn(Arrays.asList(1, 1, 3)).apply("there are 3 numbers");
+        try {
+            genericFindIn(Arrays.asList(1, 1, 3));
+        } catch (IllegalArgumentException ignored) {}
 
         List<WordyIntegerWithNullToString> xs = new ArrayList<>();
         xs.add(new WordyIntegerWithNullToString(1));
@@ -118,7 +119,26 @@ public class ReadersTest {
     }
 
     @Test
-    public void testGenericFindIn_Function_T_Optional_T_String_String() {
+    public void testGenericFindIn_Function_String_Optional_T() {
+        Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
+            if (s.equals("one")) return Optional.of(new WordyInteger(1));
+            if (s.equals("two")) return Optional.of(new WordyInteger(2));
+            if (s.equals("three")) return Optional.of(new WordyInteger(3));
+            if (s.equals("one hundred")) return Optional.of(new WordyInteger(100));
+            return Optional.empty();
+        });
+        aeq(f.apply("vdfsmvlefqvehthreefdsz"), "Optional[(three, 13)]");
+        aeq(f.apply("vdfsmvldfonevfdsz"), "Optional[(one, 9)]");
+        aeq(f.apply("vdfsmvldfone hundredvfdsz"), "Optional[(many, 9)]");
+        aeq(f.apply("vdfsmvldfvfdsz"), "Optional.empty");
+        try {
+            genericFindIn(s -> null).apply("vdfsmvlefqvehthreefdsz");
+            fail();
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Test
+    public void testGenericFindIn_Function_String_Optional_T_String() {
         Function<String, Optional<Pair<WordyInteger, Integer>>> f = genericFindIn(s -> {
             if (s.equals("one")) return Optional.of(new WordyInteger(1));
             if (s.equals("two")) return Optional.of(new WordyInteger(2));
@@ -278,7 +298,7 @@ public class ReadersTest {
     }
 
     @Test
-     public void testReadShort() {
+    public void testReadShort() {
         aeq(readShort("0").get(), "0");
         aeq(readShort("5").get(), "5");
         aeq(readShort("-100").get(), "-100");
@@ -315,7 +335,7 @@ public class ReadersTest {
     }
 
     @Test
-     public void testReadInteger() {
+    public void testReadInteger() {
         aeq(readInteger("0").get(), "0");
         aeq(readInteger("5").get(), "5");
         aeq(readInteger("-100").get(), "-100");

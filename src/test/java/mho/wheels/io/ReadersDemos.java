@@ -3,21 +3,29 @@ package mho.wheels.io;
 import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.RandomProvider;
+import mho.wheels.structures.FiniteDomainFunction;
+import mho.wheels.structures.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
-import static mho.wheels.iterables.IterableUtils.fromString;
-import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {
     private static final boolean USE_RANDOM = false;
-    private static final String BOOLEAN_CHARS = "aeflrstu";
-    private static final String ORDERING_CHARS = "EGLQT";
-    private static final String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
-    private static final String INTEGRAL_CHARS = "-0123456789";
-    private static final String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
-    private static final String BIG_DECIMAL_CHARS = "+-.0123456789E";
+    private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
+    private static final @NotNull String ORDERING_CHARS = "EGLQT";
+    private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
+    private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
+    private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
+    private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
     private static int LIMIT;
+    private static final int SMALL_LIMIT = 1000;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -30,6 +38,46 @@ public class ReadersDemos {
         }
     }
 
+    private static void demoGenericRead() {
+        initialize();
+        Iterable<Pair<Function<String, Integer>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
+                P.pairs(P.strings(INTEGRAL_CHARS), P.withNull(P.integers()))
+        );
+        for (Pair<Function<String, Integer>, String> p : take(LIMIT, ps)) {
+            System.out.println("genericRead(" + p.a + ").apply(" + p.b + ") = " + genericRead(p.a).apply(p.b));
+        }
+    }
+
+    private static void demoGenericFindIn_List_T() {
+        initialize();
+        Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.distinctLists(P.integers()), P.strings(INTEGRAL_CHARS));
+        for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
+            String listString = tail(init(p.a.toString()));
+            System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
+                    genericFindIn(p.a).apply(p.b));
+        }
+    }
+
+    private static void demoGenericFindIn_Function_String_Optional_T() {
+        initialize();
+        Iterable<Pair<Function<String, Optional<Integer>>, String>> ps = map(
+                p -> new Pair<>(new FiniteDomainFunction<String, Optional<Integer>>(p.b), p.a),
+                P.dependentPairsInfinite(
+                        P.withScale(4).stringsAtLeast(1, INTEGRAL_CHARS),
+                        s -> P.maps(
+                                toList(filter(t -> !t.isEmpty(), ExhaustiveProvider.INSTANCE.substrings(s))),
+                                P.optionals(P.integersGeometric())
+                        )
+                )
+        );
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(SMALL_LIMIT, ps)) {
+            String listString = tail(init(p.a.toString()));
+            System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
+                    genericFindIn(p.a).apply(p.b));
+        }
+    }
+
     private static void demoReadBoolean() {
         initialize();
         for (String s : take(LIMIT, P.strings())) {
@@ -39,13 +87,7 @@ public class ReadersDemos {
 
     private static void demoReadBoolean_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(BOOLEAN_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(BOOLEAN_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("readBoolean(" + s + ") = " + readBoolean(s));
         }
     }
@@ -59,13 +101,7 @@ public class ReadersDemos {
 
     private static void demoFindBooleanIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(BOOLEAN_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(BOOLEAN_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(BOOLEAN_CHARS))) {
             System.out.println("findBooleanIn(" + s + ") = " + findBooleanIn(s));
         }
     }
@@ -79,13 +115,7 @@ public class ReadersDemos {
 
     private static void demoReadOrdering_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(ORDERING_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(ORDERING_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("readOrdering(" + s + ") = " + readOrdering(s));
         }
     }
@@ -99,13 +129,7 @@ public class ReadersDemos {
 
     private static void demoFindOrderingIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(ORDERING_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(ORDERING_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(ORDERING_CHARS))) {
             System.out.println("findOrderingIn(" + s + ") = " + findOrderingIn(s));
         }
     }
@@ -119,13 +143,7 @@ public class ReadersDemos {
 
     private static void demoReadRoundingMode_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(ROUNDING_MODE_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(ROUNDING_MODE_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("readRoundingMode(" + s + ") = " + readRoundingMode(s));
         }
     }
@@ -139,13 +157,7 @@ public class ReadersDemos {
 
     private static void demoFindRoundingModeIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(ROUNDING_MODE_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(ROUNDING_MODE_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(ROUNDING_MODE_CHARS))) {
             System.out.println("findRoundingModeIn(" + s + ") = " + findRoundingModeIn(s));
         }
     }
@@ -159,13 +171,7 @@ public class ReadersDemos {
 
     private static void demoReadBigInteger_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readBigInteger(" + s + ") = " + readBigInteger(s));
         }
     }
@@ -179,13 +185,7 @@ public class ReadersDemos {
 
     private static void demoFindBigIntegerIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findBigIntegerIn(" + s + ") = " + findBigIntegerIn(s));
         }
     }
@@ -199,13 +199,7 @@ public class ReadersDemos {
 
     private static void demoReadByte_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readByte(" + s + ") = " + readByte(s));
         }
     }
@@ -219,13 +213,7 @@ public class ReadersDemos {
 
     private static void demoFindByteIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findByteIn(" + s + ") = " + findByteIn(s));
         }
     }
@@ -239,13 +227,7 @@ public class ReadersDemos {
 
     private static void demoReadShort_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readShort(" + s + ") = " + readShort(s));
         }
     }
@@ -259,13 +241,7 @@ public class ReadersDemos {
 
     private static void demoFindShortIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findShortIn(" + s + ") = " + findShortIn(s));
         }
     }
@@ -279,13 +255,7 @@ public class ReadersDemos {
 
     private static void demoReadInteger_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readInteger(" + s + ") = " + readInteger(s));
         }
     }
@@ -299,13 +269,7 @@ public class ReadersDemos {
 
     private static void demoFindIntegerIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findIntegerIn(" + s + ") = " + findIntegerIn(s));
         }
     }
@@ -319,13 +283,7 @@ public class ReadersDemos {
 
     private static void demoReadLong_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("readLong(" + s + ") = " + readLong(s));
         }
     }
@@ -339,13 +297,7 @@ public class ReadersDemos {
 
     private static void demoFindLongIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(INTEGRAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(INTEGRAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(INTEGRAL_CHARS))) {
             System.out.println("findLongIn(" + s + ") = " + findLongIn(s));
         }
     }
@@ -359,13 +311,7 @@ public class ReadersDemos {
 
     private static void demoReadFloat_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(FLOATING_POINT_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readFloat(" + s + ") = " + readFloat(s));
         }
     }
@@ -379,13 +325,7 @@ public class ReadersDemos {
 
     private static void demoFindFloatIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(FLOATING_POINT_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findFloatIn(" + s + ") = " + findFloatIn(s));
         }
     }
@@ -399,13 +339,7 @@ public class ReadersDemos {
 
     private static void demoReadDouble_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(FLOATING_POINT_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("readDouble(" + s + ") = " + readDouble(s));
         }
     }
@@ -419,13 +353,7 @@ public class ReadersDemos {
 
     private static void demoFindDoubleIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(FLOATING_POINT_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(FLOATING_POINT_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(FLOATING_POINT_CHARS))) {
             System.out.println("findDoubleIn(" + s + ") = " + findDoubleIn(s));
         }
     }
@@ -439,13 +367,7 @@ public class ReadersDemos {
 
     private static void demoReadBigDecimal_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(BIG_DECIMAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(BIG_DECIMAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("readBigDecimal(" + s + ") = " + readBigDecimal(s));
         }
     }
@@ -459,13 +381,7 @@ public class ReadersDemos {
 
     private static void demoFindBigDecimalIn_targeted() {
         initialize();
-        Iterable<Character> cs;
-        if (P instanceof ExhaustiveProvider) {
-            cs = fromString(BIG_DECIMAL_CHARS);
-        } else {
-            cs = ((RandomProvider) P).uniformSample(BIG_DECIMAL_CHARS);
-        }
-        for (String s : take(LIMIT, P.strings(cs))) {
+        for (String s : take(LIMIT, P.strings(BIG_DECIMAL_CHARS))) {
             System.out.println("findBigDecimalIn(" + s + ") = " + findBigDecimalIn(s));
         }
     }

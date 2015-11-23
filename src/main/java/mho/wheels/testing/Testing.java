@@ -7,10 +7,10 @@ import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Assert;
 import org.junit.ComparisonFailure;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -21,6 +21,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 public strictfp class Testing {
+    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final int TINY_LIMIT = 20;
     private static final int SMALL_LIMIT = 128;
 
@@ -128,7 +129,7 @@ public strictfp class Testing {
     }
 
     private static void failNotEquals(Object message, Object expected, Object actual) {
-        fail(format(message.toString(), expected, actual));
+        fail(format(Objects.toString(message), expected, actual));
     }
 
     static String format(String message, Object expected, Object actual) {
@@ -252,7 +253,7 @@ public strictfp class Testing {
         assertEquals(x, f.andThen(f).apply(x), x);
     }
 
-    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @NotNull A x) {
+    public static <A, B> void inverses(@NotNull Function<A, B> f, @NotNull Function<B, A> g, @Nullable A x) {
         assertEquals(x, f.andThen(g).apply(x), x);
     }
 
@@ -337,19 +338,14 @@ public strictfp class Testing {
 
         ip.reset();
         iq.reset();
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
             symmetric(Object::equals, p);
         }
 
         ip.reset();
         iq.reset();
         ir.reset();
-        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
-                fxs.apply(ip),
-                fxs.apply(iq),
-                fxs.apply(ir)
-        );
-        for (Triple<T, T, T> t : take(limit, ts)) {
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
             transitive(Object::equals, t);
         }
     }
@@ -382,7 +378,7 @@ public strictfp class Testing {
 
         ip.reset();
         iq.reset();
-        for (Pair<T, T> p : take(limit, ExhaustiveProvider.INSTANCE.pairs(fxs.apply(ip), fxs.apply(iq)))) {
+        for (Pair<T, T> p : take(limit, EP.pairs(fxs.apply(ip), fxs.apply(iq)))) {
             int compare = p.a.compareTo(p.b);
             assertTrue(p, compare == 0 || compare == 1 || compare == -1);
             antiSymmetric(Ordering::le, p);
@@ -393,12 +389,7 @@ public strictfp class Testing {
         ip.reset();
         iq.reset();
         ir.reset();
-        Iterable<Triple<T, T, T>> ts = ExhaustiveProvider.INSTANCE.triples(
-                fxs.apply(ip),
-                fxs.apply(iq),
-                fxs.apply(ir)
-        );
-        for (Triple<T, T, T> t : take(limit, ts)) {
+        for (Triple<T, T, T> t : take(limit, EP.triples(fxs.apply(ip), fxs.apply(iq), fxs.apply(ir)))) {
             transitive(Ordering::le, t);
         }
     }
@@ -428,12 +419,27 @@ public strictfp class Testing {
         }
     }
 
+    public static <T> void testHasNext(@NotNull Iterable<T> xs) {
+        Iterator<T> it = xs.iterator();
+        while (it.hasNext()) {
+            it.next();
+        }
+        try {
+            it.next();
+            fail(xs);
+        } catch (Exception ignored) {}
+    }
+
     public static @NotNull <T> String its(@NotNull Iterable<T> xs) {
         return IterableUtils.toString(TINY_LIMIT, xs);
     }
 
-    public static @NotNull String cits(@NotNull Iterable<Character> xs) {
-        return nicePrint(take(SMALL_LIMIT, xs));
+    public static @NotNull String cits(@NotNull Iterable<Character> cs) {
+        return its(map(Testing::nicePrint, cs));
+    }
+
+    public static @NotNull String sits(@NotNull Iterable<String> ss) {
+        return its(map(Testing::nicePrint, ss));
     }
 
     public static @NotNull String nicePrint(char c) {
@@ -500,7 +506,7 @@ public strictfp class Testing {
         if (commutativeAndAssociative) {
             Iterable<Pair<List<T>, List<T>>> ps = filter(
                     q -> !q.a.equals(q.b),
-                    P.dependentPairs(P.lists(xs), P::permutations)
+                    P.dependentPairs(P.lists(xs), P::permutationsFinite)
             );
             for (Pair<List<T>, List<T>> p : take(limit, ps)) {
                 assertEquals(p, listF.apply(p.a), listF.apply(p.b));
@@ -526,18 +532,20 @@ public strictfp class Testing {
     public static <A, B> void propertiesDeltaHelper(
             int limit,
             @NotNull IterableProvider P,
+            @NotNull Iterable<A> exs,
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
             @NotNull Function<Iterable<A>, Iterable<B>> deltaF,
             @NotNull Consumer<B> validate
     ) {
-        propertiesDeltaHelperClean(limit, P, xs, negate, subtract, deltaF, validate, x -> x);
+        propertiesDeltaHelperClean(limit, P, exs, xs, negate, subtract, deltaF, validate, x -> x);
     }
 
     public static <A, B> void propertiesDeltaHelperClean(
             int limit,
             @NotNull IterableProvider P,
+            @NotNull Iterable<A> exs,
             @NotNull Iterable<A> xs,
             @NotNull Function<B, B> negate,
             @NotNull BiFunction<A, A, B> subtract,
@@ -552,6 +560,7 @@ public strictfp class Testing {
             Iterable<B> reversed = reverse(map(negate.andThen(clean), deltaF.apply(reverse(lxs))));
             aeqit(lxs, deltas, reversed);
             testNoRemove(TINY_LIMIT, deltas);
+            testHasNext(deltas);
         }
 
         for (A x : take(limit, xs)) {
@@ -566,11 +575,7 @@ public strictfp class Testing {
             );
         }
 
-        Iterable<Iterable<A>> xss = map(
-                IterableUtils::cycle,
-                nub(map(IterableUtils::unrepeat, P.listsAtLeast(1, xs)))
-        );
-        for (Iterable<A> ixs : take(limit, xss)) {
+        for (Iterable<A> ixs : take(limit, EP.prefixPermutations(exs))) {
             Iterable<B> deltas = deltaF.apply(ixs);
             List<B> deltaPrefix = toList(take(TINY_LIMIT, deltas));
             deltaPrefix.forEach(validate);
@@ -605,7 +610,7 @@ public strictfp class Testing {
         }
 
         if (denseInUsedCharString) {
-            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(P.uniformSample(usedChars)));
+            Iterable<String> ss = filter(s -> read.apply(s).isPresent(), P.strings(usedChars));
             for (String s : take(limit, ss)) {
                 Optional<T> ox = read.apply(s);
                 validate.accept(ox.get());
@@ -655,5 +660,83 @@ public strictfp class Testing {
             assertTrue(x, ox.isPresent());
             assertEquals(x, ox.get(), x);
         }
+    }
+
+    public static <A, B> void benchmark(
+            int trialCount,
+            @NotNull String method,
+            @NotNull Iterable<A> inputs,
+            @NotNull Function<A, B> function,
+            @NotNull Function<A, List<Integer>> sizeFunction
+    ) {
+        benchmark(trialCount, method, inputs, function, Object::toString, sizeFunction);
+    }
+
+    public static <A, B> void benchmark(
+            int trialCount,
+            @NotNull String method,
+            @NotNull Iterable<A> inputs,
+            @NotNull Function<A, B> function,
+            @NotNull Function<A, String> display,
+            @NotNull Function<A, List<Integer>> sizeFunction
+    ) {
+        System.out.println("benchmarking " + method + "...");
+        List<Map<Integer, Pair<A, Long>>> worstCasesList = new ArrayList<>();
+        for (A input : inputs) {
+            long[] trials = new long[trialCount];
+            for (int i = 0; i < trialCount; i++) {
+                long trialTime = System.nanoTime();
+                function.apply(input);
+                trials[i] = System.nanoTime() - trialTime;
+            }
+            long time = middleMean(trials);
+            List<Integer> sizes = sizeFunction.apply(input);
+            if (worstCasesList.isEmpty()) {
+                for (int i = 0; i < sizes.size(); i++) {
+                    worstCasesList.add(new TreeMap<>());
+                }
+            }
+            for (int i = 0; i < sizes.size(); i++) {
+                Map<Integer, Pair<A, Long>> worstCases = worstCasesList.get(i);
+                Pair<A, Long> worstCase = worstCases.get(sizes.get(i));
+                if (worstCase == null || time > worstCase.b) {
+                    worstCase = new Pair<>(input, time);
+                    worstCases.put(sizes.get(i), worstCase);
+                }
+            }
+        }
+        for (Map<Integer, Pair<A, Long>> worstCases : worstCasesList) {
+            for (Map.Entry<Integer, Pair<A, Long>> worstCase : worstCases.entrySet()) {
+                System.out.println(worstCase.getKey() + "\t" + display.apply(worstCase.getValue().a) + "\t" +
+                        ((double) worstCase.getValue().b) / 1e9);
+            }
+            System.out.println();
+        }
+    }
+
+    private static long median(long[] xs) {
+        Arrays.sort(xs);
+        int mid = xs.length / 2;
+        return (xs.length & 1) == 1 ? xs[mid] : (xs[mid - 1] + xs[mid]) / 2;
+    }
+
+    private static long sum(long[] xs) {
+        long result = 0;
+        for (long x : xs) {
+            result += x;
+        }
+        return result;
+    }
+
+    private static long middleMean(long[] xs) {
+        if (xs.length == 1) return xs[0];
+        Arrays.sort(xs);
+        int a = xs.length / 4;
+        int b = xs.length * 3 / 4;
+        long sum = 0;
+        for (int i = a; i <= b; i++) {
+            sum += xs[i];
+        }
+        return sum / (b - a + 1);
     }
 }

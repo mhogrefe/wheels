@@ -31,7 +31,7 @@ public class BigDecimalUtils {
     private BigDecimalUtils() {}
 
     /**
-     * Finds the largest integer p such that {@code n}≤10<sup>p</sup>.
+     * Finds the largest integer p such that {@code bd}≤10<sup>p</sup>.
      *
      * <ul>
      *  <li>{@code bd} must be positive.</li>
@@ -39,7 +39,7 @@ public class BigDecimalUtils {
      * </ul>
      *
      * @param bd a positive {@code BigDecimal}
-     * @return ⌈log<sub>10</sub>({@code n})⌉
+     * @return ⌈log<sub>10</sub>({@code bd})⌉
      */
     public static int ceilingLog10(@NotNull BigDecimal bd) {
         if (bd.signum() != 1) {

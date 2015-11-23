@@ -12,6 +12,7 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.iterate;
 import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionTest {
@@ -339,7 +340,7 @@ public strictfp class BinaryFractionTest {
         aeq(justAboveZero.floatRange(), "(0.0, 1.4E-45)");
         aeq(justBelowZero.floatRange(), "(-1.4E-45, -0.0)");
     }
-    
+
     private static void doubleRange_helper(@NotNull String input, @NotNull String output) {
         aeq(read(input).get().doubleRange(), output);
     }

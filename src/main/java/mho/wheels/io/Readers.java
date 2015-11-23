@@ -17,7 +17,8 @@ import static mho.wheels.iterables.IterableUtils.*;
 
 /**
  * Methods for reading values from a {@code String}. Unlike Java's standard parsing methods, these never throw an
- * exception. Instead, they return empty {@code Optional}s.
+ * exception. Instead, they return empty {@code Optional}s. Methods for finding the first occurrence of a value in a
+ * {@code String} are also provided.
  */
 public class Readers {
     /**
@@ -61,7 +62,8 @@ public class Readers {
      *
      * @param read the original read function
      * @param <T> the type of value read by {@code read}
-     * @return a function which behaves like {@code read} but doesn't throw exceptions
+     * @return a function which behaves like {@code read} but doesn't throw exceptions and only accepts {@code String}s
+     * that can be returned by {@code T}'s {@code toString} method
      */
     @SuppressWarnings("JavaDoc")
     public static @NotNull <T> Function<String, Optional<T>> genericRead(@NotNull Function<String, T> read) {
@@ -78,22 +80,28 @@ public class Readers {
     }
 
     /**
-     * Given a small {@code Iterable} of values, returns a function which takes a {@code String} and returns the first
-     * occurrence of one of those values in the {@code String} as determined by the values' {@code toString} method. If
-     * two different values occur at the same index (meaning that one is a prefix of the other), the longer value is
-     * preferred. The value is returned along with the index at which it is found. If no value is found, an empty
-     * {@code Optional} is returned.
+     * Given a small {@code List} of unique values, returns a function which takes a {@code String} and returns the
+     * first occurrence of one of those values in the {@code String} as determined by the values' {@code toString}
+     * method. If two different values occur at the same index (meaning that one is a prefix of the other), the longer
+     * value is preferred. The value is returned along with the index at which it is found. If no value is found, an
+     * empty {@code Optional} is returned.
      *
      * <ul>
-     *  <li>{@code xs} cannot contain any nulls.</li>
+     *  <li>{@code xs} cannot contain any nulls and cannot contain any duplicates.</li>
      *  <li>{@code T}'s {@code toString} method must terminate on each of {@code xs} without returning a null.</li>
      * </ul>
      *
-     * @param xs an {@code Iterable} of values
+     * @param xs a {@code List} of values
      * @param <T> the type of the values in {@code xs}
      * @return a function which takes a {@code String} and returns the first occurrence of a value
      */
-    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull Iterable<T> xs) {
+    public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(@NotNull List<T> xs) {
+        if (any(x -> x == null, xs)) {
+            throw new NullPointerException("xs cannot contain any nulls.");
+        }
+        if (!unique(xs)) {
+            throw new IllegalArgumentException("xs cannot contain any duplicates.");
+        }
         return s -> {
             Iterable<Triple<T, String, Integer>> candidates = filter(
                     u -> u.c != -1,
@@ -118,6 +126,24 @@ public class Readers {
         };
     }
 
+    /**
+     * Given a function {@code read} which takes a {@code String} and returns an optional value of type {@code T},
+     * returns a function which finds the first occurrence of a value of {@code T}, according to {@code read}. If there
+     * is a tie for the first occurrence, the value of {@code T} with the longest corresponding {@code String} is
+     * selected. The output is an optional {@code Pair}. if nothing can be found, the result is empty; otherwise, the
+     * first element of the pair is the value found and the second is the index at which it was found.
+     *
+     * <ul>
+     *  <li>{@code read} cannot be null.</li>
+     *  <li>The result must be applied to {@code String}s {@code s} such that {@code read}, when applied to any
+     *  substring of {@code s}, terminates and does not return null (this condition is not checked for every
+     *  substring).</li>
+     * </ul>
+     *
+     * @param read a function which reads a {@code String} as a value
+     * @param <T> the type of value being searched for
+     * @return a function which takes a {@code String} and returns the first occurrence of a value
+     */
     public static @NotNull <T> Function<String, Optional<Pair<T, Integer>>> genericFindIn(
             @NotNull Function<String, Optional<T>> read
     ) {
@@ -147,7 +173,7 @@ public class Readers {
      *  possibly contain. (This precondition is not checked.)</li>
      *  <li>{@code s} cannot be null.</li>
      *  <li>The result must be called on {@code String}s {@code s} such that {@code read} always terminates and never
-     *  returns a null on any substring of {@code s}. (This precondition is not checked for every substring.)</li>
+     *  returns a null on any substring of {@code s} (this precondition is not checked for every substring).</li>
      * </ul>
      *
      * @param read a function which converts a {@code String} to a value.
@@ -159,6 +185,7 @@ public class Readers {
             @NotNull Function<String, Optional<T>> read,
             @NotNull String usedChars
     ) {
+        Function<String, Optional<Pair<T, Integer>>> findIn = genericFindIn(read);
         return s -> {
             if (isEmpty(s)) return Optional.empty();
             Iterable<String> grouped = group(p -> elem(p.a, usedChars) == elem(p.b, usedChars), s);
@@ -169,7 +196,6 @@ public class Readers {
             } else {
                 mask = cycle(Arrays.asList(false, true));
             }
-            Function<String, Optional<Pair<T, Integer>>> findIn = genericFindIn(read);
             for (Pair<String, Integer> p : select(mask, zip(grouped, indices))) {
                 Optional<Pair<T, Integer>> oResult = findIn.apply(p.a);
                 if (oResult.isPresent()) {
@@ -726,6 +752,7 @@ public class Readers {
      * @param s the input {@code String}
      * @return ({@code s}, 0)
      */
+    @SuppressWarnings("JavaDoc")
     public static @NotNull Optional<Pair<String, Integer>> findStringIn(@NotNull String s) {
         return Optional.of(new Pair<>(s, 0));
     }
@@ -960,7 +987,7 @@ public class Readers {
         return s -> {
             if (s.length() < 2 || head(s) != '[' || last(s) != ']') return Optional.empty();
             s = tail(init(s));
-            if (s.isEmpty()) return Optional.of(new ArrayList<T>());
+            if (s.isEmpty()) return Optional.of(new ArrayList<>());
             String[] tokens = s.split(", ");
             List<T> result = new ArrayList<>();
             int i;
