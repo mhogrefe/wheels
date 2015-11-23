@@ -1919,6 +1919,49 @@ public class RandomProviderDemos {
         }
     }
 
+    private static void demoRandomProvidersFixedScales() {
+        initialize();
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.integersGeometric(),
+                P.integersGeometric()
+        );
+        for (Triple<RandomProvider, Integer, Integer> t : take(SMALL_LIMIT, ts)) {
+            System.out.println("randomProvidersFixedScales(" + t.a + ", " + t.b + ", " + t.c + ") = " +
+                    its(t.a.randomProvidersFixedScales(t.b, t.c)));
+        }
+    }
+
+    private static void demoRandomProvidersDefault() {
+        initialize();
+        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+            System.out.println("randomProvidersDefault(" + rp + ") = " + its(rp.randomProvidersDefault()));
+        }
+    }
+
+    private static void demoRandomProvidersDefaultSecondaryScale() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("randomProvidersDefaultSecondaryScale(" + rp + ") = " +
+                    its(rp.randomProvidersDefaultSecondaryScale()));
+        }
+    }
+
+    private static void demoRandomProviders() {
+        initialize();
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+            System.out.println("randomProviders(" + rp + ") = " + its(rp.randomProviders()));
+        }
+    }
+
     private static void demoEquals_RandomProvider() {
         initialize();
         for (Pair<RandomProvider, RandomProvider> p : take(LIMIT, P.pairs(P.randomProviders()))) {
