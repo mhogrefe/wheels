@@ -9,7 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.testing.Testing.*;
-import static mho.wheels.testing.Testing.assertEquals;
 
 public class NoRemoveIteratorProperties {
     private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;

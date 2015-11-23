@@ -14,7 +14,6 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.iterables.IterableUtils.take;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos {

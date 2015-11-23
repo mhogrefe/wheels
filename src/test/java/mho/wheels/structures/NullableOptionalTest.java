@@ -9,7 +9,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static mho.wheels.structures.NullableOptional.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.aeq;
+import static mho.wheels.testing.Testing.testEqualsHelper;
 import static org.junit.Assert.*;
 
 public class NullableOptionalTest {

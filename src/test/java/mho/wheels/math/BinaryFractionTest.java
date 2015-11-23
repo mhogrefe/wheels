@@ -12,6 +12,7 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.iterate;
 import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionTest {

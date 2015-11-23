@@ -6,8 +6,9 @@ import mho.wheels.iterables.RandomProvider;
 
 import java.util.Optional;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.structures.NullableOptional.*;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.structures.NullableOptional.fromOptional;
+import static mho.wheels.structures.NullableOptional.of;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NullableOptionalDemos {

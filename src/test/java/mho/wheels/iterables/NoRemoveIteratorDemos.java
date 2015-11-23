@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 import java.util.List;
 
-import static mho.wheels.iterables.IterableUtils.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.iterables.IterableUtils.take;
+import static mho.wheels.testing.Testing.its;
 
 @SuppressWarnings("UnusedDeclaration")
 public class NoRemoveIteratorDemos {
