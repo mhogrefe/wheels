@@ -9837,7 +9837,7 @@ public class ExhaustiveProviderProperties {
     }
 
     private static void propertiesRandomProviders() {
-        initializeConstant("randomProviders");
+        initializeConstant("randomProviders()");
         biggerTest(EP, EP.randomProviders(), rp -> true);
         for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProviders())) {
             rp.validate();
