@@ -18,11 +18,11 @@ Progress
 | CachedIterator              | ✔       | ✘       | ✘     | ✘     | ✘          |
 | EventuallyKnownSizeIterator | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ExhaustiveProvider          | ✔       | ✔       | ✔     | ✔     | ✔          |
-| IterableProvider            | ✔       | ✔       | ✘     | ✘     | ✘          |
+| IterableProvider            | ✔       | ✔       | ✔     | ✘     | ✘          |
 | IterableUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterable            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterator            | ✔       | ✔       | ✔     | ✔     | ✔          |
-| RandomProvider              | ✘       | ✔       | ✘     | ✘     | ✘          |
+| RandomProvider              | ✘       | ✔       | ✔     | ✘     | ✘          |
 | BinaryFraction              | ✔       | ✔       | ✔     | ✔     | ✔          |
 | MathUtils                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
