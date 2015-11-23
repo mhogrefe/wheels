@@ -102,6 +102,9 @@ public class ExhaustiveProviderProperties {
         propertiesDistinctStrings();
         propertiesStringBags();
         propertiesStringSubsets();
+        propertiesRandomProvidersDefault();
+        propertiesRandomProvidersDefaultSecondaryScale();
+        propertiesRandomProviders();
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
         configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
         configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
@@ -303,6 +306,7 @@ public class ExhaustiveProviderProperties {
             propertiesStringsWithSubstrings_Iterable_String_String();
             propertiesStringsWithSubstrings_Iterable_String();
             propertiesMaps();
+            propertiesRandomProvidersFixedScales();
         }
         System.out.println("Done");
     }
@@ -9799,6 +9803,44 @@ public class ExhaustiveProviderProperties {
         Iterable<List<Integer>> xss = P.withScale(4).distinctListsAtLeast(1, P.withNull(P.integersGeometric()));
         for (List<Integer> xs : take(LIMIT, xss)) {
             assertTrue(xs, isEmpty(EP.maps(xs, Collections.emptyList())));
+        }
+    }
+
+    private static void propertiesRandomProvidersFixedScales() {
+        initialize("randomProvidersFixedScales(int, int)");
+        for (Pair<Integer, Integer> p : take(SMALL_LIMIT, P.pairs(P.integersGeometric()))) {
+            Iterable<RandomProvider> rps = EP.randomProvidersFixedScales(p.a, p.b);
+            testNoRemove(TINY_LIMIT, rps);
+            List<RandomProvider> rpsList = toList(take(TINY_LIMIT, rps));
+            for (RandomProvider rp : rpsList) {
+                rp.validate();
+            }
+            assertTrue(p, all(rp -> rp.getScale() == p.a && rp.getSecondaryScale() == p.b, rpsList));
+            assertTrue(p, unique(rpsList));
+        }
+    }
+
+    private static void propertiesRandomProvidersDefault() {
+        initializeConstant("randomProvidersDefault()");
+        biggerTest(EP, EP.randomProvidersDefault(), rp -> rp.getScale() == 32 && rp.getSecondaryScale() == 8);
+        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefault())) {
+            rp.validate();
+        }
+    }
+
+    private static void propertiesRandomProvidersDefaultSecondaryScale() {
+        initializeConstant("randomProvidersDefaulSecondaryScale()");
+        biggerTest(EP, EP.randomProvidersDefaultSecondaryScale(), rp -> rp.getSecondaryScale() == 8);
+        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefaultSecondaryScale())) {
+            rp.validate();
+        }
+    }
+
+    private static void propertiesRandomProviders() {
+        initializeConstant("randomProviders");
+        biggerTest(EP, EP.randomProviders(), rp -> true);
+        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProviders())) {
+            rp.validate();
         }
     }
 }

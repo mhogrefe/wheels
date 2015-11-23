@@ -17,7 +17,7 @@ Progress
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterator              | ✔       | ✘       | ✘     | ✘     | ✘          |
 | EventuallyKnownSizeIterator | ✔       | ✘       | ✘     | ✘     | ✘          |
-| ExhaustiveProvider          | ✔       | ✔       | ✔     | ✔     | ✘          |
+| ExhaustiveProvider          | ✔       | ✔       | ✔     | ✔     | ✔          |
 | IterableProvider            | ✔       | ✔       | ✘     | ✘     | ✘          |
 | IterableUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterable            | ✔       | ✘       | ✘     | ✘     | ✘          |
