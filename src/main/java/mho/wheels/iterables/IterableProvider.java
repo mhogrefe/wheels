@@ -2535,6 +2535,12 @@ public abstract strictfp class IterableProvider {
         return map(xs -> toMap(zip(ks, xs)), lists(ks.size(), vs));
     }
 
+    /**
+     * Generates all {@code RandomProvider}s with a fixed {@code scale} and {@code secondaryScale}.
+     *
+     * @param scale the {@code scale} of the generated {@code RandomProvider}s
+     * @param secondaryScale the {@code secondaryScale} of the generated {@code RandomProvider}s
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersFixedScales(int scale, int secondaryScale) {
         return map(
                 is -> new RandomProvider(is).withScale(scale).withSecondaryScale(secondaryScale),
@@ -2542,21 +2548,30 @@ public abstract strictfp class IterableProvider {
         );
     }
 
-    public @NotNull Iterable<RandomProvider> randomProviders() {
-        return map(
-                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
-                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
-        );
-    }
-
+    /**
+     * Generates all {@code RandomProvider}s with the default {@code scale} and {@code secondaryScale}.
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersDefault() {
         return map(RandomProvider::new, lists(IsaacPRNG.SIZE, integers()));
     }
 
+    /**
+     * Generates all {@code RandomProvider}s with the default {@code secondaryScale}.
+     */
     public @NotNull Iterable<RandomProvider> randomProvidersDefaultSecondaryScale() {
         return map(
                 p -> new RandomProvider(p.a).withScale(p.b),
                 pairs(lists(IsaacPRNG.SIZE, integers()), integersGeometric())
+        );
+    }
+
+    /**
+     * Generates all {@code RandomProvider}s.
+     */
+    public @NotNull Iterable<RandomProvider> randomProviders() {
+        return map(
+                p -> new RandomProvider(p.a).withScale(p.b.a).withSecondaryScale(p.b.b),
+                pairs(lists(IsaacPRNG.SIZE, integers()), pairs(integersGeometric()))
         );
     }
 }
