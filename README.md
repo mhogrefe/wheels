@@ -17,12 +17,12 @@ Progress
 | TextOutput                  | ✔       | ✘       | ✘     | ✘     | ✘          |
 | CachedIterator              | ✔       | ✘       | ✘     | ✘     | ✘          |
 | EventuallyKnownSizeIterator | ✔       | ✘       | ✘     | ✘     | ✘          |
-| ExhaustiveProvider          | ✔       | ✘       | ✘     | ✘     | ✘          |
-| IterableProvider            | ✔       | ✘       | ✘     | ✘     | ✘          |
+| ExhaustiveProvider          | ✔       | ✔       | ✔     | ✘     | ✘          |
+| IterableProvider            | ✔       | ✔       | ✘     | ✘     | ✘          |
 | IterableUtils               | ✘       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterable            | ✔       | ✘       | ✘     | ✘     | ✘          |
 | NoRemoveIterator            | ✔       | ✔       | ✔     | ✔     | ✔          |
-| RandomProvider              | ✘       | ✘       | ✘     | ✘     | ✘          |
+| RandomProvider              | ✘       | ✔       | ✘     | ✘     | ✘          |
 | BinaryFraction              | ✔       | ✔       | ✔     | ✔     | ✔          |
 | MathUtils                   | ✔       | ✘       | ✘     | ✘     | ✘          |
 | BigDecimalUtils             | ✔       | ✔       | ✔     | ✔     | ✔          |
