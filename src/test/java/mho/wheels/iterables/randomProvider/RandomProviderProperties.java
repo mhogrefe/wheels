@@ -225,6 +225,10 @@ public class RandomProviderProperties {
             propertiesStringsWithSubstrings_Iterable_String_String();
             propertiesStringsWithSubstrings_Iterable_String();
             propertiesMaps();
+            propertiesRandomProvidersFixedScales();
+            propertiesRandomProvidersDefault();
+            propertiesRandomProvidersDefaultSecondaryScale();
+            propertiesRandomProviders();
             propertiesEquals();
             propertiesHashCode();
             propertiesToString();
@@ -4428,6 +4432,85 @@ public class RandomProviderProperties {
         for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             List<Integer> sortedKeys = sort(withNullComparator, t.b);
             simpleTest(t.a, t.a.maps(t.b, t.c), m -> sort(withNullComparator, m.keySet()).equals(sortedKeys));
+        }
+    }
+
+    private static void propertiesRandomProvidersFixedScales() {
+        initialize("randomProvidersFixedScales(int, int)");
+        Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
+                P.randomProvidersDefault(),
+                P.integersGeometric(),
+                P.integersGeometric()
+        );
+        for (Triple<RandomProvider, Integer, Integer> t : take(LIMIT, ts)) {
+            simpleTest(
+                    t.a,
+                    t.a.randomProvidersFixedScales(t.b, t.c),
+                    rp -> rp.getScale() == t.b && rp.getSecondaryScale() == t.c
+            );
+            for (RandomProvider rp : take(TINY_LIMIT, t.a.randomProvidersFixedScales(t.b, t.c))) {
+                rp.validate();
+            }
+        }
+    }
+
+    private static void propertiesRandomProvidersDefault() {
+        initialize("randomProvidersDefault()");
+        for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
+            simpleTest(rp, rp.randomProvidersDefault(), s -> s.getScale() == 32 && s.getSecondaryScale() == 8);
+            for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefault())) {
+                s.validate();
+            }
+        }
+    }
+
+    private static void propertiesRandomProvidersDefaultSecondaryScale() {
+        initialize("randomProvidersSecondaryScale()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            simpleTest(rp, rp.randomProvidersDefaultSecondaryScale(), s -> s.getSecondaryScale() == 8);
+            for (RandomProvider s : take(TINY_LIMIT, rp.randomProvidersDefaultSecondaryScale())) {
+                s.validate();
+            }
+        }
+
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                rp -> rp.getScale() <= 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.randomProvidersDefaultSecondaryScale();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
+        }
+    }
+
+    private static void propertiesRandomProviders() {
+        initialize("randomProviders()");
+        Iterable<RandomProvider> rps = filterInfinite(
+                rp -> rp.getScale() > 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rps)) {
+            simpleTest(rp, rp.randomProviders(), s -> true);
+            for (RandomProvider s : take(TINY_LIMIT, rp.randomProviders())) {
+                s.validate();
+            }
+        }
+
+        Iterable<RandomProvider> rpsFail = filterInfinite(
+                rp -> rp.getScale() <= 0,
+                P.randomProvidersDefaultSecondaryScale()
+        );
+        for (RandomProvider rp : take(LIMIT, rpsFail)) {
+            try {
+                rp.randomProviders();
+                fail(rp);
+            } catch (IllegalStateException ignored) {}
         }
     }
 
