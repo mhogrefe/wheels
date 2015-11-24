@@ -42,25 +42,6 @@ public class RandomProviderProperties {
         System.out.println("\t\ttesting " + name + " properties...");
     }
 
-    private static <T> void simpleTestWithNulls(
-            @NotNull RandomProvider rp,
-            @NotNull Iterable<T> xs,
-            @NotNull Predicate<T> predicate
-    ) {
-        rp.reset();
-        assertTrue(rp, all(predicate, take(TINY_LIMIT, xs)));
-        rp.reset();
-        testNoRemove(TINY_LIMIT, xs);
-    }
-
-    private static <T> void simpleTest(
-            @NotNull RandomProvider rp,
-            @NotNull Iterable<T> xs,
-            @NotNull Predicate<T> predicate
-    ) {
-        simpleTestWithNulls(rp, xs, x -> x != null && predicate.test(x));
-    }
-
     @Test
     public void testAllProperties() {
         List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
@@ -253,6 +234,25 @@ public class RandomProviderProperties {
             propertiesToString();
         }
         System.out.println("Done");
+    }
+
+    private static <T> void simpleTestWithNulls(
+            @NotNull RandomProvider rp,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        rp.reset();
+        assertTrue(rp, all(predicate, take(TINY_LIMIT, xs)));
+        rp.reset();
+        testNoRemove(TINY_LIMIT, xs);
+    }
+
+    private static <T> void simpleTest(
+            @NotNull RandomProvider rp,
+            @NotNull Iterable<T> xs,
+            @NotNull Predicate<T> predicate
+    ) {
+        simpleTestWithNulls(rp, xs, x -> x != null && predicate.test(x));
     }
 
     private static void propertiesConstructor() {
