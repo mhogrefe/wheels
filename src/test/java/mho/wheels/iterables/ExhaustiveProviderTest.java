@@ -97,183 +97,183 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testLongsIncreasing() {
-        aeqit(take(TINY_LIMIT, P.longsIncreasing()),
+        simpleProviderHelper(P.longsIncreasing(),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
                 " -9223372036854775796, -9223372036854775795, -9223372036854775794, -9223372036854775793," +
-                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789]");
+                " -9223372036854775792, -9223372036854775791, -9223372036854775790, -9223372036854775789, ...]");
     }
 
     @Test
     public void testPositiveBytes() {
         aeq(length(P.positiveBytes()), 127);
-        aeqit(
-                take(TINY_LIMIT, P.positiveBytes()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
-        );
+        simpleProviderHelper(P.positiveBytes(),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveShorts() {
         aeq(length(P.positiveShorts()), 32767);
-        aeqit(
-                take(TINY_LIMIT, P.positiveShorts()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]"
-        );
+        simpleProviderHelper(P.positiveShorts(),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveIntegers() {
-        aeqit(take(TINY_LIMIT, P.positiveIntegers()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        simpleProviderHelper(P.positiveIntegers(),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveLongs() {
-        aeqit(take(TINY_LIMIT, P.positiveLongs()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        simpleProviderHelper(P.positiveLongs(),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.positiveBigIntegers()),
-                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]");
+        simpleProviderHelper(P.positiveBigIntegers(),
+                "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testNegativeBytes() {
         aeq(length(P.negativeBytes()), 128);
-        aeqit(take(TINY_LIMIT, P.negativeBytes()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        simpleProviderHelper(P.negativeBytes(),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeShorts() {
         aeq(length(P.negativeShorts()), 32768);
-        aeqit(take(TINY_LIMIT, P.negativeShorts()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        simpleProviderHelper(P.negativeShorts(),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeIntegers() {
-        aeqit(take(TINY_LIMIT, P.negativeIntegers()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        simpleProviderHelper(P.negativeIntegers(),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeLongs() {
-        aeqit(take(TINY_LIMIT, P.negativeLongs()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        simpleProviderHelper(P.negativeLongs(),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.negativeBigIntegers()),
-                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20]");
+        simpleProviderHelper(P.negativeBigIntegers(),
+                "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNaturalBytes() {
         aeq(length(P.naturalBytes()), 128);
-        aeqit(take(TINY_LIMIT, P.naturalBytes()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        simpleProviderHelper(P.naturalBytes(),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalShorts() {
         aeq(length(P.naturalShorts()), 32768);
-        aeqit(take(TINY_LIMIT, P.naturalShorts()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        simpleProviderHelper(P.naturalShorts(),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalIntegers() {
-        aeqit(take(TINY_LIMIT, P.naturalIntegers()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        simpleProviderHelper(P.naturalIntegers(),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalLongs() {
-        aeqit(take(TINY_LIMIT, P.naturalLongs()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        simpleProviderHelper(P.naturalLongs(),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.naturalBigIntegers()),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        simpleProviderHelper(P.naturalBigIntegers(),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNonzeroBytes() {
         Iterable<Byte> bs = P.nonzeroBytes();
         aeq(length(bs), 255);
-        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
-        aeqit(take(TINY_LIMIT, bs), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+        aeqitLimit(TINY_LIMIT, reverse(bs),
+                "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
+                " -119, 119, -118, ...]");
+        simpleProviderHelper(bs, "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroShorts() {
         Iterable<Short> ss = P.nonzeroShorts();
         aeq(length(ss), 65535);
-        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
-        aeqit(take(TINY_LIMIT, ss), "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+        aeqitLimit(TINY_LIMIT, reverse(ss),
+                "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
+                " -32761, 32761, -32760, 32760, -32759, 32759, -32758, ...]");
+        simpleProviderHelper(ss, "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroIntegers() {
-        aeqit(
-                take(TINY_LIMIT, P.nonzeroIntegers()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
-        );
+        simpleProviderHelper(P.nonzeroIntegers(),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroLongs() {
-        aeqit(take(TINY_LIMIT, P.nonzeroLongs()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]");
+        simpleProviderHelper(P.nonzeroLongs(),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroBigIntegers() {
-        aeqit(
-                take(TINY_LIMIT, P.nonzeroBigIntegers()),
-                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10]"
-        );
+        simpleProviderHelper(P.nonzeroBigIntegers(),
+                "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testBytes() {
         Iterable<Byte> bs = P.bytes();
         aeq(length(bs), 256);
-        aeqit(take(5, reverse(bs)), "[-128, -127, 127, -126, 126]");
-        aeqit(take(TINY_LIMIT, bs), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeqitLimit(TINY_LIMIT, reverse(bs),
+                "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
+                " -119, 119, -118, ...]");
+        simpleProviderHelper(bs, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testShorts() {
         Iterable<Short> ss = P.shorts();
         aeq(length(ss), 65536);
-        aeqit(take(5, reverse(ss)), "[-32768, -32767, 32767, -32766, 32766]");
-        aeqit(take(TINY_LIMIT, ss), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        aeqitLimit(TINY_LIMIT, reverse(ss),
+                "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
+                " -32761, 32761, -32760, 32760, -32759, 32759, -32758, ...]");
+        simpleProviderHelper(ss, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testIntegers() {
-        aeqit(take(TINY_LIMIT, P.integers()),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        simpleProviderHelper(P.integers(),
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testLongs() {
-        aeqit(take(TINY_LIMIT, P.longs()), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        simpleProviderHelper(P.longs(), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testBigIntegers() {
-        aeqit(take(TINY_LIMIT, P.bigIntegers()),
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        simpleProviderHelper(P.bigIntegers(),
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
