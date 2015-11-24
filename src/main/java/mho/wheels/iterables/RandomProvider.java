@@ -34,9 +34,9 @@ import static mho.wheels.testing.Testing.*;
  * an instance which copies the generator, use {@link RandomProvider#deepCopy()}.</p>
  *
  * <p>Note that sometimes the documentation will say things like "returns an {@code Iterable} containing all
- * {@code String}s". This cannot strictly be true, since {@link java.util.Random} has a finite period, and will
- * therefore produce only a finite number of {@code String}s. So in general, the documentation often pretends that the
- * source of randomness is perfect (but still deterministic).</p>
+ * {@code String}s". This cannot strictly be true, since {@code IsaacPRNG} has a finite period, and will therefore
+ * produce only a finite number of {@code String}s. So in general, the documentation often pretends that the source of
+ * randomness is perfect (but still deterministic).</p>
  */
 public final strictfp class RandomProvider extends IterableProvider {
     /**
