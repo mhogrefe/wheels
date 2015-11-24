@@ -331,73 +331,72 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_byte_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp((byte) a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeUp((byte) a), output);
     }
 
     @Test
     public void testRangeUp_byte() {
-        rangeUp_byte_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_byte_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_byte_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_byte_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        rangeUp_byte_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
+        rangeUp_byte_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
         rangeUp_byte_helper(Byte.MAX_VALUE, "[127]");
-        rangeUp_byte_helper(Byte.MIN_VALUE, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        rangeUp_byte_helper(Byte.MIN_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     private static void rangeUp_short_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp((short) a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeUp((short) a), output);
     }
 
     @Test
     public void testRangeUp_short() {
-        rangeUp_short_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_short_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_short_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_short_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        rangeUp_short_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
+        rangeUp_short_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
         rangeUp_short_helper(Short.MAX_VALUE, "[32767]");
-        rangeUp_short_helper(
-                Short.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]"
-        );
+        rangeUp_short_helper(Short.MIN_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
     }
 
     @Test
     public void testRangeUp_int() {
-        rangeUp_int_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_int_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_int_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_int_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        rangeUp_int_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
+        rangeUp_int_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
         rangeUp_int_helper(Integer.MAX_VALUE, "[2147483647]");
-        rangeUp_int_helper(
-                Integer.MIN_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]"
-        );
+        rangeUp_int_helper(Integer.MIN_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp(a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
     }
 
     @Test
     public void testRangeUp_long() {
-        rangeUp_long_helper(0L, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_long_helper(5L, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_long_helper(-5L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_long_helper(0L, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        rangeUp_long_helper(5L, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
+        rangeUp_long_helper(-5L, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
         rangeUp_long_helper(Long.MAX_VALUE, "[9223372036854775807]");
-        rangeUp_long_helper(Long.MIN_VALUE, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]");
+        rangeUp_long_helper(Long.MIN_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeUp(BigInteger.valueOf(a))), output);
+        aeqitLimit(TINY_LIMIT, P.rangeUp(BigInteger.valueOf(a)), output);
     }
 
     @Test
 
     public void testRangeUp_BigInteger() {
-        rangeUp_BigInteger_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
-        rangeUp_BigInteger_helper(5, "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]");
-        rangeUp_BigInteger_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14]");
+        rangeUp_BigInteger_helper(0, "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
+        rangeUp_BigInteger_helper(5,
+                "[5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, ...]");
+        rangeUp_BigInteger_helper(-5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ...]");
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
@@ -430,74 +429,56 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeDown((byte) a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeDown((byte) a), output);
     }
 
     @Test
     public void testRangeDown_byte() {
-        rangeDown_byte_helper(
-                0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
-        );
-        rangeDown_byte_helper(
-                5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
-        );
-        rangeDown_byte_helper(
-                -5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
-        );
-        rangeDown_byte_helper(
-                Byte.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]"
-        );
+        rangeDown_byte_helper(0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
+        rangeDown_byte_helper(5,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
+        rangeDown_byte_helper(-5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
+                " ...]");
+        rangeDown_byte_helper(Byte.MAX_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
         rangeDown_byte_helper(Byte.MIN_VALUE, "[-128]");
     }
 
     private static void rangeDown_short_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeDown((short) a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeDown((short) a), output);
     }
 
     @Test
     public void testRangeDown_short() {
-        rangeDown_short_helper(
-                0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
-        );
-        rangeDown_short_helper(
-                5,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]"
-        );
-        rangeDown_short_helper(
-                -5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
-        );
-        rangeDown_short_helper(
-                Short.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]"
-        );
+        rangeDown_short_helper(0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
+        rangeDown_short_helper(5,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
+        rangeDown_short_helper(-5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
+                " ...]");
+        rangeDown_short_helper(Short.MAX_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
         rangeDown_short_helper(Short.MIN_VALUE, "[-32768]");
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        aeqit(take(TINY_LIMIT, P.rangeDown(a)), output);
+        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
     }
 
     @Test
     public void testRangeDown_int() {
-        rangeDown_int_helper(
-                0,
-                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19]"
-        );
-        rangeDown_int_helper(5, "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14]");
-        rangeDown_int_helper(
-                -5,
-                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24]"
-        );
-        rangeDown_int_helper(
-                Integer.MAX_VALUE,
-                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10]"
-        );
+        rangeDown_int_helper(0,
+                "[0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, ...]");
+        rangeDown_int_helper(5,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, ...]");
+        rangeDown_int_helper(-5,
+                "[-5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, -21, -22, -23, -24," +
+                " ...]");
+        rangeDown_int_helper(Integer.MAX_VALUE,
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
         rangeDown_int_helper(Integer.MIN_VALUE, "[-2147483648]");
     }
 
