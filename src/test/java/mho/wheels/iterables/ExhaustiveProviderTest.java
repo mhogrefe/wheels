@@ -27,7 +27,7 @@ public strictfp class ExhaustiveProviderTest {
     private static final int TINY_LIMIT = 20;
 
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
-        aeqit(xs, output);
+        aeqitLimit(TINY_LIMIT, xs, output);
         testNoRemove(TINY_LIMIT, xs);
     }
 
@@ -74,26 +74,25 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testBytesIncreasing() {
         aeq(length(P.bytesIncreasing()), 256);
-        aeqit(take(TINY_LIMIT, P.bytesIncreasing()),
-                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
-                " -118, -117, -116, -115, -114, -113, -112, -111, -110, -109]");
+        simpleProviderHelper(P.bytesIncreasing(),
+                "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119, -118, -117, -116, -115, -114, -113," +
+                " -112, -111, -110, -109, ...]");
     }
 
     @Test
     public void testShortsIncreasing() {
         aeq(length(P.shortsIncreasing()), 65536);
-        aeqit(take(TINY_LIMIT, P.shortsIncreasing()),
-                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759," +
-                " -32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749]");
+        simpleProviderHelper(P.shortsIncreasing(),
+                "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759, -32758, -32757," +
+                " -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749, ...]");
     }
 
     @Test
     public void testIntegersIncreasing() {
-        aeqit(take(TINY_LIMIT, P.integersIncreasing()),
-                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644," +
-                " -2147483643, -2147483642, -2147483641, -2147483640, -2147483639," +
-                " -2147483638, -2147483637, -2147483636, -2147483635, -2147483634," +
-                " -2147483633, -2147483632, -2147483631, -2147483630, -2147483629]");
+        simpleProviderHelper(P.integersIncreasing(),
+                "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
+                " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
+                " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629, ...]");
     }
 
     @Test
@@ -10047,7 +10046,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             toList(P.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
@@ -10064,7 +10063,7 @@ public strictfp class ExhaustiveProviderTest {
         try {
             toList(P.stringsWithSubstrings(Collections.singletonList(null)));
             fail();
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
