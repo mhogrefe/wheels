@@ -879,25 +879,25 @@ public class ExhaustiveProviderProperties {
     private static void propertiesPositiveBinaryFractions() {
         initializeConstant("positiveBinaryFractions()");
         biggerTest(EP, EP.positiveBinaryFractions(), bf -> bf.signum() == 1);
-        take(TINY_LIMIT, EP.positiveBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.positiveBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesNegativeBinaryFractions() {
         initializeConstant("negativeBinaryFractions()");
         biggerTest(EP, EP.negativeBinaryFractions(), bf -> bf.signum() == -1);
-        take(TINY_LIMIT, EP.negativeBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.negativeBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesNonzeroBinaryFractions() {
         initializeConstant("nonzeroBinaryFractions()");
         biggerTest(EP, EP.nonzeroBinaryFractions(), bf -> bf != BinaryFraction.ZERO);
-        take(TINY_LIMIT, EP.nonzeroBinaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.nonzeroBinaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesBinaryFractions() {
         initializeConstant("binaryFractions()");
         biggerTest(EP, EP.binaryFractions(), bf -> true);
-        take(TINY_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
+        take(LARGE_LIMIT, EP.binaryFractions()).forEach(BinaryFraction::validate);
     }
 
     private static void propertiesRangeUp_BinaryFraction() {
@@ -9815,6 +9815,7 @@ public class ExhaustiveProviderProperties {
             for (RandomProvider rp : rpsList) {
                 rp.validate();
             }
+            take(TINY_LIMIT, rpsList).forEach(RandomProvider::validate);
             assertTrue(p, all(rp -> rp.getScale() == p.a && rp.getSecondaryScale() == p.b, rpsList));
             assertTrue(p, unique(rpsList));
         }
@@ -9823,24 +9824,18 @@ public class ExhaustiveProviderProperties {
     private static void propertiesRandomProvidersDefault() {
         initializeConstant("randomProvidersDefault()");
         biggerTest(EP, EP.randomProvidersDefault(), rp -> rp.getScale() == 32 && rp.getSecondaryScale() == 8);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefault())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProvidersDefault()).forEach(RandomProvider::validate);
     }
 
     private static void propertiesRandomProvidersDefaultSecondaryScale() {
         initializeConstant("randomProvidersDefaulSecondaryScale()");
         biggerTest(EP, EP.randomProvidersDefaultSecondaryScale(), rp -> rp.getSecondaryScale() == 8);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProvidersDefaultSecondaryScale())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProvidersDefaultSecondaryScale()).forEach(RandomProvider::validate);
     }
 
     private static void propertiesRandomProviders() {
         initializeConstant("randomProviders()");
         biggerTest(EP, EP.randomProviders(), rp -> true);
-        for (RandomProvider rp : take(LARGE_LIMIT, EP.randomProviders())) {
-            rp.validate();
-        }
+        take(LARGE_LIMIT, EP.randomProviders()).forEach(RandomProvider::validate);
     }
 }
