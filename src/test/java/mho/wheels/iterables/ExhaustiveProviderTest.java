@@ -8471,7 +8471,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSeptuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetSeptuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetSeptuplesLex_fail_helper(@NotNull String input) {
@@ -8506,7 +8506,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsLex(size, input), output);
+        simpleProviderHelper(P.stringSubsetsLex(size, input), output);
     }
 
     @Test
@@ -8588,7 +8588,7 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(P.stringSubsetsLex("abc"), "[, a, ab, abc, ac, b, bc, c]");
         aeqit(P.stringSubsetsLex("abcd"), "[, a, ab, abc, abcd, abd, ac, acd, ad, b, bc, bcd, bd, c, cd, d]");
         aeqit(P.stringSubsetsLex("abbc"), "[, a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsLex("Mississippi"),
+        simpleProviderHelper(P.stringSubsetsLex("Mississippi"),
                 "[, M, Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss," +
                 " Miiiippsss, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, ...]");
     }
@@ -8658,7 +8658,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsLexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringSubsetsLexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -8711,7 +8711,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetsShortlex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetsShortlex(readIntegerList(input)), output);
     }
 
     private static void subsetsShortlex_fail_helper(@NotNull String input) {
@@ -8734,7 +8734,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsShortlex(input), output);
+        simpleProviderHelper(P.stringSubsetsShortlex(input), output);
     }
 
     @Test
@@ -8749,7 +8749,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     @Test
@@ -8792,7 +8792,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringSubsetsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -8847,7 +8847,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.subsets(size, input), output);
+        simpleProviderHelper(P.subsets(size, input), output);
     }
 
     private static void subsets_int_Iterable_fail_helper(int size, @NotNull String input) {
@@ -8904,11 +8904,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetPairs_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetPairs(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetPairs(readIntegerList(input)), output);
     }
 
     private static void subsetPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetPairs(input), output);
+        simpleProviderHelper(P.subsetPairs(input), output);
     }
 
     private static void subsetPairs_fail_helper(@NotNull String input) {
@@ -8934,11 +8934,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetTriples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetTriples(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetTriples(readIntegerList(input)), output);
     }
 
     private static void subsetTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetTriples(input), output);
+        simpleProviderHelper(P.subsetTriples(input), output);
     }
 
     private static void subsetTriples_fail_helper(@NotNull String input) {
@@ -8966,11 +8966,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuadruples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuadruples(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetQuadruples(readIntegerList(input)), output);
     }
 
     private static void subsetQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuadruples(input), output);
+        simpleProviderHelper(P.subsetQuadruples(input), output);
     }
 
     private static void subsetQuadruples_fail_helper(@NotNull String input) {
@@ -8998,11 +8998,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuintuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuintuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetQuintuples(readIntegerList(input)), output);
     }
 
     private static void subsetQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuintuples(input), output);
+        simpleProviderHelper(P.subsetQuintuples(input), output);
     }
 
     private static void subsetQuintuples_fail_helper(@NotNull String input) {
@@ -9041,11 +9041,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSextuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSextuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetSextuples(readIntegerList(input)), output);
     }
 
     private static void subsetSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSextuples(input), output);
+        simpleProviderHelper(P.subsetSextuples(input), output);
     }
 
     private static void subsetSextuples_fail_helper(@NotNull String input) {
@@ -9088,11 +9088,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSeptuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSeptuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetSeptuples(readIntegerList(input)), output);
     }
 
     private static void subsetSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSeptuples(input), output);
+        simpleProviderHelper(P.subsetSeptuples(input), output);
     }
 
     private static void subsetSeptuples_fail_helper(@NotNull String input) {
@@ -9137,7 +9137,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsets(size, input), output);
+        simpleProviderHelper(P.stringSubsets(size, input), output);
     }
 
     @Test
@@ -9185,7 +9185,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsets_int_helper(int size, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsets(size), output);
+        simpleProviderHelper(P.stringSubsets(size), output);
     }
 
     @Test
@@ -9205,7 +9205,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsets_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsets(input), output);
+        simpleProviderHelper(P.subsets(input), output);
     }
 
     private static void subsets_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -9240,22 +9240,22 @@ public strictfp class ExhaustiveProviderTest {
     public void testStringSubsets_String() {
         aeqit(P.stringSubsets(""), "[]");
         aeq(length(P.stringSubsets("")), 1);
-        aeqitLimit(TINY_LIMIT, P.stringSubsets("a"), "[, a]");
-        aeqitLimit(TINY_LIMIT, P.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
-        aeqitLimit(TINY_LIMIT, P.stringSubsets("abbc"),
+        simpleProviderHelper(P.stringSubsets("a"), "[, a]");
+        simpleProviderHelper(P.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
+        simpleProviderHelper(P.stringSubsets("abbc"),
                 "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        aeqitLimit(TINY_LIMIT, P.stringSubsets("Mississippi"),
+        simpleProviderHelper(P.stringSubsets("Mississippi"),
                 "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
     }
 
     @Test
     public void testStringSubsets() {
-        aeqitLimit(TINY_LIMIT, P.stringSubsets(),
+        simpleProviderHelper(P.stringSubsets(),
                 "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
     }
 
     private static void subsetsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.subsetsAtLeast(minSize, input), output);
     }
 
     private static void subsetsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -9338,7 +9338,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringSubsetsAtLeast(minSize, input), output);
     }
 
     @Test
@@ -9386,7 +9386,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsAtLeast_helper(int minSize, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsAtLeast(minSize), output);
+        simpleProviderHelper(P.stringSubsetsAtLeast(minSize), output);
     }
 
     @Test
@@ -9439,7 +9439,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void repeatingIterables_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, map(Testing::its, P.repeatingIterables(input)), output);
+        simpleProviderHelper(map(Testing::its, P.repeatingIterables(input)), output);
     }
 
     private static void repeatingIterables_helper(@NotNull String input, @NotNull String output) {
@@ -9574,7 +9574,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> xs,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, map(Testing::its, P.repeatingIterablesDistinctAtLeast(minSize, xs)), output);
+        simpleProviderHelper(map(Testing::its, P.repeatingIterablesDistinctAtLeast(minSize, xs)), output);
     }
 
     private static void repeatingIterablesDistinctAtLeast_helper(
@@ -9789,7 +9789,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.listsWithElement(x, input), output);
+        simpleProviderHelper(P.listsWithElement(x, input), output);
     }
 
     private static void listsWithElement_helper(@Nullable Integer x, @NotNull String input, @NotNull String output) {
@@ -9828,7 +9828,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsWithChar_char_String_helper(char c, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsWithChar(c, input), output);
+        simpleProviderHelper(P.stringsWithChar(c, input), output);
     }
 
     @Test
@@ -9849,7 +9849,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsWithChar_char_helper(char c, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsWithChar(c), output);
+        simpleProviderHelper(P.stringsWithChar(c), output);
     }
 
     @Test
@@ -9867,7 +9867,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.subsetsWithElement(x, input), output);
+        simpleProviderHelper(P.subsetsWithElement(x, input), output);
     }
 
     private static void subsetsWithElement_helper(@NotNull Integer x, @NotNull String input, @NotNull String output) {
@@ -9897,7 +9897,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsWithChar(c, input), output);
+        simpleProviderHelper(P.stringSubsetsWithChar(c, input), output);
     }
 
     @Test
@@ -9916,7 +9916,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsWithChar_char_helper(char c, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringSubsetsWithChar(c), output);
+        simpleProviderHelper(P.stringSubsetsWithChar(c), output);
     }
 
     @Test
@@ -9931,15 +9931,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsWithSublists() {
-        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
-        aeqitLimit(TINY_LIMIT, P.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(P.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
+        simpleProviderHelper(P.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
+        simpleProviderHelper(
                 P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
                 "[[]]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
                 "[[], [0], [0, 0], [0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]," +
                 " [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]," +
@@ -9951,8 +9949,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
                 "[[1, 0, 1], [1, 0, 1, 0], [0, 1, 0, 1], [0, 1, 0, 1, 0], [1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0]," +
                 " [0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1, 0]," +
@@ -9960,23 +9957,20 @@ public strictfp class ExhaustiveProviderTest {
                 " [0, 0, 0, 1, 0, 1, 0, 0], [0, 0, 0, 1, 0, 1, 0, 0, 0], [1, 0, 1, 0, 0, 0, 0]," +
                 " [1, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), P.positiveIntegers()),
                 "[[1, 0, 1], [1, 0, 1, 1], [1, 1, 0, 1], [1, 1, 0, 1, 1], [1, 0, 1, 1, 1], [1, 0, 1, 2]," +
                 " [1, 1, 0, 1, 1, 1], [1, 1, 0, 1, 2], [1, 1, 1, 0, 1], [1, 1, 1, 0, 1, 1], [2, 1, 0, 1]," +
                 " [2, 1, 0, 1, 1], [1, 1, 1, 0, 1, 1, 1], [1, 1, 1, 0, 1, 2], [2, 1, 0, 1, 1, 1], [2, 1, 0, 1, 2]," +
                 " [1, 0, 1, 1, 1, 1], [1, 0, 1, 3], [1, 1, 0, 1, 1, 1, 1], [1, 1, 0, 1, 3], ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.listsWithSublists(map(i -> Arrays.asList(i, i), P.positiveIntegers()), Collections.singletonList(0)),
                 "[[1, 1], [1, 1, 0], [2, 2], [2, 2, 0], [0, 1, 1], [0, 1, 1, 0], [0, 2, 2], [0, 2, 2, 0]," +
                 " [1, 1, 0, 0], [1, 1, 0, 0, 0], [2, 2, 0, 0], [2, 2, 0, 0, 0], [0, 1, 1, 0, 0], [0, 1, 1, 0, 0, 0]," +
                 " [0, 2, 2, 0, 0], [0, 2, 2, 0, 0, 0], [3, 3], [3, 3, 0], [4, 4], [4, 4, 0], ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.listsWithSublists(map(i -> Arrays.asList(i, i), P.positiveIntegers()), P.positiveIntegers()),
                 "[[1, 1], [1, 1, 1], [2, 2], [2, 2, 1], [1, 1, 1, 1], [1, 2, 2], [1, 2, 2, 1], [1, 1, 2]," +
                 " [2, 2, 1, 1], [2, 2, 2], [1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2, 1, 1], [1, 2, 2, 2], [3, 3]," +
@@ -9990,23 +9984,20 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
         aeq(length(P.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
                 "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
                 " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.stringsWithSubstrings(
                         map(d -> Double.toString(d), P.positiveDoubles()),
                         charsToString(range('a', 'z'))
@@ -10022,13 +10013,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringsWithSubstrings_Iterable_String() {
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.emptyList()), "[]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("")),
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList()), "[]");
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList("")),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(Collections.singletonList("cat")),
+        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList("cat")),
                 "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
                 " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]");
-        aeqitLimit(TINY_LIMIT, P.stringsWithSubstrings(map(d -> Double.toString(d), P.positiveDoubles())),
+        simpleProviderHelper(P.stringsWithSubstrings(map(d -> Double.toString(d), P.positiveDoubles())),
                 "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
                 " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]");
         try {
@@ -10038,7 +10029,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.maps(readIntegerListWithNulls(keys), values), output);
+        simpleProviderHelper(P.maps(readIntegerListWithNulls(keys), values), output);
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull String values, @NotNull String output) {
@@ -10101,7 +10092,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void randomProvidersFixedScales_helper(int scale, int secondaryScale, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.randomProvidersFixedScales(scale, secondaryScale), output);
+        simpleProviderHelper(P.randomProvidersFixedScales(scale, secondaryScale), output);
     }
 
     @Test
@@ -10144,7 +10135,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefault() {
-        aeqitLimit(TINY_LIMIT, P.randomProvidersDefault(),
+        simpleProviderHelper(P.randomProvidersDefault(),
                 "[RandomProvider[@-7948823947390831374, 32, 8], RandomProvider[@7302477663894715351, 32, 8]," +
                 " RandomProvider[@5113382706114603938, 32, 8], RandomProvider[@-1774083719213728003, 32, 8]," +
                 " RandomProvider[@8538952961045368838, 32, 8], RandomProvider[@7023783968100629274, 32, 8]," +
@@ -10159,7 +10150,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefaultSecondaryScale() {
-        aeqitLimit(TINY_LIMIT, P.randomProvidersDefaultSecondaryScale(),
+        simpleProviderHelper(P.randomProvidersDefaultSecondaryScale(),
                 "[RandomProvider[@-7948823947390831374, 0, 8], RandomProvider[@-7948823947390831374, 1, 8]," +
                 " RandomProvider[@7302477663894715351, 0, 8], RandomProvider[@7302477663894715351, 1, 8]," +
                 " RandomProvider[@-7948823947390831374, -1, 8], RandomProvider[@-7948823947390831374, 2, 8]," +
@@ -10174,7 +10165,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProviders() {
-        aeqitLimit(TINY_LIMIT, P.randomProviders(),
+        simpleProviderHelper(P.randomProviders(),
                 "[RandomProvider[@-7948823947390831374, 0, 0], RandomProvider[@-7948823947390831374, 0, 1]," +
                 " RandomProvider[@7302477663894715351, 0, 0], RandomProvider[@7302477663894715351, 0, 1]," +
                 " RandomProvider[@-7948823947390831374, 1, 0], RandomProvider[@-7948823947390831374, 1, 1]," +
