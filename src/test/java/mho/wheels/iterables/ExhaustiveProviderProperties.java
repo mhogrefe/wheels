@@ -924,7 +924,7 @@ public class ExhaustiveProviderProperties {
             Iterable<BinaryFraction> bfs = EP.range(p.a, p.b);
             simpleTest(p, bfs, bf -> ge(bf, p.a) && le(bf, p.b));
             assertEquals(p, gt(p.a, p.b), isEmpty(bfs));
-            take(TINY_LIMIT, bfs.forEach(BinaryFraction::validate);
+            take(TINY_LIMIT, bfs).forEach(BinaryFraction::validate);
             if (ge(p.a, p.b)) {
                 testHasNext(bfs);
             }
