@@ -332,7 +332,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_byte_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp((byte) a), output);
+        simpleProviderHelper(P.rangeUp((byte) a), output);
     }
 
     @Test
@@ -346,7 +346,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_short_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp((short) a), output);
+        simpleProviderHelper(P.rangeUp((short) a), output);
     }
 
     @Test
@@ -360,7 +360,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
+        simpleProviderHelper(P.rangeUp(a), output);
     }
 
     @Test
@@ -374,7 +374,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
+        simpleProviderHelper(P.rangeUp(a), output);
     }
 
     @Test
@@ -388,7 +388,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(BigInteger.valueOf(a)), output);
+        simpleProviderHelper(P.rangeUp(BigInteger.valueOf(a)), output);
     }
 
     @Test
@@ -430,7 +430,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown((byte) a), output);
+        simpleProviderHelper(P.rangeDown((byte) a), output);
     }
 
     @Test
@@ -448,7 +448,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_short_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown((short) a), output);
+        simpleProviderHelper(P.rangeDown((short) a), output);
     }
 
     @Test
@@ -466,7 +466,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        simpleProviderHelper(P.rangeDown(a), output);
     }
 
     @Test
@@ -484,7 +484,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        simpleProviderHelper(P.rangeDown(a), output);
     }
 
     @Test
@@ -502,7 +502,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(BigInteger.valueOf(a)), output);
+        simpleProviderHelper(P.rangeDown(BigInteger.valueOf(a)), output);
     }
 
     @Test
@@ -656,34 +656,34 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBinaryFractions() {
-        aeqitLimit(TINY_LIMIT, P.positiveBinaryFractions(),
+        simpleProviderHelper(P.positiveBinaryFractions(),
                 "[1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
                 " 9 << 1, 19, 5 >> 1, ...]");
     }
 
     @Test
     public void testNegativeBinaryFractions() {
-        aeqitLimit(TINY_LIMIT, P.negativeBinaryFractions(),
+        simpleProviderHelper(P.negativeBinaryFractions(),
                 "[-1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1, -15," +
                 " -1 >> 2, -17, -9 << 1, -19, -5 >> 1, ...]");
     }
 
     @Test
     public void testNonzeroBinaryFractions() {
-        aeqitLimit(TINY_LIMIT, P.nonzeroBinaryFractions(),
+        simpleProviderHelper(P.nonzeroBinaryFractions(),
                 "[1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2, 9," +
                 " -9, 5 << 1, -5 << 1, ...]");
     }
 
     @Test
     public void testBinaryFractions() {
-        aeqitLimit(TINY_LIMIT, P.binaryFractions(),
+        simpleProviderHelper(P.binaryFractions(),
                 "[0, 1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2," +
                 " 9, -9, 5 << 1, ...]");
     }
 
     private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(P.rangeUp(BinaryFraction.read(a).get()), output);
     }
 
     @Test
@@ -720,7 +720,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(P.rangeDown(BinaryFraction.read(a).get()), output);
     }
 
     @Test
@@ -761,7 +761,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
+        simpleProviderHelper(P.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
     }
 
     @Test
@@ -868,7 +868,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_float_helper(float a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
+        simpleProviderHelper(P.rangeUp(a), output);
     }
 
     private static void rangeUp_float_fail_helper(float a) {
@@ -946,7 +946,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_float_helper(float a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        simpleProviderHelper(P.rangeDown(a), output);
     }
 
     private static void rangeDown_float_fail_helper(float a) {
@@ -1026,7 +1026,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_float_float_helper(float a, float b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
+        simpleProviderHelper(P.range(a, b), output);
     }
 
     private static void range_float_float_fail_helper(float a, float b) {
@@ -1108,7 +1108,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_double_helper(double a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeUp(a), output);
+        simpleProviderHelper(P.rangeUp(a), output);
     }
 
     private static void rangeUp_double_fail_helper(double a) {
@@ -1205,7 +1205,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_double_helper(double a, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.rangeDown(a), output);
+        simpleProviderHelper(P.rangeDown(a), output);
     }
 
     private static void rangeDown_double_fail_helper(double a) {
@@ -1304,7 +1304,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_double_double_helper(double a, double b, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.range(a, b), output);
+        simpleProviderHelper(P.range(a, b), output);
     }
 
     private static void range_double_double_fail_helper(double a, double b) {
@@ -1884,7 +1884,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void withNull_cyclic_helper(@NotNull String x, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.withNull(cycle(readIntegerListWithNulls(x))), output);
+        simpleProviderHelper(P.withNull(cycle(readIntegerListWithNulls(x))), output);
     }
 
     @Test
@@ -1899,11 +1899,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonEmptyOptionals() {
-        aeqitLimit(TINY_LIMIT, P.nonEmptyOptionals(P.integers()),
+        simpleProviderHelper(P.nonEmptyOptionals(P.integers()),
                 "[Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3], Optional[-3]," +
                 " Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6], Optional[7]," +
                 " Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], Optional[10], ...]");
-        aeqitLimit(TINY_LIMIT, P.nonEmptyOptionals(P.strings()),
+        simpleProviderHelper(P.nonEmptyOptionals(P.strings()),
                 "[Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c], Optional[ab]," +
                 " Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab], Optional[g]," +
                 " Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], Optional[j], ...]");
@@ -1917,11 +1917,11 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testOptionals() {
-        aeqitLimit(TINY_LIMIT, P.optionals(P.integers()),
+        simpleProviderHelper(P.optionals(P.integers()),
                 "[Optional.empty, Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3]," +
                 " Optional[-3], Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6]," +
                 " Optional[7], Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], ...]");
-        aeqitLimit(TINY_LIMIT, P.optionals(P.strings()),
+        simpleProviderHelper(P.optionals(P.strings()),
                 "[Optional.empty, Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c]," +
                 " Optional[ab], Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab]," +
                 " Optional[g], Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], ...]");
@@ -1935,13 +1935,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonEmptyNullableOptionals() {
-        aeqitLimit(TINY_LIMIT, P.nonEmptyNullableOptionals(P.withNull(P.integers())),
+        simpleProviderHelper(P.nonEmptyNullableOptionals(P.withNull(P.integers())),
                 "[NullableOptional[null], NullableOptional[0], NullableOptional[1], NullableOptional[-1]," +
                 " NullableOptional[2], NullableOptional[-2], NullableOptional[3], NullableOptional[-3]," +
                 " NullableOptional[4], NullableOptional[-4], NullableOptional[5], NullableOptional[-5]," +
                 " NullableOptional[6], NullableOptional[-6], NullableOptional[7], NullableOptional[-7]," +
                 " NullableOptional[8], NullableOptional[-8], NullableOptional[9], NullableOptional[-9], ...]");
-        aeqitLimit(TINY_LIMIT, P.nonEmptyNullableOptionals(P.withNull(P.strings())),
+        simpleProviderHelper(P.nonEmptyNullableOptionals(P.withNull(P.strings())),
                 "[NullableOptional[null], NullableOptional[], NullableOptional[a], NullableOptional[aa]," +
                 " NullableOptional[b], NullableOptional[aaa], NullableOptional[c], NullableOptional[ab]," +
                 " NullableOptional[d], NullableOptional[aaaa], NullableOptional[e], NullableOptional[ba]," +
@@ -1954,13 +1954,13 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNullableOptionals() {
-        aeqitLimit(TINY_LIMIT, P.nullableOptionals(P.withNull(P.integers())),
+        simpleProviderHelper(P.nullableOptionals(P.withNull(P.integers())),
                 "[NullableOptional.empty, NullableOptional[null], NullableOptional[0], NullableOptional[1]," +
                 " NullableOptional[-1], NullableOptional[2], NullableOptional[-2], NullableOptional[3]," +
                 " NullableOptional[-3], NullableOptional[4], NullableOptional[-4], NullableOptional[5]," +
                 " NullableOptional[-5], NullableOptional[6], NullableOptional[-6], NullableOptional[7]," +
                 " NullableOptional[-7], NullableOptional[8], NullableOptional[-8], NullableOptional[9], ...]");
-        aeqitLimit(TINY_LIMIT, P.nullableOptionals(P.withNull(P.strings())),
+        simpleProviderHelper(P.nullableOptionals(P.withNull(P.strings())),
                 "[NullableOptional.empty, NullableOptional[null], NullableOptional[], NullableOptional[a]," +
                 " NullableOptional[aa], NullableOptional[b], NullableOptional[aaa], NullableOptional[c]," +
                 " NullableOptional[ab], NullableOptional[d], NullableOptional[aaaa], NullableOptional[e]," +
@@ -1982,14 +1982,14 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        aeqitLimit(TINY_LIMIT, P.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
+        simpleProviderHelper(P.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
                 "[(3, foo), (2, a), (2, b), (2, c), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
                 " (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
                 " (0, beep), (0, beep), ...]");
 
         aeqit(P.dependentPairs(Collections.emptyList(), f), "[]");
 
-        aeqitLimit(TINY_LIMIT, P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
+        simpleProviderHelper(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
 
         try {
             toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
@@ -1999,7 +1999,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfinite() {
-        aeqitLimit(TINY_LIMIT, P.dependentPairsInfinite(P.naturalBigIntegers(), i -> P.naturalBigIntegers()),
+        simpleProviderHelper(P.dependentPairsInfinite(P.naturalBigIntegers(), i -> P.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
 
@@ -2010,7 +2010,7 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        aeqitLimit(TINY_LIMIT, P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b)," +
                 " (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep)," +
                 " (0, beep), ...]");
@@ -2033,8 +2033,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfiniteLogarithmicOrder() {
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.dependentPairsInfiniteLogarithmicOrder(
                         P.naturalBigIntegers(),
                         i -> P.naturalBigIntegers()
@@ -2050,7 +2049,7 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        aeqitLimit(TINY_LIMIT, P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
                 " (1, a), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (1, b), ...]");
 
@@ -2077,8 +2076,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDependentPairsInfiniteSquareRootOrder() {
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.dependentPairsInfiniteSquareRootOrder(
                         P.naturalBigIntegers(),
                         i -> P.naturalBigIntegers()
@@ -2094,7 +2092,7 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        aeqitLimit(TINY_LIMIT, P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
                 " (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
                 " ...]");
@@ -2139,20 +2137,17 @@ public strictfp class ExhaustiveProviderTest {
         );
         aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")), "[]");
         aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()), "[]");
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsLogarithmicOrder(P.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b), (5, a), (1, c)," +
                 " (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsLogarithmicOrder(fromString("abcd"), P.naturalBigIntegers()),
                 "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2), (d, 1), (a, 4)," +
                 " (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsLogarithmicOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
                 "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2), (6, -1)," +
                 " (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3), ...]"
@@ -2177,14 +2172,12 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]"
         );
         aeqit(P.pairsLogarithmicOrder(Collections.emptyList()), "[]");
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsLogarithmicOrder(P.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1), (5, 0), (1, 2)," +
                 " (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsLogarithmicOrder(cons(null, P.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
                 " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
@@ -2211,20 +2204,17 @@ public strictfp class ExhaustiveProviderTest {
         );
         aeqit(P.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")), "[]");
         aeqit(P.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()), "[]");
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsSquareRootOrder(P.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d), (1, c), (1, d)," +
                 " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsSquareRootOrder(fromString("abcd"), P.naturalBigIntegers()),
                 "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3), (b, 2), (b, 3)," +
                 " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsSquareRootOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
                 "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4), (2, -3)," +
                 " (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2), ...]"
@@ -2249,14 +2239,12 @@ public strictfp class ExhaustiveProviderTest {
                 " (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]"
         );
         aeqit(P.pairsSquareRootOrder(Collections.emptyList()), "[]");
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsSquareRootOrder(P.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3), (1, 2), (1, 3)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1), ...]"
         );
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.pairsSquareRootOrder(cons(null, P.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (0, 0), (1, null), (1, 0), (2, null), (2, 0), (null, 1)," +
                 " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)," +
@@ -2268,8 +2256,8 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(map(Testing::its, P.permutationsFinite(readIntegerListWithNulls(input))), output);
     }
 
-    private static void permutationsFiniteHelper(int limit, @NotNull List<Integer> input, @NotNull String output) {
-        aeqitLimit(limit, map(Testing::its, P.permutationsFinite(input)), output);
+    private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
+        simpleProviderHelper(map(Testing::its, P.permutationsFinite(input)), output);
     }
 
     @Test
@@ -2294,7 +2282,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[[3, 1, 1, null], [3, 1, null, 1], [3, null, 1, 1], [1, 3, 1, null], [1, 3, null, 1]," +
                 " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3], [null, 3, 1, 1]," +
                 " [null, 1, 3, 1], [null, 1, 1, 3]]");
-        permutationsFiniteHelper(TINY_LIMIT, toList(IterableUtils.range(1, 10)),
+        permutationsFiniteHelper(toList(IterableUtils.range(1, 10)),
                 "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [1, 2, 3, 4, 5, 6, 7, 8, 10, 9], [1, 2, 3, 4, 5, 6, 7, 9, 8, 10]," +
                 " [1, 2, 3, 4, 5, 6, 7, 9, 10, 8], [1, 2, 3, 4, 5, 6, 7, 10, 8, 9], [1, 2, 3, 4, 5, 6, 7, 10, 9, 8]," +
                 " [1, 2, 3, 4, 5, 6, 8, 7, 9, 10], [1, 2, 3, 4, 5, 6, 8, 7, 10, 9], [1, 2, 3, 4, 5, 6, 8, 9, 7, 10]," +
