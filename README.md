@@ -30,6 +30,7 @@ Progress
 | IntegerUtils                | ✔       | ✘       | ✘     | ✘     | ✘          |
 | LexComparator               | ✔       | ✔       | ✘     | ✘     | ✘          |
 | ListBasedComparator         | ✔       | ✘       | ✘     | ✘     | ✘          |
+| OptionalComparator          | ✔       | ✘       | ✘     | ✘     | ✘          |
 | ShortlexComparator          | ✔       | ✔       | ✘     | ✘     | ✘          |
 | StringShortlexComparator    | ✔       | ✔       | ✘     | ✘     | ✘          |
 | WithNullComparator          | ✘       | ✘       | ✘     | ✘     | ✘          |
