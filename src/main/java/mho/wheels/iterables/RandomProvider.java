@@ -968,6 +968,7 @@ public final strictfp class RandomProvider extends IterableProvider {
      * @param b the inclusive upper bound of the generated elements
      * @return uniformly-distributed {@code Byte}s between {@code a} and {@code b}, inclusive
      */
+    //todo don't return empty list
     @Override
     public @NotNull Iterable<Byte> range(byte a, byte b) {
         if (a > b) return Collections.emptyList();
