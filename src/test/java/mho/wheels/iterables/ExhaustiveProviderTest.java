@@ -2304,7 +2304,7 @@ public strictfp class ExhaustiveProviderTest {
                 " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
                 " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
                 " olehl, olelh, ollhe, olleh]");
-        aeqitLimit(TINY_LIMIT, P.stringPermutations("Mississippi"),
+        simpleProviderHelper(P.stringPermutations("Mississippi"),
                 "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
                 " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
                 " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
@@ -2318,8 +2318,8 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(map(Testing::its, P.prefixPermutations(input)), output);
     }
 
-    private static void prefixPermutationsHelper(int limit, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(limit, map(Testing::its, P.prefixPermutations(input)), output);
+    private static void prefixPermutationsLimitHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
+        simpleProviderHelper(map(Testing::its, P.prefixPermutations(input)), output);
     }
 
     @Test
@@ -2354,7 +2354,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 3, 1, null], [1, null, 1, 3], [1, 1, 3, null], [1, 1, null, 3], [null, 3, 1, 1]," +
                 " [null, 1, 1, 3], [null, 1, 3, 1], [null, 1, 1, 3], [1, 3, 1, null], [1, 3, null, 1]," +
                 " [1, 1, 3, null], [1, 1, null, 3], [1, null, 3, 1], [1, null, 1, 3]]");
-        prefixPermutationsHelper(TINY_LIMIT, IterableUtils.range(1, 10),
+        prefixPermutationsLimitHelper(IterableUtils.range(1, 10),
                 "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [2, 1, 3, 4, 5, 6, 7, 8, 9, 10], [1, 3, 2, 4, 5, 6, 7, 8, 9, 10]," +
                 " [2, 3, 1, 4, 5, 6, 7, 8, 9, 10], [3, 1, 2, 4, 5, 6, 7, 8, 9, 10], [3, 2, 1, 4, 5, 6, 7, 8, 9, 10]," +
                 " [1, 2, 4, 3, 5, 6, 7, 8, 9, 10], [1, 3, 4, 2, 5, 6, 7, 8, 9, 10], [1, 4, 2, 3, 5, 6, 7, 8, 9, 10]," +
@@ -2362,7 +2362,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [2, 4, 1, 3, 5, 6, 7, 8, 9, 10], [2, 4, 3, 1, 5, 6, 7, 8, 9, 10], [3, 1, 4, 2, 5, 6, 7, 8, 9, 10]," +
                 " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10], [3, 4, 1, 2, 5, 6, 7, 8, 9, 10], [3, 4, 2, 1, 5, 6, 7, 8, 9, 10]," +
                 " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10], [4, 1, 3, 2, 5, 6, 7, 8, 9, 10], ...]");
-        prefixPermutationsHelper(TINY_LIMIT, P.positiveIntegers(),
+        prefixPermutationsLimitHelper(P.positiveIntegers(),
                 "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
@@ -2383,7 +2383,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 4, 2, 1, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [4, 1, 3, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...], ...]");
-        prefixPermutationsHelper(TINY_LIMIT, repeat(1),
+        prefixPermutationsLimitHelper(repeat(1),
                 "[[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
@@ -2476,7 +2476,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<B> bs,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.pairsLex(as, toList(bs)), output);
+        simpleProviderHelper(P.pairsLex(as, toList(bs)), output);
     }
 
     @Test
@@ -2508,7 +2508,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<C> cs,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.triplesLex(as, toList(bs), toList(cs)), output);
+        simpleProviderHelper(P.triplesLex(as, toList(bs), toList(cs)), output);
     }
 
     @Test
@@ -2549,7 +2549,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<D> ds,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+        simpleProviderHelper(P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
     }
 
     @Test
@@ -2614,7 +2614,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<E> es,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
+        simpleProviderHelper(P.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
     }
 
     @Test
@@ -2746,7 +2746,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<F> fs,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
+        simpleProviderHelper(P.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
     }
 
     @Test
@@ -2987,8 +2987,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<G> gs,
             @NotNull String output
     ) {
-        aeqitLimit(
-                TINY_LIMIT,
+        simpleProviderHelper(
                 P.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)),
                 output
         );
@@ -3501,7 +3500,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsLex_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsLex(size, input), output);
+        simpleProviderHelper(P.stringsLex(size, input), output);
     }
 
     @Test
@@ -3553,7 +3552,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void listsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.listsShortlex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.listsShortlex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -3578,7 +3577,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsShortlex(input), output);
+        simpleProviderHelper(P.stringsShortlex(input), output);
     }
 
     @Test
@@ -3598,7 +3597,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -3696,7 +3695,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -3768,7 +3767,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.lists(size, input), output);
+        simpleProviderHelper(P.lists(size, input), output);
     }
 
     @Test
@@ -3874,11 +3873,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void pairs_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.pairs(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.pairs(readIntegerListWithNulls(input)), output);
     }
 
     private static void pairs_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.pairs(input), output);
+        simpleProviderHelper(P.pairs(input), output);
     }
 
     @Test
@@ -3934,11 +3933,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.triples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.triples(readIntegerListWithNulls(input)), output);
     }
 
     private static void triples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.triples(input), output);
+        simpleProviderHelper(P.triples(input), output);
     }
 
     @Test
@@ -4031,11 +4030,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.quadruples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.quadruples(readIntegerListWithNulls(input)), output);
     }
 
     private static void quadruples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.quadruples(input), output);
+        simpleProviderHelper(P.quadruples(input), output);
     }
 
     @Test
@@ -4237,11 +4236,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void quintuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.quintuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.quintuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void quintuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.quintuples(input), output);
+        simpleProviderHelper(P.quintuples(input), output);
     }
 
     @Test
@@ -4596,11 +4595,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void sextuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.sextuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.sextuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void sextuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.sextuples(input), output);
+        simpleProviderHelper(P.sextuples(input), output);
     }
 
     @Test
@@ -5361,11 +5360,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void septuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.septuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.septuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void septuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.septuples(input), output);
+        simpleProviderHelper(P.septuples(input), output);
     }
 
     @Test
@@ -5409,7 +5408,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void strings_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.strings(size, input), output);
+        simpleProviderHelper(P.strings(size, input), output);
     }
 
     @Test
@@ -5461,7 +5460,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void strings_int_helper(int size, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.strings(size), output);
+        simpleProviderHelper(P.strings(size), output);
     }
 
     @Test
@@ -5483,7 +5482,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testLists_Iterable() {
         aeqit(P.lists(Collections.emptyList()), "[[]]");
-        aeqitLimit(TINY_LIMIT, P.lists(Collections.singletonList(5)),
+        simpleProviderHelper(P.lists(Collections.singletonList(5)),
                 "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
@@ -5493,17 +5492,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        aeqitLimit(TINY_LIMIT, P.lists(Arrays.asList(1, 2, 3)),
+        simpleProviderHelper(P.lists(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
                 " [1, 1, 1, 1, 1, 1], ...]");
-        aeqitLimit(TINY_LIMIT, P.lists(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(P.lists(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
-        aeqitLimit(TINY_LIMIT, P.lists(P.naturalIntegers()),
+        simpleProviderHelper(P.lists(P.naturalIntegers()),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
                 " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        aeqitLimit(TINY_LIMIT, P.lists(repeat(1)),
+        simpleProviderHelper(P.lists(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
     }
@@ -5512,26 +5511,26 @@ public strictfp class ExhaustiveProviderTest {
     public void testStrings_String() {
         aeqit(P.strings(""), "[]");
         aeq(length(P.strings("")), 1);
-        aeqitLimit(TINY_LIMIT, P.strings("a"),
+        simpleProviderHelper(P.strings("a"),
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        aeqitLimit(TINY_LIMIT, P.strings("abc"),
+        simpleProviderHelper(P.strings("abc"),
                 "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
-        aeqitLimit(TINY_LIMIT, P.strings("abbc"),
+        simpleProviderHelper(P.strings("abbc"),
                 "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
-        aeqitLimit(TINY_LIMIT, P.strings("Mississippi"),
+        simpleProviderHelper(P.strings("Mississippi"),
                 "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
     }
 
     @Test
     public void testStrings() {
-        aeqitLimit(TINY_LIMIT, P.strings(),
+        simpleProviderHelper(P.strings(),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.listsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.listsAtLeast(minSize, input), output);
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -5681,7 +5680,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsAtLeast_String_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringsAtLeast(minSize, input), output);
     }
 
     @Test
@@ -5752,7 +5751,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsAtLeast_helper(int minSize, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringsAtLeast(minSize), output);
+        simpleProviderHelper(P.stringsAtLeast(minSize), output);
     }
 
     @Test
@@ -5816,7 +5815,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctPairsLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctPairsLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctPairsLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5833,7 +5832,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctTriplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctTriplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5855,7 +5854,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5878,7 +5877,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuintuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctQuintuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5905,7 +5904,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSextuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctSextuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5934,7 +5933,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSeptuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctSeptuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5973,7 +5972,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctStringsLex(size, input), output);
+        simpleProviderHelper(P.distinctStringsLex(size, input), output);
     }
 
     @Test
@@ -6073,7 +6072,7 @@ public strictfp class ExhaustiveProviderTest {
                 " babc, bac, bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, b, ba, bab, babc, bac, bacb," +
                 " bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, c, ca, cab, cabb, cab, cabb, cb, cba, cbab," +
                 " cbb, cbba, cb, cba, cbab, cbb, cbba]");
-        aeqitLimit(TINY_LIMIT, P.distinctStringsLex("Mississippi"),
+        simpleProviderHelper(P.distinctStringsLex("Mississippi"),
                 "[, M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
                 " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
                 " ...]");
@@ -6210,7 +6209,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctStringsLexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.distinctStringsLexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -6329,7 +6328,7 @@ public strictfp class ExhaustiveProviderTest {
                 " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
                 " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
                 " cabb, cabb, cbab, cbba, cbab, cbba]");
-        aeqitLimit(TINY_LIMIT, P.distinctStringsShortlex("Mississippi"),
+        simpleProviderHelper(P.distinctStringsShortlex("Mississippi"),
                 "[, M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
     }
 
@@ -6484,7 +6483,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctStringsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -6556,7 +6555,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctLists(size, input), output);
+        simpleProviderHelper(P.distinctLists(size, input), output);
     }
 
     private static void distinctLists_int_Iterable_fail_helper(int size, @NotNull String input) {
@@ -6622,11 +6621,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctPairs(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctPairs(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctPairs(input), output);
+        simpleProviderHelper(P.distinctPairs(input), output);
     }
 
     @Test
@@ -6649,11 +6648,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctTriples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctTriples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctTriples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctTriples(input), output);
+        simpleProviderHelper(P.distinctTriples(input), output);
     }
 
     @Test
@@ -6683,11 +6682,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuadruples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuadruples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctQuadruples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuadruples(input), output);
+        simpleProviderHelper(P.distinctQuadruples(input), output);
     }
 
     @Test
@@ -6718,11 +6717,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuintuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuintuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctQuintuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctQuintuples(input), output);
+        simpleProviderHelper(P.distinctQuintuples(input), output);
     }
 
     @Test
@@ -6759,11 +6758,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSextuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSextuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctSextuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSextuples(input), output);
+        simpleProviderHelper(P.distinctSextuples(input), output);
     }
 
     @Test
@@ -6804,11 +6803,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSeptuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSeptuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.distinctSeptuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctSeptuples(input), output);
+        simpleProviderHelper(P.distinctSeptuples(input), output);
     }
 
     @Test
@@ -6859,7 +6858,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctStrings(size, input), output);
+        simpleProviderHelper(P.distinctStrings(size, input), output);
     }
 
     @Test
@@ -6909,7 +6908,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctStrings_int_helper(int size, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctStrings(size), output);
+        simpleProviderHelper(P.distinctStrings(size), output);
     }
 
     @Test
@@ -6932,17 +6931,17 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDistinctLists_Iterable() {
         aeqit(P.distinctLists(Collections.emptyList()), "[[]]");
-        aeqitLimit(TINY_LIMIT, P.distinctLists(Collections.singletonList(5)), "[[], [5]]");
-        aeqitLimit(TINY_LIMIT, P.distinctLists(Arrays.asList(1, 2, 3)),
+        simpleProviderHelper(P.distinctLists(Collections.singletonList(5)), "[[], [5]]");
+        simpleProviderHelper(P.distinctLists(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3]," +
                 " [3, 2], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        aeqitLimit(TINY_LIMIT, P.distinctLists(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(P.distinctLists(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2]," +
                 " [1, 3], [1, 2, 2], [2, 3], [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], ...]");
-        aeqitLimit(TINY_LIMIT, P.distinctLists(P.naturalIntegers()),
+        simpleProviderHelper(P.distinctLists(P.naturalIntegers()),
                 "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
                 " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        aeqitLimit(TINY_LIMIT, P.distinctLists(repeat(1)),
+        simpleProviderHelper(P.distinctLists(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
     }
@@ -6951,18 +6950,18 @@ public strictfp class ExhaustiveProviderTest {
     public void testDistinctStrings_String() {
         aeqit(P.distinctStrings(""), "[]");
         aeq(length(P.distinctStrings("")), 1);
-        aeqitLimit(TINY_LIMIT, P.distinctStrings("a"), "[, a]");
-        aeqitLimit(TINY_LIMIT, P.distinctStrings("abc"),
+        simpleProviderHelper(P.distinctStrings("a"), "[, a]");
+        simpleProviderHelper(P.distinctStrings("abc"),
                 "[, a, ab, b, abc, c, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
-        aeqitLimit(TINY_LIMIT, P.distinctStrings("abbc"),
+        simpleProviderHelper(P.distinctStrings("abbc"),
                 "[, a, ab, b, abb, b, ab, c, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ...]");
-        aeqitLimit(TINY_LIMIT, P.distinctStrings("Mississippi"),
+        simpleProviderHelper(P.distinctStrings("Mississippi"),
                 "[, M, Mi, i, Mis, s, Ms, s, Miss, i, iM, s, Mis, s, is, i, Missi, p, Ms, p, ...]");
     }
 
     @Test
     public void testDistinctStrings() {
-        aeqitLimit(TINY_LIMIT, P.distinctStrings(),
+        simpleProviderHelper(P.distinctStrings(),
                 "[, a, ab, b, abc, c, ac, d, abcd, e, ba, f, abd, g, bc, h, abcde, i, ad, j, ...]");
     }
 
@@ -6971,7 +6970,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctListsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.distinctListsAtLeast(minSize, input), output);
     }
 
     private static void distinctListsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -7074,7 +7073,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.distinctStringsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.distinctStringsAtLeast(minSize, input), output);
     }
 
     @Test
@@ -7127,7 +7126,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctStringsAtLeast_helper(int minSize, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.distinctStringsAtLeast(minSize), output);
+        simpleProviderHelper(P.distinctStringsAtLeast(minSize), output);
     }
 
     @Test
@@ -7193,7 +7192,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagPairsLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagPairsLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagPairsLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagPairsLex_fail_helper(@NotNull String input) {
@@ -7216,7 +7215,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagTriplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagTriplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagTriplesLex_fail_helper(@NotNull String input) {
@@ -7243,7 +7242,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagQuadruplesLex_fail_helper(@NotNull String input) {
@@ -7270,7 +7269,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuintuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagQuintuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagQuintuplesLex_fail_helper(@NotNull String input) {
@@ -7299,7 +7298,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSextuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagSextuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagSextuplesLex_fail_helper(@NotNull String input) {
@@ -7330,7 +7329,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSeptuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.bagSeptuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagSeptuplesLex_fail_helper(@NotNull String input) {
@@ -7369,7 +7368,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringBagsLex(size, input), output);
+        simpleProviderHelper(P.stringBagsLex(size, input), output);
     }
 
     @Test
@@ -7418,7 +7417,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagsShortlex(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagsShortlex(readIntegerList(input)), output);
     }
 
     private static void bagsShortlex_fail_helper(@NotNull String input) {
@@ -7452,7 +7451,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBagsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringBagsShortlex(input), output);
+        simpleProviderHelper(P.stringBagsShortlex(input), output);
     }
 
     @Test
@@ -7472,7 +7471,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagsShortlexAtLeast(minSize, readIntegerList(input)), output);
+        simpleProviderHelper(P.bagsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     @Test
@@ -7560,7 +7559,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringBagsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringBagsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
@@ -7633,7 +7632,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bags_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bags(size, input), output);
+        simpleProviderHelper(P.bags(size, input), output);
     }
 
     private static void bags_int_Iterable_fail_helper(int size, @NotNull String input) {
@@ -7696,11 +7695,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagPairs(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagPairs(readIntegerList(input)), output);
     }
 
     private static void bagPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagPairs(input), output);
+        simpleProviderHelper(P.bagPairs(input), output);
     }
 
     private static void bagPairs_fail_helper(@NotNull String input) {
@@ -7728,11 +7727,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagTriples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagTriples(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagTriples(readIntegerList(input)), output);
     }
 
     private static void bagTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagTriples(input), output);
+        simpleProviderHelper(P.bagTriples(input), output);
     }
 
     private static void bagTriples_fail_helper(@NotNull String input) {
@@ -7766,11 +7765,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuadruples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuadruples(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagQuadruples(readIntegerList(input)), output);
     }
 
     private static void bagQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuadruples(input), output);
+        simpleProviderHelper(P.bagQuadruples(input), output);
     }
 
     private static void bagQuadruples_fail_helper(@NotNull String input) {
@@ -7804,11 +7803,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuintuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuintuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagQuintuples(readIntegerList(input)), output);
     }
 
     private static void bagQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagQuintuples(input), output);
+        simpleProviderHelper(P.bagQuintuples(input), output);
     }
 
     private static void bagQuintuples_fail_helper(@NotNull String input) {
@@ -7846,11 +7845,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSextuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSextuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagSextuples(readIntegerList(input)), output);
     }
 
     private static void bagSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSextuples(input), output);
+        simpleProviderHelper(P.bagSextuples(input), output);
     }
 
     private static void bagSextuples_fail_helper(@NotNull String input) {
@@ -7892,11 +7891,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSeptuples_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSeptuples(readIntegerList(input)), output);
+        simpleProviderHelper(P.bagSeptuples(readIntegerList(input)), output);
     }
 
     private static void bagSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagSeptuples(input), output);
+        simpleProviderHelper(P.bagSeptuples(input), output);
     }
 
     private static void bagSeptuples_fail_helper(@NotNull String input) {
@@ -7946,7 +7945,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringBags(size, input), output);
+        simpleProviderHelper(P.stringBags(size, input), output);
     }
 
     @Test
@@ -7994,7 +7993,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBags_int_helper(int size, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringBags(size), output);
+        simpleProviderHelper(P.stringBags(size), output);
     }
 
     @Test
@@ -8016,7 +8015,7 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testBags_Iterable() {
         aeqit(P.bags(Collections.<Integer>emptyList()), "[[]]");
-        aeqitLimit(TINY_LIMIT, P.bags(Collections.singletonList(5)),
+        simpleProviderHelper(P.bags(Collections.singletonList(5)),
                 "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
@@ -8026,18 +8025,18 @@ public strictfp class ExhaustiveProviderTest {
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        aeqitLimit(TINY_LIMIT, P.bags(Arrays.asList(1, 2, 3)),
+        simpleProviderHelper(P.bags(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 2], [1, 1, 2], [2, 3]," +
                 " [1, 1, 1, 1, 1], [1, 3], [1, 2, 2], [1, 1, 1, 2], [1, 2, 3], [1, 1, 1, 1, 1, 1], [3, 3]," +
                 " [2, 2, 2], [1, 1, 2, 2], ...]");
-        aeqitLimit(TINY_LIMIT, P.bags(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(P.bags(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 2], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 2], [1, 2, 2], [1, 3], [1, 1, 1, 2], [2, 3], [1, 2, 2], [1, 1, 1, 1, 1, 1]," +
                 " ...]");
-        aeqitLimit(TINY_LIMIT, P.bags(P.naturalIntegers()),
+        simpleProviderHelper(P.bags(P.naturalIntegers()),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 1], [5], [0, 0, 1], [6]," +
                 " [1, 2], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        aeqitLimit(TINY_LIMIT, P.bags(repeat(1)),
+        simpleProviderHelper(P.bags(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
         try {
@@ -8054,26 +8053,26 @@ public strictfp class ExhaustiveProviderTest {
     public void testStringBags_String() {
         aeqit(P.stringBags(""), "[]");
         aeq(length(P.stringBags("")), 1);
-        aeqitLimit(TINY_LIMIT, P.stringBags("a"),
+        simpleProviderHelper(P.stringBags("a"),
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        aeqitLimit(TINY_LIMIT, P.stringBags("abc"),
+        simpleProviderHelper(P.stringBags("abc"),
                 "[, a, aa, b, aaa, c, ab, aaaa, bb, aab, bc, aaaaa, ac, abb, aaab, abc, aaaaaa, cc, bbb, aabb, ...]");
-        aeqitLimit(TINY_LIMIT, P.stringBags("abbc"),
+        simpleProviderHelper(P.stringBags("abbc"),
                 "[, a, aa, b, aaa, b, ab, c, aaaa, bb, aab, bb, aaaaa, ab, abb, ac, aaab, bc, abb, aaaaaa, ...]");
-        aeqitLimit(TINY_LIMIT, P.stringBags("Mississippi"),
+        simpleProviderHelper(P.stringBags("Mississippi"),
                 "[, M, MM, i, MMM, s, Mi, s, MMMM, i, ii, s, MMi, s, is, i, MMMMM, p, Ms, p, ...]");
     }
 
     @Test
     public void testStringBags() {
-        aeqitLimit(TINY_LIMIT, P.stringBags(),
+        simpleProviderHelper(P.stringBags(),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, bb, f, aab, g, bc, h, aaaaa, i, ac, j, ...]");
     }
 
     private static void bagsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.bagsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.bagsAtLeast(minSize, input), output);
     }
 
     private static void bagsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -8214,7 +8213,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqitLimit(TINY_LIMIT, P.stringBagsAtLeast(minSize, input), output);
+        simpleProviderHelper(P.stringBagsAtLeast(minSize, input), output);
     }
 
     @Test
@@ -8286,7 +8285,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBagsAtLeast_helper(int minSize, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.stringBagsAtLeast(minSize), output);
+        simpleProviderHelper(P.stringBagsAtLeast(minSize), output);
     }
 
     @Test
@@ -8345,7 +8344,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetPairsLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetPairsLex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetPairsLex(readIntegerList(input)), output);
     }
 
     private static void subsetPairsLex_fail_helper(@NotNull String input) {
@@ -8366,7 +8365,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetTriplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetTriplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetTriplesLex_fail_helper(@NotNull String input) {
@@ -8387,7 +8386,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(P.subsetQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void subsetQuadruplesLex_fail_helper(@NotNull String input) {
@@ -8408,7 +8407,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetQuintuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetQuintuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetQuintuplesLex_fail_helper(@NotNull String input) {
@@ -8439,7 +8438,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        aeqitLimit(TINY_LIMIT, P.subsetSextuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(P.subsetSextuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetSextuplesLex_fail_helper(@NotNull String input) {
