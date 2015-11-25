@@ -300,8 +300,8 @@ public strictfp class IterableUtilsTest {
 
     @Test
     public void testRangeUp_byte() {
-        aeqit(take(TINY_LIMIT, rangeUp((byte) 0)),
-                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]");
+        aeqitLimit(TINY_LIMIT, rangeUp((byte) 0),
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
         aeq(length(rangeUp((byte) 0)), 1 << 7);
         aeqit(take(TINY_LIMIT, rangeUp(Byte.MIN_VALUE)),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119," +
