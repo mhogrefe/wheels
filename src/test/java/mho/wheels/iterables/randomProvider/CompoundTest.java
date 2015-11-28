@@ -38,7 +38,7 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withElement(element, cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqit(take(TINY_LIMIT, sample), output);
+        aeqitLimit(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> Objects.equals(x, element) ? 1 : 0, sample))), elementFrequency);
         P.reset();
     }
@@ -49,42 +49,42 @@ public strictfp class CompoundTest {
                 2,
                 "[1]",
                 null,
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1]",
+                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
                 0.4992549999935604
         );
         withElement_helper(
                 8,
                 "[1]",
                 null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
                 0.12480700000010415
         );
         withElement_helper(
                 32,
                 "[1]",
                 null,
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
                 0.031218000000010567
         );
         withElement_helper(
                 2,
                 "[null, 2, 3]",
                 10,
-                "[null, 10, 2, 3, null, 2, 3, null, 2, 10, 3, 10, 10, null, 10, 10, 2, 3, 10, null]",
+                "[null, 10, 2, 3, null, 2, 3, null, 2, 10, 3, 10, 10, null, 10, 10, 2, 3, 10, null, ...]",
                 0.4992549999935604
         );
         withElement_helper(
                 8,
                 "[null, 2, 3]",
                 10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2]",
+                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
                 0.12480700000010415
         );
         withElement_helper(
                 32,
                 "[null, 2, 3]",
                 10,
-                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2]",
+                "[null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, 3, null, 2, ...]",
                 0.031218000000010567
         );
         try {
@@ -105,7 +105,7 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Integer> xs = P.withScale(scale).withNull(cycle(readIntegerListWithNulls(input)));
         List<Integer> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqit(take(TINY_LIMIT, sample), output);
+        aeqitLimit(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x == null ? 1 : 0, sample))), nullFrequency);
         P.reset();
     }
@@ -115,32 +115,37 @@ public strictfp class CompoundTest {
         withNull_helper(
                 2,
                 "[1]",
-                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1]",
+                "[1, null, 1, 1, 1, 1, 1, 1, 1, null, 1, null, null, 1, null, null, 1, 1, null, 1, ...]",
                 0.4992549999935604
         );
-        withNull_helper(8, "[1]", "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]", 0.12480700000010415);
+        withNull_helper(
+                8,
+                "[1]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
+                0.12480700000010415
+        );
         withNull_helper(
                 32,
                 "[1]",
-                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]",
+                "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]",
                 0.031218000000010567
         );
         withNull_helper(
                 2,
                 "[1, 2, 3]",
-                "[1, null, 2, 3, 1, 2, 3, 1, 2, null, 3, null, null, 1, null, null, 2, 3, null, 1]",
+                "[1, null, 2, 3, 1, 2, 3, 1, 2, null, 3, null, null, 1, null, null, 2, 3, null, 1, ...]",
                 0.4992549999935604
         );
         withNull_helper(
                 8,
                 "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]",
+                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
                 0.12480700000010415
         );
         withNull_helper(
                 32,
                 "[1, 2, 3]",
-                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2]",
+                "[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, ...]",
                 0.031218000000010567
         );
         try {
@@ -161,7 +166,7 @@ public strictfp class CompoundTest {
     ) {
         Iterable<Optional<Integer>> xs = P.withScale(scale).optionals(cycle(readIntegerListWithNulls(input)));
         List<Optional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqit(take(TINY_LIMIT, sample), output);
+        aeqitLimit(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
@@ -173,7 +178,8 @@ public strictfp class CompoundTest {
                 "[1]",
                 "[Optional[1], Optional.empty, Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
                 " Optional[1], Optional[1], Optional.empty, Optional[1], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[1], Optional[1], Optional.empty, Optional[1]]",
+                " Optional[1], Optional.empty, Optional.empty, Optional[1], Optional[1], Optional.empty," +
+                " Optional[1], ...]",
                 0.4992549999935604
         );
         optionalsHelper(
@@ -181,7 +187,7 @@ public strictfp class CompoundTest {
                 "[1]",
                 "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
                 " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]]",
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
                 0.12480700000010415
         );
         optionalsHelper(
@@ -189,7 +195,7 @@ public strictfp class CompoundTest {
                 "[1]",
                 "[Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
                 " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]," +
-                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1]]",
+                " Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], Optional[1], ...]",
                 0.031218000000010567
         );
         optionalsHelper(
@@ -197,7 +203,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[Optional[1], Optional.empty, Optional[2], Optional[3], Optional[1], Optional[2], Optional[3]," +
                 " Optional[1], Optional[2], Optional.empty, Optional[3], Optional.empty, Optional.empty," +
-                " Optional[1], Optional.empty, Optional.empty, Optional[2], Optional[3], Optional.empty, Optional[1]]",
+                " Optional[1], Optional.empty, Optional.empty, Optional[2], Optional[3], Optional.empty," +
+                " Optional[1], ...]",
                 0.4992549999935604
         );
         optionalsHelper(
@@ -205,7 +212,7 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
                 " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]]",
+                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
                 0.12480700000010415
         );
         optionalsHelper(
@@ -213,7 +220,7 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1]," +
                 " Optional[2], Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]," +
-                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2]]",
+                " Optional[3], Optional[1], Optional[2], Optional[3], Optional[1], Optional[2], ...]",
                 0.031218000000010567
         );
         try {
@@ -235,7 +242,7 @@ public strictfp class CompoundTest {
         Iterable<NullableOptional<Integer>> xs = P.withScale(scale)
                 .nullableOptionals(cycle(readIntegerListWithNulls(input)));
         List<NullableOptional<Integer>> sample = toList(take(DEFAULT_SAMPLE_SIZE, xs));
-        aeqit(take(TINY_LIMIT, sample), output);
+        aeqitLimit(TINY_LIMIT, sample, output);
         aeq(meanOfIntegers(toList(map(x -> x.isPresent() ? 0 : 1, sample))), emptyFrequency);
         P.reset();
     }
@@ -249,7 +256,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
                 " NullableOptional[1], NullableOptional.empty, NullableOptional[1], NullableOptional.empty," +
                 " NullableOptional.empty, NullableOptional[1], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional.empty, NullableOptional[1]]",
+                " NullableOptional[1], NullableOptional[1], NullableOptional.empty, NullableOptional[1], ...]",
                 0.4992549999935604
         );
         nullableOptionals_helper(
@@ -259,7 +266,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]]",
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
                 0.12480700000010415
         );
         nullableOptionals_helper(
@@ -269,7 +276,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
                 " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]," +
-                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1]]",
+                " NullableOptional[1], NullableOptional[1], NullableOptional[1], NullableOptional[1], ...]",
                 0.031218000000010567
         );
         nullableOptionals_helper(
@@ -279,7 +286,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
                 " NullableOptional[2], NullableOptional.empty, NullableOptional[3], NullableOptional.empty," +
                 " NullableOptional.empty, NullableOptional[null], NullableOptional.empty, NullableOptional.empty," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional.empty, NullableOptional[null]]",
+                " NullableOptional[2], NullableOptional[3], NullableOptional.empty, NullableOptional[null], ...]",
                 0.4992549999935604
         );
         nullableOptionals_helper(
@@ -289,7 +296,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
                 " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
                 " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]]",
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
                 0.12480700000010415
         );
         nullableOptionals_helper(
@@ -299,7 +306,7 @@ public strictfp class CompoundTest {
                 " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]," +
                 " NullableOptional[3], NullableOptional[null], NullableOptional[2], NullableOptional[3]," +
                 " NullableOptional[null], NullableOptional[2], NullableOptional[3], NullableOptional[null]," +
-                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2]]",
+                " NullableOptional[2], NullableOptional[3], NullableOptional[null], NullableOptional[2], ...]",
                 0.031218000000010567
         );
         try {
@@ -3850,8 +3857,8 @@ public strictfp class CompoundTest {
                 2,
                 "[1, 2, 3, 4]",
                 "[[2, 2, 4, 4], [2, 2, 3], [3, 4], [2, 3, 4], [], [1, 1, 2, 3, 4], [2], [], [3, 3, 4], [1, 2, 3, 3]," +
-                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 3, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 3, 3, 4, 4]" +
-                ", ...]",
+                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 3, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 3, 3, 4, 4]," +
+                " ...]",
                 "{[]=333041, [1]=55655, [2]=55628, [4]=55498, [3]=55246, [3, 4]=18572, [1, 2]=18564, [2, 4]=18474," +
                 " [1, 4]=18473, [2, 3]=18429}",
                 2.0037019999891394
@@ -3880,8 +3887,8 @@ public strictfp class CompoundTest {
                 2,
                 "[1, 2, 2, 4]",
                 "[[2, 2, 4, 4], [2, 2, 2], [2, 4], [2, 2, 4], [], [1, 1, 2, 2, 4], [2], [], [2, 2, 4], [1, 2, 2, 2]," +
-                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 2, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 2, 2, 4, 4]" +
-                ", ...]",
+                " [], [], [1], [1], [2, 2, 4], [], [2, 2, 2, 4, 4, 4, 4], [4, 4, 4, 4], [4], [1, 1, 2, 2, 2, 4, 4]," +
+                " ...]",
                 "{[]=333041, [2]=110874, [1]=55655, [4]=55498, [2, 2]=37235, [2, 4]=37046, [1, 2]=36992," +
                 " [1, 2, 4]=18649, [2, 2, 4]=18508, [1, 4]=18473}",
                 2.0037019999891394
@@ -3903,19 +3910,19 @@ public strictfp class CompoundTest {
                 "[[2, 2, 2], [2, 2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 2], [2], [2], [2], [2, 2], [2], [], [], [2], [2]," +
                 " [2], [], [2], [2], [], [2], [], [], ...]",
                 "{[]=499557, [2]=250432, [2, 2]=124756, [2, 2, 2]=62825, [2, 2, 2, 2]=31144, [2, 2, 2, 2, 2]=15656," +
-                " [2, 2, 2, 2, 2, 2]=7784, [2, 2, 2, 2, 2, 2, 2]=3987, [2, 2, 2, 2, 2, 2, 2, 2]=1945" +
-                ", [2, 2, 2, 2, 2, 2, 2, 2, 2]=945}",
+                " [2, 2, 2, 2, 2, 2]=7784, [2, 2, 2, 2, 2, 2, 2]=3987, [2, 2, 2, 2, 2, 2, 2, 2]=1945," +
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=945}",
                 1.0006389999976706
         );
         bags_Iterable_helper_uniform(
                 2,
                 "[2, 2, 2, 2]",
                 "[[2, 2, 2, 2], [2, 2, 2], [2, 2], [2, 2, 2], [], [2, 2, 2, 2, 2], [2], [], [2, 2, 2], [2, 2, 2, 2]," +
-                " [], [], [2], [2], [2, 2, 2], [], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2], [2], [2, 2, 2, 2, 2, 2, 2]" +
-                ", ...]",
+                " [], [], [2], [2], [2, 2, 2], [], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2], [2], [2, 2, 2, 2, 2, 2, 2],ß" +
+                " ...]",
                 "{[]=333041, [2]=222027, [2, 2]=148088, [2, 2, 2]=98825, [2, 2, 2, 2]=65746, [2, 2, 2, 2, 2]=44116," +
-                " [2, 2, 2, 2, 2, 2]=29303, [2, 2, 2, 2, 2, 2, 2]=19671, [2, 2, 2, 2, 2, 2, 2, 2]=13059" +
-                ", [2, 2, 2, 2, 2, 2, 2, 2, 2]=8625}",
+                " [2, 2, 2, 2, 2, 2]=29303, [2, 2, 2, 2, 2, 2, 2]=19671, [2, 2, 2, 2, 2, 2, 2, 2]=13059," +
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=8625}",
                 2.0037019999891394
         );
         bags_Iterable_helper_uniform(
@@ -3926,8 +3933,8 @@ public strictfp class CompoundTest {
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2], [], [2, 2, 2, 2], [2, 2, 2, 2, 2]," +
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2], [2], [], [2, 2, 2, 2], ...]",
                 "{[]=200010, [2]=159823, [2, 2]=128026, [2, 2, 2]=102068, [2, 2, 2, 2]=82001, [2, 2, 2, 2, 2]=65507," +
-                " [2, 2, 2, 2, 2, 2]=52528, [2, 2, 2, 2, 2, 2, 2]=41779, [2, 2, 2, 2, 2, 2, 2, 2]=33653" +
-                ", [2, 2, 2, 2, 2, 2, 2, 2, 2]=26990}",
+                " [2, 2, 2, 2, 2, 2]=52528, [2, 2, 2, 2, 2, 2, 2]=41779, [2, 2, 2, 2, 2, 2, 2, 2]=33653," +
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2]=26990}",
                 4.00571499999147
         );
         bags_Iterable_helper_uniform(
@@ -3996,8 +4003,8 @@ public strictfp class CompoundTest {
                 "[[1, 1, 1], [1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1], [1, 1], [], [1], [1, 1, 1], [], []," +
                 " [1, 1], [1, 1], [1, 1], [], [1, 1], [], [], [1], [1], [], ...]",
                 "{[]=499125, [1]=250897, [1, 1]=124849, [1, 1, 1]=62518, [1, 1, 1, 1]=31407, [1, 1, 1, 1, 1]=15634," +
-                " [1, 1, 1, 1, 1, 1]=7825, [1, 1, 1, 1, 1, 1, 1]=3926, [1, 1, 1, 1, 1, 1, 1, 1]=1896" +
-                ", [1, 1, 1, 1, 1, 1, 1, 1, 1]=956}",
+                " [1, 1, 1, 1, 1, 1]=7825, [1, 1, 1, 1, 1, 1, 1]=3926, [1, 1, 1, 1, 1, 1, 1, 1]=1896," +
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=956}",
                 1.0008359999977228
         );
         bags_Iterable_helper(
@@ -4006,8 +4013,8 @@ public strictfp class CompoundTest {
                 "[[1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1], [1, 1], [1, 1, 1, 1, 1], [], [1]," +
                 " [1, 1], [1], [1, 1, 1], [1, 1, 1, 1, 1, 1], [1], [1, 1], [], [1], [], [1], [], [1, 1, 1], ...]",
                 "{[]=333813, [1]=221150, [1, 1]=148025, [1, 1, 1]=98992, [1, 1, 1, 1]=66270, [1, 1, 1, 1, 1]=43747," +
-                " [1, 1, 1, 1, 1, 1]=29389, [1, 1, 1, 1, 1, 1, 1]=19567, [1, 1, 1, 1, 1, 1, 1, 1]=12958" +
-                ", [1, 1, 1, 1, 1, 1, 1, 1, 1]=8571}",
+                " [1, 1, 1, 1, 1, 1]=29389, [1, 1, 1, 1, 1, 1, 1]=19567, [1, 1, 1, 1, 1, 1, 1, 1]=12958," +
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=8571}",
                 2.0020969999891216
         );
         bags_Iterable_helper(
@@ -4019,8 +4026,8 @@ public strictfp class CompoundTest {
                 " [1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [], [1, 1, 1, 1, 1, 1, 1, 1]," +
                 " [1], [1, 1, 1, 1], ...]",
                 "{[]=200194, [1]=160489, [1, 1]=127708, [1, 1, 1]=101606, [1, 1, 1, 1]=82008, [1, 1, 1, 1, 1]=65900," +
-                " [1, 1, 1, 1, 1, 1]=52157, [1, 1, 1, 1, 1, 1, 1]=41827, [1, 1, 1, 1, 1, 1, 1, 1]=33413" +
-                ", [1, 1, 1, 1, 1, 1, 1, 1, 1]=26877}",
+                " [1, 1, 1, 1, 1, 1]=52157, [1, 1, 1, 1, 1, 1, 1]=41827, [1, 1, 1, 1, 1, 1, 1, 1]=33413," +
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1]=26877}",
                 4.004359999991779
         );
         bags_Iterable_fail_helper(1, Collections.emptyList());
@@ -4272,8 +4279,8 @@ public strictfp class CompoundTest {
                 " [5, 5, 5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5], [5, 5, 5, 5, 5, 5], ...]",
                 "{[5, 5, 5]=333813, [5, 5, 5, 5]=221150, [5, 5, 5, 5, 5]=148025, [5, 5, 5, 5, 5, 5]=98992," +
                 " [5, 5, 5, 5, 5, 5, 5]=66270, [5, 5, 5, 5, 5, 5, 5, 5]=43747, [5, 5, 5, 5, 5, 5, 5, 5, 5]=29389," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=19567, [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=12958" +
-                ", [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=8571}",
+                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=19567, [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=12958," +
+                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=8571}",
                 5.002096999996331
         );
         bagsAtLeast_helper_uniform(
@@ -4306,8 +4313,8 @@ public strictfp class CompoundTest {
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=33831, [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=32551," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=31521," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=30149," +
-                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=28763" +
-                ", [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=27543}",
+                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=28763," +
+                " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]=27543}",
                 32.00360900002322
         );
         bagsAtLeast_helper_uniform(
@@ -4416,8 +4423,8 @@ public strictfp class CompoundTest {
                 " [1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4], ...]",
                 "{[1, 1, 2, 2, 3, 3, 4, 4]=1551, [1, 1, 2, 2, 3, 3, 3, 4, 4]=1154, [1, 1, 1, 2, 2, 3, 3, 4, 4]=1113," +
                 " [1, 1, 2, 2, 3, 3, 4, 4, 4]=1111, [1, 1, 2, 2, 2, 3, 3, 4, 4]=1091, [1, 1, 2, 2, 3, 4, 4, 4]=1078," +
-                " [1, 1, 1, 2, 2, 3, 4, 4]=1057, [1, 1, 2, 3, 3, 4, 4, 4]=1056, [1, 1, 2, 2, 2, 3, 3, 4]=1050" +
-                ", [1, 1, 2, 2, 2, 3, 4, 4]=1029}",
+                " [1, 1, 1, 2, 2, 3, 4, 4]=1057, [1, 1, 2, 3, 3, 4, 4, 4]=1056, [1, 1, 2, 2, 2, 3, 3, 4]=1050," +
+                " [1, 1, 2, 2, 2, 3, 4, 4]=1029}",
                 32.008717000021356
         );
         bagsAtLeast_helper_uniform(
@@ -4470,8 +4477,8 @@ public strictfp class CompoundTest {
                 "{[1, 1, 2, 2, 2, 2, 4, 4]=4084, [1, 1, 2, 2, 2, 2, 2, 4, 4]=3541, [1, 1, 2, 2, 2, 2, 2, 4]=3276," +
                 " [1, 2, 2, 2, 2, 2, 4, 4]=3271, [1, 1, 2, 2, 2, 2, 4, 4, 4]=2956," +
                 " [1, 1, 2, 2, 2, 2, 2, 2, 4, 4]=2929, [1, 1, 1, 2, 2, 2, 2, 4, 4]=2912," +
-                " [1, 1, 1, 2, 2, 2, 2, 2, 4, 4]=2878, [1, 1, 2, 2, 2, 2, 2, 4, 4, 4]=2789" +
-                ", [1, 1, 2, 2, 2, 4, 4, 4]=2777}",
+                " [1, 1, 1, 2, 2, 2, 2, 2, 4, 4]=2878, [1, 1, 2, 2, 2, 2, 2, 4, 4, 4]=2789," +
+                " [1, 1, 2, 2, 2, 4, 4, 4]=2777}",
                 32.008717000021356
         );
         bagsAtLeast_helper_uniform(
@@ -4495,8 +4502,8 @@ public strictfp class CompoundTest {
                 " [2, 2, 2, 2, 2, 2, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 2, 2, 2, 2], ...]",
                 "{[2, 2, 2]=332475, [2, 2, 2, 2]=222950, [2, 2, 2, 2, 2]=148435, [2, 2, 2, 2, 2, 2]=98386," +
                 " [2, 2, 2, 2, 2, 2, 2]=65648, [2, 2, 2, 2, 2, 2, 2, 2]=43847, [2, 2, 2, 2, 2, 2, 2, 2, 2]=29430," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=19567, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=13014" +
-                ", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=8771}",
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=19567, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=13014," +
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=8771}",
                 5.00315899999616
         );
         bagsAtLeast_helper_uniform(
@@ -4529,8 +4536,8 @@ public strictfp class CompoundTest {
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=33943, [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=32305," +
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=31206," +
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=29856," +
-                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=28774" +
-                ", [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=27718}",
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=28774," +
+                " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]=27718}",
                 32.008717000021356
         );
         bagsAtLeast_helper_uniform(
@@ -4582,13 +4589,13 @@ public strictfp class CompoundTest {
                 " [1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 4, 5, 7, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 10, 10]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, " +
                 "3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7," +
-                " 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10" +
-                ", 10, 10, 10], [1, 1, 1, 3, 4, 4, 4, 5, 5, 5, 8, 8, 8, 8, 9, 9, 9, 10]," +
+                " 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10," +
+                " 10, 10, 10], [1, 1, 1, 3, 4, 4, 4, 5, 5, 5, 8, 8, 8, 8, 9, 9, 9, 10]," +
                 " [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 8, 8, 9, 9, 9, 9, 9, 10], ...]",
                 "{[1, 2, 3, 6, 7, 8, 9, 10]=25, [1, 2, 3, 4, 6, 7, 9, 10]=25, [2, 3, 4, 5, 6, 7, 9, 10]=25," +
                 " [1, 2, 3, 4, 6, 8, 9, 10]=23, [1, 3, 4, 5, 6, 7, 9, 10]=23, [2, 3, 4, 6, 7, 8, 9, 10]=21," +
-                " [1, 3, 4, 5, 7, 8, 9, 10]=21, [1, 2, 4, 5, 6, 7, 8, 9, 10]=20, [1, 2, 3, 4, 5, 6, 8, 9, 10]=20" +
-                ", [1, 2, 4, 5, 6, 7, 9, 10]=20}",
+                " [1, 3, 4, 5, 7, 8, 9, 10]=21, [1, 2, 4, 5, 6, 7, 8, 9, 10]=20, [1, 2, 3, 4, 5, 6, 8, 9, 10]=20," +
+                " [1, 2, 4, 5, 6, 7, 9, 10]=20}",
                 31.997066000022638
         );
         bagsAtLeast_helper(
@@ -4631,13 +4638,13 @@ public strictfp class CompoundTest {
                 " [1, 1, 1, 2, 2, 3, 3, 4, 4, 7, 7, 9]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, " +
                 "2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3," +
-                " 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 8, 8, 8, 8" +
-                ", 8, 8, 9, 9, 9, 10, 10, 10, 12, 13, 14, 15, 15, 17], [1, 1, 1, 1, 2, 2, 2, 4, 7, 8, 8]," +
+                " 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 8, 8, 8, 8," +
+                " 8, 8, 9, 9, 9, 10, 10, 10, 12, 13, 14, 15, 15, 17], [1, 1, 1, 1, 2, 2, 2, 4, 7, 8, 8]," +
                 " [1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 6, 6, 7, 7, 8, 10, 11]," +
                 " [1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 7, 7, 8]," +
                 " [1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 5, 5, 5, 6, 6, 8, 8, 13]," +
-                " [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 5, 5, 6, 6, 6, 6, 6, 7, 8, 8, 9, 9, 9, 10, 12" +
-                ", 16]," +
+                " [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 5, 5, 6, 6, 6, 6, 6, 7, 8, 8, 9, 9, 9, 10, 12," +
+                " 16]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, " +
                 "2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6," +
                 " 6, 6, 6, 6, 6, 7, 8, 8, 9, 10, 10, 11, 14, 15, 17]," +
@@ -4648,8 +4655,8 @@ public strictfp class CompoundTest {
                 "3, 3, 4, 4, 5, 5, 5, 6, 7, 7, 7, 8, 10, 11, 15, 17], ...]",
                 "{[1, 1, 1, 2, 2, 3, 4, 5]=91, [1, 1, 1, 2, 2, 3, 3, 4]=78, [1, 1, 1, 1, 2, 2, 3, 4]=77," +
                 " [1, 1, 1, 2, 2, 2, 3, 4]=74, [1, 1, 2, 2, 2, 3, 4, 5]=69, [1, 1, 2, 2, 3, 3, 4, 5]=68," +
-                " [1, 1, 1, 2, 3, 3, 4, 5]=68, [1, 1, 2, 2, 2, 3, 3, 4]=66, [1, 1, 1, 2, 2, 3, 4, 6]=64" +
-                ", [1, 1, 1, 2, 2, 3, 4, 4]=64}",
+                " [1, 1, 1, 2, 3, 3, 4, 5]=68, [1, 1, 2, 2, 2, 3, 3, 4]=66, [1, 1, 1, 2, 2, 3, 4, 6]=64," +
+                " [1, 1, 1, 2, 2, 3, 4, 4]=64}",
                 32.00730000002313
         );
         bagsAtLeast_helper(
@@ -4674,8 +4681,8 @@ public strictfp class CompoundTest {
                 " [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1, 1], ...]",
                 "{[1, 1, 1]=333813, [1, 1, 1, 1]=221150, [1, 1, 1, 1, 1]=148025, [1, 1, 1, 1, 1, 1]=98992," +
                 " [1, 1, 1, 1, 1, 1, 1]=66270, [1, 1, 1, 1, 1, 1, 1, 1]=43747, [1, 1, 1, 1, 1, 1, 1, 1, 1]=29389," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=19567, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=12958" +
-                ", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=8571}",
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=19567, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=12958," +
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=8571}",
                 5.002096999996331
         );
         bagsAtLeast_helper(
@@ -4708,8 +4715,8 @@ public strictfp class CompoundTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=33831, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=32551," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=31521," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=30149," +
-                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=28763" +
-                ", [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=27543}",
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=28763," +
+                " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]=27543}",
                 32.00360900002322
         );
         bagsAtLeast_fail_helper(5, 3, Collections.emptyList());
@@ -4779,8 +4786,8 @@ public strictfp class CompoundTest {
                 " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaaaaaaaaaa, ...]",
                 "{aaaaaaaa=39940, aaaaaaaaa=38196, aaaaaaaaaa=36988, aaaaaaaaaaa=35334, aaaaaaaaaaaa=33831," +
-                " aaaaaaaaaaaaa=32551, aaaaaaaaaaaaaa=31521, aaaaaaaaaaaaaaa=30149, aaaaaaaaaaaaaaaa=28763" +
-                ", aaaaaaaaaaaaaaaaa=27543}",
+                " aaaaaaaaaaaaa=32551, aaaaaaaaaaaaaa=31521, aaaaaaaaaaaaaaa=30149, aaaaaaaaaaaaaaaa=28763," +
+                " aaaaaaaaaaaaaaaaa=27543}",
                 32.00360900002322
         );
         stringBagsAtLeast_int_String_helper(
@@ -4823,8 +4830,8 @@ public strictfp class CompoundTest {
                 1,
                 "abbc",
                 "[abbc, abbbbbbcc, abbc, c, bc, b, abc, b, a, cc, b, ab, bb, b, b, b, a, b, a, a, ...]",
-                "{b=249789, c=125444, a=125036, bb=62887, bc=62524, ab=61937, ac=31260, abc=23497, abb=23397" +
-                ", bbc=23350}",
+                "{b=249789, c=125444, a=125036, bb=62887, bc=62524, ab=61937, ac=31260, abc=23497, abb=23397," +
+                " bbc=23350}",
                 1.999585999979838
         );
         stringBagsAtLeast_int_String_helper(
@@ -5205,8 +5212,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[[1, 2], [1, 2, 3], [1, 3], [2, 3], [], [], [1, 3], [2], [], [], [3], [1, 3], [3], [3], [], [3]," +
                 " [], [], [], [], ...]",
-                "{[]=499504, [2]=100253, [3]=100058, [1]=100023, [2, 3]=50160, [1, 2, 3]=50048, [1, 2]=49990" +
-                ", [1, 3]=49964}",
+                "{[]=499504, [2]=100253, [3]=100058, [1]=100023, [2, 3]=50160, [1, 2, 3]=50048, [1, 2]=49990," +
+                " [1, 3]=49964}",
                 0.7507059999970308
         );
         subsets_Iterable_helper_uniform(
@@ -5214,8 +5221,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[[2], [2], [2, 3], [], [2, 3], [1, 3], [1, 2], [3], [1, 2, 3], [1], [1], [1], [1, 2], [2, 3], []," +
                 " [2], [1, 2, 3], [], [], [], ...]",
-                "{[]=333247, [1, 2, 3]=152964, [2]=95442, [3]=95325, [1]=94824, [1, 2]=76127, [1, 3]=76065" +
-                ", [2, 3]=76006}",
+                "{[]=333247, [1, 2, 3]=152964, [2]=95442, [3]=95325, [1]=94824, [1, 2]=76127, [1, 3]=76065," +
+                " [2, 3]=76006}",
                 1.2008789999923022
         );
         subsets_Iterable_helper_uniform(
@@ -5223,8 +5230,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 3]",
                 "[[2], [2], [1, 2, 3], [1], [3], [1, 2, 3], [2, 3], [1, 2, 3], [], [1, 2, 3], [1, 3], [1, 3]," +
                 " [1, 2, 3], [], [], [1, 3], [1], [1, 3], [], [1, 3], ...]",
-                "{[1, 2, 3]=332856, []=199912, [2, 3]=83497, [1, 2]=82734, [1, 3]=82492, [1]=72945, [2]=72868" +
-                ", [3]=72696}",
+                "{[1, 2, 3]=332856, []=199912, [2, 3]=83497, [1, 2]=82734, [1, 3]=82492, [1]=72945, [2]=72868," +
+                " [3]=72696}",
                 1.7145229999887661
         );
         subsets_Iterable_helper_uniform(
@@ -5259,8 +5266,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 2, 4]",
                 "[[1, 2, 4], [1, 2, 4], [1, 2, 4], [4], [4], [2], [1, 2], [2], [], [], [4], [2], [1], [], [2], [2]," +
                 " [], [2], [], [], ...]",
-                "{[]=499557, [2]=167198, [1]=71506, [4]=71260, [2, 4]=61764, [1, 2]=61754, [1, 2, 4]=43049" +
-                ", [1, 4]=23912}",
+                "{[]=499557, [2]=167198, [1]=71506, [4]=71260, [2, 4]=61764, [1, 2]=61754, [1, 2, 4]=43049," +
+                " [1, 4]=23912}",
                 0.7339709999971153
         );
         subsets_Iterable_helper_uniform(
@@ -5268,8 +5275,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 2, 4]",
                 "[[2, 4], [2], [2, 4], [2, 4], [], [1, 2, 4], [2], [], [2, 4], [1, 2], [], [], [1], [1], [2, 4], []," +
                 " [2, 4], [4], [4], [1, 2, 4], ...]",
-                "{[]=333041, [2]=166862, [1, 2, 4]=133729, [2, 4]=100221, [1, 2]=99830, [1]=66679, [4]=66467" +
-                ", [1, 4]=33171}",
+                "{[]=333041, [2]=166862, [1, 2, 4]=133729, [2, 4]=100221, [1, 2]=99830, [1]=66679, [4]=66467," +
+                " [1, 4]=33171}",
                 1.1676389999927037
         );
         subsets_Iterable_helper_uniform(
@@ -5277,8 +5284,8 @@ public strictfp class CompoundTest {
                 "[1, 2, 2, 4]",
                 "[[2, 4], [2], [1, 2, 4], [1, 2], [], [], [2], [1, 2, 4], [2, 4], [1, 2, 4], [2, 4], [1, 2, 4], [1]," +
                 " [], [1, 2, 4], [1, 2], [1, 2, 4], [2], [], [1, 2, 4], ...]",
-                "{[1, 2, 4]=300726, []=200010, [2]=133338, [2, 4]=116702, [1, 2]=116234, [4]=49847, [1]=49823" +
-                ", [1, 4]=33320}",
+                "{[1, 2, 4]=300726, []=200010, [2]=133338, [2, 4]=116702, [1, 2]=116234, [4]=49847, [1]=49823," +
+                " [1, 4]=33320}",
                 1.667697999989275
         );
         subsets_Iterable_helper_uniform(
@@ -5490,16 +5497,16 @@ public strictfp class CompoundTest {
                 2,
                 "Mississippi",
                 "[is, is, is, i, is, , s, s, Mip, , , p, ps, s, is, ips, i, , is, , ...]",
-                "{=333528, s=106872, i=106248, is=100321, ips=77392, p=45804, Mips=40546, ps=37802, ip=37774" +
-                ", Mis=31686}",
+                "{=333528, s=106872, i=106248, is=100321, ips=77392, p=45804, Mips=40546, ps=37802, ip=37774," +
+                " Mis=31686}",
                 1.2632049999918284
         );
         stringSubsets_String_helper(
                 4,
                 "Mississippi",
                 "[is, s, Mips, s, ps, s, Mips, s, Mis, is, Mips, Mips, , ips, i, Mips, , , Ms, s, ...]",
-                "{=199852, ips=143500, Mips=131826, is=114182, s=82176, i=81772, Mis=51875, ip=38564, ps=38557" +
-                ", p=34200}",
+                "{=199852, ips=143500, Mips=131826, is=114182, s=82176, i=81772, Mis=51875, ip=38564, ps=38557," +
+                " p=34200}",
                 1.8740139999846195
         );
         stringSubsets_String_fail_helper(1, "");
@@ -5857,8 +5864,8 @@ public strictfp class CompoundTest {
                 1,
                 "Mississippi",
                 "[ps, is, i, is, is, s, i, is, s, s, i, ip, Mi, i, p, i, s, s, ps, s, ...]",
-                "{i=222608, s=222220, is=127085, p=100226, ips=55787, ps=52857, ip=52609, M=47546, Mis=24765" +
-                ", Mi=24457}",
+                "{i=222608, s=222220, is=127085, p=100226, ips=55787, ps=52857, ip=52609, M=47546, Mis=24765," +
+                " Mi=24457}",
                 1.5401079999842737
         );
         stringSubsetsAtLeast_int_String_helper(
@@ -6600,10 +6607,10 @@ public strictfp class CompoundTest {
                 " [1, 3, 1, 5, 1, 2, 3, 6, null, 4, 9], [1, 6, 7, 5, 1, 10, 1, 1, 1, 2, null, 4, 13, 7, 10, 3]," +
                 " [17, 2, 1, 2, 1, 3, 4, 3, 2, 7, 1, 1, 3, 4, 2, 4, 1, 1, 4, 3, 2, 1, 1, 19, 1, 1, 2, 7, 3, 14, 2, " +
                 "20, 4, 1, 2, 5, 2, 8, 5, 2, 7, 3, 4, 13, 1, 4, 3, 7, 2, 7, 1, 1, 6, 5, 2, 4, 4, 3, 1, 5, 3, 2, 4, " +
-                "10, 8, 1, 2, 6, 2, 5, null, 4, 1, 3, 1, 6, 15, 3, 3, 2, 6, 4, 3, 5, 2, 3, 3, 2, 4, 2, 6, 11, 2, 18" +
-                ", 1]," +
-                " [2, 7, 2, 1, 6, 9, 3, 1, 3, 1, 6, 1, 4, 5, 6, 6, 1, 1, 3, 2, 10, 2, 7, null, 3, 1, 2, 2, 5, 13, 6" +
-                ", 8, 4], [1, 1, 10, 4, 1, 5, 5, 1, null, 3, 8, 4, 3, 3, 1, 6, 2, 1]," +
+                "10, 8, 1, 2, 6, 2, 5, null, 4, 1, 3, 1, 6, 15, 3, 3, 2, 6, 4, 3, 5, 2, 3, 3, 2, 4, 2, 6, 11, 2, 18," +
+                " 1]," +
+                " [2, 7, 2, 1, 6, 9, 3, 1, 3, 1, 6, 1, 4, 5, 6, 6, 1, 1, 3, 2, 10, 2, 7, null, 3, 1, 2, 2, 5, 13, 6," +
+                " 8, 4], [1, 1, 10, 4, 1, 5, 5, 1, null, 3, 8, 4, 3, 3, 1, 6, 2, 1]," +
                 " [15, 2, 4, 2, 3, 2, 10, 3, 2, 2, 1, 1, 4, 7, 7, 3, 2, null, 9, 2, 2, 2, 4, 2, 3, 1, 1]," +
                 " [4, 4, 2, 1, 7, 6, 15, 2, 2, 4, 4, 4, 1, 1, 7, 4, 6, 3, null, 3, 4, 9, 3, 3, 8]," +
                 " [1, 5, 17, 1, 2, 9, 2, 1, 2, 1, 2, 9, 5, 3, 8, 3, 15, 8, 2, 5, 12, 4, 2, null, 2, 1]," +
@@ -6618,8 +6625,8 @@ public strictfp class CompoundTest {
                 "4, 10, 5, 8, 17, 5, 1, 11, 1, 2, 4, 3, 1, 5, 7, 1], [4, 2, 6, 6, null, 2, 4, 4]," +
                 " [1, 6, 4, 1, 5, 3, null, 1, 5, 3, 3, 4, 2, 1, 16, 1, 4, 7, 4, 5, 4, 2, 5, 1, 2, 8, 2, 2, 8]," +
                 " [6, 8, 3, 2, 5, 12, 4, 2, 1, 2, 9, 6, 8, 2, 2, 3, 8, 1, 9, 4, 10, 2, 3, 1, 1, 6, 5, 6, 1, 2, 3, 1" +
-                "1, 6, 4, 5, null], [1, 1, 5, 5, 1, 1, 1, 4, 6, 2, 1, 2, 8, 3, 9, 8, 8, null, 17, 1, 7, 2, 3, 7, 1]" +
-                ", ...]",
+                "1, 6, 4, 5, null], [1, 1, 5, 5, 1, 1, 1, 4, 6, 2, 1, 2, 8, 3, 9, 8, 8, null, 17, 1, 7, 2, 3, 7, 1]," +
+                " ...]",
                 "{[null]=3674, [1, null]=868, [null, 1]=845, [2, null]=682, [null, 2]=642, [3, null]=486," +
                 " [null, 3]=478, [4, null]=386, [null, 4]=364, [5, null]=295}",
                 32.001327000020574
@@ -6678,8 +6685,8 @@ public strictfp class CompoundTest {
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, " +
                 "1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, null, 1, 1, 1], ...]",
                 "{[null]=3569, [1, null]=3438, [null, 1]=3407, [1, null, 1]=3282, [null, 1, 1]=3212," +
-                " [1, 1, null]=3188, [1, null, 1, 1]=3044, [1, 1, 1, null]=3024, [null, 1, 1, 1]=2998" +
-                ", [1, 1, null, 1]=2972}",
+                " [1, 1, null]=3188, [1, null, 1, 1]=3044, [1, 1, 1, null]=3024, [null, 1, 1, 1]=2998," +
+                " [1, 1, null, 1]=2972}",
                 31.985562000021005
         );
         listsWithElement_fail_helper(5, null, Collections.emptyList());
@@ -6764,8 +6771,8 @@ public strictfp class CompoundTest {
                 "aaaa",
                 "[aaaa#aaa, aa#aaa, #aaaaa, a#, aaa#aaaa, #, a#a, aaa#, aaaaaaa#aaaa, a#aaaaaaa, a#, aaaaaaaa#," +
                 " aaa#aaa, a#, aa#aa, #aaaaa, a#, a#, aaaa#, aaaa#a, ...]",
-                "{#=111075, #a=73772, a#=73623, aa#=49634, #aa=49416, a#a=49351, a#aa=32949, #aaa=32912, aaa#=32899" +
-                ", aa#a=32804}",
+                "{#=111075, #a=73772, a#=73623, aa#=49634, #aa=49416, a#a=49351, a#aa=32949, #aaa=32912, aaa#=32899," +
+                " aa#a=32804}",
                 5.005771999999611
         );
         stringsWithChar_char_String_helper(
@@ -7135,8 +7142,8 @@ public strictfp class CompoundTest {
                 "abcd",
                 "[ abcd,  abcd,  abcd,  abc,  abcd,  ,  abcd,  ,  abcd,  acd,  c,  c,  abcd,  abcd,  abcd,  abcd," +
                 "  abcd,  abcd,  bc,  abcd, ...]",
-                "{ abcd=773484,  =31317,  abc=25051,  abd=24894,  bcd=24763,  acd=24732,  a=10032,  b=9969,  d=9935" +
-                ",  c=9893}",
+                "{ abcd=773484,  =31317,  abc=25051,  abd=24894,  bcd=24763,  acd=24732,  a=10032,  b=9969,  d=9935," +
+                "  c=9893}",
                 4.543944999926795
         );
         stringSubsetsWithChar_char_String_helper(
@@ -7168,8 +7175,8 @@ public strictfp class CompoundTest {
                 'b',
                 "Mississippi",
                 "[bps, bips, b, bps, bis, bs, b, b, bs, bs, bs, bs, bi, b, bi, b, b, b, b, b, ...]",
-                "{b=499907, bs=111412, bi=111205, bis=63811, bp=49643, bips=28080, bps=26542, bip=26154, Mb=24053" +
-                ", Mbis=12372}",
+                "{b=499907, bs=111412, bi=111205, bis=63811, bp=49643, bips=28080, bps=26542, bip=26154, Mb=24053," +
+                " Mbis=12372}",
                 1.7701949999823314
         );
         stringSubsetsWithChar_char_String_helper(
@@ -7624,8 +7631,8 @@ public strictfp class CompoundTest {
                 " 刓1.0719636E16쪅右䦋\u2832, 䫯-1.7012438E-6홃祝몷, -6.0346965E28, \u0c554.3328808E-37壙," +
                 " 63701.168\u2e94, ...]",
                 "{3.3475204E22=2, -4.16071123E11=2, 4.523417E27=2, -170.97168=2, 3.37845E-11=2, -10.269147=2," +
-                " -5.751692E-14=2, ε䊿\u2538-4.730412E-34\udd15몱ﲦ䯏ϡ罖\u19dc刿=1, -3.041954E25ᬜK=1" +
-                ", 㩷ⴿ2.0586195E-32䝲\uf207=1}",
+                " -5.751692E-14=2, ε䊿\u2538-4.730412E-34\udd15몱ﲦ䯏ϡ罖\u19dc刿=1, -3.041954E25ᬜK=1," +
+                " 㩷ⴿ2.0586195E-32䝲\uf207=1}",
                 14.31644599993982
         );
         stringsWithSubstrings_Iterable_String_helper(
