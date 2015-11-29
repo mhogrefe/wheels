@@ -32,7 +32,7 @@ public class IntegerUtils {
     private static final int ITERABLE_PRINT_LIMIT = 20;
 
     /**
-     * Determines whether {@code this} is a power of 2.
+     * Determines whether {@code n} is a power of 2.
      *
      * <ul>
      *  <li>{@code n} must be positive.</li>
@@ -50,7 +50,7 @@ public class IntegerUtils {
     }
 
     /**
-     * Determines whether {@code this} is a power of 2.
+     * Determines whether {@code n} is a power of 2.
      *
      * <ul>
      *  <li>{@code n} must be positive.</li>
@@ -68,7 +68,7 @@ public class IntegerUtils {
     }
 
     /**
-     * Determines whether {@code this} is a power of 2.
+     * Determines whether {@code n} is a power of 2.
      *
      * <ul>
      *  <li>{@code n} must be positive.</li>
