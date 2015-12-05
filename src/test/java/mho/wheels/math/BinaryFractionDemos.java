@@ -6,6 +6,7 @@ import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Testing;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
+import static mho.wheels.testing.Testing.*;
 import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -22,7 +24,6 @@ public strictfp class BinaryFractionDemos {
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
     private static int LIMIT;
     private static final int SMALL_LIMIT = 1000;
-    private static final int TINY_LIMIT = 20;
     private static IterableProvider P;
 
     private static void initialize() {
@@ -242,15 +243,15 @@ public strictfp class BinaryFractionDemos {
         initialize();
         for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).listsAtLeast(1, P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
-            System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(delta(rs)));
+            System.out.println("Δ(" + listString + ") = " + its(delta(rs)));
         }
     }
 
     private static void demoDelta_infinite() {
         initialize();
         for (Iterable<BinaryFraction> bfs : take(LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
-            String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bfs)));
-            System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(bfs)));
+            String listString = tail(init(its(bfs)));
+            System.out.println("Δ(" + listString + ") = " + its(delta(bfs)));
         }
     }
 
