@@ -480,6 +480,19 @@ public strictfp class BinaryFractionProperties {
             fixedPoint(e -> e.multiply(ONE), bf);
         }
 
+        Iterable<Triple<BinaryFraction, BinaryFraction, BinaryFraction>> ts = filterInfinite(
+                t -> {
+                    long productExponent = (long) t.a.getExponent() + t.b.getExponent() + t.c.getExponent();
+                    return productExponent <= Integer.MAX_VALUE && productExponent >= Integer.MIN_VALUE;
+                },
+                P.triples(P.binaryFractions())
+        );
+        for (Triple<BinaryFraction, BinaryFraction, BinaryFraction> t : take(LIMIT, ts)) {
+            associative(BinaryFraction::multiply, t);
+            leftDistributive(BinaryFraction::add, BinaryFraction::multiply, t);
+            rightDistributive(BinaryFraction::add, BinaryFraction::multiply, t);
+        }
+
         //overflow and underflow not tested
     }
 

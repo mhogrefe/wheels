@@ -272,6 +272,22 @@ public strictfp class Testing {
         assertEquals(t, f.apply(f.apply(t.a, t.b), t.c), f.apply(t.a, f.apply(t.b, t.c)));
     }
 
+    public static <T> void leftDistributive(
+            @NotNull BiFunction<T, T, T> f,
+            @NotNull BiFunction<T, T, T> g,
+            @NotNull Triple<T, T, T> t
+    ) {
+        assertEquals(t, g.apply(t.a, f.apply(t.b, t.c)), f.apply(g.apply(t.a, t.b), g.apply(t.a, t.c)));
+    }
+
+    public static <T> void rightDistributive(
+            @NotNull BiFunction<T, T, T> f,
+            @NotNull BiFunction<T, T, T> g,
+            @NotNull Triple<T, T, T> t
+    ) {
+        assertEquals(t, g.apply(f.apply(t.b, t.c), t.a), f.apply(g.apply(t.b, t.a), g.apply(t.c, t.a)));
+    }
+
     public static <A, B, MA, MB> void homomorphic(
             @NotNull Function<A, MA> domainMap,
             @NotNull Function<B, MB> rangeMap,
