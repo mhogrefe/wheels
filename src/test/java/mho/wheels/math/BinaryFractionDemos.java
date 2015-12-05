@@ -224,7 +224,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoSum() {
         initialize();
-        for (List<BinaryFraction> rs : take(LIMIT, P.lists(P.binaryFractions()))) {
+        for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Σ(" + listString + ") = " + sum(rs));
         }
@@ -232,23 +232,23 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoProduct() {
         initialize();
-        for (List<BinaryFraction> rs : take(LIMIT, P.lists(P.binaryFractions()))) {
+        for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).lists(P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Π(" + listString + ") = " + product(rs));
         }
     }
 
-    private static void demoDelta_finite_Iterable() {
+    private static void demoDelta_finite() {
         initialize();
-        for (List<BinaryFraction> rs : take(SMALL_LIMIT, P.withScale(16).listsAtLeast(1, P.binaryFractions()))) {
+        for (List<BinaryFraction> rs : take(LIMIT, P.withScale(4).listsAtLeast(1, P.binaryFractions()))) {
             String listString = tail(init(rs.toString()));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(delta(rs)));
         }
     }
 
-    private static void demoDelta_infinite_Iterable() {
+    private static void demoDelta_infinite() {
         initialize();
-        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
+        for (Iterable<BinaryFraction> bfs : take(LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
             String listString = tail(init(IterableUtils.toString(TINY_LIMIT, bfs)));
             System.out.println("Δ(" + listString + ") = " + IterableUtils.toString(TINY_LIMIT, delta(bfs)));
         }
