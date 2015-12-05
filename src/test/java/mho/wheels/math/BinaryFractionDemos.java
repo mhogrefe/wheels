@@ -247,7 +247,7 @@ public strictfp class BinaryFractionDemos {
 
     private static void demoDelta_infinite() {
         initialize();
-        for (Iterable<BinaryFraction> bfs : take(LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
+        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
             String listString = tail(init(its(bfs)));
             System.out.println("Δ(" + listString + ") = " + its(delta(bfs)));
         }
