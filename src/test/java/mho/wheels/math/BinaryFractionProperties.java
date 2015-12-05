@@ -474,8 +474,8 @@ public strictfp class BinaryFractionProperties {
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            assertTrue(bf, bf.multiply(ZERO) == ZERO);
-            assertTrue(bf, ZERO.multiply(bf) == ZERO);
+            fixedPoint(bf::multiply, ZERO);
+            fixedPoint(c -> c.multiply(bf), ZERO);
             fixedPoint(ONE::multiply, bf);
             fixedPoint(e -> e.multiply(ONE), bf);
         }
