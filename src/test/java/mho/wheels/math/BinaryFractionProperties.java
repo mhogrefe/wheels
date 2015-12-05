@@ -529,11 +529,12 @@ public strictfp class BinaryFractionProperties {
             BinaryFraction shifted = p.a.shiftLeft(p.b);
             shifted.validate();
             assertEquals(p, shifted, shiftLeft_simplest(p.a, p.b));
+            inverses(bf -> bf.shiftLeft(p.b), (BinaryFraction bf) -> bf.shiftRight(p.b), p.a);
             assertEquals(p, shifted, p.a.shiftRight(-p.b));
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            assertEquals(bf, bf.shiftLeft(0), bf);
+            fixedPoint(c -> c.shiftLeft(0), bf);
         }
 
         ps = filterInfinite(
@@ -597,11 +598,12 @@ public strictfp class BinaryFractionProperties {
             BinaryFraction shifted = p.a.shiftRight(p.b);
             shifted.validate();
             assertEquals(p, shifted, shiftRight_simplest(p.a, p.b));
+            inverses(bf -> bf.shiftRight(p.b), (BinaryFraction bf) -> bf.shiftLeft(p.b), p.a);
             assertEquals(p, shifted, p.a.shiftLeft(-p.b));
         }
 
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            assertEquals(bf, bf.shiftRight(0), bf);
+            fixedPoint(c -> c.shiftRight(0), bf);
         }
 
         //overflow and underflow not tested
