@@ -157,7 +157,7 @@ public strictfp class BinaryFractionDemos {
     private static void demoSignum() {
         initialize();
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
-            System.out.println("sgn(" + bf + ") = " + bf.signum());
+            System.out.println("signum(" + bf + ") = " + bf.signum());
         }
     }
 
