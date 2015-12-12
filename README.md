@@ -45,4 +45,5 @@ Progress
 | Septuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Sextuple                    | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Triple                      | ✘       | ✘       | ✘     | ✘     | ✘          |
+| Demos                       | ✘       | ✘       | ✘     | ✘     | ✘          |
 | Testing                     | ✘       | ✘       | ✘     | ✘     | ✘          |
