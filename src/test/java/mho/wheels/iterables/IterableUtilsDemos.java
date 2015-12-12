@@ -1,8 +1,8 @@
 package mho.wheels.iterables;
 
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,26 +12,7 @@ import java.util.List;
 import static mho.wheels.iterables.IterableUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public strictfp class IterableUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static final int SMALLER_LIMIT = 100;
-    private static final int TINY_LIMIT = 20;
-
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public strictfp class IterableUtilsDemos extends Demos {
     private static void demoAddTo_Collection_Iterable() {
         initialize();
         for (Pair<List<Integer>, List<Integer>> p : take(LIMIT, P.pairs(P.lists(P.withNull(P.integers()))))) {

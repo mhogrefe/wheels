@@ -1,6 +1,6 @@
 package mho.wheels.iterables;
 
-import org.jetbrains.annotations.NotNull;
+import mho.wheels.testing.Demos;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,23 +9,7 @@ import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.testing.Testing.its;
 
 @SuppressWarnings("UnusedDeclaration")
-public class NoRemoveIteratorDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class NoRemoveIteratorDemos extends Demos {
     private static void demoConstructor_finite() {
         initialize();
         for (List<Integer> xs : take(LIMIT, P.withScale(4).lists(P.withNull(P.integersGeometric())))) {

@@ -1,8 +1,6 @@
 package mho.wheels.structures;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
+import mho.wheels.testing.Demos;
 
 import java.util.Optional;
 
@@ -11,21 +9,7 @@ import static mho.wheels.structures.NullableOptional.fromOptional;
 import static mho.wheels.structures.NullableOptional.of;
 
 @SuppressWarnings("UnusedDeclaration")
-public class NullableOptionalDemos {
-    private static final boolean USE_RANDOM = false;
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class NullableOptionalDemos extends Demos {
     private static void demoOf_Integer() {
         initialize();
         for (Integer i : take(LIMIT, P.withNull(P.integers()))) {

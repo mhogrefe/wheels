@@ -1,9 +1,7 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 
 import java.math.BigInteger;
 
@@ -13,21 +11,7 @@ import static mho.wheels.math.MathUtils.gcd;
 import static mho.wheels.math.MathUtils.lcm;
 
 @SuppressWarnings("UnusedDeclaration")
-public class MathUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class MathUtilsDemos extends Demos {
     private static void demoGcd_int_int() {
         initialize();
         Iterable<Pair<Integer, Integer>> ps = filter(p -> p.a != 0 || p.b != 0, P.pairs(P.integers()));

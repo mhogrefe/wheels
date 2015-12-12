@@ -1,10 +1,9 @@
 package mho.wheels.io;
 
 import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -16,27 +15,13 @@ import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public class ReadersDemos {
-    private static final boolean USE_RANDOM = false;
+public class ReadersDemos extends Demos {
     private static final @NotNull String BOOLEAN_CHARS = "aeflrstu";
     private static final @NotNull String ORDERING_CHARS = "EGLQT";
     private static final @NotNull String ROUNDING_MODE_CHARS = "ACDEFGHILNOPRSUVWY_";
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
     private static final @NotNull String FLOATING_POINT_CHARS = "-.0123456789EINafinty";
     private static final @NotNull String BIG_DECIMAL_CHARS = "+-.0123456789E";
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
 
     private static void demoGenericRead() {
         initialize();

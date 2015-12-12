@@ -1,11 +1,11 @@
 package mho.wheels.numberUtils;
 
 import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.Demos;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -18,22 +18,7 @@ import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.lt;
 
 @SuppressWarnings("UnusedDeclaration")
-public class IntegerUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final int SMALL_LIMIT = 3000;
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class IntegerUtilsDemos extends Demos {
     private static void demoBits_int() {
         initialize();
         for (int i : take(LIMIT, P.naturalIntegers())) {

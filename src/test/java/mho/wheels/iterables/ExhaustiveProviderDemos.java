@@ -2,8 +2,8 @@ package mho.wheels.iterables;
 
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.*;
+import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,24 +16,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public class ExhaustiveProviderDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static final int SMALL_LIMIT = 1000;
-    private static final int TINY_LIMIT = 100;
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class ExhaustiveProviderDemos extends Demos {
     private static void demoUniformSample_Iterable() {
         initialize();
         for (List<Integer> is : take(LIMIT, P.lists(P.withNull(P.integersGeometric())))) {
@@ -611,7 +594,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoPrefixPermutations_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(TINY_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(SMALLER_LIMIT, P.prefixPermutations(EP.withNull(EP.naturalIntegers())))) {
             String listString = tail(init(its(xs)));
             System.out.println("prefixPermutations(" + listString + ") = " +
                     its(map(Testing::its, EP.prefixPermutations(xs))));
@@ -1230,7 +1213,7 @@ public class ExhaustiveProviderDemos {
                 Iterable<Integer>,
                 Iterable<Integer>,
                 Iterable<Integer>
-        > s : take(TINY_LIMIT, ss)) {
+        > s : take(SMALLER_LIMIT, ss)) {
             System.out.println(
                     "septuples(" + its(s.a) + ", " + its(s.b) + ", " + its(s.c) + ", " + its(s.d) + ", " + its(s.e) +
                     ", " + its(s.f) + ", " + its(s.g) + ") = " + its(EP.septuples(s.a, s.b, s.c, s.d, s.e, s.f, s.g)));
@@ -1264,7 +1247,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStrings_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("strings(" + i + ") = " + sits(EP.strings(i)));
         }
     }
@@ -1326,7 +1309,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStringsAtLeast_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringsAtLeast(" + i + ") = " + sits(EP.stringsAtLeast(i)));
         }
     }
@@ -1593,7 +1576,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoDistinctStrings_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("distinctStrings(" + i + ") = " + sits(EP.distinctStrings(i)));
         }
     }
@@ -1657,7 +1640,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoDistinctStringsAtLeast_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("distinctStringsAtLeast(" + i + ") = " + sits(EP.distinctStringsAtLeast(i)));
         }
     }
@@ -1884,7 +1867,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStringBags_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringBags(" + i + ") = " + sits(EP.stringBags(i)));
         }
     }
@@ -1947,7 +1930,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStringBagsAtLeast_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringBagsAtLeast(" + i + ") = " + sits(EP.stringBagsAtLeast(i)));
         }
     }
@@ -2212,7 +2195,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStringSubsets_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringSubsets(" + i + ") = " + sits(EP.stringSubsets(i)));
         }
     }
@@ -2275,7 +2258,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoStringSubsetsAtLeast_int() {
         initialize();
-        for (int i : take(TINY_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
+        for (int i : take(SMALLER_LIMIT, P.withScale(4).naturalIntegersGeometric())) {
             System.out.println("stringSubsetsAtLeast(" + i + ") = " + sits(EP.stringSubsetsAtLeast(i)));
         }
     }
@@ -2297,7 +2280,7 @@ public class ExhaustiveProviderDemos {
                 ys -> length(nub(ys)) > 1,
                 P.withScale(4).listsAtLeast(2, P.withNull(P.integersGeometric()))
         );
-        for (List<Integer> xs : take(TINY_LIMIT, xss)) {
+        for (List<Integer> xs : take(SMALLER_LIMIT, xss)) {
             String listString = tail(init(xs.toString()));
             System.out.println("repeatingIterables(" + listString + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
@@ -2306,7 +2289,7 @@ public class ExhaustiveProviderDemos {
 
     private static void demoRepeatingIterables_infinite() {
         initialize();
-        for (Iterable<Integer> xs : take(TINY_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
+        for (Iterable<Integer> xs : take(SMALLER_LIMIT, P.prefixPermutations(P.withNull(EP.naturalIntegers())))) {
             String xsString = tail(init(its(xs)));
             System.out.println("repeatingIterables(" + xsString + ") = " +
                     its(map(Testing::its, EP.repeatingIterables(xs))));
@@ -2319,7 +2302,7 @@ public class ExhaustiveProviderDemos {
                 P.withScale(3).rangeUpGeometric(2),
                 i -> P.withScale(i + 1).distinctListsAtLeast(i, P.withNull(P.integersGeometric()))
         );
-        for (Pair<Integer, List<Integer>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Integer, List<Integer>> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("repeatingIterablesDistinctAtLeast(" + p.a + ", " + p.b + ") = " +
                     its(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(p.a, p.b))));
         }
@@ -2331,7 +2314,7 @@ public class ExhaustiveProviderDemos {
                 P.prefixPermutations(P.withNull(EP.naturalIntegers())),
                 filterInfinite(i -> i < 10, P.withScale(3).rangeUpGeometric(2))
         );
-        for (Pair<Iterable<Integer>, Integer> p : take(TINY_LIMIT, ps)) {
+        for (Pair<Iterable<Integer>, Integer> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("repeatingIterablesDistinctAtLeast(" + p.b + ", " + its(p.a) + ") = " +
                     its(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(p.b, p.a))));
         }

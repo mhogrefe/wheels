@@ -1,10 +1,8 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -12,27 +10,12 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.its;
 import static mho.wheels.testing.Testing.nicePrint;
 
 @SuppressWarnings("UnusedDeclaration")
-public strictfp class BinaryFractionDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+public strictfp class BinaryFractionDemos extends Demos {
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
 
     private static void demoGetMantissa() {
         initialize();

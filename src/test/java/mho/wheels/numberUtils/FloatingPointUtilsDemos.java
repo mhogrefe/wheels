@@ -1,31 +1,14 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.structures.Pair;
+import mho.wheels.testing.Demos;
 
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.numberUtils.FloatingPointUtils.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public strictfp class FloatingPointUtilsDemos {
-    private static final boolean USE_RANDOM = false;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public strictfp class FloatingPointUtilsDemos extends Demos {
     private static void demoIsNegativeZero_float() {
         initialize();
         for (float f : take(LIMIT, P.floats())) {

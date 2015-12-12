@@ -1,6 +1,5 @@
 package mho.wheels.iterables.randomProvider;
 
-import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
 import mho.wheels.iterables.RandomProvider;
@@ -9,8 +8,8 @@ import mho.wheels.random.IsaacPRNG;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.Demos;
 import mho.wheels.testing.Testing;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,24 +21,7 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
-public class RandomProviderDemos {
-    private static final boolean USE_RANDOM = false;
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static int LIMIT;
-    private static final int SMALL_LIMIT = 1000;
-    private static final int TINY_LIMIT = 100;
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
-    }
-
+public class RandomProviderDemos extends Demos {
     private static void demoConstructor() {
         initialize();
         for (Void v : take(LIMIT, repeat((Void) null))) {
@@ -1040,7 +1022,7 @@ public class RandomProviderDemos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -1051,7 +1033,7 @@ public class RandomProviderDemos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -1074,7 +1056,7 @@ public class RandomProviderDemos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("rangeUpCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpCanonical(p.b)));
         }
     }
@@ -1085,7 +1067,7 @@ public class RandomProviderDemos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("rangeDownCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownCanonical(p.b)));
         }
     }
@@ -1234,7 +1216,7 @@ public class RandomProviderDemos {
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("prefixPermutations(" + p.a + ", " + its(p.b) + ") = " +
                     its(map(Testing::its, p.a.prefixPermutations(p.b))));
         }
@@ -1735,7 +1717,7 @@ public class RandomProviderDemos {
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(TINY_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALLER_LIMIT, ps)) {
             System.out.println("repeatingIterables(" + p.a + ", " + its(p.b) + ") = " +
                     its(map(Testing::its, p.a.repeatingIterables(p.b))));
         }
@@ -1756,7 +1738,7 @@ public class RandomProviderDemos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(TINY_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALLER_LIMIT, ts)) {
             System.out.println("repeatingIterablesDistinctAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(map(Testing::its, t.a.repeatingIterablesDistinctAtLeast(t.b, t.c))));
         }
