@@ -10,8 +10,8 @@ import java.util.List;
 
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.math.BinaryFraction.*;
-import static mho.wheels.testing.Testing.its;
-import static mho.wheels.testing.Testing.nicePrint;
+import static mho.wheels.math.BinaryFraction.sum;
+import static mho.wheels.testing.Testing.*;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class BinaryFractionDemos extends Demos {
@@ -230,7 +230,7 @@ public strictfp class BinaryFractionDemos extends Demos {
 
     private static void demoDelta_infinite() {
         initialize();
-        for (Iterable<BinaryFraction> bfs : take(SMALL_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
+        for (Iterable<BinaryFraction> bfs : take(MEDIUM_LIMIT, P.prefixPermutations(EP.binaryFractions()))) {
             String listString = tail(init(its(bfs)));
             System.out.println("Δ(" + listString + ") = " + its(delta(bfs)));
         }

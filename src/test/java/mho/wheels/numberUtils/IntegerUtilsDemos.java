@@ -16,6 +16,7 @@ import static mho.wheels.numberUtils.IntegerUtils.*;
 import static mho.wheels.numberUtils.IntegerUtils.demux;
 import static mho.wheels.numberUtils.IntegerUtils.mux;
 import static mho.wheels.ordering.Ordering.lt;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public class IntegerUtilsDemos extends Demos {
@@ -391,7 +392,7 @@ public class IntegerUtilsDemos extends Demos {
                 p -> new Pair<>(p.a, toStringBase(BigInteger.valueOf(p.a), p.b)),
                 P.pairs(P.rangeUpGeometric(2), P.bigIntegers())
         );
-        for (Pair<Integer, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<Integer, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }
@@ -402,7 +403,7 @@ public class IntegerUtilsDemos extends Demos {
                 p -> new Pair<>(p.a, toStringBase(p.a, p.b)),
                 P.pairs(P.rangeUp(TWO), P.bigIntegers())
         );
-        for (Pair<BigInteger, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<BigInteger, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("fromStringBase(" + p.a + ", " + p.b + ") = " + fromStringBase(p.a, p.b));
         }
     }

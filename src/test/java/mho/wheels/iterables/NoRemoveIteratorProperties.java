@@ -13,9 +13,7 @@ import static mho.wheels.iterables.IterableUtils.toList;
 import static mho.wheels.testing.Testing.*;
 
 public class NoRemoveIteratorProperties {
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static int LIMIT;
-    private static final int TINY_LIMIT = 20;
     private static IterableProvider P;
 
     private static void initialize(String name) {

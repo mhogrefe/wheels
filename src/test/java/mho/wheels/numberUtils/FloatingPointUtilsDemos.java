@@ -6,6 +6,7 @@ import mho.wheels.testing.Demos;
 import static mho.wheels.iterables.IterableUtils.filter;
 import static mho.wheels.iterables.IterableUtils.take;
 import static mho.wheels.numberUtils.FloatingPointUtils.*;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public strictfp class FloatingPointUtilsDemos extends Demos {
@@ -152,7 +153,7 @@ public strictfp class FloatingPointUtilsDemos extends Demos {
 
     private static void demoScaleUp_double() {
         initialize();
-        for (double d : take(SMALL_LIMIT, P.doubles())) {
+        for (double d : take(MEDIUM_LIMIT, P.doubles())) {
             System.out.println("scaleUp(" + d + ") = " + scaleUp(d));
         }
     }

@@ -19,8 +19,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public strictfp class IterableUtilsTest {
-    private static final int TINY_LIMIT = 20;
-
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
         aeqitLimit(TINY_LIMIT, xs, output);
         testNoRemove(TINY_LIMIT, xs);

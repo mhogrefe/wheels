@@ -104,21 +104,21 @@ public class RandomProviderDemos extends Demos {
 
     private static void demoIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("integers(" + rp + ") = " + its(rp.integers()));
         }
     }
 
     private static void demoLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("longs(" + rp + ") = " + its(rp.longs()));
         }
     }
 
     private static void demoBooleans() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("booleans(" + rp + ") = " + its(rp.booleans()));
         }
     }
@@ -129,7 +129,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric()))
         );
-        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("uniformSample(" + p.a + ", " + p.b.toString() + ") = " + its(p.a.uniformSample(p.b)));
         }
     }
@@ -137,7 +137,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoUniformSample_String() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1));
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("uniformSample(" + p.a + ", " +  nicePrint(p.b) + ") = " +
                     cits(p.a.uniformSample(p.b)));
         }
@@ -145,161 +145,161 @@ public class RandomProviderDemos extends Demos {
 
     private static void demoOrderings() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("orderings(" + rp + ") = " + its(rp.orderings()));
         }
     }
 
     private static void demoRoundingModes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("roundingModes(" + rp + ") = " + its(rp.roundingModes()));
         }
     }
 
     private static void demoPositiveBytes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveBytes(" + rp + ") = " + its(rp.positiveBytes()));
         }
     }
 
     private static void demoPositiveShorts() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveShorts(" + rp + ") = " + its(rp.positiveShorts()));
         }
     }
 
     private static void demoPositiveIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveIntegers(" + rp + ") = " + its(rp.positiveIntegers()));
         }
     }
 
     private static void demoPositiveLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveLongs(" + rp + ") = " + its(rp.positiveLongs()));
         }
     }
 
     private static void demoNegativeBytes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeBytes(" + rp + ") = " + its(rp.negativeBytes()));
         }
     }
 
     private static void demoNegativeShorts() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeShorts(" + rp + ") = " + its(rp.negativeShorts()));
         }
     }
 
     private static void demoNegativeIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeIntegers(" + rp + ") = " + its(rp.negativeIntegers()));
         }
     }
 
     private static void demoNegativeLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeLongs(" + rp + ") = " + its(rp.negativeLongs()));
         }
     }
 
     private static void demoNaturalBytes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalBytes(" + rp + ") = " + its(rp.naturalBytes()));
         }
     }
 
     private static void demoNaturalShorts() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalShorts(" + rp + ") = " + its(rp.naturalShorts()));
         }
     }
 
     private static void demoNaturalIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalIntegers(" + rp + ") = " + its(rp.naturalIntegers()));
         }
     }
 
     private static void demoNaturalLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("naturalLongs(" + rp + ") = " + its(rp.naturalLongs()));
         }
     }
 
     private static void demoNonzeroBytes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroBytes(" + rp + ") = " + its(rp.nonzeroBytes()));
         }
     }
 
     private static void demoNonzeroShorts() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroShorts(" + rp + ") = " + its(rp.nonzeroShorts()));
         }
     }
 
     private static void demoNonzeroIntegers() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroIntegers(" + rp + ") = " + its(rp.nonzeroIntegers()));
         }
     }
 
     private static void demoNonzeroLongs() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroLongs(" + rp + ") = " + its(rp.nonzeroLongs()));
         }
     }
 
     private static void demoBytes() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("bytes(" + rp + ") = " + its(rp.bytes()));
         }
     }
 
     private static void demoShorts() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("shorts(" + rp + ") = " + its(rp.shorts()));
         }
     }
 
     private static void demoAsciiCharacters() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("asciiCharacters(" + rp + ") = " + cits(rp.asciiCharacters()));
         }
     }
 
     private static void demoCharacters() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("characters(" + rp + ") = " + cits(rp.characters()));
         }
     }
 
     private static void demoRangeUp_byte() {
         initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
+        for (Pair<RandomProvider, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -307,7 +307,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeUp_short() {
         initialize();
         Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.shorts());
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Short> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -315,14 +315,14 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeUp_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.integers());
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeUp_long() {
         initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
+        for (Pair<RandomProvider, Long> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -330,14 +330,14 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeUp_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeUp(p.b)));
         }
     }
 
     private static void demoRangeDown_byte() {
         initialize();
-        for (Pair<RandomProvider, Byte> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
+        for (Pair<RandomProvider, Byte> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -345,7 +345,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeDown_short() {
         initialize();
         Iterable<Pair<RandomProvider, Short>> ps = P.pairs(P.randomProvidersDefault(), P.shorts());
-        for (Pair<RandomProvider, Short> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Short> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -353,14 +353,14 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeDown_int() {
         initialize();
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairs(P.randomProvidersDefault(), P.integers());
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
 
     private static void demoRangeDown_long() {
         initialize();
-        for (Pair<RandomProvider, Long> p : take(SMALL_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
+        for (Pair<RandomProvider, Long> p : take(MEDIUM_LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -368,7 +368,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoRangeDown_char() {
         initialize();
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + nicePrint(p.b) + ") = " + cits(p.a.rangeDown(p.b)));
         }
     }
@@ -432,7 +432,7 @@ public class RandomProviderDemos extends Demos {
                 P.characters(),
                 P.characters()
         );
-        for (Triple<RandomProvider, Character, Character> p : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Character, Character> p : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + p.a + ", " + p.b + ", " + p.c + ") = " + cits(p.a.range(p.b, p.c)));
         }
     }
@@ -443,7 +443,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveIntegersGeometric(" + rp + ") = " + its(rp.positiveIntegersGeometric()));
         }
     }
@@ -454,7 +454,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeIntegersGeometric(" + rp + ") = " + its(rp.negativeIntegersGeometric()));
         }
     }
@@ -465,7 +465,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("naturalIntegersGeometric(" + rp + ") = " + its(rp.naturalIntegersGeometric()));
         }
     }
@@ -476,7 +476,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroIntegersGeometric(" + rp + ") = " + its(rp.nonzeroIntegersGeometric()));
         }
     }
@@ -487,7 +487,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("integersGeometric(" + rp + ") = " + its(rp.integersGeometric()));
         }
     }
@@ -498,7 +498,7 @@ public class RandomProviderDemos extends Demos {
                 p -> p.a.getScale() > p.b && (p.b > 1 || p.a.getScale() >= Integer.MAX_VALUE + p.b),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUpGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpGeometric(p.b)));
         }
     }
@@ -509,7 +509,7 @@ public class RandomProviderDemos extends Demos {
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.integersGeometric())
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDownGeometric(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownGeometric(p.b)));
         }
     }
@@ -520,7 +520,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBigIntegers(" + rp + ") = " + its(rp.positiveBigIntegers()));
         }
     }
@@ -531,7 +531,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBigIntegers(" + rp + ") = " + its(rp.negativeBigIntegers()));
         }
     }
@@ -542,7 +542,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("naturalBigIntegers(" + rp + ") = " + its(rp.naturalBigIntegers()));
         }
     }
@@ -553,7 +553,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBigIntegers(" + rp + ") = " + its(rp.nonzeroBigIntegers()));
         }
     }
@@ -564,7 +564,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("bigIntegers(" + rp + ") = " + its(rp.bigIntegers()));
         }
     }
@@ -578,7 +578,7 @@ public class RandomProviderDemos extends Demos {
                 },
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
         );
-        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigInteger> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -592,7 +592,7 @@ public class RandomProviderDemos extends Demos {
                 },
                 P.pairs(P.randomProvidersDefaultSecondaryScale(), P.bigIntegers())
         );
-        for (Pair<RandomProvider, BigInteger> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigInteger> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -603,7 +603,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBinaryFractions(" + rp + ") = " + its(rp.positiveBinaryFractions()));
         }
     }
@@ -614,7 +614,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBinaryFractions(" + rp + ") = " + its(rp.negativeBinaryFractions()));
         }
     }
@@ -625,7 +625,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBinaryFractions(" + rp + ") = " + its(rp.nonzeroBinaryFractions()));
         }
     }
@@ -636,7 +636,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("binaryFractions(" + rp + ") = " + its(rp.binaryFractions()));
         }
     }
@@ -647,7 +647,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
-        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, BinaryFraction> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -658,7 +658,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.binaryFractions()
         );
-        for (Pair<RandomProvider, BinaryFraction> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, BinaryFraction> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -673,119 +673,119 @@ public class RandomProviderDemos extends Demos {
                 P.binaryFractions(),
                 P.binaryFractions()
         );
-        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, BinaryFraction, BinaryFraction> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
         }
     }
 
     private static void demoPositiveFloats() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveFloats(" + rp + ") = " + its(rp.positiveFloats()));
         }
     }
 
     private static void demoNegativeFloats() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeFloats(" + rp + ") = " + its(rp.negativeFloats()));
         }
     }
 
     private static void demoNonzeroFloats() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroFloats(" + rp + ") = " + its(rp.nonzeroFloats()));
         }
     }
 
     private static void demoFloats() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("floats(" + rp + ") = " + its(rp.floats()));
         }
     }
 
     private static void demoPositiveDoubles() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveDoubles(" + rp + ") = " + its(rp.positiveDoubles()));
         }
     }
 
     private static void demoNegativeDoubles() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeDoubles(" + rp + ") = " + its(rp.negativeDoubles()));
         }
     }
 
     private static void demoNonzeroDoubles() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroDoubles(" + rp + ") = " + its(rp.nonzeroDoubles()));
         }
     }
 
     private static void demoDoubles() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("doubles(" + rp + ") = " + its(rp.doubles()));
         }
     }
 
     private static void demoPositiveFloatsUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveFloatsUniform(" + rp + ") = " + its(rp.positiveFloatsUniform()));
         }
     }
 
     private static void demoNegativeFloatsUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeFloatsUniform(" + rp + ") = " + its(rp.negativeFloatsUniform()));
         }
     }
 
     private static void demoNonzeroFloatsUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroFloatsUniform(" + rp + ") = " + its(rp.nonzeroFloatsUniform()));
         }
     }
 
     private static void demoFloatsUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("floatsUniform(" + rp + ") = " + its(rp.floatsUniform()));
         }
     }
 
     private static void demoPositiveDoublesUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("positiveDoublesUniform(" + rp + ") = " + its(rp.positiveDoublesUniform()));
         }
     }
 
     private static void demoNegativeDoublesUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("negativeDoublesUniform(" + rp + ") = " + its(rp.negativeDoublesUniform()));
         }
     }
 
     private static void demoNonzeroDoublesUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("nonzeroDoublesUniform(" + rp + ") = " + its(rp.nonzeroDoublesUniform()));
         }
     }
 
     private static void demoDoublesUniform() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("doublesUniform(" + rp + ") = " + its(rp.doublesUniform()));
         }
     }
@@ -796,7 +796,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(f -> !Float.isNaN(f), P.floats())
         );
-        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Float> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -807,7 +807,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(f -> !Float.isNaN(f), P.floats())
         );
-        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Float> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -819,7 +819,7 @@ public class RandomProviderDemos extends Demos {
                 filter(f -> !Float.isNaN(f), P.floats()),
                 filter(f -> !Float.isNaN(f), P.floats())
         );
-        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Float, Float> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
         }
     }
@@ -830,7 +830,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(d -> !Double.isNaN(d), P.doubles())
         );
-        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Double> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -841,7 +841,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(d -> !Double.isNaN(d), P.doubles())
         );
-        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Double> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -853,7 +853,7 @@ public class RandomProviderDemos extends Demos {
                 filter(d -> !Double.isNaN(d), P.doubles()),
                 filter(d -> !Double.isNaN(d), P.doubles())
         );
-        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Double, Double> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
         }
     }
@@ -864,7 +864,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(Float::isFinite, P.floats())
         );
-        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Float> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
         }
     }
@@ -875,7 +875,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(Float::isFinite, P.floats())
         );
-        for (Pair<RandomProvider, Float> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Float> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
         }
     }
@@ -887,7 +887,7 @@ public class RandomProviderDemos extends Demos {
                 filter(Float::isFinite, P.floats()),
                 filter(Float::isFinite, P.floats())
         );
-        for (Triple<RandomProvider, Float, Float> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Float, Float> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     its(t.a.rangeUniform(t.b, t.c)));
         }
@@ -899,7 +899,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(Double::isFinite, P.doubles())
         );
-        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Double> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeUpUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpUniform(p.b)));
         }
     }
@@ -910,7 +910,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filter(Double::isFinite, P.doubles())
         );
-        for (Pair<RandomProvider, Double> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Double> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("rangeDownUniform(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownUniform(p.b)));
         }
     }
@@ -922,7 +922,7 @@ public class RandomProviderDemos extends Demos {
                 filter(Double::isFinite, P.doubles()),
                 filter(Double::isFinite, P.doubles())
         );
-        for (Triple<RandomProvider, Double, Double> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Double, Double> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeUniform(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     its(t.a.rangeUniform(t.b, t.c)));
         }
@@ -934,7 +934,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveBigDecimals(" + rp + ") = " + its(rp.positiveBigDecimals()));
         }
     }
@@ -945,7 +945,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeBigDecimals(" + rp + ") = " + its(rp.negativeBigDecimals()));
         }
     }
@@ -956,7 +956,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroBigDecimals(" + rp + ") = " + its(rp.nonzeroBigDecimals()));
         }
     }
@@ -967,7 +967,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("bigDecimals(" + rp + ") = " + its(rp.bigDecimals()));
         }
     }
@@ -978,7 +978,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("positiveCanonicalBigDecimals(" + rp + ") = " + its(rp.positiveCanonicalBigDecimals()));
         }
     }
@@ -989,7 +989,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("negativeCanonicalBigDecimals(" + rp + ") = " + its(rp.negativeCanonicalBigDecimals()));
         }
     }
@@ -1000,7 +1000,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("nonzeroCanonicalBigDecimals(" + rp + ") = " + its(rp.nonzeroCanonicalBigDecimals()));
         }
     }
@@ -1011,7 +1011,7 @@ public class RandomProviderDemos extends Demos {
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
                 P.randomProviders()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("canonicalBigDecimals(" + rp + ") = " + its(rp.canonicalBigDecimals()));
         }
     }
@@ -1022,7 +1022,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUp(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUp(p.b)));
         }
     }
@@ -1033,7 +1033,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeDown(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDown(p.b)));
         }
     }
@@ -1045,7 +1045,7 @@ public class RandomProviderDemos extends Demos {
                 P.bigDecimals(),
                 P.bigDecimals()
         );
-        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("range(" + t.a + ", " + t.b + ", " + t.c + ") = " + its(t.a.range(t.b, t.c)));
         }
     }
@@ -1056,7 +1056,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeUpCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeUpCanonical(p.b)));
         }
     }
@@ -1067,7 +1067,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
                 P.bigDecimals()
         );
-        for (Pair<RandomProvider, BigDecimal> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, BigDecimal> p : take(SMALL_LIMIT, ps)) {
             System.out.println("rangeDownCanonical(" + p.a + ", " + p.b + ") = " + its(p.a.rangeDownCanonical(p.b)));
         }
     }
@@ -1079,7 +1079,7 @@ public class RandomProviderDemos extends Demos {
                 P.bigDecimals(),
                 P.bigDecimals()
         );
-        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, BigDecimal, BigDecimal> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("rangeCanonical(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     its(t.a.rangeCanonical(t.b, t.c)));
         }
@@ -1092,7 +1092,7 @@ public class RandomProviderDemos extends Demos {
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("withElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.withElement(t.b, t.c)));
         }
@@ -1104,7 +1104,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("withNull(" + p.a + ", " + its(p.b) + ") = " + its(p.a.withNull(p.b)));
         }
     }
@@ -1115,7 +1115,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("optionals(" + p.a + ", " + its(p.b) + ") = " + its(p.a.optionals(p.b)));
         }
     }
@@ -1126,7 +1126,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("nullableOptionals(" + p.a + ", " + its(p.b) + ") = " +
                     its(p.a.nullableOptionals(p.b)));
         }
@@ -1185,7 +1185,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
-        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("permutationsFinite(" + p.a + ", " + p.b + ") = " + its(p.a.permutationsFinite(p.b)));
         }
     }
@@ -1193,7 +1193,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoStringPermutations() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringPermutations(" + p.a + ", " + p.b + ") = " + its(p.a.stringPermutations(p.b)));
         }
     }
@@ -1204,7 +1204,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).lists(P.withNull(P.naturalIntegersGeometric()))
         );
-        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("prefixPermutations(" + p.a + ", " + p.b + ") = " +
                     its(map(IterableUtils::toList, p.a.prefixPermutations(p.b))));
         }
@@ -1216,7 +1216,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("prefixPermutations(" + p.a + ", " + its(p.b) + ") = " +
                     its(map(Testing::its, p.a.prefixPermutations(p.b))));
         }
@@ -1234,7 +1234,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, String, Integer> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("strings(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
                     sits(t.a.strings(t.c, t.b)));
         }
@@ -1246,7 +1246,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("strings(" + p.a + ", " + p.b + ") = " + sits(p.a.strings(p.b)));
         }
     }
@@ -1257,7 +1257,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("lists(" + p.a + ", " + its(p.b) + ") = " + its(p.a.lists(p.b)));
         }
     }
@@ -1268,7 +1268,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("strings(" + p.a + ", " + nicePrint(p.b) + ") = " + sits(p.a.strings(p.b)));
         }
     }
@@ -1279,7 +1279,7 @@ public class RandomProviderDemos extends Demos {
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("strings(" + rp + ") = " + sits(rp.strings()));
         }
     }
@@ -1294,7 +1294,7 @@ public class RandomProviderDemos extends Demos {
                         P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("listsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.listsAtLeast(t.b, t.c)));
         }
@@ -1310,7 +1310,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).stringsAtLeast(1)
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringsAtLeast(t.b, t.c)));
         }
@@ -1325,7 +1325,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringsAtLeast(" + p.a + ", " + p.b + ") = " + sits(p.a.stringsAtLeast(p.b)));
         }
     }
@@ -1348,7 +1348,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("distinctStrings(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.distinctStrings(t.b, t.c)));
         }
@@ -1360,7 +1360,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("distinctStrings(" + p.a + ", " + p.b + ") = " + sits(p.a.distinctStrings(p.b)));
         }
     }
@@ -1371,7 +1371,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).repeatingIterables(P.withNull(P.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("distinctLists(" + p.a + ", " + its(p.b) + ") = " + its(p.a.distinctLists(p.b)));
         }
     }
@@ -1382,7 +1382,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("distinctStrings(" + p.a + ", " + nicePrint(p.b) + ") = " +
                     sits(p.a.distinctStrings(p.b)));
         }
@@ -1394,7 +1394,7 @@ public class RandomProviderDemos extends Demos {
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("distinctStrings(" + rp + ") = " + sits(rp.distinctStrings()));
         }
     }
@@ -1417,7 +1417,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("distinctListsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.distinctListsAtLeast(t.b, t.c)));
         }
@@ -1441,7 +1441,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("distinctStringsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.distinctStringsAtLeast(t.b, t.c)));
         }
@@ -1456,7 +1456,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("distinctStringsAtLeast(" + p.a + ", " + p.b + ") = " +
                     sits(p.a.distinctStringsAtLeast(p.b)));
         }
@@ -1474,7 +1474,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, String, Integer> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, String, Integer> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringBags(" + t.a + ", " + t.c + ", " + nicePrint(t.b) + ") = " +
                     sits(t.a.stringBags(t.c, t.b)));
         }
@@ -1486,7 +1486,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).naturalIntegersGeometric()
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringBags(" + p.a + ", " + p.b + ") = " + sits(p.a.stringBags(p.b)));
         }
     }
@@ -1497,7 +1497,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("bags(" + p.a + ", " + its(p.b) + ") = " + its(p.a.bags(p.b)));
         }
     }
@@ -1508,7 +1508,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringBags(" + p.a + ", " + nicePrint(p.b) + ") = " + sits(p.a.stringBags(p.b)));
         }
     }
@@ -1519,7 +1519,7 @@ public class RandomProviderDemos extends Demos {
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("stringBags(" + rp + ") = " + sits(rp.stringBags()));
         }
     }
@@ -1534,7 +1534,7 @@ public class RandomProviderDemos extends Demos {
                         P.prefixPermutations(EP.naturalIntegers())
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("bagsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.bagsAtLeast(t.b, t.c)));
         }
@@ -1550,7 +1550,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).stringsAtLeast(1)
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringBagsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringBagsAtLeast(t.b, t.c)));
         }
@@ -1565,7 +1565,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).naturalIntegersGeometric()
                 )
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringBagsAtLeast(" + p.a + ", " + p.b + ") = " + sits(p.a.stringBagsAtLeast(p.b)));
         }
     }
@@ -1588,7 +1588,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringSubsets(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringSubsets(t.b, t.c)));
         }
@@ -1600,7 +1600,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringSubsets(" + p.a + ", " + p.b + ") = " + sits(p.a.stringSubsets(p.b)));
         }
     }
@@ -1611,7 +1611,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).repeatingIterables(P.naturalIntegers())
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("subsets(" + p.a + ", " + its(p.b) + ") = " + its(p.a.subsets(p.b)));
         }
     }
@@ -1622,7 +1622,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringSubsets(" + p.a + ", " + nicePrint(p.b) + ") = " +
                     sits(p.a.stringSubsets(p.b)));
         }
@@ -1634,7 +1634,7 @@ public class RandomProviderDemos extends Demos {
                 s -> s.getScale() > 0,
                 P.withScale(4).randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("stringSubsets(" + rp + ") = " + sits(rp.stringSubsets()));
         }
     }
@@ -1655,7 +1655,7 @@ public class RandomProviderDemos extends Demos {
                                 .repeatingIterablesDistinctAtLeast(p.b, P.naturalIntegersGeometric())
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("subsetsAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.subsetsAtLeast(t.b, t.c)));
         }
@@ -1679,7 +1679,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringSubsetsAtLeast(" + t.a + ", " + t.b + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringSubsetsAtLeast(t.b, t.c)));
         }
@@ -1694,7 +1694,7 @@ public class RandomProviderDemos extends Demos {
                         filterInfinite(i -> i <= (1 << 16), P.withScale(4).naturalIntegersGeometric())
                 )
         );
-        for (Pair<RandomProvider, Integer> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Integer> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringSubsetsAtLeast(" + p.a + ", " + p.b + ") = " +
                     sits(p.a.stringSubsetsAtLeast(p.b)));
         }
@@ -1706,7 +1706,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).listsAtLeast(1, P.withScale(4).listsAtLeast(1, P.withNull(P.integersGeometric())))
         );
-        for (Pair<RandomProvider, List<List<Integer>>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, List<List<Integer>>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("cartesianProduct(" + p.a + ", " + p.b + ") = " + its(p.a.cartesianProduct(p.b)));
         }
     }
@@ -1717,7 +1717,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALLER_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<Integer>> p : take(SMALL_LIMIT, ps)) {
             System.out.println("repeatingIterables(" + p.a + ", " + its(p.b) + ") = " +
                     its(map(Testing::its, p.a.repeatingIterables(p.b))));
         }
@@ -1738,7 +1738,7 @@ public class RandomProviderDemos extends Demos {
                         )
                 )
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALLER_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
             System.out.println("repeatingIterablesDistinctAtLeast(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(map(Testing::its, t.a.repeatingIterablesDistinctAtLeast(t.b, t.c))));
         }
@@ -1750,7 +1750,7 @@ public class RandomProviderDemos extends Demos {
                 P.randomProvidersDefault(),
                 P.withScale(4).lists(P.withNull(P.integersGeometric()))
         );
-        for (Pair<RandomProvider, List<Integer>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, List<Integer>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("sublists(" + p.a + ", " + p.b + ") = " + its(p.a.sublists(p.b)));
         }
     }
@@ -1758,7 +1758,7 @@ public class RandomProviderDemos extends Demos {
     private static void demoSubstrings() {
         initialize();
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
-        for (Pair<RandomProvider, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, String> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("substrings(" + p.a + ", " + nicePrint(p.b) + ") = " + its(p.a.substrings(p.b)));
         }
     }
@@ -1770,7 +1770,7 @@ public class RandomProviderDemos extends Demos {
                 P.withNull(P.integersGeometric()),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("listsWithElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.listsWithElement(t.b, t.c)));
         }
@@ -1789,7 +1789,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).stringsAtLeast(1)
                 )
         );
-        for (Triple<RandomProvider, Character, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Character, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringsWithChar(" + t.a + ", " + nicePrint(t.b) + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringsWithChar(t.b, t.c)));
         }
@@ -1801,7 +1801,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.characters()
         );
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
                     sits(p.a.stringsWithChar(p.b)));
         }
@@ -1814,7 +1814,7 @@ public class RandomProviderDemos extends Demos {
                 P.integersGeometric(),
                 P.prefixPermutations(EP.naturalIntegers())
         );
-        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("subsetsWithElement(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " +
                     its(t.a.subsetsWithElement(t.b, t.c)));
         }
@@ -1833,7 +1833,7 @@ public class RandomProviderDemos extends Demos {
                         P.withScale(4).stringsAtLeast(1)
                 )
         );
-        for (Triple<RandomProvider, Character, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Character, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringSubsetsWithChar(" + t.a + ", " + nicePrint(t.b) + ", " + nicePrint(t.c) +
                     ") = " + sits(t.a.stringSubsetsWithChar(t.b, t.c)));
         }
@@ -1845,7 +1845,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.characters()
         );
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringSubsetsWithChar(" + p.a + ", " + nicePrint(p.b) + ") = " +
                     sits(p.a.stringSubsetsWithChar(p.b)));
         }
@@ -1858,7 +1858,7 @@ public class RandomProviderDemos extends Demos {
                 P.prefixPermutations(EP.lists(EP.withNull(EP.naturalIntegers()))),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("listsWithSublists(" + t.a + ", " + its(t.b) + ", " + its(t.c) + ") = " +
                     its(t.a.listsWithSublists(t.b, t.c)));
         }
@@ -1871,7 +1871,7 @@ public class RandomProviderDemos extends Demos {
                 P.prefixPermutations(EP.strings()),
                 P.withScale(4).stringsAtLeast(1)
         );
-        for (Triple<RandomProvider, Iterable<String>, String> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Iterable<String>, String> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("stringsWithSubstrings(" + t.a + ", " + sits(t.b) + ", " + nicePrint(t.c) + ") = " +
                     sits(t.a.stringsWithSubstrings(t.b, t.c)));
         }
@@ -1883,7 +1883,7 @@ public class RandomProviderDemos extends Demos {
                 filterInfinite(rp -> rp.getScale() > 1, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.prefixPermutations(EP.strings())
         );
-        for (Pair<RandomProvider, Iterable<String>> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Iterable<String>> p : take(MEDIUM_LIMIT, ps)) {
             System.out.println("stringsWithSubstrings(" + p.a + ", " + sits(p.b) + ") = " +
                     sits(p.a.stringsWithSubstrings(p.b)));
         }
@@ -1896,7 +1896,7 @@ public class RandomProviderDemos extends Demos {
                 P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("maps(" + t.a + ", " + t.b + ", " + its(t.c) + ") = " + its(t.a.maps(t.b, t.c)));
         }
     }
@@ -1908,7 +1908,7 @@ public class RandomProviderDemos extends Demos {
                 P.integersGeometric(),
                 P.integersGeometric()
         );
-        for (Triple<RandomProvider, Integer, Integer> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, Integer, Integer> t : take(MEDIUM_LIMIT, ts)) {
             System.out.println("randomProvidersFixedScales(" + t.a + ", " + t.b + ", " + t.c + ") = " +
                     its(t.a.randomProvidersFixedScales(t.b, t.c)));
         }
@@ -1916,7 +1916,7 @@ public class RandomProviderDemos extends Demos {
 
     private static void demoRandomProvidersDefault() {
         initialize();
-        for (RandomProvider rp : take(SMALL_LIMIT, P.randomProvidersDefault())) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, P.randomProvidersDefault())) {
             System.out.println("randomProvidersDefault(" + rp + ") = " + its(rp.randomProvidersDefault()));
         }
     }
@@ -1927,7 +1927,7 @@ public class RandomProviderDemos extends Demos {
                 rp -> rp.getScale() > 0,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("randomProvidersDefaultSecondaryScale(" + rp + ") = " +
                     its(rp.randomProvidersDefaultSecondaryScale()));
         }
@@ -1939,7 +1939,7 @@ public class RandomProviderDemos extends Demos {
                 rp -> rp.getScale() > 0,
                 P.randomProvidersDefaultSecondaryScale()
         );
-        for (RandomProvider rp : take(SMALL_LIMIT, rps)) {
+        for (RandomProvider rp : take(MEDIUM_LIMIT, rps)) {
             System.out.println("randomProviders(" + rp + ") = " + its(rp.randomProviders()));
         }
     }

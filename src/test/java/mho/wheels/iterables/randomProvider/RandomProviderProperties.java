@@ -30,10 +30,7 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public class RandomProviderProperties {
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
-    private static final int SMALL_LIMIT = 1000;
-    private static final int TINY_LIMIT = 20;
     private static int LIMIT;
     private static IterableProvider P;
 
@@ -3257,7 +3254,7 @@ public class RandomProviderProperties {
                             )
                     )
             );
-            for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, tsFail)) {
+            for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, tsFail)) {
                 try {
                     t.a.distinctStringsAtLeast(t.b, t.c);
                     fail(t);
@@ -3957,7 +3954,7 @@ public class RandomProviderProperties {
                             )
                     )
             );
-            for (Triple<RandomProvider, Integer, String> t : take(SMALL_LIMIT, tsFail)) {
+            for (Triple<RandomProvider, Integer, String> t : take(MEDIUM_LIMIT, tsFail)) {
                 try {
                     t.a.stringSubsetsAtLeast(t.b, t.c);
                     fail(t);
@@ -4247,7 +4244,7 @@ public class RandomProviderProperties {
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.characters()
         );
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             simpleTest(p.a, p.a.stringsWithChar(p.b), s -> elem(p.b, s));
         }
     }
@@ -4346,7 +4343,7 @@ public class RandomProviderProperties {
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
                 P.characters()
         );
-        for (Pair<RandomProvider, Character> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<RandomProvider, Character> p : take(MEDIUM_LIMIT, ps)) {
             simpleTest(p.a, p.a.stringSubsetsWithChar(p.b), s -> elem(p.b, s) && increasing(toList(s)));
         }
     }
@@ -4429,7 +4426,7 @@ public class RandomProviderProperties {
                 P.withScale(4).distinctLists(P.withNull(P.integersGeometric())),
                 P.prefixPermutations(EP.withNull(EP.naturalIntegers()))
         );
-        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(SMALL_LIMIT, ts)) {
+        for (Triple<RandomProvider, List<Integer>, Iterable<Integer>> t : take(MEDIUM_LIMIT, ts)) {
             List<Integer> sortedKeys = sort(withNullComparator, t.b);
             simpleTest(t.a, t.a.maps(t.b, t.c), m -> sort(withNullComparator, m.keySet()).equals(sortedKeys));
         }

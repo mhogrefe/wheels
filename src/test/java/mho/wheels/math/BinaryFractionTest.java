@@ -16,8 +16,6 @@ import static mho.wheels.math.BinaryFraction.sum;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class BinaryFractionTest {
-    private static final int TINY_LIMIT = 20;
-
     @Test
     public void testConstants() {
         aeq(ZERO, "0");

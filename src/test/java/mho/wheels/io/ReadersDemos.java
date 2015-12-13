@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 @SuppressWarnings("UnusedDeclaration")
 public class ReadersDemos extends Demos {
@@ -56,7 +57,7 @@ public class ReadersDemos extends Demos {
                         )
                 )
         );
-        for (Pair<Function<String, Optional<Integer>>, String> p : take(SMALL_LIMIT, ps)) {
+        for (Pair<Function<String, Optional<Integer>>, String> p : take(MEDIUM_LIMIT, ps)) {
             String listString = tail(init(p.a.toString()));
             System.out.println("genericFindIn(" + listString + ").apply(" + p.b + ") = " +
                     genericFindIn(p.a).apply(p.b));

@@ -18,9 +18,6 @@ import static org.junit.Assert.fail;
 // @formatter:off
 public strictfp class NonIntegerNumericsTest {
     private static RandomProvider P;
-    private static final int DEFAULT_SAMPLE_SIZE = 1000000;
-    private static final int DEFAULT_TOP_COUNT = 10;
-    private static final int TINY_LIMIT = 20;
 
     @Before
     public void initialize() {

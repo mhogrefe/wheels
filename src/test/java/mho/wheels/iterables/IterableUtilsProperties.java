@@ -19,7 +19,6 @@ import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
 public strictfp class IterableUtilsProperties {
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
     private static boolean USE_RANDOM;
     private static int LIMIT;
 

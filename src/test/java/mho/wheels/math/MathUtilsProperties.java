@@ -18,7 +18,6 @@ import static mho.wheels.testing.Testing.*;
 
 public class MathUtilsProperties {
     private static boolean USE_RANDOM;
-    private static final int TINY_LIMIT = 10;
     private static int LIMIT;
 
     private static IterableProvider P;

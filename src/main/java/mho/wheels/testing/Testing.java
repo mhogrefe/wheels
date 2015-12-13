@@ -21,9 +21,14 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 
 public strictfp class Testing {
-    private static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
-    private static final int TINY_LIMIT = 20;
-    private static final int SMALL_LIMIT = 128;
+    public static final @NotNull ExhaustiveProvider EP = ExhaustiveProvider.INSTANCE;
+    public static final int DEFAULT_SAMPLE_SIZE = 1000000;
+    public static final int DEFAULT_TOP_COUNT = 10;
+    public static final int LARGE_LIMIT = 10000;
+    public static final int MEDIUM_LIMIT = 1000;
+    public static final int SMALL_LIMIT = 100;
+    public static final int SMALLER_LIMIT = 50;
+    public static final int TINY_LIMIT = 20;
 
     /**
      * Disallow instantiation

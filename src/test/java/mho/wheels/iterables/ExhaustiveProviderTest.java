@@ -23,10 +23,6 @@ import static org.junit.Assert.fail;
 
 // @formatter:off
 public strictfp class ExhaustiveProviderTest {
-    private static final ExhaustiveProvider P = ExhaustiveProvider.INSTANCE;
-    private static final int TINY_LIMIT = 20;
-    private static final int SMALL_LIMIT = 50;
-
     private static <T> void simpleProviderHelper(@NotNull Iterable<T> xs, @NotNull String output) {
         aeqitLimit(TINY_LIMIT, xs, output);
         testNoRemove(TINY_LIMIT, xs);
@@ -34,25 +30,25 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBooleans() {
-        simpleProviderHelper(P.booleans(), "[false, true]");
+        simpleProviderHelper(EP.booleans(), "[false, true]");
     }
 
     @Test
     public void testOrderingsIncreasing() {
-        simpleProviderHelper(P.orderingsIncreasing(), "[LT, EQ, GT]");
+        simpleProviderHelper(EP.orderingsIncreasing(), "[LT, EQ, GT]");
     }
 
     @Test
     public void testOrderings() {
-        simpleProviderHelper(P.orderings(), "[EQ, LT, GT]");
+        simpleProviderHelper(EP.orderings(), "[EQ, LT, GT]");
     }
 
     private static void uniformSample_Iterable_helper_1(@NotNull String xs, @NotNull String output) {
-        aeqit(P.uniformSample(readIntegerList(xs)), output);
+        aeqit(EP.uniformSample(readIntegerList(xs)), output);
     }
 
     private static void uniformSample_Iterable_helper_2(@NotNull String xs, @NotNull String output) {
-        aeqit(P.uniformSample(readIntegerListWithNulls(xs)), output);
+        aeqit(EP.uniformSample(readIntegerListWithNulls(xs)), output);
     }
 
     @Test
@@ -63,7 +59,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void uniformSample_String_helper(@NotNull String s, @NotNull String output) {
-        aeqcs(P.uniformSample(s), output);
+        aeqcs(EP.uniformSample(s), output);
     }
 
     @Test
@@ -74,23 +70,23 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBytesIncreasing() {
-        aeq(length(P.bytesIncreasing()), 256);
-        simpleProviderHelper(P.bytesIncreasing(),
+        aeq(length(EP.bytesIncreasing()), 256);
+        simpleProviderHelper(EP.bytesIncreasing(),
                 "[-128, -127, -126, -125, -124, -123, -122, -121, -120, -119, -118, -117, -116, -115, -114, -113," +
                 " -112, -111, -110, -109, ...]");
     }
 
     @Test
     public void testShortsIncreasing() {
-        aeq(length(P.shortsIncreasing()), 65536);
-        simpleProviderHelper(P.shortsIncreasing(),
+        aeq(length(EP.shortsIncreasing()), 65536);
+        simpleProviderHelper(EP.shortsIncreasing(),
                 "[-32768, -32767, -32766, -32765, -32764, -32763, -32762, -32761, -32760, -32759, -32758, -32757," +
                 " -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749, ...]");
     }
 
     @Test
     public void testIntegersIncreasing() {
-        simpleProviderHelper(P.integersIncreasing(),
+        simpleProviderHelper(EP.integersIncreasing(),
                 "[-2147483648, -2147483647, -2147483646, -2147483645, -2147483644, -2147483643, -2147483642," +
                 " -2147483641, -2147483640, -2147483639, -2147483638, -2147483637, -2147483636, -2147483635," +
                 " -2147483634, -2147483633, -2147483632, -2147483631, -2147483630, -2147483629, ...]");
@@ -98,7 +94,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testLongsIncreasing() {
-        simpleProviderHelper(P.longsIncreasing(),
+        simpleProviderHelper(EP.longsIncreasing(),
                 "[-9223372036854775808, -9223372036854775807, -9223372036854775806, -9223372036854775805," +
                 " -9223372036854775804, -9223372036854775803, -9223372036854775802, -9223372036854775801," +
                 " -9223372036854775800, -9223372036854775799, -9223372036854775798, -9223372036854775797," +
@@ -108,103 +104,103 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBytes() {
-        aeq(length(P.positiveBytes()), 127);
-        simpleProviderHelper(P.positiveBytes(),
+        aeq(length(EP.positiveBytes()), 127);
+        simpleProviderHelper(EP.positiveBytes(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveShorts() {
-        aeq(length(P.positiveShorts()), 32767);
-        simpleProviderHelper(P.positiveShorts(),
+        aeq(length(EP.positiveShorts()), 32767);
+        simpleProviderHelper(EP.positiveShorts(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveIntegers() {
-        simpleProviderHelper(P.positiveIntegers(),
+        simpleProviderHelper(EP.positiveIntegers(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveLongs() {
-        simpleProviderHelper(P.positiveLongs(),
+        simpleProviderHelper(EP.positiveLongs(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testPositiveBigIntegers() {
-        simpleProviderHelper(P.positiveBigIntegers(),
+        simpleProviderHelper(EP.positiveBigIntegers(),
                 "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]");
     }
 
     @Test
     public void testNegativeBytes() {
-        aeq(length(P.negativeBytes()), 128);
-        simpleProviderHelper(P.negativeBytes(),
+        aeq(length(EP.negativeBytes()), 128);
+        simpleProviderHelper(EP.negativeBytes(),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeShorts() {
-        aeq(length(P.negativeShorts()), 32768);
-        simpleProviderHelper(P.negativeShorts(),
+        aeq(length(EP.negativeShorts()), 32768);
+        simpleProviderHelper(EP.negativeShorts(),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeIntegers() {
-        simpleProviderHelper(P.negativeIntegers(),
+        simpleProviderHelper(EP.negativeIntegers(),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeLongs() {
-        simpleProviderHelper(P.negativeLongs(),
+        simpleProviderHelper(EP.negativeLongs(),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNegativeBigIntegers() {
-        simpleProviderHelper(P.negativeBigIntegers(),
+        simpleProviderHelper(EP.negativeBigIntegers(),
                 "[-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16, -17, -18, -19, -20, ...]");
     }
 
     @Test
     public void testNaturalBytes() {
-        aeq(length(P.naturalBytes()), 128);
-        simpleProviderHelper(P.naturalBytes(),
+        aeq(length(EP.naturalBytes()), 128);
+        simpleProviderHelper(EP.naturalBytes(),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalShorts() {
-        aeq(length(P.naturalShorts()), 32768);
-        simpleProviderHelper(P.naturalShorts(),
+        aeq(length(EP.naturalShorts()), 32768);
+        simpleProviderHelper(EP.naturalShorts(),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalIntegers() {
-        simpleProviderHelper(P.naturalIntegers(),
+        simpleProviderHelper(EP.naturalIntegers(),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalLongs() {
-        simpleProviderHelper(P.naturalLongs(),
+        simpleProviderHelper(EP.naturalLongs(),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNaturalBigIntegers() {
-        simpleProviderHelper(P.naturalBigIntegers(),
+        simpleProviderHelper(EP.naturalBigIntegers(),
                 "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...]");
     }
 
     @Test
     public void testNonzeroBytes() {
-        Iterable<Byte> bs = P.nonzeroBytes();
+        Iterable<Byte> bs = EP.nonzeroBytes();
         aeq(length(bs), 255);
         aeqitLimit(TINY_LIMIT, reverse(bs),
                 "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
@@ -214,7 +210,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroShorts() {
-        Iterable<Short> ss = P.nonzeroShorts();
+        Iterable<Short> ss = EP.nonzeroShorts();
         aeq(length(ss), 65535);
         aeqitLimit(TINY_LIMIT, reverse(ss),
                 "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
@@ -224,25 +220,25 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroIntegers() {
-        simpleProviderHelper(P.nonzeroIntegers(),
+        simpleProviderHelper(EP.nonzeroIntegers(),
                 "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroLongs() {
-        simpleProviderHelper(P.nonzeroLongs(),
+        simpleProviderHelper(EP.nonzeroLongs(),
                 "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testNonzeroBigIntegers() {
-        simpleProviderHelper(P.nonzeroBigIntegers(),
+        simpleProviderHelper(EP.nonzeroBigIntegers(),
                 "[1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10, ...]");
     }
 
     @Test
     public void testBytes() {
-        Iterable<Byte> bs = P.bytes();
+        Iterable<Byte> bs = EP.bytes();
         aeq(length(bs), 256);
         aeqitLimit(TINY_LIMIT, reverse(bs),
                 "[-128, -127, 127, -126, 126, -125, 125, -124, 124, -123, 123, -122, 122, -121, 121, -120, 120," +
@@ -252,7 +248,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testShorts() {
-        Iterable<Short> ss = P.shorts();
+        Iterable<Short> ss = EP.shorts();
         aeq(length(ss), 65536);
         aeqitLimit(TINY_LIMIT, reverse(ss),
                 "[-32768, -32767, 32767, -32766, 32766, -32765, 32765, -32764, 32764, -32763, 32763, -32762, 32762," +
@@ -262,25 +258,26 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testIntegers() {
-        simpleProviderHelper(P.integers(),
+        simpleProviderHelper(EP.integers(),
                 "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testLongs() {
-        simpleProviderHelper(P.longs(), "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
+        simpleProviderHelper(EP.longs(),
+                "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testBigIntegers() {
-        simpleProviderHelper(P.bigIntegers(),
+        simpleProviderHelper(EP.bigIntegers(),
                 "[0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, ...]");
     }
 
     @Test
     public void testAsciiCharactersIncreasing() {
-        aeq(length(P.asciiCharactersIncreasing()), 128);
-        aeq(charsToString(P.asciiCharactersIncreasing()),
+        aeq(length(EP.asciiCharactersIncreasing()), 128);
+        aeq(charsToString(EP.asciiCharactersIncreasing()),
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
                 "\177"
@@ -289,8 +286,8 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testAsciiCharacters() {
-        aeq(length(P.asciiCharacters()), 128);
-        aeq(charsToString(P.asciiCharacters()),
+        aeq(length(EP.asciiCharacters()), 128);
+        aeq(charsToString(EP.asciiCharacters()),
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177"
         );
@@ -298,8 +295,8 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testCharactersIncreasing() {
-        aeq(length(P.charactersIncreasing()), 65536);
-        aeq(charsToString(take(256, P.charactersIncreasing())),
+        aeq(length(EP.charactersIncreasing()), 65536);
+        aeq(charsToString(take(256, EP.charactersIncreasing())),
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
                 "\177" +
@@ -312,8 +309,8 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testCharacters() {
-        aeq(length(P.characters()), 65536);
-        aeq(charsToString(take(256, P.characters())),
+        aeq(length(EP.characters()), 65536);
+        aeq(charsToString(take(256, EP.characters())),
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ " +
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37\177" +
                 "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
@@ -326,13 +323,13 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testRoundingModes() {
         simpleProviderHelper(
-                P.roundingModes(),
+                EP.roundingModes(),
                 "[UNNECESSARY, UP, DOWN, CEILING, FLOOR, HALF_UP, HALF_DOWN, HALF_EVEN]"
         );
     }
 
     private static void rangeUp_byte_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp((byte) a), output);
+        simpleProviderHelper(EP.rangeUp((byte) a), output);
     }
 
     @Test
@@ -346,7 +343,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_short_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp((short) a), output);
+        simpleProviderHelper(EP.rangeUp((short) a), output);
     }
 
     @Test
@@ -360,7 +357,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_int_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(a), output);
+        simpleProviderHelper(EP.rangeUp(a), output);
     }
 
     @Test
@@ -374,7 +371,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_long_helper(long a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(a), output);
+        simpleProviderHelper(EP.rangeUp(a), output);
     }
 
     @Test
@@ -388,7 +385,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_BigInteger_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(BigInteger.valueOf(a)), output);
+        simpleProviderHelper(EP.rangeUp(BigInteger.valueOf(a)), output);
     }
 
     @Test
@@ -401,7 +398,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_char_helper(char a, @NotNull String output) {
-        aeqcs(P.rangeUp(a), output);
+        aeqcs(EP.rangeUp(a), output);
     }
 
     @Test
@@ -409,7 +406,7 @@ public strictfp class ExhaustiveProviderTest {
         rangeUp_char_helper(
                 '\0',
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\177"
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
         );
         rangeUp_char_helper(
                 'a',
@@ -418,19 +415,19 @@ public strictfp class ExhaustiveProviderTest {
                 "\u0080\u0081\u0082\u0083\u0084\u0085\u0086\u0087\u0088\u0089\u008a\u008b\u008c\u008d\u008e\u008f" +
                 "\u0090\u0091\u0092\u0093\u0094\u0095\u0096\u0097\u0098\u0099\u009a\u009b\u009c\u009d\u009e\u009f" +
                 "\u00a0" +
-                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßà"
+                "¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄ"
         );
         rangeUp_char_helper(
                 'Ш',
                 "ШЩЪЫЬЭЮЯабвгдежзийклмнопрстуфхцчшщъыьэюяѐёђѓєѕіїјљњћќѝўџѠѡѢѣѤѥѦѧѨѩѪѫѬѭѮѯѰѱѲѳѴѵѶѷѸѹѺѻѼѽѾѿҀҁ" +
                 "\u0482\u0483\u0484\u0485\u0486\u0487\u0488\u0489" +
-                "ҊҋҌҍҎҏҐґҒғҔҕҖҗҘҙҚқҜҝҞҟҠҡҢңҤҥҦҧ"
+                "Ҋҋ"
         );
         rangeUp_char_helper(Character.MAX_VALUE, "\uffff");
     }
 
     private static void rangeDown_byte_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown((byte) a), output);
+        simpleProviderHelper(EP.rangeDown((byte) a), output);
     }
 
     @Test
@@ -448,7 +445,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_short_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown((short) a), output);
+        simpleProviderHelper(EP.rangeDown((short) a), output);
     }
 
     @Test
@@ -466,7 +463,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_int_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(a), output);
+        simpleProviderHelper(EP.rangeDown(a), output);
     }
 
     @Test
@@ -484,7 +481,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_long_helper(long a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(a), output);
+        simpleProviderHelper(EP.rangeDown(a), output);
     }
 
     @Test
@@ -502,7 +499,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BigInteger_helper(int a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(BigInteger.valueOf(a)), output);
+        simpleProviderHelper(EP.rangeDown(BigInteger.valueOf(a)), output);
     }
 
     @Test
@@ -517,7 +514,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_char_helper(char a, @NotNull String output) {
-        aeqcs(P.rangeDown(a), output);
+        aeqcs(EP.rangeDown(a), output);
     }
 
     @Test
@@ -531,19 +528,17 @@ public strictfp class ExhaustiveProviderTest {
         rangeDown_char_helper(
                 'Ш',
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177"
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
         );
         rangeDown_char_helper(
                 Character.MAX_VALUE,
                 "\0\1\2\3\4\5\6\7\b\t\n\13\f\r\16\17\20\21\22\23\24\25\26\27\30\31\32\33\34\35\36\37" +
-                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~" +
-                "\177"
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abc"
         );
     }
 
     private static void range_byte_byte_helper(int a, int b, @NotNull String output) {
-        aeqit(P.range((byte) a, (byte) b), output);
+        aeqit(EP.range((byte) a, (byte) b), output);
     }
 
     @Test
@@ -563,7 +558,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_short_short_helper(int a, int b, @NotNull String output) {
-        aeqit(P.range((short) a, (short) b), output);
+        aeqit(EP.range((short) a, (short) b), output);
     }
 
     @Test
@@ -583,7 +578,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_int_int_helper(int a, int b, @NotNull String output) {
-        aeqit(P.range(a, b), output);
+        aeqit(EP.range(a, b), output);
     }
 
     @Test
@@ -603,7 +598,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_long_long_helper(long a, long b, @NotNull String output) {
-        aeqit(P.range(a, b), output);
+        aeqit(EP.range(a, b), output);
     }
 
     @Test
@@ -623,7 +618,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_BigInteger_BigInteger_helper(int a, int b, @NotNull String output) {
-        aeqit(P.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
+        aeqit(EP.range(BigInteger.valueOf(a), BigInteger.valueOf(b)), output);
     }
 
     @Test
@@ -643,7 +638,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_char_char_helper(char a, char b, @NotNull String output) {
-        aeqcs(P.range(a, b), output);
+        aeqcs(EP.range(a, b), output);
     }
 
     @Test
@@ -656,34 +651,34 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBinaryFractions() {
-        simpleProviderHelper(P.positiveBinaryFractions(),
+        simpleProviderHelper(EP.positiveBinaryFractions(),
                 "[1, 1 << 1, 3, 1 >> 1, 5, 3 << 1, 7, 1 << 2, 9, 5 << 1, 11, 3 >> 1, 13, 7 << 1, 15, 1 >> 2, 17," +
                 " 9 << 1, 19, 5 >> 1, ...]");
     }
 
     @Test
     public void testNegativeBinaryFractions() {
-        simpleProviderHelper(P.negativeBinaryFractions(),
+        simpleProviderHelper(EP.negativeBinaryFractions(),
                 "[-1, -1 << 1, -3, -1 >> 1, -5, -3 << 1, -7, -1 << 2, -9, -5 << 1, -11, -3 >> 1, -13, -7 << 1, -15," +
                 " -1 >> 2, -17, -9 << 1, -19, -5 >> 1, ...]");
     }
 
     @Test
     public void testNonzeroBinaryFractions() {
-        simpleProviderHelper(P.nonzeroBinaryFractions(),
+        simpleProviderHelper(EP.nonzeroBinaryFractions(),
                 "[1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2, 9," +
                 " -9, 5 << 1, -5 << 1, ...]");
     }
 
     @Test
     public void testBinaryFractions() {
-        simpleProviderHelper(P.binaryFractions(),
+        simpleProviderHelper(EP.binaryFractions(),
                 "[0, 1, -1, 1 << 1, -1 << 1, 3, -3, 1 >> 1, -1 >> 1, 5, -5, 3 << 1, -3 << 1, 7, -7, 1 << 2, -1 << 2," +
                 " 9, -9, 5 << 1, ...]");
     }
 
     private static void rangeUp_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(BinaryFraction.read(a).get()), output);
     }
 
     @Test
@@ -720,7 +715,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BinaryFraction_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(BinaryFraction.read(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(BinaryFraction.read(a).get()), output);
     }
 
     @Test
@@ -761,7 +756,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
+        simpleProviderHelper(EP.range(BinaryFraction.read(a).get(), BinaryFraction.read(b).get()), output);
     }
 
     @Test
@@ -797,7 +792,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveFloats() {
-        aeqitLimit(SMALL_LIMIT, P.positiveFloats(),
+        aeqitLimit(SMALLER_LIMIT, EP.positiveFloats(),
                 "[Infinity, 1.0, 2.0, 3.0, 6.0, 0.5, 4.0, 1.5, 12.0, 5.0, 10.0, 7.0, 14.0, 2.5, 20.0, 3.5, 28.0," +
                 " 0.25, 8.0, 0.75, 24.0, 0.125, 16.0, 0.375, 48.0, 1.25, 40.0, 1.75, 56.0, 0.625, 80.0, 0.875," +
                 " 112.0, 9.0, 18.0, 11.0, 22.0, 4.5, 36.0, 5.5, 44.0, 13.0, 26.0, 15.0, 30.0, 6.5, 52.0, 7.5, 60.0," +
@@ -806,7 +801,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeFloats() {
-        aeqitLimit(SMALL_LIMIT, P.negativeFloats(),
+        aeqitLimit(SMALLER_LIMIT, EP.negativeFloats(),
                 "[-Infinity, -1.0, -2.0, -3.0, -6.0, -0.5, -4.0, -1.5, -12.0, -5.0, -10.0, -7.0, -14.0, -2.5, -20.0," +
                 " -3.5, -28.0, -0.25, -8.0, -0.75, -24.0, -0.125, -16.0, -0.375, -48.0, -1.25, -40.0, -1.75, -56.0," +
                 " -0.625, -80.0, -0.875, -112.0, -9.0, -18.0, -11.0, -22.0, -4.5, -36.0, -5.5, -44.0, -13.0, -26.0," +
@@ -815,7 +810,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroFloats() {
-        aeqitLimit(SMALL_LIMIT, P.nonzeroFloats(),
+        aeqitLimit(SMALLER_LIMIT, EP.nonzeroFloats(),
                 "[NaN, Infinity, -Infinity, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0, -4.0, 1.5," +
                 " -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0, -20.0, 3.5," +
                 " -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125, 16.0, -16.0," +
@@ -824,7 +819,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testFloats() {
-        aeqitLimit(SMALL_LIMIT, P.floats(),
+        aeqitLimit(SMALLER_LIMIT, EP.floats(),
                 "[NaN, Infinity, -Infinity, 0.0, -0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0," +
                 " -4.0, 1.5, -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0," +
                 " -20.0, 3.5, -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125," +
@@ -833,7 +828,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveDoubles() {
-        aeqitLimit(SMALL_LIMIT, P.positiveDoubles(),
+        aeqitLimit(SMALLER_LIMIT, EP.positiveDoubles(),
                 "[Infinity, 1.0, 2.0, 3.0, 6.0, 0.5, 4.0, 1.5, 12.0, 5.0, 10.0, 7.0, 14.0, 2.5, 20.0, 3.5, 28.0," +
                 " 0.25, 8.0, 0.75, 24.0, 0.125, 16.0, 0.375, 48.0, 1.25, 40.0, 1.75, 56.0, 0.625, 80.0, 0.875," +
                 " 112.0, 9.0, 18.0, 11.0, 22.0, 4.5, 36.0, 5.5, 44.0, 13.0, 26.0, 15.0, 30.0, 6.5, 52.0, 7.5, 60.0," +
@@ -842,7 +837,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeDoubles() {
-        aeqitLimit(SMALL_LIMIT, P.negativeDoubles(),
+        aeqitLimit(SMALLER_LIMIT, EP.negativeDoubles(),
                 "[-Infinity, -1.0, -2.0, -3.0, -6.0, -0.5, -4.0, -1.5, -12.0, -5.0, -10.0, -7.0, -14.0, -2.5, -20.0," +
                 " -3.5, -28.0, -0.25, -8.0, -0.75, -24.0, -0.125, -16.0, -0.375, -48.0, -1.25, -40.0, -1.75, -56.0," +
                 " -0.625, -80.0, -0.875, -112.0, -9.0, -18.0, -11.0, -22.0, -4.5, -36.0, -5.5, -44.0, -13.0, -26.0," +
@@ -851,7 +846,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroDoubles() {
-        aeqitLimit(SMALL_LIMIT, P.nonzeroDoubles(),
+        aeqitLimit(SMALLER_LIMIT, EP.nonzeroDoubles(),
                 "[NaN, Infinity, -Infinity, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0, -4.0, 1.5," +
                 " -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0, -20.0, 3.5," +
                 " -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125, 16.0, -16.0," +
@@ -860,7 +855,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDoubles() {
-        aeqitLimit(SMALL_LIMIT, P.doubles(),
+        aeqitLimit(SMALLER_LIMIT, EP.doubles(),
                 "[NaN, Infinity, -Infinity, 0.0, -0.0, 1.0, -1.0, 2.0, -2.0, 3.0, -3.0, 6.0, -6.0, 0.5, -0.5, 4.0," +
                 " -4.0, 1.5, -1.5, 12.0, -12.0, 5.0, -5.0, 10.0, -10.0, 7.0, -7.0, 14.0, -14.0, 2.5, -2.5, 20.0," +
                 " -20.0, 3.5, -3.5, 28.0, -28.0, 0.25, -0.25, 8.0, -8.0, 0.75, -0.75, 24.0, -24.0, 0.125, -0.125," +
@@ -868,12 +863,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_float_helper(float a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(a), output);
+        simpleProviderHelper(EP.rangeUp(a), output);
     }
 
     private static void rangeUp_float_fail_helper(float a) {
         try {
-            P.rangeUp(a);
+            EP.rangeUp(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -946,12 +941,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_float_helper(float a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(a), output);
+        simpleProviderHelper(EP.rangeDown(a), output);
     }
 
     private static void rangeDown_float_fail_helper(float a) {
         try {
-            P.rangeDown(a);
+            EP.rangeDown(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1026,12 +1021,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_float_float_helper(float a, float b, @NotNull String output) {
-        simpleProviderHelper(P.range(a, b), output);
+        simpleProviderHelper(EP.range(a, b), output);
     }
 
     private static void range_float_float_fail_helper(float a, float b) {
         try {
-            P.range(a, b);
+            EP.range(a, b);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1108,12 +1103,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUp_double_helper(double a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(a), output);
+        simpleProviderHelper(EP.rangeUp(a), output);
     }
 
     private static void rangeUp_double_fail_helper(double a) {
         try {
-            P.rangeUp(a);
+            EP.rangeUp(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1205,12 +1200,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_double_helper(double a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(a), output);
+        simpleProviderHelper(EP.rangeDown(a), output);
     }
 
     private static void rangeDown_double_fail_helper(double a) {
         try {
-            P.rangeDown(a);
+            EP.rangeDown(a);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1304,12 +1299,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void range_double_double_helper(double a, double b, @NotNull String output) {
-        simpleProviderHelper(P.range(a, b), output);
+        simpleProviderHelper(EP.range(a, b), output);
     }
 
     private static void range_double_double_fail_helper(double a, double b) {
         try {
-            P.range(a, b);
+            EP.range(a, b);
             fail();
         } catch (ArithmeticException ignored) {}
     }
@@ -1392,7 +1387,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.positiveBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.positiveBigDecimals(),
                 "[1, 0.1, 2, 1E+1, 3, 0.2, 4, 0.01, 5, 0.3, 6, 2E+1, 7, 0.4, 8, 1E+2, 9, 0.5, 10, 3E+1, 11, 0.6, 12," +
                 " 0.02, 13, 0.7, 14, 4E+1, 15, 0.8, 16, 0.001, 17, 0.9, 18, 5E+1, 19, 1.0, 20, 0.03, 21, 1.1, 22," +
                 " 6E+1, 23, 1.2, 24, 2E+2, 25, 1.3, ...]");
@@ -1400,7 +1395,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.negativeBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.negativeBigDecimals(),
                 "[-1, -0.1, -2, -1E+1, -3, -0.2, -4, -0.01, -5, -0.3, -6, -2E+1, -7, -0.4, -8, -1E+2, -9, -0.5, -10," +
                 " -3E+1, -11, -0.6, -12, -0.02, -13, -0.7, -14, -4E+1, -15, -0.8, -16, -0.001, -17, -0.9, -18," +
                 " -5E+1, -19, -1.0, -20, -0.03, -21, -1.1, -22, -6E+1, -23, -1.2, -24, -2E+2, -25, -1.3, ...]");
@@ -1408,7 +1403,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.nonzeroBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.nonzeroBigDecimals(),
                 "[1, 0.1, -1, 1E+1, 2, -0.1, -2, 0.01, 3, 0.2, -3, -1E+1, 4, -0.2, -4, 1E+2, 5, 0.3, -5, 2E+1, 6," +
                 " -0.3, -6, -0.01, 7, 0.4, -7, -2E+1, 8, -0.4, -8, 0.001, 9, 0.5, -9, 3E+1, 10, -0.5, -10, 0.02, 11," +
                 " 0.6, -11, -3E+1, 12, -0.6, -12, -1E+2, 13, 0.7, ...]");
@@ -1416,7 +1411,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.bigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.bigDecimals(),
                 "[0, 0.0, 1, 0E+1, -1, 0.1, 2, 0.00, -2, -0.1, 3, 1E+1, -3, 0.2, 4, 0E+2, -4, -0.2, 5, -1E+1, -5," +
                 " 0.3, 6, 0.01, -6, -0.3, 7, 2E+1, -7, 0.4, 8, 0.000, -8, -0.4, 9, -2E+1, -9, 0.5, 10, -0.01, -10," +
                 " -0.5, 11, 3E+1, -11, 0.6, 12, 1E+2, -12, -0.6, ...]");
@@ -1424,7 +1419,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testPositiveCanonicalBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.positiveCanonicalBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.positiveCanonicalBigDecimals(),
                 "[1, 0.1, 2, 3, 0.2, 4, 0.01, 5, 0.3, 6, 7, 0.4, 8, 9, 0.5, 10, 11, 0.6, 12, 0.02, 13, 0.7, 14, 15," +
                 " 0.8, 16, 0.001, 17, 0.9, 18, 19, 20, 0.03, 21, 1.1, 22, 23, 1.2, 24, 25, 1.3, 26, 27, 1.4, 28," +
                 " 0.04, 29, 1.5, 30, 31, ...]");
@@ -1432,7 +1427,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNegativeCanonicalBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.negativeCanonicalBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.negativeCanonicalBigDecimals(),
                 "[-1, -0.1, -2, -3, -0.2, -4, -0.01, -5, -0.3, -6, -7, -0.4, -8, -9, -0.5, -10, -11, -0.6, -12," +
                 " -0.02, -13, -0.7, -14, -15, -0.8, -16, -0.001, -17, -0.9, -18, -19, -20, -0.03, -21, -1.1, -22," +
                 " -23, -1.2, -24, -25, -1.3, -26, -27, -1.4, -28, -0.04, -29, -1.5, -30, -31, ...]");
@@ -1440,7 +1435,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonzeroCanonicalBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.nonzeroCanonicalBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.nonzeroCanonicalBigDecimals(),
                 "[1, 0.1, -1, 2, -0.1, -2, 0.01, 3, 0.2, -3, 4, -0.2, -4, 5, 0.3, -5, 6, -0.3, -6, -0.01, 7, 0.4," +
                 " -7, 8, -0.4, -8, 0.001, 9, 0.5, -9, 10, -0.5, -10, 0.02, 11, 0.6, -11, 12, -0.6, -12, 13, 0.7," +
                 " -13, 14, -0.7, -14, -0.02, 15, 0.8, -15, ...]");
@@ -1448,14 +1443,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testCanonicalBigDecimals() {
-        aeqitLimit(SMALL_LIMIT, P.canonicalBigDecimals(),
+        aeqitLimit(SMALLER_LIMIT, EP.canonicalBigDecimals(),
                 "[0, 1, -1, 0.1, 2, -2, -0.1, 3, -3, 0.2, 4, -4, -0.2, 5, -5, 0.3, 6, 0.01, -6, -0.3, 7, -7, 0.4, 8," +
                 " -8, -0.4, 9, -9, 0.5, 10, -0.01, -10, -0.5, 11, -11, 0.6, 12, -12, -0.6, 13, -13, 0.7, 14, 0.02," +
                 " -14, -0.7, 15, -15, 0.8, 16, ...]");
     }
 
     private static void rangeUp_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUp(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeUp(Readers.readBigDecimal(a).get()), output);
     }
 
     @Test
@@ -1533,7 +1528,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDown_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDown(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeDown(Readers.readBigDecimal(a).get()), output);
     }
 
     @Test
@@ -1614,7 +1609,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String b,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()), output);
+        simpleProviderHelper(EP.range(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()), output);
     }
 
     @Test
@@ -1685,7 +1680,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeUpCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeUpCanonical(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeUpCanonical(Readers.readBigDecimal(a).get()), output);
     }
 
     @Test
@@ -1754,7 +1749,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void rangeDownCanonical_BigDecimal_helper(@NotNull String a, @NotNull String output) {
-        simpleProviderHelper(P.rangeDownCanonical(Readers.readBigDecimal(a).get()), output);
+        simpleProviderHelper(EP.rangeDownCanonical(Readers.readBigDecimal(a).get()), output);
     }
 
     @Test
@@ -1833,7 +1828,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         simpleProviderHelper(
-                P.rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
+                EP.rangeCanonical(Readers.readBigDecimal(a).get(), Readers.readBigDecimal(b).get()),
                 output
         );
     }
@@ -1894,11 +1889,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void withNull_finite_helper(@NotNull String x, @NotNull String output) {
-        aeqit(P.withNull(readIntegerListWithNulls(x)), output);
+        aeqit(EP.withNull(readIntegerListWithNulls(x)), output);
     }
 
     private static void withNull_cyclic_helper(@NotNull String x, @NotNull String output) {
-        simpleProviderHelper(P.withNull(cycle(readIntegerListWithNulls(x))), output);
+        simpleProviderHelper(EP.withNull(cycle(readIntegerListWithNulls(x))), output);
     }
 
     @Test
@@ -1913,76 +1908,76 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testNonEmptyOptionals() {
-        simpleProviderHelper(P.nonEmptyOptionals(P.integers()),
+        simpleProviderHelper(EP.nonEmptyOptionals(EP.integers()),
                 "[Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3], Optional[-3]," +
                 " Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6], Optional[7]," +
                 " Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], Optional[10], ...]");
-        simpleProviderHelper(P.nonEmptyOptionals(P.strings()),
+        simpleProviderHelper(EP.nonEmptyOptionals(EP.strings()),
                 "[Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c], Optional[ab]," +
                 " Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab], Optional[g]," +
                 " Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], Optional[j], ...]");
-        aeqit(P.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "[Optional[1], Optional[2], Optional[3]]");
-        aeqit(P.nonEmptyOptionals(Collections.emptyList()), "[]");
+        aeqit(EP.nonEmptyOptionals(Arrays.asList(1, 2, 3)), "[Optional[1], Optional[2], Optional[3]]");
+        aeqit(EP.nonEmptyOptionals(Collections.emptyList()), "[]");
         try {
-            toList(take(TINY_LIMIT, P.nonEmptyOptionals(P.withNull(P.integers()))));
+            toList(take(TINY_LIMIT, EP.nonEmptyOptionals(EP.withNull(EP.integers()))));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testOptionals() {
-        simpleProviderHelper(P.optionals(P.integers()),
+        simpleProviderHelper(EP.optionals(EP.integers()),
                 "[Optional.empty, Optional[0], Optional[1], Optional[-1], Optional[2], Optional[-2], Optional[3]," +
                 " Optional[-3], Optional[4], Optional[-4], Optional[5], Optional[-5], Optional[6], Optional[-6]," +
                 " Optional[7], Optional[-7], Optional[8], Optional[-8], Optional[9], Optional[-9], ...]");
-        simpleProviderHelper(P.optionals(P.strings()),
+        simpleProviderHelper(EP.optionals(EP.strings()),
                 "[Optional.empty, Optional[], Optional[a], Optional[aa], Optional[b], Optional[aaa], Optional[c]," +
                 " Optional[ab], Optional[d], Optional[aaaa], Optional[e], Optional[ba], Optional[f], Optional[aab]," +
                 " Optional[g], Optional[bb], Optional[h], Optional[aaaaa], Optional[i], Optional[ac], ...]");
-        aeqit(P.optionals(Arrays.asList(1, 2, 3)), "[Optional.empty, Optional[1], Optional[2], Optional[3]]");
-        aeqit(P.optionals(Collections.emptyList()), "[Optional.empty]");
+        aeqit(EP.optionals(Arrays.asList(1, 2, 3)), "[Optional.empty, Optional[1], Optional[2], Optional[3]]");
+        aeqit(EP.optionals(Collections.emptyList()), "[Optional.empty]");
         try {
-            toList(take(TINY_LIMIT, P.optionals(P.withNull(P.integers()))));
+            toList(take(TINY_LIMIT, EP.optionals(EP.withNull(EP.integers()))));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testNonEmptyNullableOptionals() {
-        simpleProviderHelper(P.nonEmptyNullableOptionals(P.withNull(P.integers())),
+        simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.integers())),
                 "[NullableOptional[null], NullableOptional[0], NullableOptional[1], NullableOptional[-1]," +
                 " NullableOptional[2], NullableOptional[-2], NullableOptional[3], NullableOptional[-3]," +
                 " NullableOptional[4], NullableOptional[-4], NullableOptional[5], NullableOptional[-5]," +
                 " NullableOptional[6], NullableOptional[-6], NullableOptional[7], NullableOptional[-7]," +
                 " NullableOptional[8], NullableOptional[-8], NullableOptional[9], NullableOptional[-9], ...]");
-        simpleProviderHelper(P.nonEmptyNullableOptionals(P.withNull(P.strings())),
+        simpleProviderHelper(EP.nonEmptyNullableOptionals(EP.withNull(EP.strings())),
                 "[NullableOptional[null], NullableOptional[], NullableOptional[a], NullableOptional[aa]," +
                 " NullableOptional[b], NullableOptional[aaa], NullableOptional[c], NullableOptional[ab]," +
                 " NullableOptional[d], NullableOptional[aaaa], NullableOptional[e], NullableOptional[ba]," +
                 " NullableOptional[f], NullableOptional[aab], NullableOptional[g], NullableOptional[bb]," +
                 " NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], NullableOptional[ac], ...]");
-        aeqit(P.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
+        aeqit(EP.nonEmptyNullableOptionals(Arrays.asList(1, 2, 3)),
                 "[NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
-        aeqit(P.nonEmptyNullableOptionals(Collections.emptyList()), "[]");
+        aeqit(EP.nonEmptyNullableOptionals(Collections.emptyList()), "[]");
     }
 
     @Test
     public void testNullableOptionals() {
-        simpleProviderHelper(P.nullableOptionals(P.withNull(P.integers())),
+        simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.integers())),
                 "[NullableOptional.empty, NullableOptional[null], NullableOptional[0], NullableOptional[1]," +
                 " NullableOptional[-1], NullableOptional[2], NullableOptional[-2], NullableOptional[3]," +
                 " NullableOptional[-3], NullableOptional[4], NullableOptional[-4], NullableOptional[5]," +
                 " NullableOptional[-5], NullableOptional[6], NullableOptional[-6], NullableOptional[7]," +
                 " NullableOptional[-7], NullableOptional[8], NullableOptional[-8], NullableOptional[9], ...]");
-        simpleProviderHelper(P.nullableOptionals(P.withNull(P.strings())),
+        simpleProviderHelper(EP.nullableOptionals(EP.withNull(EP.strings())),
                 "[NullableOptional.empty, NullableOptional[null], NullableOptional[], NullableOptional[a]," +
                 " NullableOptional[aa], NullableOptional[b], NullableOptional[aaa], NullableOptional[c]," +
                 " NullableOptional[ab], NullableOptional[d], NullableOptional[aaaa], NullableOptional[e]," +
                 " NullableOptional[ba], NullableOptional[f], NullableOptional[aab], NullableOptional[g]," +
                 " NullableOptional[bb], NullableOptional[h], NullableOptional[aaaaa], NullableOptional[i], ...]");
-        aeqit(P.nullableOptionals(Arrays.asList(1, 2, 3)),
+        aeqit(EP.nullableOptionals(Arrays.asList(1, 2, 3)),
                 "[NullableOptional.empty, NullableOptional[1], NullableOptional[2], NullableOptional[3]]");
-        aeqit(P.nullableOptionals(Collections.emptyList()), "[NullableOptional.empty]");
+        aeqit(EP.nullableOptionals(Collections.emptyList()), "[NullableOptional.empty]");
     }
 
     @Test
@@ -1996,24 +1991,24 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(P.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
+        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), f),
                 "[(3, foo), (2, a), (2, b), (2, c), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
                 " (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep), (0, beep)," +
                 " (0, beep), (0, beep), ...]");
 
-        aeqit(P.dependentPairs(Collections.emptyList(), f), "[]");
+        aeqit(EP.dependentPairs(Collections.emptyList(), f), "[]");
 
-        simpleProviderHelper(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> Collections.emptyList()), "[]");
 
         try {
-            toList(P.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
+            toList(EP.dependentPairs(Arrays.asList(3, 1, 2, 0), i -> null));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testDependentPairsInfinite() {
-        simpleProviderHelper(P.dependentPairsInfinite(P.naturalBigIntegers(), i -> P.naturalBigIntegers()),
+        simpleProviderHelper(EP.dependentPairsInfinite(EP.naturalBigIntegers(), i -> EP.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
 
@@ -2024,23 +2019,23 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b)," +
                 " (0, beep), (0, beep), (1, a), (1, b), (0, beep), (0, beep), (1, a), (1, b), (0, beep)," +
                 " (0, beep), ...]");
 
         try {
-            toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
+            toList(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> null));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         try {
-            toList(P.dependentPairsInfinite(Arrays.asList(0, 1), f));
+            toList(EP.dependentPairsInfinite(Arrays.asList(0, 1), f));
             fail();
         } catch (NoSuchElementException ignored) {}
 
         try {
-            toList(P.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a")));
+            toList(EP.dependentPairsInfinite(cycle(Arrays.asList(1, 0)), i -> Collections.singletonList("a")));
             fail();
         } catch (NoSuchElementException ignored) {}
     }
@@ -2048,9 +2043,9 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDependentPairsInfiniteLogarithmicOrder() {
         simpleProviderHelper(
-                P.dependentPairsInfiniteLogarithmicOrder(
-                        P.naturalBigIntegers(),
-                        i -> P.naturalBigIntegers()
+                EP.dependentPairsInfiniteLogarithmicOrder(
+                        EP.naturalBigIntegers(),
+                        i -> EP.naturalBigIntegers()
                 ),
                 "[(0, 0), (1, 0), (0, 1), (2, 0), (0, 2), (1, 1), (0, 3), (3, 0), (0, 4), (1, 2), (0, 5), (2, 1)," +
                 " (0, 6), (1, 3), (0, 7), (4, 0), (0, 8), (1, 4), (0, 9), (2, 2), ...]"
@@ -2063,23 +2058,23 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
                 " (1, a), (1, b), (1, a), (0, beep), (1, b), (1, a), (1, b), (0, beep), (1, a), (1, b), ...]");
 
         try {
-            toList(P.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));
+            toList(EP.dependentPairsInfiniteLogarithmicOrder(cycle(Arrays.asList(1, 0)), i -> null));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         try {
-            toList(P.dependentPairsInfiniteLogarithmicOrder(Arrays.asList(0, 1), f));
+            toList(EP.dependentPairsInfiniteLogarithmicOrder(Arrays.asList(0, 1), f));
             fail();
         } catch (NoSuchElementException ignored) {}
 
         try {
             toList(
-                    P.dependentPairsInfiniteLogarithmicOrder(
+                    EP.dependentPairsInfiniteLogarithmicOrder(
                             cycle(Arrays.asList(1, 0)),
                             i -> Collections.singletonList("a")
                     )
@@ -2091,9 +2086,9 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testDependentPairsInfiniteSquareRootOrder() {
         simpleProviderHelper(
-                P.dependentPairsInfiniteSquareRootOrder(
-                        P.naturalBigIntegers(),
-                        i -> P.naturalBigIntegers()
+                EP.dependentPairsInfiniteSquareRootOrder(
+                        EP.naturalBigIntegers(),
+                        i -> EP.naturalBigIntegers()
                 ),
                 "[(0, 0), (1, 0), (0, 1), (1, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 0), (3, 0), (2, 1), (3, 1)," +
                 " (2, 2), (3, 2), (2, 3), (3, 3), (0, 4), (1, 4), (0, 5), (1, 5), ...]"
@@ -2106,24 +2101,24 @@ public strictfp class ExhaustiveProviderTest {
             }
             throw new IllegalArgumentException();
         };
-        simpleProviderHelper(P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
+        simpleProviderHelper(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), f),
                 "[(1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep)," +
                 " (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep), (1, a), (0, beep), (1, b), (0, beep)," +
                 " ...]");
 
         try {
-            toList(P.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), i -> null));
+            toList(EP.dependentPairsInfiniteSquareRootOrder(cycle(Arrays.asList(1, 0)), i -> null));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
 
         try {
-            toList(P.dependentPairsInfiniteSquareRootOrder(Arrays.asList(0, 1), f));
+            toList(EP.dependentPairsInfiniteSquareRootOrder(Arrays.asList(0, 1), f));
             fail();
         } catch (NoSuchElementException ignored) {}
 
         try {
             toList(
-                    P.dependentPairsInfiniteSquareRootOrder(
+                    EP.dependentPairsInfiniteSquareRootOrder(
                             cycle(Arrays.asList(1, 0)),
                             i -> Collections.singletonList("a")
                     )
@@ -2135,34 +2130,34 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairsLogarithmicOrder_Iterable_Iterable() {
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (1, c), (3, a), (2, b), (4, a), (1, d), (3, b), (2, c), (4, b), (3, c)," +
                 " (2, d), (4, c), (3, d), (4, d)]"
         );
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (1, c), (2, a), (2, b), (4, a), (1, d), (2, b), (2, c), (4, b), (2, c)," +
                 " (2, d), (4, c), (2, d), (4, d)]"
         );
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (1, c), (null, a), (2, b), (4, a), (1, d), (null, b), (2, c), (4, b)," +
                 " (null, c), (2, d), (4, c), (null, d), (4, d)]"
         );
-        aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(P.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList(), Collections.emptyList()), "[]");
         simpleProviderHelper(
-                P.pairsLogarithmicOrder(P.naturalBigIntegers(), fromString("abcd")),
+                EP.pairsLogarithmicOrder(EP.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (0, c), (2, a), (1, b), (3, a), (0, d), (4, a), (2, b), (5, a), (1, c)," +
                 " (6, a), (3, b), (7, a), (8, a), (4, b), (9, a), (2, c), (10, a), ...]"
         );
         simpleProviderHelper(
-                P.pairsLogarithmicOrder(fromString("abcd"), P.naturalBigIntegers()),
+                EP.pairsLogarithmicOrder(fromString("abcd"), EP.naturalBigIntegers()),
                 "[(a, 0), (a, 1), (b, 0), (a, 2), (c, 0), (b, 1), (d, 0), (a, 3), (c, 1), (b, 2), (d, 1), (a, 4)," +
                 " (c, 2), (b, 3), (d, 2), (a, 5), (c, 3), (b, 4), (d, 3), (a, 6), ...]"
         );
         simpleProviderHelper(
-                P.pairsLogarithmicOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
+                EP.pairsLogarithmicOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
                 "[(1, -1), (1, -2), (2, -1), (1, -3), (3, -1), (2, -2), (4, -1), (1, -4), (5, -1), (3, -2), (6, -1)," +
                 " (2, -3), (7, -1), (4, -2), (8, -1), (1, -5), (9, -1), (5, -2), (10, -1), (3, -3), ...]"
         );
@@ -2171,28 +2166,28 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairsLogarithmicOrder_Iterable() {
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 3, 4)),
                 "[(1, 1), (1, 2), (2, 1), (1, 3), (3, 1), (2, 2), (4, 1), (1, 4), (3, 2), (2, 3), (4, 2), (3, 3)," +
                 " (2, 4), (4, 3), (3, 4), (4, 4)]"
         );
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4)),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, 2, 4)),
                 "[(1, 1), (1, 2), (2, 1), (1, 2), (2, 1), (2, 2), (4, 1), (1, 4), (2, 2), (2, 2), (4, 2), (2, 2)," +
                 " (2, 4), (4, 2), (2, 4), (4, 4)]"
         );
         aeqit(
-                P.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
+                EP.pairsLogarithmicOrder(Arrays.asList(1, 2, null, 4)),
                 "[(1, 1), (1, 2), (2, 1), (1, null), (null, 1), (2, 2), (4, 1), (1, 4), (null, 2), (2, null)," +
                 " (4, 2), (null, null), (2, 4), (4, null), (null, 4), (4, 4)]"
         );
-        aeqit(P.pairsLogarithmicOrder(Collections.emptyList()), "[]");
+        aeqit(EP.pairsLogarithmicOrder(Collections.emptyList()), "[]");
         simpleProviderHelper(
-                P.pairsLogarithmicOrder(P.naturalBigIntegers()),
+                EP.pairsLogarithmicOrder(EP.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (0, 2), (2, 0), (1, 1), (3, 0), (0, 3), (4, 0), (2, 1), (5, 0), (1, 2)," +
                 " (6, 0), (3, 1), (7, 0), (0, 4), (8, 0), (4, 1), (9, 0), (2, 2), ...]"
         );
         simpleProviderHelper(
-                P.pairsLogarithmicOrder(cons(null, P.naturalBigIntegers())),
+                EP.pairsLogarithmicOrder(cons(null, EP.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (null, 1), (1, null), (0, 0), (2, null), (null, 2), (3, null)," +
                 " (1, 0), (4, null), (0, 1), (5, null), (2, 0), (6, null), (null, 3), (7, null), (3, 0), (8, null)," +
                 " (1, 1), ...]"
@@ -2202,34 +2197,34 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairsSquareRootOrder_Iterable_Iterable() {
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
                 " (3, c), (3, d), (4, c), (4, d)]"
         );
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (2, a), (2, b), (4, a), (4, b), (1, c), (1, d), (2, c), (2, d)," +
                 " (2, c), (2, d), (4, c), (4, d)]"
         );
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (null, a), (null, b), (4, a), (4, b), (1, c), (1, d), (2, c)," +
                 " (2, d), (null, c), (null, d), (4, c), (4, d)]"
         );
-        aeqit(P.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(P.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()), "[]");
+        aeqit(EP.pairsSquareRootOrder(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(EP.pairsSquareRootOrder(Collections.emptyList(), Collections.emptyList()), "[]");
         simpleProviderHelper(
-                P.pairsSquareRootOrder(P.naturalBigIntegers(), fromString("abcd")),
+                EP.pairsSquareRootOrder(EP.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (1, b), (2, a), (2, b), (3, a), (3, b), (0, c), (0, d), (1, c), (1, d)," +
                 " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]"
         );
         simpleProviderHelper(
-                P.pairsSquareRootOrder(fromString("abcd"), P.naturalBigIntegers()),
+                EP.pairsSquareRootOrder(fromString("abcd"), EP.naturalBigIntegers()),
                 "[(a, 0), (a, 1), (b, 0), (b, 1), (c, 0), (c, 1), (d, 0), (d, 1), (a, 2), (a, 3), (b, 2), (b, 3)," +
                 " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]"
         );
         simpleProviderHelper(
-                P.pairsSquareRootOrder(P.positiveBigIntegers(), P.negativeBigIntegers()),
+                EP.pairsSquareRootOrder(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
                 "[(1, -1), (1, -2), (2, -1), (2, -2), (3, -1), (3, -2), (4, -1), (4, -2), (1, -3), (1, -4), (2, -3)," +
                 " (2, -4), (3, -3), (3, -4), (4, -3), (4, -4), (5, -1), (5, -2), (6, -1), (6, -2), ...]"
         );
@@ -2238,28 +2233,28 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testPairsSquareRootOrder_Iterable() {
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 3, 4)),
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2), (4, 1), (4, 2), (1, 3), (1, 4), (2, 3), (2, 4)," +
                 " (3, 3), (3, 4), (4, 3), (4, 4)]"
         );
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4)),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, 2, 4)),
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (2, 1), (2, 2), (4, 1), (4, 2), (1, 2), (1, 4), (2, 2), (2, 4)," +
                 " (2, 2), (2, 4), (4, 2), (4, 4)]"
         );
         aeqit(
-                P.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
+                EP.pairsSquareRootOrder(Arrays.asList(1, 2, null, 4)),
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (null, 1), (null, 2), (4, 1), (4, 2), (1, null), (1, 4)," +
                 " (2, null), (2, 4), (null, null), (null, 4), (4, null), (4, 4)]"
         );
-        aeqit(P.pairsSquareRootOrder(Collections.emptyList()), "[]");
+        aeqit(EP.pairsSquareRootOrder(Collections.emptyList()), "[]");
         simpleProviderHelper(
-                P.pairsSquareRootOrder(P.naturalBigIntegers()),
+                EP.pairsSquareRootOrder(EP.naturalBigIntegers()),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (2, 0), (2, 1), (3, 0), (3, 1), (0, 2), (0, 3), (1, 2), (1, 3)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (4, 0), (4, 1), (5, 0), (5, 1), ...]"
         );
         simpleProviderHelper(
-                P.pairsSquareRootOrder(cons(null, P.naturalBigIntegers())),
+                EP.pairsSquareRootOrder(cons(null, EP.naturalBigIntegers())),
                 "[(null, null), (null, 0), (0, null), (0, 0), (1, null), (1, 0), (2, null), (2, 0), (null, 1)," +
                 " (null, 2), (0, 1), (0, 2), (1, 1), (1, 2), (2, 1), (2, 2), (3, null), (3, 0), (4, null), (4, 0)," +
                 " ...]"
@@ -2267,11 +2262,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void permutationsFiniteHelper(@NotNull String input, @NotNull String output) {
-        aeqit(map(Testing::its, P.permutationsFinite(readIntegerListWithNulls(input))), output);
+        aeqit(map(Testing::its, EP.permutationsFinite(readIntegerListWithNulls(input))), output);
     }
 
     private static void permutationsFiniteHelper(@NotNull List<Integer> input, @NotNull String output) {
-        simpleProviderHelper(map(Testing::its, P.permutationsFinite(input)), output);
+        simpleProviderHelper(map(Testing::its, EP.permutationsFinite(input)), output);
     }
 
     @Test
@@ -2308,32 +2303,32 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringPermutations() {
-        aeqit(P.stringPermutations(""), "[]");
-        aeqit(P.stringPermutations("a"), "[a]");
-        aeqit(P.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
-        aeqit(P.stringPermutations("foo"), "[foo, ofo, oof]");
-        aeqit(P.stringPermutations("hello"),
+        aeqit(EP.stringPermutations(""), "[]");
+        aeqit(EP.stringPermutations("a"), "[a]");
+        aeqit(EP.stringPermutations("abc"), "[abc, acb, bac, bca, cab, cba]");
+        aeqit(EP.stringPermutations("foo"), "[foo, ofo, oof]");
+        aeqit(EP.stringPermutations("hello"),
                 "[hello, helol, heoll, hlelo, hleol, hlleo, hlloe, hloel, hlole, hoell, holel, holle, ehllo, ehlol," +
                 " eholl, elhlo, elhol, ellho, elloh, elohl, elolh, eohll, eolhl, eollh, lhelo, lheol, lhleo, lhloe," +
                 " lhoel, lhole, lehlo, lehol, lelho, leloh, leohl, leolh, llheo, llhoe, lleho, lleoh, llohe, lloeh," +
                 " lohel, lohle, loehl, loelh, lolhe, loleh, ohell, ohlel, ohlle, oehll, oelhl, oellh, olhel, olhle," +
                 " olehl, olelh, ollhe, olleh]");
-        simpleProviderHelper(P.stringPermutations("Mississippi"),
+        simpleProviderHelper(EP.stringPermutations("Mississippi"),
                 "[Miiiisssspp, Miiiissspsp, Miiiissspps, Miiiisspssp, Miiiisspsps, Miiiissppss, Miiiispsssp," +
                 " Miiiispssps, Miiiispspss, Miiiisppsss, Miiiipssssp, Miiiipsssps, Miiiipsspss, Miiiipspsss," +
                 " Miiiippssss, Miiisissspp, Miiisisspsp, Miiisisspps, Miiisispssp, Miiisispsps, ...]");
     }
 
     private static void prefixPermutationsHelper(@NotNull String input, @NotNull String output) {
-        aeqit(map(Testing::its, P.prefixPermutations(readIntegerList(input))), output);
+        aeqit(map(Testing::its, EP.prefixPermutations(readIntegerList(input))), output);
     }
 
     private static void prefixPermutationsHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        aeqit(map(Testing::its, P.prefixPermutations(input)), output);
+        aeqit(map(Testing::its, EP.prefixPermutations(input)), output);
     }
 
     private static void prefixPermutationsLimitHelper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(map(Testing::its, P.prefixPermutations(input)), output);
+        simpleProviderHelper(map(Testing::its, EP.prefixPermutations(input)), output);
     }
 
     @Test
@@ -2376,7 +2371,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [2, 4, 1, 3, 5, 6, 7, 8, 9, 10], [2, 4, 3, 1, 5, 6, 7, 8, 9, 10], [3, 1, 4, 2, 5, 6, 7, 8, 9, 10]," +
                 " [3, 2, 4, 1, 5, 6, 7, 8, 9, 10], [3, 4, 1, 2, 5, 6, 7, 8, 9, 10], [3, 4, 2, 1, 5, 6, 7, 8, 9, 10]," +
                 " [4, 1, 2, 3, 5, 6, 7, 8, 9, 10], [4, 1, 3, 2, 5, 6, 7, 8, 9, 10], ...]");
-        prefixPermutationsLimitHelper(P.positiveIntegers(),
+        prefixPermutationsLimitHelper(EP.positiveIntegers(),
                 "[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
                 " [1, 3, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...]," +
@@ -2421,7 +2416,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void listsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.listsLex(size, readIntegerListWithNulls(input)), output);
+        aeqit(EP.listsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -2468,11 +2463,11 @@ public strictfp class ExhaustiveProviderTest {
         listsLex_int_List_helper(2, "[]", "[]");
         listsLex_int_List_helper(3, "[]", "[]");
         try {
-            P.listsLex(-1, Collections.emptyList());
+            EP.listsLex(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.listsLex(-1, Arrays.asList(1, 2, 3));
+            EP.listsLex(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -2482,7 +2477,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<B> bs,
             @NotNull String output
     ) {
-        aeqit(P.pairsLex(as, toList(bs)), output);
+        aeqit(EP.pairsLex(as, toList(bs)), output);
     }
 
     private static <A, B> void pairsLex_helper_limit(
@@ -2490,7 +2485,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<B> bs,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.pairsLex(as, toList(bs)), output);
+        simpleProviderHelper(EP.pairsLex(as, toList(bs)), output);
     }
 
     @Test
@@ -2499,10 +2494,10 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)]");
         pairsLex_helper(Arrays.asList(1, null, 3), fromString("abc"),
                 "[(1, a), (1, b), (1, c), (null, a), (null, b), (null, c), (3, a), (3, b), (3, c)]");
-        pairsLex_helper_limit(P.naturalBigIntegers(), fromString("abc"),
+        pairsLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"),
                 "[(0, a), (0, b), (0, c), (1, a), (1, b), (1, c), (2, a), (2, b), (2, c), (3, a), (3, b), (3, c)," +
                 " (4, a), (4, b), (4, c), (5, a), (5, b), (5, c), (6, a), (6, b), ...]");
-        pairsLex_helper(P.naturalBigIntegers(), Collections.emptyList(), "[]");
+        pairsLex_helper(EP.naturalBigIntegers(), Collections.emptyList(), "[]");
         pairsLex_helper(Collections.emptyList(), fromString("abc"), "[]");
         pairsLex_helper(Collections.emptyList(), Collections.emptyList(), "[]");
     }
@@ -2513,7 +2508,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<C> cs,
             @NotNull String output
     ) {
-        aeqit(P.triplesLex(as, toList(bs), toList(cs)), output);
+        aeqit(EP.triplesLex(as, toList(bs), toList(cs)), output);
     }
 
     private static <A, B, C> void triplesLex_helper_limit(
@@ -2522,27 +2517,27 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<C> cs,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.triplesLex(as, toList(bs), toList(cs)), output);
+        simpleProviderHelper(EP.triplesLex(as, toList(bs), toList(cs)), output);
     }
 
     @Test
     public void testTriplesLex() {
-        triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(),
+        triplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        triplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(),
+        triplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (null, a, false), (null, a, true), (null, b, false), (null, b, true), (null, c, false)," +
                 " (null, c, true), (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false)," +
                 " (3, c, true)]");
-        triplesLex_helper_limit(P.naturalBigIntegers(), fromString("abc"), P.booleans(),
+        triplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (0, c, false), (0, c, true)," +
                 " (1, a, false), (1, a, true), (1, b, false), (1, b, true), (1, c, false), (1, c, true)," +
                 " (2, a, false), (2, a, true), (2, b, false), (2, b, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), ...]");
-        triplesLex_helper(P.naturalBigIntegers(), fromString("abc"), Collections.emptyList(), "[]");
-        triplesLex_helper(Collections.emptyList(), fromString("abc"), P.booleans(), "[]");
+        triplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), Collections.emptyList(), "[]");
+        triplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(), "[]");
         triplesLex_helper(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), "[]");
     }
 
@@ -2553,7 +2548,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<D> ds,
             @NotNull String output
     ) {
-        aeqit(P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+        aeqit(EP.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
     }
 
     private static <A, B, C, D> void quadruplesLex_helper_limit(
@@ -2563,12 +2558,12 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<D> ds,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
+        simpleProviderHelper(EP.quadruplesLex(as, toList(bs), toList(cs), toList(ds)), output);
     }
 
     @Test
     public void testQuadruplesLex() {
-        quadruplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings(),
+        quadruplesLex_helper(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), EP.orderings(),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -2580,7 +2575,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, a, true, LT), (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT)," +
                 " (3, b, true, EQ), (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
                 " (3, c, false, GT), (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        quadruplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), P.booleans(), P.orderings(),
+        quadruplesLex_helper(Arrays.asList(1, null, 3), fromString("abc"), EP.booleans(), EP.orderings(),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, false, GT), (1, a, true, EQ), (1, a, true, LT)," +
                 " (1, a, true, GT), (1, b, false, EQ), (1, b, false, LT), (1, b, false, GT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (1, b, true, GT), (1, c, false, EQ), (1, c, false, LT), (1, c, false, GT)," +
@@ -2593,13 +2588,13 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, a, true, GT), (3, b, false, EQ), (3, b, false, LT), (3, b, false, GT), (3, b, true, EQ)," +
                 " (3, b, true, LT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT), (3, c, false, GT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, true, GT)]");
-        quadruplesLex_helper_limit(P.naturalBigIntegers(), fromString("abc"), P.booleans(), P.orderings(),
+        quadruplesLex_helper_limit(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), EP.orderings(),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, false, GT), (0, a, true, EQ), (0, a, true, LT)," +
                 " (0, a, true, GT), (0, b, false, EQ), (0, b, false, LT), (0, b, false, GT), (0, b, true, EQ)," +
                 " (0, b, true, LT), (0, b, true, GT), (0, c, false, EQ), (0, c, false, LT), (0, c, false, GT)," +
                 " (0, c, true, EQ), (0, c, true, LT), (0, c, true, GT), (1, a, false, EQ), (1, a, false, LT), ...]");
-        quadruplesLex_helper(P.naturalBigIntegers(), fromString("abc"), P.booleans(), Collections.emptyList(), "[]");
-        quadruplesLex_helper(Collections.emptyList(), fromString("abc"), P.booleans(), P.orderings(), "[]");
+        quadruplesLex_helper(EP.naturalBigIntegers(), fromString("abc"), EP.booleans(), Collections.emptyList(), "[]");
+        quadruplesLex_helper(Collections.emptyList(), fromString("abc"), EP.booleans(), EP.orderings(), "[]");
         quadruplesLex_helper(
                 Collections.emptyList(),
                 Collections.emptyList(),
@@ -2617,7 +2612,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<E> es,
             @NotNull String output
     ) {
-        aeqit(P.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
+        aeqit(EP.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
     }
 
     private static <A, B, C, D, E> void quintuplesLex_helper_limit(
@@ -2628,7 +2623,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<E> es,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
+        simpleProviderHelper(EP.quintuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es)), output);
     }
 
     @Test
@@ -2636,8 +2631,8 @@ public strictfp class ExhaustiveProviderTest {
         quintuplesLex_helper(
                 Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
@@ -2669,8 +2664,8 @@ public strictfp class ExhaustiveProviderTest {
         quintuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
                 " (1, a, false, GT, yes), (1, a, false, GT, no), (1, a, true, EQ, yes), (1, a, true, EQ, no)," +
@@ -2703,10 +2698,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, EQ, yes), (3, c, true, EQ, no)," +
                 " (3, c, true, LT, yes), (3, c, true, LT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]");
         quintuplesLex_helper_limit(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 "[(0, a, false, EQ, yes), (0, a, false, EQ, no), (0, a, false, LT, yes), (0, a, false, LT, no)," +
                 " (0, a, false, GT, yes), (0, a, false, GT, no), (0, a, true, EQ, yes), (0, a, true, EQ, no)," +
@@ -2714,18 +2709,18 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, b, false, EQ, yes), (0, b, false, EQ, no), (0, b, false, LT, yes), (0, b, false, LT, no)," +
                 " (0, b, false, GT, yes), (0, b, false, GT, no), (0, b, true, EQ, yes), (0, b, true, EQ, no), ...]");
         quintuplesLex_helper(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Collections.emptyList(),
                 "[]"
         );
         quintuplesLex_helper(
                 Collections.emptyList(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 "[]"
         );
@@ -2748,7 +2743,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<F> fs,
             @NotNull String output
     ) {
-        aeqit(P.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
+        aeqit(EP.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
     }
 
     private static <A, B, C, D, E, F> void sextuplesLex_helper_limit(
@@ -2760,7 +2755,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<F> fs,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
+        simpleProviderHelper(EP.sextuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs)), output);
     }
 
     @Test
@@ -2768,8 +2763,8 @@ public strictfp class ExhaustiveProviderTest {
         sextuplesLex_helper(
                 Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
@@ -2847,8 +2842,8 @@ public strictfp class ExhaustiveProviderTest {
         sextuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[(1, a, false, EQ, yes, Infinity), (1, a, false, EQ, yes, NaN), (1, a, false, EQ, no, Infinity)," +
@@ -2936,10 +2931,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, LT, no, Infinity), (3, c, true, LT, no, NaN), (3, c, true, GT, yes, Infinity)," +
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]");
         sextuplesLex_helper_limit(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[(0, a, false, EQ, yes, Infinity), (0, a, false, EQ, yes, NaN), (0, a, false, EQ, no, Infinity)," +
@@ -2950,10 +2945,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, true, EQ, no, NaN), (0, a, true, LT, yes, Infinity), (0, a, true, LT, yes, NaN)," +
                 " (0, a, true, LT, no, Infinity), (0, a, true, LT, no, NaN), ...]");
         sextuplesLex_helper(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Collections.emptyList(),
                 "[]"
@@ -2961,8 +2956,8 @@ public strictfp class ExhaustiveProviderTest {
         sextuplesLex_helper(
                 Collections.emptyList(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 "[]"
@@ -2988,7 +2983,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<G> gs,
             @NotNull String output
     ) {
-        aeqit(P.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)), output);
+        aeqit(EP.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)), output);
     }
 
     private static <A, B, C, D, E, F, G> void septuplesLex_helper_limit(
@@ -3002,7 +2997,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String output
     ) {
         simpleProviderHelper(
-                P.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)),
+                EP.septuplesLex(as, toList(bs), toList(cs), toList(ds), toList(es), toList(fs), toList(gs)),
                 output
         );
     }
@@ -3014,8 +3009,8 @@ public strictfp class ExhaustiveProviderTest {
         septuplesLex_helper(
                 Arrays.asList(1, 2, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
@@ -3238,8 +3233,8 @@ public strictfp class ExhaustiveProviderTest {
         septuplesLex_helper(
                 Arrays.asList(1, null, 3),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
@@ -3460,10 +3455,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, no, Infinity, [1, 0]), (3, c, true, GT, no, Infinity, [0, 1])," +
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]");
         septuplesLex_helper_limit(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
@@ -3478,10 +3473,10 @@ public strictfp class ExhaustiveProviderTest {
                 " (0, a, false, GT, yes, Infinity, [1, 0]), (0, a, false, GT, yes, Infinity, [0, 1])," +
                 " (0, a, false, GT, yes, NaN, [1, 0]), (0, a, false, GT, yes, NaN, [0, 1]), ...]");
         septuplesLex_helper(
-                P.naturalBigIntegers(),
+                EP.naturalBigIntegers(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Collections.emptyList(),
@@ -3490,8 +3485,8 @@ public strictfp class ExhaustiveProviderTest {
         septuplesLex_helper(
                 Collections.emptyList(),
                 fromString("abc"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no"),
                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                 Arrays.asList(x, y),
@@ -3510,36 +3505,36 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringsLex(size, input), output);
+        aeqit(EP.stringsLex(size, input), output);
     }
 
     private static void stringsLex_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringsLex(size, input), output);
+        simpleProviderHelper(EP.stringsLex(size, input), output);
     }
 
     @Test
     public void testStringsLex_int_String() {
         stringsLex_int_String_helper(0, "", "[]");
-        aeq(length(P.stringsLex(0, "")), 1);
+        aeq(length(EP.stringsLex(0, "")), 1);
         stringsLex_int_String_helper(1, "", "[]");
-        aeq(length(P.stringsLex(1, "")), 0);
+        aeq(length(EP.stringsLex(1, "")), 0);
         stringsLex_int_String_helper(2, "", "[]");
-        aeq(length(P.stringsLex(2, "")), 0);
+        aeq(length(EP.stringsLex(2, "")), 0);
         stringsLex_int_String_helper(3, "", "[]");
-        aeq(length(P.stringsLex(3, "")), 0);
+        aeq(length(EP.stringsLex(3, "")), 0);
         stringsLex_int_String_helper(0, "a", "[]");
         stringsLex_int_String_helper(1, "a", "[a]");
         stringsLex_int_String_helper(2, "a", "[aa]");
         stringsLex_int_String_helper(3, "a", "[aaa]");
         stringsLex_int_String_helper(0, "abc", "[]");
-        aeq(length(P.stringsLex(0, "abc")), 1);
+        aeq(length(EP.stringsLex(0, "abc")), 1);
         stringsLex_int_String_helper(1, "abc", "[a, b, c]");
         stringsLex_int_String_helper(2, "abc", "[aa, ab, ac, ba, bb, bc, ca, cb, cc]");
         stringsLex_int_String_helper(3, "abc",
                 "[aaa, aab, aac, aba, abb, abc, aca, acb, acc, baa, bab, bac, bba, bbb, bbc, bca, bcb, bcc, caa," +
                 " cab, cac, cba, cbb, cbc, cca, ccb, ccc]");
         stringsLex_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.stringsLex(0, "abbc")), 1);
+        aeq(length(EP.stringsLex(0, "abbc")), 1);
         stringsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
         stringsLex_int_String_helper(2, "abbc", "[aa, ab, ab, ac, ba, bb, bb, bc, ba, bb, bb, bc, ca, cb, cb, cc]");
         stringsLex_int_String_helper(3, "abbc",
@@ -3548,7 +3543,7 @@ public strictfp class ExhaustiveProviderTest {
                 " bbb, bbc, bba, bbb, bbb, bbc, bca, bcb, bcb, bcc, caa, cab, cab, cac, cba, cbb, cbb, cbc, cba," +
                 " cbb, cbb, cbc, cca, ccb, ccb, ccc]");
         stringsLex_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.stringsLex(0, "Mississippi")), 1);
+        aeq(length(EP.stringsLex(0, "Mississippi")), 1);
         stringsLex_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         stringsLex_int_String_helper_limit(2, "Mississippi",
                 "[MM, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, ii, is, is, ii, is, is, ii, ip, ...]");
@@ -3556,17 +3551,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
                 " Mip, ...]");
         try {
-            P.stringsLex(-1, "");
+            EP.stringsLex(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringsLex(-1, "abc");
+            EP.stringsLex(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void listsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.listsShortlex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.listsShortlex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -3591,13 +3586,13 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringsShortlex(input), output);
+        simpleProviderHelper(EP.stringsShortlex(input), output);
     }
 
     @Test
     public void testStringsShortlex() {
         stringsShortlex_helper("", "[]");
-        aeq(length(P.stringsShortlex("")), 1);
+        aeq(length(EP.stringsShortlex("")), 1);
         stringsShortlex_helper("a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -3611,7 +3606,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void listsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.listsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -3699,29 +3694,29 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 1, null], ...]");
 
         try {
-            P.listsShortlexAtLeast(-1, Collections.emptyList());
+            EP.listsShortlexAtLeast(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.listsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.listsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringsShortlexAtLeast() {
         stringsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
+        aeq(length(EP.stringsShortlexAtLeast(0, "")), 1);
         stringsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(1, "")), 0);
         stringsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(2, "")), 0);
         stringsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(3, "")), 0);
         stringsShortlexAtLeast_helper(0, "a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -3767,21 +3762,21 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, MMs, MMs, MMi, MMs, MMs, MMi, MMp, MMp, MMi, MiM, Mii, Mis, Mis, Mii, Mis, Mis, Mii," +
                 " Mip, ...]");
         try {
-            P.stringsShortlexAtLeast(-1, "");
+            EP.stringsShortlexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringsShortlexAtLeast(-1, "abc");
+            EP.stringsShortlexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.lists(size, readIntegerListWithNulls(input)), output);
+        aeqit(EP.lists(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void lists_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.lists(size, input), output);
+        simpleProviderHelper(EP.lists(size, input), output);
     }
 
     @Test
@@ -3831,14 +3826,14 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 1, null], [3, null, 1], [3, null, null], [3, 1, 3], [3, null, 3], [3, 3, 1], [3, 3, null]," +
                 " [3, 3, 3]]");
 
-        lists_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
-        lists_int_Iterable_helper(1, P.positiveIntegers(),
+        lists_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
+        lists_int_Iterable_helper(1, EP.positiveIntegers(),
                 "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
                 " [19], [20], ...]");
-        lists_int_Iterable_helper(2, P.positiveIntegers(),
+        lists_int_Iterable_helper(2, EP.positiveIntegers(),
                 "[[1, 1], [1, 2], [2, 1], [2, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 1], [3, 2], [4, 1], [4, 2]," +
                 " [3, 3], [3, 4], [4, 3], [4, 4], [1, 5], [1, 6], [2, 5], [2, 6], ...]");
-        lists_int_Iterable_helper(3, P.positiveIntegers(),
+        lists_int_Iterable_helper(3, EP.positiveIntegers(),
                 "[[1, 1, 1], [1, 1, 2], [1, 2, 1], [1, 2, 2], [2, 1, 1], [2, 1, 2], [2, 2, 1], [2, 2, 2], [1, 1, 3]," +
                 " [1, 1, 4], [1, 2, 3], [1, 2, 4], [2, 1, 3], [2, 1, 4], [2, 2, 3], [2, 2, 4], [1, 3, 1], [1, 3, 2]," +
                 " [1, 4, 1], [1, 4, 2], ...]");
@@ -3856,42 +3851,42 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1], [1, 1, 1], ...]");
 
         try {
-            P.lists(-1, Collections.emptyList());
+            EP.lists(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.lists(-1, Arrays.asList(1, 2, 3));
+            EP.lists(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testPairs_Iterable_Iterable() {
-        aeqit(P.pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
+        aeqit(EP.pairs(Arrays.asList(1, 2, 3, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (3, a), (3, b), (4, a), (4, b)," +
                 " (3, c), (3, d), (4, c), (4, d)]");
-        aeqit(P.pairs(Arrays.asList(1, 2, null, 4), fromString("abcd")),
+        aeqit(EP.pairs(Arrays.asList(1, 2, null, 4), fromString("abcd")),
                 "[(1, a), (1, b), (2, a), (2, b), (1, c), (1, d), (2, c), (2, d), (null, a), (null, b), (4, a)," +
                 " (4, b), (null, c), (null, d), (4, c), (4, d)]");
-        aeqit(P.pairs(Collections.emptyList(), fromString("abcd")), "[]");
-        aeqit(P.pairs(Collections.emptyList(), Collections.emptyList()), "[]");
-        simpleProviderHelper(P.pairs(P.naturalBigIntegers(), fromString("abcd")),
+        aeqit(EP.pairs(Collections.emptyList(), fromString("abcd")), "[]");
+        aeqit(EP.pairs(Collections.emptyList(), Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.pairs(EP.naturalBigIntegers(), fromString("abcd")),
                 "[(0, a), (0, b), (1, a), (1, b), (0, c), (0, d), (1, c), (1, d), (2, a), (2, b), (3, a), (3, b)," +
                 " (2, c), (2, d), (3, c), (3, d), (4, a), (4, b), (5, a), (5, b), ...]");
-        simpleProviderHelper(P.pairs(fromString("abcd"), P.naturalBigIntegers()),
+        simpleProviderHelper(EP.pairs(fromString("abcd"), EP.naturalBigIntegers()),
                 "[(a, 0), (a, 1), (b, 0), (b, 1), (a, 2), (a, 3), (b, 2), (b, 3), (c, 0), (c, 1), (d, 0), (d, 1)," +
                 " (c, 2), (c, 3), (d, 2), (d, 3), (a, 4), (a, 5), (b, 4), (b, 5), ...]");
-        simpleProviderHelper(P.pairs(P.positiveBigIntegers(), P.negativeBigIntegers()),
+        simpleProviderHelper(EP.pairs(EP.positiveBigIntegers(), EP.negativeBigIntegers()),
                 "[(1, -1), (1, -2), (2, -1), (2, -2), (1, -3), (1, -4), (2, -3), (2, -4), (3, -1), (3, -2), (4, -1)," +
                 " (4, -2), (3, -3), (3, -4), (4, -3), (4, -4), (1, -5), (1, -6), (2, -5), (2, -6), ...]");
     }
 
     private static void pairs_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.pairs(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.pairs(readIntegerListWithNulls(input)), output);
     }
 
     private static void pairs_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.pairs(input), output);
+        simpleProviderHelper(EP.pairs(input), output);
     }
 
     @Test
@@ -3907,7 +3902,7 @@ public strictfp class ExhaustiveProviderTest {
         pairs_Iterable_helper("[1, 2, null, 4]",
                 "[(1, 1), (1, 2), (2, 1), (2, 2), (1, null), (1, 4), (2, null), (2, 4), (null, 1), (null, 2)," +
                 " (4, 1), (4, 2), (null, null), (null, 4), (4, null), (4, 4)]");
-        pairs_Iterable_helper(P.naturalIntegers(),
+        pairs_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0), (0, 1), (1, 0), (1, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 0), (2, 1), (3, 0), (3, 1)," +
                 " (2, 2), (2, 3), (3, 2), (3, 3), (0, 4), (0, 5), (1, 4), (1, 5), ...]");
         pairs_Iterable_helper(repeat(1),
@@ -3917,41 +3912,41 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testTriples_Iterable_Iterable_Iterable() {
-        aeqit(P.triples(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans()),
+        aeqit(EP.triples(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (2, c, false), (2, c, true)," +
                 " (3, a, false), (3, a, true), (3, b, false), (3, b, true), (3, c, false), (3, c, true)]");
-        aeqit(P.triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), P.booleans()),
+        aeqit(EP.triples(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans()),
                 "[(1, a, false), (1, a, true), (1, b, false), (1, b, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), (1, c, false), (1, c, true), (1, d, false), (1, d, true)," +
                 " (2, c, false), (2, c, true), (2, d, false), (2, d, true), (null, a, false), (null, a, true)," +
                 " (null, b, false), (null, b, true), (4, a, false), (4, a, true), (4, b, false), (4, b, true)," +
                 " (null, c, false), (null, c, true), (null, d, false), (null, d, true), (4, c, false)," +
                 " (4, c, true), (4, d, false), (4, d, true)]");
-        aeqit(P.triples(Collections.emptyList(), fromString("abcd"), P.booleans()), "[]");
-        aeqit(P.triples(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()), "[]");
-        simpleProviderHelper(P.triples(P.naturalBigIntegers(), fromString("abcd"), P.booleans()),
+        aeqit(EP.triples(Collections.emptyList(), fromString("abcd"), EP.booleans()), "[]");
+        aeqit(EP.triples(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.triples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans()),
                 "[(0, a, false), (0, a, true), (0, b, false), (0, b, true), (1, a, false), (1, a, true)," +
                 " (1, b, false), (1, b, true), (0, c, false), (0, c, true), (0, d, false), (0, d, true)," +
                 " (1, c, false), (1, c, true), (1, d, false), (1, d, true), (2, a, false), (2, a, true)," +
                 " (2, b, false), (2, b, true), ...]");
-        simpleProviderHelper(P.triples(fromString("abcd"), P.booleans(), P.naturalBigIntegers()),
+        simpleProviderHelper(EP.triples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers()),
                 "[(a, false, 0), (a, false, 1), (a, true, 0), (a, true, 1), (b, false, 0), (b, false, 1)," +
                 " (b, true, 0), (b, true, 1), (a, false, 2), (a, false, 3), (a, true, 2), (a, true, 3)," +
                 " (b, false, 2), (b, false, 3), (b, true, 2), (b, true, 3), (c, false, 0), (c, false, 1)," +
                 " (c, true, 0), (c, true, 1), ...]");
-        simpleProviderHelper(P.triples(P.positiveBigIntegers(), P.negativeBigIntegers(), P.characters()),
+        simpleProviderHelper(EP.triples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters()),
                 "[(1, -1, a), (1, -1, b), (1, -2, a), (1, -2, b), (2, -1, a), (2, -1, b), (2, -2, a), (2, -2, b)," +
                 " (1, -1, c), (1, -1, d), (1, -2, c), (1, -2, d), (2, -1, c), (2, -1, d), (2, -2, c), (2, -2, d)," +
                 " (1, -3, a), (1, -3, b), (1, -4, a), (1, -4, b), ...]");
     }
 
     private static void triples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.triples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.triples(readIntegerListWithNulls(input)), output);
     }
 
     private static void triples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.triples(input), output);
+        simpleProviderHelper(EP.triples(input), output);
     }
 
     @Test
@@ -3970,7 +3965,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 1, 1), (1, 1, 2), (1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 1, 2), (2, 2, 1), (2, 2, 2)," +
                 " (1, 1, null), (1, 1, 4), (1, 2, null), (1, 2, 4), (2, 1, null), (2, 1, 4), (2, 2, null)," +
                 " (2, 2, 4), (1, null, 1), (1, null, 2), (1, 4, 1), (1, 4, 2), ...]");
-        triples_Iterable_helper(P.naturalIntegers(),
+        triples_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1), (0, 0, 2)," +
                 " (0, 0, 3), (0, 1, 2), (0, 1, 3), (1, 0, 2), (1, 0, 3), (1, 1, 2), (1, 1, 3), (0, 2, 0), (0, 2, 1)," +
                 " (0, 3, 0), (0, 3, 1), ...]");
@@ -3982,7 +3977,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testQuadruples_Iterable_Iterable_Iterable_Iterable() {
-        aeqit(P.quadruples(Arrays.asList(1, 2, 3), fromString("abc"), P.booleans(), P.orderings()),
+        aeqit(EP.quadruples(Arrays.asList(1, 2, 3), fromString("abc"), EP.booleans(), EP.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
                 " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
                 " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
@@ -3994,7 +3989,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, b, false, EQ), (3, b, false, LT), (3, b, true, EQ), (3, b, true, LT), (3, a, false, GT)," +
                 " (3, a, true, GT), (3, b, false, GT), (3, b, true, GT), (3, c, false, EQ), (3, c, false, LT)," +
                 " (3, c, true, EQ), (3, c, true, LT), (3, c, false, GT), (3, c, true, GT)]");
-        aeqit(P.quadruples(Arrays.asList(1, 2, null, 4), fromString("abcd"), P.booleans(), P.orderings()),
+        aeqit(EP.quadruples(Arrays.asList(1, 2, null, 4), fromString("abcd"), EP.booleans(), EP.orderings()),
                 "[(1, a, false, EQ), (1, a, false, LT), (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ)," +
                 " (1, b, false, LT), (1, b, true, EQ), (1, b, true, LT), (2, a, false, EQ), (2, a, false, LT)," +
                 " (2, a, true, EQ), (2, a, true, LT), (2, b, false, EQ), (2, b, false, LT), (2, b, true, EQ)," +
@@ -4016,9 +4011,9 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, EQ), (4, d, true, LT), (null, c, false, GT), (null, c, true, GT)," +
                 " (null, d, false, GT), (null, d, true, GT), (4, c, false, GT), (4, c, true, GT), (4, d, false, GT)," +
                 " (4, d, true, GT)]");
-        aeqit(P.quadruples(Collections.emptyList(), fromString("abcd"), P.booleans(), P.orderings()), "[]");
+        aeqit(EP.quadruples(Collections.emptyList(), fromString("abcd"), EP.booleans(), EP.orderings()), "[]");
         aeqit(
-                P.quadruples(
+                EP.quadruples(
                     Collections.emptyList(),
                     Collections.emptyList(),
                     Collections.emptyList(),
@@ -4026,18 +4021,18 @@ public strictfp class ExhaustiveProviderTest {
                 ),
                 "[]"
         );
-        simpleProviderHelper(P.quadruples(P.naturalBigIntegers(), fromString("abcd"), P.booleans(), P.orderings()),
+        simpleProviderHelper(EP.quadruples(EP.naturalBigIntegers(), fromString("abcd"), EP.booleans(), EP.orderings()),
                 "[(0, a, false, EQ), (0, a, false, LT), (0, a, true, EQ), (0, a, true, LT), (0, b, false, EQ)," +
                 " (0, b, false, LT), (0, b, true, EQ), (0, b, true, LT), (1, a, false, EQ), (1, a, false, LT)," +
                 " (1, a, true, EQ), (1, a, true, LT), (1, b, false, EQ), (1, b, false, LT), (1, b, true, EQ)," +
                 " (1, b, true, LT), (0, a, false, GT), (0, a, true, GT), (0, b, false, GT), (0, b, true, GT), ...]");
-        simpleProviderHelper(P.quadruples(fromString("abcd"), P.booleans(), P.naturalBigIntegers(), P.orderings()),
+        simpleProviderHelper(EP.quadruples(fromString("abcd"), EP.booleans(), EP.naturalBigIntegers(), EP.orderings()),
                 "[(a, false, 0, EQ), (a, false, 0, LT), (a, false, 1, EQ), (a, false, 1, LT), (a, true, 0, EQ)," +
                 " (a, true, 0, LT), (a, true, 1, EQ), (a, true, 1, LT), (b, false, 0, EQ), (b, false, 0, LT)," +
                 " (b, false, 1, EQ), (b, false, 1, LT), (b, true, 0, EQ), (b, true, 0, LT), (b, true, 1, EQ)," +
                 " (b, true, 1, LT), (a, false, 0, GT), (a, false, 1, GT), (a, true, 0, GT), (a, true, 1, GT), ...]");
         simpleProviderHelper(
-                P.quadruples(P.positiveBigIntegers(), P.negativeBigIntegers(), P.characters(), P.strings()),
+                EP.quadruples(EP.positiveBigIntegers(), EP.negativeBigIntegers(), EP.characters(), EP.strings()),
                 "[(1, -1, a, ), (1, -1, a, a), (1, -1, b, ), (1, -1, b, a), (1, -2, a, ), (1, -2, a, a)," +
                 " (1, -2, b, ), (1, -2, b, a), (2, -1, a, ), (2, -1, a, a), (2, -1, b, ), (2, -1, b, a)," +
                 " (2, -2, a, ), (2, -2, a, a), (2, -2, b, ), (2, -2, b, a), (1, -1, a, aa), (1, -1, a, b)," +
@@ -4045,11 +4040,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void quadruples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.quadruples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.quadruples(readIntegerListWithNulls(input)), output);
     }
 
     private static void quadruples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.quadruples(input), output);
+        simpleProviderHelper(EP.quadruples(input), output);
     }
 
     @Test
@@ -4068,7 +4063,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 1), (1, 1, 2, 2), (1, 2, 1, 1), (1, 2, 1, 2), (1, 2, 2, 1)," +
                 " (1, 2, 2, 2), (2, 1, 1, 1), (2, 1, 1, 2), (2, 1, 2, 1), (2, 1, 2, 2), (2, 2, 1, 1), (2, 2, 1, 2)," +
                 " (2, 2, 2, 1), (2, 2, 2, 2), (1, 1, 1, null), (1, 1, 1, 4), (1, 1, 2, null), (1, 1, 2, 4), ...]");
-        quadruples_Iterable_helper(P.naturalIntegers(),
+        quadruples_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0), (0, 0, 0, 1), (0, 0, 1, 0), (0, 0, 1, 1), (0, 1, 0, 0), (0, 1, 0, 1), (0, 1, 1, 0)," +
                 " (0, 1, 1, 1), (1, 0, 0, 0), (1, 0, 0, 1), (1, 0, 1, 0), (1, 0, 1, 1), (1, 1, 0, 0), (1, 1, 0, 1)," +
                 " (1, 1, 1, 0), (1, 1, 1, 1), (0, 0, 0, 2), (0, 0, 0, 3), (0, 0, 1, 2), (0, 0, 1, 3), ...]");
@@ -4081,11 +4076,11 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testQuintuples_Iterable_Iterable_Iterable_Iterable_Iterable() {
         aeqit(
-                P.quintuples(
+                EP.quintuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no")
                 ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
@@ -4117,11 +4112,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, false, GT, yes), (3, c, false, GT, no), (3, c, true, GT, yes), (3, c, true, GT, no)]"
         );
         aeqit(
-                P.quintuples(
+                EP.quintuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no")
                 ),
                 "[(1, a, false, EQ, yes), (1, a, false, EQ, no), (1, a, false, LT, yes), (1, a, false, LT, no)," +
@@ -4178,17 +4173,17 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, false, GT, yes), (4, d, false, GT, no), (4, d, true, GT, yes), (4, d, true, GT, no)]"
         );
         aeqit(
-                P.quintuples(
+                EP.quintuples(
                 Collections.emptyList(),
                 fromString("abcd"),
-                P.booleans(),
-                P.orderings(),
+                EP.booleans(),
+                EP.orderings(),
                 Arrays.asList("yes", "no")
                 ),
                 "[]"
         );
         aeqit(
-                P.quintuples(
+                EP.quintuples(
                         Collections.emptyList(),
                         Collections.emptyList(),
                         Collections.emptyList(),
@@ -4200,11 +4195,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.quintuples(
-                        P.naturalBigIntegers(),
+                        EP.quintuples(
+                        EP.naturalBigIntegers(),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no")
                         )
                 ),
@@ -4217,11 +4212,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.quintuples(
+                        EP.quintuples(
                                 fromString("abcd"),
-                                P.booleans(),
-                                P.naturalBigIntegers(),
-                                P.orderings(),
+                                EP.booleans(),
+                                EP.naturalBigIntegers(),
+                                EP.orderings(),
                                 Arrays.asList("yes", "no")
                         )
                 ),
@@ -4234,12 +4229,12 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.quintuples(
-                                P.positiveBigIntegers(),
-                                P.negativeBigIntegers(),
-                                P.characters(),
-                                P.strings(),
-                                P.floats()
+                        EP.quintuples(
+                                EP.positiveBigIntegers(),
+                                EP.negativeBigIntegers(),
+                                EP.characters(),
+                                EP.strings(),
+                                EP.floats()
                         )
                 ),
                 "[(1, -1, a, , NaN), (1, -1, a, , Infinity), (1, -1, a, a, NaN), (1, -1, a, a, Infinity)," +
@@ -4251,11 +4246,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void quintuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.quintuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.quintuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void quintuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.quintuples(input), output);
+        simpleProviderHelper(EP.quintuples(input), output);
     }
 
     @Test
@@ -4277,7 +4272,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 1, 2), (1, 1, 2, 2, 1), (1, 1, 2, 2, 2), (1, 2, 1, 1, 1), (1, 2, 1, 1, 2)," +
                 " (1, 2, 1, 2, 1), (1, 2, 1, 2, 2), (1, 2, 2, 1, 1), (1, 2, 2, 1, 2), (1, 2, 2, 2, 1)," +
                 " (1, 2, 2, 2, 2), (2, 1, 1, 1, 1), (2, 1, 1, 1, 2), (2, 1, 1, 2, 1), (2, 1, 1, 2, 2), ...]");
-        quintuples_Iterable_helper(P.naturalIntegers(),
+        quintuples_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0), (0, 0, 0, 0, 1), (0, 0, 0, 1, 0), (0, 0, 0, 1, 1), (0, 0, 1, 0, 0)," +
                 " (0, 0, 1, 0, 1), (0, 0, 1, 1, 0), (0, 0, 1, 1, 1), (0, 1, 0, 0, 0), (0, 1, 0, 0, 1)," +
                 " (0, 1, 0, 1, 0), (0, 1, 0, 1, 1), (0, 1, 1, 0, 0), (0, 1, 1, 0, 1), (0, 1, 1, 1, 0)," +
@@ -4292,11 +4287,11 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testSextuples_Iterable_Iterable_Iterable_Iterable_Iterable_Iterable() {
         aeqit(
-                P.sextuples(
+                EP.sextuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
@@ -4374,11 +4369,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, yes, NaN), (3, c, true, GT, no, Infinity), (3, c, true, GT, no, NaN)]"
         );
         aeqit(
-                P.sextuples(
+                EP.sextuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
@@ -4526,18 +4521,18 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, GT, yes, NaN), (4, d, true, GT, no, Infinity), (4, d, true, GT, no, NaN)]"
         );
         aeqit(
-                P.sextuples(
+                EP.sextuples(
                         Collections.emptyList(),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                 ),
                 "[]"
         );
         aeqit(
-                P.sextuples(
+                EP.sextuples(
                         Collections.emptyList(),
                         Collections.emptyList(),
                         Collections.emptyList(),
@@ -4550,11 +4545,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.sextuples(
-                                P.naturalBigIntegers(),
+                        EP.sextuples(
+                                EP.naturalBigIntegers(),
                                 fromString("abcd"),
-                                P.booleans(),
-                                P.orderings(),
+                                EP.booleans(),
+                                EP.orderings(),
                                 Arrays.asList("yes", "no"),
                                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                         )
@@ -4570,11 +4565,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.sextuples(
+                        EP.sextuples(
                                 fromString("abcd"),
-                                P.booleans(),
-                                P.naturalBigIntegers(),
-                                P.orderings(),
+                                EP.booleans(),
+                                EP.naturalBigIntegers(),
+                                EP.orderings(),
                                 Arrays.asList("yes", "no"),
                                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN)
                         )
@@ -4590,13 +4585,13 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.sextuples(
-                                P.positiveBigIntegers(),
-                                P.negativeBigIntegers(),
-                                P.characters(),
-                                P.strings(),
-                                P.floats(),
-                                P.lists(P.integers())
+                        EP.sextuples(
+                                EP.positiveBigIntegers(),
+                                EP.negativeBigIntegers(),
+                                EP.characters(),
+                                EP.strings(),
+                                EP.floats(),
+                                EP.lists(EP.integers())
                         )
                 ),
                 "[(1, -1, a, , NaN, []), (1, -1, a, , NaN, [0]), (1, -1, a, , Infinity, [])," +
@@ -4610,11 +4605,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void sextuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.sextuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.sextuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void sextuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.sextuples(input), output);
+        simpleProviderHelper(EP.sextuples(input), output);
     }
 
     @Test
@@ -4639,7 +4634,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 1, 1, 1), (1, 1, 2, 1, 1, 2), (1, 1, 2, 1, 2, 1), (1, 1, 2, 1, 2, 2)," +
                 " (1, 1, 2, 2, 1, 1), (1, 1, 2, 2, 1, 2), (1, 1, 2, 2, 2, 1), (1, 1, 2, 2, 2, 2)," +
                 " (1, 2, 1, 1, 1, 1), (1, 2, 1, 1, 1, 2), (1, 2, 1, 1, 2, 1), (1, 2, 1, 1, 2, 2), ...]");
-        sextuples_Iterable_helper(P.naturalIntegers(),
+        sextuples_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 1, 1)," +
                 " (0, 0, 0, 1, 0, 0), (0, 0, 0, 1, 0, 1), (0, 0, 0, 1, 1, 0), (0, 0, 0, 1, 1, 1)," +
                 " (0, 0, 1, 0, 0, 0), (0, 0, 1, 0, 0, 1), (0, 0, 1, 0, 1, 0), (0, 0, 1, 0, 1, 1)," +
@@ -4658,11 +4653,11 @@ public strictfp class ExhaustiveProviderTest {
         List<Integer> x = Arrays.asList(1, 0);
         List<Integer> y = Arrays.asList(0, 1);
         aeqit(
-                P.septuples(
+                EP.septuples(
                         Arrays.asList(1, 2, 3),
                         fromString("abc"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
@@ -4885,11 +4880,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (3, c, true, GT, no, NaN, [1, 0]), (3, c, true, GT, no, NaN, [0, 1])]"
         );
         aeqit(
-                P.septuples(
+                EP.septuples(
                         Arrays.asList(1, 2, null, 4),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
@@ -5280,11 +5275,11 @@ public strictfp class ExhaustiveProviderTest {
                 " (4, d, true, GT, no, NaN, [1, 0]), (4, d, true, GT, no, NaN, [0, 1])]"
         );
         aeqit(
-                P.septuples(
+                EP.septuples(
                         Collections.emptyList(),
                         fromString("abcd"),
-                        P.booleans(),
-                        P.orderings(),
+                        EP.booleans(),
+                        EP.orderings(),
                         Arrays.asList("yes", "no"),
                         Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                         Arrays.asList(x, y)
@@ -5292,7 +5287,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[]"
         );
         aeqit(
-                P.septuples(
+                EP.septuples(
                         Collections.emptyList(),
                         Collections.emptyList(),
                         Collections.emptyList(),
@@ -5306,11 +5301,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.septuples(
-                                P.naturalBigIntegers(),
+                        EP.septuples(
+                                EP.naturalBigIntegers(),
                                 fromString("abcd"),
-                                P.booleans(),
-                                P.orderings(),
+                                EP.booleans(),
+                                EP.orderings(),
                                 Arrays.asList("yes", "no"),
                                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                                 Arrays.asList(x, y)
@@ -5330,11 +5325,11 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.septuples(
+                        EP.septuples(
                                 fromString("abcd"),
-                                P.booleans(),
-                                P.naturalBigIntegers(),
-                                P.orderings(),
+                                EP.booleans(),
+                                EP.naturalBigIntegers(),
+                                EP.orderings(),
                                 Arrays.asList("yes", "no"),
                                 Arrays.asList(Float.POSITIVE_INFINITY, Float.NaN),
                                 Arrays.asList(x, y)
@@ -5354,14 +5349,14 @@ public strictfp class ExhaustiveProviderTest {
         aeqit(
                 take(
                         20,
-                        P.septuples(
-                                P.positiveBigIntegers(),
-                                P.negativeBigIntegers(),
-                                P.characters(),
-                                P.strings(),
-                                P.floats(),
-                                P.lists(P.integers()),
-                                P.bigDecimals()
+                        EP.septuples(
+                                EP.positiveBigIntegers(),
+                                EP.negativeBigIntegers(),
+                                EP.characters(),
+                                EP.strings(),
+                                EP.floats(),
+                                EP.lists(EP.integers()),
+                                EP.bigDecimals()
                         )
                 ),
                 "[(1, -1, a, , NaN, [], 0), (1, -1, a, , NaN, [], 0.0), (1, -1, a, , NaN, [0], 0)," +
@@ -5375,11 +5370,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void septuples_Iterable_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.septuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.septuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void septuples_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.septuples(input), output);
+        simpleProviderHelper(EP.septuples(input), output);
     }
 
     @Test
@@ -5404,7 +5399,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 2, 1, 1, 1), (1, 1, 1, 2, 1, 1, 2), (1, 1, 1, 2, 1, 2, 1), (1, 1, 1, 2, 1, 2, 2)," +
                 " (1, 1, 1, 2, 2, 1, 1), (1, 1, 1, 2, 2, 1, 2), (1, 1, 1, 2, 2, 2, 1), (1, 1, 1, 2, 2, 2, 2)," +
                 " (1, 1, 2, 1, 1, 1, 1), (1, 1, 2, 1, 1, 1, 2), (1, 1, 2, 1, 1, 2, 1), (1, 1, 2, 1, 1, 2, 2), ...]");
-        septuples_Iterable_helper(P.naturalIntegers(),
+        septuples_Iterable_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 0, 1, 0), (0, 0, 0, 0, 0, 1, 1)," +
                 " (0, 0, 0, 0, 1, 0, 0), (0, 0, 0, 0, 1, 0, 1), (0, 0, 0, 0, 1, 1, 0), (0, 0, 0, 0, 1, 1, 1)," +
                 " (0, 0, 0, 1, 0, 0, 0), (0, 0, 0, 1, 0, 0, 1), (0, 0, 0, 1, 0, 1, 0), (0, 0, 0, 1, 0, 1, 1)," +
@@ -5419,25 +5414,25 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void strings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.strings(size, input), output);
+        aeqit(EP.strings(size, input), output);
     }
 
     private static void strings_int_String_helper_limit(int size, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.strings(size, input), output);
+        simpleProviderHelper(EP.strings(size, input), output);
     }
 
     @Test
     public void testStrings_int_String() {
         strings_int_String_helper(0, "", "[]");
-        aeq(length(P.strings(0, "")), 1);
+        aeq(length(EP.strings(0, "")), 1);
         strings_int_String_helper(1, "", "[]");
-        aeq(length(P.strings(1, "")), 0);
+        aeq(length(EP.strings(1, "")), 0);
         strings_int_String_helper(2, "", "[]");
-        aeq(length(P.strings(2, "")), 0);
+        aeq(length(EP.strings(2, "")), 0);
         strings_int_String_helper(3, "", "[]");
-        aeq(length(P.strings(3, "")), 0);
+        aeq(length(EP.strings(3, "")), 0);
         strings_int_String_helper(0, "abc", "[]");
-        aeq(length(P.strings(0, "abc")), 1);
+        aeq(length(EP.strings(0, "abc")), 1);
         strings_int_String_helper(0, "a", "[]");
         strings_int_String_helper(1, "a", "[a]");
         strings_int_String_helper(2, "a", "[aa]");
@@ -5448,7 +5443,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, abc, bac, bbc, aca, acb, bca, bcb, acc, bcc, caa," +
                 " cab, cba, cbb, cac, cbc, cca, ccb, ccc]");
         strings_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.strings(0, "abbc")), 1);
+        aeq(length(EP.strings(0, "abbc")), 1);
         strings_int_String_helper(1, "abbc", "[a, b, b, c]");
         strings_int_String_helper(2, "abbc", "[aa, ab, ba, bb, ab, ac, bb, bc, ba, bb, ca, cb, bb, bc, cb, cc]");
         strings_int_String_helper(3, "abbc",
@@ -5457,7 +5452,7 @@ public strictfp class ExhaustiveProviderTest {
                 " cba, cbb, bab, bac, bbb, bbc, cab, cac, cbb, cbc, bba, bbb, bca, bcb, cba, cbb, cca, ccb, bbb," +
                 " bbc, bcb, bcc, cbb, cbc, ccb, ccc]");
         strings_int_String_helper(0, "Mississippi", "[]");
-        aeq(length(P.strings(0, "Mississippi")), 1);
+        aeq(length(EP.strings(0, "Mississippi")), 1);
         strings_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         strings_int_String_helper_limit(2, "Mississippi",
                 "[MM, Mi, iM, ii, Ms, Ms, is, is, sM, si, sM, si, ss, ss, ss, ss, Mi, Ms, ii, is, ...]");
@@ -5465,23 +5460,23 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, MiM, Mii, iMM, iMi, iiM, iii, MMs, MMs, Mis, Mis, iMs, iMs, iis, iis, MsM, Msi, MsM," +
                 " Msi, ...]");
         try {
-            P.strings(-1, "");
+            EP.strings(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.strings(-1, "abc");
+            EP.strings(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void strings_int_helper(int size, @NotNull String output) {
-        simpleProviderHelper(P.strings(size), output);
+        simpleProviderHelper(EP.strings(size), output);
     }
 
     @Test
     public void testStrings_int() {
         strings_int_helper(0, "[]");
-        aeq(length(P.strings(0)), 1);
+        aeq(length(EP.strings(0)), 1);
         strings_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
         strings_int_helper(2,
                 "[aa, ab, ba, bb, ac, ad, bc, bd, ca, cb, da, db, cc, cd, dc, dd, ae, af, be, bf, ...]");
@@ -5489,15 +5484,15 @@ public strictfp class ExhaustiveProviderTest {
                 "[aaa, aab, aba, abb, baa, bab, bba, bbb, aac, aad, abc, abd, bac, bad, bbc, bbd, aca, acb, ada," +
                 " adb, ...]");
         try {
-            P.strings(-1);
+            EP.strings(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testLists_Iterable() {
-        aeqit(P.lists(Collections.emptyList()), "[[]]");
-        simpleProviderHelper(P.lists(Collections.singletonList(5)),
+        aeqit(EP.lists(Collections.emptyList()), "[[]]");
+        simpleProviderHelper(EP.lists(Collections.singletonList(5)),
                 "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
@@ -5507,45 +5502,45 @@ public strictfp class ExhaustiveProviderTest {
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        simpleProviderHelper(P.lists(Arrays.asList(1, 2, 3)),
+        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 3], [1, 2, 1], [2, 3], [1, 1, 1, 2], [3, 1], [1, 2, 2], [3, 2]," +
                 " [1, 1, 1, 1, 1, 1], ...]");
-        simpleProviderHelper(P.lists(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(EP.lists(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 1], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 2], [1, 2, 1], [1, 3], [1, 1, 1, 2], [2, 2], [1, 2, 2], [2, 3], ...]");
-        simpleProviderHelper(P.lists(P.naturalIntegers()),
+        simpleProviderHelper(EP.lists(EP.naturalIntegers()),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
                 " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        simpleProviderHelper(P.lists(repeat(1)),
+        simpleProviderHelper(EP.lists(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
     }
 
     @Test
     public void testStrings_String() {
-        aeqit(P.strings(""), "[]");
-        aeq(length(P.strings("")), 1);
-        simpleProviderHelper(P.strings("a"),
+        aeqit(EP.strings(""), "[]");
+        aeq(length(EP.strings("")), 1);
+        simpleProviderHelper(EP.strings("a"),
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        simpleProviderHelper(P.strings("abc"),
+        simpleProviderHelper(EP.strings("abc"),
                 "[, a, aa, b, aaa, c, ab, aaaa, ba, aab, bb, aaaaa, ac, aba, bc, aaab, ca, abb, cb, aaaaaa, ...]");
-        simpleProviderHelper(P.strings("abbc"),
+        simpleProviderHelper(EP.strings("abbc"),
                 "[, a, aa, b, aaa, b, ab, c, aaaa, ba, aab, bb, aaaaa, ab, aba, ac, aaab, bb, abb, bc, ...]");
-        simpleProviderHelper(P.strings("Mississippi"),
+        simpleProviderHelper(EP.strings("Mississippi"),
                 "[, M, MM, i, MMM, s, Mi, s, MMMM, i, iM, s, MMi, s, ii, i, MMMMM, p, Ms, p, ...]");
     }
 
     @Test
     public void testStrings() {
-        simpleProviderHelper(P.strings(),
+        simpleProviderHelper(EP.strings(),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.listsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.listsAtLeast(minSize, input), output);
     }
 
     private static void listsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -5654,17 +5649,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, 1, 1], [2, 1, 1], [1, 1, 2, 1], [2, 1, 2], [1, 1, 1, 1, 2], [2, 2, 1], [1, 1, 2, 2]," +
                 " [2, 2, 2], [1, 1, 1, 1, 1, 1, 1], [1, 1, 2], [1, 2, 1, 1], [1, 1, 3], [1, 1, 1, 2, 1], ...]");
 
-        listsAtLeast_helper(0, P.naturalIntegers(),
+        listsAtLeast_helper(0, EP.naturalIntegers(),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
                 " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        listsAtLeast_helper(1, P.naturalIntegers(),
+        listsAtLeast_helper(1, EP.naturalIntegers(),
                 "[[0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 0], [5], [0, 0, 1], [6]," +
                 " [1, 1], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], [0, 1, 0], ...]");
-        listsAtLeast_helper(2, P.naturalIntegers(),
+        listsAtLeast_helper(2, EP.naturalIntegers(),
                 "[[0, 0], [0, 0, 0], [0, 1], [0, 0, 0, 0], [1, 0], [0, 0, 1], [1, 1], [0, 0, 0, 0, 0], [0, 2]," +
                 " [0, 1, 0], [0, 3], [0, 0, 0, 1], [1, 2], [0, 1, 1], [1, 3], [0, 0, 0, 0, 0, 0], [2, 0], [1, 0, 0]," +
                 " [2, 1], [0, 0, 1, 0], ...]");
-        listsAtLeast_helper(3, P.naturalIntegers(),
+        listsAtLeast_helper(3, EP.naturalIntegers(),
                 "[[0, 0, 0], [0, 0, 0, 0], [0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 0], [0, 0, 0, 1], [0, 1, 1]," +
                 " [0, 0, 0, 0, 0, 0], [1, 0, 0], [0, 0, 1, 0], [1, 0, 1], [0, 0, 0, 0, 1], [1, 1, 0], [0, 0, 1, 1]," +
                 " [1, 1, 1], [0, 0, 0, 0, 0, 0, 0], [0, 0, 2], [0, 1, 0, 0], [0, 0, 3], [0, 0, 0, 1, 0], ...]");
@@ -5685,29 +5680,29 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
 
         try {
-            P.listsAtLeast(-1, Collections.emptyList());
+            EP.listsAtLeast(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.listsAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.listsAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringsAtLeast_String_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringsAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringsAtLeast_String() {
         stringsAtLeast_String_helper(0, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(0, "")), 1);
+        aeq(length(EP.stringsShortlexAtLeast(0, "")), 1);
         stringsAtLeast_String_helper(1, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(1, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(1, "")), 0);
         stringsAtLeast_String_helper(2, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(2, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(2, "")), 0);
         stringsAtLeast_String_helper(3, "", "[]");
-        aeq(length(P.stringsShortlexAtLeast(3, "")), 0);
+        aeq(length(EP.stringsShortlexAtLeast(3, "")), 0);
         stringsAtLeast_String_helper(0, "a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -5756,17 +5751,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMMM, MMi, MMMMM, MiM, MMMi, Mii, MMMMMM, iMM, MMiM, iMi, MMMMi, iiM, MMii, iii, MMMMMMM," +
                 " MMs, MiMM, MMs, MMMiM, ...]");
         try {
-            P.stringsAtLeast(-1, "");
+            EP.stringsAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringsAtLeast(-1, "abc");
+            EP.stringsAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringsAtLeast_helper(int minSize, @NotNull String output) {
-        simpleProviderHelper(P.stringsAtLeast(minSize), output);
+        simpleProviderHelper(EP.stringsAtLeast(minSize), output);
     }
 
     @Test
@@ -5781,13 +5776,13 @@ public strictfp class ExhaustiveProviderTest {
                 "[aaa, aaaa, aab, aaaaa, aba, aaab, abb, aaaaaa, baa, aaba, bab, aaaab, bba, aabb, bbb, aaaaaaa," +
                 " aac, abaa, aad, aaaba, ...]");
         try {
-            P.stringsAtLeast(-1);
+            EP.stringsAtLeast(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctListsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctListsLex(size, readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctListsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5820,17 +5815,17 @@ public strictfp class ExhaustiveProviderTest {
         distinctListsLex_int_List_helper(3, "[1, null, 3]",
                 "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
         try {
-            P.distinctListsLex(-1, Collections.emptyList());
+            EP.distinctListsLex(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctListsLex(-1, Arrays.asList(1, 2, 3));
+            EP.distinctListsLex(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctPairsLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctPairsLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctPairsLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5847,7 +5842,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctTriplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctTriplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5869,7 +5864,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5892,7 +5887,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuintuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctQuintuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5919,7 +5914,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSextuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctSextuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5948,7 +5943,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSeptuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctSeptuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -5979,7 +5974,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctStringsLex_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctStringsLex(size, input), output);
+        aeqit(EP.distinctStringsLex(size, input), output);
     }
 
     private static void distinctStringsLex_int_String_helper_limit(
@@ -5987,40 +5982,40 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctStringsLex(size, input), output);
+        simpleProviderHelper(EP.distinctStringsLex(size, input), output);
     }
 
     @Test
     public void testDistinctStringsLex_int_String() {
         distinctStringsLex_int_String_helper(0, "", "[]");
-        aeq(length(P.distinctStringsLex(0, "")), 1);
+        aeq(length(EP.distinctStringsLex(0, "")), 1);
         distinctStringsLex_int_String_helper(1, "", "[]");
-        aeq(length(P.distinctStringsLex(1, "")), 0);
+        aeq(length(EP.distinctStringsLex(1, "")), 0);
         distinctStringsLex_int_String_helper(2, "", "[]");
-        aeq(length(P.distinctStringsLex(2, "")), 0);
+        aeq(length(EP.distinctStringsLex(2, "")), 0);
         distinctStringsLex_int_String_helper(3, "", "[]");
-        aeq(length(P.distinctStringsLex(3, "")), 0);
+        aeq(length(EP.distinctStringsLex(3, "")), 0);
         distinctStringsLex_int_String_helper(0, "a", "[]");
-        aeq(length(P.distinctStringsLex(0, "a")), 1);
+        aeq(length(EP.distinctStringsLex(0, "a")), 1);
         distinctStringsLex_int_String_helper(1, "a", "[a]");
         distinctStringsLex_int_String_helper(2, "a", "[]");
-        aeq(length(P.distinctStringsLex(2, "a")), 0);
+        aeq(length(EP.distinctStringsLex(2, "a")), 0);
         distinctStringsLex_int_String_helper(3, "a", "[]");
-        aeq(length(P.distinctStringsLex(3, "a")), 0);
+        aeq(length(EP.distinctStringsLex(3, "a")), 0);
         distinctStringsLex_int_String_helper(0, "abc", "[]");
-        aeq(length(P.distinctStringsLex(0, "abc")), 1);
+        aeq(length(EP.distinctStringsLex(0, "abc")), 1);
         distinctStringsLex_int_String_helper(1, "abc", "[a, b, c]");
         distinctStringsLex_int_String_helper(2, "abc", "[ab, ac, ba, bc, ca, cb]");
         distinctStringsLex_int_String_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
         distinctStringsLex_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.distinctStringsLex(0, "abbc")), 1);
+        aeq(length(EP.distinctStringsLex(0, "abbc")), 1);
         distinctStringsLex_int_String_helper(1, "abbc", "[a, b, b, c]");
         distinctStringsLex_int_String_helper(2, "abbc", "[ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb]");
         distinctStringsLex_int_String_helper(3, "abbc",
                 "[abb, abc, abb, abc, acb, acb, bab, bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab," +
                 " cab, cba, cbb, cba, cbb]");
         distinctStringsLex_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.distinctStringsLex(0, "Mississippi")), 1);
+        aeq(length(EP.distinctStringsLex(0, "Mississippi")), 1);
         distinctStringsLex_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         distinctStringsLex_int_String_helper_limit(2, "Mississippi",
                 "[Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, Mp, Mi, iM, is, is, ii, is, is, ii, ip, ip, ii, ...]");
@@ -6028,17 +6023,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Mis, Mii, Mis, Mis, Mii, Mip, Mip, Mii, Msi, Mss, Msi, Mss, Mss, Msi, Msp, Msp, Msi, Msi," +
                 " Mss, ...]");
         try {
-            P.distinctStringsLex(-1, "");
+            EP.distinctStringsLex(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctStringsLex(-1, "abc");
+            EP.distinctStringsLex(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctListsLex_List_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.distinctListsLex(readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctListsLex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -6073,28 +6068,28 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDistinctStringsLex_String() {
-        aeqit(P.distinctStringsLex(""), "[]");
-        aeq(length(P.distinctStringsLex("")), 1);
-        aeqit(P.distinctStringsLex("a"), "[, a]");
-        aeqit(P.distinctStringsLex("abc"), "[, a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
-        aeqit(P.distinctStringsLex("abcd"),
+        aeqit(EP.distinctStringsLex(""), "[]");
+        aeq(length(EP.distinctStringsLex("")), 1);
+        aeqit(EP.distinctStringsLex("a"), "[, a]");
+        aeqit(EP.distinctStringsLex("abc"), "[, a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
+        aeqit(EP.distinctStringsLex("abcd"),
                 "[, a, ab, abc, abcd, abd, abdc, ac, acb, acbd, acd, acdb, ad, adb, adbc, adc, adcb, b, ba, bac," +
                 " bacd, bad, badc, bc, bca, bcad, bcd, bcda, bd, bda, bdac, bdc, bdca, c, ca, cab, cabd, cad, cadb," +
                 " cb, cba, cbad, cbd, cbda, cd, cda, cdab, cdb, cdba, d, da, dab, dabc, dac, dacb, db, dba, dbac," +
                 " dbc, dbca, dc, dca, dcab, dcb, dcba]");
-        aeqit(P.distinctStringsLex("abbc"),
+        aeqit(EP.distinctStringsLex("abbc"),
                 "[, a, ab, abb, abbc, abc, abcb, ab, abb, abbc, abc, abcb, ac, acb, acbb, acb, acbb, b, ba, bab," +
                 " babc, bac, bacb, bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, b, ba, bab, babc, bac, bacb," +
                 " bb, bba, bbac, bbc, bbca, bc, bca, bcab, bcb, bcba, c, ca, cab, cabb, cab, cabb, cb, cba, cbab," +
                 " cbb, cbba, cb, cba, cbab, cbb, cbba]");
-        simpleProviderHelper(P.distinctStringsLex("Mississippi"),
+        simpleProviderHelper(EP.distinctStringsLex("Mississippi"),
                 "[, M, Mi, Mis, Miss, Missi, Missis, Mississ, Mississi, Mississip, Mississipp, Mississippi," +
                 " Mississipi, Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii," +
                 " ...]");
     }
 
     private static void distinctListsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctListsLexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctListsLexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -6206,17 +6201,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 2, 2], [3, 2, 2, 1], [3, 2, 1], [3, 2, 1, 2], [3, 2, 2], [3, 2, 2, 1]]");
 
         try {
-            P.distinctListsLexAtLeast(-1, Collections.emptyList());
+            EP.distinctListsLexAtLeast(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctListsLexAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.distinctListsLexAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctStringsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctStringsLexAtLeast(minSize, input), output);
+        aeqit(EP.distinctStringsLexAtLeast(minSize, input), output);
     }
 
     private static void distinctStringsLexAtLeast_helper_limit(
@@ -6224,25 +6219,25 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctStringsLexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.distinctStringsLexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testDistinctStringsLexAtLeast_int_String() {
         distinctStringsLexAtLeast_helper(0, "", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(0, "")), 1);
+        aeq(length(EP.distinctStringsLexAtLeast(0, "")), 1);
         distinctStringsLexAtLeast_helper(1, "", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(1, "")), 0);
+        aeq(length(EP.distinctStringsLexAtLeast(1, "")), 0);
         distinctStringsLexAtLeast_helper(2, "", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(2, "")), 0);
+        aeq(length(EP.distinctStringsLexAtLeast(2, "")), 0);
         distinctStringsLexAtLeast_helper(3, "", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(3, "")), 0);
+        aeq(length(EP.distinctStringsLexAtLeast(3, "")), 0);
         distinctStringsLexAtLeast_helper(0, "a", "[, a]");
         distinctStringsLexAtLeast_helper(1, "a", "[a]");
         distinctStringsLexAtLeast_helper(2, "a", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(2, "a")), 0);
+        aeq(length(EP.distinctStringsLexAtLeast(2, "a")), 0);
         distinctStringsLexAtLeast_helper(3, "a", "[]");
-        aeq(length(P.distinctStringsLexAtLeast(3, "a")), 0);
+        aeq(length(EP.distinctStringsLexAtLeast(3, "a")), 0);
         distinctStringsLexAtLeast_helper(0, "abc",
                 "[, a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
         distinctStringsLexAtLeast_helper(1, "abc", "[a, ab, abc, ac, acb, b, ba, bac, bc, bca, c, ca, cab, cb, cba]");
@@ -6284,17 +6279,17 @@ public strictfp class ExhaustiveProviderTest {
                 " Mississipip, Mississip, Mississipp, Mississippi, Mississipi, Mississipip, Mississii, Mississiip," +
                 " Mississiipp, Mississiip, ...]");
         try {
-            P.distinctStringsLexAtLeast(-1, "");
+            EP.distinctStringsLexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctStringsLexAtLeast(-1, "abc");
+            EP.distinctStringsLexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctListsShortlex_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.distinctListsShortlex(readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctListsShortlex(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -6329,21 +6324,21 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testDistinctStringsShortlex() {
-        aeqit(P.distinctStringsShortlex(""), "[]");
-        aeq(length(P.distinctStringsShortlex("")), 1);
-        aeqit(P.distinctStringsShortlex("a"), "[, a]");
-        aeqit(P.distinctStringsShortlex("abc"), "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
-        aeqit(P.distinctStringsShortlex("abcd"),
+        aeqit(EP.distinctStringsShortlex(""), "[]");
+        aeq(length(EP.distinctStringsShortlex("")), 1);
+        aeqit(EP.distinctStringsShortlex("a"), "[, a]");
+        aeqit(EP.distinctStringsShortlex("abc"), "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
+        aeqit(EP.distinctStringsShortlex("abcd"),
                 "[, a, b, c, d, ab, ac, ad, ba, bc, bd, ca, cb, cd, da, db, dc, abc, abd, acb, acd, adb, adc, bac," +
                 " bad, bca, bcd, bda, bdc, cab, cad, cba, cbd, cda, cdb, dab, dac, dba, dbc, dca, dcb, abcd, abdc," +
                 " acbd, acdb, adbc, adcb, bacd, badc, bcad, bcda, bdac, bdca, cabd, cadb, cbad, cbda, cdab, cdba," +
                 " dabc, dacb, dbac, dbca, dcab, dcba]");
-        aeqit(P.distinctStringsShortlex("abbc"),
+        aeqit(EP.distinctStringsShortlex("abbc"),
                 "[, a, b, b, c, ab, ab, ac, ba, bb, bc, ba, bb, bc, ca, cb, cb, abb, abc, abb, abc, acb, acb, bab," +
                 " bac, bba, bbc, bca, bcb, bab, bac, bba, bbc, bca, bcb, cab, cab, cba, cbb, cba, cbb, abbc, abcb," +
                 " abbc, abcb, acbb, acbb, babc, bacb, bbac, bbca, bcab, bcba, babc, bacb, bbac, bbca, bcab, bcba," +
                 " cabb, cabb, cbab, cbba, cbab, cbba]");
-        simpleProviderHelper(P.distinctStringsShortlex("Mississippi"),
+        simpleProviderHelper(EP.distinctStringsShortlex("Mississippi"),
                 "[, M, i, s, s, i, s, s, i, p, p, i, Mi, Ms, Ms, Mi, Ms, Ms, Mi, Mp, ...]");
     }
 
@@ -6352,7 +6347,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqit(P.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctListsShortlexAtLeast(minSize, readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -6476,11 +6471,11 @@ public strictfp class ExhaustiveProviderTest {
                 " [3, 2, 2, 1]]");
 
         try {
-            P.distinctListsShortlexAtLeast(-1, Collections.emptyList());
+            EP.distinctListsShortlexAtLeast(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctListsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.distinctListsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -6490,7 +6485,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        aeqit(P.distinctStringsShortlexAtLeast(minSize, input), output);
+        aeqit(EP.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
     private static void distinctStringsShortlexAtLeast_helper_limit(
@@ -6498,25 +6493,25 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctStringsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.distinctStringsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testDistinctStringsShortlexAtLeast_int_String() {
         distinctStringsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(0, "")), 1);
+        aeq(length(EP.distinctStringsShortlexAtLeast(0, "")), 1);
         distinctStringsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(1, "")), 0);
+        aeq(length(EP.distinctStringsShortlexAtLeast(1, "")), 0);
         distinctStringsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(2, "")), 0);
+        aeq(length(EP.distinctStringsShortlexAtLeast(2, "")), 0);
         distinctStringsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(3, "")), 0);
+        aeq(length(EP.distinctStringsShortlexAtLeast(3, "")), 0);
         distinctStringsShortlexAtLeast_helper(0, "a", "[, a]");
         distinctStringsShortlexAtLeast_helper(1, "a", "[a]");
         distinctStringsShortlexAtLeast_helper(2, "a", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(2, "a")), 0);
+        aeq(length(EP.distinctStringsShortlexAtLeast(2, "a")), 0);
         distinctStringsShortlexAtLeast_helper(3, "a", "[]");
-        aeq(length(P.distinctStringsShortlexAtLeast(3, "a")), 0);
+        aeq(length(EP.distinctStringsShortlexAtLeast(3, "a")), 0);
         distinctStringsShortlexAtLeast_helper(0, "abc",
                 "[, a, b, c, ab, ac, ba, bc, ca, cb, abc, acb, bac, bca, cab, cba]");
         distinctStringsShortlexAtLeast_helper(1, "abc",
@@ -6552,17 +6547,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Mis, Mii, Mis, Mis, Mii, Mip, Mip, Mii, Msi, Mss, Msi, Mss, Mss, Msi, Msp, Msp, Msi, Msi," +
                 " Mss, ...]");
         try {
-            P.distinctStringsShortlexAtLeast(-1, "");
+            EP.distinctStringsShortlexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctStringsShortlexAtLeast(-1, "abc");
+            EP.distinctStringsShortlexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctLists_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctLists(size, readIntegerListWithNulls(input)), output);
+        aeqit(EP.distinctLists(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctLists_int_Iterable_helper(
@@ -6570,12 +6565,12 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctLists(size, input), output);
+        simpleProviderHelper(EP.distinctLists(size, input), output);
     }
 
     private static void distinctLists_int_Iterable_fail_helper(int size, @NotNull String input) {
         try {
-            P.distinctLists(size, readIntegerListWithNulls(input));
+            EP.distinctLists(size, readIntegerListWithNulls(input));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -6609,14 +6604,14 @@ public strictfp class ExhaustiveProviderTest {
                 "[[1, null], [1, 3], [null, 1], [null, 3], [3, 1], [3, null]]");
         distinctLists_int_Iterable_helper(3, "[1, null, 3]",
                 "[[1, null, 3], [1, 3, null], [null, 1, 3], [null, 3, 1], [3, 1, null], [3, null, 1]]");
-        distinctLists_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
-        distinctLists_int_Iterable_helper(1, P.positiveIntegers(),
+        distinctLists_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
+        distinctLists_int_Iterable_helper(1, EP.positiveIntegers(),
                 "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
                 " [19], [20], ...]");
-        distinctLists_int_Iterable_helper(2, P.positiveIntegers(),
+        distinctLists_int_Iterable_helper(2, EP.positiveIntegers(),
                 "[[1, 2], [1, 3], [2, 1], [2, 3], [1, 4], [1, 5], [2, 4], [2, 5], [3, 1], [3, 2], [4, 1], [4, 2]," +
                 " [3, 4], [3, 5], [4, 3], [4, 5], [1, 6], [1, 7], [2, 6], [2, 7], ...]");
-        distinctLists_int_Iterable_helper(3, P.positiveIntegers(),
+        distinctLists_int_Iterable_helper(3, EP.positiveIntegers(),
                 "[[1, 2, 3], [1, 2, 4], [1, 3, 2], [1, 3, 4], [2, 1, 3], [2, 1, 4], [2, 3, 1], [2, 3, 4], [1, 2, 5]," +
                 " [1, 2, 6], [1, 3, 5], [1, 3, 6], [2, 1, 5], [2, 1, 6], [2, 3, 5], [2, 3, 6], [1, 4, 2], [1, 4, 3]," +
                 " [1, 5, 2], [1, 5, 3], ...]");
@@ -6636,11 +6631,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctPairs(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctPairs(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctPairs(input), output);
+        simpleProviderHelper(EP.distinctPairs(input), output);
     }
 
     @Test
@@ -6654,7 +6649,7 @@ public strictfp class ExhaustiveProviderTest {
         distinctPairs_helper("[1, 2, null, 4]",
                 "[(1, 2), (1, null), (2, 1), (2, null), (1, 4), (2, 4), (null, 1), (null, 2), (4, 1), (4, 2)," +
                 " (null, 4), (4, null)]");
-        distinctPairs_helper(P.naturalIntegers(),
+        distinctPairs_helper(EP.naturalIntegers(),
                 "[(0, 1), (0, 2), (1, 0), (1, 2), (0, 3), (0, 4), (1, 3), (1, 4), (2, 0), (2, 1), (3, 0), (3, 1)," +
                 " (2, 3), (2, 4), (3, 2), (3, 4), (0, 5), (0, 6), (1, 5), (1, 6), ...]");
         distinctPairs_helper(repeat(1),
@@ -6663,11 +6658,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctTriples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctTriples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctTriples(input), output);
+        simpleProviderHelper(EP.distinctTriples(input), output);
     }
 
     @Test
@@ -6686,7 +6681,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 2, null), (1, 2, 4), (1, null, 2), (1, null, 4), (2, 1, null), (2, 1, 4), (2, null, 1)," +
                 " (2, null, 4), (1, 4, 2), (1, 4, null), (2, 4, 1), (2, 4, null), (null, 1, 2), (null, 1, 4)," +
                 " (null, 2, 1), (null, 2, 4), (4, 1, 2), (4, 1, null), (4, 2, 1), (4, 2, null), ...]");
-        distinctTriples_helper(P.naturalIntegers(),
+        distinctTriples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2), (0, 1, 3), (0, 2, 1), (0, 2, 3), (1, 0, 2), (1, 0, 3), (1, 2, 0), (1, 2, 3), (0, 1, 4)," +
                 " (0, 1, 5), (0, 2, 4), (0, 2, 5), (1, 0, 4), (1, 0, 5), (1, 2, 4), (1, 2, 5), (0, 3, 1), (0, 3, 2)," +
                 " (0, 4, 1), (0, 4, 2), ...]");
@@ -6697,11 +6692,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuadruples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctQuadruples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuadruples(input), output);
+        simpleProviderHelper(EP.distinctQuadruples(input), output);
     }
 
     @Test
@@ -6721,7 +6716,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (2, 1, 4, null), (2, null, 1, 4), (2, null, 4, 1), (1, 4, 2, null), (1, 4, null, 2)," +
                 " (2, 4, 1, null), (2, 4, null, 1), (null, 1, 2, 4), (null, 1, 4, 2), (null, 2, 1, 4)," +
                 " (null, 2, 4, 1), (4, 1, 2, null), (4, 1, null, 2), (4, 2, 1, null), (4, 2, null, 1), ...]");
-        distinctQuadruples_helper(P.naturalIntegers(),
+        distinctQuadruples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3), (0, 1, 2, 4), (0, 1, 3, 2), (0, 1, 3, 4), (0, 2, 1, 3), (0, 2, 1, 4), (0, 2, 3, 1)," +
                 " (0, 2, 3, 4), (1, 0, 2, 3), (1, 0, 2, 4), (1, 0, 3, 2), (1, 0, 3, 4), (1, 2, 0, 3), (1, 2, 0, 4)," +
                 " (1, 2, 3, 0), (1, 2, 3, 4), (0, 1, 2, 5), (0, 1, 2, 6), (0, 1, 3, 5), (0, 1, 3, 6), ...]");
@@ -6732,11 +6727,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuintuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctQuintuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctQuintuples(input), output);
+        simpleProviderHelper(EP.distinctQuintuples(input), output);
     }
 
     @Test
@@ -6760,7 +6755,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, null, 2, 4, 6), (1, null, 2, 5, 4), (1, null, 2, 5, 6), (1, null, 4, 2, 5)," +
                 " (1, null, 4, 2, 6), (1, null, 4, 5, 2), (1, null, 4, 5, 6), (2, 1, null, 4, 5)," +
                 " (2, 1, null, 4, 6), (2, 1, null, 5, 4), (2, 1, null, 5, 6), ...]");
-        distinctQuintuples_helper(P.naturalIntegers(),
+        distinctQuintuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4), (0, 1, 2, 3, 5), (0, 1, 2, 4, 3), (0, 1, 2, 4, 5), (0, 1, 3, 2, 4)," +
                 " (0, 1, 3, 2, 5), (0, 1, 3, 4, 2), (0, 1, 3, 4, 5), (0, 2, 1, 3, 4), (0, 2, 1, 3, 5)," +
                 " (0, 2, 1, 4, 3), (0, 2, 1, 4, 5), (0, 2, 3, 1, 4), (0, 2, 3, 1, 5), (0, 2, 3, 4, 1)," +
@@ -6773,11 +6768,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSextuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctSextuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSextuples(input), output);
+        simpleProviderHelper(EP.distinctSextuples(input), output);
     }
 
     @Test
@@ -6803,7 +6798,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 2, 4, null, 5, 6), (1, 2, 4, null, 5, 7), (1, 2, 4, null, 6, 5), (1, 2, 4, null, 6, 7)," +
                 " (1, 2, 4, 5, null, 6), (1, 2, 4, 5, null, 7), (1, 2, 4, 5, 6, null), (1, 2, 4, 5, 6, 7)," +
                 " (1, null, 2, 4, 5, 6), (1, null, 2, 4, 5, 7), (1, null, 2, 4, 6, 5), (1, null, 2, 4, 6, 7), ...]");
-        distinctSextuples_helper(P.naturalIntegers(),
+        distinctSextuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 6), (0, 1, 2, 3, 5, 4), (0, 1, 2, 3, 5, 6)," +
                 " (0, 1, 2, 4, 3, 5), (0, 1, 2, 4, 3, 6), (0, 1, 2, 4, 5, 3), (0, 1, 2, 4, 5, 6)," +
                 " (0, 1, 3, 2, 4, 5), (0, 1, 3, 2, 4, 6), (0, 1, 3, 2, 5, 4), (0, 1, 3, 2, 5, 6)," +
@@ -6818,11 +6813,11 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSeptuples(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.distinctSeptuples(readIntegerListWithNulls(input)), output);
     }
 
     private static void distinctSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.distinctSeptuples(input), output);
+        simpleProviderHelper(EP.distinctSeptuples(input), output);
     }
 
     @Test
@@ -6850,7 +6845,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 2, null, 5, 6, 4, 7), (1, 2, null, 5, 6, 4, 8), (1, 2, null, 5, 6, 7, 4)," +
                 " (1, 2, null, 5, 6, 7, 8), (1, 2, 4, null, 5, 6, 7), (1, 2, 4, null, 5, 6, 8)," +
                 " (1, 2, 4, null, 5, 7, 6), (1, 2, 4, null, 5, 7, 8), ...]");
-        distinctSeptuples_helper(P.naturalIntegers(),
+        distinctSeptuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4, 5, 6), (0, 1, 2, 3, 4, 5, 7), (0, 1, 2, 3, 4, 6, 5), (0, 1, 2, 3, 4, 6, 7)," +
                 " (0, 1, 2, 3, 5, 4, 6), (0, 1, 2, 3, 5, 4, 7), (0, 1, 2, 3, 5, 6, 4), (0, 1, 2, 3, 5, 6, 7)," +
                 " (0, 1, 2, 4, 3, 5, 6), (0, 1, 2, 4, 3, 5, 7), (0, 1, 2, 4, 3, 6, 5), (0, 1, 2, 4, 3, 6, 7)," +
@@ -6865,7 +6860,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void distinctStrings_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.distinctStrings(size, input), output);
+        aeqit(EP.distinctStrings(size, input), output);
     }
 
     private static void distinctStrings_int_String_helper_limit(
@@ -6873,39 +6868,39 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctStrings(size, input), output);
+        simpleProviderHelper(EP.distinctStrings(size, input), output);
     }
 
     @Test
     public void testDistinctStrings_int_String() {
         distinctStrings_int_String_helper(0, "", "[]");
-        aeq(length(P.distinctStrings(0, "")), 1);
+        aeq(length(EP.distinctStrings(0, "")), 1);
         distinctStrings_int_String_helper(1, "", "[]");
-        aeq(length(P.distinctStrings(1, "")), 0);
+        aeq(length(EP.distinctStrings(1, "")), 0);
         distinctStrings_int_String_helper(2, "", "[]");
-        aeq(length(P.distinctStrings(2, "")), 0);
+        aeq(length(EP.distinctStrings(2, "")), 0);
         distinctStrings_int_String_helper(3, "", "[]");
-        aeq(length(P.distinctStrings(3, "")), 0);
+        aeq(length(EP.distinctStrings(3, "")), 0);
         distinctStrings_int_String_helper(0, "a", "[]");
         distinctStrings_int_String_helper(1, "a", "[a]");
         distinctStrings_int_String_helper(2, "a", "[]");
-        aeq(length(P.distinctStrings(2, "a")), 0);
+        aeq(length(EP.distinctStrings(2, "a")), 0);
         distinctStrings_int_String_helper(3, "a", "[]");
-        aeq(length(P.distinctStrings(3, "a")), 0);
+        aeq(length(EP.distinctStrings(3, "a")), 0);
         distinctStrings_int_String_helper(0, "abc", "[]");
-        aeq(length(P.distinctStrings(0, "abc")), 1);
+        aeq(length(EP.distinctStrings(0, "abc")), 1);
         distinctStrings_int_String_helper(1, "abc", "[a, b, c]");
         distinctStrings_int_String_helper(2, "abc", "[ab, ac, ba, bc, ca, cb]");
         distinctStrings_int_String_helper(3, "abc", "[abc, acb, bac, bca, cab, cba]");
         distinctStrings_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.distinctStrings(0, "abbc")), 1);
+        aeq(length(EP.distinctStrings(0, "abbc")), 1);
         distinctStrings_int_String_helper(1, "abbc", "[a, b, b, c]");
         distinctStrings_int_String_helper(2, "abbc", "[ab, ab, ba, bb, ac, bc, ba, bb, ca, cb, bc, cb]");
         distinctStrings_int_String_helper(3, "abbc",
                 "[abb, abc, abb, abc, bab, bac, bba, bbc, acb, acb, bca, bcb, bab, bac, bba, bbc, cab, cab, cba," +
                 " cbb, bca, bcb, cba, cbb]");
         distinctStrings_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.distinctStrings(0, "Mississippi")), 1);
+        aeq(length(EP.distinctStrings(0, "Mississippi")), 1);
         distinctStrings_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         distinctStrings_int_String_helper_limit(2, "Mississippi",
                 "[Mi, Ms, iM, is, Ms, Mi, is, ii, sM, si, sM, si, ss, si, ss, si, Ms, Ms, is, is, ...]");
@@ -6913,23 +6908,23 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Mis, Msi, Mss, iMs, iMs, isM, iss, Mii, Mis, Msi, Mss, iMi, iMs, isi, iss, Msi, Mss, Mii," +
                 " Mis, ...]");
         try {
-            P.distinctStrings(-1, "");
+            EP.distinctStrings(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctStrings(-1, "abc");
+            EP.distinctStrings(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctStrings_int_helper(int size, @NotNull String output) {
-        simpleProviderHelper(P.distinctStrings(size), output);
+        simpleProviderHelper(EP.distinctStrings(size), output);
     }
 
     @Test
     public void testDistinctStrings_int() {
         distinctStrings_int_helper(0, "[]");
-        aeq(length(P.distinctStrings(0)), 1);
+        aeq(length(EP.distinctStrings(0)), 1);
         distinctStrings_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
         distinctStrings_int_helper(2,
                 "[ab, ac, ba, bc, ad, ae, bd, be, ca, cb, da, db, cd, ce, dc, de, af, ag, bf, bg, ...]");
@@ -6938,45 +6933,45 @@ public strictfp class ExhaustiveProviderTest {
                 " aec, ...]");
         distinctStrings_int_helper(65537, "[]");
         try {
-            P.distinctStrings(-1);
+            EP.distinctStrings(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testDistinctLists_Iterable() {
-        aeqit(P.distinctLists(Collections.emptyList()), "[[]]");
-        simpleProviderHelper(P.distinctLists(Collections.singletonList(5)), "[[], [5]]");
-        simpleProviderHelper(P.distinctLists(Arrays.asList(1, 2, 3)),
+        aeqit(EP.distinctLists(Collections.emptyList()), "[[]]");
+        simpleProviderHelper(EP.distinctLists(Collections.singletonList(5)), "[[], [5]]");
+        simpleProviderHelper(EP.distinctLists(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 2], [2], [1, 2, 3], [3], [1, 3], [2, 1], [2, 3], [1, 3, 2], [3, 1], [2, 1, 3]," +
                 " [3, 2], [2, 3, 1], [3, 1, 2], [3, 2, 1]]");
-        simpleProviderHelper(P.distinctLists(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(EP.distinctLists(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 1], [1, 2, 3], [2, 2]," +
                 " [1, 3], [1, 2, 2], [2, 3], [1, 2, 3], [2, 1], [2, 1, 2], [2, 2], [1, 2, 3, 2], ...]");
-        simpleProviderHelper(P.distinctLists(P.naturalIntegers()),
+        simpleProviderHelper(EP.distinctLists(EP.naturalIntegers()),
                 "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
                 " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        simpleProviderHelper(P.distinctLists(repeat(1)),
+        simpleProviderHelper(EP.distinctLists(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
     }
 
     @Test
     public void testDistinctStrings_String() {
-        aeqit(P.distinctStrings(""), "[]");
-        aeq(length(P.distinctStrings("")), 1);
-        simpleProviderHelper(P.distinctStrings("a"), "[, a]");
-        simpleProviderHelper(P.distinctStrings("abc"),
+        aeqit(EP.distinctStrings(""), "[]");
+        aeq(length(EP.distinctStrings("")), 1);
+        simpleProviderHelper(EP.distinctStrings("a"), "[, a]");
+        simpleProviderHelper(EP.distinctStrings("abc"),
                 "[, a, ab, b, abc, c, ac, ba, bc, acb, ca, bac, cb, bca, cab, cba]");
-        simpleProviderHelper(P.distinctStrings("abbc"),
+        simpleProviderHelper(EP.distinctStrings("abbc"),
                 "[, a, ab, b, abb, b, ab, c, abbc, ba, abc, bb, ac, abb, bc, abc, ba, bab, bb, abcb, ...]");
-        simpleProviderHelper(P.distinctStrings("Mississippi"),
+        simpleProviderHelper(EP.distinctStrings("Mississippi"),
                 "[, M, Mi, i, Mis, s, Ms, s, Miss, i, iM, s, Mis, s, is, i, Missi, p, Ms, p, ...]");
     }
 
     @Test
     public void testDistinctStrings() {
-        simpleProviderHelper(P.distinctStrings(),
+        simpleProviderHelper(EP.distinctStrings(),
                 "[, a, ab, b, abc, c, ac, d, abcd, e, ba, f, abd, g, bc, h, abcde, i, ad, j, ...]");
     }
 
@@ -6985,7 +6980,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctListsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.distinctListsAtLeast(minSize, input), output);
     }
 
     private static void distinctListsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -7043,17 +7038,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [2, 2, 1], [2, 2, 3], [1, 2, 2, 3], [1, 2, 3, 2], [1, 3, 2], [2, 1, 2, 3], [1, 3, 2], [2, 3, 1]," +
                 " [2, 1, 3, 2], [2, 3, 2], [2, 2, 1, 3], [2, 2, 3, 1], ...]");
 
-        distinctListsAtLeast_helper(0, P.naturalIntegers(),
+        distinctListsAtLeast_helper(0, EP.naturalIntegers(),
                 "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
                 " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        distinctListsAtLeast_helper(1, P.naturalIntegers(),
+        distinctListsAtLeast_helper(1, EP.naturalIntegers(),
                 "[[0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 0], [5], [0, 1, 3], [6]," +
                 " [1, 2], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], [0, 2, 1], ...]");
-        distinctListsAtLeast_helper(2, P.naturalIntegers(),
+        distinctListsAtLeast_helper(2, EP.naturalIntegers(),
                 "[[0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [1, 0], [0, 1, 3], [1, 2], [0, 1, 2, 3, 4], [0, 3]," +
                 " [0, 2, 1], [0, 4], [0, 1, 2, 4], [1, 3], [0, 2, 3], [1, 4], [0, 1, 2, 3, 4, 5], [2, 0], [1, 0, 2]," +
                 " [2, 1], [0, 1, 3, 2], ...]");
-        distinctListsAtLeast_helper(3, P.naturalIntegers(),
+        distinctListsAtLeast_helper(3, EP.naturalIntegers(),
                 "[[0, 1, 2], [0, 1, 2, 3], [0, 1, 3], [0, 1, 2, 3, 4], [0, 2, 1], [0, 1, 2, 4], [0, 2, 3]," +
                 " [0, 1, 2, 3, 4, 5], [1, 0, 2], [0, 1, 3, 2], [1, 0, 3], [0, 1, 2, 3, 5], [1, 2, 0], [0, 1, 3, 4]," +
                 " [1, 2, 3], [0, 1, 2, 3, 4, 5, 6], [0, 1, 4], [0, 2, 1, 3], [0, 1, 5], [0, 1, 2, 4, 3], ...]");
@@ -7074,11 +7069,11 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1], [1, 1, 1, 1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1], [1, 1, 1, 1, 1], ...]");
 
         try {
-            P.distinctListsAtLeast(-1, Collections.emptyList());
+            EP.distinctListsAtLeast(-1, Collections.emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctListsAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.distinctListsAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -7088,19 +7083,19 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.distinctStringsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.distinctStringsAtLeast(minSize, input), output);
     }
 
     @Test
     public void testDistinctStringsAtLeast_String() {
         distinctStringsAtLeast_String_helper(0, "", "[]");
-        aeq(length(P.distinctStringsAtLeast(0, "")), 1);
+        aeq(length(EP.distinctStringsAtLeast(0, "")), 1);
         distinctStringsAtLeast_String_helper(1, "", "[]");
-        aeq(length(P.distinctStringsAtLeast(1, "")), 0);
+        aeq(length(EP.distinctStringsAtLeast(1, "")), 0);
         distinctStringsAtLeast_String_helper(2, "", "[]");
-        aeq(length(P.distinctStringsAtLeast(2, "")), 0);
+        aeq(length(EP.distinctStringsAtLeast(2, "")), 0);
         distinctStringsAtLeast_String_helper(3, "", "[]");
-        aeq(length(P.distinctStringsAtLeast(3, "")), 0);
+        aeq(length(EP.distinctStringsAtLeast(3, "")), 0);
         distinctStringsAtLeast_String_helper(0, "a", "[, a]");
         distinctStringsAtLeast_String_helper(1, "a", "[a]");
         distinctStringsAtLeast_String_helper(2, "a", "[]");
@@ -7131,17 +7126,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Miss, Mis, Missi, Msi, Misi, Mss, Missis, iMs, Miss, iMs, Misss, isM, Misi, iss, Mississ," +
                 " Mii, Msis, Mis, Misis, ...]");
         try {
-            P.distinctStringsAtLeast(-1, "");
+            EP.distinctStringsAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.distinctStringsAtLeast(-1, "abc");
+            EP.distinctStringsAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void distinctStringsAtLeast_helper(int minSize, @NotNull String output) {
-        simpleProviderHelper(P.distinctStringsAtLeast(minSize), output);
+        simpleProviderHelper(EP.distinctStringsAtLeast(minSize), output);
     }
 
     @Test
@@ -7158,18 +7153,18 @@ public strictfp class ExhaustiveProviderTest {
                 " abe, acbd, abf, abced, ...]");
         distinctStringsAtLeast_helper(65537, "[]");
         try {
-            P.distinctStringsAtLeast(-1);
+            EP.distinctStringsAtLeast(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void bagsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.bagsLex(size, readIntegerListWithNulls(input)), output);
+        aeqit(EP.bagsLex(size, readIntegerListWithNulls(input)), output);
     }
 
     private static void bagsLex_int_List_fail_helper(int size, @NotNull String input) {
         try {
-            P.bagsLex(size, readIntegerListWithNulls(input));
+            EP.bagsLex(size, readIntegerListWithNulls(input));
             fail();
         } catch (ArithmeticException | NullPointerException ignored) {}
     }
@@ -7207,12 +7202,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagPairsLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagPairsLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagPairsLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagPairsLex_fail_helper(@NotNull String input) {
         try {
-            P.bagPairsLex(readIntegerListWithNulls(input));
+            EP.bagPairsLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7230,12 +7225,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagTriplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagTriplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagTriplesLex_fail_helper(@NotNull String input) {
         try {
-            P.bagTriplesLex(readIntegerListWithNulls(input));
+            EP.bagTriplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7257,12 +7252,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagQuadruplesLex_fail_helper(@NotNull String input) {
         try {
-            P.bagQuadruplesLex(readIntegerListWithNulls(input));
+            EP.bagQuadruplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7284,12 +7279,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuintuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagQuintuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagQuintuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.bagQuintuplesLex(readIntegerListWithNulls(input));
+            EP.bagQuintuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7313,12 +7308,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagSextuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagSextuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagSextuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.bagSextuplesLex(readIntegerListWithNulls(input));
+            EP.bagSextuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7344,12 +7339,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagSeptuplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.bagSeptuplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void bagSeptuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.bagSeptuplesLex(readIntegerListWithNulls(input));
+            EP.bagSeptuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7375,7 +7370,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBagsLex_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringBagsLex(size, input), output);
+        aeqit(EP.stringBagsLex(size, input), output);
     }
 
     private static void stringBagsLex_helper_limit(
@@ -7383,38 +7378,38 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringBagsLex(size, input), output);
+        simpleProviderHelper(EP.stringBagsLex(size, input), output);
     }
 
     @Test
     public void testStringBagsLex() {
         stringBagsLex_helper(0, "", "[]");
-        aeq(length(P.stringBagsLex(0, "")), 1);
+        aeq(length(EP.stringBagsLex(0, "")), 1);
         stringBagsLex_helper(1, "", "[]");
-        aeq(length(P.stringBagsLex(1, "")), 0);
+        aeq(length(EP.stringBagsLex(1, "")), 0);
         stringBagsLex_helper(2, "", "[]");
-        aeq(length(P.stringBagsLex(2, "")), 0);
+        aeq(length(EP.stringBagsLex(2, "")), 0);
         stringBagsLex_helper(3, "", "[]");
-        aeq(length(P.stringBagsLex(3, "")), 0);
+        aeq(length(EP.stringBagsLex(3, "")), 0);
         stringBagsLex_helper(0, "a", "[]");
-        aeq(length(P.stringBagsLex(0, "a")), 1);
+        aeq(length(EP.stringBagsLex(0, "a")), 1);
         stringBagsLex_helper(1, "a", "[a]");
         stringBagsLex_helper(2, "a", "[aa]");
         stringBagsLex_helper(3, "a", "[aaa]");
         stringBagsLex_helper(0, "abc", "[]");
-        aeq(length(P.stringBagsLex(0, "abc")), 1);
+        aeq(length(EP.stringBagsLex(0, "abc")), 1);
         stringBagsLex_helper(1, "abc", "[a, b, c]");
         stringBagsLex_helper(2, "abc", "[aa, ab, ac, bb, bc, cc]");
         stringBagsLex_helper(3, "abc", "[aaa, aab, aac, abb, abc, acc, bbb, bbc, bcc, ccc]");
         stringBagsLex_helper(0, "abbc", "[]");
-        aeq(length(P.stringBagsLex(0, "abbc")), 1);
+        aeq(length(EP.stringBagsLex(0, "abbc")), 1);
         stringBagsLex_helper(1, "abbc", "[a, b, b, c]");
         stringBagsLex_helper(2, "abbc", "[aa, ab, ab, ac, bb, bb, bc, bb, bc, cc]");
         stringBagsLex_helper(3, "abbc",
                 "[aaa, aab, aab, aac, abb, abb, abc, abb, abc, acc, bbb, bbb, bbc, bbb, bbc, bcc, bbb, bbc, bcc," +
                 " ccc]");
         stringBagsLex_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.stringBagsLex(0, "Mississippi")), 1);
+        aeq(length(EP.stringBagsLex(0, "Mississippi")), 1);
         stringBagsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
         stringBagsLex_helper_limit(2, "Mississippi",
                 "[MM, Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ii, ip, ip, is, is, is, ...]");
@@ -7422,22 +7417,22 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, MMi, MMi, MMi, MMp, MMp, MMs, MMs, MMs, MMs, Mii, Mii, Mii, Mii, Mip, Mip, Mis, Mis," +
                 " Mis, ...]");
         try {
-            P.stringBagsLex(-1, "");
+            EP.stringBagsLex(-1, "");
             fail();
         } catch (ArithmeticException ignored) {}
         try {
-            P.stringBagsLex(-1, "abc");
+            EP.stringBagsLex(-1, "abc");
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     private static void bagsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagsShortlex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagsShortlex(readIntegerList(input)), output);
     }
 
     private static void bagsShortlex_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagsShortlex(readIntegerListWithNulls(input)));
+            toList(EP.bagsShortlex(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7466,13 +7461,13 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBagsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringBagsShortlex(input), output);
+        simpleProviderHelper(EP.stringBagsShortlex(input), output);
     }
 
     @Test
     public void testStringBagsShortlex() {
         stringBagsShortlex_helper("", "[]");
-        aeq(length(P.stringBagsShortlex("")), 1);
+        aeq(length(EP.stringBagsShortlex("")), 1);
         stringBagsShortlex_helper("a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -7486,7 +7481,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagsShortlexAtLeast(minSize, readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     @Test
@@ -7556,37 +7551,37 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 2, 2, 2], [1, 2, 2, 3], [1, 2, 3, 3], [1, 3, 3, 3], ...]");
 
         try {
-            P.bagsShortlexAtLeast(-1, Collections.<Integer>emptyList());
+            EP.bagsShortlexAtLeast(-1, Collections.<Integer>emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.bagsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.bagsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(P.bagsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
+            toList(EP.bagsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            toList(P.bagsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
+            toList(EP.bagsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     private static void stringBagsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringBagsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringBagsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringBagsShortlexAtLeast() {
         stringBagsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(P.stringBagsShortlexAtLeast(0, "")), 1);
+        aeq(length(EP.stringBagsShortlexAtLeast(0, "")), 1);
         stringBagsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(P.stringBagsShortlexAtLeast(1, "")), 0);
+        aeq(length(EP.stringBagsShortlexAtLeast(1, "")), 0);
         stringBagsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(P.stringBagsShortlexAtLeast(2, "")), 0);
+        aeq(length(EP.stringBagsShortlexAtLeast(2, "")), 0);
         stringBagsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(P.stringBagsShortlexAtLeast(3, "")), 0);
+        aeq(length(EP.stringBagsShortlexAtLeast(3, "")), 0);
         stringBagsShortlexAtLeast_helper(0, "a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -7633,26 +7628,26 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, MMi, MMi, MMi, MMp, MMp, MMs, MMs, MMs, MMs, Mii, Mii, Mii, Mii, Mip, Mip, Mis, Mis," +
                 " Mis, ...]");
         try {
-            P.stringBagsShortlexAtLeast(-1, "");
+            EP.stringBagsShortlexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringBagsShortlexAtLeast(-1, "abc");
+            EP.stringBagsShortlexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void bags_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.bags(size, readIntegerList(input)), output);
+        aeqit(EP.bags(size, readIntegerList(input)), output);
     }
 
     private static void bags_int_Iterable_helper(int size, @NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bags(size, input), output);
+        simpleProviderHelper(EP.bags(size, input), output);
     }
 
     private static void bags_int_Iterable_fail_helper(int size, @NotNull String input) {
         try {
-            toList(P.bags(size, readIntegerListWithNulls(input)));
+            toList(EP.bags(size, readIntegerListWithNulls(input)));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -7681,14 +7676,14 @@ public strictfp class ExhaustiveProviderTest {
                 "[[1, 1, 1], [1, 1, 2], [1, 2, 2], [1, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 2], [2, 2, 3], [1, 1, 2]," +
                 " [1, 1, 3], [1, 2, 3], [2, 2, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 3, 3], [2, 2, 2], [2, 2, 3]," +
                 " [2, 3, 3], [3, 3, 3]]");
-        bags_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
-        bags_int_Iterable_helper(1, P.positiveIntegers(),
+        bags_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
+        bags_int_Iterable_helper(1, EP.positiveIntegers(),
                 "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
                 " [19], [20], ...]");
-        bags_int_Iterable_helper(2, P.positiveIntegers(),
+        bags_int_Iterable_helper(2, EP.positiveIntegers(),
                 "[[1, 1], [1, 2], [2, 2], [2, 3], [1, 3], [1, 4], [2, 4], [2, 5], [3, 3], [3, 4], [4, 4], [4, 5]," +
                 " [3, 5], [3, 6], [4, 6], [4, 7], [1, 5], [1, 6], [2, 6], [2, 7], ...]");
-        bags_int_Iterable_helper(3, P.positiveIntegers(),
+        bags_int_Iterable_helper(3, EP.positiveIntegers(),
                 "[[1, 1, 1], [1, 1, 2], [1, 2, 2], [1, 2, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [2, 3, 4], [1, 1, 3]," +
                 " [1, 1, 4], [1, 2, 4], [1, 2, 5], [2, 2, 4], [2, 2, 5], [2, 3, 5], [2, 3, 6], [1, 3, 3], [1, 3, 4]," +
                 " [1, 4, 4], [1, 4, 5], ...]");
@@ -7710,16 +7705,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagPairs(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagPairs(readIntegerList(input)), output);
     }
 
     private static void bagPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagPairs(input), output);
+        simpleProviderHelper(EP.bagPairs(input), output);
     }
 
     private static void bagPairs_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagPairs(readIntegerListWithNulls(input)));
+            toList(EP.bagPairs(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7732,7 +7727,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 1), (1, 2), (2, 2), (2, 3), (1, 3), (1, 4), (2, 4), (3, 3), (3, 4), (4, 4)]");
         bagPairs_helper("[1, 2, 2, 4]",
                 "[(1, 1), (1, 2), (2, 2), (2, 2), (1, 2), (1, 4), (2, 4), (2, 2), (2, 4), (4, 4)]");
-        bagPairs_helper(P.naturalIntegers(),
+        bagPairs_helper(EP.naturalIntegers(),
                 "[(0, 0), (0, 1), (1, 1), (1, 2), (0, 2), (0, 3), (1, 3), (1, 4), (2, 2), (2, 3), (3, 3), (3, 4)," +
                 " (2, 4), (2, 5), (3, 5), (3, 6), (0, 4), (0, 5), (1, 5), (1, 6), ...]");
         bagPairs_helper(repeat(1),
@@ -7742,16 +7737,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagTriples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagTriples(readIntegerList(input)), output);
     }
 
     private static void bagTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagTriples(input), output);
+        simpleProviderHelper(EP.bagTriples(input), output);
     }
 
     private static void bagTriples_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagTriples(readIntegerListWithNulls(input)));
+            toList(EP.bagTriples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7768,7 +7763,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 1, 1), (1, 1, 2), (1, 2, 2), (1, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 2), (2, 2, 4), (1, 1, 2)," +
                 " (1, 1, 4), (1, 2, 4), (2, 2, 4), (1, 2, 2), (1, 2, 4), (1, 4, 4), (2, 4, 4), (2, 2, 2), (2, 2, 4)," +
                 " (2, 4, 4), (4, 4, 4)]");
-        bagTriples_helper(P.naturalIntegers(),
+        bagTriples_helper(EP.naturalIntegers(),
                 "[(0, 0, 0), (0, 0, 1), (0, 1, 1), (0, 1, 2), (1, 1, 1), (1, 1, 2), (1, 2, 2), (1, 2, 3), (0, 0, 2)," +
                 " (0, 0, 3), (0, 1, 3), (0, 1, 4), (1, 1, 3), (1, 1, 4), (1, 2, 4), (1, 2, 5), (0, 2, 2), (0, 2, 3)," +
                 " (0, 3, 3), (0, 3, 4), ...]");
@@ -7780,16 +7775,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuadruples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagQuadruples(readIntegerList(input)), output);
     }
 
     private static void bagQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuadruples(input), output);
+        simpleProviderHelper(EP.bagQuadruples(input), output);
     }
 
     private static void bagQuadruples_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagQuadruples(readIntegerListWithNulls(input)));
+            toList(EP.bagQuadruples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7806,7 +7801,7 @@ public strictfp class ExhaustiveProviderTest {
                 "[(1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 2), (1, 1, 2, 2), (1, 2, 2, 2), (1, 2, 2, 2), (1, 2, 2, 2)," +
                 " (1, 2, 2, 4), (2, 2, 2, 2), (2, 2, 2, 2), (2, 2, 2, 2), (2, 2, 2, 4), (2, 2, 2, 2), (2, 2, 2, 4)," +
                 " (2, 2, 4, 4), (1, 1, 1, 2), (1, 1, 1, 4), (1, 1, 2, 4), (1, 2, 2, 4), (2, 2, 2, 4), ...]");
-        bagQuadruples_helper(P.naturalIntegers(),
+        bagQuadruples_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0), (0, 0, 0, 1), (0, 0, 1, 1), (0, 0, 1, 2), (0, 1, 1, 1), (0, 1, 1, 2), (0, 1, 2, 2)," +
                 " (0, 1, 2, 3), (1, 1, 1, 1), (1, 1, 1, 2), (1, 1, 2, 2), (1, 1, 2, 3), (1, 2, 2, 2), (1, 2, 2, 3)," +
                 " (1, 2, 3, 3), (1, 2, 3, 4), (0, 0, 0, 2), (0, 0, 0, 3), (0, 0, 1, 3), (0, 0, 1, 4), ...]");
@@ -7818,16 +7813,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuintuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagQuintuples(readIntegerList(input)), output);
     }
 
     private static void bagQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagQuintuples(input), output);
+        simpleProviderHelper(EP.bagQuintuples(input), output);
     }
 
     private static void bagQuintuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagQuintuples(readIntegerListWithNulls(input)));
+            toList(EP.bagQuintuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7846,7 +7841,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 2, 2), (1, 1, 2, 2, 2), (1, 1, 2, 2, 4), (1, 2, 2, 2, 2), (1, 2, 2, 2, 2)," +
                 " (1, 2, 2, 2, 2), (1, 2, 2, 2, 4), (1, 2, 2, 2, 2), (1, 2, 2, 2, 4), (1, 2, 2, 4, 4)," +
                 " (2, 2, 2, 2, 2), (2, 2, 2, 2, 2), (2, 2, 2, 2, 2), (2, 2, 2, 2, 4), (2, 2, 2, 2, 2), ...]");
-        bagQuintuples_helper(P.naturalIntegers(),
+        bagQuintuples_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0), (0, 0, 0, 0, 1), (0, 0, 0, 1, 1), (0, 0, 0, 1, 2), (0, 0, 1, 1, 1)," +
                 " (0, 0, 1, 1, 2), (0, 0, 1, 2, 2), (0, 0, 1, 2, 3), (0, 1, 1, 1, 1), (0, 1, 1, 1, 2)," +
                 " (0, 1, 1, 2, 2), (0, 1, 1, 2, 3), (0, 1, 2, 2, 2), (0, 1, 2, 2, 3), (0, 1, 2, 3, 3)," +
@@ -7860,16 +7855,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagSextuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagSextuples(readIntegerList(input)), output);
     }
 
     private static void bagSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagSextuples(input), output);
+        simpleProviderHelper(EP.bagSextuples(input), output);
     }
 
     private static void bagSextuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagSextuples(readIntegerListWithNulls(input)));
+            toList(EP.bagSextuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7890,7 +7885,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 2, 2, 2, 2), (1, 1, 2, 2, 2, 2), (1, 1, 2, 2, 2, 2), (1, 1, 2, 2, 2, 4)," +
                 " (1, 1, 2, 2, 2, 2), (1, 1, 2, 2, 2, 4), (1, 1, 2, 2, 4, 4), (1, 2, 2, 2, 2, 2)," +
                 " (1, 2, 2, 2, 2, 2), (1, 2, 2, 2, 2, 2), (1, 2, 2, 2, 2, 4), (1, 2, 2, 2, 2, 2), ...]");
-        bagSextuples_helper(P.naturalIntegers(),
+        bagSextuples_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 1, 1), (0, 0, 0, 0, 1, 2)," +
                 " (0, 0, 0, 1, 1, 1), (0, 0, 0, 1, 1, 2), (0, 0, 0, 1, 2, 2), (0, 0, 0, 1, 2, 3)," +
                 " (0, 0, 1, 1, 1, 1), (0, 0, 1, 1, 1, 2), (0, 0, 1, 1, 2, 2), (0, 0, 1, 1, 2, 3)," +
@@ -7906,16 +7901,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void bagSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.bagSeptuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.bagSeptuples(readIntegerList(input)), output);
     }
 
     private static void bagSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagSeptuples(input), output);
+        simpleProviderHelper(EP.bagSeptuples(input), output);
     }
 
     private static void bagSeptuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.bagSeptuples(readIntegerListWithNulls(input)));
+            toList(EP.bagSeptuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -7936,7 +7931,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 1, 1, 2, 2, 2, 2), (1, 1, 1, 2, 2, 2, 2), (1, 1, 1, 2, 2, 2, 2), (1, 1, 1, 2, 2, 2, 4)," +
                 " (1, 1, 1, 2, 2, 2, 2), (1, 1, 1, 2, 2, 2, 4), (1, 1, 1, 2, 2, 4, 4), (1, 1, 2, 2, 2, 2, 2)," +
                 " (1, 1, 2, 2, 2, 2, 2), (1, 1, 2, 2, 2, 2, 2), (1, 1, 2, 2, 2, 2, 4), (1, 1, 2, 2, 2, 2, 2), ...]");
-        bagSeptuples_helper(P.naturalIntegers(),
+        bagSeptuples_helper(EP.naturalIntegers(),
                 "[(0, 0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0, 1), (0, 0, 0, 0, 0, 1, 1), (0, 0, 0, 0, 0, 1, 2)," +
                 " (0, 0, 0, 0, 1, 1, 1), (0, 0, 0, 0, 1, 1, 2), (0, 0, 0, 0, 1, 2, 2), (0, 0, 0, 0, 1, 2, 3)," +
                 " (0, 0, 0, 1, 1, 1, 1), (0, 0, 0, 1, 1, 1, 2), (0, 0, 0, 1, 1, 2, 2), (0, 0, 0, 1, 1, 2, 3)," +
@@ -7952,7 +7947,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringBags_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringBags(size, input), output);
+        aeqit(EP.stringBags(size, input), output);
     }
 
     private static void stringBags_int_String_helper_limit(
@@ -7960,37 +7955,37 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringBags(size, input), output);
+        simpleProviderHelper(EP.stringBags(size, input), output);
     }
 
     @Test
     public void testStringBags_int_String() {
         stringBags_int_String_helper(0, "", "[]");
-        aeq(length(P.stringBags(0, "")), 1);
+        aeq(length(EP.stringBags(0, "")), 1);
         stringBags_int_String_helper(1, "", "[]");
-        aeq(length(P.stringBags(1, "")), 0);
+        aeq(length(EP.stringBags(1, "")), 0);
         stringBags_int_String_helper(2, "", "[]");
-        aeq(length(P.stringBags(2, "")), 0);
+        aeq(length(EP.stringBags(2, "")), 0);
         stringBags_int_String_helper(3, "", "[]");
-        aeq(length(P.stringBags(3, "")), 0);
+        aeq(length(EP.stringBags(3, "")), 0);
         stringBags_int_String_helper(0, "a", "[]");
         stringBags_int_String_helper(1, "a", "[a]");
         stringBags_int_String_helper(2, "a", "[aa]");
         stringBags_int_String_helper(3, "a", "[aaa]");
         stringBags_int_String_helper(0, "abc", "[]");
-        aeq(length(P.stringBags(0, "abc")), 1);
+        aeq(length(EP.stringBags(0, "abc")), 1);
         stringBags_int_String_helper(1, "abc", "[a, b, c]");
         stringBags_int_String_helper(2, "abc", "[aa, ab, bb, bc, ac, cc]");
         stringBags_int_String_helper(3, "abc", "[aaa, aab, abb, abc, bbb, bbc, bcc, aac, acc, ccc]");
         stringBags_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.stringBags(0, "abbc")), 1);
+        aeq(length(EP.stringBags(0, "abbc")), 1);
         stringBags_int_String_helper(1, "abbc", "[a, b, b, c]");
         stringBags_int_String_helper(2, "abbc", "[aa, ab, bb, bb, ab, ac, bc, bb, bc, cc]");
         stringBags_int_String_helper(3, "abbc",
                 "[aaa, aab, abb, abb, bbb, bbb, bbb, bbc, aab, aac, abc, bbc, abb, abc, acc, bcc, bbb, bbc, bcc," +
                 " ccc]");
         stringBags_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.stringBags(0, "Mississippi")), 1);
+        aeq(length(EP.stringBags(0, "Mississippi")), 1);
         stringBags_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         stringBags_int_String_helper_limit(2, "Mississippi",
                 "[MM, Mi, ii, is, Ms, Ms, is, ii, ss, ss, ss, is, is, ss, ss, ss, Mi, Ms, is, is, ...]");
@@ -7998,23 +7993,23 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMi, Mii, Mis, iii, iis, iss, iss, MMs, MMs, Mis, Mii, iis, iii, iis, iss, Mss, Mss, Mss," +
                 " Mis, ...]");
         try {
-            P.stringBags(-1, "");
+            EP.stringBags(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringBags(-1, "abc");
+            EP.stringBags(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringBags_int_helper(int size, @NotNull String output) {
-        simpleProviderHelper(P.stringBags(size), output);
+        simpleProviderHelper(EP.stringBags(size), output);
     }
 
     @Test
     public void testStringBags_int() {
         stringBags_int_helper(0, "[]");
-        aeq(length(P.stringBags(0)), 1);
+        aeq(length(EP.stringBags(0)), 1);
         stringBags_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
         stringBags_int_helper(2,
                 "[aa, ab, bb, bc, ac, ad, bd, be, cc, cd, dd, de, ce, cf, df, dg, ae, af, bf, bg, ...]");
@@ -8022,15 +8017,15 @@ public strictfp class ExhaustiveProviderTest {
                 "[aaa, aab, abb, abc, bbb, bbc, bcc, bcd, aac, aad, abd, abe, bbd, bbe, bce, bcf, acc, acd, add," +
                 " ade, ...]");
         try {
-            P.stringBags(-1);
+            EP.stringBags(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testBags_Iterable() {
-        aeqit(P.bags(Collections.<Integer>emptyList()), "[[]]");
-        simpleProviderHelper(P.bags(Collections.singletonList(5)),
+        aeqit(EP.bags(Collections.<Integer>emptyList()), "[[]]");
+        simpleProviderHelper(EP.bags(Collections.singletonList(5)),
                 "[[], [5], [5, 5], [5, 5, 5], [5, 5, 5, 5], [5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
@@ -8040,54 +8035,54 @@ public strictfp class ExhaustiveProviderTest {
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]," +
                 " [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], ...]");
-        simpleProviderHelper(P.bags(Arrays.asList(1, 2, 3)),
+        simpleProviderHelper(EP.bags(Arrays.asList(1, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [3], [1, 2], [1, 1, 1, 1], [2, 2], [1, 1, 2], [2, 3]," +
                 " [1, 1, 1, 1, 1], [1, 3], [1, 2, 2], [1, 1, 1, 2], [1, 2, 3], [1, 1, 1, 1, 1, 1], [3, 3]," +
                 " [2, 2, 2], [1, 1, 2, 2], ...]");
-        simpleProviderHelper(P.bags(Arrays.asList(1, 2, 2, 3)),
+        simpleProviderHelper(EP.bags(Arrays.asList(1, 2, 2, 3)),
                 "[[], [1], [1, 1], [2], [1, 1, 1], [2], [1, 2], [3], [1, 1, 1, 1], [2, 2], [1, 1, 2], [2, 2]," +
                 " [1, 1, 1, 1, 1], [1, 2], [1, 2, 2], [1, 3], [1, 1, 1, 2], [2, 3], [1, 2, 2], [1, 1, 1, 1, 1, 1]," +
                 " ...]");
-        simpleProviderHelper(P.bags(P.naturalIntegers()),
+        simpleProviderHelper(EP.bags(EP.naturalIntegers()),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 1], [5], [0, 0, 1], [6]," +
                 " [1, 2], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        simpleProviderHelper(P.bags(repeat(1)),
+        simpleProviderHelper(EP.bags(repeat(1)),
                 "[[], [1], [1, 1], [1], [1, 1, 1], [1], [1, 1], [1], [1, 1, 1, 1], [1], [1, 1], [1], [1, 1, 1], [1]," +
                 " [1, 1], [1], [1, 1, 1, 1, 1], [1], [1, 1], [1], ...]");
         try {
-            toList(P.bags(Collections.<Integer>singletonList(null)));
+            toList(EP.bags(Collections.<Integer>singletonList(null)));
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            toList(P.bags(Arrays.asList(1, null, 3)));
+            toList(EP.bags(Arrays.asList(1, null, 3)));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testStringBags_String() {
-        aeqit(P.stringBags(""), "[]");
-        aeq(length(P.stringBags("")), 1);
-        simpleProviderHelper(P.stringBags("a"),
+        aeqit(EP.stringBags(""), "[]");
+        aeq(length(EP.stringBags("")), 1);
+        simpleProviderHelper(EP.stringBags("a"),
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
                 " aaaaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaaaa, ...]");
-        simpleProviderHelper(P.stringBags("abc"),
+        simpleProviderHelper(EP.stringBags("abc"),
                 "[, a, aa, b, aaa, c, ab, aaaa, bb, aab, bc, aaaaa, ac, abb, aaab, abc, aaaaaa, cc, bbb, aabb, ...]");
-        simpleProviderHelper(P.stringBags("abbc"),
+        simpleProviderHelper(EP.stringBags("abbc"),
                 "[, a, aa, b, aaa, b, ab, c, aaaa, bb, aab, bb, aaaaa, ab, abb, ac, aaab, bc, abb, aaaaaa, ...]");
-        simpleProviderHelper(P.stringBags("Mississippi"),
+        simpleProviderHelper(EP.stringBags("Mississippi"),
                 "[, M, MM, i, MMM, s, Mi, s, MMMM, i, ii, s, MMi, s, is, i, MMMMM, p, Ms, p, ...]");
     }
 
     @Test
     public void testStringBags() {
-        simpleProviderHelper(P.stringBags(),
+        simpleProviderHelper(EP.stringBags(),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, bb, f, aab, g, bc, h, aaaaa, i, ac, j, ...]");
     }
 
     private static void bagsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.bagsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.bagsAtLeast(minSize, input), output);
     }
 
     private static void bagsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -8096,7 +8091,7 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void bagsAtLeast_fail_helper(int minSize, @NotNull String input) {
         try {
-            toList(P.bagsAtLeast(minSize, readIntegerListWithNulls(input)));
+            toList(EP.bagsAtLeast(minSize, readIntegerListWithNulls(input)));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -8187,17 +8182,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 1, 1, 1, 1, 1], [2, 2, 2], [1, 1, 2, 2], [2, 2, 2], [1, 1, 1, 1, 2], [2, 2, 2], [1, 1, 2, 2]," +
                 " [2, 2, 3], [1, 1, 1, 1, 1, 1, 1], [1, 1, 2], [1, 2, 2, 2], [1, 1, 3], [1, 1, 1, 2, 2], ...]");
 
-        bagsAtLeast_helper(0, P.naturalIntegers(),
+        bagsAtLeast_helper(0, EP.naturalIntegers(),
                 "[[], [0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 1], [5], [0, 0, 1], [6]," +
                 " [1, 2], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], ...]");
-        bagsAtLeast_helper(1, P.naturalIntegers(),
+        bagsAtLeast_helper(1, EP.naturalIntegers(),
                 "[[0], [0, 0], [1], [0, 0, 0], [2], [0, 1], [3], [0, 0, 0, 0], [4], [1, 1], [5], [0, 0, 1], [6]," +
                 " [1, 2], [7], [0, 0, 0, 0, 0], [8], [0, 2], [9], [0, 1, 1], ...]");
-        bagsAtLeast_helper(2, P.naturalIntegers(),
+        bagsAtLeast_helper(2, EP.naturalIntegers(),
                 "[[0, 0], [0, 0, 0], [0, 1], [0, 0, 0, 0], [1, 1], [0, 0, 1], [1, 2], [0, 0, 0, 0, 0], [0, 2]," +
                 " [0, 1, 1], [0, 3], [0, 0, 0, 1], [1, 3], [0, 1, 2], [1, 4], [0, 0, 0, 0, 0, 0], [2, 2], [1, 1, 1]," +
                 " [2, 3], [0, 0, 1, 1], ...]");
-        bagsAtLeast_helper(3, P.naturalIntegers(),
+        bagsAtLeast_helper(3, EP.naturalIntegers(),
                 "[[0, 0, 0], [0, 0, 0, 0], [0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 1], [0, 0, 0, 1], [0, 1, 2]," +
                 " [0, 0, 0, 0, 0, 0], [1, 1, 1], [0, 0, 1, 1], [1, 1, 2], [0, 0, 0, 0, 1], [1, 2, 2], [0, 0, 1, 2]," +
                 " [1, 2, 3], [0, 0, 0, 0, 0, 0, 0], [0, 0, 2], [0, 1, 1, 1], [0, 0, 3], [0, 0, 0, 1, 1], ...]");
@@ -8228,19 +8223,19 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringBagsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringBagsAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringBagsAtLeast_String() {
         stringBagsAtLeast_String_helper(0, "", "[]");
-        aeq(length(P.stringBagsAtLeast(0, "")), 1);
+        aeq(length(EP.stringBagsAtLeast(0, "")), 1);
         stringBagsAtLeast_String_helper(1, "", "[]");
-        aeq(length(P.stringBagsAtLeast(1, "")), 0);
+        aeq(length(EP.stringBagsAtLeast(1, "")), 0);
         stringBagsAtLeast_String_helper(2, "", "[]");
-        aeq(length(P.stringBagsAtLeast(2, "")), 0);
+        aeq(length(EP.stringBagsAtLeast(2, "")), 0);
         stringBagsAtLeast_String_helper(3, "", "[]");
-        aeq(length(P.stringBagsAtLeast(3, "")), 0);
+        aeq(length(EP.stringBagsAtLeast(3, "")), 0);
         stringBagsAtLeast_String_helper(0, "a",
                 "[, a, aa, aaa, aaaa, aaaaa, aaaaaa, aaaaaaa, aaaaaaaa, aaaaaaaaa, aaaaaaaaaa, aaaaaaaaaaa," +
                 " aaaaaaaaaaaa, aaaaaaaaaaaaa, aaaaaaaaaaaaaa, aaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaa, aaaaaaaaaaaaaaaaa," +
@@ -8290,17 +8285,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[MMM, MMMM, MMi, MMMMM, Mii, MMMi, Mis, MMMMMM, iii, MMii, iis, MMMMi, iss, MMis, iss, MMMMMMM," +
                 " MMs, Miii, MMs, MMMii, ...]");
         try {
-            P.stringBagsAtLeast(-1, "");
+            EP.stringBagsAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringBagsAtLeast(-1, "abc");
+            EP.stringBagsAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringBagsAtLeast_helper(int minSize, @NotNull String output) {
-        simpleProviderHelper(P.stringBagsAtLeast(minSize), output);
+        simpleProviderHelper(EP.stringBagsAtLeast(minSize), output);
     }
 
     @Test
@@ -8316,18 +8311,18 @@ public strictfp class ExhaustiveProviderTest {
                 "[aaa, aaaa, aab, aaaaa, abb, aaab, abc, aaaaaa, bbb, aabb, bbc, aaaab, bcc, aabc, bcd, aaaaaaa," +
                 " aac, abbb, aad, aaabb, ...]");
         try {
-            P.stringBagsAtLeast(-1);
+            EP.stringBagsAtLeast(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void subsetsLex_int_List_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.subsetsLex(size, readIntegerList(input)), output);
+        aeqit(EP.subsetsLex(size, readIntegerList(input)), output);
     }
 
     private static void subsetsLex_int_List_fail_helper(int size, @NotNull String input) {
         try {
-            P.subsetsLex(size, readIntegerListWithNulls(input));
+            EP.subsetsLex(size, readIntegerListWithNulls(input));
             fail();
         } catch (ArithmeticException | NullPointerException ignored) {}
     }
@@ -8359,12 +8354,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetPairsLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetPairsLex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetPairsLex(readIntegerList(input)), output);
     }
 
     private static void subsetPairsLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetPairsLex(readIntegerListWithNulls(input));
+            EP.subsetPairsLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8380,12 +8375,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetTriplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetTriplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetTriplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetTriplesLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetTriplesLex(readIntegerListWithNulls(input));
+            EP.subsetTriplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8401,12 +8396,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuadruplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuadruplesLex(readIntegerListWithNulls(input)), output);
+        simpleProviderHelper(EP.subsetQuadruplesLex(readIntegerListWithNulls(input)), output);
     }
 
     private static void subsetQuadruplesLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetQuadruplesLex(readIntegerListWithNulls(input));
+            EP.subsetQuadruplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8422,12 +8417,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuintuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuintuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetQuintuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetQuintuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetQuintuplesLex(readIntegerListWithNulls(input));
+            EP.subsetQuintuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8453,12 +8448,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSextuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSextuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetSextuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetSextuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetSextuplesLex(readIntegerListWithNulls(input));
+            EP.subsetSextuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8486,12 +8481,12 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSeptuplesLex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSeptuplesLex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetSeptuplesLex(readIntegerList(input)), output);
     }
 
     private static void subsetSeptuplesLex_fail_helper(@NotNull String input) {
         try {
-            P.subsetSeptuplesLex(readIntegerListWithNulls(input));
+            EP.subsetSeptuplesLex(readIntegerListWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8513,7 +8508,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsLex_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringSubsetsLex(size, input), output);
+        aeqit(EP.stringSubsetsLex(size, input), output);
     }
 
     private static void stringSubsetsLex_helper_limit(
@@ -8521,38 +8516,38 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsetsLex(size, input), output);
+        simpleProviderHelper(EP.stringSubsetsLex(size, input), output);
     }
 
     @Test
     public void testStringSubsetsLex_int_String() {
         stringSubsetsLex_helper(0, "", "[]");
-        aeq(length(P.stringSubsetsLex(0, "")), 1);
+        aeq(length(EP.stringSubsetsLex(0, "")), 1);
         stringSubsetsLex_helper(1, "", "[]");
-        aeq(length(P.stringSubsetsLex(1, "")), 0);
+        aeq(length(EP.stringSubsetsLex(1, "")), 0);
         stringSubsetsLex_helper(2, "", "[]");
-        aeq(length(P.stringSubsetsLex(2, "")), 0);
+        aeq(length(EP.stringSubsetsLex(2, "")), 0);
         stringSubsetsLex_helper(3, "", "[]");
-        aeq(length(P.stringSubsetsLex(3, "")), 0);
+        aeq(length(EP.stringSubsetsLex(3, "")), 0);
         stringSubsetsLex_helper(0, "a", "[]");
-        aeq(length(P.stringSubsetsLex(0, "a")), 1);
+        aeq(length(EP.stringSubsetsLex(0, "a")), 1);
         stringSubsetsLex_helper(1, "a", "[a]");
         stringSubsetsLex_helper(2, "a", "[]");
-        aeq(length(P.stringSubsetsLex(2, "a")), 0);
+        aeq(length(EP.stringSubsetsLex(2, "a")), 0);
         stringSubsetsLex_helper(3, "a", "[]");
-        aeq(length(P.stringSubsetsLex(3, "a")), 0);
+        aeq(length(EP.stringSubsetsLex(3, "a")), 0);
         stringSubsetsLex_helper(0, "abc", "[]");
-        aeq(length(P.stringSubsetsLex(0, "abc")), 1);
+        aeq(length(EP.stringSubsetsLex(0, "abc")), 1);
         stringSubsetsLex_helper(1, "abc", "[a, b, c]");
         stringSubsetsLex_helper(2, "abc", "[ab, ac, bc]");
         stringSubsetsLex_helper(3, "abc", "[abc]");
         stringSubsetsLex_helper(0, "abbc", "[]");
-        aeq(length(P.stringSubsetsLex(0, "abbc")), 1);
+        aeq(length(EP.stringSubsetsLex(0, "abbc")), 1);
         stringSubsetsLex_helper(1, "abbc", "[a, b, b, c]");
         stringSubsetsLex_helper(2, "abbc", "[ab, ab, ac, bb, bc, bc]");
         stringSubsetsLex_helper(3, "abbc", "[abb, abc, abc, bbc]");
         stringSubsetsLex_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.stringSubsetsLex(0, "Mississippi")), 1);
+        aeq(length(EP.stringSubsetsLex(0, "Mississippi")), 1);
         stringSubsetsLex_helper_limit(1, "Mississippi", "[M, i, i, i, i, p, p, s, s, s, s]");
         stringSubsetsLex_helper_limit(2, "Mississippi",
                 "[Mi, Mi, Mi, Mi, Mp, Mp, Ms, Ms, Ms, Ms, ii, ii, ii, ip, ip, is, is, is, is, ii, ...]");
@@ -8560,22 +8555,22 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
                 " Mip, ...]");
         try {
-            P.stringSubsetsLex(-1, "");
+            EP.stringSubsetsLex(-1, "");
             fail();
         } catch (ArithmeticException ignored) {}
         try {
-            P.stringSubsetsLex(-1, "abc");
+            EP.stringSubsetsLex(-1, "abc");
             fail();
         } catch (ArithmeticException ignored) {}
     }
 
     private static void subsetsLex_List_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.subsetsLex(readIntegerList(input)), output);
+        aeqit(EP.subsetsLex(readIntegerList(input)), output);
     }
 
     private static void subsetsLex_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetsLex(readIntegerListWithNulls(input)));
+            toList(EP.subsetsLex(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8597,24 +8592,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsetsLex_String() {
-        aeqit(P.stringSubsetsLex(""), "[]");
-        aeq(length(P.stringSubsetsLex("")), 1);
-        aeqit(P.stringSubsetsLex("a"), "[, a]");
-        aeqit(P.stringSubsetsLex("abc"), "[, a, ab, abc, ac, b, bc, c]");
-        aeqit(P.stringSubsetsLex("abcd"), "[, a, ab, abc, abcd, abd, ac, acd, ad, b, bc, bcd, bd, c, cd, d]");
-        aeqit(P.stringSubsetsLex("abbc"), "[, a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
-        simpleProviderHelper(P.stringSubsetsLex("Mississippi"),
+        aeqit(EP.stringSubsetsLex(""), "[]");
+        aeq(length(EP.stringSubsetsLex("")), 1);
+        aeqit(EP.stringSubsetsLex("a"), "[, a]");
+        aeqit(EP.stringSubsetsLex("abc"), "[, a, ab, abc, ac, b, bc, c]");
+        aeqit(EP.stringSubsetsLex("abcd"), "[, a, ab, abc, abcd, abd, ac, acd, ad, b, bc, bcd, bd, c, cd, d]");
+        aeqit(EP.stringSubsetsLex("abbc"), "[, a, ab, abb, abbc, abc, ab, abc, ac, b, bb, bbc, bc, b, bc, c]");
+        simpleProviderHelper(EP.stringSubsetsLex("Mississippi"),
                 "[, M, Mi, Mii, Miii, Miiii, Miiiip, Miiiipp, Miiiipps, Miiiippss, Miiiippsss, Miiiippssss," +
                 " Miiiippsss, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, ...]");
     }
 
     private static void subsetsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(P.subsetsLexAtLeast(minSize, readIntegerList(input)), output);
+        aeqit(EP.subsetsLexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     private static void subsetsLexAtLeast_fail_helper(int minSize, @NotNull String input) {
         try {
-            toList(P.subsetsLexAtLeast(minSize, readIntegerListWithNulls(input)));
+            toList(EP.subsetsLexAtLeast(minSize, readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
@@ -8665,7 +8660,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsLexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringSubsetsLexAtLeast(minSize, input), output);
+        aeqit(EP.stringSubsetsLexAtLeast(minSize, input), output);
     }
 
     private static void stringSubsetsLexAtLeast_helper_limit(
@@ -8673,25 +8668,25 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsetsLexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringSubsetsLexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringSubsetsLexAtLeast_int_String() {
         stringSubsetsLexAtLeast_helper(0, "", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(0, "")), 1);
+        aeq(length(EP.stringSubsetsLexAtLeast(0, "")), 1);
         stringSubsetsLexAtLeast_helper(1, "", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(1, "")), 0);
+        aeq(length(EP.stringSubsetsLexAtLeast(1, "")), 0);
         stringSubsetsLexAtLeast_helper(2, "", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(2, "")), 0);
+        aeq(length(EP.stringSubsetsLexAtLeast(2, "")), 0);
         stringSubsetsLexAtLeast_helper(3, "", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(3, "")), 0);
+        aeq(length(EP.stringSubsetsLexAtLeast(3, "")), 0);
         stringSubsetsLexAtLeast_helper(0, "a", "[, a]");
         stringSubsetsLexAtLeast_helper(1, "a", "[a]");
         stringSubsetsLexAtLeast_helper(2, "a", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(2, "a")), 0);
+        aeq(length(EP.stringSubsetsLexAtLeast(2, "a")), 0);
         stringSubsetsLexAtLeast_helper(3, "a", "[]");
-        aeq(length(P.stringSubsetsLexAtLeast(3, "a")), 0);
+        aeq(length(EP.stringSubsetsLexAtLeast(3, "a")), 0);
         stringSubsetsLexAtLeast_helper(0, "abc", "[, a, ab, abc, ac, b, bc, c]");
         stringSubsetsLexAtLeast_helper(1, "abc", "[a, ab, abc, ac, b, bc, c]");
         stringSubsetsLexAtLeast_helper(2, "abc", "[ab, abc, ac, bc]");
@@ -8716,22 +8711,22 @@ public strictfp class ExhaustiveProviderTest {
                 " Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss, Miiiippsss, Miiiippss, Miiiipps, Miiiippss," +
                 " Miiiipps, ...]");
         try {
-            P.stringSubsetsLexAtLeast(-1, "");
+            EP.stringSubsetsLexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringSubsetsLexAtLeast(-1, "abc");
+            EP.stringSubsetsLexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void subsetsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetsShortlex(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetsShortlex(readIntegerList(input)), output);
     }
 
     private static void subsetsShortlex_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetsShortlex(readIntegerListWithNulls(input)));
+            toList(EP.subsetsShortlex(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8749,13 +8744,13 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsShortlex_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringSubsetsShortlex(input), output);
+        simpleProviderHelper(EP.stringSubsetsShortlex(input), output);
     }
 
     @Test
     public void testStringSubsetsShortlex() {
         stringSubsetsShortlex_helper("", "[]");
-        aeq(length(P.stringSubsetsShortlex("")), 1);
+        aeq(length(EP.stringSubsetsShortlex("")), 1);
         stringSubsetsShortlex_helper("a", "[, a]");
         stringSubsetsShortlex_helper("abc", "[, a, b, c, ab, ac, bc, abc]");
         stringSubsetsShortlex_helper("abbc","[, a, b, b, c, ab, ab, ac, bb, bc, bc, abb, abc, abc, bbc, abbc]");
@@ -8764,7 +8759,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetsShortlexAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetsShortlexAtLeast(minSize, readIntegerList(input)), output);
     }
 
     @Test
@@ -8785,19 +8780,19 @@ public strictfp class ExhaustiveProviderTest {
         subsetsShortlexAtLeast_helper(3, "[1, 2, 3]", "[[1, 2, 3]]");
 
         try {
-            P.subsetsShortlexAtLeast(-1, Collections.<Integer>emptyList());
+            EP.subsetsShortlexAtLeast(-1, Collections.<Integer>emptyList());
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.subsetsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
+            EP.subsetsShortlexAtLeast(-1, Arrays.asList(1, 2, 3));
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            toList(P.subsetsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
+            toList(EP.subsetsShortlexAtLeast(1, Arrays.asList(1, null, 3)));
             fail();
         } catch (NullPointerException ignored) {}
         try {
-            toList(P.subsetsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
+            toList(EP.subsetsShortlexAtLeast(1, Collections.<Integer>singletonList(null)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8807,19 +8802,19 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsetsShortlexAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringSubsetsShortlexAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringSubsetsShortlexAtLeast() {
         stringSubsetsShortlexAtLeast_helper(0, "", "[]");
-        aeq(length(P.stringSubsetsShortlexAtLeast(0, "")), 1);
+        aeq(length(EP.stringSubsetsShortlexAtLeast(0, "")), 1);
         stringSubsetsShortlexAtLeast_helper(1, "", "[]");
-        aeq(length(P.stringSubsetsShortlexAtLeast(1, "")), 0);
+        aeq(length(EP.stringSubsetsShortlexAtLeast(1, "")), 0);
         stringSubsetsShortlexAtLeast_helper(2, "", "[]");
-        aeq(length(P.stringSubsetsShortlexAtLeast(2, "")), 0);
+        aeq(length(EP.stringSubsetsShortlexAtLeast(2, "")), 0);
         stringSubsetsShortlexAtLeast_helper(3, "", "[]");
-        aeq(length(P.stringSubsetsShortlexAtLeast(3, "")), 0);
+        aeq(length(EP.stringSubsetsShortlexAtLeast(3, "")), 0);
         stringSubsetsShortlexAtLeast_helper(0, "a", "[, a]");
         stringSubsetsShortlexAtLeast_helper(1, "a", "[a]");
         stringSubsetsShortlexAtLeast_helper(2, "a", "[]");
@@ -8844,17 +8839,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mii, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mii, Mip, Mip, Mis, Mis, Mis, Mis, Mii, Mip," +
                 " Mip, ...]");
         try {
-            P.stringSubsetsShortlexAtLeast(-1, "");
+            EP.stringSubsetsShortlexAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringSubsetsShortlexAtLeast(-1, "abc");
+            EP.stringSubsetsShortlexAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void subsets_int_Iterable_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.subsets(size, readIntegerList(input)), output);
+        aeqit(EP.subsets(size, readIntegerList(input)), output);
     }
 
     private static void subsets_int_Iterable_helper(
@@ -8862,12 +8857,12 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.subsets(size, input), output);
+        simpleProviderHelper(EP.subsets(size, input), output);
     }
 
     private static void subsets_int_Iterable_fail_helper(int size, @NotNull String input) {
         try {
-            toList(P.subsets(size, readIntegerListWithNulls(input)));
+            toList(EP.subsets(size, readIntegerListWithNulls(input)));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -8890,14 +8885,14 @@ public strictfp class ExhaustiveProviderTest {
         subsets_int_Iterable_helper(1, "[1, 2, 2, 3]", "[[1], [2], [2], [3]]");
         subsets_int_Iterable_helper(2, "[1, 2, 2, 3]", "[[1, 2], [1, 2], [2, 2], [2, 3], [1, 3], [2, 3]]");
         subsets_int_Iterable_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
-        subsets_int_Iterable_helper(0, P.positiveIntegers(), "[[]]");
-        subsets_int_Iterable_helper(1, P.positiveIntegers(),
+        subsets_int_Iterable_helper(0, EP.positiveIntegers(), "[[]]");
+        subsets_int_Iterable_helper(1, EP.positiveIntegers(),
                 "[[1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15], [16], [17], [18]," +
                 " [19], [20], ...]");
-        subsets_int_Iterable_helper(2, P.positiveIntegers(),
+        subsets_int_Iterable_helper(2, EP.positiveIntegers(),
                 "[[1, 2], [1, 3], [2, 3], [2, 4], [1, 4], [1, 5], [2, 5], [2, 6], [3, 4], [3, 5], [4, 5], [4, 6]," +
                 " [3, 6], [3, 7], [4, 7], [4, 8], [1, 6], [1, 7], [2, 7], [2, 8], ...]");
-        subsets_int_Iterable_helper(3, P.positiveIntegers(),
+        subsets_int_Iterable_helper(3, EP.positiveIntegers(),
                 "[[1, 2, 3], [1, 2, 4], [1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [2, 4, 6], [1, 2, 5]," +
                 " [1, 2, 6], [1, 3, 6], [1, 3, 7], [2, 3, 6], [2, 3, 7], [2, 4, 7], [2, 4, 8], [1, 4, 5], [1, 4, 6]," +
                 " [1, 5, 6], [1, 5, 7], ...]");
@@ -8919,16 +8914,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetPairs_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetPairs(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetPairs(readIntegerList(input)), output);
     }
 
     private static void subsetPairs_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetPairs(input), output);
+        simpleProviderHelper(EP.subsetPairs(input), output);
     }
 
     private static void subsetPairs_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetPairs(readIntegerListWithNulls(input)));
+            toList(EP.subsetPairs(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8939,7 +8934,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetPairs_helper("[5]", "[]");
         subsetPairs_helper("[1, 2, 3, 4]", "[(1, 2), (1, 3), (2, 3), (2, 4), (1, 4), (3, 4)]");
         subsetPairs_helper("[1, 2, 2, 4]", "[(1, 2), (1, 2), (2, 2), (2, 4), (1, 4), (2, 4)]");
-        subsetPairs_helper(P.naturalIntegers(),
+        subsetPairs_helper(EP.naturalIntegers(),
                 "[(0, 1), (0, 2), (1, 2), (1, 3), (0, 3), (0, 4), (1, 4), (1, 5), (2, 3), (2, 4), (3, 4), (3, 5)," +
                 " (2, 5), (2, 6), (3, 6), (3, 7), (0, 5), (0, 6), (1, 6), (1, 7), ...]");
         subsetPairs_helper(repeat(1),
@@ -8949,16 +8944,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetTriples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetTriples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetTriples(readIntegerList(input)), output);
     }
 
     private static void subsetTriples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetTriples(input), output);
+        simpleProviderHelper(EP.subsetTriples(input), output);
     }
 
     private static void subsetTriples_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetTriples(readIntegerListWithNulls(input)));
+            toList(EP.subsetTriples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -8969,7 +8964,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetTriples_helper("[5]", "[]");
         subsetTriples_helper("[1, 2, 3, 4]", "[(1, 2, 3), (1, 2, 4), (1, 3, 4), (2, 3, 4)]");
         subsetTriples_helper("[1, 2, 2, 4]", "[(1, 2, 2), (1, 2, 4), (1, 2, 4), (2, 2, 4)]");
-        subsetTriples_helper(P.naturalIntegers(),
+        subsetTriples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2), (0, 1, 3), (0, 2, 3), (0, 2, 4), (1, 2, 3), (1, 2, 4), (1, 3, 4), (1, 3, 5), (0, 1, 4)," +
                 " (0, 1, 5), (0, 2, 5), (0, 2, 6), (1, 2, 5), (1, 2, 6), (1, 3, 6), (1, 3, 7), (0, 3, 4), (0, 3, 5)," +
                 " (0, 4, 5), (0, 4, 6), ...]");
@@ -8981,16 +8976,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuadruples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuadruples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetQuadruples(readIntegerList(input)), output);
     }
 
     private static void subsetQuadruples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuadruples(input), output);
+        simpleProviderHelper(EP.subsetQuadruples(input), output);
     }
 
     private static void subsetQuadruples_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetQuadruples(readIntegerListWithNulls(input)));
+            toList(EP.subsetQuadruples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -9001,7 +8996,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetQuadruples_helper("[5]", "[]");
         subsetQuadruples_helper("[1, 2, 3, 4]", "[(1, 2, 3, 4)]");
         subsetQuadruples_helper("[1, 2, 2, 4]", "[(1, 2, 2, 4)]");
-        subsetQuadruples_helper(P.naturalIntegers(),
+        subsetQuadruples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3), (0, 1, 2, 4), (0, 1, 3, 4), (0, 1, 3, 5), (0, 2, 3, 4), (0, 2, 3, 5), (0, 2, 4, 5)," +
                 " (0, 2, 4, 6), (1, 2, 3, 4), (1, 2, 3, 5), (1, 2, 4, 5), (1, 2, 4, 6), (1, 3, 4, 5), (1, 3, 4, 6)," +
                 " (1, 3, 5, 6), (1, 3, 5, 7), (0, 1, 2, 5), (0, 1, 2, 6), (0, 1, 3, 6), (0, 1, 3, 7), ...]");
@@ -9013,16 +9008,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetQuintuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuintuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetQuintuples(readIntegerList(input)), output);
     }
 
     private static void subsetQuintuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetQuintuples(input), output);
+        simpleProviderHelper(EP.subsetQuintuples(input), output);
     }
 
     private static void subsetQuintuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetQuintuples(readIntegerListWithNulls(input)));
+            toList(EP.subsetQuintuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -9042,7 +9037,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 2, 4, 5, 7), (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 4, 5, 6), (1, 2, 4, 5, 7)," +
                 " (1, 2, 4, 6, 7), (1, 2, 4, 6, 8), (1, 2, 5, 6, 7), (1, 2, 5, 6, 8), (1, 2, 5, 7, 8)," +
                 " (2, 2, 4, 5, 6), (2, 2, 4, 5, 7), (2, 2, 4, 6, 7), (2, 2, 4, 6, 8), (2, 2, 5, 6, 7), ...]");
-        subsetQuintuples_helper(P.naturalIntegers(),
+        subsetQuintuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4), (0, 1, 2, 3, 5), (0, 1, 2, 4, 5), (0, 1, 2, 4, 6), (0, 1, 3, 4, 5)," +
                 " (0, 1, 3, 4, 6), (0, 1, 3, 5, 6), (0, 1, 3, 5, 7), (0, 2, 3, 4, 5), (0, 2, 3, 4, 6)," +
                 " (0, 2, 3, 5, 6), (0, 2, 3, 5, 7), (0, 2, 4, 5, 6), (0, 2, 4, 5, 7), (0, 2, 4, 6, 7)," +
@@ -9056,16 +9051,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSextuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSextuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetSextuples(readIntegerList(input)), output);
     }
 
     private static void subsetSextuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSextuples(input), output);
+        simpleProviderHelper(EP.subsetSextuples(input), output);
     }
 
     private static void subsetSextuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetSextuples(readIntegerListWithNulls(input)));
+            toList(EP.subsetSextuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -9087,7 +9082,7 @@ public strictfp class ExhaustiveProviderTest {
                 " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 4, 5, 6, 7)," +
                 " (1, 2, 4, 5, 6, 8), (1, 2, 4, 5, 7, 8), (1, 2, 4, 6, 7, 8), (1, 2, 5, 6, 7, 8)," +
                 " (2, 2, 4, 5, 6, 7), (2, 2, 4, 5, 6, 8), (2, 2, 4, 5, 7, 8), (2, 2, 4, 6, 7, 8), ...]");
-        subsetSextuples_helper(P.naturalIntegers(),
+        subsetSextuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4, 5), (0, 1, 2, 3, 4, 6), (0, 1, 2, 3, 5, 6), (0, 1, 2, 3, 5, 7)," +
                 " (0, 1, 2, 4, 5, 6), (0, 1, 2, 4, 5, 7), (0, 1, 2, 4, 6, 7), (0, 1, 2, 4, 6, 8)," +
                 " (0, 1, 3, 4, 5, 6), (0, 1, 3, 4, 5, 7), (0, 1, 3, 4, 6, 7), (0, 1, 3, 4, 6, 8)," +
@@ -9103,16 +9098,16 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void subsetSeptuples_helper(@NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSeptuples(readIntegerList(input)), output);
+        simpleProviderHelper(EP.subsetSeptuples(readIntegerList(input)), output);
     }
 
     private static void subsetSeptuples_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetSeptuples(input), output);
+        simpleProviderHelper(EP.subsetSeptuples(input), output);
     }
 
     private static void subsetSeptuples_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsetSeptuples(readIntegerListWithNulls(input)));
+            toList(EP.subsetSeptuples(readIntegerListWithNulls(input)));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -9128,7 +9123,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetSeptuples_helper("[1, 2, 2, 4, 5, 6, 7, 8]",
                 "[(1, 2, 2, 4, 5, 6, 7), (1, 2, 2, 4, 5, 6, 8), (1, 2, 2, 4, 5, 7, 8), (1, 2, 2, 4, 6, 7, 8)," +
                 " (1, 2, 2, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (1, 2, 4, 5, 6, 7, 8), (2, 2, 4, 5, 6, 7, 8)]");
-        subsetSeptuples_helper(P.naturalIntegers(),
+        subsetSeptuples_helper(EP.naturalIntegers(),
                 "[(0, 1, 2, 3, 4, 5, 6), (0, 1, 2, 3, 4, 5, 7), (0, 1, 2, 3, 4, 6, 7), (0, 1, 2, 3, 4, 6, 8)," +
                 " (0, 1, 2, 3, 5, 6, 7), (0, 1, 2, 3, 5, 6, 8), (0, 1, 2, 3, 5, 7, 8), (0, 1, 2, 3, 5, 7, 9)," +
                 " (0, 1, 2, 4, 5, 6, 7), (0, 1, 2, 4, 5, 6, 8), (0, 1, 2, 4, 5, 7, 8), (0, 1, 2, 4, 5, 7, 9)," +
@@ -9144,7 +9139,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsets_int_String_helper(int size, @NotNull String input, @NotNull String output) {
-        aeqit(P.stringSubsets(size, input), output);
+        aeqit(EP.stringSubsets(size, input), output);
     }
 
     private static void stringSubsets_int_String_helper_limit(
@@ -9152,37 +9147,37 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsets(size, input), output);
+        simpleProviderHelper(EP.stringSubsets(size, input), output);
     }
 
     @Test
     public void testStringSubsets_int_String() {
         stringSubsets_int_String_helper(0, "", "[]");
-        aeq(length(P.stringSubsets(0, "")), 1);
+        aeq(length(EP.stringSubsets(0, "")), 1);
         stringSubsets_int_String_helper(1, "", "[]");
-        aeq(length(P.stringSubsets(1, "")), 0);
+        aeq(length(EP.stringSubsets(1, "")), 0);
         stringSubsets_int_String_helper(2, "", "[]");
-        aeq(length(P.stringSubsets(2, "")), 0);
+        aeq(length(EP.stringSubsets(2, "")), 0);
         stringSubsets_int_String_helper(3, "", "[]");
-        aeq(length(P.stringSubsets(3, "")), 0);
+        aeq(length(EP.stringSubsets(3, "")), 0);
         stringSubsets_int_String_helper(0, "a", "[]");
         stringSubsets_int_String_helper(1, "a", "[a]");
         stringSubsets_int_String_helper(2, "a", "[]");
-        aeq(length(P.stringSubsets(2, "a")), 0);
+        aeq(length(EP.stringSubsets(2, "a")), 0);
         stringSubsets_int_String_helper(3, "a", "[]");
-        aeq(length(P.stringSubsets(3, "a")), 0);
+        aeq(length(EP.stringSubsets(3, "a")), 0);
         stringSubsets_int_String_helper(0, "abc", "[]");
-        aeq(length(P.stringSubsets(0, "abc")), 1);
+        aeq(length(EP.stringSubsets(0, "abc")), 1);
         stringSubsets_int_String_helper(1, "abc", "[a, b, c]");
         stringSubsets_int_String_helper(2, "abc", "[ab, ac, bc]");
         stringSubsets_int_String_helper(3, "abc", "[abc]");
         stringSubsets_int_String_helper(0, "abbc", "[]");
-        aeq(length(P.stringSubsets(0, "abbc")), 1);
+        aeq(length(EP.stringSubsets(0, "abbc")), 1);
         stringSubsets_int_String_helper(1, "abbc", "[a, b, b, c]");
         stringSubsets_int_String_helper(2, "abbc", "[ab, ab, bb, bc, ac, bc]");
         stringSubsets_int_String_helper(3, "abbc", "[abb, abc, abc, bbc]");
         stringSubsets_int_String_helper_limit(0, "Mississippi", "[]");
-        aeq(length(P.stringSubsets(0, "Mississippi")), 1);
+        aeq(length(EP.stringSubsets(0, "Mississippi")), 1);
         stringSubsets_int_String_helper_limit(1, "Mississippi", "[M, i, s, s, i, s, s, i, p, p, i]");
         stringSubsets_int_String_helper_limit(2, "Mississippi",
                 "[Mi, Ms, is, is, Ms, Mi, ii, is, ss, is, is, ss, ss, ss, ss, is, Ms, Ms, is, ii, ...]");
@@ -9190,23 +9185,23 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Mis, Mss, Mis, iss, iis, iis, iss, Mii, Mis, Mss, Mss, iss, iss, iss, iis, Mis, Mss, Mis," +
                 " Mis, ...]");
         try {
-            P.stringSubsets(-1, "");
+            EP.stringSubsets(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringSubsets(-1, "abc");
+            EP.stringSubsets(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringSubsets_int_helper(int size, @NotNull String output) {
-        simpleProviderHelper(P.stringSubsets(size), output);
+        simpleProviderHelper(EP.stringSubsets(size), output);
     }
 
     @Test
     public void testStringSubsets_int() {
         stringSubsets_int_helper(0, "[]");
-        aeq(length(P.stringSubsets(0)), 1);
+        aeq(length(EP.stringSubsets(0)), 1);
         stringSubsets_int_helper(1, "[a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, ...]");
         stringSubsets_int_helper(2,
                 "[ab, ac, bc, bd, ad, ae, be, bf, cd, ce, de, df, cf, cg, dg, dh, af, ag, bg, bh, ...]");
@@ -9214,13 +9209,13 @@ public strictfp class ExhaustiveProviderTest {
                 "[abc, abd, acd, ace, bcd, bce, bde, bdf, abe, abf, acf, acg, bcf, bcg, bdg, bdh, ade, adf, aef," +
                 " aeg, ...]");
         try {
-            P.stringSubsets(-1);
+            EP.stringSubsets(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void subsets_Iterable_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsets(input), output);
+        simpleProviderHelper(EP.subsets(input), output);
     }
 
     private static void subsets_Iterable_helper(@NotNull String input, @NotNull String output) {
@@ -9229,7 +9224,7 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void subsets_Iterable_fail_helper(@NotNull String input) {
         try {
-            toList(P.subsets(readIntegerListWithNulls(input)));
+            toList(EP.subsets(readIntegerListWithNulls(input)));
         } catch (NullPointerException ignored) {}
     }
 
@@ -9241,7 +9236,7 @@ public strictfp class ExhaustiveProviderTest {
         subsets_Iterable_helper("[1, 2, 2, 3]",
                 "[[], [1], [1, 2], [2], [1, 2, 2], [2], [1, 2], [3], [1, 2, 2, 3], [2, 2], [1, 2, 3], [2, 3]," +
                 " [1, 3], [1, 2, 3], [2, 3], [2, 2, 3]]");
-        subsets_Iterable_helper(P.naturalIntegers(),
+        subsets_Iterable_helper(EP.naturalIntegers(),
                 "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
                 " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
         subsets_Iterable_helper(repeat(1),
@@ -9253,24 +9248,24 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testStringSubsets_String() {
-        aeqit(P.stringSubsets(""), "[]");
-        aeq(length(P.stringSubsets("")), 1);
-        simpleProviderHelper(P.stringSubsets("a"), "[, a]");
-        simpleProviderHelper(P.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
-        simpleProviderHelper(P.stringSubsets("abbc"),
+        aeqit(EP.stringSubsets(""), "[]");
+        aeq(length(EP.stringSubsets("")), 1);
+        simpleProviderHelper(EP.stringSubsets("a"), "[, a]");
+        simpleProviderHelper(EP.stringSubsets("abc"), "[, a, ab, b, abc, c, ac, bc]");
+        simpleProviderHelper(EP.stringSubsets("abbc"),
                 "[, a, ab, b, abb, b, ab, c, abbc, bb, abc, bc, ac, abc, bc, bbc]");
-        simpleProviderHelper(P.stringSubsets("Mississippi"),
+        simpleProviderHelper(EP.stringSubsets("Mississippi"),
                 "[, M, Mi, i, Mis, s, Ms, s, Miss, i, is, s, Mis, s, is, i, Miiss, p, Ms, p, ...]");
     }
 
     @Test
     public void testStringSubsets() {
-        simpleProviderHelper(P.stringSubsets(),
+        simpleProviderHelper(EP.stringSubsets(),
                 "[, a, ab, b, abc, c, ac, d, abcd, e, bc, f, abd, g, bd, h, abcde, i, ad, j, ...]");
     }
 
     private static void subsetsAtLeast_helper(int minSize, @NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(P.subsetsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.subsetsAtLeast(minSize, input), output);
     }
 
     private static void subsetsAtLeast_helper(int minSize, @NotNull String input, @NotNull String output) {
@@ -9279,7 +9274,7 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void subsetsAtLeast_fail_helper(int minSize, @NotNull String input) {
         try {
-            toList(P.subsetsAtLeast(minSize, readIntegerListWithNulls(input)));
+            toList(EP.subsetsAtLeast(minSize, readIntegerListWithNulls(input)));
             fail();
         } catch (IllegalArgumentException | NullPointerException ignored) {}
     }
@@ -9312,17 +9307,17 @@ public strictfp class ExhaustiveProviderTest {
                 " [2, 2, 3]]");
         subsetsAtLeast_helper(3, "[1, 2, 2, 3]", "[[1, 2, 2], [1, 2, 2, 3], [1, 2, 3], [1, 2, 3], [2, 2, 3]]");
 
-        subsetsAtLeast_helper(0, P.naturalIntegers(),
+        subsetsAtLeast_helper(0, EP.naturalIntegers(),
                 "[[], [0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
                 " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], ...]");
-        subsetsAtLeast_helper(1, P.naturalIntegers(),
+        subsetsAtLeast_helper(1, EP.naturalIntegers(),
                 "[[0], [0, 1], [1], [0, 1, 2], [2], [0, 2], [3], [0, 1, 2, 3], [4], [1, 2], [5], [0, 1, 3], [6]," +
                 " [1, 3], [7], [0, 1, 2, 3, 4], [8], [0, 3], [9], [0, 2, 3], ...]");
-        subsetsAtLeast_helper(2, P.naturalIntegers(),
+        subsetsAtLeast_helper(2, EP.naturalIntegers(),
                 "[[0, 1], [0, 1, 2], [0, 2], [0, 1, 2, 3], [1, 2], [0, 1, 3], [1, 3], [0, 1, 2, 3, 4], [0, 3]," +
                 " [0, 2, 3], [0, 4], [0, 1, 2, 4], [1, 4], [0, 2, 4], [1, 5], [0, 1, 2, 3, 4, 5], [2, 3], [1, 2, 3]," +
                 " [2, 4], [0, 1, 3, 4], ...]");
-        subsetsAtLeast_helper(3, P.naturalIntegers(),
+        subsetsAtLeast_helper(3, EP.naturalIntegers(),
                 "[[0, 1, 2], [0, 1, 2, 3], [0, 1, 3], [0, 1, 2, 3, 4], [0, 2, 3], [0, 1, 2, 4], [0, 2, 4]," +
                 " [0, 1, 2, 3, 4, 5], [1, 2, 3], [0, 1, 3, 4], [1, 2, 4], [0, 1, 2, 3, 5], [1, 3, 4], [0, 1, 3, 5]," +
                 " [1, 3, 5], [0, 1, 2, 3, 4, 5, 6], [0, 1, 4], [0, 2, 3, 4], [0, 1, 5], [0, 1, 2, 4, 5], ...]");
@@ -9353,19 +9348,19 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsetsAtLeast(minSize, input), output);
+        simpleProviderHelper(EP.stringSubsetsAtLeast(minSize, input), output);
     }
 
     @Test
     public void testStringSubsetsAtLeast_String() {
         stringSubsetsAtLeast_String_helper(0, "", "[]");
-        aeq(length(P.stringSubsetsAtLeast(0, "")), 1);
+        aeq(length(EP.stringSubsetsAtLeast(0, "")), 1);
         stringSubsetsAtLeast_String_helper(1, "", "[]");
-        aeq(length(P.stringSubsetsAtLeast(1, "")), 0);
+        aeq(length(EP.stringSubsetsAtLeast(1, "")), 0);
         stringSubsetsAtLeast_String_helper(2, "", "[]");
-        aeq(length(P.stringSubsetsAtLeast(2, "")), 0);
+        aeq(length(EP.stringSubsetsAtLeast(2, "")), 0);
         stringSubsetsAtLeast_String_helper(3, "", "[]");
-        aeq(length(P.stringSubsetsAtLeast(3, "")), 0);
+        aeq(length(EP.stringSubsetsAtLeast(3, "")), 0);
         stringSubsetsAtLeast_String_helper(0, "a", "[, a]");
         stringSubsetsAtLeast_String_helper(1, "a", "[a]");
         stringSubsetsAtLeast_String_helper(2, "a", "[]");
@@ -9391,17 +9386,17 @@ public strictfp class ExhaustiveProviderTest {
                 "[Mis, Miss, Mis, Miiss, Mss, Miis, Mis, Miisss, iss, Miis, iis, Misss, iis, Miss, iss, Miissss," +
                 " Mii, Miss, Mis, Miiss, ...]");
         try {
-            P.stringSubsetsAtLeast(-1, "");
+            EP.stringSubsetsAtLeast(-1, "");
             fail();
         } catch (IllegalArgumentException ignored) {}
         try {
-            P.stringSubsetsAtLeast(-1, "abc");
+            EP.stringSubsetsAtLeast(-1, "abc");
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void stringSubsetsAtLeast_helper(int minSize, @NotNull String output) {
-        simpleProviderHelper(P.stringSubsetsAtLeast(minSize), output);
+        simpleProviderHelper(EP.stringSubsetsAtLeast(minSize), output);
     }
 
     @Test
@@ -9417,18 +9412,18 @@ public strictfp class ExhaustiveProviderTest {
                 "[abc, abcd, abd, abcde, acd, abce, ace, abcdef, bcd, abde, bce, abcdf, bde, abdf, bdf, abcdefg," +
                 " abe, acde, abf, abcef, ...]");
         try {
-            P.stringSubsetsAtLeast(-1);
+            EP.stringSubsetsAtLeast(-1);
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
 
     private static void cartesianProduct_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.cartesianProduct(readIntegerListWithNullsLists(input)), output);
+        aeqit(EP.cartesianProduct(readIntegerListWithNullsLists(input)), output);
     }
 
     private static void cartesianProduct_fail_helper(@NotNull String input) {
         try {
-            P.cartesianProduct(readIntegerListWithNullsListsWithNulls(input));
+            EP.cartesianProduct(readIntegerListWithNullsListsWithNulls(input));
             fail();
         } catch (NullPointerException ignored) {}
     }
@@ -9454,7 +9449,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void repeatingIterables_helper(@NotNull Iterable<Integer> input, @NotNull String output) {
-        simpleProviderHelper(map(Testing::its, P.repeatingIterables(input)), output);
+        simpleProviderHelper(map(Testing::its, EP.repeatingIterables(input)), output);
     }
 
     private static void repeatingIterables_helper(@NotNull String input, @NotNull String output) {
@@ -9463,7 +9458,7 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void repeatingIterables_fail_helper(@NotNull String input) {
         try {
-            P.repeatingIterables(readIntegerListWithNulls(input));
+            EP.repeatingIterables(readIntegerListWithNulls(input));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -9559,7 +9554,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, 4, 4, null, null, ...]," +
                 " [4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, -5, 4, 4, ...], ...]");
         repeatingIterables_helper(
-                P.naturalIntegers(),
+                EP.naturalIntegers(),
                 "[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ...]," +
                 " [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...]," +
                 " [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, ...]," +
@@ -9589,7 +9584,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> xs,
             @NotNull String output
     ) {
-        simpleProviderHelper(map(Testing::its, P.repeatingIterablesDistinctAtLeast(minSize, xs)), output);
+        simpleProviderHelper(map(Testing::its, EP.repeatingIterablesDistinctAtLeast(minSize, xs)), output);
     }
 
     private static void repeatingIterablesDistinctAtLeast_helper(
@@ -9602,7 +9597,7 @@ public strictfp class ExhaustiveProviderTest {
 
     private static void repeatingIterablesDistinctAtLeast_fail_helper(int minSize, @NotNull String xs) {
         try {
-            P.repeatingIterablesDistinctAtLeast(minSize, readIntegerListWithNulls(xs));
+            EP.repeatingIterablesDistinctAtLeast(minSize, readIntegerListWithNulls(xs));
             fail();
         } catch (IllegalArgumentException ignored) {}
     }
@@ -9719,7 +9714,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4, null, null, -5, 4," +
                 " ...], [4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, 4, null, -5, -5, ...]," +
                 " [null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, null, 4, -5, -5, ...], ...]");
-        repeatingIterablesDistinctAtLeast_helper(2, P.naturalIntegers(),
+        repeatingIterablesDistinctAtLeast_helper(2, EP.naturalIntegers(),
                 "[[0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, ...]," +
                 " [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, ...]," +
                 " [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, ...]," +
@@ -9740,7 +9735,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, ...]," +
                 " [1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, ...]," +
                 " [2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, ...], ...]");
-        repeatingIterablesDistinctAtLeast_helper(5, P.naturalIntegers(),
+        repeatingIterablesDistinctAtLeast_helper(5, EP.naturalIntegers(),
                 "[[0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, ...]," +
                 " [0, 1, 2, 3, 5, 0, 1, 2, 3, 5, 0, 1, 2, 3, 5, 0, 1, 2, 3, 5, ...]," +
                 " [0, 1, 3, 2, 4, 0, 1, 3, 2, 4, 0, 1, 3, 2, 4, 0, 1, 3, 2, 4, ...]," +
@@ -9767,7 +9762,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void sublists_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.sublists(readIntegerListWithNulls(input)), output);
+        aeqit(EP.sublists(readIntegerListWithNulls(input)), output);
     }
 
     @Test
@@ -9784,7 +9779,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void substrings_helper(@NotNull String input, @NotNull String output) {
-        aeqit(P.substrings(input), output);
+        aeqit(EP.substrings(input), output);
     }
 
     @Test
@@ -9804,7 +9799,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.listsWithElement(x, input), output);
+        simpleProviderHelper(EP.listsWithElement(x, input), output);
     }
 
     private static void listsWithElement_helper(@Nullable Integer x, @NotNull String input, @NotNull String output) {
@@ -9827,12 +9822,12 @@ public strictfp class ExhaustiveProviderTest {
                 "[[0], [0, 0], [1, 0], [1, 0, 0], [0, 0, 0], [0, 1], [1, 0, 0, 0], [1, 0, 1], [1, 1, 0]," +
                 " [1, 1, 0, 0], [2, 0], [2, 0, 0], [1, 1, 0, 0, 0], [1, 1, 0, 1], [2, 0, 0, 0], [2, 0, 1]," +
                 " [0, 0, 0, 0], [0, 2], [1, 0, 0, 0, 0], [1, 0, 2], ...]");
-        listsWithElement_helper(null, P.positiveIntegers(),
+        listsWithElement_helper(null, EP.positiveIntegers(),
                 "[[null], [null, 1], [1, null], [1, null, 1], [null, 1, 1], [null, 2], [1, null, 1, 1]," +
                 " [1, null, 2], [1, 1, null], [1, 1, null, 1], [2, null], [2, null, 1], [1, 1, null, 1, 1]," +
                 " [1, 1, null, 2], [2, null, 1, 1], [2, null, 2], [null, 1, 1, 1], [null, 3], [1, null, 1, 1, 1]," +
                 " [1, null, 3], ...]");
-        listsWithElement_helper(3, P.positiveIntegers(),
+        listsWithElement_helper(3, EP.positiveIntegers(),
                 "[[3], [3, 1], [1, 3], [1, 3, 1], [3, 1, 1], [3, 2], [1, 3, 1, 1], [1, 3, 2], [1, 1, 3]," +
                 " [1, 1, 3, 1], [2, 3], [2, 3, 1], [1, 1, 3, 1, 1], [1, 1, 3, 2], [2, 3, 1, 1], [2, 3, 2]," +
                 " [3, 1, 1, 1], [3, 3], [1, 3, 1, 1, 1], [1, 3, 3], ...]");
@@ -9843,7 +9838,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsWithChar_char_String_helper(char c, @NotNull String input, @NotNull String output) {
-        simpleProviderHelper(P.stringsWithChar(c, input), output);
+        simpleProviderHelper(EP.stringsWithChar(c, input), output);
     }
 
     @Test
@@ -9864,7 +9859,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringsWithChar_char_helper(char c, @NotNull String output) {
-        simpleProviderHelper(P.stringsWithChar(c), output);
+        simpleProviderHelper(EP.stringsWithChar(c), output);
     }
 
     @Test
@@ -9882,7 +9877,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull Iterable<Integer> input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.subsetsWithElement(x, input), output);
+        simpleProviderHelper(EP.subsetsWithElement(x, input), output);
     }
 
     private static void subsetsWithElement_helper(@NotNull Integer x, @NotNull String input, @NotNull String output) {
@@ -9897,7 +9892,7 @@ public strictfp class ExhaustiveProviderTest {
         subsetsWithElement_helper(1, "[1, 2, 3]", "[[1], [1, 2], [1, 2, 3], [1, 3]]");
         subsetsWithElement_helper(2, "[1, 2, 3]", "[[2], [1, 2], [1, 2, 3], [2, 3]]");
         subsetsWithElement_helper(3, "[1, 2, 3]", "[[3], [1, 3], [1, 2, 3], [2, 3]]");
-        subsetsWithElement_helper(3, P.positiveIntegers(),
+        subsetsWithElement_helper(3, EP.positiveIntegers(),
                 "[[3], [1, 3], [1, 2, 3], [2, 3], [1, 2, 3, 4], [3, 4], [1, 3, 4], [3, 5], [1, 2, 3, 4, 5], [3, 6]," +
                 " [2, 3, 4], [3, 7], [1, 2, 3, 5], [3, 8], [2, 3, 5], [3, 9], [1, 2, 3, 4, 5, 6], [3, 10]," +
                 " [1, 3, 5], [3, 11], ...]");
@@ -9912,7 +9907,7 @@ public strictfp class ExhaustiveProviderTest {
             @NotNull String input,
             @NotNull String output
     ) {
-        simpleProviderHelper(P.stringSubsetsWithChar(c, input), output);
+        simpleProviderHelper(EP.stringSubsetsWithChar(c, input), output);
     }
 
     @Test
@@ -9931,7 +9926,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void stringSubsetsWithChar_char_helper(char c, @NotNull String output) {
-        simpleProviderHelper(P.stringSubsetsWithChar(c), output);
+        simpleProviderHelper(EP.stringSubsetsWithChar(c), output);
     }
 
     @Test
@@ -9946,14 +9941,14 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testListsWithSublists() {
-        simpleProviderHelper(P.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
-        simpleProviderHelper(P.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.singletonList(0)), "[]");
+        simpleProviderHelper(EP.listsWithSublists(Collections.emptyList(), Collections.emptyList()), "[]");
         simpleProviderHelper(
-                P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
+                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.emptyList()),
                 "[[]]"
         );
         simpleProviderHelper(
-                P.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
+                EP.listsWithSublists(Collections.singletonList(Collections.emptyList()), Collections.singletonList(0)),
                 "[[], [0], [0, 0], [0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]," +
                 " [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]," +
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]," +
@@ -9965,7 +9960,7 @@ public strictfp class ExhaustiveProviderTest {
                 " [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ...]"
         );
         simpleProviderHelper(
-                P.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
+                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), Collections.singletonList(0)),
                 "[[1, 0, 1], [1, 0, 1, 0], [0, 1, 0, 1], [0, 1, 0, 1, 0], [1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0]," +
                 " [0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1, 0]," +
                 " [0, 0, 0, 1, 0, 1], [0, 0, 0, 1, 0, 1, 0], [0, 0, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0]," +
@@ -9973,78 +9968,81 @@ public strictfp class ExhaustiveProviderTest {
                 " [1, 0, 1, 0, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], ...]"
         );
         simpleProviderHelper(
-                P.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), P.positiveIntegers()),
+                EP.listsWithSublists(Collections.singletonList(Arrays.asList(1, 0, 1)), EP.positiveIntegers()),
                 "[[1, 0, 1], [1, 0, 1, 1], [1, 1, 0, 1], [1, 1, 0, 1, 1], [1, 0, 1, 1, 1], [1, 0, 1, 2]," +
                 " [1, 1, 0, 1, 1, 1], [1, 1, 0, 1, 2], [1, 1, 1, 0, 1], [1, 1, 1, 0, 1, 1], [2, 1, 0, 1]," +
                 " [2, 1, 0, 1, 1], [1, 1, 1, 0, 1, 1, 1], [1, 1, 1, 0, 1, 2], [2, 1, 0, 1, 1, 1], [2, 1, 0, 1, 2]," +
                 " [1, 0, 1, 1, 1, 1], [1, 0, 1, 3], [1, 1, 0, 1, 1, 1, 1], [1, 1, 0, 1, 3], ...]"
         );
         simpleProviderHelper(
-                P.listsWithSublists(map(i -> Arrays.asList(i, i), P.positiveIntegers()), Collections.singletonList(0)),
+                EP.listsWithSublists(
+                        map(i -> Arrays.asList(i, i), EP.positiveIntegers()),
+                        Collections.singletonList(0)
+                ),
                 "[[1, 1], [1, 1, 0], [2, 2], [2, 2, 0], [0, 1, 1], [0, 1, 1, 0], [0, 2, 2], [0, 2, 2, 0]," +
                 " [1, 1, 0, 0], [1, 1, 0, 0, 0], [2, 2, 0, 0], [2, 2, 0, 0, 0], [0, 1, 1, 0, 0], [0, 1, 1, 0, 0, 0]," +
                 " [0, 2, 2, 0, 0], [0, 2, 2, 0, 0, 0], [3, 3], [3, 3, 0], [4, 4], [4, 4, 0], ...]"
         );
         simpleProviderHelper(
-                P.listsWithSublists(map(i -> Arrays.asList(i, i), P.positiveIntegers()), P.positiveIntegers()),
+                EP.listsWithSublists(map(i -> Arrays.asList(i, i), EP.positiveIntegers()), EP.positiveIntegers()),
                 "[[1, 1], [1, 1, 1], [2, 2], [2, 2, 1], [1, 1, 1, 1], [1, 2, 2], [1, 2, 2, 1], [1, 1, 2]," +
                 " [2, 2, 1, 1], [2, 2, 2], [1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2, 1, 1], [1, 2, 2, 2], [3, 3]," +
                 " [3, 3, 1], [4, 4], [4, 4, 1], [1, 3, 3], [1, 3, 3, 1], ...]"
         );
         try {
-            toList(P.listsWithSublists(Collections.singletonList(null), Collections.singletonList(0)));
+            toList(EP.listsWithSublists(Collections.singletonList(null), Collections.singletonList(0)));
             fail();
         } catch (NullPointerException ignored) {}
     }
 
     @Test
     public void testStringsWithSubstrings_Iterable_String_String() {
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
-        aeq(length(P.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), ""), "[]");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList(), charsToString(range('a', 'z'))), "[]");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList(""), ""), "[]");
+        aeq(length(EP.stringsWithSubstrings(Collections.singletonList(""), "")), 1);
         simpleProviderHelper(
-                P.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
+                EP.stringsWithSubstrings(Collections.singletonList(""), charsToString(range('a', 'z'))),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]"
         );
         simpleProviderHelper(
-                P.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
+                EP.stringsWithSubstrings(Collections.singletonList("cat"), charsToString(range('a', 'z'))),
                 "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
                 " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]"
         );
         simpleProviderHelper(
-                P.stringsWithSubstrings(
-                        map(d -> Double.toString(d), P.positiveDoubles()),
+                EP.stringsWithSubstrings(
+                        map(d -> Double.toString(d), EP.positiveDoubles()),
                         charsToString(range('a', 'z'))
                 ),
                 "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
                 " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]"
         );
         try {
-            toList(P.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
+            toList(EP.stringsWithSubstrings(Collections.singletonList(null), charsToString(range('a', 'z'))));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     @Test
     public void testStringsWithSubstrings_Iterable_String() {
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.emptyList()), "[]");
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList("")),
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.emptyList()), "[]");
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("")),
                 "[, a, aa, b, aaa, c, ab, d, aaaa, e, ba, f, aab, g, bb, h, aaaaa, i, ac, j, ...]");
-        simpleProviderHelper(P.stringsWithSubstrings(Collections.singletonList("cat")),
+        simpleProviderHelper(EP.stringsWithSubstrings(Collections.singletonList("cat")),
                 "[cat, cata, acat, acata, cataa, catb, acataa, acatb, aacat, aacata, bcat, bcata, aacataa, aacatb," +
                 " bcataa, bcatb, cataaa, catc, acataaa, acatc, ...]");
-        simpleProviderHelper(P.stringsWithSubstrings(map(d -> Double.toString(d), P.positiveDoubles())),
+        simpleProviderHelper(EP.stringsWithSubstrings(map(d -> Double.toString(d), EP.positiveDoubles())),
                 "[Infinity, Infinitya, 1.0, 1.0a, aInfinity, aInfinitya, a1.0, a1.0a, Infinityaa, Infinityb, 1.0aa," +
                 " 1.0b, aInfinityaa, aInfinityb, a1.0aa, a1.0b, 2.0, 2.0a, 3.0, 3.0a, ...]");
         try {
-            toList(P.stringsWithSubstrings(Collections.singletonList(null)));
+            toList(EP.stringsWithSubstrings(Collections.singletonList(null)));
             fail();
         } catch (NullPointerException | IllegalArgumentException ignored) {}
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull Iterable<Integer> values, @NotNull String output) {
-        simpleProviderHelper(P.maps(readIntegerListWithNulls(keys), values), output);
+        simpleProviderHelper(EP.maps(readIntegerListWithNulls(keys), values), output);
     }
 
     private static void maps_helper(@NotNull String keys, @NotNull String values, @NotNull String output) {
@@ -10057,12 +10055,12 @@ public strictfp class ExhaustiveProviderTest {
         maps_helper("[]", "[4]", "[{}]");
         maps_helper("[]", "[1, 2, 3]", "[{}]");
         maps_helper("[]", "[1, null, 3]", "[{}]");
-        maps_helper("[]", P.positiveIntegers(), "[{}]");
+        maps_helper("[]", EP.positiveIntegers(), "[{}]");
         maps_helper("[4]", "[]", "[]");
         maps_helper("[4]", "[4]", "[{4=4}]");
         maps_helper("[4]", "[1, 2, 3]", "[{4=1}, {4=2}, {4=3}]");
         maps_helper("[4]", "[1, null, 3]", "[{4=1}, {4=null}, {4=3}]");
-        maps_helper("[4]", P.positiveIntegers(),
+        maps_helper("[4]", EP.positiveIntegers(),
                 "[{4=1}, {4=2}, {4=3}, {4=4}, {4=5}, {4=6}, {4=7}, {4=8}, {4=9}, {4=10}, {4=11}, {4=12}, {4=13}," +
                 " {4=14}, {4=15}, {4=16}, {4=17}, {4=18}, {4=19}, {4=20}, ...]");
         maps_helper("[1, 2, 3]", "[]", "[]");
@@ -10078,7 +10076,7 @@ public strictfp class ExhaustiveProviderTest {
                 " {1=1, 2=1, 3=3}, {1=1, 2=null, 3=3}, {1=null, 2=1, 3=3}, {1=null, 2=null, 3=3}, {1=1, 2=3, 3=1}," +
                 " {1=1, 2=3, 3=null}, {1=null, 2=3, 3=1}, {1=null, 2=3, 3=null}, {1=1, 2=3, 3=3}," +
                 " {1=null, 2=3, 3=3}, {1=3, 2=1, 3=1}, {1=3, 2=1, 3=null}, ...]");
-        maps_helper("[1, 2, 3]", P.positiveIntegers(),
+        maps_helper("[1, 2, 3]", EP.positiveIntegers(),
                 "[{1=1, 2=1, 3=1}, {1=1, 2=1, 3=2}, {1=1, 2=2, 3=1}, {1=1, 2=2, 3=2}, {1=2, 2=1, 3=1}," +
                 " {1=2, 2=1, 3=2}, {1=2, 2=2, 3=1}, {1=2, 2=2, 3=2}, {1=1, 2=1, 3=3}, {1=1, 2=1, 3=4}," +
                 " {1=1, 2=2, 3=3}, {1=1, 2=2, 3=4}, {1=2, 2=1, 3=3}, {1=2, 2=1, 3=4}, {1=2, 2=2, 3=3}," +
@@ -10098,7 +10096,7 @@ public strictfp class ExhaustiveProviderTest {
                 " {null=null, 1=null, 3=3}, {null=3, 1=1, 3=1}, {null=3, 1=1, 3=null}, {null=3, 1=null, 3=1}," +
                 " {null=3, 1=null, 3=null}, {null=3, 1=1, 3=3}, {null=3, 1=null, 3=3}, {null=1, 1=3, 3=1}," +
                 " {null=1, 1=3, 3=null}, ...]");
-        maps_helper("[1, null, 3]", P.positiveIntegers(),
+        maps_helper("[1, null, 3]", EP.positiveIntegers(),
                 "[{null=1, 1=1, 3=1}, {null=1, 1=1, 3=2}, {null=2, 1=1, 3=1}, {null=2, 1=1, 3=2}," +
                 " {null=1, 1=2, 3=1}, {null=1, 1=2, 3=2}, {null=2, 1=2, 3=1}, {null=2, 1=2, 3=2}," +
                 " {null=1, 1=1, 3=3}, {null=1, 1=1, 3=4}, {null=2, 1=1, 3=3}, {null=2, 1=1, 3=4}," +
@@ -10107,7 +10105,7 @@ public strictfp class ExhaustiveProviderTest {
     }
 
     private static void randomProvidersFixedScales_helper(int scale, int secondaryScale, @NotNull String output) {
-        simpleProviderHelper(P.randomProvidersFixedScales(scale, secondaryScale), output);
+        simpleProviderHelper(EP.randomProvidersFixedScales(scale, secondaryScale), output);
     }
 
     @Test
@@ -10150,7 +10148,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefault() {
-        simpleProviderHelper(P.randomProvidersDefault(),
+        simpleProviderHelper(EP.randomProvidersDefault(),
                 "[RandomProvider[@-7948823947390831374, 32, 8], RandomProvider[@7302477663894715351, 32, 8]," +
                 " RandomProvider[@5113382706114603938, 32, 8], RandomProvider[@-1774083719213728003, 32, 8]," +
                 " RandomProvider[@8538952961045368838, 32, 8], RandomProvider[@7023783968100629274, 32, 8]," +
@@ -10165,7 +10163,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProvidersDefaultSecondaryScale() {
-        simpleProviderHelper(P.randomProvidersDefaultSecondaryScale(),
+        simpleProviderHelper(EP.randomProvidersDefaultSecondaryScale(),
                 "[RandomProvider[@-7948823947390831374, 0, 8], RandomProvider[@-7948823947390831374, 1, 8]," +
                 " RandomProvider[@7302477663894715351, 0, 8], RandomProvider[@7302477663894715351, 1, 8]," +
                 " RandomProvider[@-7948823947390831374, -1, 8], RandomProvider[@-7948823947390831374, 2, 8]," +
@@ -10180,7 +10178,7 @@ public strictfp class ExhaustiveProviderTest {
 
     @Test
     public void testRandomProviders() {
-        simpleProviderHelper(P.randomProviders(),
+        simpleProviderHelper(EP.randomProviders(),
                 "[RandomProvider[@-7948823947390831374, 0, 0], RandomProvider[@-7948823947390831374, 0, 1]," +
                 " RandomProvider[@7302477663894715351, 0, 0], RandomProvider[@7302477663894715351, 0, 1]," +
                 " RandomProvider[@-7948823947390831374, 1, 0], RandomProvider[@-7948823947390831374, 1, 1]," +
@@ -10196,21 +10194,21 @@ public strictfp class ExhaustiveProviderTest {
     @Test
     public void testEquals() {
         //noinspection EqualsWithItself
-        assertTrue(P.equals(P));
+        assertTrue(EP.equals(EP));
         //noinspection ObjectEqualsNull
-        assertFalse(P.equals(null));
+        assertFalse(EP.equals(null));
         //noinspection EqualsBetweenInconvertibleTypes
-        assertFalse(P.equals("hello"));
+        assertFalse(EP.equals("hello"));
     }
 
     @Test
     public void testHashCode() {
-        aeq(P.hashCode(), 0);
+        aeq(EP.hashCode(), 0);
     }
 
     @Test
     public void testToString() {
-        aeq(P, "ExhaustiveProvider");
+        aeq(EP, "ExhaustiveProvider");
     }
 
     private static @NotNull List<Integer> readIntegerList(@NotNull String s) {
