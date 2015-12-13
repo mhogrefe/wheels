@@ -1,19 +1,14 @@
 package mho.wheels.io;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,58 +18,45 @@ import static mho.wheels.io.Readers.*;
 import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.testing.Testing.*;
 
-public strictfp class ReadersProperties {
+public strictfp class ReadersProperties extends TestProperties {
     private static final @NotNull String INTEGRAL_CHARS = "-0123456789";
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize(String name) {
-        P.reset();
-        System.out.println("\t\ttesting " + name + " properties...");
+    
+    public ReadersProperties() {
+        super("Readers");
     }
 
-    @Test
-    public void testAllProperties() {
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("Readers properties");
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesGenericRead();
-            propertiesGenericFindIn_List_T();
-            propertiesReadBoolean();
-            propertiesFindBooleanIn();
-            propertiesReadOrdering();
-            propertiesFindOrderingIn();
-            propertiesReadRoundingMode();
-            propertiesFindRoundingModeIn();
-            propertiesReadBigInteger();
-            propertiesFindBigIntegerIn();
-            propertiesReadByte();
-            propertiesFindByteIn();
-            propertiesReadShort();
-            propertiesFindShortIn();
-            propertiesReadInteger();
-            propertiesFindIntegerIn();
-            propertiesReadLong();
-            propertiesFindLongIn();
-            propertiesReadFloat();
-            propertiesFindFloatIn();
-            propertiesReadDouble();
-            propertiesFindDoubleIn();
-            propertiesReadBigDecimal();
-            propertiesFindBigDecimalIn();
-            propertiesReadCharacter();
-            propertiesFindCharacterIn();
-            propertiesReadString();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesGenericRead();
+        propertiesGenericFindIn_List_T();
+        propertiesReadBoolean();
+        propertiesFindBooleanIn();
+        propertiesReadOrdering();
+        propertiesFindOrderingIn();
+        propertiesReadRoundingMode();
+        propertiesFindRoundingModeIn();
+        propertiesReadBigInteger();
+        propertiesFindBigIntegerIn();
+        propertiesReadByte();
+        propertiesFindByteIn();
+        propertiesReadShort();
+        propertiesFindShortIn();
+        propertiesReadInteger();
+        propertiesFindIntegerIn();
+        propertiesReadLong();
+        propertiesFindLongIn();
+        propertiesReadFloat();
+        propertiesFindFloatIn();
+        propertiesReadDouble();
+        propertiesFindDoubleIn();
+        propertiesReadBigDecimal();
+        propertiesFindBigDecimalIn();
+        propertiesReadCharacter();
+        propertiesFindCharacterIn();
+        propertiesReadString();
     }
 
-    private static void propertiesGenericRead() {
+    private void propertiesGenericRead() {
         initialize("genericRead(Function<String, T>)");
         Iterable<Pair<Function<String, Integer>, String>> ps = map(
                 p -> new Pair<>(new FiniteDomainFunction<>(Collections.singletonList(p)), p.a),
@@ -91,7 +73,7 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesGenericFindIn_List_T() {
+    private void propertiesGenericFindIn_List_T() {
         initialize("genericFindIn(List<T>)");
         Iterable<Pair<List<Integer>, String>> ps = P.pairs(P.subsets(P.integers()), P.strings(INTEGRAL_CHARS));
         for (Pair<List<Integer>, String> p : take(LIMIT, ps)) {
@@ -154,7 +136,7 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesReadBoolean() {
+    private void propertiesReadBoolean() {
         initialize("readBoolean(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBoolean(s);
@@ -166,12 +148,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindBooleanIn() {
+    private void propertiesFindBooleanIn() {
         initialize("findBooleanIn(String)");
         propertiesFindInHelper(LIMIT, P, P.booleans(), Readers::readBoolean, Readers::findBooleanIn, b -> {});
     }
 
-    private static void propertiesReadOrdering() {
+    private void propertiesReadOrdering() {
         initialize("readOrdering(String)");
         for (String s : take(LIMIT, P.strings())) {
             readOrdering(s);
@@ -183,12 +165,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindOrderingIn() {
+    private void propertiesFindOrderingIn() {
         initialize("findOrderingIn(String)");
         propertiesFindInHelper(LIMIT, P, P.orderings(), Readers::readOrdering, Readers::findOrderingIn, o -> {});
     }
 
-    private static void propertiesReadRoundingMode() {
+    private void propertiesReadRoundingMode() {
         initialize("readRoundingMode(String)");
         for (String s : take(LIMIT, P.strings())) {
             readRoundingMode(s);
@@ -200,7 +182,7 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindRoundingModeIn() {
+    private void propertiesFindRoundingModeIn() {
         initialize("findRoundingModeIn(String)");
         propertiesFindInHelper(
                 LIMIT,
@@ -212,7 +194,7 @@ public strictfp class ReadersProperties {
         );
     }
 
-    private static void propertiesReadBigInteger() {
+    private void propertiesReadBigInteger() {
         initialize("readBigInteger(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBigInteger(s);
@@ -224,12 +206,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindBigIntegerIn() {
+    private void propertiesFindBigIntegerIn() {
         initialize("findBigIntegerIn(String)");
         propertiesFindInHelper(LIMIT, P, P.bigIntegers(), Readers::readBigInteger, Readers::findBigIntegerIn, i -> {});
     }
 
-    private static void propertiesReadByte() {
+    private void propertiesReadByte() {
         initialize("readByte(String)");
         for (String s : take(LIMIT, P.strings())) {
             readByte(s);
@@ -241,12 +223,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindByteIn() {
+    private void propertiesFindByteIn() {
         initialize("findByteIn(String)");
         propertiesFindInHelper(LIMIT, P, P.bytes(), Readers::readByte, Readers::findByteIn, b -> {});
     }
 
-    private static void propertiesReadShort() {
+    private void propertiesReadShort() {
         initialize("readShort(String)");
         for (String s : take(LIMIT, P.strings())) {
             readShort(s);
@@ -258,12 +240,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindShortIn() {
+    private void propertiesFindShortIn() {
         initialize("findShortIn(String)");
         propertiesFindInHelper(LIMIT, P, P.shorts(), Readers::readShort, Readers::findShortIn, s -> {});
     }
 
-    private static void propertiesReadInteger() {
+    private void propertiesReadInteger() {
         initialize("readInteger(String)");
         for (String s : take(LIMIT, P.strings())) {
             readInteger(s);
@@ -275,12 +257,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindIntegerIn() {
+    private void propertiesFindIntegerIn() {
         initialize("findIntegerIn(String)");
         propertiesFindInHelper(LIMIT, P, P.integers(), Readers::readInteger, Readers::findIntegerIn, i -> {});
     }
 
-    private static void propertiesReadLong() {
+    private void propertiesReadLong() {
         initialize("readLong(String)");
         for (String s : take(LIMIT, P.strings())) {
             readLong(s);
@@ -292,12 +274,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindLongIn() {
+    private void propertiesFindLongIn() {
         initialize("findLongIn(String)");
         propertiesFindInHelper(LIMIT, P, P.longs(), Readers::readLong, Readers::findLongIn, l -> {});
     }
 
-    private static void propertiesReadFloat() {
+    private void propertiesReadFloat() {
         initialize("readFloat(String)");
         for (String s : take(LIMIT, P.strings())) {
             readFloat(s);
@@ -309,12 +291,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindFloatIn() {
+    private void propertiesFindFloatIn() {
         initialize("findFloatIn(String)");
         propertiesFindInHelper(LIMIT, P, P.floats(), Readers::readFloat, Readers::findFloatIn, f -> {});
     }
 
-    private static void propertiesReadDouble() {
+    private void propertiesReadDouble() {
         initialize("readDouble(String)");
         for (String s : take(LIMIT, P.strings())) {
             readDouble(s);
@@ -326,12 +308,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindDoubleIn() {
+    private void propertiesFindDoubleIn() {
         initialize("findDoubleIn(String)");
         propertiesFindInHelper(LIMIT, P, P.doubles(), Readers::readDouble, Readers::findDoubleIn, d -> {});
     }
 
-    private static void propertiesReadBigDecimal() {
+    private void propertiesReadBigDecimal() {
         initialize("readBigDecimal(String)");
         for (String s : take(LIMIT, P.strings())) {
             readBigDecimal(s);
@@ -343,7 +325,7 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindBigDecimalIn() {
+    private void propertiesFindBigDecimalIn() {
         initialize("findBigDecimalIn(String)");
         propertiesFindInHelper(
                 LIMIT,
@@ -355,7 +337,7 @@ public strictfp class ReadersProperties {
         );
     }
 
-    private static void propertiesReadCharacter() {
+    private void propertiesReadCharacter() {
         initialize("readCharacter(String)");
         for (String s : take(LIMIT, P.strings())) {
             readCharacter(s);
@@ -367,12 +349,12 @@ public strictfp class ReadersProperties {
         }
     }
 
-    private static void propertiesFindCharacterIn() {
+    private void propertiesFindCharacterIn() {
         initialize("findCharacterIn(String)");
         propertiesFindInHelper(LIMIT, P, P.characters(), Readers::readCharacter, Readers::findCharacterIn, c -> {});
     }
 
-    private static void propertiesReadString() {
+    private void propertiesReadString() {
         initialize("readString(String)");
         for (String s : take(LIMIT, P.strings())) {
             Optional<String> os = readString(s);

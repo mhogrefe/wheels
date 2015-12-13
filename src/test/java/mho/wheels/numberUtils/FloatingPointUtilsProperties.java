@@ -1,16 +1,10 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.math.BinaryFraction;
 import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
-import org.junit.Test;
+import mho.wheels.testing.TestProperties;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.filter;
@@ -19,52 +13,38 @@ import static mho.wheels.numberUtils.FloatingPointUtils.*;
 import static mho.wheels.ordering.Ordering.le;
 import static mho.wheels.testing.Testing.*;
 
-public class FloatingPointUtilsProperties {
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize(String name) {
-        P.reset();
-        System.out.println("\t\ttesting " + name + " properties...");
+public class FloatingPointUtilsProperties extends TestProperties {
+    public FloatingPointUtilsProperties() {
+        super("FloatingPointUtils");
     }
 
-    @Test
-    public void testAllProperties() {
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("FloatingPointUtils properties");
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesIsNegativeZero_float();
-            propertiesIsNegativeZero_double();
-            propertiesIsPositiveZero_float();
-            propertiesIsPositiveZero_double();
-            propertiesSuccessor_float();
-            propertiesPredecessor_float();
-            propertiesSuccessor_double();
-            propertiesPredecessor_double();
-            propertiesToOrderedRepresentation_float();
-            propertiesFloatFromOrderedRepresentation();
-            propertiesToOrderedRepresentation_double();
-            propertiesDoubleFromOrderedRepresentation();
-            propertiesFloatFromMantissaAndExponent();
-            propertiesDoubleFromMantissaAndExponent();
-            propertiesToMantissaAndExponent_float();
-            propertiesToMantissaAndExponent_double();
-            propertiesAbsNegativeZeros_float();
-            propertiesAbsNegativeZeros_double();
-            propertiesScaleUp_float();
-            propertiesScaleUp_double();
-            propertiesToStringCompact_float();
-            propertiesToStringCompact_double();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesIsNegativeZero_float();
+        propertiesIsNegativeZero_double();
+        propertiesIsPositiveZero_float();
+        propertiesIsPositiveZero_double();
+        propertiesSuccessor_float();
+        propertiesPredecessor_float();
+        propertiesSuccessor_double();
+        propertiesPredecessor_double();
+        propertiesToOrderedRepresentation_float();
+        propertiesFloatFromOrderedRepresentation();
+        propertiesToOrderedRepresentation_double();
+        propertiesDoubleFromOrderedRepresentation();
+        propertiesFloatFromMantissaAndExponent();
+        propertiesDoubleFromMantissaAndExponent();
+        propertiesToMantissaAndExponent_float();
+        propertiesToMantissaAndExponent_double();
+        propertiesAbsNegativeZeros_float();
+        propertiesAbsNegativeZeros_double();
+        propertiesScaleUp_float();
+        propertiesScaleUp_double();
+        propertiesToStringCompact_float();
+        propertiesToStringCompact_double();
     }
 
-    private static void propertiesIsNegativeZero_float() {
+    private void propertiesIsNegativeZero_float() {
         initialize("isNegativeZero(float)");
         for (float f : take(LIMIT, P.floats())) {
             isNegativeZero(f);
@@ -75,7 +55,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesIsNegativeZero_double() {
+    private void propertiesIsNegativeZero_double() {
         initialize("isNegativeZero(double)");
         for (double d : take(LIMIT, P.doubles())) {
             isNegativeZero(d);
@@ -86,7 +66,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesIsPositiveZero_float() {
+    private void propertiesIsPositiveZero_float() {
         initialize("isPositiveZero(float)");
         for (float f : take(LIMIT, P.floats())) {
             isPositiveZero(f);
@@ -97,7 +77,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesIsPositiveZero_double() {
+    private void propertiesIsPositiveZero_double() {
         initialize("isPositiveZero(double)");
         for (double d : take(LIMIT, P.doubles())) {
             isPositiveZero(d);
@@ -108,7 +88,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesSuccessor_float() {
+    private void propertiesSuccessor_float() {
         initialize("successor(float)");
         Iterable<Float> fs = filter(
                 f -> !Float.isNaN(f) && f != Float.POSITIVE_INFINITY && !isNegativeZero(f),
@@ -120,7 +100,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesPredecessor_float() {
+    private void propertiesPredecessor_float() {
         initialize("predecessor(float)");
         Iterable<Float> fs = filter(
                 f -> !Float.isNaN(f) && f != Float.NEGATIVE_INFINITY && !isPositiveZero(f),
@@ -132,7 +112,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesSuccessor_double() {
+    private void propertiesSuccessor_double() {
         initialize("successor(double)");
         Iterable<Double> ds = filter(
                 d -> !Double.isNaN(d) && d != Double.POSITIVE_INFINITY && !isNegativeZero(d),
@@ -144,7 +124,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesPredecessor_double() {
+    private void propertiesPredecessor_double() {
         initialize("predecessor(double)");
         Iterable<Double> ds = filter(
                 d -> !Double.isNaN(d) && d != Double.NEGATIVE_INFINITY && !isPositiveZero(d),
@@ -156,7 +136,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToOrderedRepresentation_float() {
+    private void propertiesToOrderedRepresentation_float() {
         initialize("toOrderedRepresentation(float)");
         for (float f : take(LIMIT, filter(g -> !Float.isNaN(g), P.floats()))) {
             int n = toOrderedRepresentation(f);
@@ -211,7 +191,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesFloatFromOrderedRepresentation() {
+    private void propertiesFloatFromOrderedRepresentation() {
         initialize("floatFromOrderedRepresentation(int)");
         int maxAbs = FloatingPointUtils.POSITIVE_FINITE_FLOAT_COUNT + 1;
 
@@ -281,7 +261,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToOrderedRepresentation_double() {
+    private void propertiesToOrderedRepresentation_double() {
         initialize("toOrderedRepresentation(double)");
         for (double d : take(LIMIT, filter(e -> !Double.isNaN(e), P.doubles()))) {
             long n = toOrderedRepresentation(d);
@@ -336,7 +316,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesDoubleFromOrderedRepresentation() {
+    private void propertiesDoubleFromOrderedRepresentation() {
         initialize("doubleFromOrderedRepresentation(long)");
         long maxAbs = FloatingPointUtils.POSITIVE_FINITE_DOUBLE_COUNT + 1;
 
@@ -406,7 +386,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesFloatFromMantissaAndExponent() {
+    private void propertiesFloatFromMantissaAndExponent() {
         initialize("floatFromMantissaAndExponent()");
         for (Pair<Integer, Integer> p : take(LIMIT, P.pairs(P.integers()))) {
             floatFromMantissaAndExponent(p.a, p.b);
@@ -430,7 +410,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesDoubleFromMantissaAndExponent() {
+    private void propertiesDoubleFromMantissaAndExponent() {
         initialize("doubleFromMantissaAndExponent()");
         for (Pair<Long, Integer> p : take(LIMIT, P.pairs(P.longs(), P.integers()))) {
             doubleFromMantissaAndExponent(p.a, p.b);
@@ -454,7 +434,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToMantissaAndExponent_float() {
+    private void propertiesToMantissaAndExponent_float() {
         initialize("toMantissaAndExponent(float)");
         for (float f : take(LIMIT, P.floats())) {
             toMantissaAndExponent(f);
@@ -475,7 +455,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToMantissaAndExponent_double() {
+    private void propertiesToMantissaAndExponent_double() {
         initialize("toMantissaAndExponent(double)");
         for (double d : take(LIMIT, P.doubles())) {
             toMantissaAndExponent(d);
@@ -496,7 +476,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesAbsNegativeZeros_float() {
+    private void propertiesAbsNegativeZeros_float() {
         initialize("absNegativeZeros(float)");
         for (float f : take(LIMIT, P.floats())) {
             assertFalse(f, isNegativeZero(absNegativeZeros(f)));
@@ -507,7 +487,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesAbsNegativeZeros_double() {
+    private void propertiesAbsNegativeZeros_double() {
         initialize("absNegativeZeros(double)");
         for (double d : take(LIMIT, P.doubles())) {
             assertFalse(d, isNegativeZero(absNegativeZeros(d)));
@@ -518,7 +498,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesScaleUp_float() {
+    private void propertiesScaleUp_float() {
         initialize("scaleUp(float)");
         for (float f : take(LIMIT, P.floats())) {
             scaleUp(f);
@@ -538,7 +518,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesScaleUp_double() {
+    private void propertiesScaleUp_double() {
         initialize("scaleUp(double)");
         for (double d : take(LIMIT, P.doubles())) {
             scaleUp(d);
@@ -558,7 +538,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToStringCompact_float() {
+    private void propertiesToStringCompact_float() {
         initialize("toStringCompact(float)");
         for (float f : take(LIMIT, P.floats())) {
             String s = toStringCompact(f);
@@ -568,7 +548,7 @@ public class FloatingPointUtilsProperties {
         }
     }
 
-    private static void propertiesToStringCompact_double() {
+    private void propertiesToStringCompact_double() {
         initialize("toStringCompact(double)");
         for (double d : take(LIMIT, P.doubles())) {
             String s = toStringCompact(d);

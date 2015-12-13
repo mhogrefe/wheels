@@ -1,19 +1,20 @@
 package mho.wheels.math;
 
-import mho.wheels.iterables.ExhaustiveProvider;
 import mho.wheels.iterables.IterableProvider;
 import mho.wheels.iterables.IterableUtils;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.numberUtils.BigDecimalUtils;
 import mho.wheels.numberUtils.FloatingPointUtils;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -21,64 +22,51 @@ import static mho.wheels.math.BinaryFraction.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-public strictfp class BinaryFractionProperties {
+public strictfp class BinaryFractionProperties extends TestProperties {
     private static final @NotNull String BINARY_FRACTION_CHARS = " -0123456789<>";
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize(String name) {
-        P.reset();
-        System.out.println("\t\ttesting " + name + " properties...");
+    
+    public BinaryFractionProperties() {
+        super("BinaryFraction");
     }
 
-    @Test
-    public void testAllProperties() {
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("BinaryFraction properties");
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesGetMantissa();
-            propertiesGetExponent();
-            propertiesOf_BigInteger_int();
-            propertiesOf_BigInteger();
-            propertiesOf_int();
-            propertiesOf_float();
-            propertiesOf_double();
-            propertiesBigDecimalValue();
-            propertiesFloatRange();
-            propertiesDoubleRange();
-            propertiesIsInteger();
-            propertiesAdd();
-            propertiesNegate();
-            propertiesAbs();
-            propertiesSignum();
-            propertiesSubtract();
-            compareImplementationsSubtract();
-            propertiesMultiply();
-            propertiesShiftLeft();
-            compareImplementationsShiftLeft();
-            propertiesShiftRight();
-            compareImplementationsShiftRight();
-            propertiesSum();
-            propertiesProduct();
-            propertiesDelta();
-            propertiesFloor();
-            propertiesCeiling();
-            propertiesEquals();
-            propertiesHashCode();
-            propertiesCompareTo();
-            propertiesRead();
-            propertiesFindIn();
-            propertiesToString();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesGetMantissa();
+        propertiesGetExponent();
+        propertiesOf_BigInteger_int();
+        propertiesOf_BigInteger();
+        propertiesOf_int();
+        propertiesOf_float();
+        propertiesOf_double();
+        propertiesBigDecimalValue();
+        propertiesFloatRange();
+        propertiesDoubleRange();
+        propertiesIsInteger();
+        propertiesAdd();
+        propertiesNegate();
+        propertiesAbs();
+        propertiesSignum();
+        propertiesSubtract();
+        compareImplementationsSubtract();
+        propertiesMultiply();
+        propertiesShiftLeft();
+        compareImplementationsShiftLeft();
+        propertiesShiftRight();
+        compareImplementationsShiftRight();
+        propertiesSum();
+        propertiesProduct();
+        propertiesDelta();
+        propertiesFloor();
+        propertiesCeiling();
+        propertiesEquals();
+        propertiesHashCode();
+        propertiesCompareTo();
+        propertiesRead();
+        propertiesFindIn();
+        propertiesToString();
     }
 
-    private static void propertiesGetMantissa() {
+    private void propertiesGetMantissa() {
         initialize("getMantissa()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigInteger mantissa = bf.getMantissa();
@@ -87,14 +75,14 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesGetExponent() {
+    private void propertiesGetExponent() {
         initialize("getExponent()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             bf.getExponent();
         }
     }
 
-    private static void propertiesOf_BigInteger_int() {
+    private void propertiesOf_BigInteger_int() {
         initialize("of(BigInteger, int)");
         Iterable<Pair<BigInteger, Integer>> ps = filterInfinite(
                 p -> (long) p.b + p.a.getLowestSetBit() < Integer.MAX_VALUE,
@@ -117,7 +105,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesOf_BigInteger() {
+    private void propertiesOf_BigInteger() {
         initialize("of(BigInteger)");
         for (BigInteger i : take(LIMIT, P.bigIntegers())) {
             BinaryFraction bf = of(i);
@@ -130,7 +118,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesOf_int() {
+    private void propertiesOf_int() {
         initialize("of(int)");
         for (int i : take(LIMIT, P.integers())) {
             BinaryFraction bf = of(i);
@@ -145,7 +133,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesOf_float() {
+    private void propertiesOf_float() {
         initialize("of(float)");
         for (float f : take(LIMIT, P.floats())) {
             Optional<BinaryFraction> obf = of(f);
@@ -160,7 +148,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesOf_double() {
+    private void propertiesOf_double() {
         initialize("of(double)");
         for (double d : take(LIMIT, P.doubles())) {
             Optional<BinaryFraction> obf = of(d);
@@ -175,7 +163,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesBigDecimalValue() {
+    private void propertiesBigDecimalValue() {
         initialize("bigDecimalValue()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigDecimal bd = bf.bigDecimalValue();
@@ -185,7 +173,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesFloatRange() {
+    private void propertiesFloatRange() {
         initialize("floatRange()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Pair<Float, Float> range = bf.floatRange();
@@ -237,7 +225,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesDoubleRange() {
+    private void propertiesDoubleRange() {
         initialize("doubleRange()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             Pair<Double, Double> range = bf.doubleRange();
@@ -289,7 +277,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesIsInteger() {
+    private void propertiesIsInteger() {
         initialize("isInteger()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             assertEquals(bf, bf.isInteger(), of(bf.floor()).equals(bf));
@@ -300,7 +288,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesAdd() {
+    private void propertiesAdd() {
         initialize("add(BinaryFraction)");
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
@@ -341,7 +329,7 @@ public strictfp class BinaryFractionProperties {
         //overflow and underflow not tested
     }
 
-    private static void propertiesNegate() {
+    private void propertiesNegate() {
         initialize("negate()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             homomorphic(
@@ -362,7 +350,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesAbs() {
+    private void propertiesAbs() {
         initialize("abs()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             homomorphic(
@@ -384,7 +372,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesSignum() {
+    private void propertiesSignum() {
         initialize("signum()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             homomorphic(
@@ -404,7 +392,7 @@ public strictfp class BinaryFractionProperties {
         return a.add(b.negate());
     }
 
-    private static void propertiesSubtract() {
+    private void propertiesSubtract() {
         initialize("subtract(BinaryFraction)");
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
@@ -442,14 +430,14 @@ public strictfp class BinaryFractionProperties {
         //overflow and underflow not tested
     }
 
-    private static void compareImplementationsSubtract() {
+    private void compareImplementationsSubtract() {
         Map<String, Function<Pair<BinaryFraction, BinaryFraction>, BinaryFraction>> functions = new LinkedHashMap<>();
         functions.put("simplest", p -> subtract_simplest(p.a, p.b));
         functions.put("standard", p -> p.a.subtract(p.b));
         compareImplementations("subtract(BinaryFraction)", take(LIMIT, P.pairs(P.binaryFractions())), functions);
     }
 
-    private static void propertiesMultiply() {
+    private void propertiesMultiply() {
         initialize("multiply(BinaryFraction)");
         Iterable<Pair<BinaryFraction, BinaryFraction>> ps = filterInfinite(
                 p -> {
@@ -499,7 +487,7 @@ public strictfp class BinaryFractionProperties {
         return bf.multiply(of(BigInteger.ONE, bits));
     }
 
-    private static void propertiesShiftLeft() {
+    private void propertiesShiftLeft() {
         initialize("shiftLeft(int)");
         Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
@@ -550,7 +538,7 @@ public strictfp class BinaryFractionProperties {
         //overflow and underflow not tested
     }
 
-    private static void compareImplementationsShiftLeft() {
+    private void compareImplementationsShiftLeft() {
         Map<String, Function<Pair<BinaryFraction, Integer>, BinaryFraction>> functions = new LinkedHashMap<>();
         functions.put("simplest", p -> shiftLeft_simplest(p.a, p.b));
         functions.put("standard", p -> p.a.shiftLeft(p.b));
@@ -568,7 +556,7 @@ public strictfp class BinaryFractionProperties {
         return bf.multiply(of(BigInteger.ONE, -bits));
     }
 
-    private static void propertiesShiftRight() {
+    private void propertiesShiftRight() {
         initialize("shiftRight(int)");
         Iterable<Pair<BinaryFraction, Integer>> ps = filterInfinite(
                 p -> {
@@ -608,7 +596,7 @@ public strictfp class BinaryFractionProperties {
         //overflow and underflow not tested
     }
 
-    private static void compareImplementationsShiftRight() {
+    private void compareImplementationsShiftRight() {
         Map<String, Function<Pair<BinaryFraction, Integer>, BinaryFraction>> functions = new LinkedHashMap<>();
         functions.put("simplest", p -> shiftRight_simplest(p.a, p.b));
         functions.put("standard", p -> p.a.shiftRight(p.b));
@@ -622,7 +610,7 @@ public strictfp class BinaryFractionProperties {
         compareImplementations("shiftRight(int)", take(LIMIT, ps), functions);
     }
 
-    private static void propertiesSum() {
+    private void propertiesSum() {
         initialize("sum(Iterable<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
@@ -645,7 +633,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesProduct() {
+    private void propertiesProduct() {
         initialize("product(Iterable<BinaryFraction>)");
         propertiesFoldHelper(
                 LIMIT,
@@ -668,7 +656,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesDelta() {
+    private void propertiesDelta() {
         initialize("delta(Iterable<BinaryFraction>)");
         propertiesDeltaHelper(
                 LIMIT,
@@ -692,7 +680,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesFloor() {
+    private void propertiesFloor() {
         initialize("floor()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigInteger floor = bf.floor();
@@ -705,7 +693,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesCeiling() {
+    private void propertiesCeiling() {
         initialize("ceiling()");
         for (BinaryFraction bf : take(LIMIT, P.binaryFractions())) {
             BigInteger ceiling = bf.ceiling();
@@ -718,17 +706,17 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesEquals() {
+    private void propertiesEquals() {
         initialize("equals(Object)");
         propertiesEqualsHelper(LIMIT, P, IterableProvider::binaryFractions);
     }
 
-    private static void propertiesHashCode() {
+    private void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, IterableProvider::binaryFractions);
     }
 
-    private static void propertiesCompareTo() {
+    private void propertiesCompareTo() {
         initialize("compareTo(BinaryFraction)");
         propertiesCompareToHelper(LIMIT, P, IterableProvider::binaryFractions);
 
@@ -744,7 +732,7 @@ public strictfp class BinaryFractionProperties {
         }
     }
 
-    private static void propertiesRead() {
+    private void propertiesRead() {
         initialize("read(String)");
         propertiesReadHelper(
                 LIMIT,
@@ -757,7 +745,7 @@ public strictfp class BinaryFractionProperties {
         );
     }
 
-    private static void propertiesFindIn() {
+    private void propertiesFindIn() {
         initialize("findIn(String)");
         propertiesFindInHelper(
                 LIMIT,
@@ -769,7 +757,7 @@ public strictfp class BinaryFractionProperties {
         );
     }
 
-    private static void propertiesToString() {
+    private void propertiesToString() {
         initialize("toString()");
         propertiesToStringHelper(LIMIT, BINARY_FRACTION_CHARS, P.binaryFractions(), BinaryFraction::read);
     }

@@ -15,8 +15,8 @@ import mho.wheels.structures.FiniteDomainFunction;
 import mho.wheels.structures.NullableOptional;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -29,208 +29,195 @@ import static mho.wheels.iterables.IterableUtils.*;
 import static mho.wheels.ordering.Ordering.*;
 import static mho.wheels.testing.Testing.*;
 
-public class RandomProviderProperties {
+public class RandomProviderProperties extends TestProperties {
     private static final String RANDOM_PROVIDER_CHARS = " ,-0123456789@PR[]adeimnorv";
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize(String name) {
-        P.reset();
-        System.out.println("\t\ttesting " + name + " properties...");
+    
+    public RandomProviderProperties() {
+        super("RandomProvider");
     }
 
-    @Test
-    public void testAllProperties() {
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("RandomProvider properties");
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesConstructor();
-            propertiesConstructor_List_Integer();
-            propertiesGetScale();
-            propertiesGetSecondaryScale();
-            propertiesGetSeed();
-            propertiesWithScale();
-            propertiesWithSecondaryScale();
-            propertiesCopy();
-            propertiesDeepCopy();
-            propertiesReset();
-            propertiesGetId();
-            propertiesIntegers();
-            propertiesLongs();
-            propertiesBooleans();
-            propertiesUniformSample_Iterable();
-            propertiesUniformSample_String();
-            propertiesOrderings();
-            propertiesRoundingModes();
-            propertiesPositiveBytes();
-            propertiesPositiveShorts();
-            propertiesPositiveIntegers();
-            propertiesPositiveLongs();
-            propertiesNegativeBytes();
-            propertiesNegativeShorts();
-            propertiesNegativeIntegers();
-            propertiesNegativeLongs();
-            propertiesNaturalBytes();
-            propertiesNaturalShorts();
-            propertiesNaturalIntegers();
-            propertiesNaturalLongs();
-            propertiesNonzeroBytes();
-            propertiesNonzeroShorts();
-            propertiesNonzeroIntegers();
-            propertiesNonzeroLongs();
-            propertiesBytes();
-            propertiesShorts();
-            propertiesAsciiCharacters();
-            propertiesCharacters();
-            propertiesRangeUp_byte();
-            propertiesRangeUp_short();
-            propertiesRangeUp_int();
-            propertiesRangeUp_long();
-            propertiesRangeUp_char();
-            propertiesRangeDown_byte();
-            propertiesRangeDown_short();
-            propertiesRangeDown_int();
-            propertiesRangeDown_long();
-            propertiesRangeDown_char();
-            propertiesRange_byte_byte();
-            propertiesRange_short_short();
-            propertiesRange_int_int();
-            propertiesRange_long_long();
-            propertiesRange_BigInteger_BigInteger();
-            propertiesRange_char_char();
-            propertiesPositiveIntegersGeometric();
-            propertiesNegativeIntegersGeometric();
-            propertiesNaturalIntegersGeometric();
-            propertiesNonzeroIntegersGeometric();
-            propertiesIntegersGeometric();
-            propertiesRangeUpGeometric();
-            propertiesRangeDownGeometric();
-            propertiesPositiveBigIntegers();
-            propertiesNegativeBigIntegers();
-            propertiesNaturalBigIntegers();
-            propertiesNonzeroBigIntegers();
-            propertiesBigIntegers();
-            propertiesRangeUp_BigInteger();
-            propertiesRangeDown_BigInteger();
-            propertiesPositiveBinaryFractions();
-            propertiesNegativeBinaryFractions();
-            propertiesNonzeroBinaryFractions();
-            propertiesBinaryFractions();
-            propertiesRangeUp_BinaryFraction();
-            propertiesRangeDown_BinaryFraction();
-            propertiesRange_BinaryFraction_BinaryFraction();
-            propertiesPositiveFloats();
-            propertiesNegativeFloats();
-            propertiesNonzeroFloats();
-            propertiesFloats();
-            propertiesPositiveDoubles();
-            propertiesNegativeDoubles();
-            propertiesNonzeroDoubles();
-            propertiesDoubles();
-            propertiesPositiveFloatsUniform();
-            propertiesNegativeFloatsUniform();
-            propertiesNonzeroFloatsUniform();
-            propertiesFloatsUniform();
-            propertiesPositiveDoublesUniform();
-            propertiesNegativeDoublesUniform();
-            propertiesNonzeroDoublesUniform();
-            propertiesDoublesUniform();
-            propertiesRangeUp_float();
-            propertiesRangeDown_float();
-            propertiesRange_float_float();
-            propertiesRangeUp_double();
-            propertiesRangeDown_double();
-            propertiesRange_double_double();
-            propertiesRangeUpUniform_float();
-            propertiesRangeDownUniform_float();
-            propertiesRangeUniform_float_float();
-            propertiesRangeUpUniform_double();
-            propertiesRangeDownUniform_double();
-            propertiesRangeUniform_double_double();
-            propertiesPositiveBigDecimals();
-            propertiesNegativeBigDecimals();
-            propertiesNonzeroBigDecimals();
-            propertiesBigDecimals();
-            propertiesPositiveCanonicalBigDecimals();
-            propertiesNegativeCanonicalBigDecimals();
-            propertiesNonzeroCanonicalBigDecimals();
-            propertiesCanonicalBigDecimals();
-            propertiesRangeUp_BigDecimal();
-            propertiesRangeDown_BigDecimal();
-            propertiesRange_BigDecimal_BigDecimal();
-            propertiesRangeUpCanonical_BigDecimal();
-            propertiesRangeDownCanonical_BigDecimal();
-            propertiesRangeCanonical_BigDecimal_BigDecimal();
-            propertiesWithElement();
-            propertiesWithNull();
-            propertiesOptionals();
-            propertiesNullableOptionals();
-            propertiesDependentPairsInfinite();
-            propertiesShuffle();
-            propertiesPermutationsFinite();
-            propertiesStringPermutations();
-            propertiesPrefixPermutations();
-            propertiesStrings_int_String();
-            propertiesStrings_int();
-            propertiesLists();
-            propertiesStrings_String();
-            propertiesStrings();
-            propertiesListsAtLeast();
-            propertiesStringsAtLeast_int_String();
-            propertiesStringsAtLeast_int();
-            propertiesDistinctStrings_int_String();
-            propertiesDistinctStrings_int();
-            propertiesDistinctLists();
-            propertiesDistinctStrings_String();
-            propertiesDistinctStrings();
-            propertiesDistinctListsAtLeast();
-            propertiesDistinctStringsAtLeast_int_String();
-            propertiesDistinctStringsAtLeast_int();
-            propertiesStringBags_int_String();
-            propertiesStringBags_int();
-            propertiesBags();
-            propertiesStringBags_String();
-            propertiesStringBags();
-            propertiesBagsAtLeast();
-            propertiesStringBagsAtLeast_int_String();
-            propertiesStringBagsAtLeast_int();
-            propertiesStringSubsets_int_String();
-            propertiesStringSubsets_int();
-            propertiesSubsets();
-            propertiesStringSubsets_String();
-            propertiesStringSubsets();
-            propertiesSubsetsAtLeast();
-            propertiesStringSubsetsAtLeast_int_String();
-            propertiesStringSubsetsAtLeast_int();
-            propertiesCartesianProduct();
-            propertiesRepeatingIterables();
-            propertiesRepeatingIterablesDistinctAtLeast();
-            propertiesSublists();
-            propertiesSubstrings();
-            propertiesListsWithElement();
-            propertiesStringsWithChar_char_String();
-            propertiesStringsWithChar_char();
-            propertiesSubsetsWithElement();
-            propertiesStringSubsetsWithChar_char_String();
-            propertiesStringSubsetsWithChar_char();
-            propertiesListsWithSublists();
-            propertiesStringsWithSubstrings_Iterable_String_String();
-            propertiesStringsWithSubstrings_Iterable_String();
-            propertiesMaps();
-            propertiesRandomProvidersFixedScales();
-            propertiesRandomProvidersDefault();
-            propertiesRandomProvidersDefaultSecondaryScale();
-            propertiesRandomProviders();
-            propertiesEquals();
-            propertiesHashCode();
-            propertiesToString();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesConstructor();
+        propertiesConstructor_List_Integer();
+        propertiesGetScale();
+        propertiesGetSecondaryScale();
+        propertiesGetSeed();
+        propertiesWithScale();
+        propertiesWithSecondaryScale();
+        propertiesCopy();
+        propertiesDeepCopy();
+        propertiesReset();
+        propertiesGetId();
+        propertiesIntegers();
+        propertiesLongs();
+        propertiesBooleans();
+        propertiesUniformSample_Iterable();
+        propertiesUniformSample_String();
+        propertiesOrderings();
+        propertiesRoundingModes();
+        propertiesPositiveBytes();
+        propertiesPositiveShorts();
+        propertiesPositiveIntegers();
+        propertiesPositiveLongs();
+        propertiesNegativeBytes();
+        propertiesNegativeShorts();
+        propertiesNegativeIntegers();
+        propertiesNegativeLongs();
+        propertiesNaturalBytes();
+        propertiesNaturalShorts();
+        propertiesNaturalIntegers();
+        propertiesNaturalLongs();
+        propertiesNonzeroBytes();
+        propertiesNonzeroShorts();
+        propertiesNonzeroIntegers();
+        propertiesNonzeroLongs();
+        propertiesBytes();
+        propertiesShorts();
+        propertiesAsciiCharacters();
+        propertiesCharacters();
+        propertiesRangeUp_byte();
+        propertiesRangeUp_short();
+        propertiesRangeUp_int();
+        propertiesRangeUp_long();
+        propertiesRangeUp_char();
+        propertiesRangeDown_byte();
+        propertiesRangeDown_short();
+        propertiesRangeDown_int();
+        propertiesRangeDown_long();
+        propertiesRangeDown_char();
+        propertiesRange_byte_byte();
+        propertiesRange_short_short();
+        propertiesRange_int_int();
+        propertiesRange_long_long();
+        propertiesRange_BigInteger_BigInteger();
+        propertiesRange_char_char();
+        propertiesPositiveIntegersGeometric();
+        propertiesNegativeIntegersGeometric();
+        propertiesNaturalIntegersGeometric();
+        propertiesNonzeroIntegersGeometric();
+        propertiesIntegersGeometric();
+        propertiesRangeUpGeometric();
+        propertiesRangeDownGeometric();
+        propertiesPositiveBigIntegers();
+        propertiesNegativeBigIntegers();
+        propertiesNaturalBigIntegers();
+        propertiesNonzeroBigIntegers();
+        propertiesBigIntegers();
+        propertiesRangeUp_BigInteger();
+        propertiesRangeDown_BigInteger();
+        propertiesPositiveBinaryFractions();
+        propertiesNegativeBinaryFractions();
+        propertiesNonzeroBinaryFractions();
+        propertiesBinaryFractions();
+        propertiesRangeUp_BinaryFraction();
+        propertiesRangeDown_BinaryFraction();
+        propertiesRange_BinaryFraction_BinaryFraction();
+        propertiesPositiveFloats();
+        propertiesNegativeFloats();
+        propertiesNonzeroFloats();
+        propertiesFloats();
+        propertiesPositiveDoubles();
+        propertiesNegativeDoubles();
+        propertiesNonzeroDoubles();
+        propertiesDoubles();
+        propertiesPositiveFloatsUniform();
+        propertiesNegativeFloatsUniform();
+        propertiesNonzeroFloatsUniform();
+        propertiesFloatsUniform();
+        propertiesPositiveDoublesUniform();
+        propertiesNegativeDoublesUniform();
+        propertiesNonzeroDoublesUniform();
+        propertiesDoublesUniform();
+        propertiesRangeUp_float();
+        propertiesRangeDown_float();
+        propertiesRange_float_float();
+        propertiesRangeUp_double();
+        propertiesRangeDown_double();
+        propertiesRange_double_double();
+        propertiesRangeUpUniform_float();
+        propertiesRangeDownUniform_float();
+        propertiesRangeUniform_float_float();
+        propertiesRangeUpUniform_double();
+        propertiesRangeDownUniform_double();
+        propertiesRangeUniform_double_double();
+        propertiesPositiveBigDecimals();
+        propertiesNegativeBigDecimals();
+        propertiesNonzeroBigDecimals();
+        propertiesBigDecimals();
+        propertiesPositiveCanonicalBigDecimals();
+        propertiesNegativeCanonicalBigDecimals();
+        propertiesNonzeroCanonicalBigDecimals();
+        propertiesCanonicalBigDecimals();
+        propertiesRangeUp_BigDecimal();
+        propertiesRangeDown_BigDecimal();
+        propertiesRange_BigDecimal_BigDecimal();
+        propertiesRangeUpCanonical_BigDecimal();
+        propertiesRangeDownCanonical_BigDecimal();
+        propertiesRangeCanonical_BigDecimal_BigDecimal();
+        propertiesWithElement();
+        propertiesWithNull();
+        propertiesOptionals();
+        propertiesNullableOptionals();
+        propertiesDependentPairsInfinite();
+        propertiesShuffle();
+        propertiesPermutationsFinite();
+        propertiesStringPermutations();
+        propertiesPrefixPermutations();
+        propertiesStrings_int_String();
+        propertiesStrings_int();
+        propertiesLists();
+        propertiesStrings_String();
+        propertiesStrings();
+        propertiesListsAtLeast();
+        propertiesStringsAtLeast_int_String();
+        propertiesStringsAtLeast_int();
+        propertiesDistinctStrings_int_String();
+        propertiesDistinctStrings_int();
+        propertiesDistinctLists();
+        propertiesDistinctStrings_String();
+        propertiesDistinctStrings();
+        propertiesDistinctListsAtLeast();
+        propertiesDistinctStringsAtLeast_int_String();
+        propertiesDistinctStringsAtLeast_int();
+        propertiesStringBags_int_String();
+        propertiesStringBags_int();
+        propertiesBags();
+        propertiesStringBags_String();
+        propertiesStringBags();
+        propertiesBagsAtLeast();
+        propertiesStringBagsAtLeast_int_String();
+        propertiesStringBagsAtLeast_int();
+        propertiesStringSubsets_int_String();
+        propertiesStringSubsets_int();
+        propertiesSubsets();
+        propertiesStringSubsets_String();
+        propertiesStringSubsets();
+        propertiesSubsetsAtLeast();
+        propertiesStringSubsetsAtLeast_int_String();
+        propertiesStringSubsetsAtLeast_int();
+        propertiesCartesianProduct();
+        propertiesRepeatingIterables();
+        propertiesRepeatingIterablesDistinctAtLeast();
+        propertiesSublists();
+        propertiesSubstrings();
+        propertiesListsWithElement();
+        propertiesStringsWithChar_char_String();
+        propertiesStringsWithChar_char();
+        propertiesSubsetsWithElement();
+        propertiesStringSubsetsWithChar_char_String();
+        propertiesStringSubsetsWithChar_char();
+        propertiesListsWithSublists();
+        propertiesStringsWithSubstrings_Iterable_String_String();
+        propertiesStringsWithSubstrings_Iterable_String();
+        propertiesMaps();
+        propertiesRandomProvidersFixedScales();
+        propertiesRandomProvidersDefault();
+        propertiesRandomProvidersDefaultSecondaryScale();
+        propertiesRandomProviders();
+        propertiesEquals();
+        propertiesHashCode();
+        propertiesToString();
     }
 
     private static <T> void simpleTestWithNulls(
@@ -252,7 +239,7 @@ public class RandomProviderProperties {
         simpleTestWithNulls(rp, xs, x -> x != null && predicate.test(x));
     }
 
-    private static void propertiesConstructor() {
+    private void propertiesConstructor() {
         initialize("RandomProvider()");
         //noinspection unused
         for (Void v : take(LIMIT, repeat((Void) null))) {
@@ -261,7 +248,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesConstructor_List_Integer() {
+    private void propertiesConstructor_List_Integer() {
         initialize("RandomProvider(List<Integer>)");
         for (List<Integer> is : take(LIMIT, P.lists(IsaacPRNG.SIZE, P.integers()))) {
             RandomProvider rp = new RandomProvider(is);
@@ -279,7 +266,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesGetScale() {
+    private void propertiesGetScale() {
         initialize("getScale()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int scale = rp.getScale();
@@ -287,7 +274,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesGetSecondaryScale() {
+    private void propertiesGetSecondaryScale() {
         initialize("getSecondaryScale()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             int secondaryScale = rp.getSecondaryScale();
@@ -295,7 +282,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesGetSeed() {
+    private void propertiesGetSeed() {
         initialize("getSeed()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             List<Integer> seed = rp.getSeed();
@@ -308,7 +295,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesWithScale() {
+    private void propertiesWithScale() {
         initialize("withScale(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             RandomProvider rp = p.a.withScale(p.b);
@@ -324,7 +311,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesWithSecondaryScale() {
+    private void propertiesWithSecondaryScale() {
         initialize("withSecondaryScale(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProviders(), P.naturalIntegers()))) {
             RandomProvider rp = p.a.withSecondaryScale(p.b);
@@ -344,7 +331,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesCopy() {
+    private void propertiesCopy() {
         initialize("copy()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             RandomProvider copy = rp.copy();
@@ -354,7 +341,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDeepCopy() {
+    private void propertiesDeepCopy() {
         initialize("deepCopy()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             RandomProvider copy = rp.deepCopy();
@@ -364,7 +351,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesReset() {
+    private void propertiesReset() {
         initialize("reset()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             RandomProvider rpDependent = rp.withScale(10);
@@ -380,14 +367,14 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesGetId() {
+    private void propertiesGetId() {
         initialize("getId()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             rp.getId();
         }
     }
 
-    private static void propertiesIntegers() {
+    private void propertiesIntegers() {
         initialize("integers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.integers();
@@ -395,7 +382,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesLongs() {
+    private void propertiesLongs() {
         initialize("longs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.longs();
@@ -403,7 +390,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBooleans() {
+    private void propertiesBooleans() {
         initialize("booleans()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Boolean> bs = rp.booleans();
@@ -414,7 +401,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesUniformSample_Iterable() {
+    private void propertiesUniformSample_Iterable() {
         initialize("uniformSample(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -434,7 +421,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesUniformSample_String() {
+    private void propertiesUniformSample_String() {
         initialize("uniformSample(String)");
         for (Pair<RandomProvider, String> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.stringsAtLeast(1)))) {
             Iterable<Character> cs = p.a.uniformSample(p.b);
@@ -450,7 +437,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesOrderings() {
+    private void propertiesOrderings() {
         initialize("orderings()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Ordering> os = rp.orderings();
@@ -461,7 +448,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRoundingModes() {
+    private void propertiesRoundingModes() {
         initialize("roundingModes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<RoundingMode> rms = rp.roundingModes();
@@ -472,7 +459,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBytes() {
+    private void propertiesPositiveBytes() {
         initialize("positiveBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.positiveBytes();
@@ -480,7 +467,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveShorts() {
+    private void propertiesPositiveShorts() {
         initialize("positiveShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.positiveShorts();
@@ -488,7 +475,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveIntegers() {
+    private void propertiesPositiveIntegers() {
         initialize("positiveIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.positiveIntegers();
@@ -496,7 +483,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveLongs() {
+    private void propertiesPositiveLongs() {
         initialize("positiveLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.positiveLongs();
@@ -504,7 +491,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeBytes() {
+    private void propertiesNegativeBytes() {
         initialize("negativeBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.negativeBytes();
@@ -512,7 +499,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeShorts() {
+    private void propertiesNegativeShorts() {
         initialize("negativeShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.negativeShorts();
@@ -520,7 +507,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeIntegers() {
+    private void propertiesNegativeIntegers() {
         initialize("negativeIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.negativeIntegers();
@@ -528,7 +515,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeLongs() {
+    private void propertiesNegativeLongs() {
         initialize("negativeLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.negativeLongs();
@@ -536,7 +523,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalBytes() {
+    private void propertiesNaturalBytes() {
         initialize("naturalBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.naturalBytes();
@@ -544,7 +531,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalShorts() {
+    private void propertiesNaturalShorts() {
         initialize("naturalShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.naturalShorts();
@@ -552,7 +539,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalIntegers() {
+    private void propertiesNaturalIntegers() {
         initialize("naturalIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.naturalIntegers();
@@ -560,7 +547,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalLongs() {
+    private void propertiesNaturalLongs() {
         initialize("naturalLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.naturalLongs();
@@ -568,7 +555,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroBytes() {
+    private void propertiesNonzeroBytes() {
         initialize("nonzeroBytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.nonzeroBytes();
@@ -576,7 +563,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroShorts() {
+    private void propertiesNonzeroShorts() {
         initialize("nonzeroShorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.nonzeroShorts();
@@ -584,7 +571,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroIntegers() {
+    private void propertiesNonzeroIntegers() {
         initialize("nonzeroIntegers()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Integer> is = rp.nonzeroIntegers();
@@ -592,7 +579,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroLongs() {
+    private void propertiesNonzeroLongs() {
         initialize("nonzeroLongs()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Long> ls = rp.nonzeroLongs();
@@ -600,7 +587,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBytes() {
+    private void propertiesBytes() {
         initialize("bytes()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Byte> bs = rp.bytes();
@@ -608,7 +595,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesShorts() {
+    private void propertiesShorts() {
         initialize("shorts()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Short> ss = rp.shorts();
@@ -616,7 +603,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesAsciiCharacters() {
+    private void propertiesAsciiCharacters() {
         initialize("asciiCharacters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.asciiCharacters();
@@ -624,7 +611,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesCharacters() {
+    private void propertiesCharacters() {
         initialize("characters()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Character> cs = rp.characters();
@@ -632,7 +619,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_byte() {
+    private void propertiesRangeUp_byte() {
         initialize("rangeUp(byte)");
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             Iterable<Byte> bs = p.a.rangeUp(p.b);
@@ -644,7 +631,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_short() {
+    private void propertiesRangeUp_short() {
         initialize("rangeUp(short)");
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             Iterable<Short> ss = p.a.rangeUp(p.b);
@@ -656,7 +643,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_int() {
+    private void propertiesRangeUp_int() {
         initialize("rangeUp(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             Iterable<Integer> is = p.a.rangeUp(p.b);
@@ -668,7 +655,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_long() {
+    private void propertiesRangeUp_long() {
         initialize("rangeUp(long)");
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             Iterable<Long> ls = p.a.rangeUp(p.b);
@@ -680,7 +667,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_char() {
+    private void propertiesRangeUp_char() {
         initialize("rangeUp(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
@@ -693,7 +680,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_byte() {
+    private void propertiesRangeDown_byte() {
         initialize("rangeDown(byte)");
         for (Pair<RandomProvider, Byte> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.bytes()))) {
             Iterable<Byte> bs = p.a.rangeDown(p.b);
@@ -705,7 +692,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_short() {
+    private void propertiesRangeDown_short() {
         initialize("rangeDown(short)");
         for (Pair<RandomProvider, Short> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.shorts()))) {
             Iterable<Short> ss = p.a.rangeDown(p.b);
@@ -717,7 +704,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_int() {
+    private void propertiesRangeDown_int() {
         initialize("rangeDown(int)");
         for (Pair<RandomProvider, Integer> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.integers()))) {
             Iterable<Integer> is = p.a.rangeDown(p.b);
@@ -729,7 +716,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_long() {
+    private void propertiesRangeDown_long() {
         initialize("rangeDown(long)");
         for (Pair<RandomProvider, Long> p : take(LIMIT, P.pairs(P.randomProvidersDefault(), P.longs()))) {
             Iterable<Long> ls = p.a.rangeDown(p.b);
@@ -741,7 +728,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_char() {
+    private void propertiesRangeDown_char() {
         initialize("rangeDown(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(P.randomProvidersDefault(), P.characters());
         for (Pair<RandomProvider, Character> p : take(LIMIT, ps)) {
@@ -754,7 +741,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_byte_byte() {
+    private void propertiesRange_byte_byte() {
         initialize("range(byte, byte)");
         Iterable<Triple<RandomProvider, Byte, Byte>> ts = P.triples(P.randomProvidersDefault(), P.bytes(), P.bytes());
         for (Triple<RandomProvider, Byte, Byte> t : take(LIMIT, ts)) {
@@ -768,7 +755,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_short_short() {
+    private void propertiesRange_short_short() {
         initialize("range(short, short)");
         Iterable<Triple<RandomProvider, Short, Short>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -786,7 +773,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_int_int() {
+    private void propertiesRange_int_int() {
         initialize("range(int, int)");
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -804,7 +791,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_long_long() {
+    private void propertiesRange_long_long() {
         initialize("range(long, long)");
         Iterable<Triple<RandomProvider, Long, Long>> ts = P.triples(P.randomProvidersDefault(), P.longs(), P.longs());
         for (Triple<RandomProvider, Long, Long> t : take(LIMIT, ts)) {
@@ -818,7 +805,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_BigInteger_BigInteger() {
+    private void propertiesRange_BigInteger_BigInteger() {
         initialize("range(BigInteger, BigInteger)");
 
         Iterable<Triple<RandomProvider, BigInteger, BigInteger>> ts = P.triples(
@@ -838,7 +825,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_char_char() {
+    private void propertiesRange_char_char() {
         initialize("range(char, char)");
         Iterable<Triple<RandomProvider, Character, Character>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -857,7 +844,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveIntegersGeometric() {
+    private void propertiesPositiveIntegersGeometric() {
         initialize("positiveIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -880,7 +867,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeIntegersGeometric() {
+    private void propertiesNegativeIntegersGeometric() {
         initialize("negativeIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -903,7 +890,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalIntegersGeometric() {
+    private void propertiesNaturalIntegersGeometric() {
         initialize("naturalIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -933,7 +920,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroIntegersGeometric() {
+    private void propertiesNonzeroIntegersGeometric() {
         initialize("nonzeroIntegersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -956,7 +943,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesIntegersGeometric() {
+    private void propertiesIntegersGeometric() {
         initialize("integersGeometric()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -986,7 +973,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUpGeometric() {
+    private void propertiesRangeUpGeometric() {
         initialize("rangeUpGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b && (p.b >= 1 || p.a.getScale() < Integer.MAX_VALUE + p.b),
@@ -1009,7 +996,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDownGeometric() {
+    private void propertiesRangeDownGeometric() {
         initialize("rangeDownGeometric(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() < p.b && (p.b <= -1 || p.a.getScale() > p.b - Integer.MAX_VALUE),
@@ -1032,7 +1019,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBigIntegers() {
+    private void propertiesPositiveBigIntegers() {
         initialize("positiveBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -1056,7 +1043,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeBigIntegers() {
+    private void propertiesNegativeBigIntegers() {
         initialize("negativeBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -1079,7 +1066,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNaturalBigIntegers() {
+    private void propertiesNaturalBigIntegers() {
         initialize("naturalBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -1109,7 +1096,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroBigIntegers() {
+    private void propertiesNonzeroBigIntegers() {
         initialize("nonzeroBigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2,
@@ -1132,7 +1119,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBigIntegers() {
+    private void propertiesBigIntegers() {
         initialize("bigIntegers()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getScale() != Integer.MAX_VALUE,
@@ -1162,7 +1149,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_BigInteger() {
+    private void propertiesRangeUp_BigInteger() {
         initialize("rangeUp(BigInteger)");
         Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
@@ -1191,7 +1178,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_BigInteger() {
+    private void propertiesRangeDown_BigInteger() {
         initialize("rangeDown(BigInteger)");
         Iterable<Pair<RandomProvider, BigInteger>> ps = filterInfinite(
                 p -> {
@@ -1220,7 +1207,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBinaryFractions() {
+    private void propertiesPositiveBinaryFractions() {
         initialize("positiveBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1248,7 +1235,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeBinaryFractions() {
+    private void propertiesNegativeBinaryFractions() {
         initialize("negativeBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1276,7 +1263,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroBinaryFractions() {
+    private void propertiesNonzeroBinaryFractions() {
         initialize("nonzeroBinaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1304,7 +1291,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBinaryFractions() {
+    private void propertiesBinaryFractions() {
         initialize("binaryFractions()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() > 0 && x.getSecondaryScale() > 0,
@@ -1332,7 +1319,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_BinaryFraction() {
+    private void propertiesRangeUp_BinaryFraction() {
         initialize("rangeUp(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1363,7 +1350,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_BinaryFraction() {
+    private void propertiesRangeDown_BinaryFraction() {
         initialize("rangeDown(BinaryFraction)");
         Iterable<Pair<RandomProvider, BinaryFraction>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() > 0 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -1394,7 +1381,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_BinaryFraction_BinaryFraction() {
+    private void propertiesRange_BinaryFraction_BinaryFraction() {
         initialize("range(BinaryFraction, BinaryFraction)");
 
         Iterable<Triple<RandomProvider, BinaryFraction, BinaryFraction>> ts = P.triples(
@@ -1438,7 +1425,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveFloats() {
+    private void propertiesPositiveFloats() {
         initialize("positiveFloats()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.positiveFloats();
@@ -1446,7 +1433,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeFloats() {
+    private void propertiesNegativeFloats() {
         initialize("negativeFloats()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.negativeFloats();
@@ -1454,7 +1441,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroFloats() {
+    private void propertiesNonzeroFloats() {
         initialize("nonzeroFloats()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.nonzeroFloats();
@@ -1462,7 +1449,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesFloats() {
+    private void propertiesFloats() {
         initialize("floats()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.floats();
@@ -1470,7 +1457,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveDoubles() {
+    private void propertiesPositiveDoubles() {
         initialize("positiveDoubles()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.positiveDoubles();
@@ -1478,7 +1465,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeDoubles() {
+    private void propertiesNegativeDoubles() {
         initialize("negativeDoubles()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.negativeDoubles();
@@ -1486,7 +1473,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroDoubles() {
+    private void propertiesNonzeroDoubles() {
         initialize("nonzeroDoubles()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.nonzeroDoubles();
@@ -1494,7 +1481,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDoubles() {
+    private void propertiesDoubles() {
         initialize("doubles()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.doubles();
@@ -1502,7 +1489,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveFloatsUniform() {
+    private void propertiesPositiveFloatsUniform() {
         initialize("positiveFloatsUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.positiveFloatsUniform();
@@ -1510,7 +1497,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeFloatsUniform() {
+    private void propertiesNegativeFloatsUniform() {
         initialize("negativeFloatsUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.negativeFloatsUniform();
@@ -1518,7 +1505,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroFloatsUniform() {
+    private void propertiesNonzeroFloatsUniform() {
         initialize("nonzeroFloatsUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.nonzeroFloatsUniform();
@@ -1526,7 +1513,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesFloatsUniform() {
+    private void propertiesFloatsUniform() {
         initialize("floatsUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Float> fs = rp.floatsUniform();
@@ -1534,7 +1521,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveDoublesUniform() {
+    private void propertiesPositiveDoublesUniform() {
         initialize("positiveDoublesUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.positiveDoublesUniform();
@@ -1542,7 +1529,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeDoublesUniform() {
+    private void propertiesNegativeDoublesUniform() {
         initialize("negativeDoublesUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.negativeDoublesUniform();
@@ -1550,7 +1537,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroDoublesUniform() {
+    private void propertiesNonzeroDoublesUniform() {
         initialize("nonzeroDoublesUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.nonzeroDoublesUniform();
@@ -1558,7 +1545,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDoublesUniform() {
+    private void propertiesDoublesUniform() {
         initialize("doublesUniform()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             Iterable<Double> ds = rp.doublesUniform();
@@ -1566,7 +1553,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_float() {
+    private void propertiesRangeUp_float() {
         initialize("rangeUp(float)");
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1582,7 +1569,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_float() {
+    private void propertiesRangeDown_float() {
         initialize("rangeDown(float)");
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1598,7 +1585,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_float_float() {
+    private void propertiesRange_float_float() {
         initialize("range(float, float)");
         Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1628,7 +1615,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_double() {
+    private void propertiesRangeUp_double() {
         initialize("rangeUp(double)");
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1644,7 +1631,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_double() {
+    private void propertiesRangeDown_double() {
         initialize("rangeDown(double)");
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1660,7 +1647,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_double_double() {
+    private void propertiesRange_double_double() {
         initialize("range(double, double)");
         Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1690,7 +1677,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUpUniform_float() {
+    private void propertiesRangeUpUniform_float() {
         initialize("rangeUpUniform(float)");
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1702,7 +1689,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDownUniform_float() {
+    private void propertiesRangeDownUniform_float() {
         initialize("rangeDownUniform(float)");
         Iterable<Pair<RandomProvider, Float>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1714,7 +1701,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUniform_float_float() {
+    private void propertiesRangeUniform_float_float() {
         initialize("rangeUniform(float, float)");
         Iterable<Triple<RandomProvider, Float, Float>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1768,7 +1755,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUpUniform_double() {
+    private void propertiesRangeUpUniform_double() {
         initialize("rangeUpUniform(double)");
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1780,7 +1767,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDownUniform_double() {
+    private void propertiesRangeDownUniform_double() {
         initialize("rangeDownUniform(double)");
         Iterable<Pair<RandomProvider, Double>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -1792,7 +1779,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUniform_double_double() {
+    private void propertiesRangeUniform_double_double() {
         initialize("rangeUniform(double, double)");
         Iterable<Triple<RandomProvider, Double, Double>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -1846,7 +1833,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveBigDecimals() {
+    private void propertiesPositiveBigDecimals() {
         initialize("positiveBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1873,7 +1860,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeBigDecimals() {
+    private void propertiesNegativeBigDecimals() {
         initialize("negativeBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1900,7 +1887,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroBigDecimals() {
+    private void propertiesNonzeroBigDecimals() {
         initialize("nonzeroBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1927,7 +1914,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBigDecimals() {
+    private void propertiesBigDecimals() {
         initialize("bigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1954,7 +1941,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPositiveCanonicalBigDecimals() {
+    private void propertiesPositiveCanonicalBigDecimals() {
         initialize("positiveCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -1981,7 +1968,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNegativeCanonicalBigDecimals() {
+    private void propertiesNegativeCanonicalBigDecimals() {
         initialize("negativeCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -2008,7 +1995,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNonzeroCanonicalBigDecimals() {
+    private void propertiesNonzeroCanonicalBigDecimals() {
         initialize("nonzeroCanonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -2035,7 +2022,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesCanonicalBigDecimals() {
+    private void propertiesCanonicalBigDecimals() {
         initialize("canonicalBigDecimals()");
         Iterable<RandomProvider> rps = filterInfinite(
                 x -> x.getScale() >= 2 && x.getSecondaryScale() > 0,
@@ -2062,7 +2049,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUp_BigDecimal() {
+    private void propertiesRangeUp_BigDecimal() {
         initialize("rangeUp(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -2093,7 +2080,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDown_BigDecimal() {
+    private void propertiesRangeDown_BigDecimal() {
         initialize("rangeDown(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -2124,7 +2111,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRange_BigDecimal_BigDecimal() {
+    private void propertiesRange_BigDecimal_BigDecimal() {
         initialize("range(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
@@ -2171,7 +2158,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeUpCanonical_BigDecimal() {
+    private void propertiesRangeUpCanonical_BigDecimal() {
         initialize("rangeUpCanonical(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -2202,7 +2189,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeDownCanonical_BigDecimal() {
+    private void propertiesRangeDownCanonical_BigDecimal() {
         initialize("rangeDownCanonical(BigDecimal)");
         Iterable<Pair<RandomProvider, BigDecimal>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2 && x.getSecondaryScale() > 0, P.randomProviders()),
@@ -2233,7 +2220,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRangeCanonical_BigDecimal_BigDecimal() {
+    private void propertiesRangeCanonical_BigDecimal_BigDecimal() {
         initialize("rangeCanonical(BigDecimal, BigDecimal)");
 
         Iterable<Triple<RandomProvider, BigDecimal, BigDecimal>> ts = P.triples(
@@ -2280,7 +2267,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesWithElement() {
+    private void propertiesWithElement() {
         initialize("withElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -2323,7 +2310,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesWithNull() {
+    private void propertiesWithNull() {
         initialize("withNull(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -2359,7 +2346,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesOptionals() {
+    private void propertiesOptionals() {
         initialize("optionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -2406,7 +2393,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesNullableOptionals() {
+    private void propertiesNullableOptionals() {
         initialize("nullableOptionals(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(x -> x.getScale() >= 2, P.randomProvidersDefaultSecondaryScale()),
@@ -2442,7 +2429,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDependentPairsInfinite() {
+    private void propertiesDependentPairsInfinite() {
         initialize("dependentPairsInfinite(Iterable<A>, Function<A, Iterable<B>>)");
         RandomProvider RP = RandomProvider.example();
         IterableProvider PS = P.withScale(4);
@@ -2532,7 +2519,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesShuffle() {
+    private void propertiesShuffle() {
         initialize("shuffle(List<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -2546,7 +2533,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPermutationsFinite() {
+    private void propertiesPermutationsFinite() {
         initialize("permutationsFinite(List<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -2573,7 +2560,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringPermutations() {
+    private void propertiesStringPermutations() {
         initialize("stringPermutations(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
@@ -2592,7 +2579,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesPrefixPermutations() {
+    private void propertiesPrefixPermutations() {
         initialize("prefixPermutations(Iterable<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.randomProvidersDefaultSecondaryScale()),
@@ -2645,7 +2632,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStrings_int_String() {
+    private void propertiesStrings_int_String() {
         initialize("strings(int, String)");
         Iterable<Triple<RandomProvider, String, Integer>> ts = map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
@@ -2701,7 +2688,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStrings_int() {
+    private void propertiesStrings_int() {
         initialize("strings(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -2720,7 +2707,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesLists() {
+    private void propertiesLists() {
         initialize("lists(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -2746,7 +2733,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStrings_String() {
+    private void propertiesStrings_String() {
         initialize("strings(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -2768,7 +2755,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStrings() {
+    private void propertiesStrings() {
         initialize("strings()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
@@ -2779,7 +2766,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesListsAtLeast() {
+    private void propertiesListsAtLeast() {
         initialize("listsAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -2843,7 +2830,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsAtLeast_int_String() {
+    private void propertiesStringsAtLeast_int_String() {
         initialize("stringsAtLeast(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -2902,7 +2889,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsAtLeast_int() {
+    private void propertiesStringsAtLeast_int() {
         initialize("stringsAtLeast(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -2944,7 +2931,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_int_String() {
+    private void propertiesDistinctStrings_int_String() {
         initialize("distinctStrings(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -3010,7 +2997,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_int() {
+    private void propertiesDistinctStrings_int() {
         initialize("distinctStrings(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -3038,7 +3025,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctLists() {
+    private void propertiesDistinctLists() {
         initialize("distinctLists(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3064,7 +3051,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings_String() {
+    private void propertiesDistinctStrings_String() {
         initialize("distinctStrings(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3083,7 +3070,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStrings() {
+    private void propertiesDistinctStrings() {
         initialize("distinctStrings()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
@@ -3094,7 +3081,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctListsAtLeast() {
+    private void propertiesDistinctListsAtLeast() {
         initialize("distinctListsAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -3174,7 +3161,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsAtLeast_int_String() {
+    private void propertiesDistinctStringsAtLeast_int_String() {
         initialize("distinctStringsAtLeast(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -3263,7 +3250,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesDistinctStringsAtLeast_int() {
+    private void propertiesDistinctStringsAtLeast_int() {
         initialize("distinctStringsAtLeast(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -3305,7 +3292,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_int_String() {
+    private void propertiesStringBags_int_String() {
         initialize("stringBags(int, String)");
         Iterable<Triple<RandomProvider, String, Integer>> ts = map(
                 p -> new Triple<>(p.a, p.b.a, p.b.b),
@@ -3369,7 +3356,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_int() {
+    private void propertiesStringBags_int() {
         initialize("stringBags(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = P.pairsLogarithmicOrder(
                 P.randomProvidersDefault(),
@@ -3388,7 +3375,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBags() {
+    private void propertiesBags() {
         initialize("bags(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3425,7 +3412,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBags_String() {
+    private void propertiesStringBags_String() {
         initialize("stringBags(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3447,7 +3434,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBags() {
+    private void propertiesStringBags() {
         initialize("stringBags()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
@@ -3458,7 +3445,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesBagsAtLeast() {
+    private void propertiesBagsAtLeast() {
         initialize("bagsAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -3537,7 +3524,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsAtLeast_int_String() {
+    private void propertiesStringBagsAtLeast_int_String() {
         initialize("stringBagsAtLeast(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -3600,7 +3587,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringBagsAtLeast_int() {
+    private void propertiesStringBagsAtLeast_int() {
         initialize("stringBagsAtLeast(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -3646,7 +3633,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_int_String() {
+    private void propertiesStringSubsets_int_String() {
         initialize("stringSubsets(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -3712,7 +3699,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_int() {
+    private void propertiesStringSubsets_int() {
         initialize("distinctStrings(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -3740,7 +3727,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesSubsets() {
+    private void propertiesSubsets() {
         initialize("subsets(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3766,7 +3753,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets_String() {
+    private void propertiesStringSubsets_String() {
         initialize("stringSubsets(String)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 0, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -3785,7 +3772,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsets() {
+    private void propertiesStringSubsets() {
         initialize("stringSubsets()");
         Iterable<RandomProvider> rpsFail = filterInfinite(
                 s -> s.getScale() > 0,
@@ -3796,7 +3783,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsAtLeast() {
+    private void propertiesSubsetsAtLeast() {
         initialize("subsetsAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = filterInfinite(
                 t -> t.a.getScale() > t.b,
@@ -3874,7 +3861,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsAtLeast_int_String() {
+    private void propertiesStringSubsetsAtLeast_int_String() {
         initialize("stringSubsetsAtLeast(int, String)");
         Iterable<Triple<RandomProvider, Integer, String>> ts = map(
                 p -> new Triple<>(p.a.a, p.a.b, p.b),
@@ -3963,7 +3950,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsAtLeast_int() {
+    private void propertiesStringSubsetsAtLeast_int() {
         initialize("stringSubsetsAtLeast(int)");
         Iterable<Pair<RandomProvider, Integer>> ps = filterInfinite(
                 p -> p.a.getScale() > p.b,
@@ -4005,7 +3992,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesCartesianProduct() {
+    private void propertiesCartesianProduct() {
         initialize("cartesianProduct(List<List<T>>)");
         Iterable<Pair<RandomProvider, List<List<Integer>>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -4048,7 +4035,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRepeatingIterables() {
+    private void propertiesRepeatingIterables() {
         initialize("repeatingIterables(Iterable<T>)");
         Iterable<Pair<RandomProvider, Iterable<Integer>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
@@ -4063,7 +4050,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRepeatingIterablesDistinctAtLeast() {
+    private void propertiesRepeatingIterablesDistinctAtLeast() {
         initialize("repeatingIterablesDistinctAtLeast(int, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = map(
                 p -> new Triple<>(p.a, p.b.b, p.b.a),
@@ -4135,7 +4122,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesSublists() {
+    private void propertiesSublists() {
         initialize("sublists(List<T>)");
         Iterable<Pair<RandomProvider, List<Integer>>> ps = P.pairs(
                 P.randomProvidersDefault(),
@@ -4146,7 +4133,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesSubstrings() {
+    private void propertiesSubstrings() {
         initialize("substrings(String<T>)");
         Iterable<Pair<RandomProvider, String>> ps = P.pairs(P.randomProvidersDefault(), P.withScale(4).strings());
         for (Pair<RandomProvider, String> p : take(LIMIT, ps)) {
@@ -4154,7 +4141,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesListsWithElement() {
+    private void propertiesListsWithElement() {
         initialize("listsWithElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -4190,7 +4177,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithChar_char_String() {
+    private void propertiesStringsWithChar_char_String() {
         initialize("stringsWithChar(char, String)");
         Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
                 t -> nub(t.c).length() != 1 || head(t.c) != t.b,
@@ -4238,7 +4225,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithChar_char() {
+    private void propertiesStringsWithChar_char() {
         initialize("stringsWithChar(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() >= 3, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -4249,7 +4236,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesSubsetsWithElement() {
+    private void propertiesSubsetsWithElement() {
         initialize("subsetsWithElement(T, Iterable<T>)");
         Iterable<Triple<RandomProvider, Integer, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -4285,7 +4272,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsWithChar_char_String() {
+    private void propertiesStringSubsetsWithChar_char_String() {
         initialize("stringSubsetsWithChar(char, String)");
         Iterable<Triple<RandomProvider, Character, String>> ts = filterInfinite(
                 t -> nub(t.c).length() != 1 || head(t.c) != t.b,
@@ -4337,7 +4324,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringSubsetsWithChar_char() {
+    private void propertiesStringSubsetsWithChar_char() {
         initialize("stringSubsetsWithChar(char)");
         Iterable<Pair<RandomProvider, Character>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() >= 2, P.withScale(4).randomProvidersDefaultSecondaryScale()),
@@ -4348,7 +4335,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesListsWithSublists() {
+    private void propertiesListsWithSublists() {
         initialize("listsWithSublists(Iterable<List<T>>, Iterable<T>)");
         Iterable<Triple<RandomProvider, Iterable<List<Integer>>, Iterable<Integer>>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
@@ -4372,7 +4359,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithSubstrings_Iterable_String_String() {
+    private void propertiesStringsWithSubstrings_Iterable_String_String() {
         initialize("stringsWithSubstrings(Iterable<String>, String)");
         Iterable<Triple<RandomProvider, Iterable<String>, String>> ts = P.triples(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
@@ -4396,7 +4383,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesStringsWithSubstrings_Iterable_String() {
+    private void propertiesStringsWithSubstrings_Iterable_String() {
         initialize("stringsWithSubstrings(Iterable<String>)");
         Iterable<Pair<RandomProvider, Iterable<String>>> ps = P.pairs(
                 filterInfinite(rp -> rp.getScale() > 1, P.randomProvidersDefaultSecondaryScale()),
@@ -4418,7 +4405,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesMaps() {
+    private void propertiesMaps() {
         initialize("maps(List<Integer>, List<Integer>)");
         Comparator<Integer> withNullComparator = new WithNullComparator<>();
         Iterable<Triple<RandomProvider, List<Integer>, Iterable<Integer>>> ts = P.triples(
@@ -4432,7 +4419,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRandomProvidersFixedScales() {
+    private void propertiesRandomProvidersFixedScales() {
         initialize("randomProvidersFixedScales(int, int)");
         Iterable<Triple<RandomProvider, Integer, Integer>> ts = P.triples(
                 P.randomProvidersDefault(),
@@ -4451,7 +4438,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRandomProvidersDefault() {
+    private void propertiesRandomProvidersDefault() {
         initialize("randomProvidersDefault()");
         for (RandomProvider rp : take(LIMIT, P.randomProvidersDefault())) {
             simpleTest(rp, rp.randomProvidersDefault(), s -> s.getScale() == 32 && s.getSecondaryScale() == 8);
@@ -4461,7 +4448,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRandomProvidersDefaultSecondaryScale() {
+    private void propertiesRandomProvidersDefaultSecondaryScale() {
         initialize("randomProvidersSecondaryScale()");
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
@@ -4486,7 +4473,7 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesRandomProviders() {
+    private void propertiesRandomProviders() {
         initialize("randomProviders()");
         Iterable<RandomProvider> rps = filterInfinite(
                 rp -> rp.getScale() > 0,
@@ -4511,17 +4498,17 @@ public class RandomProviderProperties {
         }
     }
 
-    private static void propertiesEquals() {
+    private void propertiesEquals() {
         initialize("equals(Object)");
         propertiesEqualsHelper(LIMIT, P, IterableProvider::randomProviders);
     }
 
-    private static void propertiesHashCode() {
+    private void propertiesHashCode() {
         initialize("hashCode()");
         propertiesHashCodeHelper(LIMIT, P, IterableProvider::randomProviders);
     }
 
-    private static void propertiesToString() {
+    private void propertiesToString() {
         initialize("toString()");
         for (RandomProvider rp : take(LIMIT, P.randomProviders())) {
             String s = rp.toString();

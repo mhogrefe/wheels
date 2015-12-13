@@ -1,10 +1,12 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.*;
+import mho.wheels.iterables.ExhaustiveProvider;
+import mho.wheels.iterables.IterableUtils;
+import mho.wheels.iterables.NoRemoveIterator;
 import mho.wheels.structures.Pair;
 import mho.wheels.structures.Triple;
+import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,87 +24,70 @@ import static mho.wheels.ordering.Ordering.ge;
 import static mho.wheels.ordering.Ordering.lt;
 import static mho.wheels.testing.Testing.*;
 
-public class IntegerUtilsProperties {
-    private static boolean USE_RANDOM;
-    private static int LIMIT;
-
-    private static IterableProvider P;
-
-    private static void initialize() {
-        if (USE_RANDOM) {
-            P = RandomProvider.example();
-            LIMIT = 1000;
-        } else {
-            P = ExhaustiveProvider.INSTANCE;
-            LIMIT = 10000;
-        }
+public class IntegerUtilsProperties extends TestProperties {
+    public IntegerUtilsProperties() {
+        super("IntegerUtils");
     }
 
-    @Test
-    public void testAllProperties() {
-        System.out.println("MathUtils properties");
-        for (boolean useRandom : Arrays.asList(false, true)) {
-            System.out.println("\ttesting " + (useRandom ? "randomly" : "exhaustively"));
-            USE_RANDOM = useRandom;
-            propertiesBits_int();
-            compareImplementationsBits_int();
-            propertiesBits_BigInteger();
-            compareImplementationsBits_BigInteger();
-            propertiesBitsPadded_int_int();
-            compareImplementationsBitsPadded_int_int();
-            propertiesBitsPadded_int_BigInteger();
-            propertiesBigEndianBits_int();
-            compareImplementationsBigEndianBits_int();
-            propertiesBigEndianBits_BigInteger();
-            propertiesBigEndianBitsPadded_int_int();
-            compareImplementationsBigEndianBitsPadded_int_int();
-            propertiesBigEndianBitsPadded_int_BigInteger();
-            propertiesFromBigEndianBits();
-            propertiesFromBits();
-            compareImplementationsFromBits();
-            propertiesDigits_int_int();
-            compareImplementationsDigits_int_int();
-            propertiesDigits_BigInteger_BigInteger();
-            propertiesDigitsPadded_int_int_int();
-            compareImplementationsDigitsPadded_int_int_int();
-            propertiesDigitsPadded_int_BigInteger_BigInteger();
-            propertiesBigEndianDigits_int_int();
-            compareImplementationsBigEndianDigits_int_int();
-            propertiesBigEndianDigits_BigInteger_BigInteger();
-            propertiesBigEndianDigitsPadded_int_int_int();
-            compareImplementationsBigEndianDigitsPadded_int_int_int();
-            propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger();
-            propertiesFromDigits_int_Iterable_Integer();
-            compareImplementationsFromDigits_int_Iterable_Integer();
-            propertiesFromDigits_int_Iterable_BigInteger();
-            propertiesFromBigEndianDigits_int_Iterable_Integer();
-            compareImplementationsFromBigEndianDigits_int_Iterable_Integer();
-            propertiesFromBigEndianDigits_int_Iterable_BigInteger();
-            propertiesToDigit();
-            propertiesFromDigit();
-            propertiesToStringBase_int_int();
-            compareImplementationsToStringBase_int_int();
-            propertiesToStringBase_BigInteger_BigInteger();
-            propertiesFromStringBase_int_String();
-            compareImplementationsFromStringBase_int_String();
-            propertiesFromStringBase_BigInteger_String();
-            propertiesLogarithmicMux();
-            propertiesLogarithmicDemux();
-            propertiesSquareRootMux();
-            propertiesSquareRootDemux();
-            propertiesMux();
-            propertiesDemux();
-            compareImplementationsDemux();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesBits_int();
+        compareImplementationsBits_int();
+        propertiesBits_BigInteger();
+        compareImplementationsBits_BigInteger();
+        propertiesBitsPadded_int_int();
+        compareImplementationsBitsPadded_int_int();
+        propertiesBitsPadded_int_BigInteger();
+        propertiesBigEndianBits_int();
+        compareImplementationsBigEndianBits_int();
+        propertiesBigEndianBits_BigInteger();
+        propertiesBigEndianBitsPadded_int_int();
+        compareImplementationsBigEndianBitsPadded_int_int();
+        propertiesBigEndianBitsPadded_int_BigInteger();
+        propertiesFromBigEndianBits();
+        propertiesFromBits();
+        compareImplementationsFromBits();
+        propertiesDigits_int_int();
+        compareImplementationsDigits_int_int();
+        propertiesDigits_BigInteger_BigInteger();
+        propertiesDigitsPadded_int_int_int();
+        compareImplementationsDigitsPadded_int_int_int();
+        propertiesDigitsPadded_int_BigInteger_BigInteger();
+        propertiesBigEndianDigits_int_int();
+        compareImplementationsBigEndianDigits_int_int();
+        propertiesBigEndianDigits_BigInteger_BigInteger();
+        propertiesBigEndianDigitsPadded_int_int_int();
+        compareImplementationsBigEndianDigitsPadded_int_int_int();
+        propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger();
+        propertiesFromDigits_int_Iterable_Integer();
+        compareImplementationsFromDigits_int_Iterable_Integer();
+        propertiesFromDigits_int_Iterable_BigInteger();
+        propertiesFromBigEndianDigits_int_Iterable_Integer();
+        compareImplementationsFromBigEndianDigits_int_Iterable_Integer();
+        propertiesFromBigEndianDigits_int_Iterable_BigInteger();
+        propertiesToDigit();
+        propertiesFromDigit();
+        propertiesToStringBase_int_int();
+        compareImplementationsToStringBase_int_int();
+        propertiesToStringBase_BigInteger_BigInteger();
+        propertiesFromStringBase_int_String();
+        compareImplementationsFromStringBase_int_String();
+        propertiesFromStringBase_BigInteger_String();
+        propertiesLogarithmicMux();
+        propertiesLogarithmicDemux();
+        propertiesSquareRootMux();
+        propertiesSquareRootDemux();
+        propertiesMux();
+        propertiesDemux();
+        compareImplementationsDemux();
     }
 
     private static @NotNull Iterable<Boolean> bits_int_simplest(int n) {
         return bits(BigInteger.valueOf(n));
     }
 
-    private static void propertiesBits_int() {
-        initialize();
+    private void propertiesBits_int() {
+        initialize("");
         System.out.println("\t\ttesting bits(int) properties...");
 
         for (int i : take(LIMIT, P.naturalIntegers())) {
@@ -133,8 +118,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBits_int() {
-        initialize();
+    private void compareImplementationsBits_int() {
+        initialize("");
         System.out.println("\t\tcomparing bits(int) implementations...");
 
         long totalTime = 0;
@@ -172,8 +157,8 @@ public class IntegerUtilsProperties {
         };
     }
 
-    private static void propertiesBits_BigInteger() {
-        initialize();
+    private void propertiesBits_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bits(BigInteger) properties...");
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
@@ -204,8 +189,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBits_BigInteger() {
-        initialize();
+    private void compareImplementationsBits_BigInteger() {
+        initialize("");
         System.out.println("\t\tcomparing bits(BigInteger) implementations...");
 
         long totalTime = 0;
@@ -229,8 +214,8 @@ public class IntegerUtilsProperties {
         return bitsPadded(length, BigInteger.valueOf(n));
     }
 
-    private static void propertiesBitsPadded_int_int() {
-        initialize();
+    private void propertiesBitsPadded_int_int() {
+        initialize("");
         System.out.println("\t\ttesting bitsPadded(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps = P.pairsSquareRootOrder(
@@ -275,8 +260,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBitsPadded_int_int() {
-        initialize();
+    private void compareImplementationsBitsPadded_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing bitsPadded(int, int) implementations...");
 
         long totalTime = 0;
@@ -300,8 +285,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesBitsPadded_int_BigInteger() {
-        initialize();
+    private void propertiesBitsPadded_int_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bitsPadded(int, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, Integer>> ps;
@@ -350,8 +335,8 @@ public class IntegerUtilsProperties {
         return bigEndianBits(BigInteger.valueOf(n));
     }
 
-    private static void propertiesBigEndianBits_int() {
-        initialize();
+    private void propertiesBigEndianBits_int() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianBits(int) properties...");
 
         for (int i : take(LIMIT, P.naturalIntegers())) {
@@ -377,8 +362,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBigEndianBits_int() {
-        initialize();
+    private void compareImplementationsBigEndianBits_int() {
+        initialize("");
         System.out.println("\t\tcomparing bigEndianBits(int) implementations...");
 
         long totalTime = 0;
@@ -398,8 +383,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesBigEndianBits_BigInteger() {
-        initialize();
+    private void propertiesBigEndianBits_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianBits(BigInteger) properties...");
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
@@ -428,8 +413,8 @@ public class IntegerUtilsProperties {
         return bigEndianBitsPadded(length, BigInteger.valueOf(n));
     }
 
-    private static void propertiesBigEndianBitsPadded_int_int() {
-        initialize();
+    private void propertiesBigEndianBitsPadded_int_int() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianBitsPadded(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps;
@@ -470,8 +455,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBigEndianBitsPadded_int_int() {
-        initialize();
+    private void compareImplementationsBigEndianBitsPadded_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing bigEndianBitsPadded(int, int) implementations...");
 
         long totalTime = 0;
@@ -497,8 +482,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesBigEndianBitsPadded_int_BigInteger() {
-        initialize();
+    private void propertiesBigEndianBitsPadded_int_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianBitsPadded(int, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, Integer>> ps;
@@ -552,8 +537,8 @@ public class IntegerUtilsProperties {
         return new BigInteger(bytes);
     }
 
-    private static void propertiesFromBits() {
-        initialize();
+    private void propertiesFromBits() {
+        initialize("");
         System.out.println("\t\ttesting fromBits(Iterable<Boolean>) properties...");
 
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
@@ -580,8 +565,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsFromBits() {
-        initialize();
+    private void compareImplementationsFromBits() {
+        initialize("");
         System.out.println("\t\tcomparing fromBits(Iterable<Boolean>) implementations...");
 
         long totalTime = 0;
@@ -601,8 +586,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesFromBigEndianBits() {
-        initialize();
+    private void propertiesFromBigEndianBits() {
+        initialize("");
         System.out.println("\t\ttesting fromBigEndianBits(Iterable<Boolean>) properties...");
 
         for (List<Boolean> bs : take(LIMIT, P.lists(P.booleans()))) {
@@ -628,8 +613,8 @@ public class IntegerUtilsProperties {
         return map(BigInteger::intValue, digits(BigInteger.valueOf(base), BigInteger.valueOf(n)));
     }
 
-    private static void propertiesDigits_int_int() {
-        initialize();
+    private void propertiesDigits_int_int() {
+        initialize("");
         System.out.println("\t\ttesting digits(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps;
@@ -698,8 +683,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsDigits_int_int() {
-        initialize();
+    private void compareImplementationsDigits_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing digits(int, int) implementations...");
 
         long totalTime = 0;
@@ -725,8 +710,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesDigits_BigInteger_BigInteger() {
-        initialize();
+    private void propertiesDigits_BigInteger_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting digits(BigInteger, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
@@ -807,8 +792,8 @@ public class IntegerUtilsProperties {
         return map(BigInteger::intValue, digitsPadded(length, BigInteger.valueOf(base), BigInteger.valueOf(n)));
     }
 
-    private static void propertiesDigitsPadded_int_int_int() {
-        initialize();
+    private void propertiesDigitsPadded_int_int_int() {
+        initialize("");
         System.out.println("\t\ttesting digitsPadded(int, int, int) properties...");
 
         Iterable<Triple<Integer, Integer, Integer>> ts;
@@ -944,8 +929,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsDigitsPadded_int_int_int() {
-        initialize();
+    private void compareImplementationsDigitsPadded_int_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing digitsPadded(int, int, int) implementations...");
 
         long totalTime = 0;
@@ -978,8 +963,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesDigitsPadded_int_BigInteger_BigInteger() {
-        initialize();
+    private void propertiesDigitsPadded_int_BigInteger_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting digitsPadded(int, BigInteger, BigInteger) properties...");
 
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
@@ -1109,8 +1094,8 @@ public class IntegerUtilsProperties {
         return map(BigInteger::intValue, bigEndianDigits(BigInteger.valueOf(base), BigInteger.valueOf(n)));
     }
 
-    private static void propertiesBigEndianDigits_int_int() {
-        initialize();
+    private void propertiesBigEndianDigits_int_int() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianDigits(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps;
@@ -1174,8 +1159,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBigEndianDigits_int_int() {
-        initialize();
+    private void compareImplementationsBigEndianDigits_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing bigEndianDigits(int, int) implementations...");
 
         long totalTime = 0;
@@ -1201,8 +1186,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesBigEndianDigits_BigInteger_BigInteger() {
-        initialize();
+    private void propertiesBigEndianDigits_BigInteger_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianDigits(BigInteger, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
@@ -1278,8 +1263,8 @@ public class IntegerUtilsProperties {
         );
     }
 
-    private static void propertiesBigEndianDigitsPadded_int_int_int() {
-        initialize();
+    private void propertiesBigEndianDigitsPadded_int_int_int() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianDigitsPadded(int, int, int) properties...");
 
         Iterable<Triple<Integer, Integer, Integer>> ts;
@@ -1410,8 +1395,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsBigEndianDigitsPadded_int_int_int() {
-        initialize();
+    private void compareImplementationsBigEndianDigitsPadded_int_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing bigEndianDigitsPadded(int, int, int) implementations...");
 
         long totalTime = 0;
@@ -1444,8 +1429,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger() {
-        initialize();
+    private void propertiesBigEndianDigitsPadded_int_BigInteger_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting bigEndianDigitsPadded(int, BigInteger, BigInteger) properties...");
 
         Iterable<Triple<Integer, BigInteger, BigInteger>> ts;
@@ -1574,8 +1559,8 @@ public class IntegerUtilsProperties {
         return fromDigits(BigInteger.valueOf(base), map(i -> BigInteger.valueOf(i), digits));
     }
 
-    private static void propertiesFromDigits_int_Iterable_Integer() {
-        initialize();
+    private void propertiesFromDigits_int_Iterable_Integer() {
+        initialize("");
         System.out.println("\t\ttesting fromDigits(int, Iterable<Integer>) properties...");
 
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
@@ -1640,8 +1625,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsFromDigits_int_Iterable_Integer() {
-        initialize();
+    private void compareImplementationsFromDigits_int_Iterable_Integer() {
+        initialize("");
         System.out.println("\t\tcomparing fromDigits(int, Iterable<Integer>) implementations...");
 
         long totalTime = 0;
@@ -1671,8 +1656,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesFromDigits_int_Iterable_BigInteger() {
-        initialize();
+    private void propertiesFromDigits_int_Iterable_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting fromDigits(int, Iterable<BigInteger>) properties...");
 
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
@@ -1752,8 +1737,8 @@ public class IntegerUtilsProperties {
         return fromBigEndianDigits(BigInteger.valueOf(base), map(i -> BigInteger.valueOf(i), digits));
     }
 
-    private static void propertiesFromBigEndianDigits_int_Iterable_Integer() {
-        initialize();
+    private void propertiesFromBigEndianDigits_int_Iterable_Integer() {
+        initialize("");
         System.out.println("\t\ttesting fromBigEndianDigits(int, Iterable<Integer>) properties...");
 
         Iterable<Pair<List<Integer>, Integer>> unfilteredPs;
@@ -1819,8 +1804,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsFromBigEndianDigits_int_Iterable_Integer() {
-        initialize();
+    private void compareImplementationsFromBigEndianDigits_int_Iterable_Integer() {
+        initialize("");
         System.out.println("\t\tcomparing fromBigEndianDigits(int, Iterable<Integer>) implementations...");
 
         long totalTime = 0;
@@ -1850,8 +1835,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesFromBigEndianDigits_int_Iterable_BigInteger() {
-        initialize();
+    private void propertiesFromBigEndianDigits_int_Iterable_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting fromBigEndianDigits(int, Iterable<BigInteger>) properties...");
 
         Iterable<Pair<List<BigInteger>, BigInteger>> unfilteredPs;
@@ -1920,8 +1905,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesToDigit() {
-        initialize();
+    private void propertiesToDigit() {
+        initialize("");
         System.out.println("\t\ttesting toDigit(int) properties...");
 
         for (int i : take(LIMIT, P.range(0, 35))) {
@@ -1945,8 +1930,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesFromDigit() {
-        initialize();
+    private void propertiesFromDigit() {
+        initialize("");
         System.out.println("\t\ttesting fromDigit(char) properties...");
 
         for (char c : take(LIMIT, IterableUtils.mux(Arrays.asList(P.range('0', '9'), P.range('A', 'Z'))))) {
@@ -1971,8 +1956,8 @@ public class IntegerUtilsProperties {
         return toStringBase(BigInteger.valueOf(base), BigInteger.valueOf(n));
     }
 
-    private static void propertiesToStringBase_int_int() {
-        initialize();
+    private void propertiesToStringBase_int_int() {
+        initialize("");
         System.out.println("\t\ttesting toStringBase(int, int) properties...");
 
         Iterable<Pair<Integer, Integer>> ps;
@@ -2023,8 +2008,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsToStringBase_int_int() {
-        initialize();
+    private void compareImplementationsToStringBase_int_int() {
+        initialize("");
         System.out.println("\t\tcomparing toStringBase(int, int) implementations...");
 
         long totalTime = 0;
@@ -2050,8 +2035,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesToStringBase_BigInteger_BigInteger() {
-        initialize();
+    private void propertiesToStringBase_BigInteger_BigInteger() {
+        initialize("");
         System.out.println("\t\ttesting toStringBase(BigInteger, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
@@ -2111,8 +2096,8 @@ public class IntegerUtilsProperties {
         return fromStringBase(BigInteger.valueOf(base), s);
     }
 
-    private static void propertiesFromStringBase_int_String() {
-        initialize();
+    private void propertiesFromStringBase_int_String() {
+        initialize("");
         System.out.println("\t\ttesting fromString(int, String) properties...");
 
         Iterable<Pair<Integer, String>> ps = map(
@@ -2139,8 +2124,8 @@ public class IntegerUtilsProperties {
         //improper String left untested
     }
 
-    private static void compareImplementationsFromStringBase_int_String() {
-        initialize();
+    private void compareImplementationsFromStringBase_int_String() {
+        initialize("");
         System.out.println("\t\tcomparing fromStringBase(int, String) implementations...");
 
         long totalTime = 0;
@@ -2164,8 +2149,8 @@ public class IntegerUtilsProperties {
         System.out.println("\t\t\tstandard: " + ((double) totalTime) / 1e9 + " s");
     }
 
-    private static void propertiesFromStringBase_BigInteger_String() {
-        initialize();
+    private void propertiesFromStringBase_BigInteger_String() {
+        initialize("");
         System.out.println("\t\ttesting fromStringBase(BigInteger, String) properties...");
 
         Iterable<Pair<BigInteger, String>> ps = map(
@@ -2191,8 +2176,8 @@ public class IntegerUtilsProperties {
         //improper String left untested
     }
 
-    private static void propertiesLogarithmicMux() {
-        initialize();
+    private void propertiesLogarithmicMux() {
+        initialize("");
         System.out.println("\t\ttesting logarithmicMux(BigInteger, BigInteger) properties...");
 
         Iterable<Pair<BigInteger, BigInteger>> ps;
@@ -2226,8 +2211,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesLogarithmicDemux() {
-        initialize();
+    private void propertiesLogarithmicDemux() {
+        initialize("");
         System.out.println("\t\ttesting logarithmicDemux(BigInteger) properties...");
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
@@ -2247,8 +2232,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesSquareRootMux() {
-        initialize();
+    private void propertiesSquareRootMux() {
+        initialize("");
         System.out.println("\t\ttesting squareRootMux(BigInteger, BigInteger) properties...");
 
         for (Pair<BigInteger, BigInteger> p : take(LIMIT, P.pairs(P.naturalBigIntegers()))) {
@@ -2274,8 +2259,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesSquareRootDemux() {
-        initialize();
+    private void propertiesSquareRootDemux() {
+        initialize("");
         System.out.println("\t\ttesting squareRootDemux(BigInteger) properties...");
 
         for (BigInteger i : take(LIMIT, P.naturalBigIntegers())) {
@@ -2293,8 +2278,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void propertiesMux() {
-        initialize();
+    private void propertiesMux() {
+        initialize("");
         System.out.println("\t\ttesting mux(List<BigInteger>) properties...");
 
         for (List<BigInteger> is : take(LIMIT, P.lists(P.naturalBigIntegers()))) {
@@ -2364,8 +2349,8 @@ public class IntegerUtilsProperties {
         return demuxed;
     }
 
-    private static void propertiesDemux() {
-        initialize();
+    private void propertiesDemux() {
+        initialize("");
         System.out.println("\t\ttesting demux(int size, BigInteger n) properties...");
 
         Iterable<Pair<BigInteger, Integer>> ps = P.withElement(
@@ -2402,8 +2387,8 @@ public class IntegerUtilsProperties {
         }
     }
 
-    private static void compareImplementationsDemux() {
-        initialize();
+    private void compareImplementationsDemux() {
+        initialize("");
         System.out.println("\t\tcomparing demux(int size, BigInteger n) implementations...");
 
         Iterable<Pair<BigInteger, Integer>> ps = P.withElement(

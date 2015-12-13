@@ -1,17 +1,11 @@
 package mho.wheels.numberUtils;
 
-import mho.wheels.iterables.ExhaustiveProvider;
-import mho.wheels.iterables.IterableProvider;
-import mho.wheels.iterables.RandomProvider;
 import mho.wheels.ordering.Ordering;
 import mho.wheels.structures.Pair;
-import mho.wheels.structures.Triple;
-import org.junit.Test;
+import mho.wheels.testing.TestProperties;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Function;
 
 import static mho.wheels.iterables.IterableUtils.*;
@@ -20,37 +14,24 @@ import static mho.wheels.ordering.Ordering.eq;
 import static mho.wheels.ordering.Ordering.ne;
 import static mho.wheels.testing.Testing.*;
 
-public class BigDecimalUtilsProperties {
-    private static int LIMIT;
-    private static IterableProvider P;
-
-    private static void initialize(String name) {
-        System.out.println("\t\ttesting " + name + " properties...");
+public class BigDecimalUtilsProperties extends TestProperties {
+    public BigDecimalUtilsProperties() {
+        super("BigDecimalUtils");
     }
 
-    @Test
-    public void testAllProperties() {
-        List<Triple<IterableProvider, Integer, String>> configs = new ArrayList<>();
-        configs.add(new Triple<>(ExhaustiveProvider.INSTANCE, 10000, "exhaustively"));
-        configs.add(new Triple<>(RandomProvider.example(), 1000, "randomly"));
-        System.out.println("BigDecimalUtils properties");
-        for (Triple<IterableProvider, Integer, String> config : configs) {
-            P = config.a;
-            LIMIT = config.b;
-            System.out.println("\ttesting " + config.c);
-            propertiesCeilingLog10();
-            propertiesSetPrecision();
-            propertiesSuccessor();
-            propertiesPredecessor();
-            propertiesShiftLeft();
-            propertiesShiftRight();
-            propertiesCanonicalize();
-            propertiesIsCanonical();
-        }
-        System.out.println("Done");
+    @Override
+    protected void testBothModes() {
+        propertiesCeilingLog10();
+        propertiesSetPrecision();
+        propertiesSuccessor();
+        propertiesPredecessor();
+        propertiesShiftLeft();
+        propertiesShiftRight();
+        propertiesCanonicalize();
+        propertiesIsCanonical();
     }
 
-    private static void propertiesCeilingLog10() {
+    private void propertiesCeilingLog10() {
         initialize("ceilingLog10(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.positiveBigDecimals())) {
             int log = ceilingLog10(bd);
@@ -80,7 +61,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesSetPrecision() {
+    private void propertiesSetPrecision() {
         initialize("setPrecision(BigDecimal, int)");
         Iterable<Pair<BigDecimal, Integer>> ps = filterInfinite(
                 q -> ne(q.a, BigDecimal.ZERO),
@@ -118,7 +99,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesSuccessor() {
+    private void propertiesSuccessor() {
         initialize("successor(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             BigDecimal successor = successor(bd);
@@ -128,7 +109,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesPredecessor() {
+    private void propertiesPredecessor() {
         initialize("predecessor(BigDecimal)");
 
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
@@ -139,7 +120,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesShiftLeft() {
+    private void propertiesShiftLeft() {
         initialize("shiftLeft(BigDecimal, int)");
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
             homomorphic(
@@ -163,7 +144,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesShiftRight() {
+    private void propertiesShiftRight() {
         initialize("shiftRight(BigDecimal, int)");
         for (Pair<BigDecimal, Integer> p : take(LIMIT, P.pairs(P.bigDecimals(), P.integersGeometric()))) {
             homomorphic(
@@ -188,7 +169,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesCanonicalize() {
+    private void propertiesCanonicalize() {
         initialize("canonicalize(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             homomorphic(
@@ -215,7 +196,7 @@ public class BigDecimalUtilsProperties {
         }
     }
 
-    private static void propertiesIsCanonical() {
+    private void propertiesIsCanonical() {
         initialize("isCanonical(BigDecimal)");
         for (BigDecimal bd : take(LIMIT, P.bigDecimals())) {
             assertEquals(bd, isCanonical(bd), bd.equals(canonicalize(bd)));

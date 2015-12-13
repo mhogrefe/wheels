@@ -10,7 +10,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static mho.wheels.testing.Testing.*;
+import static mho.wheels.testing.Testing.LARGE_LIMIT;
+import static mho.wheels.testing.Testing.MEDIUM_LIMIT;
 
 public abstract class TestProperties {
     protected int LIMIT;

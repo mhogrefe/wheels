@@ -9,7 +9,6 @@ import mho.wheels.ordering.comparators.*;
 import mho.wheels.structures.*;
 import mho.wheels.testing.TestProperties;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
